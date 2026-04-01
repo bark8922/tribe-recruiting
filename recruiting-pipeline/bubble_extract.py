@@ -260,6 +260,7 @@ class BubbleClient:
         constraints: list | None = None,
         sort_field: str = "Created Date",
         sort_descending: bool = False,
+        expected_fields: list | None = None,
     ) -> list[dict]:
         """Fetch all records for a Bubble type with cursor pagination."""
         all_records = []
@@ -299,12 +300,19 @@ class BubbleClient:
                     break
 
                 # Normalize Bubble field names: replace spaces with underscores
+                # Ensure ALL expected fields exist (even as None) so DuckDB
+                # creates columns consistently regardless of sparse data
+                norm_fields = None
+                if expected_fields:
+                    norm_fields = [f.replace(" ", "_") if " " in f else f for f in expected_fields]
                 for rec in results:
                     normalized = {}
+                    # Pre-fill expected fields as None
+                    if norm_fields:
+                        for nf in norm_fields:
+                            normalized[nf] = None
                     for k, v in rec.items():
-                        # Bubble uses "_id" internally but "Created Date" with spaces
                         key = k.replace(" ", "_") if " " in k else k
-                        # Also map "bubbleinternal_id" from _id
                         normalized[key] = v
                     # Ensure bubbleinternal_id is set (Bubble's _id)
                     if "_id" in rec:
@@ -403,7 +411,11 @@ async def extract_endpoint(
     log.info(f"Extracting {type_name} ({mode})...")
     start = time.time()
 
-    records = await client.fetch_all(type_name, constraints=constraints if constraints else None)
+    records = await client.fetch_all(
+        type_name,
+        constraints=constraints if constraints else None,
+        expected_fields=endpoint.get("fields"),
+    )
 
     if mode == "incremental" and records:
         # Merge with existing data

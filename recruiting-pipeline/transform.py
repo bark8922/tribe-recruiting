@@ -856,10 +856,17 @@ def export_dashboard_json(con: duckdb.DuckDBPyConnection, output_dir: Path):
 
     # Helper to run query and get list of dicts
     def query_to_list(sql):
+        import math
         result = con.execute(sql).fetchdf()
         # Replace NaT/NaN with None for clean JSON
         result = result.where(result.notna(), None)
-        return result.to_dict(orient="records")
+        records = result.to_dict(orient="records")
+        # pandas to_dict can still leave float('nan') — scrub them
+        for rec in records:
+            for k, v in rec.items():
+                if isinstance(v, float) and (math.isnan(v) or math.isinf(v)):
+                    rec[k] = None
+        return records
 
     dashboard = {}
 

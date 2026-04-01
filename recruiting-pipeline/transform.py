@@ -51,6 +51,15 @@ def load_bubble_tables(con: duckdb.DuckDBPyConnection, data_dir: Path):
                 CREATE OR REPLACE TABLE "{table_name}" AS
                 SELECT * FROM read_json_auto('{f}', maximum_object_size=100000000)
             """)
+            # Ensure bubbleinternal_id column exists (Bubble API returns _id,
+            # but Keboola-ported SQL references bubbleinternal_id)
+            cols = [row[0] for row in con.execute(
+                f"SELECT column_name FROM information_schema.columns WHERE table_name = '{table_name}'"
+            ).fetchall()]
+            if "bubbleinternal_id" not in cols and "_id" in cols:
+                con.execute(f'ALTER TABLE "{table_name}" ADD COLUMN bubbleinternal_id VARCHAR')
+                con.execute(f'UPDATE "{table_name}" SET bubbleinternal_id = "_id"')
+                log.info(f"  Added bubbleinternal_id from _id")
             count = con.execute(f'SELECT count(*) FROM "{table_name}"').fetchone()[0]
             log.info(f"  → {count:,} rows")
         except Exception as e:

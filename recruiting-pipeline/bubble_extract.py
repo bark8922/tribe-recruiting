@@ -377,9 +377,23 @@ async def extract_endpoint(
             "value": since,
         })
     elif mode == "full":
-        # For large tables, filter to 2025+ on full loads
-        if type_name in ("Candidate", "Talent", "Events", "Emails", "Position",
-                         "recruiter_screeen_notes", "Analytic"):
+        # For large tables, filter to 2025+ on full loads.
+        # Company (444K+), Nylas_Email_message (551K+), duxsoup_messages
+        # are also huge — must be date-filtered.
+        #
+        # Use "Modified Date" for Candidate/Talent/recruiter_screeen_notes
+        # so we capture older records still active in the pipeline.
+        # Use "Created Date" for Events/Emails/etc where we only want
+        # recent activity data.
+        if type_name in ("Candidate", "Talent", "recruiter_screeen_notes"):
+            constraints.append({
+                "key": "Modified Date",
+                "constraint_type": "greater than",
+                "value": DATE_FILTER_2025,
+            })
+        elif type_name in ("Events", "Emails", "Position", "Analytic",
+                           "Company", "Nylas_Email_message", "duxsoup_messages",
+                           "stages"):
             constraints.append({
                 "key": "Created Date",
                 "constraint_type": "greater than",
@@ -445,14 +459,22 @@ async def run_extraction(mode: str = "full", endpoint_name: Optional[str] = None
     async with BubbleClient(API_TOKEN) as client:
         # Extract lookup tables first (small, always full)
         for ep in [e for e in endpoints if e in FULL_LOAD_ENDPOINTS]:
-            name, count = await extract_endpoint(client, ep, "full", DATA_DIR)
-            results[name] = count
+            try:
+                name, count = await extract_endpoint(client, ep, "full", DATA_DIR)
+                results[name] = count
+            except Exception as exc:
+                log.warning(f"Skipping {ep['name']}: {exc}")
+                continue
 
         # Then extract large tables (potentially filtered)
         for ep in [e for e in endpoints if e in INCREMENTAL_ENDPOINTS]:
-            ep_mode = mode if mode == "incremental" else "full"
-            name, count = await extract_endpoint(client, ep, ep_mode, DATA_DIR, since=since)
-            results[name] = count
+            try:
+                ep_mode = mode if mode == "incremental" else "full"
+                name, count = await extract_endpoint(client, ep, ep_mode, DATA_DIR, since=since)
+                results[name] = count
+            except Exception as exc:
+                log.warning(f"Skipping {ep['name']}: {exc}")
+                continue
 
     # Save extraction state
     with open(state_file, "w") as f:

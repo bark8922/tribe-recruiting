@@ -101,15 +101,7 @@ INCREMENTAL_ENDPOINTS = [
         "date_field": "Modified Date",
         "fields": ["_id", "email", "talent", "count", "Created Date", "Modified Date"],
     },
-    {
-        "name": "Company",
-        "key": "_id",
-        "date_field": "Modified Date",
-        "fields": [
-            "_id", "Name", "CompanyWebsite", "client", "jobs", "users",
-            "archived", "test", "ats", "Created Date", "Modified Date",
-        ],
-    },
+    # Company moved to FULL_LOAD_ENDPOINTS with client=True constraint
     {
         "name": "Position",
         "key": "_id",
@@ -169,6 +161,12 @@ FULL_LOAD_ENDPOINTS = [
         "archived", "atsID", "executive_search", "external_recruiter",
         "test", "campaign_inREPLY", "sub_category",
         "Created Date", "Modified Date",
+    ]},
+    {"name": "Company", "key": "_id", "fields": [
+        "_id", "Name", "CompanyWebsite", "client", "jobs", "users",
+        "archived", "test", "ats", "Created Date", "Modified Date",
+    ], "constraints": [
+        {"key": "client", "constraint_type": "equals", "value": "true"},
     ]},
     {"name": "HiringManager", "key": "_id", "fields": [
         "_id", "Name", "Title", "Company", "Email", "archived",
@@ -377,6 +375,11 @@ async def extract_endpoint(
     type_name = endpoint["name"]
     constraints = []
 
+    # If the endpoint has pre-defined constraints (e.g. Company: client=True),
+    # always apply them regardless of mode.
+    if endpoint.get("constraints"):
+        constraints.extend(endpoint["constraints"])
+
     if mode == "incremental" and since:
         # Only fetch records modified since last run
         constraints.append({
@@ -386,18 +389,14 @@ async def extract_endpoint(
         })
     elif mode == "full":
         # For large tables, filter to 2025+ on full loads.
-        # Company (444K+), Nylas_Email_message (551K+), duxsoup_messages
-        # are also huge — must be date-filtered.
+        # Nylas_Email_message (551K+), duxsoup_messages are huge — must be date-filtered.
         #
-        # Use "Modified Date" for Candidate/Talent/recruiter_screeen_notes
+        # Use "Modified Date" for Candidate/Talent/recruiter_screeen_notes/stages
         # so we capture older records still active in the pipeline.
         # Use "Created Date" for Events/Emails/etc where we only want
         # recent activity data.
         if type_name in ("Candidate", "Talent", "recruiter_screeen_notes",
-                         "Company", "stages"):
-            # Use Modified Date so we capture older records still active
-            # Company: most clients created before 2025, but still active
-            # stages: stage definitions are reused across all time
+                         "stages"):
             constraints.append({
                 "key": "Modified Date",
                 "constraint_type": "greater than",

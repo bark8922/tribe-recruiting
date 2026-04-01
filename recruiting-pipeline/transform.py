@@ -189,13 +189,14 @@ def run_transformations(con: duckdb.DuckDBPyConnection):
     log.info("Creating final_client...")
     con.execute("""
         CREATE OR REPLACE TABLE final_client AS
-        SELECT DISTINCT
+        SELECT
             client_id,
             client_name,
-            is_client_archived,
-            CASE WHEN test = TRUE THEN TRUE ELSE FALSE END AS test
+            BOOL_OR(is_client_archived) AS is_client_archived,
+            BOOL_OR(test) AS test
         FROM tmp_job
-        WHERE client_name IS NOT NULL
+        WHERE client_name IS NOT NULL AND client_id IS NOT NULL
+        GROUP BY client_id, client_name
     """)
     _log_count(con, "final_client")
 
@@ -951,7 +952,9 @@ def export_dashboard_json(con: duckdb.DuckDBPyConnection, output_dir: Path):
         GROUP BY period, who_event_created_for, event_type, job_id
     """)
 
-    # --- Events detail (recent 90 days only, for drill-down) ---
+    # --- Events detail (2025+ for drill-down) ---
+    # Use 2025-01-01 floor instead of rolling 90-day window, since
+    # extracted events are already filtered to 2025+ at extraction time
     dashboard["events_recent"] = query_to_list("""
         SELECT
             event_id, candidate_id, talent_id, job_id,
@@ -962,7 +965,7 @@ def export_dashboard_json(con: duckdb.DuckDBPyConnection, output_dir: Path):
             automation_is_message_read, automation_is_message_replied,
             is_event_createdby_ai, is_event_duplicated
         FROM final_event
-        WHERE CAST(date_created AS DATE) >= CURRENT_DATE - INTERVAL 90 DAY
+        WHERE CAST(date_created AS DATE) >= '2025-01-01'
           AND is_event_duplicated = FALSE
     """)
 

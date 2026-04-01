@@ -1,8 +1,9 @@
 {
-  "last_run": "2026-04-01T09:00:25.000Z",
+  "last_run": "2026-04-01T12:04:42.000Z",
   "mode": "full",
   "results": {
     "Jobs": 1540,
+    "Company": 56,
     "HiringManager": 310,
     "User": 158,
     "stagesType": 10,
@@ -34,7 +35,6 @@
     "Talent": 46,
     "Events": 533,
     "Emails": 6,
-    "Company": 135,
     "Position": 0,
     "Nylas_Email_message": 101,
     "duxsoup_messages": 196,

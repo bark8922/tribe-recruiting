@@ -51,15 +51,22 @@ def load_bubble_tables(con: duckdb.DuckDBPyConnection, data_dir: Path):
                 CREATE OR REPLACE TABLE "{table_name}" AS
                 SELECT * FROM read_json_auto('{f}', maximum_object_size=100000000, union_by_name=true, ignore_errors=true)
             """)
-            # Ensure bubbleinternal_id column exists (Bubble API returns _id,
-            # but Keboola-ported SQL references bubbleinternal_id)
-            cols = [row[0] for row in con.execute(
-                f"SELECT column_name FROM information_schema.columns WHERE table_name = '{table_name}'"
-            ).fetchall()]
+            # Ensure bubbleinternal_id is VARCHAR (DuckDB may infer it as JSON)
+            # and exists as a column (Keboola-ported SQL references it)
+            cols = {row[0]: row[1] for row in con.execute(
+                f"SELECT column_name, data_type FROM information_schema.columns WHERE table_name = '{table_name}'"
+            ).fetchall()}
             if "bubbleinternal_id" not in cols and "_id" in cols:
                 con.execute(f'ALTER TABLE "{table_name}" ADD COLUMN bubbleinternal_id VARCHAR')
-                con.execute(f'UPDATE "{table_name}" SET bubbleinternal_id = "_id"')
+                con.execute(f'UPDATE "{table_name}" SET bubbleinternal_id = CAST("_id" AS VARCHAR)')
                 log.info(f"  Added bubbleinternal_id from _id")
+            elif "bubbleinternal_id" in cols and cols["bubbleinternal_id"] != "VARCHAR":
+                # Cast to VARCHAR if DuckDB inferred wrong type (e.g. JSON)
+                con.execute(f'ALTER TABLE "{table_name}" ADD COLUMN _bid_tmp VARCHAR')
+                con.execute(f'UPDATE "{table_name}" SET _bid_tmp = CAST(bubbleinternal_id AS VARCHAR)')
+                con.execute(f'ALTER TABLE "{table_name}" DROP COLUMN bubbleinternal_id')
+                con.execute(f'ALTER TABLE "{table_name}" RENAME COLUMN _bid_tmp TO bubbleinternal_id')
+                log.info(f"  Cast bubbleinternal_id to VARCHAR")
             count = con.execute(f'SELECT count(*) FROM "{table_name}"').fetchone()[0]
             log.info(f"  → {count:,} rows")
         except Exception as e:

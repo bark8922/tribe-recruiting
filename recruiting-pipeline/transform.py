@@ -51,20 +51,30 @@ def load_bubble_tables(con: duckdb.DuckDBPyConnection, data_dir: Path):
                 CREATE OR REPLACE TABLE "{table_name}" AS
                 SELECT * FROM read_json_auto('{f}', maximum_object_size=100000000, union_by_name=true, ignore_errors=true)
             """)
-            # Ensure bubbleinternal_id exists as VARCHAR.
-            # DuckDB may infer it as JSON from read_json_auto — force VARCHAR.
+            # DuckDB read_json_auto often infers Bubble ID fields as JSON type
+            # instead of VARCHAR. This breaks JOINs. Cast ALL JSON-typed columns
+            # to VARCHAR so SQL comparisons work correctly.
+            json_cols = [row[0] for row in con.execute(f"""
+                SELECT column_name FROM information_schema.columns
+                WHERE table_name = '{table_name}' AND data_type = 'JSON'
+            """).fetchall()]
+            for jcol in json_cols:
+                safe = jcol.replace('"', '""')
+                con.execute(f'ALTER TABLE "{table_name}" ADD COLUMN "_tmp_{safe}" VARCHAR')
+                con.execute(f'UPDATE "{table_name}" SET "_tmp_{safe}" = CAST("{safe}" AS VARCHAR)')
+                con.execute(f'ALTER TABLE "{table_name}" DROP COLUMN "{safe}"')
+                con.execute(f'ALTER TABLE "{table_name}" RENAME COLUMN "_tmp_{safe}" TO "{safe}"')
+            if json_cols:
+                log.info(f"  Cast {len(json_cols)} JSON columns to VARCHAR")
+
+            # Ensure bubbleinternal_id exists
             cols = [row[0] for row in con.execute(
                 f"SELECT column_name FROM information_schema.columns WHERE table_name = '{table_name}'"
             ).fetchall()]
-            if "bubbleinternal_id" in cols:
-                # Always force to VARCHAR (drop + recreate to avoid type issues)
-                con.execute(f'ALTER TABLE "{table_name}" ADD COLUMN _bid_varchar VARCHAR')
-                con.execute(f'UPDATE "{table_name}" SET _bid_varchar = CAST(bubbleinternal_id AS VARCHAR)')
-                con.execute(f'ALTER TABLE "{table_name}" DROP COLUMN bubbleinternal_id')
-                con.execute(f'ALTER TABLE "{table_name}" RENAME COLUMN _bid_varchar TO bubbleinternal_id')
-            elif "_id" in cols:
+            if "bubbleinternal_id" not in cols and "_id" in cols:
                 con.execute(f'ALTER TABLE "{table_name}" ADD COLUMN bubbleinternal_id VARCHAR')
                 con.execute(f'UPDATE "{table_name}" SET bubbleinternal_id = CAST("_id" AS VARCHAR)')
+
             count = con.execute(f'SELECT count(*) FROM "{table_name}"').fetchone()[0]
             log.info(f"  → {count:,} rows")
         except Exception as e:

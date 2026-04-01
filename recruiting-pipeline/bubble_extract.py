@@ -5,7 +5,7 @@ Bubble.io Data Extractor for Tribe Recruiting Dashboard
 Pulls data from Bubble's Data API, handles cursor-based pagination,
 and saves to Parquet files for DuckDB transformation.
 
-API: https://overview.tribe.xyz/api/1.1/obj/<type>
+API: https://overview.tribe.xyz/version-test/api/1.1/obj/<type>
 Auth: Bearer token
 Pagination: cursor-based (remaining + cursor fields)
 
@@ -31,8 +31,8 @@ import aiohttp
 # Configuration
 # ---------------------------------------------------------------------------
 
-API_BASE = "https://overview.tribe.xyz/api/1.1/obj"
-API_TOKEN = os.environ.get("BUBBLE_API_TOKEN", "f1f6477f39fdadad2c1062a148760546")
+API_BASE = "https://overview.tribe.xyz/version-test/api/1.1/obj"
+API_TOKEN = os.environ.get("BUBBLE_API_TOKEN", "")
 DATA_DIR = Path(os.environ.get("RECRUIT_DATA_DIR", Path(__file__).parent / "data"))
 PAGE_LIMIT = 100  # Bubble max per request
 MAX_CONCURRENT = 3  # Be nice to Bubble's API

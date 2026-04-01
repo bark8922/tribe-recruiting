@@ -857,33 +857,49 @@ def export_dashboard_json(con: duckdb.DuckDBPyConnection, output_dir: Path):
     # Helper to run query and get list of dicts
     def query_to_list(sql):
         import math
+        import pandas as pd
         result = con.execute(sql).fetchdf()
         # Replace NaT/NaN with None for clean JSON
         result = result.where(result.notna(), None)
         records = result.to_dict(orient="records")
-        # pandas to_dict can still leave float('nan') — scrub them
+        # pandas to_dict can leave float('nan'), NaT objects, or Timestamp objects
         for rec in records:
             for k, v in rec.items():
-                if isinstance(v, float) and (math.isnan(v) or math.isinf(v)):
+                if v is pd.NaT or (hasattr(v, '__class__') and v.__class__.__name__ == 'NaTType'):
+                    rec[k] = None
+                elif isinstance(v, float) and (math.isnan(v) or math.isinf(v)):
+                    rec[k] = None
+                elif hasattr(v, 'isoformat'):
+                    # Convert Timestamp/date/datetime to ISO string
+                    rec[k] = v.isoformat()[:10] if hasattr(v, 'date') and str(v).endswith('00:00:00') else v.isoformat()
+                elif str(v) == 'NaT':
                     rec[k] = None
         return records
 
     dashboard = {}
 
     # --- Jobs ---
+    # Only include jobs created since 2024 OR with recent candidate activity
+    # Filter out test jobs in the export itself
     dashboard["jobs"] = query_to_list("""
         SELECT
-            j.job_id, j.client_id, j.date_created, j.job_title,
+            j.job_id, j.client_id,
+            CAST(j.date_created AS VARCHAR) AS date_created,
+            j.job_title,
             j.job_category, j.job_subcategory, j.job_location,
             j.user_hiring_manager, j.job_recruiter, j.job_sourcer,
             j.is_job_archived, j.is_external_recruiter, j.test, j.executive_search,
             cl.client_name
         FROM final_job j
         LEFT JOIN final_client cl ON j.client_id = cl.client_id
-        WHERE j.date_created >= '2025-01-01' OR j.job_id IN (
-            SELECT DISTINCT job_id FROM final_candidate_stage
-            WHERE date_created >= '2025-01-01'
-        )
+        WHERE (j.test IS DISTINCT FROM TRUE)
+          AND (
+            j.date_created >= '2024-01-01'
+            OR j.job_id IN (
+                SELECT DISTINCT job_id FROM final_candidate_stage
+                WHERE date_created >= '2025-01-01'
+            )
+          )
     """)
 
     # --- Candidates with stage info ---
@@ -896,10 +912,14 @@ def export_dashboard_json(con: duckdb.DuckDBPyConnection, output_dir: Path):
             c.is_candidate_archived, c.is_candidate_createdby_ai,
             c.source,
             cs.stage_current_type, cs.stage_current,
-            cs.date_created,
-            cs.date_lnkdin_viewed, cs.date_contacted,
-            cs.date_screen, cs.date_screen_actual,
-            cs.date_interview, cs.date_offer, cs.date_hired,
+            CAST(cs.date_created AS VARCHAR) AS date_created,
+            CAST(cs.date_lnkdin_viewed AS VARCHAR) AS date_lnkdin_viewed,
+            CAST(cs.date_contacted AS VARCHAR) AS date_contacted,
+            CAST(cs.date_screen AS VARCHAR) AS date_screen,
+            CAST(cs.date_screen_actual AS VARCHAR) AS date_screen_actual,
+            CAST(cs.date_interview AS VARCHAR) AS date_interview,
+            CAST(cs.date_offer AS VARCHAR) AS date_offer,
+            CAST(cs.date_hired AS VARCHAR) AS date_hired,
             cs.automation_emails, cs.automation_connections,
             cs.automation_inmails, cs.automation_messages,
             j.client_id,

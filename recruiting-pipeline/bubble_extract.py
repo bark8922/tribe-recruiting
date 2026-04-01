@@ -393,15 +393,18 @@ async def extract_endpoint(
         # so we capture older records still active in the pipeline.
         # Use "Created Date" for Events/Emails/etc where we only want
         # recent activity data.
-        if type_name in ("Candidate", "Talent", "recruiter_screeen_notes"):
+        if type_name in ("Candidate", "Talent", "recruiter_screeen_notes",
+                         "Company", "stages"):
+            # Use Modified Date so we capture older records still active
+            # Company: most clients created before 2025, but still active
+            # stages: stage definitions are reused across all time
             constraints.append({
                 "key": "Modified Date",
                 "constraint_type": "greater than",
                 "value": DATE_FILTER_2025,
             })
         elif type_name in ("Events", "Emails", "Position", "Analytic",
-                           "Company", "Nylas_Email_message", "duxsoup_messages",
-                           "stages"):
+                           "Nylas_Email_message", "duxsoup_messages"):
             constraints.append({
                 "key": "Created Date",
                 "constraint_type": "greater than",

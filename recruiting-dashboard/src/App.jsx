@@ -66,16 +66,30 @@ const formatDate = (dateStr) => {
   return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 };
 
-// Helper: Get month from date
+// Helper: Get month from date as YYYY-MM (matches events_monthly period format)
 const getMonth = (dateStr) => {
-  if (!dateStr) return null;
+  if (!dateStr || dateStr === 'NaT' || dateStr === 'None') return null;
+  // If already YYYY-MM format, return as-is
+  if (/^\d{4}-\d{2}$/.test(dateStr)) return dateStr;
+  // Try to parse and extract YYYY-MM
+  const d = dateStr.substring(0, 10); // "2025-01-28" from "2025-01-28 00:00:00" or ISO
+  if (/^\d{4}-\d{2}-\d{2}$/.test(d)) return d.substring(0, 7);
   const date = new Date(dateStr);
-  return date.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+  if (isNaN(date.getTime())) return null;
+  return date.toISOString().substring(0, 7);
+};
+
+// Helper: Format YYYY-MM to display label
+const formatPeriod = (ym) => {
+  if (!ym) return '';
+  const [y, m] = ym.split('-');
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return months[parseInt(m, 10) - 1] + ' ' + y.slice(2);
 };
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('overview');
-  const [period, setPeriod] = useState('2026-03');
+  const [period, setPeriod] = useState('all');
   const [recruiter, setRecruiter] = useState('all');
   const [client, setClient] = useState('all');
   const [expandedJob, setExpandedJob] = useState(null);
@@ -95,6 +109,9 @@ export default function Dashboard() {
   // Apply global filters
   const filteredCandidates = useMemo(() => {
     let filtered = activeCandidates;
+    if (period !== 'all') {
+      filtered = filtered.filter(c => getMonth(c.date_created) === period);
+    }
     if (recruiter !== 'all') {
       const jobsForRecruiter = activeJobs.filter(j => j.job_recruiter === recruiter).map(j => j.job_id);
       filtered = filtered.filter(c => jobsForRecruiter.includes(c.job_id));
@@ -103,7 +120,7 @@ export default function Dashboard() {
       filtered = filtered.filter(c => c.client_id === client);
     }
     return filtered;
-  }, [recruiter, client, activeCandidates]);
+  }, [period, recruiter, client, activeCandidates]);
 
   const filteredJobs = useMemo(() => {
     let filtered = activeJobs;
@@ -125,7 +142,7 @@ export default function Dashboard() {
   );
 
   const clients = useMemo(() =>
-    ['all', ...new Set(DATA.jobs.map(j => j.client_id))].map(c => ({
+    ['all', ...new Set(DATA.jobs.map(j => j.client_id).filter(Boolean))].map(c => ({
       v: c, l: c === 'all' ? 'All Clients' : DATA.clients.find(cl => cl.client_id === c)?.client_name || c
     })),
     []
@@ -134,10 +151,20 @@ export default function Dashboard() {
   const periods = useMemo(() => {
     const allPeriods = new Set();
     DATA.candidates.forEach(c => {
-      if (c.date_hired) allPeriods.add(getMonth(c.date_hired));
-      if (c.date_created) allPeriods.add(getMonth(c.date_created));
+      const m1 = getMonth(c.date_hired);
+      const m2 = getMonth(c.date_created);
+      if (m1) allPeriods.add(m1);
+      if (m2) allPeriods.add(m2);
     });
-    return Array.from(allPeriods).sort().reverse().map(p => ({ v: p, l: p }));
+    // Also include periods from events_monthly
+    DATA.events_monthly.forEach(e => {
+      if (e.period) allPeriods.add(e.period);
+    });
+    const sorted = Array.from(allPeriods).filter(Boolean).sort().reverse();
+    return [
+      { v: 'all', l: 'All Periods' },
+      ...sorted.map(p => ({ v: p, l: formatPeriod(p) }))
+    ];
   }, []);
 
   // ==== OVERVIEW TAB ====
@@ -436,7 +463,7 @@ export default function Dashboard() {
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={overviewData.hiringTrend}>
               <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-              <XAxis dataKey="month" stroke="#9ca3af" style={{ fontSize: '12px' }} />
+              <XAxis dataKey="month" stroke="#9ca3af" style={{ fontSize: '12px' }} tickFormatter={formatPeriod} />
               <YAxis stroke="#9ca3af" style={{ fontSize: '12px' }} />
               <Tooltip content={<Tip />} />
               <Line type="monotone" dataKey="hires" stroke="#10b981" strokeWidth={2} dot={{ r: 4 }} />
@@ -616,7 +643,7 @@ export default function Dashboard() {
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={timeToHireData.tthByMonth}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-            <XAxis dataKey="month" stroke="#9ca3af" style={{ fontSize: '12px' }} />
+            <XAxis dataKey="month" stroke="#9ca3af" style={{ fontSize: '12px' }} tickFormatter={formatPeriod} />
             <YAxis stroke="#9ca3af" style={{ fontSize: '12px' }} />
             <Tooltip content={<Tip />} />
             <Legend />
@@ -697,7 +724,7 @@ export default function Dashboard() {
             label="Period" 
             value={period} 
             onChange={setPeriod} 
-            options={periods.length > 0 ? periods : [{v: '2026-03', l: '2026-03'}]}
+            options={periods.length > 1 ? periods : [{v: 'all', l: 'All Periods'}]}
           />
           <Select 
             label="Recruiter" 

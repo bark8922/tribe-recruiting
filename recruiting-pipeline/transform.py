@@ -49,7 +49,7 @@ def load_bubble_tables(con: duckdb.DuckDBPyConnection, data_dir: Path):
         try:
             con.execute(f"""
                 CREATE OR REPLACE TABLE "{table_name}" AS
-                SELECT * FROM read_json_auto('{f}', maximum_object_size=100000000)
+                SELECT * FROM read_json_auto('{f}', maximum_object_size=100000000, union_by_name=true, ignore_errors=true)
             """)
             # Ensure bubbleinternal_id column exists (Bubble API returns _id,
             # but Keboola-ported SQL references bubbleinternal_id)

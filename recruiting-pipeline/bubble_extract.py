@@ -31,7 +31,7 @@ import aiohttp
 # Configuration
 # ---------------------------------------------------------------------------
 
-API_BASE = "https://overview.tribe.xyz/api/1.1/obj"
+API_BASE = "https://overview.tribe.xyz/version-test/api/1.1/obj"
 API_TOKEN = os.environ.get("BUBBLE_API_TOKEN", "")
 DATA_DIR = Path(os.environ.get("RECRUIT_DATA_DIR", Path(__file__).parent / "data"))
 PAGE_LIMIT = 100  # Bubble max per request

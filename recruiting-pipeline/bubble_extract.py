@@ -96,6 +96,7 @@ INCREMENTAL_ENDPOINTS = [
             "ats_creation_time", "new_role", "new_sub_role",
             "Ai_Search", "Created Date", "Modified Date",
         ],
+        "max_records": 50000,
     },
     {
         "name": "Emails",
@@ -423,11 +424,14 @@ async def extract_endpoint(
     log.info(f"Extracting {type_name} ({mode})...")
     start = time.time()
 
+    # If there's a record cap, sort descending to get most recent records first
+    sort_desc = bool(endpoint.get("max_records"))
     records = await client.fetch_all(
         type_name,
         constraints=constraints if constraints else None,
         expected_fields=endpoint.get("fields"),
         max_records=endpoint.get("max_records"),
+        sort_descending=sort_desc,
     )
 
     if mode == "incremental" and records:

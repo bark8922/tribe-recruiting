@@ -930,7 +930,12 @@ def export_dashboard_json(con: duckdb.DuckDBPyConnection, output_dir: Path):
         JOIN final_candidate_stage cs ON c.candidate_id = cs.candidate_id
         LEFT JOIN final_job j ON c.job_id = j.job_id
         LEFT JOIN final_client cl ON j.client_id = cl.client_id
-        WHERE cs.date_created >= '2025-01-01'
+        WHERE cs.date_created >= '2024-01-01'
+           OR cs.date_contacted >= '2025-01-01'
+           OR cs.date_screen >= '2025-01-01'
+           OR cs.date_interview >= '2025-01-01'
+           OR cs.date_offer >= '2025-01-01'
+           OR cs.date_hired >= '2025-01-01'
     """)
 
     # --- Events (aggregated by type per candidate per month) ---

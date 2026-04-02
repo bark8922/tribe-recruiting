@@ -70,6 +70,7 @@ INCREMENTAL_ENDPOINTS = [
             "hired_currency", "archived", "linkedin", "Created Date",
             "Modified Date",
         ],
+        "max_records": 50000,
     },
     {
         "name": "Talent",
@@ -80,6 +81,7 @@ INCREMENTAL_ENDPOINTS = [
             "currentTitle", "Email", "linkedin", "location_address",
             "LinkedinMainID", "linkedin_nick", "Created Date", "Modified Date",
         ],
+        "max_records": 50000,
     },
     {
         "name": "Events",
@@ -116,18 +118,21 @@ INCREMENTAL_ENDPOINTS = [
         "key": "_id",
         "date_field": "Modified Date",
         "fields": ["_id", "A_B_Id", "version", "Read", "Created Date", "Modified Date"],
+        "max_records": 10000,
     },
     {
         "name": "duxsoup_messages",
         "key": "_id",
         "date_field": "Modified Date",
         "fields": ["_id", "A_B_id", "version", "Created Date", "Modified Date"],
+        "max_records": 10000,
     },
     {
         "name": "Analytic",
         "key": "_id",
         "date_field": "Modified Date",
         "fields": ["_id", "page", "user", "Created Date", "Modified Date"],
+        "max_records": 5000,
     },
     {
         "name": "stages",
@@ -259,12 +264,17 @@ class BubbleClient:
         sort_field: str = "Created Date",
         sort_descending: bool = False,
         expected_fields: list | None = None,
+        max_records: int | None = None,
     ) -> list[dict]:
         """Fetch all records for a Bubble type with cursor pagination."""
         all_records = []
         cursor = 0
 
         while True:
+            # Safety cap — stop if we've hit the max
+            if max_records and len(all_records) >= max_records:
+                log.info(f"  {type_name}: hit max_records cap ({max_records}), stopping")
+                break
             async with self._semaphore:
                 params = {
                     "limit": PAGE_LIMIT,
@@ -417,6 +427,7 @@ async def extract_endpoint(
         type_name,
         constraints=constraints if constraints else None,
         expected_fields=endpoint.get("fields"),
+        max_records=endpoint.get("max_records"),
     )
 
     if mode == "incremental" and records:

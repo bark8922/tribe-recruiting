@@ -146,13 +146,74 @@ const formatPeriod = (ym) => {
 // SQL escape helper (prevent injection from filter values)
 const esc = (val) => val.replace(/'/g, "''");
 
+// ─── Date Range Helpers ───────────────────────────────────────────────────────
+
+function getDateRange(periodKey) {
+  const today = new Date();
+  const yyyy = (d) => d.toISOString().slice(0, 10);
+
+  // Monday of current week
+  const monday = new Date(today);
+  monday.setDate(today.getDate() - ((today.getDay() + 6) % 7));
+
+  // Monday of last week
+  const lastMonday = new Date(monday);
+  lastMonday.setDate(monday.getDate() - 7);
+  const lastSunday = new Date(monday);
+  lastSunday.setDate(monday.getDate() - 1);
+
+  // First of current month
+  const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+  // First of last month
+  const lastMonthStart = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+  const lastMonthEnd = new Date(today.getFullYear(), today.getMonth(), 0);
+
+  switch (periodKey) {
+    case 'this_week': return { from: yyyy(monday), to: yyyy(today) };
+    case 'last_week': return { from: yyyy(lastMonday), to: yyyy(lastSunday) };
+    case 'this_month': return { from: yyyy(monthStart), to: yyyy(today) };
+    case 'last_month': return { from: yyyy(lastMonthStart), to: yyyy(lastMonthEnd) };
+    case 'last_30': {
+      const d = new Date(today); d.setDate(today.getDate() - 30);
+      return { from: yyyy(d), to: yyyy(today) };
+    }
+    case 'last_90': {
+      const d = new Date(today); d.setDate(today.getDate() - 90);
+      return { from: yyyy(d), to: yyyy(today) };
+    }
+    case 'ytd': return { from: `${today.getFullYear()}-01-01`, to: yyyy(today) };
+    case 'all': return { from: null, to: null };
+    default:
+      // Monthly: "2026-04" format
+      if (/^\d{4}-\d{2}$/.test(periodKey)) {
+        const [y, m] = periodKey.split('-').map(Number);
+        const end = new Date(y, m, 0); // last day of that month
+        return { from: `${periodKey}-01`, to: yyyy(end) };
+      }
+      return { from: null, to: null };
+  }
+}
+
+const PERIOD_PRESETS = [
+  { v: 'this_week', l: 'This Week' },
+  { v: 'last_week', l: 'Last Week' },
+  { v: 'this_month', l: 'This Month' },
+  { v: 'last_month', l: 'Last Month' },
+  { v: 'last_30', l: 'Last 30 Days' },
+  { v: 'last_90', l: 'Last 90 Days' },
+  { v: 'ytd', l: 'Year to Date' },
+  { v: 'all', l: 'All Time' },
+];
+
 // ─── Main Dashboard ───────────────────────────────────────────────────────────
 
 export default function Dashboard() {
   const [dbReady, setDbReady] = useState(false);
   const [dbError, setDbError] = useState(null);
   const [activeTab, setActiveTab] = useState('overview');
-  const [period, setPeriod] = useState('all');
+  const [period, setPeriod] = useState('this_month');
+  const [customFrom, setCustomFrom] = useState('');
+  const [customTo, setCustomTo] = useState('');
   const [recruiter, setRecruiter] = useState('all');
   const [client, setClient] = useState('all');
   const [expandedJob, setExpandedJob] = useState(null);
@@ -167,7 +228,7 @@ export default function Dashboard() {
   const [jobsData, setJobsData] = useState(null);
 
   // Filter options
-  const [filterOptions, setFilterOptions] = useState({ periods: [], recruiters: [], clients: [] });
+  const [filterOptions, setFilterOptions] = useState({ months: [], recruiters: [], clients: [] });
 
   // ── DuckDB Init ──
   useEffect(() => {
@@ -184,8 +245,12 @@ export default function Dashboard() {
     if (!dbReady) return;
     (async () => {
       try {
-        const [periods, recruiters, clients] = await Promise.all([
+        const [months, recruiters, clients] = await Promise.all([
           queryDB(`
+            SELECT DISTINCT SUBSTRING(date_created, 1, 7) AS period
+            FROM 'events_monthly.parquet'
+            WHERE period IS NOT NULL
+            UNION
             SELECT DISTINCT SUBSTRING(date_created, 1, 7) AS period
             FROM 'candidates.parquet'
             WHERE date_created IS NOT NULL
@@ -204,7 +269,7 @@ export default function Dashboard() {
         ]);
 
         setFilterOptions({
-          periods: periods.filter(p => p.period).map(p => ({ v: p.period, l: formatPeriod(p.period) })),
+          months: months.filter(p => p.period).map(p => ({ v: p.period, l: formatPeriod(p.period) })),
           recruiters: recruiters.map(r => ({ v: r.user_id, l: r.user_name })),
           clients: clients.filter(c => c.client_id).map(c => ({ v: c.client_id, l: c.client_name }))
         });
@@ -218,14 +283,32 @@ export default function Dashboard() {
   useEffect(() => {
     if (!dbReady) return;
     loadTabData(activeTab);
-  }, [dbReady, activeTab, period, recruiter, client]);
+  }, [dbReady, activeTab, period, customFrom, customTo, recruiter, client]);
 
   // ── SQL filter fragments ──
   function buildFilters() {
     const cFilter = client !== 'all' ? `AND j.client_id = '${esc(client)}'` : '';
     const rFilter = recruiter !== 'all' ? `AND j.job_recruiter = '${esc(recruiter)}'` : '';
-    const pFilter = period !== 'all' ? `AND SUBSTRING(c.date_created, 1, 7) = '${esc(period)}'` : '';
+
+    let pFilter = '';
+    if (period === 'custom') {
+      if (customFrom) pFilter += ` AND CAST(c.date_created AS DATE) >= '${esc(customFrom)}'`;
+      if (customTo) pFilter += ` AND CAST(c.date_created AS DATE) <= '${esc(customTo)}'`;
+    } else if (period !== 'all') {
+      const range = getDateRange(period);
+      if (range.from && range.to) {
+        pFilter = ` AND CAST(c.date_created AS DATE) >= '${range.from}' AND CAST(c.date_created AS DATE) <= '${range.to}'`;
+      }
+    }
     return { cFilter, rFilter, pFilter };
+  }
+
+  // Helper: get current date range for display
+  function getCurrentDateRange() {
+    if (period === 'custom') {
+      return { from: customFrom || null, to: customTo || null };
+    }
+    return getDateRange(period);
   }
 
   // ── Tab Data Loaders ──
@@ -604,7 +687,13 @@ export default function Dashboard() {
     );
   }
 
-  const periodOptions = [{ v: 'all', l: 'All Periods' }, ...filterOptions.periods];
+  const periodOptions = [
+    ...PERIOD_PRESETS,
+    { v: '_divider', l: '──────────', disabled: true },
+    { v: 'custom', l: 'Custom Range' },
+    { v: '_divider2', l: '── Months ──', disabled: true },
+    ...filterOptions.months
+  ];
   const recruiterOptions = [{ v: 'all', l: 'All Recruiters' }, ...filterOptions.recruiters];
   const clientOptions = [{ v: 'all', l: 'All Clients' }, ...filterOptions.clients];
 
@@ -917,12 +1006,48 @@ export default function Dashboard() {
 
         {/* Global Filters */}
         <div className="bg-gray-800 rounded-xl border border-gray-700 p-4 mb-6 flex gap-4 flex-wrap items-end">
-          <Select
-            label="Period"
-            value={period}
-            onChange={setPeriod}
-            options={periodOptions}
-          />
+          <div className="flex flex-col gap-1">
+            <label className="text-gray-500 text-xs">Period</label>
+            <select
+              value={period}
+              onChange={e => setPeriod(e.target.value)}
+              className="bg-gray-800 border border-gray-600 rounded-lg px-2 py-1.5 text-sm text-white min-w-[150px]"
+            >
+              {periodOptions.map(o => (
+                <option key={o.v} value={o.v} disabled={o.disabled}>{o.l}</option>
+              ))}
+            </select>
+          </div>
+          {period === 'custom' && (
+            <>
+              <div className="flex flex-col gap-1">
+                <label className="text-gray-500 text-xs">From</label>
+                <input
+                  type="date"
+                  value={customFrom}
+                  onChange={e => setCustomFrom(e.target.value)}
+                  className="bg-gray-800 border border-gray-600 rounded-lg px-2 py-1.5 text-sm text-white"
+                />
+              </div>
+              <div className="flex flex-col gap-1">
+                <label className="text-gray-500 text-xs">To</label>
+                <input
+                  type="date"
+                  value={customTo}
+                  onChange={e => setCustomTo(e.target.value)}
+                  className="bg-gray-800 border border-gray-600 rounded-lg px-2 py-1.5 text-sm text-white"
+                />
+              </div>
+            </>
+          )}
+          {period !== 'all' && period !== 'custom' && (
+            <div className="flex flex-col gap-1">
+              <label className="text-gray-500 text-xs">Date Range</label>
+              <span className="text-gray-400 text-xs py-1.5">
+                {(() => { const r = getDateRange(period); return r.from ? `${r.from} → ${r.to}` : ''; })()}
+              </span>
+            </div>
+          )}
           <Select
             label="Recruiter"
             value={recruiter}

@@ -198,7 +198,7 @@ export default function Dashboard() {
           `),
           queryDB(`
             SELECT DISTINCT client_id, client_name FROM 'jobs.parquet'
-            WHERE client_name IS NOT NULL AND (test IS NULL OR test != 'true')
+            WHERE client_name IS NOT NULL AND (test IS NULL OR test = false)
             ORDER BY client_name
           `)
         ]);
@@ -251,7 +251,7 @@ export default function Dashboard() {
   // ── OVERVIEW ──
   async function loadOverviewData() {
     const { cFilter, rFilter, pFilter } = buildFilters();
-    const jobFilters = `WHERE (j.test IS NULL OR j.test != 'true') AND j.is_job_archived = false ${client !== 'all' ? `AND j.client_id = '${esc(client)}'` : ''} ${recruiter !== 'all' ? `AND j.job_recruiter = '${esc(recruiter)}'` : ''}`;
+    const jobFilters = `WHERE (j.test IS NULL OR j.test = false) AND j.is_job_archived = false ${client !== 'all' ? `AND j.client_id = '${esc(client)}'` : ''} ${recruiter !== 'all' ? `AND j.job_recruiter = '${esc(recruiter)}'` : ''}`;
     const candBase = `FROM 'candidates.parquet' c LEFT JOIN 'jobs.parquet' j ON c.job_id = j.job_id WHERE c.is_candidate_archived = false AND c.is_candidate_disqualified = false ${cFilter} ${rFilter} ${pFilter}`;
 
     const [stats, funnel, hiringTrend, activity, tth] = await Promise.all([
@@ -352,7 +352,7 @@ export default function Dashboard() {
         ${pFilter}
       LEFT JOIN 'users.parquet' u_rec ON j.job_recruiter = u_rec.user_id
       LEFT JOIN 'users.parquet' u_src ON j.job_sourcer = u_src.user_id
-      WHERE (j.test IS NULL OR j.test != 'true')
+      WHERE (j.test IS NULL OR j.test = false)
         AND j.is_job_archived = false
         ${cFilter} ${rFilter}
       GROUP BY j.job_id, j.job_title, j.client_name, j.date_created, u_rec.user_name, u_src.user_name
@@ -441,7 +441,7 @@ export default function Dashboard() {
           COUNT(DISTINCT c.candidate_id)::INTEGER AS pipeline_candidates,
           COUNT(DISTINCT CASE WHEN c.stage_current_type = 'Hired' THEN c.candidate_id END)::INTEGER AS hires
         FROM 'clients.parquet' cl
-        LEFT JOIN 'jobs.parquet' j ON j.client_id = cl.client_id AND (j.test IS NULL OR j.test != 'true')
+        LEFT JOIN 'jobs.parquet' j ON j.client_id = cl.client_id AND (j.test IS NULL OR j.test = false)
           ${recruiter !== 'all' ? `AND j.job_recruiter = '${esc(recruiter)}'` : ''}
         LEFT JOIN 'candidates.parquet' c ON c.job_id = j.job_id
           AND c.is_candidate_archived = false AND c.is_candidate_disqualified = false
@@ -580,7 +580,7 @@ export default function Dashboard() {
         AND c.is_candidate_disqualified = false
       LEFT JOIN 'users.parquet' u_rec ON j.job_recruiter = u_rec.user_id
       LEFT JOIN 'users.parquet' u_src ON j.job_sourcer = u_src.user_id
-      WHERE (j.test IS NULL OR j.test != 'true')
+      WHERE (j.test IS NULL OR j.test = false)
         AND j.is_job_archived = false
         ${cFilter} ${rFilter}
       GROUP BY j.job_id, j.job_title, j.client_name, j.date_created, u_rec.user_name, u_src.user_name

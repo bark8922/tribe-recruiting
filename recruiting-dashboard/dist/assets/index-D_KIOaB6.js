@@ -120,9 +120,9 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             ORDER BY user_name
           `),yt(`
             SELECT DISTINCT client_id, client_name FROM 'jobs.parquet'
-            WHERE client_name IS NOT NULL AND (test IS NULL OR test != 'true')
+            WHERE client_name IS NOT NULL AND (test IS NULL OR test = false)
             ORDER BY client_name
-          `)]);F({periods:L.filter(Q=>Q.period).map(Q=>({v:Q.period,l:lv(Q.period)})),recruiters:j.map(Q=>({v:Q.user_id,l:Q.user_name})),clients:de.filter(Q=>Q.client_id).map(Q=>({v:Q.client_id,l:Q.client_name}))})}catch(L){console.error("Error loading filter options:",L)}})()},[t]),U.useEffect(()=>{t&&M(i)},[t,i,o,l,c]);function C(){const L=c!=="all"?`AND j.client_id = '${_a(c)}'`:"",j=l!=="all"?`AND j.job_recruiter = '${_a(l)}'`:"",de=o!=="all"?`AND SUBSTRING(c.date_created, 1, 7) = '${_a(o)}'`:"";return{cFilter:L,rFilter:j,pFilter:de}}async function M(L){v(!0);try{switch(L){case"overview":p(await B());break;case"pipeline":g(await z());break;case"recruiter":_(await D());break;case"client":x(await R());break;case"tth":T(await W());break;case"jobs":$(await K());break}}catch(j){console.error(`Error loading ${L}:`,j)}finally{v(!1)}}async function B(){var Js;const{cFilter:L,rFilter:j,pFilter:de}=C(),Q=`WHERE (j.test IS NULL OR j.test != 'true') AND j.is_job_archived = false ${c!=="all"?`AND j.client_id = '${_a(c)}'`:""} ${l!=="all"?`AND j.job_recruiter = '${_a(l)}'`:""}`,ye=`FROM 'candidates.parquet' c LEFT JOIN 'jobs.parquet' j ON c.job_id = j.job_id WHERE c.is_candidate_archived = false AND c.is_candidate_disqualified = false ${L} ${j} ${de}`,[$e,Ae,Dt,ce,Ai]=await Promise.all([yt(`
+          `)]);F({periods:L.filter(Q=>Q.period).map(Q=>({v:Q.period,l:lv(Q.period)})),recruiters:j.map(Q=>({v:Q.user_id,l:Q.user_name})),clients:de.filter(Q=>Q.client_id).map(Q=>({v:Q.client_id,l:Q.client_name}))})}catch(L){console.error("Error loading filter options:",L)}})()},[t]),U.useEffect(()=>{t&&M(i)},[t,i,o,l,c]);function C(){const L=c!=="all"?`AND j.client_id = '${_a(c)}'`:"",j=l!=="all"?`AND j.job_recruiter = '${_a(l)}'`:"",de=o!=="all"?`AND SUBSTRING(c.date_created, 1, 7) = '${_a(o)}'`:"";return{cFilter:L,rFilter:j,pFilter:de}}async function M(L){v(!0);try{switch(L){case"overview":p(await B());break;case"pipeline":g(await z());break;case"recruiter":_(await D());break;case"client":x(await R());break;case"tth":T(await W());break;case"jobs":$(await K());break}}catch(j){console.error(`Error loading ${L}:`,j)}finally{v(!1)}}async function B(){var Js;const{cFilter:L,rFilter:j,pFilter:de}=C(),Q=`WHERE (j.test IS NULL OR j.test = false) AND j.is_job_archived = false ${c!=="all"?`AND j.client_id = '${_a(c)}'`:""} ${l!=="all"?`AND j.job_recruiter = '${_a(l)}'`:""}`,ye=`FROM 'candidates.parquet' c LEFT JOIN 'jobs.parquet' j ON c.job_id = j.job_id WHERE c.is_candidate_archived = false AND c.is_candidate_disqualified = false ${L} ${j} ${de}`,[$e,Ae,Dt,ce,Ai]=await Promise.all([yt(`
         SELECT
           (SELECT COUNT(*)::INTEGER FROM 'jobs.parquet' j ${Q}) AS open_roles,
           (SELECT COUNT(*)::INTEGER ${ye}) AS active_candidates,
@@ -171,7 +171,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         ${de}
       LEFT JOIN 'users.parquet' u_rec ON j.job_recruiter = u_rec.user_id
       LEFT JOIN 'users.parquet' u_src ON j.job_sourcer = u_src.user_id
-      WHERE (j.test IS NULL OR j.test != 'true')
+      WHERE (j.test IS NULL OR j.test = false)
         AND j.is_job_archived = false
         ${L} ${j}
       GROUP BY j.job_id, j.job_title, j.client_name, j.date_created, u_rec.user_name, u_src.user_name
@@ -207,7 +207,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           COUNT(DISTINCT c.candidate_id)::INTEGER AS pipeline_candidates,
           COUNT(DISTINCT CASE WHEN c.stage_current_type = 'Hired' THEN c.candidate_id END)::INTEGER AS hires
         FROM 'clients.parquet' cl
-        LEFT JOIN 'jobs.parquet' j ON j.client_id = cl.client_id AND (j.test IS NULL OR j.test != 'true')
+        LEFT JOIN 'jobs.parquet' j ON j.client_id = cl.client_id AND (j.test IS NULL OR j.test = false)
           ${l!=="all"?`AND j.job_recruiter = '${_a(l)}'`:""}
         LEFT JOIN 'candidates.parquet' c ON c.job_id = j.job_id
           AND c.is_candidate_archived = false AND c.is_candidate_disqualified = false
@@ -299,7 +299,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
         AND c.is_candidate_disqualified = false
       LEFT JOIN 'users.parquet' u_rec ON j.job_recruiter = u_rec.user_id
       LEFT JOIN 'users.parquet' u_src ON j.job_sourcer = u_src.user_id
-      WHERE (j.test IS NULL OR j.test != 'true')
+      WHERE (j.test IS NULL OR j.test = false)
         AND j.is_job_archived = false
         ${L} ${j}
       GROUP BY j.job_id, j.job_title, j.client_name, j.date_created, u_rec.user_name, u_src.user_name

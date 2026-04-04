@@ -30,7 +30,12 @@ async function initDuckDB() {
       const base = new URL('./', window.location.href).href;
 
       // Register all Parquet files via HTTP (supports range requests)
-      const files = ['candidates', 'events_monthly', 'events_detail', 'jobs', 'users', 'clients', 'screens', 'job_goals'];
+      // Split files keep each under Cloudflare's 25MB limit
+      const files = [
+        'candidates_pre2022', 'candidates_2022_2023', 'candidates_2024', 'candidates_2025plus',
+        'events_detail_2025h1', 'events_detail_2025h2', 'events_detail_2026plus',
+        'events_monthly', 'jobs', 'users', 'clients', 'screens', 'job_goals'
+      ];
       for (const file of files) {
         try {
           await _dbInstance.registerFileURL(
@@ -43,6 +48,21 @@ async function initDuckDB() {
           console.warn(`Failed to register ${file}.parquet:`, e);
         }
       }
+
+      // Create unified views so queries can use 'candidates' and 'events_detail' as before
+      await _connInstance.query(`
+        CREATE VIEW candidates AS
+        SELECT * FROM 'candidates_pre2022.parquet'
+        UNION ALL SELECT * FROM 'candidates_2022_2023.parquet'
+        UNION ALL SELECT * FROM 'candidates_2024.parquet'
+        UNION ALL SELECT * FROM 'candidates_2025plus.parquet'
+      `);
+      await _connInstance.query(`
+        CREATE VIEW events_detail AS
+        SELECT * FROM 'events_detail_2025h1.parquet'
+        UNION ALL SELECT * FROM 'events_detail_2025h2.parquet'
+        UNION ALL SELECT * FROM 'events_detail_2026plus.parquet'
+      `);
 
       return _connInstance;
     } catch (error) {
@@ -252,7 +272,7 @@ export default function Dashboard() {
             WHERE period IS NOT NULL
             UNION
             SELECT DISTINCT SUBSTRING(date_created, 1, 7) AS period
-            FROM 'candidates.parquet'
+            FROM candidates
             WHERE date_created IS NOT NULL
             ORDER BY period DESC
           `),
@@ -335,7 +355,7 @@ export default function Dashboard() {
   async function loadOverviewData() {
     const { cFilter, rFilter, pFilter } = buildFilters();
     const jobFilters = `WHERE (j.test IS NULL OR j.test = false) AND j.is_job_archived = false ${client !== 'all' ? `AND j.client_id = '${esc(client)}'` : ''} ${recruiter !== 'all' ? `AND j.job_recruiter = '${esc(recruiter)}'` : ''}`;
-    const candBase = `FROM 'candidates.parquet' c LEFT JOIN 'jobs.parquet' j ON c.job_id = j.job_id WHERE c.is_candidate_archived = false AND c.is_candidate_disqualified = false ${cFilter} ${rFilter} ${pFilter}`;
+    const candBase = `FROM candidates c LEFT JOIN 'jobs.parquet' j ON c.job_id = j.job_id WHERE c.is_candidate_archived = false AND c.is_candidate_disqualified = false ${cFilter} ${rFilter} ${pFilter}`;
 
     const [stats, funnel, hiringTrend, activity, tth] = await Promise.all([
       // KPIs
@@ -356,7 +376,7 @@ export default function Dashboard() {
       // Monthly hiring trend
       queryDB(`
         SELECT SUBSTRING(c.date_hired, 1, 7) AS month, COUNT(*)::INTEGER AS hires
-        FROM 'candidates.parquet' c
+        FROM candidates c
         WHERE c.date_hired IS NOT NULL AND c.is_candidate_archived = false AND c.is_candidate_disqualified = false
         GROUP BY month
         ORDER BY month
@@ -372,7 +392,7 @@ export default function Dashboard() {
       // Avg TTH
       queryDB(`
         SELECT AVG(DATEDIFF('day', CAST(c.date_created AS DATE), CAST(c.date_hired AS DATE)))::INTEGER AS avg_tth
-        FROM 'candidates.parquet' c
+        FROM candidates c
         LEFT JOIN 'jobs.parquet' j ON c.job_id = j.job_id
         WHERE c.stage_current_type = 'Hired' AND c.date_hired IS NOT NULL AND c.date_created IS NOT NULL
           AND c.is_candidate_archived = false AND c.is_candidate_disqualified = false
@@ -428,7 +448,7 @@ export default function Dashboard() {
         COUNT(CASE WHEN c.stage_current_type = 'Hired' THEN 1 END)::INTEGER AS hired,
         DATEDIFF('day', CAST(j.date_created AS DATE), CURRENT_DATE)::INTEGER AS days_open
       FROM 'jobs.parquet' j
-      LEFT JOIN 'candidates.parquet' c
+      LEFT JOIN candidates c
         ON c.job_id = j.job_id
         AND c.is_candidate_archived = false
         AND c.is_candidate_disqualified = false
@@ -469,14 +489,14 @@ export default function Dashboard() {
       // Sourced candidates per sourcer
       queryDB(`
         SELECT candidate_sourcer AS uid, COUNT(*)::INTEGER AS cnt
-        FROM 'candidates.parquet'
+        FROM candidates
         WHERE is_candidate_archived = false AND is_candidate_disqualified = false
         GROUP BY candidate_sourcer
       `),
       // Hires per recruiter (via job)
       queryDB(`
         SELECT j.job_recruiter AS uid, COUNT(*)::INTEGER AS cnt
-        FROM 'candidates.parquet' c
+        FROM candidates c
         JOIN 'jobs.parquet' j ON c.job_id = j.job_id
         WHERE c.stage_current_type = 'Hired'
           AND c.is_candidate_archived = false AND c.is_candidate_disqualified = false
@@ -526,7 +546,7 @@ export default function Dashboard() {
         FROM 'clients.parquet' cl
         LEFT JOIN 'jobs.parquet' j ON j.client_id = cl.client_id AND (j.test IS NULL OR j.test = false)
           ${recruiter !== 'all' ? `AND j.job_recruiter = '${esc(recruiter)}'` : ''}
-        LEFT JOIN 'candidates.parquet' c ON c.job_id = j.job_id
+        LEFT JOIN candidates c ON c.job_id = j.job_id
           AND c.is_candidate_archived = false AND c.is_candidate_disqualified = false
         ${client !== 'all' ? `WHERE cl.client_id = '${esc(client)}'` : ''}
         GROUP BY cl.client_id, cl.client_name
@@ -539,7 +559,7 @@ export default function Dashboard() {
           COUNT(DISTINCT CASE WHEN c.stage_current_type = 'Hired' THEN c.candidate_id END)::INTEGER AS filled
         FROM 'job_goals.parquet' g
         JOIN 'jobs.parquet' j ON g.job_id = j.job_id
-        LEFT JOIN 'candidates.parquet' c ON c.job_id = g.job_id AND c.stage_current_type = 'Hired'
+        LEFT JOIN candidates c ON c.job_id = g.job_id AND c.stage_current_type = 'Hired'
         GROUP BY j.client_id
       `)
     ]);
@@ -572,7 +592,7 @@ export default function Dashboard() {
           AVG(DATEDIFF('day', CAST(c.date_created AS DATE), CAST(c.date_hired AS DATE)))::INTEGER AS avg,
           MIN(DATEDIFF('day', CAST(c.date_created AS DATE), CAST(c.date_hired AS DATE)))::INTEGER AS min,
           MAX(DATEDIFF('day', CAST(c.date_created AS DATE), CAST(c.date_hired AS DATE)))::INTEGER AS max
-        FROM 'candidates.parquet' c
+        FROM candidates c
         LEFT JOIN 'jobs.parquet' j ON c.job_id = j.job_id
         WHERE c.stage_current_type = 'Hired'
           AND c.date_hired IS NOT NULL AND c.date_created IS NOT NULL
@@ -588,31 +608,31 @@ export default function Dashboard() {
         SELECT
           'Created → Contacted' AS stage,
           AVG(DATEDIFF('day', CAST(c.date_created AS DATE), CAST(c.date_contacted AS DATE)))::INTEGER AS avg_days
-        FROM 'candidates.parquet' c
+        FROM candidates c
         WHERE c.stage_current_type = 'Hired' AND c.date_created IS NOT NULL AND c.date_contacted IS NOT NULL
           AND c.is_candidate_archived = false AND c.is_candidate_disqualified = false
         UNION ALL
         SELECT 'Contacted → Screen',
           AVG(DATEDIFF('day', CAST(c.date_contacted AS DATE), CAST(c.date_screen AS DATE)))::INTEGER
-        FROM 'candidates.parquet' c
+        FROM candidates c
         WHERE c.stage_current_type = 'Hired' AND c.date_contacted IS NOT NULL AND c.date_screen IS NOT NULL
           AND c.is_candidate_archived = false AND c.is_candidate_disqualified = false
         UNION ALL
         SELECT 'Screen → Interview',
           AVG(DATEDIFF('day', CAST(c.date_screen AS DATE), CAST(c.date_interview AS DATE)))::INTEGER
-        FROM 'candidates.parquet' c
+        FROM candidates c
         WHERE c.stage_current_type = 'Hired' AND c.date_screen IS NOT NULL AND c.date_interview IS NOT NULL
           AND c.is_candidate_archived = false AND c.is_candidate_disqualified = false
         UNION ALL
         SELECT 'Interview → Offer',
           AVG(DATEDIFF('day', CAST(c.date_interview AS DATE), CAST(c.date_offer AS DATE)))::INTEGER
-        FROM 'candidates.parquet' c
+        FROM candidates c
         WHERE c.stage_current_type = 'Hired' AND c.date_interview IS NOT NULL AND c.date_offer IS NOT NULL
           AND c.is_candidate_archived = false AND c.is_candidate_disqualified = false
         UNION ALL
         SELECT 'Offer → Hired',
           AVG(DATEDIFF('day', CAST(c.date_offer AS DATE), CAST(c.date_hired AS DATE)))::INTEGER
-        FROM 'candidates.parquet' c
+        FROM candidates c
         WHERE c.stage_current_type = 'Hired' AND c.date_offer IS NOT NULL AND c.date_hired IS NOT NULL
           AND c.is_candidate_archived = false AND c.is_candidate_disqualified = false
       `),
@@ -622,7 +642,7 @@ export default function Dashboard() {
           AVG(DATEDIFF('day', CAST(c.date_created AS DATE), CAST(c.date_hired AS DATE)))::INTEGER AS overall_avg,
           AVG(DATEDIFF('day', CAST(c.date_contacted AS DATE), CAST(c.date_screen AS DATE)))::INTEGER AS avg_to_screen,
           AVG(DATEDIFF('day', CAST(c.date_interview AS DATE), CAST(c.date_offer AS DATE)))::INTEGER AS avg_to_offer
-        FROM 'candidates.parquet' c
+        FROM candidates c
         LEFT JOIN 'jobs.parquet' j ON c.job_id = j.job_id
         WHERE c.stage_current_type = 'Hired'
           AND c.date_hired IS NOT NULL AND c.date_created IS NOT NULL
@@ -657,7 +677,7 @@ export default function Dashboard() {
         COUNT(CASE WHEN c.stage_current_type = 'Hired' THEN 1 END)::INTEGER AS hired,
         DATEDIFF('day', CAST(j.date_created AS DATE), CURRENT_DATE)::INTEGER AS days_open
       FROM 'jobs.parquet' j
-      LEFT JOIN 'candidates.parquet' c
+      LEFT JOIN candidates c
         ON c.job_id = j.job_id
         AND c.is_candidate_archived = false
         AND c.is_candidate_disqualified = false

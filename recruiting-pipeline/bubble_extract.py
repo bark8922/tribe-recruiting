@@ -96,7 +96,7 @@ INCREMENTAL_ENDPOINTS = [
             "ats_creation_time", "new_role", "new_sub_role",
             "Ai_Search", "Created Date", "Modified Date",
         ],
-        "max_records": 50000,
+        # No max_records — uses windowed monthly extraction instead
     },
     {
         "name": "Emails",
@@ -346,10 +346,10 @@ class BubbleClient:
 # Extraction Logic
 # ---------------------------------------------------------------------------
 
-def save_records(records: list[dict], type_name: str, data_dir: Path):
-    """Save records as JSON (line-delimited for easy loading into DuckDB)."""
+def save_records(records: list[dict], type_name: str, data_dir: Path, suffix: str = ""):
+    """Save records as JSON for loading into DuckDB."""
     data_dir.mkdir(parents=True, exist_ok=True)
-    out_path = data_dir / f"bubble_{type_name}.json"
+    out_path = data_dir / f"bubble_{type_name}{suffix}.json"
 
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(records, f, ensure_ascii=False, default=str)
@@ -446,6 +446,78 @@ async def extract_endpoint(
     return type_name, len(records)
 
 
+async def extract_events_windowed(
+    client: BubbleClient,
+    endpoint: dict,
+    data_dir: Path,
+    start_date: str = "2025-01-01",
+):
+    """
+    Extract Events in monthly windows to avoid OOM on large datasets.
+    Each month is saved as a separate file (bubble_Events_YYYYMM.json).
+    Returns total record count.
+    """
+    from datetime import date
+    type_name = endpoint["name"]
+    fields = endpoint.get("fields")
+
+    # Build list of monthly windows from start_date to today
+    start = date.fromisoformat(start_date)
+    today = date.today()
+    windows = []
+    current = start.replace(day=1)
+    while current <= today:
+        next_month = (current.replace(day=28) + timedelta(days=4)).replace(day=1)
+        windows.append((current.isoformat(), next_month.isoformat()))
+        current = next_month
+
+    total_records = 0
+    log.info(f"Extracting {type_name} in {len(windows)} monthly windows ({start_date} → today)...")
+
+    for window_start, window_end in windows:
+        label = window_start[:7]  # YYYY-MM
+        out_path = data_dir / f"bubble_{type_name}_{label.replace('-', '')}.json"
+
+        # Skip months already extracted (allows resuming)
+        if out_path.exists():
+            try:
+                with open(out_path) as f:
+                    existing = json.load(f)
+                count = len(existing)
+                total_records += count
+                log.info(f"  {type_name} [{label}]: skipping, {count:,} records already on disk")
+                continue
+            except (json.JSONDecodeError, Exception):
+                pass  # re-extract if file is corrupt
+
+        constraints = [
+            {"key": "Created Date", "constraint_type": "greater than", "value": f"{window_start}T00:00:00.000Z"},
+            {"key": "Created Date", "constraint_type": "less than", "value": f"{window_end}T00:00:00.000Z"},
+        ]
+
+        log.info(f"  {type_name} [{label}]: extracting...")
+        start_time = time.time()
+
+        records = await client.fetch_all(
+            type_name,
+            constraints=constraints,
+            expected_fields=fields,
+            sort_descending=False,
+        )
+
+        elapsed = time.time() - start_time
+        total_records += len(records)
+        log.info(f"  {type_name} [{label}]: {len(records):,} records in {elapsed:.1f}s")
+
+        save_records(records, type_name, data_dir, suffix=f"_{label.replace('-', '')}")
+
+        # Free memory between windows
+        del records
+
+    log.info(f"  {type_name} TOTAL: {total_records:,} records across {len(windows)} months")
+    return type_name, total_records
+
+
 async def run_extraction(mode: str = "full", endpoint_name: Optional[str] = None):
     """Run the full extraction pipeline."""
     if not API_TOKEN:
@@ -498,9 +570,16 @@ async def run_extraction(mode: str = "full", endpoint_name: Optional[str] = None
         # Then extract large tables (potentially filtered)
         for ep in [e for e in endpoints if e in INCREMENTAL_ENDPOINTS]:
             try:
-                ep_mode = mode if mode == "incremental" else "full"
-                name, count = await extract_endpoint(client, ep, ep_mode, DATA_DIR, since=since)
-                results[name] = count
+                # Events: use windowed monthly extraction to avoid OOM
+                if ep["name"] == "Events" and mode == "full":
+                    name, count = await extract_events_windowed(
+                        client, ep, DATA_DIR, start_date="2025-01-01"
+                    )
+                    results[name] = count
+                else:
+                    ep_mode = mode if mode == "incremental" else "full"
+                    name, count = await extract_endpoint(client, ep, ep_mode, DATA_DIR, since=since)
+                    results[name] = count
             except Exception as exc:
                 log.warning(f"Skipping {ep['name']}: {exc}")
                 continue

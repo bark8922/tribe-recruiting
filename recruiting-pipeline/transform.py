@@ -36,49 +36,145 @@ DATA_DIR = Path(os.environ.get("RECRUIT_DATA_DIR", Path(__file__).parent / "data
 OUTPUT_DIR = Path(os.environ.get("RECRUIT_OUTPUT_DIR", Path(__file__).parent / "output"))
 
 
+def _load_single_json(con: duckdb.DuckDBPyConnection, table_name: str, file_path: str):
+    """Load a single JSON file into a DuckDB table and fix column types."""
+    con.execute(f"""
+        CREATE OR REPLACE TABLE "{table_name}" AS
+        SELECT * FROM read_json_auto('{file_path}', maximum_object_size=100000000, union_by_name=true, ignore_errors=true)
+    """)
+    _fix_table_types(con, table_name)
+
+
+def _fix_table_types(con: duckdb.DuckDBPyConnection, table_name: str):
+    """Cast JSON columns to VARCHAR and ensure bubbleinternal_id exists."""
+    # DuckDB read_json_auto often infers Bubble ID fields as JSON type
+    # instead of VARCHAR. This breaks JOINs. Cast ALL JSON-typed columns
+    # to VARCHAR so SQL comparisons work correctly.
+    json_cols = [row[0] for row in con.execute(f"""
+        SELECT column_name FROM information_schema.columns
+        WHERE table_name = '{table_name}' AND data_type = 'JSON'
+    """).fetchall()]
+    for jcol in json_cols:
+        safe = jcol.replace('"', '""')
+        con.execute(f'ALTER TABLE "{table_name}" ADD COLUMN "_tmp_{safe}" VARCHAR')
+        con.execute(f'UPDATE "{table_name}" SET "_tmp_{safe}" = CAST("{safe}" AS VARCHAR)')
+        con.execute(f'ALTER TABLE "{table_name}" DROP COLUMN "{safe}"')
+        con.execute(f'ALTER TABLE "{table_name}" RENAME COLUMN "_tmp_{safe}" TO "{safe}"')
+    if json_cols:
+        log.info(f"  Cast {len(json_cols)} JSON columns to VARCHAR")
+
+    # Ensure bubbleinternal_id exists
+    cols = [row[0] for row in con.execute(
+        f"SELECT column_name FROM information_schema.columns WHERE table_name = '{table_name}'"
+    ).fetchall()]
+    if "bubbleinternal_id" not in cols and "_id" in cols:
+        con.execute(f'ALTER TABLE "{table_name}" ADD COLUMN bubbleinternal_id VARCHAR')
+        con.execute(f'UPDATE "{table_name}" SET bubbleinternal_id = CAST("_id" AS VARCHAR)')
+
+
+def _load_single_csv_gz(con: duckdb.DuckDBPyConnection, table_name: str, file_path: str):
+    """Load a gzipped CSV file directly into a DuckDB table."""
+    con.execute(f"""
+        CREATE OR REPLACE TABLE "{table_name}" AS
+        SELECT * FROM read_csv_auto('{file_path}', header=true, ignore_errors=true, sample_size=10000)
+    """)
+    _fix_table_types(con, table_name)
+
+
 def load_bubble_tables(con: duckdb.DuckDBPyConnection, data_dir: Path):
-    """Load all bubble_*.json files into DuckDB tables."""
+    """Load all bubble_*.json files into DuckDB tables.
+
+    Handles windowed Events files (bubble_Events_YYYYMM.json) by loading
+    each window incrementally and merging into a single bubble_Events table.
+    Also supports loading large tables directly from CSV.gz files.
+    """
+    # --- Load large tables directly from CSV.gz if available ---
+    csv_gz_tables = {
+        "Events.csv.gz": "bubble_Events",
+        "Position.csv.gz": "bubble_Position",
+    }
+    csv_loaded = set()
+    for csv_file, table_name in csv_gz_tables.items():
+        csv_path = data_dir / csv_file
+        if csv_path.exists():
+            log.info(f"Loading {table_name} directly from {csv_file} (DuckDB CSV reader)...")
+            try:
+                _load_single_csv_gz(con, table_name, str(csv_path))
+                count = con.execute(f'SELECT count(*) FROM "{table_name}"').fetchone()[0]
+                log.info(f"  -> {count:,} rows loaded from CSV.gz")
+                csv_loaded.add(table_name)
+            except Exception as e:
+                log.warning(f"  Failed to load {table_name} from CSV.gz: {e}")
+                log.info(f"  Will fall back to JSON files if available.")
+
     json_files = sorted(data_dir.glob("bubble_*.json"))
-    if not json_files:
+    if not json_files and not csv_loaded:
         log.error(f"No bubble_*.json files found in {data_dir}")
         sys.exit(1)
 
-    for f in json_files:
+    # Separate windowed Events files from regular files
+    import re
+    events_window_pattern = re.compile(r'^bubble_Events_\d{6}\.json$')
+    events_window_files = sorted([f for f in json_files if events_window_pattern.match(f.name)])
+    regular_files = [f for f in json_files if not events_window_pattern.match(f.name)]
+
+    # If we have windowed Events files, skip the old monolithic bubble_Events.json
+    if events_window_files:
+        regular_files = [f for f in regular_files if f.name != "bubble_Events.json"]
+
+    # Skip any tables already loaded from CSV.gz
+    regular_files = [f for f in regular_files if f.stem not in csv_loaded]
+    if "bubble_Events" in csv_loaded:
+        events_window_files = []
+
+    # Load regular files
+    for f in regular_files:
         table_name = f.stem  # e.g., "bubble_Jobs"
         log.info(f"Loading {table_name} from {f.name}...")
         try:
-            con.execute(f"""
-                CREATE OR REPLACE TABLE "{table_name}" AS
-                SELECT * FROM read_json_auto('{f}', maximum_object_size=100000000, union_by_name=true, ignore_errors=true)
-            """)
-            # DuckDB read_json_auto often infers Bubble ID fields as JSON type
-            # instead of VARCHAR. This breaks JOINs. Cast ALL JSON-typed columns
-            # to VARCHAR so SQL comparisons work correctly.
-            json_cols = [row[0] for row in con.execute(f"""
-                SELECT column_name FROM information_schema.columns
-                WHERE table_name = '{table_name}' AND data_type = 'JSON'
-            """).fetchall()]
-            for jcol in json_cols:
-                safe = jcol.replace('"', '""')
-                con.execute(f'ALTER TABLE "{table_name}" ADD COLUMN "_tmp_{safe}" VARCHAR')
-                con.execute(f'UPDATE "{table_name}" SET "_tmp_{safe}" = CAST("{safe}" AS VARCHAR)')
-                con.execute(f'ALTER TABLE "{table_name}" DROP COLUMN "{safe}"')
-                con.execute(f'ALTER TABLE "{table_name}" RENAME COLUMN "_tmp_{safe}" TO "{safe}"')
-            if json_cols:
-                log.info(f"  Cast {len(json_cols)} JSON columns to VARCHAR")
-
-            # Ensure bubbleinternal_id exists
-            cols = [row[0] for row in con.execute(
-                f"SELECT column_name FROM information_schema.columns WHERE table_name = '{table_name}'"
-            ).fetchall()]
-            if "bubbleinternal_id" not in cols and "_id" in cols:
-                con.execute(f'ALTER TABLE "{table_name}" ADD COLUMN bubbleinternal_id VARCHAR')
-                con.execute(f'UPDATE "{table_name}" SET bubbleinternal_id = CAST("_id" AS VARCHAR)')
-
+            _load_single_json(con, table_name, str(f))
             count = con.execute(f'SELECT count(*) FROM "{table_name}"').fetchone()[0]
             log.info(f"  → {count:,} rows")
         except Exception as e:
             log.warning(f"  Failed to load {table_name}: {e}")
+
+    # Load windowed Events files incrementally to avoid OOM
+    if events_window_files:
+        log.info(f"Loading bubble_Events from {len(events_window_files)} monthly window files...")
+        total_events = 0
+        for i, f in enumerate(events_window_files):
+            label = f.stem.replace("bubble_Events_", "")
+            log.info(f"  Loading Events window {label} ({i+1}/{len(events_window_files)})...")
+            try:
+                if i == 0:
+                    # First window: create the table
+                    _load_single_json(con, "bubble_Events", str(f))
+                else:
+                    # Subsequent windows: INSERT INTO from a temp table
+                    # Use INSERT BY NAME to handle any column order/missing column differences
+                    con.execute(f"""
+                        CREATE OR REPLACE TEMP TABLE _events_tmp AS
+                        SELECT * FROM read_json_auto('{f}', maximum_object_size=100000000, union_by_name=true, ignore_errors=true)
+                    """)
+                    _fix_table_types(con, "_events_tmp")
+                    # Add any missing columns to bubble_Events before inserting
+                    main_cols = set(r[0] for r in con.execute(
+                        "SELECT column_name FROM information_schema.columns WHERE table_name = 'bubble_Events'"
+                    ).fetchall())
+                    tmp_cols = set(r[0] for r in con.execute(
+                        "SELECT column_name FROM information_schema.columns WHERE table_name = '_events_tmp'"
+                    ).fetchall())
+                    for col in tmp_cols - main_cols:
+                        safe = col.replace('"', '""')
+                        con.execute(f'ALTER TABLE "bubble_Events" ADD COLUMN "{safe}" VARCHAR')
+                    con.execute('INSERT INTO "bubble_Events" BY NAME SELECT * FROM _events_tmp')
+                    con.execute('DROP TABLE IF EXISTS _events_tmp')
+            except Exception as e:
+                log.warning(f"  Failed to load Events window {label}: {e}")
+                continue
+
+        total_events = con.execute('SELECT count(*) FROM "bubble_Events"').fetchone()[0]
+        log.info(f"  → bubble_Events TOTAL: {total_events:,} rows from {len(events_window_files)} windows")
 
 
 def run_transformations(con: duckdb.DuckDBPyConnection):
@@ -929,12 +1025,7 @@ def export_dashboard_json(con: duckdb.DuckDBPyConnection, output_dir: Path):
         JOIN final_candidate_stage cs ON c.candidate_id = cs.candidate_id
         LEFT JOIN final_job j ON c.job_id = j.job_id
         LEFT JOIN final_client cl ON j.client_id = cl.client_id
-        WHERE cs.date_created >= '2024-01-01'
-           OR cs.date_contacted >= '2025-01-01'
-           OR cs.date_screen >= '2025-01-01'
-           OR cs.date_interview >= '2025-01-01'
-           OR cs.date_offer >= '2025-01-01'
-           OR cs.date_hired >= '2025-01-01'
+        WHERE cs.date_created >= '2025-01-01'
     """)
 
     # --- Events (aggregated by type per candidate per month) ---
@@ -969,7 +1060,7 @@ def export_dashboard_json(con: duckdb.DuckDBPyConnection, output_dir: Path):
             automation_is_message_read, automation_is_message_replied,
             is_event_createdby_ai, is_event_duplicated
         FROM final_event
-        WHERE CAST(date_created AS DATE) >= '2025-01-01'
+        WHERE CAST(date_created AS DATE) >= CURRENT_DATE - INTERVAL 90 DAY
           AND is_event_duplicated = FALSE
     """)
 
@@ -1050,6 +1141,9 @@ def main():
 
     # Use in-memory DuckDB (data fits in RAM after 2025 filter)
     con = duckdb.connect(":memory:")
+    con.execute("SET temp_directory='/home/pipeline/tribe-recruiting/recruiting-pipeline/tmp'")
+    con.execute("SET max_temp_directory_size='25GiB'")
+    os.makedirs('/home/pipeline/tribe-recruiting/recruiting-pipeline/tmp', exist_ok=True)
 
     # Load raw Bubble data
     load_bubble_tables(con, DATA_DIR)
@@ -1061,14 +1155,139 @@ def main():
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     export_dashboard_json(con, OUTPUT_DIR)
 
-    # Also save DuckDB file for ad-hoc querying
-    db_path = OUTPUT_DIR / "recruiting.duckdb"
-    con.execute(f"EXPORT DATABASE '{OUTPUT_DIR / 'recruiting_export'}' (FORMAT PARQUET)")
-    log.info(f"Parquet export saved to {OUTPUT_DIR / 'recruiting_export'}")
+    export_parquet_files(con, OUTPUT_DIR / "parquet")
+    # Parquet export disabled to save disk space
+    # con.execute(f"EXPORT DATABASE '{OUTPUT_DIR / 'recruiting_export'}' (FORMAT PARQUET)")
+    # log.info(f"Parquet export saved to {OUTPUT_DIR / 'recruiting_export'}")
 
     con.close()
     log.info("Done!")
 
+
+def export_parquet_files(con: duckdb.DuckDBPyConnection, output_dir: Path):
+    """Export transformed data to Parquet files for DuckDB-WASM frontend."""
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    log.info("Exporting Parquet files for DuckDB-WASM...")
+
+    # Helper to export a single table
+    def export_table(table_name: str, sql: str):
+        try:
+            con.execute(f"""
+                COPY (
+                    {sql}
+                ) TO '{output_dir / f"{table_name}.parquet"}' (FORMAT PARQUET, COMPRESSION ZSTD)
+            """)
+            size_bytes = (output_dir / f"{table_name}.parquet").stat().st_size
+            size_mb = size_bytes / (1024 * 1024)
+            log.info(f"  {table_name}.parquet: {size_mb:.1f} MB")
+        except Exception as e:
+            log.error(f"  Failed to export {table_name}: {e}")
+            raise
+
+    # 1. Candidates (main candidate data with stage info)
+    export_table("candidates", """
+        SELECT
+            c.candidate_id, c.job_id, c.talent_id,
+            c.candidate_sourcer, c.reason_not_interested,
+            c.hired_salary_eur, c.hired_salary_currency,
+            c.is_candidate_duplicated, c.is_candidate_disqualified,
+            c.is_candidate_archived, c.is_candidate_createdby_ai,
+            c.source,
+            cs.stage_current_type, cs.stage_current,
+            CAST(cs.date_created AS VARCHAR) AS date_created,
+            CAST(cs.date_lnkdin_viewed AS VARCHAR) AS date_lnkdin_viewed,
+            CAST(cs.date_contacted AS VARCHAR) AS date_contacted,
+            CAST(cs.date_screen AS VARCHAR) AS date_screen,
+            CAST(cs.date_screen_actual AS VARCHAR) AS date_screen_actual,
+            CAST(cs.date_interview AS VARCHAR) AS date_interview,
+            CAST(cs.date_offer AS VARCHAR) AS date_offer,
+            CAST(cs.date_hired AS VARCHAR) AS date_hired,
+            cs.automation_emails, cs.automation_connections,
+            cs.automation_inmails, cs.automation_messages,
+            j.client_id, j.job_recruiter, j.job_sourcer,
+            cl.client_name, j.job_title
+        FROM final_candidate c
+        JOIN final_candidate_stage cs ON c.candidate_id = cs.candidate_id
+        LEFT JOIN final_job j ON c.job_id = j.job_id
+        LEFT JOIN final_client cl ON j.client_id = cl.client_id
+        ORDER BY cs.date_created DESC
+    """)
+
+    # 2. Events monthly (aggregated by period, recruiter, event type, job)
+    export_table("events_monthly", """
+        SELECT
+            STRFTIME(CAST(date_created AS DATE), '%Y-%m') AS period,
+            who_event_created_for AS recruiter,
+            event_type,
+            job_id,
+            COUNT(*)::INTEGER AS count,
+            COUNT(CASE WHEN is_event_duplicated THEN 1 END)::INTEGER AS duplicates,
+            COUNT(CASE WHEN automation_is_message_read THEN 1 END)::INTEGER AS reads,
+            COUNT(CASE WHEN automation_is_message_replied THEN 1 END)::INTEGER AS replies
+        FROM final_event
+        WHERE is_event_duplicated = FALSE
+        GROUP BY period, who_event_created_for, event_type, job_id
+        ORDER BY period DESC
+    """)
+
+    # 3. Events detail (individual events, 2025+)
+    export_table("events_detail", """
+        SELECT
+            event_id, candidate_id, talent_id, job_id,
+            CAST(date_created AS VARCHAR) AS date_created,
+            event_type, moved_to_stage, moved_to_stageType,
+            who_created_event, who_event_created_for,
+            automation_flow_name, automation_step_name,
+            automation_is_message_read, automation_is_message_replied,
+            is_event_createdby_ai, is_event_duplicated
+        FROM final_event
+        WHERE CAST(date_created AS DATE) >= '2025-01-01'
+          AND is_event_duplicated = FALSE
+        ORDER BY date_created DESC
+    """)
+
+    # 4. Jobs
+    export_table("jobs", """
+        SELECT
+            j.job_id, j.job_title, j.client_id, cl.client_name,
+            j.job_recruiter, j.job_sourcer,
+            CAST(j.date_created AS VARCHAR) AS date_created,
+            j.is_job_archived, j.test
+        FROM final_job j
+        LEFT JOIN final_client cl ON j.client_id = cl.client_id
+    """)
+
+    # 5. Users (recruiters, sourcers)
+    export_table("users", """
+        SELECT user_id, user_name, user_email, employee_number, role_current, sub_role_current
+        FROM final_user
+    """)
+
+    # 6. Clients
+    export_table("clients", """
+        SELECT client_id, client_name, is_client_archived, test
+        FROM final_client
+        WHERE client_name IS NOT NULL AND client_name != '--None--'
+    """)
+
+    # 7. Screens
+    export_table("screens", """
+        SELECT screen_id, candidate_id, date_created,
+               current_salary, current_salary_currency,
+               desired_salary, desired_salary_currency,
+               location, rating, user_recruiter,
+               relocation, salary_type, start_date, visa
+        FROM final_screen
+    """)
+
+    # 8. Job goals
+    export_table("job_goals", """
+        SELECT goal_id, job_id, goal_number, date_created, date_modified
+        FROM final_job_goals
+    """)
+
+    log.info(f"All Parquet files exported to {output_dir}")
 
 if __name__ == "__main__":
     main()

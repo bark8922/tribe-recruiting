@@ -3,3 +3,6 @@ __pycache__/
 *.pyc
 .env
 bubble_*.json
+recruiting-pipeline/data/Events.csv.gz
+recruiting-pipeline/output/recruiting_data.json
+recruiting-pipeline/output/parquet/

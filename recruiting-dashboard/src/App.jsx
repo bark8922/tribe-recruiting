@@ -114,7 +114,14 @@ const WBRTab = ({ data }) => {
       if (summary[client]) summary[client].hires_12w += val;
     });
 
-    return Object.values(summary).sort((a, b) => a.client.localeCompare(b.client));
+    // Hide all-zero rows (matches PBI's empty-row hiding — Fever, etc.)
+    // A row is shown if it has ANY non-zero actuals, 12w hires, or open roles
+    return Object.values(summary)
+      .filter((r) =>
+        r.contacted || r.screened || r.ats || r.offers || r.hires ||
+        r.roles || r.hires_12w
+      )
+      .sort((a, b) => a.client.localeCompare(b.client));
   }, [data, selectedWeek]);
 
   // TA detail table

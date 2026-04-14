@@ -281,41 +281,36 @@ const WBRTab = ({ data }) => {
     }).sort((a, b) => a.ts.localeCompare(b.ts));
   }, [data, selectedWeek]);
 
-  // TS Overall Conversion Rate (cumulative across all weeks)
+  // TS Overall Conversion Rate with Officially Assigned Active Pipelines
+  // ─────────────────────────────────────────────────────────────────────
+  // Active Jobs / Positive Response / Actual Screens / ATS come from Andy's
+  // validated `ts_conversion` export (ts_queries_v4.sql — 99.4% PBI wk15 match).
+  // Contacted + Recruiter Screens come from ts_actuals (existing pipeline)
+  // because Andy's export doesn't include them — they're only used as the
+  // denominator for the two early-funnel % columns.
+  // Strict filter: job.job_sourcer = TS AND credited event from TS exists on the job.
   const tsConversion = useMemo(() => {
-    const result = [];
-    const allSourcers = new Set();
-    // Collect all sourcers from ts_weekly (roster)
-    (data.ts_weekly || []).forEach((t) => allSourcers.add(t.ts));
-
-    allSourcers.forEach((tsName) => {
-      const weeklyData = data.ts_actuals?.[tsName] || {};
-      let contacted = 0, recruiterScreens = 0, actualScreens = 0, ats = 0, offers = 0, hires = 0;
+    const andy = data.ts_conversion || [];
+    return andy.map((row) => {
+      const weeklyData = data.ts_actuals?.[row.ts] || {};
+      let contacted = 0, recruiterScreens = 0;
       Object.values(weeklyData).forEach((wk) => {
         contacted += wk.contacted || 0;
         recruiterScreens += wk.recruiter_screens || wk.screened || 0;
-        actualScreens += wk.actual_screens || 0;
-        ats += wk.ats || 0;
-        offers += wk.offers || 0;
-        hires += wk.hires || 0;
       });
-      const jobs = data.ts_jobs?.[tsName] || {};
-      const positiveResponses = data.ts_positive_responses?.[tsName] || 0;
-
-      result.push({
-        ts: tsName,
-        active_jobs: jobs.num_jobs || 0,
+      return {
+        ts: row.ts,
+        active_jobs: row.active_pipelines || 0,
         contacted,
-        positive_responses: positiveResponses,
-        pct_contacted_to_pr: contacted > 0 ? Math.round(positiveResponses / contacted * 1000) / 10 : 0,
+        positive_responses: row.positive_response || 0,
         recruiter_screens: recruiterScreens,
-        actual_screens: actualScreens,
-        pct_screen_to_actual: recruiterScreens > 0 ? Math.round(actualScreens / recruiterScreens * 1000) / 10 : 0,
-        ats,
-        pct_actual_to_ats: actualScreens > 0 ? Math.round(ats / actualScreens * 1000) / 10 : 0,
-      });
-    });
-    return result.sort((a, b) => a.ts.localeCompare(b.ts));
+        actual_screens: row.actual_screens || 0,
+        ats: row.ats || 0,
+        pct_contacted_to_pr:  contacted          > 0 ? Math.round((row.positive_response || 0) / contacted          * 1000) / 10 : null,
+        pct_screen_to_actual: recruiterScreens   > 0 ? Math.round((row.actual_screens    || 0) / recruiterScreens   * 1000) / 10 : null,
+        pct_actual_to_ats:    (row.actual_screens || 0) > 0 ? Math.round((row.ats        || 0) / row.actual_screens * 1000) / 10 : null,
+      };
+    }).sort((a, b) => a.ts.localeCompare(b.ts));
   }, [data]);
 
   return (
@@ -549,47 +544,53 @@ const WBRTab = ({ data }) => {
           </div>
         </div>
 
-      {/* TS Overall Conversion Rate */}
+      {/* TS Overall Conversion Rate with Officially Assigned Active Pipelines */}
       <div className="bg-gray-800 rounded-lg p-4">
-        <h3 className="text-lg font-semibold text-white mb-4">TS Overall Conversion Rate — 2026 YTD</h3>
+        <h3 className="text-lg font-semibold text-white mb-1">TS Overall Conversion Rate with Officially Assigned Active Pipelines</h3>
+        <p className="text-xs text-gray-500 mb-4">
+          Pipelines where the sourcer is officially assigned <em>and</em> actively working the pipeline.
+          Funnel metrics count candidates on those pipelines only.
+        </p>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="text-gray-300 border-b border-gray-600">
-                <th className="text-left px-2 py-2">Sourcer</th>
+                <th className="text-left px-2 py-2">TS</th>
                 <th className="text-center px-2 py-2">Active Jobs</th>
-                <th className="text-center px-2 py-2">Contacted</th>
-                <th className="text-center px-2 py-2">% → PR</th>
-                <th className="text-center px-2 py-2">Pos. Response</th>
-                <th className="text-center px-2 py-2">Recruiter Screens</th>
-                <th className="text-center px-2 py-2">% → Actual</th>
+                <th className="text-center px-2 py-2">% Contacted to Positive Response</th>
+                <th className="text-center px-2 py-2">Positive Response</th>
+                <th className="text-center px-2 py-2">% Screens to Actual Screen</th>
                 <th className="text-center px-2 py-2">Actual Screens</th>
-                <th className="text-center px-2 py-2">% → ATS</th>
+                <th className="text-center px-2 py-2">% Actual Screens to ATS</th>
                 <th className="text-center px-2 py-2">ATS</th>
               </tr>
             </thead>
             <tbody>
-              {tsConversion.map((row, idx) => (
-                <tr key={idx} className={idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'}>
-                  <td className="text-left px-2 py-2 text-white font-medium">{row.ts}</td>
-                  <td className="text-center px-2 py-2 text-gray-300">{row.active_jobs}</td>
-                  <td className="text-center px-2 py-2 text-gray-300">{row.contacted}</td>
-                  <td className="text-center px-2 py-2 text-gray-300">{row.pct_contacted_to_pr}%</td>
-                  <td className="text-center px-2 py-2 text-gray-300">{row.positive_responses}</td>
-                  <td className="text-center px-2 py-2 text-gray-300">{row.recruiter_screens}</td>
-                  <td className="text-center px-2 py-2 text-gray-300">{row.pct_screen_to_actual}%</td>
-                  <td className="text-center px-2 py-2 text-gray-300">{row.actual_screens}</td>
-                  <td className="text-center px-2 py-2 text-gray-300">{row.pct_actual_to_ats}%</td>
-                  <td className="text-center px-2 py-2 text-gray-300">{row.ats}</td>
-                </tr>
-              ))}
+              {tsConversion.map((row, idx) => {
+                const fmt = (v) => v == null ? '—' : `${v}%`;
+                // PBI-style conditional formatting thresholds (approximated from PBI screenshot)
+                const cell = (v, greenAt) => {
+                  if (v == null) return 'text-gray-500';
+                  return v >= greenAt ? 'bg-green-700/40 text-white' : 'bg-red-700/40 text-white';
+                };
+                return (
+                  <tr key={idx} className={idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'}>
+                    <td className="text-left px-2 py-2 text-white font-medium">{row.ts}</td>
+                    <td className="text-center px-2 py-2 text-gray-300">{row.active_jobs}</td>
+                    <td className={`text-center px-2 py-2 ${cell(row.pct_contacted_to_pr, 20)}`}>{fmt(row.pct_contacted_to_pr)}</td>
+                    <td className="text-center px-2 py-2 text-gray-300">{row.positive_responses}</td>
+                    <td className={`text-center px-2 py-2 ${cell(row.pct_screen_to_actual, 75)}`}>{fmt(row.pct_screen_to_actual)}</td>
+                    <td className="text-center px-2 py-2 text-gray-300">{row.actual_screens}</td>
+                    <td className={`text-center px-2 py-2 ${cell(row.pct_actual_to_ats, 55)}`}>{fmt(row.pct_actual_to_ats)}</td>
+                    <td className="text-center px-2 py-2 text-gray-300">{row.ats}</td>
+                  </tr>
+                );
+              })}
               <tr className="bg-gray-700 border-t border-gray-600 font-semibold">
                 <td className="text-left px-2 py-2 text-white">Total</td>
                 <td className="text-center px-2 py-2 text-white">{tsConversion.reduce((s, r) => s + r.active_jobs, 0)}</td>
-                <td className="text-center px-2 py-2 text-white">{tsConversion.reduce((s, r) => s + r.contacted, 0)}</td>
                 <td className="text-center px-2 py-2 text-white">—</td>
                 <td className="text-center px-2 py-2 text-white">{tsConversion.reduce((s, r) => s + r.positive_responses, 0)}</td>
-                <td className="text-center px-2 py-2 text-white">{tsConversion.reduce((s, r) => s + r.recruiter_screens, 0)}</td>
                 <td className="text-center px-2 py-2 text-white">—</td>
                 <td className="text-center px-2 py-2 text-white">{tsConversion.reduce((s, r) => s + r.actual_screens, 0)}</td>
                 <td className="text-center px-2 py-2 text-white">—</td>
@@ -598,9 +599,11 @@ const WBRTab = ({ data }) => {
             </tbody>
           </table>
         </div>
+        <p className="text-xs text-gray-500 mt-3">
+          Source: <code className="text-gray-400">ts_queries_v4.sql</code> · Andy Hsu logic (2026-04-14) · Validated vs PBI week 15 at 99.4%
+        </p>
       </div>
 
-      <TSConversionSection data={data} />
     </div>
   );
 };
@@ -1056,127 +1059,6 @@ const ProjectDashboardTab = ({ data }) => {
   );
 };
 
-// ───────────────────────────────────────────────────────────────────────────
-// TS Overall Conversion Rate tab — replaces PBI's
-//   "TS Overall Conversion Rate with Officially Assigned Active Pipelines"
-//
-// BACKGROUND (DO NOT DELETE — per Andy Hsu, 2026-04-14):
-//   The table shows pipelines OFFICIALLY owned by a sourcer (job.job_sourcer=TS)
-//   WHERE THEY ARE ALSO WORKING (at least one credited event from TS on that
-//   job). Funnel columns (Positive Response / Actual Screens / Move to ATS)
-//   are scoped to candidates on those Active Pipelines only — NOT the sourcer's
-//   entire cross-client activity.
-//
-//   Source of truth: ts_queries_v4.sql (run against "out.c-reporting-v2").
-//   Validated 2026-04-14 against PBI week 15 export: 34/36 values exact,
-//   2 off-by-one from snapshot timing = 99.4% match.
-//
-// If future you is tempted to "simplify" this logic — read Andy's warning in
-// the SQL header first. Silent drift will break our PBI-parity target.
-// ───────────────────────────────────────────────────────────────────────────
-const TSConversionSection = ({ data }) => {
-  const [minPipelines, setMinPipelines] = useState(1);
-  const [search, setSearch] = useState('');
-
-  const rows = useMemo(() => {
-    const list = (data.ts_conversion || []).filter(r =>
-      r.active_pipelines >= minPipelines &&
-      (!search || r.ts.toLowerCase().includes(search.toLowerCase()))
-    );
-    return list.map(r => {
-      const contactedToPR = r.active_pipelines > 0 ? null : null;
-      const prToActual    = r.positive_response > 0 ? r.actual_screens / r.positive_response : null;
-      const actualToATS   = r.actual_screens    > 0 ? r.ats            / r.actual_screens    : null;
-      return { ...r, prToActual, actualToATS };
-    });
-  }, [data.ts_conversion, minPipelines, search]);
-
-  const totals = useMemo(() => rows.reduce((acc, r) => ({
-    active_pipelines:  acc.active_pipelines  + r.active_pipelines,
-    positive_response: acc.positive_response + r.positive_response,
-    actual_screens:    acc.actual_screens    + r.actual_screens,
-    ats:               acc.ats               + r.ats,
-  }), { active_pipelines:0, positive_response:0, actual_screens:0, ats:0 }), [rows]);
-
-  const fmtPct = v => v == null ? '—' : `${(v * 100).toFixed(1)}%`;
-
-  return (
-    <div className="space-y-4">
-      <div className="bg-gray-800 rounded-lg p-4">
-        <div className="flex items-start justify-between gap-4 flex-wrap">
-          <div>
-            <h2 className="text-xl font-semibold text-white">TS Overall Conversion Rate</h2>
-            <p className="text-sm text-gray-400 mt-1 max-w-3xl">
-              Pipelines where the sourcer is officially assigned <em>and</em> actively working the pipeline.
-              Funnel metrics count candidates on those pipelines only.
-            </p>
-            <p className="text-xs text-gray-500 mt-2">
-              Source: <code className="text-gray-400">ts_queries_v4.sql</code> · Validated vs PBI week 15 at 99.4% · Andy Hsu logic (2026-04-14)
-            </p>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2">
-              <label className="text-xs text-gray-400">Min pipelines</label>
-              <input type="number" min="0" value={minPipelines}
-                onChange={e => setMinPipelines(Number(e.target.value) || 0)}
-                className="w-16 bg-gray-900 text-white text-sm rounded px-2 py-1 border border-gray-700" />
-            </div>
-            <div className="relative">
-              <Search size={14} className="absolute left-2 top-2.5 text-gray-500" />
-              <input type="text" placeholder="Search sourcer…" value={search}
-                onChange={e => setSearch(e.target.value)}
-                className="bg-gray-900 text-white text-sm rounded pl-7 pr-2 py-1 border border-gray-700 w-48" />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-4 gap-4">
-        <div className="bg-gray-800 rounded-lg p-4"><div className="text-xs text-gray-400">Active Pipelines</div><div className="text-2xl font-bold text-white mt-1">{totals.active_pipelines}</div></div>
-        <div className="bg-gray-800 rounded-lg p-4"><div className="text-xs text-gray-400">Positive Response</div><div className="text-2xl font-bold text-white mt-1">{totals.positive_response}</div></div>
-        <div className="bg-gray-800 rounded-lg p-4"><div className="text-xs text-gray-400">Actual Screens</div><div className="text-2xl font-bold text-white mt-1">{totals.actual_screens}</div></div>
-        <div className="bg-gray-800 rounded-lg p-4"><div className="text-xs text-gray-400">Move to ATS</div><div className="text-2xl font-bold text-white mt-1">{totals.ats}</div></div>
-      </div>
-
-      <div className="bg-gray-800 rounded-lg overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="bg-gray-900 text-gray-400 text-xs uppercase">
-              <tr>
-                <th className="px-4 py-3 text-left font-medium">Sourcer</th>
-                <th className="px-4 py-3 text-right font-medium">Active Pipelines</th>
-                <th className="px-4 py-3 text-right font-medium">Positive Response</th>
-                <th className="px-4 py-3 text-right font-medium">Actual Screens</th>
-                <th className="px-4 py-3 text-right font-medium">% PR → Screen</th>
-                <th className="px-4 py-3 text-right font-medium">Move to ATS</th>
-                <th className="px-4 py-3 text-right font-medium">% Screen → ATS</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map(r => (
-                <tr key={r.ts} className="border-t border-gray-700 hover:bg-gray-750">
-                  <td className="px-4 py-2 text-white">{r.ts}</td>
-                  <td className="px-4 py-2 text-right text-white">{r.active_pipelines}</td>
-                  <td className="px-4 py-2 text-right text-gray-300">{r.positive_response}</td>
-                  <td className="px-4 py-2 text-right text-gray-300">{r.actual_screens}</td>
-                  <td className="px-4 py-2 text-right text-gray-400">{fmtPct(r.prToActual)}</td>
-                  <td className="px-4 py-2 text-right text-gray-300">{r.ats}</td>
-                  <td className="px-4 py-2 text-right text-gray-400">{fmtPct(r.actualToATS)}</td>
-                </tr>
-              ))}
-              {rows.length === 0 && (
-                <tr><td colSpan={7} className="px-4 py-8 text-center text-gray-500">No sourcers match the current filter.</td></tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-        <div className="px-4 py-2 text-xs text-gray-500 bg-gray-900 border-t border-gray-700">
-          {rows.length} sourcers · Strict filter: job_sourcer = TS AND credited event from TS exists on the job
-        </div>
-      </div>
-    </div>
-  );
-};
 
 // Main Dashboard
 const RecruitingDashboard = () => {

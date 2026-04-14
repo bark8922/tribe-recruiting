@@ -599,6 +599,8 @@ const WBRTab = ({ data }) => {
           </table>
         </div>
       </div>
+
+      <TSConversionSection data={data} />
     </div>
   );
 };
@@ -1072,7 +1074,7 @@ const ProjectDashboardTab = ({ data }) => {
 // If future you is tempted to "simplify" this logic — read Andy's warning in
 // the SQL header first. Silent drift will break our PBI-parity target.
 // ───────────────────────────────────────────────────────────────────────────
-const TSConversionTab = ({ data }) => {
+const TSConversionSection = ({ data }) => {
   const [minPipelines, setMinPipelines] = useState(1);
   const [search, setSearch] = useState('');
 
@@ -1187,12 +1189,12 @@ const RecruitingDashboard = () => {
       </div>
       <div className="bg-gray-800 border-b border-gray-700 px-6">
         <div className="flex gap-8">
-          {['wbr', 'mbr', 'ts_conversion', 'project'].map((tab) => (
+          {['wbr', 'mbr', 'project'].map((tab) => (
             <button key={tab} onClick={() => setActiveTab(tab)}
               className={`py-4 px-2 font-medium border-b-2 transition-colors ${
                 activeTab === tab ? 'text-white border-white' : 'text-gray-400 border-transparent hover:text-gray-300'
               }`}>
-              {tab === 'wbr' ? 'WBR' : tab === 'mbr' ? 'MBR' : tab === 'ts_conversion' ? 'TS Conversion' : 'Project Dashboard'}
+              {tab === 'wbr' ? 'WBR' : tab === 'mbr' ? 'MBR' : 'Project Dashboard'}
             </button>
           ))}
         </div>
@@ -1200,7 +1202,6 @@ const RecruitingDashboard = () => {
       <div className="px-6 py-6">
         {activeTab === 'wbr' && <WBRTab data={dashboardData} />}
         {activeTab === 'mbr' && <MBRTab data={dashboardData} />}
-        {activeTab === 'ts_conversion' && <TSConversionTab data={dashboardData} />}
         {activeTab === 'project' && <ProjectDashboardTab data={dashboardData} />}
       </div>
     </div>

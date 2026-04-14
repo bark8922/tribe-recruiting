@@ -114,14 +114,7 @@ const WBRTab = ({ data }) => {
       if (summary[client]) summary[client].hires_12w += val;
     });
 
-    // Hide all-zero rows (matches PBI's empty-row hiding — Fever, etc.)
-    // A row is shown if it has ANY non-zero actuals, 12w hires, or open roles
-    return Object.values(summary)
-      .filter((r) =>
-        r.contacted || r.screened || r.ats || r.offers || r.hires ||
-        r.roles || r.hires_12w
-      )
-      .sort((a, b) => a.client.localeCompare(b.client));
+    return Object.values(summary).sort((a, b) => a.client.localeCompare(b.client));
   }, [data, selectedWeek]);
 
   // TA detail table
@@ -610,6 +603,310 @@ const WBRTab = ({ data }) => {
   );
 };
 
+// MBR Tab — Monthly Business Review (last 4 weeks, w12-w15 = 2026-03-16 to 2026-04-12)
+const MBRTab = ({ data }) => {
+  const MBR_WEEKS = (data.mbr_window?.weeks || ['w12','w13','w14','w15']);
+  const windowLabel = `${data.mbr_window?.start || '2026-03-16'} → ${data.mbr_window?.end || '2026-04-12'}`;
+
+  // Build client-level rows from mbr_client_totals (Keboola-sourced, includes Wolt subdivisions)
+  const clientRows = useMemo(() => {
+    const rows = Object.entries(data.mbr_client_totals || {}).map(([client, t]) => ({
+      client,
+      contacted: t.contacted || 0,
+      actual_screens: t.actual_screens || 0,
+      ats: t.ats || 0,
+      offers: t.offers || 0,
+      hires: t.hires || 0,
+      hires_12w: t.hires_12w || 0,
+    }));
+    // hide all-zero rows
+    return rows.filter(r => r.contacted + r.actual_screens + r.ats + r.offers + r.hires + r.hires_12w > 0)
+               .sort((a, b) => a.client.localeCompare(b.client));
+  }, [data]);
+
+  // Build TA-level rows (with targets and comments)
+  const taRows = useMemo(() => {
+    const targets = data.mbr_ta_targets || [];
+    // Map of latest comment per normalized TA key (from ta_weekly_notes, picking latest week available)
+    const latestNote = {};
+    (data.ta_weekly_notes || []).forEach(n => {
+      const key = `${normalizeTa(n.ta)}`;
+      if (!latestNote[key] || n.week > latestNote[key].week) {
+        latestNote[key] = n;
+      }
+    });
+
+    const result = [];
+    targets.forEach(t => {
+      const key = `${t.client}|${normalizeTa(t.ta)}`;
+      const a = data.mbr_ta_actuals?.[key] || {};
+      const note = latestNote[normalizeTa(t.ta)];
+      result.push({
+        client: t.client,
+        ta: t.ta,
+        team_group: t.team_group,
+        contacted: a.contacted || 0,
+        actual_screens: a.actual_screens || 0,
+        ats: a.ats || 0,
+        offers: a.offers || 0,
+        hires: a.hires || 0,
+        hires_12w: a.hires_12w || 0,
+        ats_12w: a.ats_12w || 0,
+        screens_12w: a.screens_12w || 0,
+        jobs_60d: a.jobs_60d || 0,
+        contacted_target: t.contacted || 0,
+        actual_screens_target: t.actual_screens || 0,
+        ats_target: t.moved_to_ats || 0,
+        hires_target: t.hires || 0,
+        pct_screens_to_hires: a.screens_12w > 0 ? Math.round((a.hires_12w || 0) / a.screens_12w * 100) : null,
+        comment: note?.comment || '',
+      });
+    });
+    const groupOrder = { 'Dolphins/Whales': 0, 'Ponies/Unicorns': 1 };
+    return result.sort((a, b) => {
+      const ga = groupOrder[a.team_group] ?? 2;
+      const gb = groupOrder[b.team_group] ?? 2;
+      if (ga !== gb) return ga - gb;
+      if (a.client !== b.client) return a.client.localeCompare(b.client);
+      return a.ta.localeCompare(b.ta);
+    });
+  }, [data]);
+
+  // TS rows from mbr_ts_actuals — only include sourcers with a ts_weekly target row
+  const tsRows = useMemo(() => {
+    const targets = {};
+    (data.ts_weekly || []).forEach(t => {
+      // Sum monthly target = sum of weekly targets across the 4 MBR weeks
+      const wNum = parseInt(String(t.week));
+      if (wNum >= 12 && wNum <= 15) {
+        targets[t.ts] = (targets[t.ts] || 0) + (Number(t.contacted_target) || 0);
+      }
+    });
+    const rows = [];
+    Object.keys(targets).forEach(ts => {
+      const a = data.mbr_ts_actuals?.[ts] || {};
+      rows.push({
+        ts,
+        contacted: a.contacted_4w || 0,
+        contacted_target: targets[ts],
+        recruiter_screens: a.recruiter_screens_4w || 0,
+        actual_screens: a.actual_screens_4w || 0,
+        ats: a.ats_4w || 0,
+        hires_12w: a.hires_12w || 0,
+        screens_12w: a.screens_12w || 0,
+        ats_12w: a.ats_12w || 0,
+        pct_actual_to_ats_12w: a.screens_12w > 0 ? Math.round((a.ats_12w || 0) / a.screens_12w * 100) : null,
+      });
+    });
+    return rows.sort((a, b) => (b.contacted + b.hires_12w) - (a.contacted + a.hires_12w) || a.ts.localeCompare(b.ts));
+  }, [data]);
+
+  const clientTotals = clientRows.reduce((acc, r) => ({
+    contacted: acc.contacted + r.contacted,
+    actual_screens: acc.actual_screens + r.actual_screens,
+    ats: acc.ats + r.ats,
+    offers: acc.offers + r.offers,
+    hires: acc.hires + r.hires,
+    hires_12w: acc.hires_12w + r.hires_12w,
+  }), { contacted:0, actual_screens:0, ats:0, offers:0, hires:0, hires_12w:0 });
+
+  const renderTaGroup = (group) => {
+    const rows = taRows.filter(r => r.team_group === group);
+    if (rows.length === 0) return null;
+    const label = group === 'Dolphins/Whales' ? '🐬 Dolphins & Whales' : '🦄 Ponies & Unicorns';
+    const totals = rows.reduce((a, r) => ({
+      contacted: a.contacted + r.contacted,
+      actual_screens: a.actual_screens + r.actual_screens,
+      ats: a.ats + r.ats,
+      hires: a.hires + r.hires,
+      hires_12w: a.hires_12w + r.hires_12w,
+      ats_12w: a.ats_12w + r.ats_12w,
+      screens_12w: a.screens_12w + r.screens_12w,
+      jobs_60d: a.jobs_60d + r.jobs_60d,
+      contacted_target: a.contacted_target + r.contacted_target,
+      actual_screens_target: a.actual_screens_target + r.actual_screens_target,
+      ats_target: a.ats_target + r.ats_target,
+      hires_target: a.hires_target + r.hires_target,
+    }), { contacted:0, actual_screens:0, ats:0, hires:0, hires_12w:0, ats_12w:0, screens_12w:0, jobs_60d:0, contacted_target:0, actual_screens_target:0, ats_target:0, hires_target:0 });
+
+    return (
+      <div className="bg-gray-800 rounded-lg p-4" key={group}>
+        <h3 className="text-lg font-semibold text-white mb-4">{label} — TAs (Last 4 Weeks)</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm" style={{ minWidth: '1400px' }}>
+            <thead>
+              <tr className="text-gray-300 border-b border-gray-600">
+                <th className="text-left px-2 py-2 sticky left-0 bg-gray-800 z-10">Client</th>
+                <th className="text-left px-2 py-2">TA</th>
+                <th className="text-center px-1 py-2 text-xs" title="Last 12w Hires">12w H</th>
+                <th className="text-center px-1 py-2 text-xs" title="Last 12w ATS">12w ATS</th>
+                <th className="text-center px-1 py-2 text-xs" title="Last 12w Screens">12w Scr</th>
+                <th className="text-center px-1 py-2 text-xs" title="12w % Screens → Hires">12w %S→H</th>
+                <th className="text-center px-1 py-2 text-xs" title="4w Hires">Hires</th>
+                <th className="text-center px-1 py-2 text-xs">Tgt</th>
+                <th className="text-center px-1 py-2 text-xs" title="4w Contacted">Cntd</th>
+                <th className="text-center px-1 py-2 text-xs">Tgt</th>
+                <th className="text-center px-1 py-2 text-xs" title="4w Actual Screens">Scrn</th>
+                <th className="text-center px-1 py-2 text-xs">Tgt</th>
+                <th className="text-center px-1 py-2 text-xs" title="4w Moved to ATS">ATS</th>
+                <th className="text-center px-1 py-2 text-xs">Tgt</th>
+                <th className="text-center px-1 py-2 text-xs" title="Jobs Opened &gt; 60 days">{'>'}60d</th>
+                <th className="text-left px-2 py-2 text-xs min-w-[140px]">Latest Comment</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((r, idx) => {
+                const prev = idx > 0 ? rows[idx - 1] : null;
+                const clientChange = !prev || prev.client !== r.client;
+                return (
+                  <tr key={idx} className={`${idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'} ${clientChange ? 'border-t border-gray-600' : ''}`}>
+                    <td className="text-left px-2 py-2 text-white font-medium sticky left-0 bg-inherit z-10">{clientChange ? r.client : ''}</td>
+                    <td className="text-left px-2 py-2 text-gray-300 whitespace-nowrap">{r.ta}</td>
+                    <td className="text-center px-1 py-2 text-gray-300">{r.hires_12w || '—'}</td>
+                    <td className="text-center px-1 py-2 text-gray-300">{r.ats_12w || '—'}</td>
+                    <td className="text-center px-1 py-2 text-gray-300">{r.screens_12w || '—'}</td>
+                    <td className="text-center px-1 py-2 text-gray-400">{r.pct_screens_to_hires != null ? `${r.pct_screens_to_hires}%` : '—'}</td>
+                    <td className="text-center px-1 py-2 text-gray-300">{r.hires || ''}</td>
+                    <td className="text-center px-1 py-2 text-gray-500">{r.hires_target ? r.hires_target.toFixed(1) : '—'}</td>
+                    <td className="text-center px-1 py-2" style={getCellStyle(r.contacted, r.contacted_target)}>{r.contacted || ''}</td>
+                    <td className="text-center px-1 py-2 text-gray-500">{r.contacted_target || '—'}</td>
+                    <td className="text-center px-1 py-2" style={getCellStyle(r.actual_screens, r.actual_screens_target)}>{r.actual_screens || ''}</td>
+                    <td className="text-center px-1 py-2 text-gray-500">{r.actual_screens_target || '—'}</td>
+                    <td className="text-center px-1 py-2" style={getCellStyle(r.ats, r.ats_target)}>{r.ats || ''}</td>
+                    <td className="text-center px-1 py-2 text-gray-500">{r.ats_target || '—'}</td>
+                    <td className="text-center px-1 py-2 text-gray-300">{r.jobs_60d || ''}</td>
+                    <td className="text-left px-2 py-2 text-gray-400 text-xs max-w-xs truncate" title={r.comment}>{r.comment || '—'}</td>
+                  </tr>
+                );
+              })}
+              <tr className="bg-gray-700 font-semibold" style={{ borderTop: '2px solid #6B7280' }}>
+                <td className="text-left px-2 py-2 text-white sticky left-0 bg-gray-700 z-10">{group} Total</td>
+                <td className="text-left px-2 py-2 text-gray-300">—</td>
+                <td className="text-center px-1 py-2 text-white">{totals.hires_12w}</td>
+                <td className="text-center px-1 py-2 text-white">{totals.ats_12w}</td>
+                <td className="text-center px-1 py-2 text-white">{totals.screens_12w}</td>
+                <td className="text-center px-1 py-2 text-white">—</td>
+                <td className="text-center px-1 py-2 text-white">{totals.hires}</td>
+                <td className="text-center px-1 py-2 text-white">{totals.hires_target.toFixed(1)}</td>
+                <td className="text-center px-1 py-2 text-white">{totals.contacted}</td>
+                <td className="text-center px-1 py-2 text-white">{totals.contacted_target}</td>
+                <td className="text-center px-1 py-2 text-white">{totals.actual_screens}</td>
+                <td className="text-center px-1 py-2 text-white">{totals.actual_screens_target}</td>
+                <td className="text-center px-1 py-2 text-white">{totals.ats}</td>
+                <td className="text-center px-1 py-2 text-white">{totals.ats_target}</td>
+                <td className="text-center px-1 py-2 text-white">{totals.jobs_60d}</td>
+                <td className="text-left px-2 py-2 text-gray-400">—</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+        <div className="text-sm text-gray-400">Monthly Business Review — last 4 weeks</div>
+        <div className="text-xl font-semibold text-white mt-1">Window: {windowLabel} (weeks {MBR_WEEKS.join(', ')})</div>
+      </div>
+
+      {/* 1. Client's Target */}
+      <div className="bg-gray-800 rounded-lg p-4">
+        <h3 className="text-lg font-semibold text-white mb-4">Client's Target — Last 4 Weeks</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="text-gray-300 border-b border-gray-600">
+                <th className="text-left px-2 py-2">Client</th>
+                <th className="text-center px-2 py-2">Last 12w Hires</th>
+                <th className="text-center px-2 py-2">Hires</th>
+                <th className="text-center px-2 py-2">Contacted</th>
+                <th className="text-center px-2 py-2">Actual Screens</th>
+                <th className="text-center px-2 py-2">Moved to ATS</th>
+                <th className="text-center px-2 py-2">Offers</th>
+              </tr>
+            </thead>
+            <tbody>
+              {clientRows.map((row, idx) => (
+                <tr key={idx} className={idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'}>
+                  <td className="text-left px-2 py-2 text-white font-medium">{row.client}</td>
+                  <td className="text-center px-2 py-2 text-gray-300">{row.hires_12w}</td>
+                  <td className="text-center px-2 py-2 text-gray-300">{row.hires}</td>
+                  <td className="text-center px-2 py-2 text-gray-300">{row.contacted}</td>
+                  <td className="text-center px-2 py-2 text-gray-300">{row.actual_screens}</td>
+                  <td className="text-center px-2 py-2 text-gray-300">{row.ats}</td>
+                  <td className="text-center px-2 py-2 text-gray-300">{row.offers}</td>
+                </tr>
+              ))}
+              <tr className="bg-gray-700 border-t border-gray-600 font-semibold">
+                <td className="text-left px-2 py-2 text-white">Total</td>
+                <td className="text-center px-2 py-2 text-white">{clientTotals.hires_12w}</td>
+                <td className="text-center px-2 py-2 text-white">{clientTotals.hires}</td>
+                <td className="text-center px-2 py-2 text-white">{clientTotals.contacted}</td>
+                <td className="text-center px-2 py-2 text-white">{clientTotals.actual_screens}</td>
+                <td className="text-center px-2 py-2 text-white">{clientTotals.ats}</td>
+                <td className="text-center px-2 py-2 text-white">{clientTotals.offers}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* 2. Ponies & Unicorns */}
+      {renderTaGroup('Ponies/Unicorns')}
+
+      {/* 3. Dolphins & Whales */}
+      {renderTaGroup('Dolphins/Whales')}
+
+      {/* 4. TS Target Last 4 Weeks */}
+      <div className="bg-gray-800 rounded-lg p-4">
+        <h3 className="text-lg font-semibold text-white mb-4">TS's Target — Last 4 Weeks</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="text-gray-300 border-b border-gray-600">
+                <th className="text-left px-2 py-2">Sourcer</th>
+                <th className="text-center px-2 py-2">12w Hires</th>
+                <th className="text-center px-2 py-2" title="Last 12w % Actual Screens → ATS">12w %S→A</th>
+                <th className="text-center px-2 py-2">Contacted</th>
+                <th className="text-center px-2 py-2">Target</th>
+                <th className="text-center px-2 py-2">Recruiter Screens</th>
+                <th className="text-center px-2 py-2">Actual Screens</th>
+                <th className="text-center px-2 py-2">Moved to ATS</th>
+              </tr>
+            </thead>
+            <tbody>
+              {tsRows.map((r, idx) => (
+                <tr key={idx} className={idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'}>
+                  <td className="text-left px-2 py-2 text-white font-medium">{r.ts}</td>
+                  <td className="text-center px-2 py-2 text-gray-300">{r.hires_12w || '—'}</td>
+                  <td className="text-center px-2 py-2 text-gray-400">{r.pct_actual_to_ats_12w != null ? `${r.pct_actual_to_ats_12w}%` : '—'}</td>
+                  <td className="text-center px-2 py-2" style={getCellStyle(r.contacted, r.contacted_target)}>{r.contacted}</td>
+                  <td className="text-center px-2 py-2 text-gray-500">{r.contacted_target || '—'}</td>
+                  <td className="text-center px-2 py-2 text-gray-300">{r.recruiter_screens}</td>
+                  <td className="text-center px-2 py-2 text-gray-300">{r.actual_screens}</td>
+                  <td className="text-center px-2 py-2 text-gray-300">{r.ats}</td>
+                </tr>
+              ))}
+              <tr className="bg-gray-700 border-t border-gray-600 font-semibold">
+                <td className="text-left px-2 py-2 text-white">Total</td>
+                <td className="text-center px-2 py-2 text-white">{tsRows.reduce((s, r) => s + r.hires_12w, 0)}</td>
+                <td className="text-center px-2 py-2 text-white">—</td>
+                <td className="text-center px-2 py-2 text-white">{tsRows.reduce((s, r) => s + r.contacted, 0)}</td>
+                <td className="text-center px-2 py-2 text-white">{tsRows.reduce((s, r) => s + r.contacted_target, 0)}</td>
+                <td className="text-center px-2 py-2 text-white">{tsRows.reduce((s, r) => s + r.recruiter_screens, 0)}</td>
+                <td className="text-center px-2 py-2 text-white">{tsRows.reduce((s, r) => s + r.actual_screens, 0)}</td>
+                <td className="text-center px-2 py-2 text-white">{tsRows.reduce((s, r) => s + r.ats, 0)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Project Dashboard Tab
 const ProjectDashboardTab = ({ data }) => {
   const [selectedClient, setSelectedClient] = useState('');
@@ -768,18 +1065,19 @@ const RecruitingDashboard = () => {
       </div>
       <div className="bg-gray-800 border-b border-gray-700 px-6">
         <div className="flex gap-8">
-          {['wbr', 'project'].map((tab) => (
+          {['wbr', 'mbr', 'project'].map((tab) => (
             <button key={tab} onClick={() => setActiveTab(tab)}
               className={`py-4 px-2 font-medium border-b-2 transition-colors ${
                 activeTab === tab ? 'text-white border-white' : 'text-gray-400 border-transparent hover:text-gray-300'
               }`}>
-              {tab === 'wbr' ? 'WBR' : 'Project Dashboard'}
+              {tab === 'wbr' ? 'WBR' : tab === 'mbr' ? 'MBR' : 'Project Dashboard'}
             </button>
           ))}
         </div>
       </div>
       <div className="px-6 py-6">
         {activeTab === 'wbr' && <WBRTab data={dashboardData} />}
+        {activeTab === 'mbr' && <MBRTab data={dashboardData} />}
         {activeTab === 'project' && <ProjectDashboardTab data={dashboardData} />}
       </div>
     </div>

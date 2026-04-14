@@ -283,15 +283,16 @@ const WBRTab = ({ data }) => {
 
   // TS Overall Conversion Rate with Officially Assigned Active Pipelines
   // ─────────────────────────────────────────────────────────────────────
-  // Active Jobs / Positive Response / Actual Screens / ATS come from Andy's
-  // validated `ts_conversion` export (ts_queries_v4.sql — 99.4% PBI wk15 match).
-  // Contacted + Recruiter Screens come from ts_actuals (existing pipeline)
-  // because Andy's export doesn't include them — they're only used as the
-  // denominator for the two early-funnel % columns.
+  // All numerators + denominators come from Andy's `ts_conversion` export
+  // (ts_queries_v4.sql — validated vs PBI wk15).
+  // PBI's view scopes BOTH contacted and recruiter_screens to the active
+  // pipelines, which is why an unscoped ts_actuals aggregate produces the
+  // wrong %s. Using the scoped values from ts_conversion yields an exact
+  // match to PBI.
   // Strict filter: job.job_sourcer = TS AND credited event from TS exists on the job.
   // Roster filter: ts_weekly entries for the selected week (same source of truth
-  // as the TS Weekly table above — Andy's WBR Target Google Sheet). This scopes
-  // to who was an active TS at the point in time of the selected week.
+  // as the TS Weekly table above — Andy's WBR Target Google Sheet). Scopes to
+  // who was an active TS at the point in time of the selected week.
   const tsConversion = useMemo(() => {
     const activeRoster = new Set(
       (data.ts_weekly || [])
@@ -300,12 +301,20 @@ const WBRTab = ({ data }) => {
     );
     const andy = (data.ts_conversion || []).filter((row) => activeRoster.has(row.ts));
     return andy.map((row) => {
-      const weeklyData = data.ts_actuals?.[row.ts] || {};
-      let contacted = 0, recruiterScreens = 0;
-      Object.values(weeklyData).forEach((wk) => {
-        contacted += wk.contacted || 0;
-        recruiterScreens += wk.recruiter_screens || wk.screened || 0;
-      });
+      // Prefer scoped values from ts_conversion (matches PBI). Fall back to
+      // ts_actuals aggregate only if scoped values haven't been backfilled yet.
+      let contacted = row.contacted;
+      let recruiterScreens = row.recruiter_screens;
+      if (contacted == null || recruiterScreens == null) {
+        const weeklyData = data.ts_actuals?.[row.ts] || {};
+        let cFallback = 0, rsFallback = 0;
+        Object.values(weeklyData).forEach((wk) => {
+          cFallback += wk.contacted || 0;
+          rsFallback += wk.recruiter_screens || wk.screened || 0;
+        });
+        if (contacted == null) contacted = cFallback;
+        if (recruiterScreens == null) recruiterScreens = rsFallback;
+      }
       return {
         ts: row.ts,
         active_jobs: row.active_pipelines || 0,

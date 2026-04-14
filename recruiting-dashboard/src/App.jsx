@@ -1054,6 +1054,128 @@ const ProjectDashboardTab = ({ data }) => {
   );
 };
 
+// ───────────────────────────────────────────────────────────────────────────
+// TS Overall Conversion Rate tab — replaces PBI's
+//   "TS Overall Conversion Rate with Officially Assigned Active Pipelines"
+//
+// BACKGROUND (DO NOT DELETE — per Andy Hsu, 2026-04-14):
+//   The table shows pipelines OFFICIALLY owned by a sourcer (job.job_sourcer=TS)
+//   WHERE THEY ARE ALSO WORKING (at least one credited event from TS on that
+//   job). Funnel columns (Positive Response / Actual Screens / Move to ATS)
+//   are scoped to candidates on those Active Pipelines only — NOT the sourcer's
+//   entire cross-client activity.
+//
+//   Source of truth: ts_queries_v4.sql (run against "out.c-reporting-v2").
+//   Validated 2026-04-14 against PBI week 15 export: 34/36 values exact,
+//   2 off-by-one from snapshot timing = 99.4% match.
+//
+// If future you is tempted to "simplify" this logic — read Andy's warning in
+// the SQL header first. Silent drift will break our PBI-parity target.
+// ───────────────────────────────────────────────────────────────────────────
+const TSConversionTab = ({ data }) => {
+  const [minPipelines, setMinPipelines] = useState(1);
+  const [search, setSearch] = useState('');
+
+  const rows = useMemo(() => {
+    const list = (data.ts_conversion || []).filter(r =>
+      r.active_pipelines >= minPipelines &&
+      (!search || r.ts.toLowerCase().includes(search.toLowerCase()))
+    );
+    return list.map(r => {
+      const contactedToPR = r.active_pipelines > 0 ? null : null;
+      const prToActual    = r.positive_response > 0 ? r.actual_screens / r.positive_response : null;
+      const actualToATS   = r.actual_screens    > 0 ? r.ats            / r.actual_screens    : null;
+      return { ...r, prToActual, actualToATS };
+    });
+  }, [data.ts_conversion, minPipelines, search]);
+
+  const totals = useMemo(() => rows.reduce((acc, r) => ({
+    active_pipelines:  acc.active_pipelines  + r.active_pipelines,
+    positive_response: acc.positive_response + r.positive_response,
+    actual_screens:    acc.actual_screens    + r.actual_screens,
+    ats:               acc.ats               + r.ats,
+  }), { active_pipelines:0, positive_response:0, actual_screens:0, ats:0 }), [rows]);
+
+  const fmtPct = v => v == null ? '—' : `${(v * 100).toFixed(1)}%`;
+
+  return (
+    <div className="space-y-4">
+      <div className="bg-gray-800 rounded-lg p-4">
+        <div className="flex items-start justify-between gap-4 flex-wrap">
+          <div>
+            <h2 className="text-xl font-semibold text-white">TS Overall Conversion Rate</h2>
+            <p className="text-sm text-gray-400 mt-1 max-w-3xl">
+              Pipelines where the sourcer is officially assigned <em>and</em> actively working the pipeline.
+              Funnel metrics count candidates on those pipelines only.
+            </p>
+            <p className="text-xs text-gray-500 mt-2">
+              Source: <code className="text-gray-400">ts_queries_v4.sql</code> · Validated vs PBI week 15 at 99.4% · Andy Hsu logic (2026-04-14)
+            </p>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
+              <label className="text-xs text-gray-400">Min pipelines</label>
+              <input type="number" min="0" value={minPipelines}
+                onChange={e => setMinPipelines(Number(e.target.value) || 0)}
+                className="w-16 bg-gray-900 text-white text-sm rounded px-2 py-1 border border-gray-700" />
+            </div>
+            <div className="relative">
+              <Search size={14} className="absolute left-2 top-2.5 text-gray-500" />
+              <input type="text" placeholder="Search sourcer…" value={search}
+                onChange={e => setSearch(e.target.value)}
+                className="bg-gray-900 text-white text-sm rounded pl-7 pr-2 py-1 border border-gray-700 w-48" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-4 gap-4">
+        <div className="bg-gray-800 rounded-lg p-4"><div className="text-xs text-gray-400">Active Pipelines</div><div className="text-2xl font-bold text-white mt-1">{totals.active_pipelines}</div></div>
+        <div className="bg-gray-800 rounded-lg p-4"><div className="text-xs text-gray-400">Positive Response</div><div className="text-2xl font-bold text-white mt-1">{totals.positive_response}</div></div>
+        <div className="bg-gray-800 rounded-lg p-4"><div className="text-xs text-gray-400">Actual Screens</div><div className="text-2xl font-bold text-white mt-1">{totals.actual_screens}</div></div>
+        <div className="bg-gray-800 rounded-lg p-4"><div className="text-xs text-gray-400">Move to ATS</div><div className="text-2xl font-bold text-white mt-1">{totals.ats}</div></div>
+      </div>
+
+      <div className="bg-gray-800 rounded-lg overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-gray-900 text-gray-400 text-xs uppercase">
+              <tr>
+                <th className="px-4 py-3 text-left font-medium">Sourcer</th>
+                <th className="px-4 py-3 text-right font-medium">Active Pipelines</th>
+                <th className="px-4 py-3 text-right font-medium">Positive Response</th>
+                <th className="px-4 py-3 text-right font-medium">Actual Screens</th>
+                <th className="px-4 py-3 text-right font-medium">% PR → Screen</th>
+                <th className="px-4 py-3 text-right font-medium">Move to ATS</th>
+                <th className="px-4 py-3 text-right font-medium">% Screen → ATS</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map(r => (
+                <tr key={r.ts} className="border-t border-gray-700 hover:bg-gray-750">
+                  <td className="px-4 py-2 text-white">{r.ts}</td>
+                  <td className="px-4 py-2 text-right text-white">{r.active_pipelines}</td>
+                  <td className="px-4 py-2 text-right text-gray-300">{r.positive_response}</td>
+                  <td className="px-4 py-2 text-right text-gray-300">{r.actual_screens}</td>
+                  <td className="px-4 py-2 text-right text-gray-400">{fmtPct(r.prToActual)}</td>
+                  <td className="px-4 py-2 text-right text-gray-300">{r.ats}</td>
+                  <td className="px-4 py-2 text-right text-gray-400">{fmtPct(r.actualToATS)}</td>
+                </tr>
+              ))}
+              {rows.length === 0 && (
+                <tr><td colSpan={7} className="px-4 py-8 text-center text-gray-500">No sourcers match the current filter.</td></tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+        <div className="px-4 py-2 text-xs text-gray-500 bg-gray-900 border-t border-gray-700">
+          {rows.length} sourcers · Strict filter: job_sourcer = TS AND credited event from TS exists on the job
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Main Dashboard
 const RecruitingDashboard = () => {
   const [activeTab, setActiveTab] = useState('wbr');
@@ -1065,12 +1187,12 @@ const RecruitingDashboard = () => {
       </div>
       <div className="bg-gray-800 border-b border-gray-700 px-6">
         <div className="flex gap-8">
-          {['wbr', 'mbr', 'project'].map((tab) => (
+          {['wbr', 'mbr', 'ts_conversion', 'project'].map((tab) => (
             <button key={tab} onClick={() => setActiveTab(tab)}
               className={`py-4 px-2 font-medium border-b-2 transition-colors ${
                 activeTab === tab ? 'text-white border-white' : 'text-gray-400 border-transparent hover:text-gray-300'
               }`}>
-              {tab === 'wbr' ? 'WBR' : tab === 'mbr' ? 'MBR' : 'Project Dashboard'}
+              {tab === 'wbr' ? 'WBR' : tab === 'mbr' ? 'MBR' : tab === 'ts_conversion' ? 'TS Conversion' : 'Project Dashboard'}
             </button>
           ))}
         </div>
@@ -1078,6 +1200,7 @@ const RecruitingDashboard = () => {
       <div className="px-6 py-6">
         {activeTab === 'wbr' && <WBRTab data={dashboardData} />}
         {activeTab === 'mbr' && <MBRTab data={dashboardData} />}
+        {activeTab === 'ts_conversion' && <TSConversionTab data={dashboardData} />}
         {activeTab === 'project' && <ProjectDashboardTab data={dashboardData} />}
       </div>
     </div>

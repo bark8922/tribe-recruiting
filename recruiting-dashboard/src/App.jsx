@@ -289,8 +289,16 @@ const WBRTab = ({ data }) => {
   // because Andy's export doesn't include them — they're only used as the
   // denominator for the two early-funnel % columns.
   // Strict filter: job.job_sourcer = TS AND credited event from TS exists on the job.
+  // Roster filter: ts_weekly entries for the selected week (same source of truth
+  // as the TS Weekly table above — Andy's WBR Target Google Sheet). This scopes
+  // to who was an active TS at the point in time of the selected week.
   const tsConversion = useMemo(() => {
-    const andy = data.ts_conversion || [];
+    const activeRoster = new Set(
+      (data.ts_weekly || [])
+        .filter((t) => t.week === selectedWeek)
+        .map((t) => t.ts)
+    );
+    const andy = (data.ts_conversion || []).filter((row) => activeRoster.has(row.ts));
     return andy.map((row) => {
       const weeklyData = data.ts_actuals?.[row.ts] || {};
       let contacted = 0, recruiterScreens = 0;
@@ -311,7 +319,7 @@ const WBRTab = ({ data }) => {
         pct_actual_to_ats:    (row.actual_screens || 0) > 0 ? Math.round((row.ats        || 0) / row.actual_screens * 1000) / 10 : null,
       };
     }).sort((a, b) => a.ts.localeCompare(b.ts));
-  }, [data]);
+  }, [data, selectedWeek]);
 
   return (
     <div className="space-y-6">

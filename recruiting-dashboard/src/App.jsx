@@ -704,6 +704,16 @@ const MBRTab = ({ data }) => {
         targets[t.ts] = (targets[t.ts] || 0) + (Number(t.contacted_target) || 0);
       }
     });
+    // Latest comment per TS: pick the most recent (year, week) ts_weekly row with a non-empty comment
+    const latestComment = {};
+    (data.ts_weekly || []).forEach(t => {
+      if (!t.comment) return;
+      const key = t.ts;
+      const prev = latestComment[key];
+      const curRank = (Number(t.year) || 0) * 100 + (Number(t.week) || 0);
+      const prevRank = prev ? (Number(prev.year) || 0) * 100 + (Number(prev.week) || 0) : -1;
+      if (curRank > prevRank) latestComment[key] = t;
+    });
     const rows = [];
     Object.keys(targets).forEach(ts => {
       const a = data.mbr_ts_actuals?.[ts] || {};
@@ -718,9 +728,10 @@ const MBRTab = ({ data }) => {
         screens_12w: a.screens_12w || 0,
         ats_12w: a.ats_12w || 0,
         pct_actual_to_ats_12w: a.screens_12w > 0 ? Math.round((a.ats_12w || 0) / a.screens_12w * 100) : null,
+        comment: latestComment[ts]?.comment || '',
       });
     });
-    return rows.sort((a, b) => (b.contacted + b.hires_12w) - (a.contacted + a.hires_12w) || a.ts.localeCompare(b.ts));
+    return rows.sort((a, b) => a.ts.localeCompare(b.ts));
   }, [data]);
 
   const clientTotals = clientRows.reduce((acc, r) => ({
@@ -896,6 +907,7 @@ const MBRTab = ({ data }) => {
                 <th className="text-center px-2 py-2">Recruiter Screens</th>
                 <th className="text-center px-2 py-2">Actual Screens</th>
                 <th className="text-center px-2 py-2">Moved to ATS</th>
+                <th className="text-left px-2 py-2 text-xs min-w-[180px]">Latest Comment</th>
               </tr>
             </thead>
             <tbody>
@@ -909,6 +921,7 @@ const MBRTab = ({ data }) => {
                   <td className="text-center px-2 py-2 text-gray-300">{r.recruiter_screens}</td>
                   <td className="text-center px-2 py-2 text-gray-300">{r.actual_screens}</td>
                   <td className="text-center px-2 py-2 text-gray-300">{r.ats}</td>
+                  <td className="text-left px-2 py-2 text-gray-400 text-xs max-w-xs truncate" title={r.comment}>{r.comment || '—'}</td>
                 </tr>
               ))}
               <tr className="bg-gray-700 border-t border-gray-600 font-semibold">
@@ -920,6 +933,7 @@ const MBRTab = ({ data }) => {
                 <td className="text-center px-2 py-2 text-white">{tsRows.reduce((s, r) => s + r.recruiter_screens, 0)}</td>
                 <td className="text-center px-2 py-2 text-white">{tsRows.reduce((s, r) => s + r.actual_screens, 0)}</td>
                 <td className="text-center px-2 py-2 text-white">{tsRows.reduce((s, r) => s + r.ats, 0)}</td>
+                <td className="text-left px-2 py-2 text-gray-400">—</td>
               </tr>
             </tbody>
           </table>

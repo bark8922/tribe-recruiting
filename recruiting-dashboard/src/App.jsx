@@ -316,38 +316,35 @@ const WBRTab = ({ data }) => {
   // as the TS Weekly table above — Andy's WBR Target Google Sheet). Scopes to
   // who was an active TS at the point in time of the selected week.
   const tsConversion = useMemo(() => {
+    const weekKey = `w${selectedWeek}`;
     const activeRoster = new Set(
       (data.ts_weekly || [])
         .filter((t) => t.week === selectedWeek)
         .map((t) => t.ts)
     );
-    const andy = (data.ts_conversion || []).filter((row) => activeRoster.has(row.ts));
-    return andy.map((row) => {
-      // Prefer scoped values from ts_conversion (matches PBI). Fall back to
-      // ts_actuals aggregate only if scoped values haven't been backfilled yet.
-      let contacted = row.contacted;
-      let recruiterScreens = row.recruiter_screens;
-      if (contacted == null || recruiterScreens == null) {
-        const weeklyData = data.ts_actuals?.[row.ts] || {};
-        let cFallback = 0, rsFallback = 0;
-        Object.values(weeklyData).forEach((wk) => {
-          cFallback += wk.contacted || 0;
-          rsFallback += wk.recruiter_screens || wk.screened || 0;
-        });
-        if (contacted == null) contacted = cFallback;
-        if (recruiterScreens == null) recruiterScreens = rsFallback;
-      }
+    // Use per-week cumulative conversion data when available; fall back to
+    // static snapshot for backward compat.
+    const weeklyConv = data.ts_conversion_weekly?.[weekKey];
+    const source = weeklyConv
+      ? weeklyConv.filter((row) => activeRoster.has(row.ts))
+      : (data.ts_conversion || []).filter((row) => activeRoster.has(row.ts));
+    return source.map((row) => {
+      const contacted = row.contacted || 0;
+      const recruiterScreens = row.recruiter_screens || 0;
+      const actualScreens = row.actual_screens || 0;
+      const positiveResponse = row.positive_response || 0;
+      const ats = row.ats || 0;
       return {
         ts: row.ts,
         active_jobs: row.active_pipelines || 0,
         contacted,
-        positive_responses: row.positive_response || 0,
+        positive_responses: positiveResponse,
         recruiter_screens: recruiterScreens,
-        actual_screens: row.actual_screens || 0,
-        ats: row.ats || 0,
-        pct_contacted_to_pr:  contacted          > 0 ? Math.round((row.positive_response || 0) / contacted          * 1000) / 10 : null,
-        pct_screen_to_actual: recruiterScreens   > 0 ? Math.round((row.actual_screens    || 0) / recruiterScreens   * 1000) / 10 : null,
-        pct_actual_to_ats:    (row.actual_screens || 0) > 0 ? Math.round((row.ats        || 0) / row.actual_screens * 1000) / 10 : null,
+        actual_screens: actualScreens,
+        ats,
+        pct_contacted_to_pr:  contacted        > 0 ? Math.round(positiveResponse / contacted        * 1000) / 10 : null,
+        pct_screen_to_actual: recruiterScreens > 0 ? Math.round(actualScreens    / recruiterScreens * 1000) / 10 : null,
+        pct_actual_to_ats:    actualScreens    > 0 ? Math.round(ats              / actualScreens    * 1000) / 10 : null,
       };
     }).sort((a, b) => a.ts.localeCompare(b.ts));
   }, [data, selectedWeek]);

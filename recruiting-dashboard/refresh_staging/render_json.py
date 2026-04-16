@@ -226,11 +226,12 @@ def load_mbr_wolt_roster_from_history() -> dict[str, str]:
 
 
 def load_ta_roster_from_csv() -> tuple[set[str], dict[str, str]]:
-    """Load TA roster + WBR Wolt sub-BU mapping from wbr_ta_target.csv.
+    """Load TA roster + WBR Wolt sub-BU mapping from wbr_ta_target.csv + weekly note.
 
     Returns (ta_roster, wbr_wolt_roster):
-      ta_roster: set of fold_name(TA) for all 2026 rows. Uses diacritics-folded
-        names so 'Dora Vrbanić' (Snowflake) matches 'Dora Vrbanic' (CSV).
+      ta_roster: set of fold_name(TA) for all 2026 rows from BOTH the monthly
+        target sheet AND the weekly note. This ensures former employees who
+        appear in earlier weekly notes still have their Snowflake data included.
       wbr_wolt_roster: {fold_ta: Wolt sub-BU long label} from most-recent 2026
         month per TA. Used for WBR Wolt routing."""
     ta_roster: set[str] = set()
@@ -261,6 +262,23 @@ def load_ta_roster_from_csv() -> tuple[set[str], dict[str, str]]:
                 cur = wolt_newest.get(ta)
                 if cur is None or m_ > cur[0]:
                     wolt_newest[ta] = (m_, raw_c)
+    # Also include TAs from the weekly note — catches people who appear in
+    # per-week rosters but aren't in the monthly target sheet (e.g. mid-month
+    # additions, former employees still in earlier weeks' rosters).
+    try:
+        f2 = WBR_TA_WEEKLY_NOTE_CSV.open()
+    except FileNotFoundError:
+        pass
+    else:
+        with f2:
+            for row in csv.DictReader(f2):
+                wk = row.get("Week", "")
+                if not wk.startswith("2026"):
+                    continue
+                ta = fold_name(row.get("TA") or "")
+                client = (row.get("Client") or "").strip()
+                if ta and client and not is_ghost_ta(client, row.get("TA", "")):
+                    ta_roster.add(ta)
     wbr_wolt = {ta: v[1] for ta, v in wolt_newest.items()}
     return ta_roster, wbr_wolt
 
@@ -307,6 +325,43 @@ def load_ts_weekly_roster() -> dict[str, list[str]]:
             if ts:
                 out.setdefault(wk, set()).add(ts)
     return {wk: sorted(v) for wk, v in out.items()}
+
+
+def build_ts_weekly_from_csv() -> list[dict]:
+    """Rebuild ts_weekly from wbr_ts_weekly.csv — replaces stale live JSON version.
+    Returns list of {ts, year, week, contacted_target, reasoning, comment} dicts.
+    This ensures former TSes from earlier weeks are included."""
+    rows = []
+    try:
+        f = WBR_TS_WEEKLY_CSV.open()
+    except FileNotFoundError:
+        return []
+    with f:
+        for row in csv.DictReader(f):
+            wk_str = row.get("Week", "")
+            m = re.match(r"(\d{4})W(\d+)", wk_str)
+            if not m or m.group(1) != "2026":
+                continue
+            ts = (row.get("TS") or "").strip()
+            if not ts:
+                continue
+            rows.append({
+                "ts": ts,
+                "year": 2026,
+                "week": int(m.group(2)),
+                "contacted_target": _safe_int(row.get("Contacted Target")),
+                "reasoning": (row.get("Reasoning") or "").strip() or None,
+                "comment": (row.get("Comment") or "").strip() or None,
+            })
+    return rows
+
+
+def _safe_int(v):
+    """Parse to int, return None if empty/invalid."""
+    try:
+        return int(float(v))
+    except (TypeError, ValueError):
+        return None
 
 
 def load_ts_roster_from_csv() -> set[str]:
@@ -369,19 +424,29 @@ def load_ts():
     return raw
 
 
+def _ci(row, key):
+    """Case-insensitive CSV column lookup."""
+    if key in row:
+        return row[key]
+    for k in row:
+        if k.lower() == key.lower():
+            return row[k]
+    raise KeyError(key)
+
+
 def load_ts_conversion():
     """Return list of per-TS rows from snowflake_ts_conversion.csv."""
     rows = []
     with SNOW_TS_CONV.open() as f:
         for row in csv.DictReader(f):
             rows.append({
-                "ts": row["ts"],
-                "active_pipelines": int(row["active_pipelines"]),
-                "contacted": int(row["contacted"]),
-                "positive_response": int(row["positive_response"]),
-                "recruiter_screens": int(row["recruiter_screens"]),
-                "actual_screens": int(row["actual_screens"]),
-                "ats": int(row["ats"]),
+                "ts": _ci(row, "ts"),
+                "active_pipelines": int(_ci(row, "active_pipelines")),
+                "contacted": int(_ci(row, "contacted")),
+                "positive_response": int(_ci(row, "positive_response")),
+                "recruiter_screens": int(_ci(row, "recruiter_screens")),
+                "actual_screens": int(_ci(row, "actual_screens")),
+                "ats": int(_ci(row, "ats")),
             })
     return rows
 
@@ -392,8 +457,9 @@ def load_aux():
     out = {}
     with SNOW_AUX.open() as f:
         for row in csv.DictReader(f):
-            key = (row["role"], row["metric"], row["client"], row["who"])
-            out[key] = int(float(row["val"]))
+            key = (_ci(row, "role"), _ci(row, "metric"),
+                   _ci(row, "client"), _ci(row, "who"))
+            out[key] = int(float(_ci(row, "val")))
     return out
 
 
@@ -677,6 +743,13 @@ def main():
     ta_weekly_roster = load_ta_weekly_roster()
     ts_weekly_roster = load_ts_weekly_roster()
 
+    # Rebuild ts_weekly from CSV — the live JSON's version may be stale and
+    # missing former TSes from earlier weeks (e.g. Ejla Suljcic w1 only).
+    ts_weekly_from_csv = build_ts_weekly_from_csv()
+    if ts_weekly_from_csv:
+        print(f"  ts_weekly rebuilt from CSV: {len(ts_weekly_from_csv)} entries "
+              f"({len(set(r['ts'] for r in ts_weekly_from_csv))} unique TSes)")
+
     print(f"  TA roster: {len(ta_roster) if ta_roster else 'UNFILTERED'} TAs from CSV")
     print(f"  TS roster: {len(ts_roster)} TSes from CSV")
     print(f"  WBR Wolt sub-BUs: {len(wbr_wolt)} TAs mapped")
@@ -712,9 +785,7 @@ def main():
     mbr_ts_actuals = build_mbr_ts_actuals(raw_ts, aux, mbr_weeks, ts_roster=ts_roster)
     mbr_client_totals = build_mbr_client_totals(mbr_ta_actuals)
 
-    # ts_conversion — emit in the same shape App.jsx consumes (list of dicts,
-    # with contacted/recruiter_screens kept as real values now that SQL is
-    # scoped to Active Pipelines per Andy's rule).
+    # ts_conversion — static snapshot (lifetime scoped to Active Pipelines).
     ts_conversion = [
         {
             "ts": row["ts"],
@@ -729,15 +800,80 @@ def main():
         if ts_roster is None or fold_name(row["ts"]) in ts_roster
     ]
 
+    # ts_conversion_weekly: per-week cumulative conversion data from ts_actuals.
+    # For week N, sums w1..wN. Gives per-week-snapshot view of conversion progress.
+    # active_pipelines kept from the static snapshot (can't compute per-week).
+    ap_lookup = {row["ts"]: row["active_pipelines"] for row in ts_conv_rows}
+    pr_lookup = {row["ts"]: row["positive_response"] for row in ts_conv_rows}
+    max_week = max((int(wk[1:]) for ts_weeks in ts_actuals.values()
+                    for wk in ts_weeks), default=15)
+    ts_conversion_weekly = {}
+    for wn in range(1, max_week + 1):
+        wk_key = f"w{wn}"
+        week_rows = []
+        for ts_name, weeks in ts_actuals.items():
+            # Cumulative sums w1..wN
+            cum = defaultdict(int)
+            for w in range(1, wn + 1):
+                wd = weeks.get(f"w{w}", {})
+                cum["contacted"] += wd.get("contacted", 0)
+                cum["recruiter_screens"] += wd.get("recruiter_screens", 0) or wd.get("screened", 0)
+                cum["actual_screens"] += wd.get("actual_screens", 0)
+                cum["ats"] += wd.get("ats", 0)
+            if any(cum.values()):
+                week_rows.append({
+                    "ts": ts_name,
+                    "active_pipelines": ap_lookup.get(ts_name, 0),
+                    "contacted": cum["contacted"],
+                    "positive_response": pr_lookup.get(ts_name, 0),
+                    "recruiter_screens": cum["recruiter_screens"],
+                    "actual_screens": cum["actual_screens"],
+                    "ats": cum["ats"],
+                })
+        ts_conversion_weekly[wk_key] = week_rows
+
+    # Synthesize target entries for TAs in weekly roster but not in targets.
+    # This ensures former/mid-month TAs show up in the TA detail table with
+    # their actuals (targets = 0) when viewing earlier weeks.
+    existing_targets = list(live.get("targets", []))
+    existing_pairs = {
+        f"{fold_name(t.get('client',''))}|{fold_name(t.get('ta',''))}"
+        for t in existing_targets
+    }
+    added_targets = 0
+    for wk_entries in ta_weekly_roster.values():
+        for pair in wk_entries:
+            parts = pair.split("|", 1)
+            if len(parts) != 2:
+                continue
+            client_raw, ta_raw = parts
+            key = f"{fold_name(client_raw)}|{fold_name(ta_raw)}"
+            if key not in existing_pairs:
+                existing_pairs.add(key)
+                existing_targets.append({
+                    "client": client_raw,
+                    "ta": ta_raw,
+                    "contacted": 0, "actual_screens": 0,
+                    "moved_to_ats": 0, "hires": 0,
+                    "team_group": "",
+                })
+                added_targets += 1
+    if added_targets:
+        print(f"  Synthesized {added_targets} target rows for weekly-note-only TAs")
+
     # Assemble output. Start from a COPY of live so any static field we don't
     # explicitly touch is preserved verbatim (roles, jobs, ts_jobs, targets,
     # ts_weekly, ta_weekly_notes, mbr_ta_targets, mbr_window, etc.)
     out = dict(live)  # shallow copy
+    out["targets"] = existing_targets  # includes synthesized entries
+    if ts_weekly_from_csv:
+        out["ts_weekly"] = ts_weekly_from_csv  # rebuilt from CSV — includes all former TSes
 
     out["wbr_actuals"] = wbr_actuals
     out["weekly_trend"] = weekly_trend
     out["ts_actuals"] = ts_actuals
     out["ts_conversion"] = ts_conversion
+    out["ts_conversion_weekly"] = ts_conversion_weekly
     # ts_positive_responses intentionally NOT overwritten — live has unscoped PR
     # values (credit-only, no AP filter) that our scoped SQL can't reproduce.
     # Preserved from live via the dict(live) shallow copy. See build_ts_positive_responses docstring.

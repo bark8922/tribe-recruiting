@@ -4,7 +4,8 @@ import {
   LineChart, Line, CartesianGrid, Legend
 } from 'recharts';
 import { Search } from 'lucide-react';
-import dashboardData from './dashboard_data.json';
+import dashboardDataPbi from './dashboard_data.json';
+import dashboardDataSnowflake from './dashboard_data_snowflake.json';
 
 const WEEKS = Array.from({ length: 15 }, (_, i) => i + 1);
 const WEEKLY_DIVISOR = 4.33;
@@ -1094,11 +1095,40 @@ const ProjectDashboardTab = ({ data }) => {
 // Main Dashboard
 const RecruitingDashboard = () => {
   const [activeTab, setActiveTab] = useState('wbr');
+  // Data source toggle: 'pbi' = current Power BI / Bubble pipeline (source of truth)
+  //                     'snowflake' = new Keboola-Snowflake pipeline (parallel-run for validation)
+  const [dataSource, setDataSource] = useState('pbi');
+  const dashboardData = dataSource === 'pbi' ? dashboardDataPbi : dashboardDataSnowflake;
   return (
     <div className="min-h-screen bg-gray-900 text-white">
-      <div className="bg-gray-800 border-b border-gray-700 px-6 py-6">
-        <h1 className="text-3xl font-bold text-white">Tribe.xyz Recruiting Dashboard</h1>
-        <p className="text-sm text-gray-400 mt-1">Replacing Power BI</p>
+      <div className="bg-gray-800 border-b border-gray-700 px-6 py-6 flex items-start justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-white">Tribe.xyz Recruiting Dashboard</h1>
+          <p className="text-sm text-gray-400 mt-1">
+            {dataSource === 'pbi' ? 'Power BI / Bubble pipeline' : 'Snowflake pipeline (parallel-run)'}
+          </p>
+        </div>
+        <div className="flex items-center gap-2 bg-gray-900 border border-gray-700 rounded-lg p-1">
+          {[
+            ['pbi', 'Power BI'],
+            ['snowflake', 'Snowflake'],
+          ].map(([val, label]) => (
+            <button
+              key={val}
+              onClick={() => setDataSource(val)}
+              className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
+                dataSource === val
+                  ? 'bg-white text-gray-900'
+                  : 'text-gray-400 hover:text-gray-200'
+              }`}
+              title={val === 'pbi'
+                ? 'Current source of truth: Bubble → n8n → data.json'
+                : 'New: Keboola MCP → render_json → dashboard_data_snowflake.json'}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
       </div>
       <div className="bg-gray-800 border-b border-gray-700 px-6">
         <div className="flex gap-8">

@@ -67,9 +67,18 @@ const WBRTab = ({ data }) => {
     const weekKey = `w${selectedWeek}`;
     const summary = {};
 
-    // Initialize from targets (April 2026)
+    // Per-week roster from TA Weekly Note — determines which clients are active this week
+    const weeklyRoster = data.wbr_ta_weekly_roster?.[weekKey] || [];
+    const activeClientsThisWeek = new Set(
+      weeklyRoster.map(pair => normalizeClient(pair.split('|')[0]))
+    );
+    const hasWeeklyRoster = weeklyRoster.length > 0;
+
+    // Initialize from targets, filtered to only clients active in this week
     data.targets.forEach((t) => {
       const display = normalizeClient(t.client);
+      // Skip clients not in the weekly note for this week
+      if (hasWeeklyRoster && !activeClientsThisWeek.has(display)) return;
       if (!summary[display]) {
         summary[display] = {
           client: display,
@@ -123,8 +132,20 @@ const WBRTab = ({ data }) => {
     const weekKey = `w${selectedWeek}`;
     const details = [];
 
+    // Per-week roster — filter to only TAs active this week
+    const weeklyRoster = data.wbr_ta_weekly_roster?.[weekKey] || [];
+    const activePairsThisWeek = new Set(
+      weeklyRoster.map(pair => {
+        const [c, ta] = pair.split('|');
+        return `${normalizeClient(c)}|${normalizeTa(ta)}`;
+      })
+    );
+    const hasWeeklyRoster = weeklyRoster.length > 0;
+
     data.targets.forEach((t) => {
       const display = normalizeClient(t.client);
+      // Skip (client, TA) pairs not in the weekly note for this week
+      if (hasWeeklyRoster && !activePairsThisWeek.has(`${display}|${normalizeTa(t.ta)}`)) return;
       let actual = { contacted: 0, screened: 0, ats: 0, offers: 0, hires: 0 };
 
       Object.keys(data.wbr_actuals).forEach((key) => {

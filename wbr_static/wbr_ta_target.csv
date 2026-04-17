@@ -1510,7 +1510,7 @@ row_number,Client,TA,Year,Month,Contacted,Actual Screens,Moved to ATS,Hires
 1510,"Wolt North, Baltics & Benelux",Tina Aramouni ,2026,4,20,10,8,1.25
 1511,"Wolt North, Baltics & Benelux",Adelya Khakimova,2026,4,50,15,8,1.25
 1512,Wolt Central & South,Niki Vokalkova,2026,4,0,15,8,1.25
-1513,Aiven,Fuad Safarov,2026,4,,,,3.5
+1513,Aiven,Fuad Safarov,2026,4,50,12,5,3.5
 1514,Wolt HQ,Nenad Skoko,2026,4,60,15,8,1
 1515,Wolt HQ,Elena Petrovska,2026,4,100,4,3,
 1516,Wolt HQ,Milica Veselinovic,2026,4,100,4,3,1
@@ -1536,4 +1536,4 @@ row_number,Client,TA,Year,Month,Contacted,Actual Screens,Moved to ATS,Hires
 1536,Glovo,Samantha Nel,2026,4,70,15,10,
 1537,Eucalyptus,Dušan Špica,2026,4,100,15,7,
 1538,Eucalyptus,Alisa Liddell,2026,4,100,15,7,
-1539,Aiven,Vladimir Stankovic,2026,4,0,0,0,
+1539,Aiven,Vladimir Stankovic,2026,4,50,12,5,

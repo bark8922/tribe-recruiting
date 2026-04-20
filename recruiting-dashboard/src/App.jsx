@@ -162,8 +162,14 @@ const WBRTab = ({ data }) => {
     // job's job_recruiter in data.targets to find the TA's canonical client
     // (sub-BU). Unmatched Wolt jobs stay unallocated rather than dumping into
     // a default sub-BU.
+    // Wolt catch-all recruiter → sub-BU map. Only include (client, TA) pairs
+    // where team_group is set — roster-only placeholders (e.g. Simon Siew and
+    // Vladimir Stankovic listed under Wolt Tech with team_group='') would
+    // otherwise inflate Wolt Tech hires from 1 (PBI actual) to 7 by absorbing
+    // hires from raw-'Wolt' rows where those TAs are job_recruiter.
     const recruiterToWoltSubBu = new Map();
     data.targets.forEach((t) => {
+      if (!t.team_group) return;
       const ta = normalizeTa(t.ta);
       const cl = normalizeClient(t.client);
       if (ta && cl && cl.startsWith('Wolt') && !recruiterToWoltSubBu.has(ta)) {
@@ -523,7 +529,7 @@ const WBRTab = ({ data }) => {
                 <td className="text-center px-2 py-2 text-white">{clientSummary.reduce((sum, r) => sum + r.ats, 0)}</td>
                 <td className="text-center px-2 py-2 text-white">{clientSummary.reduce((sum, r) => sum + r.offers, 0)}</td>
                 <td className="text-center px-2 py-2 text-white">{clientSummary.reduce((sum, r) => sum + r.hires, 0)}</td>
-                <td className="text-center px-2 py-2 text-white">{clientSummary.reduce((sum, r) => sum + r.hires_12w, 0)}</td>
+                <td className="text-center px-2 py-2 text-white" title="Sum of 12w hires across ALL active clients (includes Wolt Volume + other hidden rows), to match PBI's Total behaviour">{Object.values(data.mbr_client_totals || {}).reduce((s, v) => s + (v.hires_12w || 0), 0) || clientSummary.reduce((sum, r) => sum + r.hires_12w, 0)}</td>
               </tr>
             </tbody>
           </table>

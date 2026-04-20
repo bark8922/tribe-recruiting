@@ -772,26 +772,26 @@
       "w15": {
         "contacted": 102,
         "screened": 11,
-        "actual_screens": 13,
+        "actual_screens": 12,
         "ats": 11,
         "offers": 0,
         "hires": 0
       },
       "w16": {
-        "contacted": 94,
-        "screened": 23,
-        "actual_screens": 11,
-        "ats": 5,
+        "contacted": 97,
+        "screened": 26,
+        "actual_screens": 16,
+        "ats": 7,
         "offers": 0,
         "hires": 0
       }
     },
     "Aviv|Iryna Dyda": {
       "w16": {
-        "contacted": 86,
-        "screened": 6,
-        "actual_screens": 2,
-        "ats": 0,
+        "contacted": 101,
+        "screened": 7,
+        "actual_screens": 4,
+        "ats": 1,
         "offers": 0,
         "hires": 0
       }
@@ -856,7 +856,7 @@
       "w13": {
         "contacted": 49,
         "screened": 10,
-        "actual_screens": 9,
+        "actual_screens": 8,
         "ats": 10,
         "offers": 0,
         "hires": 0
@@ -879,8 +879,8 @@
       },
       "w16": {
         "contacted": 91,
-        "screened": 15,
-        "actual_screens": 26,
+        "screened": 18,
+        "actual_screens": 30,
         "ats": 9,
         "offers": 0,
         "hires": 0
@@ -976,10 +976,10 @@
         "hires": 0
       },
       "w16": {
-        "contacted": 86,
-        "screened": 20,
-        "actual_screens": 12,
-        "ats": 8,
+        "contacted": 111,
+        "screened": 22,
+        "actual_screens": 14,
+        "ats": 9,
         "offers": 0,
         "hires": 0
       }
@@ -1074,10 +1074,10 @@
         "hires": 0
       },
       "w16": {
-        "contacted": 101,
-        "screened": 16,
-        "actual_screens": 16,
-        "ats": 10,
+        "contacted": 135,
+        "screened": 21,
+        "actual_screens": 20,
+        "ats": 13,
         "offers": 0,
         "hires": 0
       }
@@ -1172,10 +1172,10 @@
         "hires": 0
       },
       "w16": {
-        "contacted": 86,
-        "screened": 20,
-        "actual_screens": 12,
-        "ats": 7,
+        "contacted": 117,
+        "screened": 23,
+        "actual_screens": 15,
+        "ats": 9,
         "offers": 0,
         "hires": 0
       }
@@ -1190,10 +1190,10 @@
         "hires": 0
       },
       "w16": {
-        "contacted": 43,
-        "screened": 8,
-        "actual_screens": 8,
-        "ats": 2,
+        "contacted": 63,
+        "screened": 9,
+        "actual_screens": 9,
+        "ats": 1,
         "offers": 0,
         "hires": 0
       }
@@ -1208,10 +1208,10 @@
         "hires": 0
       },
       "w16": {
-        "contacted": 32,
-        "screened": 6,
-        "actual_screens": 0,
-        "ats": 0,
+        "contacted": 54,
+        "screened": 26,
+        "actual_screens": 20,
+        "ats": 7,
         "offers": 0,
         "hires": 0
       }
@@ -1746,9 +1746,9 @@
         "hires": 0
       },
       "w16": {
-        "contacted": 95,
-        "screened": 16,
-        "actual_screens": 7,
+        "contacted": 103,
+        "screened": 19,
+        "actual_screens": 10,
         "ats": 1,
         "offers": 0,
         "hires": 0
@@ -1758,16 +1758,16 @@
       "w15": {
         "contacted": 85,
         "screened": 6,
-        "actual_screens": 3,
+        "actual_screens": 2,
         "ats": 2,
         "offers": 0,
         "hires": 0
       },
       "w16": {
-        "contacted": 59,
-        "screened": 5,
-        "actual_screens": 7,
-        "ats": 4,
+        "contacted": 62,
+        "screened": 18,
+        "actual_screens": 14,
+        "ats": 7,
         "offers": 0,
         "hires": 0
       }
@@ -1790,10 +1790,10 @@
         "hires": 0
       },
       "w16": {
-        "contacted": 43,
-        "screened": 11,
-        "actual_screens": 4,
-        "ats": 4,
+        "contacted": 90,
+        "screened": 12,
+        "actual_screens": 11,
+        "ats": 5,
         "offers": 0,
         "hires": 0
       }
@@ -1888,7 +1888,7 @@
         "hires": 0
       },
       "w13": {
-        "contacted": 209,
+        "contacted": 208,
         "screened": 9,
         "actual_screens": 13,
         "ats": 9,
@@ -1912,11 +1912,11 @@
         "hires": 0
       },
       "w16": {
-        "contacted": 9,
-        "screened": 9,
-        "actual_screens": 12,
-        "ats": 5,
-        "offers": 0,
+        "contacted": 12,
+        "screened": 12,
+        "actual_screens": 17,
+        "ats": 9,
+        "offers": 2,
         "hires": 0
       }
     },
@@ -2004,11 +2004,11 @@
         "hires": 0
       },
       "w16": {
-        "contacted": 115,
-        "screened": 20,
-        "actual_screens": 13,
-        "ats": 7,
-        "offers": 1,
+        "contacted": 132,
+        "screened": 30,
+        "actual_screens": 17,
+        "ats": 10,
+        "offers": 3,
         "hires": 1
       }
     },
@@ -2040,7 +2040,7 @@
         "hires": 0
       },
       "w11": {
-        "contacted": 96,
+        "contacted": 95,
         "screened": 13,
         "actual_screens": 12,
         "ats": 8,
@@ -2080,10 +2080,10 @@
         "hires": 0
       },
       "w16": {
-        "contacted": 51,
-        "screened": 8,
-        "actual_screens": 9,
-        "ats": 4,
+        "contacted": 77,
+        "screened": 18,
+        "actual_screens": 18,
+        "ats": 6,
         "offers": 0,
         "hires": 0
       }
@@ -2291,7 +2291,7 @@
         "actual_screens": 20,
         "ats": 14,
         "offers": 0,
-        "hires": 0
+        "hires": 1
       }
     },
     "Parloa|Filip Nogowski": {
@@ -2408,10 +2408,10 @@
         "hires": 0
       },
       "w16": {
-        "contacted": 5,
-        "screened": 3,
-        "actual_screens": 3,
-        "ats": 3,
+        "contacted": 8,
+        "screened": 6,
+        "actual_screens": 6,
+        "ats": 4,
         "offers": 3,
         "hires": 1
       }
@@ -2612,12 +2612,12 @@
         "hires": 0
       },
       "w16": {
-        "contacted": 37,
-        "screened": 1,
-        "actual_screens": 1,
-        "ats": 1,
-        "offers": 2,
-        "hires": 3
+        "contacted": 44,
+        "screened": 14,
+        "actual_screens": 14,
+        "ats": 3,
+        "offers": 3,
+        "hires": 4
       }
     },
     "Scorewarrior|Ekaterina Boyprav": {
@@ -2898,10 +2898,10 @@
         "hires": 0
       },
       "w16": {
-        "contacted": 1,
-        "screened": 1,
-        "actual_screens": 0,
-        "ats": 0,
+        "contacted": 5,
+        "screened": 5,
+        "actual_screens": 4,
+        "ats": 1,
         "offers": 0,
         "hires": 0
       }
@@ -3102,10 +3102,10 @@
         "hires": 0
       },
       "w16": {
-        "contacted": 66,
-        "screened": 0,
-        "actual_screens": 0,
-        "ats": 0,
+        "contacted": 153,
+        "screened": 4,
+        "actual_screens": 4,
+        "ats": 3,
         "offers": 0,
         "hires": 0
       }
@@ -3816,6 +3816,14 @@
         "ats": 2,
         "offers": 0,
         "hires": 0
+      },
+      "w16": {
+        "contacted": 132,
+        "screened": 15,
+        "actual_screens": 13,
+        "ats": 10,
+        "offers": 0,
+        "hires": 0
       }
     },
     "Wolt HQ|Elena Petrovska": {
@@ -3924,10 +3932,10 @@
         "hires": 0
       },
       "w16": {
-        "contacted": 154,
-        "screened": 16,
-        "actual_screens": 11,
-        "ats": 7,
+        "contacted": 170,
+        "screened": 19,
+        "actual_screens": 12,
+        "ats": 8,
         "offers": 0,
         "hires": 0
       }
@@ -4202,10 +4210,10 @@
         "hires": 0
       },
       "w16": {
-        "contacted": 16,
-        "screened": 5,
-        "actual_screens": 5,
-        "ats": 2,
+        "contacted": 22,
+        "screened": 13,
+        "actual_screens": 13,
+        "ats": 6,
         "offers": 0,
         "hires": 0
       }
@@ -4332,10 +4340,10 @@
         "hires": 0
       },
       "w16": {
-        "contacted": 20,
-        "screened": 7,
-        "actual_screens": 8,
-        "ats": 4,
+        "contacted": 21,
+        "screened": 9,
+        "actual_screens": 10,
+        "ats": 6,
         "offers": 3,
         "hires": 2
       }
@@ -4798,10 +4806,10 @@
         "hires": 1
       },
       "w16": {
-        "contacted": 9,
-        "screened": 10,
-        "actual_screens": 9,
-        "ats": 5,
+        "contacted": 13,
+        "screened": 13,
+        "actual_screens": 12,
+        "ats": 6,
         "offers": 0,
         "hires": 0
       }
@@ -4912,12 +4920,12 @@
         "hires": 0
       },
       "w16": {
-        "contacted": 3,
-        "screened": 3,
-        "actual_screens": 3,
-        "ats": 3,
-        "offers": 0,
-        "hires": 0
+        "contacted": 5,
+        "screened": 5,
+        "actual_screens": 5,
+        "ats": 4,
+        "offers": 1,
+        "hires": 1
       }
     },
     "Wolt HQ|Rafael Rosa": {
@@ -5412,54 +5420,55 @@
     "desk.ly|Lisa Gargulinska": 2
   },
   "hires_12w": {
-    "Wolt|Dolores Palotas": 60,
-    "Taxfix|Marina Nikolic": 7,
-    "Nexi |Andreas Weins": 2,
-    "Wolt|Fuad Safarov": 35,
-    "Wolt|Niki Vokalkova": 8,
     "AVIV |Kristina Colovic": 3,
-    "DualEntry|Samantha Nel": 1,
-    "Wolt|Ketevan Khorava": 218,
-    "SevenRooms|Zelimir Stajcic": 1,
     "Wolt|Iryna Shumik": 1,
-    "DualEntry|Simon Siew": 1,
+    "Wolt|Nenad Skoko": 6,
+    "Wolt|Alexandra Constantinide": 4,
+    "Doordash|Akash Singh": 11,
+    "SevenRooms|Zelimir Stajcic": 1,
+    "AVIV |Alexandra Richiteanu": 1,
+    "Wolt|Milica Veselinovic": 1,
+    "Wolt|Alisa Liddell": 84,
+    "Wolt|Lisa Gargulinska": 7,
+    "Wolt|Dolores Palotas": 57,
+    "AVIV |Anna Tyulpanova": 2,
+    "Wolt|Evagelina Rapanaki": 16,
+    "Glovo|Chené Elliot": 1,
+    "Wolt|Zarina Amanbekova": 56,
+    "PhantomBuster|Mateja Jokovic": 6,
+    "Enam|Aleksandra Vistac": 1,
     "Wolt|Ejla Suljcic": 1,
+    "Nexi |Maria Desiree Gerbore": 9,
+    "Nexi |Andreas Weins": 2,
+    "Wolt|Rafael Rosa": 2,
+    "Wolt|Alexandra Richiteanu": 1,
+    "Eucalyptus|Meho Saracevic ": 4,
+    "Taxfix|Marina Nikolic": 8,
+    "Parloa|Filip Nogowski": 6,
+    "Glovo|Samantha Nel": 2,
     "Wolt|Elena Petrovska": 1,
     "Wolt|Chené Elliot": 1,
-    "Wolt|Evagelina Rapanaki": 19,
-    "Wolt|Jan Dokulil": 8,
-    "Doordash|Danish Shams": 1,
-    "Wolt|Alexandra Richiteanu": 1,
-    "Wolt|Chantal Bozkurt": 153,
-    "Wolt|Alexandra Constantinide": 4,
-    "Wolt|Tinatini Karaulashvili": 71,
-    "AVIV |Lejla Silva": 3,
-    "Glovo|Samantha Nel": 2,
-    "Wolt|Akash Singh": 4,
-    "Wolt|Rafael Rosa": 2,
-    "DualEntry|Chené Elliot": 1,
-    "Wolt|Jelena Lacmanovic": 17,
-    "AVIV |Anna Tyulpanova": 2,
-    "Wolt|Vladimir Stankovic": 4,
-    "Wolt|Lisa Gargulinska": 6,
-    "Wolt|Milica Veselinovic": 1,
-    "AVIV |Alexandra Richiteanu": 1,
-    "Parloa|Jonaed Iqbal": 10,
-    "Scorewarrior|Mark Kandaurov": 3,
-    "PhantomBuster|Mateja Jokovic": 2,
-    "Nexi |Maria Desiree Gerbore": 9,
-    "Wolt|Adelya Khakimova": 6,
-    "Scorewarrior|Ekaterina Boyprav": 1,
-    "Parloa|Filip Nogowski": 5,
-    "Parloa|Gustavo Loureiro Castro": 1,
-    "Wolt|Alisa Liddell": 90,
-    "Wolt|Simon Siew": 4,
-    "Doordash|Akash Singh": 10,
-    "Wolt|Zarina Amanbekova": 62,
     "Wolt|Tina Aramouni": 8,
-    "Enam|Aleksandra Vistac": 2,
-    "Wolt|Nenad Skoko": 7,
-    "Eucalyptus|Meho Saracevic ": 6
+    "Wolt|Akash Singh": 4,
+    "Wolt|Vladimir Stankovic": 4,
+    "Wolt|Jan Dokulil": 8,
+    "Wolt|Niki Vokalkova": 7,
+    "AVIV |Lejla Silva": 3,
+    "Wolt|Simon Siew": 2,
+    "Doordash|Danish Shams": 1,
+    "Wolt|Fuad Safarov": 26,
+    "Wolt|Adelya Khakimova": 6,
+    "Wolt|Chantal Bozkurt": 141,
+    "Wolt|Jelena Lacmanovic": 17,
+    "DualEntry|Chené Elliot": 1,
+    "DualEntry|Simon Siew": 1,
+    "Parloa|Gustavo Loureiro Castro": 1,
+    "Nexi |Adis Prepoljac": 1,
+    "DualEntry|Samantha Nel": 1,
+    "Wolt|Ketevan Khorava": 193,
+    "Wolt|Tinatini Karaulashvili": 55,
+    "Parloa|Jonaed Iqbal": 10,
+    "Scorewarrior|Mark Kandaurov": 3
   },
   "ts_weekly": [
     {
@@ -6965,6 +6974,102 @@
       "contacted_target": null,
       "reasoning": null,
       "comment": "good week , wrapping up a few roles \"150 is his target\" working with a ne TA"
+    },
+    {
+      "ts": "Gustavo Loureiro Castro",
+      "year": 2026,
+      "week": 16,
+      "contacted_target": 80,
+      "reasoning": null,
+      "comment": null
+    },
+    {
+      "ts": "Andrea Akovic",
+      "year": 2026,
+      "week": 16,
+      "contacted_target": 200,
+      "reasoning": null,
+      "comment": null
+    },
+    {
+      "ts": "Nare Avetisyan",
+      "year": 2026,
+      "week": 16,
+      "contacted_target": 180,
+      "reasoning": null,
+      "comment": null
+    },
+    {
+      "ts": "Valeriia Yurykova",
+      "year": 2026,
+      "week": 16,
+      "contacted_target": 70,
+      "reasoning": null,
+      "comment": null
+    },
+    {
+      "ts": "Elena Petrovska",
+      "year": 2026,
+      "week": 16,
+      "contacted_target": null,
+      "reasoning": null,
+      "comment": null
+    },
+    {
+      "ts": "Milica Veselinovic",
+      "year": 2026,
+      "week": 16,
+      "contacted_target": null,
+      "reasoning": null,
+      "comment": null
+    },
+    {
+      "ts": "Rodrigo Gomes",
+      "year": 2026,
+      "week": 16,
+      "contacted_target": 80,
+      "reasoning": null,
+      "comment": "Ramping up the projects with Vlad and Alex. RS number should be higher next week."
+    },
+    {
+      "ts": "Mia Gjorgievska",
+      "year": 2026,
+      "week": 16,
+      "contacted_target": null,
+      "reasoning": null,
+      "comment": null
+    },
+    {
+      "ts": "Marina Lazarevic",
+      "year": 2026,
+      "week": 16,
+      "contacted_target": 150,
+      "reasoning": null,
+      "comment": null
+    },
+    {
+      "ts": "Naledi Ngwenya",
+      "year": 2026,
+      "week": 16,
+      "contacted_target": 75,
+      "reasoning": null,
+      "comment": "Wrapping up the project with FTAPI, lots of unresponsiveness> dragging down the process > candidates dropping out"
+    },
+    {
+      "ts": "Jovana Drakula",
+      "year": 2026,
+      "week": 16,
+      "contacted_target": null,
+      "reasoning": null,
+      "comment": null
+    },
+    {
+      "ts": "Zelimir Stajcic",
+      "year": 2026,
+      "week": 16,
+      "contacted_target": null,
+      "reasoning": null,
+      "comment": null
     }
   ],
   "ta_weekly_notes": [
@@ -16700,7 +16805,7 @@
     },
     {
       "week": 11,
-      "contacted": 2188,
+      "contacted": 2187,
       "screened": 406,
       "ats": 248,
       "offers": 69,
@@ -16716,8 +16821,8 @@
     },
     {
       "week": 13,
-      "contacted": 1780,
-      "screened": 259,
+      "contacted": 1779,
+      "screened": 258,
       "ats": 155,
       "offers": 31,
       "hires": 32
@@ -16733,18 +16838,18 @@
     {
       "week": 15,
       "contacted": 2259,
-      "screened": 307,
+      "screened": 305,
       "ats": 178,
       "offers": 5,
       "hires": 6
     },
     {
       "week": 16,
-      "contacted": 1786,
-      "screened": 248,
-      "ats": 134,
-      "offers": 14,
-      "hires": 11
+      "contacted": 2312,
+      "screened": 370,
+      "ats": 188,
+      "offers": 20,
+      "hires": 14
     }
   ],
   "ts_actuals": {
@@ -16954,7 +17059,7 @@
         "hires": 0
       },
       "w11": {
-        "contacted": 203,
+        "contacted": 202,
         "recruiter_screens": 7,
         "actual_screens": 0,
         "ats": 1,
@@ -16994,9 +17099,9 @@
         "hires": 0
       },
       "w16": {
-        "contacted": 101,
-        "recruiter_screens": 16,
-        "actual_screens": 11,
+        "contacted": 190,
+        "recruiter_screens": 25,
+        "actual_screens": 15,
         "ats": 5,
         "offers": 0,
         "hires": 0
@@ -17104,6 +17209,14 @@
         "recruiter_screens": 17,
         "actual_screens": 7,
         "ats": 2,
+        "offers": 0,
+        "hires": 0
+      },
+      "w16": {
+        "contacted": 132,
+        "recruiter_screens": 15,
+        "actual_screens": 12,
+        "ats": 10,
         "offers": 0,
         "hires": 0
       }
@@ -17214,10 +17327,10 @@
         "hires": 0
       },
       "w16": {
-        "contacted": 154,
-        "recruiter_screens": 16,
-        "actual_screens": 11,
-        "ats": 7,
+        "contacted": 170,
+        "recruiter_screens": 19,
+        "actual_screens": 12,
+        "ats": 8,
         "offers": 0,
         "hires": 0
       }
@@ -17320,10 +17433,18 @@
         "hires": 0
       },
       "w16": {
-        "contacted": 166,
-        "recruiter_screens": 12,
+        "contacted": 167,
+        "recruiter_screens": 15,
         "actual_screens": 6,
         "ats": 3,
+        "offers": 0,
+        "hires": 0
+      },
+      "w17": {
+        "contacted": 0,
+        "recruiter_screens": 1,
+        "actual_screens": 1,
+        "ats": 0,
         "offers": 0,
         "hires": 0
       }
@@ -17435,9 +17556,9 @@
       },
       "w16": {
         "contacted": 70,
-        "recruiter_screens": 9,
-        "actual_screens": 6,
-        "ats": 1,
+        "recruiter_screens": 12,
+        "actual_screens": 9,
+        "ats": 3,
         "offers": 0,
         "hires": 0
       }
@@ -17533,8 +17654,8 @@
       },
       "w16": {
         "contacted": 91,
-        "recruiter_screens": 15,
-        "actual_screens": 26,
+        "recruiter_screens": 18,
+        "actual_screens": 30,
         "ats": 9,
         "offers": 0,
         "hires": 0
@@ -17655,9 +17776,9 @@
       },
       "w16": {
         "contacted": 167,
-        "recruiter_screens": 38,
-        "actual_screens": 25,
-        "ats": 15,
+        "recruiter_screens": 40,
+        "actual_screens": 29,
+        "ats": 17,
         "offers": 0,
         "hires": 0
       }
@@ -17868,8 +17989,8 @@
         "hires": 0
       },
       "w16": {
-        "contacted": 73,
-        "recruiter_screens": 3,
+        "contacted": 81,
+        "recruiter_screens": 5,
         "actual_screens": 2,
         "ats": 0,
         "offers": 0,
@@ -17982,10 +18103,10 @@
         "hires": 0
       },
       "w16": {
-        "contacted": 193,
-        "recruiter_screens": 35,
-        "actual_screens": 21,
-        "ats": 12,
+        "contacted": 228,
+        "recruiter_screens": 38,
+        "actual_screens": 27,
+        "ats": 14,
         "offers": 0,
         "hires": 0
       }
@@ -18112,9 +18233,9 @@
         "hires": 0
       },
       "w16": {
-        "contacted": 86,
-        "recruiter_screens": 7,
-        "actual_screens": 0,
+        "contacted": 99,
+        "recruiter_screens": 9,
+        "actual_screens": 2,
         "ats": 0,
         "offers": 0,
         "hires": 0
@@ -18227,9 +18348,9 @@
       },
       "w16": {
         "contacted": 121,
-        "recruiter_screens": 11,
-        "actual_screens": 6,
-        "ats": 3,
+        "recruiter_screens": 12,
+        "actual_screens": 8,
+        "ats": 4,
         "offers": 0,
         "hires": 0
       }
@@ -18348,10 +18469,10 @@
         "hires": 0
       },
       "w16": {
-        "contacted": 66,
-        "recruiter_screens": 0,
-        "actual_screens": 0,
-        "ats": 0,
+        "contacted": 153,
+        "recruiter_screens": 4,
+        "actual_screens": 4,
+        "ats": 3,
         "offers": 0,
         "hires": 0
       }
@@ -18425,16 +18546,17 @@
     }
   },
   "ts_hires_12w": {
-    "Marina Lazarevic": 5,
-    "Elena Petrovska": 2,
+    "Adis Prepoljac": 1,
     "Valeriia Yurykova": 3,
-    "Aleksandra Markovic": 2,
-    "Rodrigo Gomes": 1,
-    "Zelimir Stajcic": 1,
+    "Elena Petrovska": 2,
     "Nare Avetisyan": 1,
     "Milica Veselinovic": 1,
+    "Rodrigo Gomes": 1,
+    "Zelimir Stajcic": 1,
+    "Marina Lazarevic": 4,
     "Ejla Suljcic": 2,
-    "Gustavo Loureiro Castro": 1
+    "Gustavo Loureiro Castro": 1,
+    "Aleksandra Markovic": 2
   },
   "ts_positive_responses": {
     "Nare Avetisyan": 594,
@@ -18451,27 +18573,27 @@
   },
   "mbr_client_totals": {
     "Aviv": {
-      "contacted": 1566,
-      "actual_screens": 187,
-      "ats": 118,
-      "offers": 2,
-      "hires": 2,
+      "contacted": 2014,
+      "actual_screens": 245,
+      "ats": 141,
+      "offers": 0,
+      "hires": 0,
       "hires_12w": 9
     },
     "Aiven": {
-      "contacted": 106,
-      "actual_screens": 19,
-      "ats": 11,
+      "contacted": 223,
+      "actual_screens": 48,
+      "ats": 19,
       "offers": 0,
       "hires": 0,
       "hires_12w": 0
     },
     "Wolt HQ": {
-      "contacted": 1619,
-      "actual_screens": 133,
-      "ats": 90,
-      "offers": 15,
-      "hires": 12,
+      "contacted": 1538,
+      "actual_screens": 124,
+      "ats": 76,
+      "offers": 7,
+      "hires": 10,
       "hires_12w": 29
     },
     "DualEntry": {
@@ -18483,122 +18605,122 @@
       "hires_12w": 3
     },
     "Enam": {
-      "contacted": 220,
-      "actual_screens": 34,
-      "ats": 16,
+      "contacted": 250,
+      "actual_screens": 32,
+      "ats": 9,
       "offers": 0,
       "hires": 0,
-      "hires_12w": 2
+      "hires_12w": 1
     },
     "Eucalyptus": {
-      "contacted": 522,
-      "actual_screens": 83,
-      "ats": 46,
-      "offers": 1,
+      "contacted": 677,
+      "actual_screens": 112,
+      "ats": 59,
+      "offers": 3,
       "hires": 1,
-      "hires_12w": 6
-    },
-    "Glovo": {
-      "contacted": 601,
-      "actual_screens": 88,
-      "ats": 40,
-      "offers": 2,
-      "hires": 2,
-      "hires_12w": 2
-    },
-    "Nexi": {
-      "contacted": 517,
-      "actual_screens": 54,
-      "ats": 32,
-      "offers": 3,
-      "hires": 2,
-      "hires_12w": 11
-    },
-    "Parloa": {
-      "contacted": 170,
-      "actual_screens": 76,
-      "ats": 56,
-      "offers": 5,
-      "hires": 4,
-      "hires_12w": 15
-    },
-    "PhantomBuster": {
-      "contacted": 89,
-      "actual_screens": 21,
-      "ats": 14,
-      "offers": 3,
-      "hires": 2,
-      "hires_12w": 2
-    },
-    "Scorewarrior": {
-      "contacted": 128,
-      "actual_screens": 42,
-      "ats": 16,
-      "offers": 0,
-      "hires": 0,
       "hires_12w": 4
     },
+    "Glovo": {
+      "contacted": 701,
+      "actual_screens": 106,
+      "ats": 49,
+      "offers": 5,
+      "hires": 3,
+      "hires_12w": 3
+    },
+    "Nexi": {
+      "contacted": 613,
+      "actual_screens": 81,
+      "ats": 52,
+      "offers": 4,
+      "hires": 4,
+      "hires_12w": 12
+    },
+    "Parloa": {
+      "contacted": 165,
+      "actual_screens": 71,
+      "ats": 51,
+      "offers": 7,
+      "hires": 4,
+      "hires_12w": 16
+    },
+    "PhantomBuster": {
+      "contacted": 133,
+      "actual_screens": 35,
+      "ats": 17,
+      "offers": 6,
+      "hires": 6,
+      "hires_12w": 6
+    },
+    "Scorewarrior": {
+      "contacted": 48,
+      "actual_screens": 31,
+      "ats": 14,
+      "offers": 0,
+      "hires": 0,
+      "hires_12w": 3
+    },
     "Taxfix": {
-      "contacted": 344,
-      "actual_screens": 34,
+      "contacted": 407,
+      "actual_screens": 36,
+      "ats": 32,
+      "offers": 2,
+      "hires": 2,
+      "hires_12w": 8
+    },
+    "Wolt NBB": {
+      "contacted": 165,
+      "actual_screens": 51,
       "ats": 31,
+      "offers": 11,
+      "hires": 12,
+      "hires_12w": 31
+    },
+    "Wolt Volume": {
+      "contacted": 14,
+      "actual_screens": 14,
+      "ats": 10,
+      "offers": 9,
+      "hires": 9,
+      "hires_12w": 628
+    },
+    "Wolt Tech": {
+      "contacted": 453,
+      "actual_screens": 46,
+      "ats": 27,
       "offers": 1,
       "hires": 1,
       "hires_12w": 7
     },
-    "Wolt NBB": {
-      "contacted": 162,
-      "actual_screens": 49,
-      "ats": 29,
-      "offers": 14,
-      "hires": 17,
-      "hires_12w": 31
-    },
-    "Wolt Volume": {
-      "contacted": 72,
-      "actual_screens": 72,
-      "ats": 68,
-      "offers": 67,
-      "hires": 67,
-      "hires_12w": 708
-    },
-    "Wolt Tech": {
-      "contacted": 369,
-      "actual_screens": 39,
-      "ats": 20,
-      "offers": 1,
-      "hires": 1,
-      "hires_12w": 9
-    },
     "Wolt Market": {
-      "contacted": 228,
-      "actual_screens": 32,
-      "ats": 18,
+      "contacted": 240,
+      "actual_screens": 45,
+      "ats": 24,
       "offers": 7,
       "hires": 7,
       "hires_12w": 8
     },
     "Wolt Germany": {
-      "contacted": 42,
-      "actual_screens": 40,
-      "ats": 24,
-      "offers": 6,
-      "hires": 4,
-      "hires_12w": 6
+      "contacted": 35,
+      "actual_screens": 33,
+      "ats": 20,
+      "offers": 4,
+      "hires": 5,
+      "hires_12w": 7
     },
     "Wolt C&S": {
-      "contacted": 23,
-      "actual_screens": 24,
-      "ats": 15,
-      "offers": 4,
-      "hires": 3,
-      "hires_12w": 8
+      "contacted": 28,
+      "actual_screens": 29,
+      "ats": 19,
+      "offers": 5,
+      "hires": 4,
+      "hires_12w": 7
     }
   },
   "mbr_ta_actuals": {
     "Aviv|Alexandra Richiteanu": {
-      "contacted": 37,
-      "actual_screens": 15,
+      "contacted": 7,
+      "actual_screens": 11,
       "ats": 4,
       "offers": 0,
       "hires": 0,
@@ -18608,91 +18730,102 @@
       "jobs_60d": 3
     },
     "Aviv|Anna Tyulpanova": {
-      "contacted": 206,
-      "actual_screens": 31,
-      "ats": 24,
+      "contacted": 303,
+      "actual_screens": 39,
+      "ats": 26,
       "offers": 0,
       "hires": 0,
       "hires_12w": 2,
-      "screens_12w": 145,
-      "ats_12w": 87,
+      "screens_12w": 160,
+      "ats_12w": 94,
       "jobs_60d": 3
     },
-    "Aviv|Jovana Drakula": {
-      "contacted": 279,
-      "actual_screens": 23,
-      "ats": 16,
+    "Aviv|Iryna Dyda": {
+      "contacted": 101,
+      "actual_screens": 4,
+      "ats": 1,
       "offers": 0,
       "hires": 0,
       "hires_12w": 0,
-      "screens_12w": 47,
-      "ats_12w": 40,
+      "screens_12w": 4,
+      "ats_12w": 1,
+      "jobs_60d": 0
+    },
+    "Aviv|Jovana Drakula": {
+      "contacted": 352,
+      "actual_screens": 48,
+      "ats": 21,
+      "offers": 0,
+      "hires": 0,
+      "hires_12w": 0,
+      "screens_12w": 76,
+      "ats_12w": 49,
       "jobs_60d": 6
     },
     "Aviv|Kristina Colovic": {
-      "contacted": 184,
-      "actual_screens": 24,
-      "ats": 18,
-      "offers": 2,
-      "hires": 2,
+      "contacted": 210,
+      "actual_screens": 26,
+      "ats": 17,
+      "offers": 0,
+      "hires": 0,
       "hires_12w": 3,
-      "screens_12w": 115,
-      "ats_12w": 66,
+      "screens_12w": 129,
+      "ats_12w": 75,
       "jobs_60d": 0
     },
     "Aviv|Lejla Silva": {
-      "contacted": 619,
-      "actual_screens": 53,
-      "ats": 36,
+      "contacted": 713,
+      "actual_screens": 73,
+      "ats": 49,
       "offers": 0,
       "hires": 0,
       "hires_12w": 3,
-      "screens_12w": 105,
-      "ats_12w": 68,
+      "screens_12w": 125,
+      "ats_12w": 81,
       "jobs_60d": 0
     },
     "Aviv|Wladyslaw Gadomski": {
-      "contacted": 241,
-      "actual_screens": 41,
-      "ats": 20,
+      "contacted": 328,
+      "actual_screens": 44,
+      "ats": 23,
       "offers": 0,
       "hires": 0,
       "hires_12w": 0,
-      "screens_12w": 131,
-      "ats_12w": 68,
+      "screens_12w": 146,
+      "ats_12w": 77,
       "jobs_60d": 2
     },
     "Aiven|Fuad Safarov": {
-      "contacted": 55,
-      "actual_screens": 12,
-      "ats": 8,
+      "contacted": 118,
+      "actual_screens": 21,
+      "ats": 9,
       "offers": 0,
       "hires": 0,
       "hires_12w": 0,
-      "screens_12w": 12,
-      "ats_12w": 8,
+      "screens_12w": 21,
+      "ats_12w": 9,
       "jobs_60d": 0
     },
     "Aiven|Vladimir Stankovic": {
-      "contacted": 51,
-      "actual_screens": 7,
-      "ats": 3,
+      "contacted": 105,
+      "actual_screens": 27,
+      "ats": 10,
       "offers": 0,
       "hires": 0,
       "hires_12w": 0,
-      "screens_12w": 7,
-      "ats_12w": 3,
+      "screens_12w": 27,
+      "ats_12w": 10,
       "jobs_60d": 0
     },
     "Wolt HQ|Akash Singh": {
-      "contacted": 47,
-      "actual_screens": 11,
-      "ats": 10,
-      "offers": 11,
-      "hires": 8,
-      "hires_12w": 14,
-      "screens_12w": 156,
-      "ats_12w": 114,
+      "contacted": 2,
+      "actual_screens": 2,
+      "ats": 2,
+      "offers": 3,
+      "hires": 7,
+      "hires_12w": 15,
+      "screens_12w": 129,
+      "ats_12w": 93,
       "jobs_60d": 1
     },
     "Wolt HQ|Danish Shams": {
@@ -18702,25 +18835,25 @@
       "offers": 0,
       "hires": 0,
       "hires_12w": 1,
-      "screens_12w": 91,
-      "ats_12w": 62,
+      "screens_12w": 75,
+      "ats_12w": 55,
       "jobs_60d": 3
     },
     "Wolt HQ|Milica Veselinovic": {
-      "contacted": 315,
-      "actual_screens": 20,
-      "ats": 12,
+      "contacted": 248,
+      "actual_screens": 19,
+      "ats": 11,
       "offers": 1,
-      "hires": 1,
+      "hires": 0,
       "hires_12w": 1,
-      "screens_12w": 58,
+      "screens_12w": 56,
       "ats_12w": 30,
       "jobs_60d": 8
     },
     "Wolt HQ|Nidhi Raina": {
-      "contacted": 134,
-      "actual_screens": 13,
-      "ats": 12,
+      "contacted": 61,
+      "actual_screens": 2,
+      "ats": 2,
       "offers": 0,
       "hires": 0,
       "hires_12w": 0,
@@ -18757,8 +18890,8 @@
       "offers": 0,
       "hires": 0,
       "hires_12w": 1,
-      "screens_12w": 83,
-      "ats_12w": 17,
+      "screens_12w": 75,
+      "ats_12w": 16,
       "jobs_60d": 0
     },
     "DualEntry|Simon Siew": {
@@ -18773,47 +18906,47 @@
       "jobs_60d": 1
     },
     "Enam|Aleksandra Vistac": {
-      "contacted": 220,
-      "actual_screens": 34,
-      "ats": 16,
+      "contacted": 250,
+      "actual_screens": 32,
+      "ats": 9,
       "offers": 0,
       "hires": 0,
-      "hires_12w": 2,
-      "screens_12w": 149,
-      "ats_12w": 62,
+      "hires_12w": 1,
+      "screens_12w": 142,
+      "ats_12w": 59,
       "jobs_60d": 5
     },
     "Eucalyptus|Alisa Liddell": {
-      "contacted": 85,
-      "actual_screens": 3,
-      "ats": 2,
+      "contacted": 147,
+      "actual_screens": 16,
+      "ats": 9,
       "offers": 0,
       "hires": 0,
       "hires_12w": 0,
-      "screens_12w": 3,
-      "ats_12w": 2,
+      "screens_12w": 16,
+      "ats_12w": 9,
       "jobs_60d": 0
     },
     "Eucalyptus|Dušan Špica": {
-      "contacted": 158,
-      "actual_screens": 19,
-      "ats": 7,
+      "contacted": 248,
+      "actual_screens": 30,
+      "ats": 12,
       "offers": 0,
       "hires": 0,
       "hires_12w": 0,
-      "screens_12w": 19,
-      "ats_12w": 7,
+      "screens_12w": 30,
+      "ats_12w": 12,
       "jobs_60d": 0
     },
     "Eucalyptus|Meho Saracevic": {
-      "contacted": 279,
-      "actual_screens": 61,
-      "ats": 37,
-      "offers": 1,
+      "contacted": 282,
+      "actual_screens": 66,
+      "ats": 38,
+      "offers": 3,
       "hires": 1,
-      "hires_12w": 6,
-      "screens_12w": 219,
-      "ats_12w": 105,
+      "hires_12w": 4,
+      "screens_12w": 215,
+      "ats_12w": 100,
       "jobs_60d": 4
     },
     "Fever|Lejla Silva": {
@@ -18823,30 +18956,41 @@
       "offers": 0,
       "hires": 0,
       "hires_12w": 0,
-      "screens_12w": 7,
-      "ats_12w": 6,
+      "screens_12w": 1,
+      "ats_12w": 1,
       "jobs_60d": 0
     },
     "Glovo|Chené Elliot": {
-      "contacted": 359,
-      "actual_screens": 55,
-      "ats": 27,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 0,
-      "screens_12w": 76,
-      "ats_12w": 38,
+      "contacted": 435,
+      "actual_screens": 64,
+      "ats": 33,
+      "offers": 3,
+      "hires": 1,
+      "hires_12w": 1,
+      "screens_12w": 93,
+      "ats_12w": 48,
       "jobs_60d": 0
     },
     "Glovo|Samantha Nel": {
-      "contacted": 242,
-      "actual_screens": 33,
-      "ats": 13,
+      "contacted": 266,
+      "actual_screens": 42,
+      "ats": 16,
       "offers": 2,
       "hires": 2,
       "hires_12w": 2,
-      "screens_12w": 46,
-      "ats_12w": 22,
+      "screens_12w": 64,
+      "ats_12w": 28,
+      "jobs_60d": 0
+    },
+    "Nexi|Adis Prepoljac": {
+      "contacted": 52,
+      "actual_screens": 7,
+      "ats": 6,
+      "offers": 1,
+      "hires": 1,
+      "hires_12w": 1,
+      "screens_12w": 7,
+      "ats_12w": 6,
       "jobs_60d": 0
     },
     "Nexi|Andreas Weins": {
@@ -18856,119 +19000,119 @@
       "offers": 0,
       "hires": 0,
       "hires_12w": 2,
-      "screens_12w": 70,
-      "ats_12w": 37,
+      "screens_12w": 48,
+      "ats_12w": 27,
       "jobs_60d": 17
     },
     "Nexi|Maria Desiree Gerbore": {
-      "contacted": 515,
-      "actual_screens": 52,
-      "ats": 31,
+      "contacted": 559,
+      "actual_screens": 72,
+      "ats": 45,
       "offers": 3,
-      "hires": 2,
+      "hires": 3,
       "hires_12w": 9,
-      "screens_12w": 217,
-      "ats_12w": 101,
+      "screens_12w": 216,
+      "ats_12w": 103,
       "jobs_60d": 2
     },
     "Parloa|Filip Nogowski": {
-      "contacted": 79,
-      "actual_screens": 28,
-      "ats": 27,
-      "offers": 2,
+      "contacted": 77,
+      "actual_screens": 24,
+      "ats": 24,
+      "offers": 4,
       "hires": 1,
-      "hires_12w": 5,
-      "screens_12w": 130,
-      "ats_12w": 81,
+      "hires_12w": 6,
+      "screens_12w": 121,
+      "ats_12w": 74,
       "jobs_60d": 6
     },
     "Parloa|Jonaed Iqbal": {
-      "contacted": 91,
-      "actual_screens": 48,
-      "ats": 29,
+      "contacted": 88,
+      "actual_screens": 47,
+      "ats": 27,
       "offers": 3,
       "hires": 3,
       "hires_12w": 10,
-      "screens_12w": 170,
+      "screens_12w": 161,
       "ats_12w": 89,
       "jobs_60d": 7
     },
     "PhantomBuster|Mateja Jokovic": {
-      "contacted": 89,
-      "actual_screens": 21,
-      "ats": 14,
-      "offers": 3,
-      "hires": 2,
-      "hires_12w": 2,
-      "screens_12w": 61,
-      "ats_12w": 39,
-      "jobs_60d": 2
+      "contacted": 133,
+      "actual_screens": 35,
+      "ats": 17,
+      "offers": 6,
+      "hires": 6,
+      "hires_12w": 6,
+      "screens_12w": 75,
+      "ats_12w": 42,
+      "jobs_60d": 5
     },
     "Scorewarrior|Ekaterina Boyprav": {
-      "contacted": 110,
-      "actual_screens": 19,
-      "ats": 8,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 1,
-      "screens_12w": 54,
-      "ats_12w": 25,
-      "jobs_60d": 3
-    },
-    "Scorewarrior|Mark Kandaurov": {
-      "contacted": 18,
-      "actual_screens": 23,
-      "ats": 8,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 3,
-      "screens_12w": 83,
-      "ats_12w": 35,
-      "jobs_60d": 1
-    },
-    "Wolt HQ|Adelya Khakimova": {
-      "contacted": 28,
-      "actual_screens": 11,
-      "ats": 6,
+      "contacted": 34,
+      "actual_screens": 12,
+      "ats": 7,
       "offers": 0,
       "hires": 0,
       "hires_12w": 0,
-      "screens_12w": 19,
-      "ats_12w": 13,
-      "jobs_60d": 0
+      "screens_12w": 45,
+      "ats_12w": 20,
+      "jobs_60d": 3
+    },
+    "Scorewarrior|Mark Kandaurov": {
+      "contacted": 14,
+      "actual_screens": 19,
+      "ats": 7,
+      "offers": 0,
+      "hires": 0,
+      "hires_12w": 3,
+      "screens_12w": 75,
+      "ats_12w": 32,
+      "jobs_60d": 1
+    },
+    "Wolt HQ|Adelya Khakimova": {
+      "contacted": 21,
+      "actual_screens": 11,
+      "ats": 5,
+      "offers": 0,
+      "hires": 0,
+      "hires_12w": 0,
+      "screens_12w": 23,
+      "ats_12w": 14,
+      "jobs_60d": 1
     },
     "Wolt HQ|Zelimir Stajcic": {
-      "contacted": 528,
-      "actual_screens": 29,
-      "ats": 19,
+      "contacted": 530,
+      "actual_screens": 28,
+      "ats": 17,
       "offers": 0,
       "hires": 0,
       "hires_12w": 1,
-      "screens_12w": 85,
-      "ats_12w": 57,
+      "screens_12w": 82,
+      "ats_12w": 54,
       "jobs_60d": 5
     },
     "Taxfix|Marina Nikolic": {
-      "contacted": 344,
-      "actual_screens": 34,
-      "ats": 31,
-      "offers": 1,
-      "hires": 1,
-      "hires_12w": 7,
-      "screens_12w": 176,
-      "ats_12w": 144,
+      "contacted": 407,
+      "actual_screens": 36,
+      "ats": 32,
+      "offers": 2,
+      "hires": 2,
+      "hires_12w": 8,
+      "screens_12w": 166,
+      "ats_12w": 137,
       "jobs_60d": 2
     },
     "Wolt NBB|Adelya Khakimova": {
       "contacted": 0,
       "actual_screens": 0,
       "ats": 0,
-      "offers": 2,
-      "hires": 3,
+      "offers": 0,
+      "hires": 0,
       "hires_12w": 6,
-      "screens_12w": 59,
-      "ats_12w": 31,
-      "jobs_60d": 16
+      "screens_12w": 52,
+      "ats_12w": 28,
+      "jobs_60d": 17
     },
     "Wolt HQ|Alexandra Richiteanu": {
       "contacted": 0,
@@ -18977,31 +19121,31 @@
       "offers": 0,
       "hires": 0,
       "hires_12w": 1,
-      "screens_12w": 8,
-      "ats_12w": 5,
+      "screens_12w": 2,
+      "ats_12w": 2,
       "jobs_60d": 0
     },
     "Wolt Volume|Alisa Liddell": {
-      "contacted": 10,
-      "actual_screens": 10,
-      "ats": 10,
-      "offers": 10,
-      "hires": 10,
-      "hires_12w": 90,
-      "screens_12w": 91,
-      "ats_12w": 91,
-      "jobs_60d": 10
+      "contacted": 9,
+      "actual_screens": 9,
+      "ats": 9,
+      "offers": 9,
+      "hires": 9,
+      "hires_12w": 84,
+      "screens_12w": 85,
+      "ats_12w": 85,
+      "jobs_60d": 11
     },
     "Wolt Volume|Chantal Bozkurt": {
-      "contacted": 13,
-      "actual_screens": 13,
-      "ats": 13,
-      "offers": 13,
-      "hires": 13,
-      "hires_12w": 153,
-      "screens_12w": 156,
-      "ats_12w": 154,
-      "jobs_60d": 20
+      "contacted": 0,
+      "actual_screens": 0,
+      "ats": 0,
+      "offers": 0,
+      "hires": 0,
+      "hires_12w": 141,
+      "screens_12w": 144,
+      "ats_12w": 142,
+      "jobs_60d": 21
     },
     "Wolt HQ|Chené Elliot": {
       "contacted": 0,
@@ -19015,14 +19159,14 @@
       "jobs_60d": 0
     },
     "Wolt Volume|Dolores Palotas": {
-      "contacted": 13,
-      "actual_screens": 13,
-      "ats": 9,
-      "offers": 8,
-      "hires": 8,
-      "hires_12w": 60,
-      "screens_12w": 71,
-      "ats_12w": 61,
+      "contacted": 5,
+      "actual_screens": 5,
+      "ats": 1,
+      "offers": 0,
+      "hires": 0,
+      "hires_12w": 57,
+      "screens_12w": 68,
+      "ats_12w": 58,
       "jobs_60d": 0
     },
     "Wolt|Dora Vrbanić": {
@@ -19037,25 +19181,25 @@
       "jobs_60d": 1
     },
     "Wolt Tech|Ejla Suljcic": {
-      "contacted": 369,
-      "actual_screens": 39,
-      "ats": 20,
+      "contacted": 453,
+      "actual_screens": 46,
+      "ats": 27,
       "offers": 1,
       "hires": 1,
       "hires_12w": 1,
-      "screens_12w": 136,
-      "ats_12w": 76,
+      "screens_12w": 148,
+      "ats_12w": 85,
       "jobs_60d": 8
     },
     "Wolt HQ|Elena Petrovska": {
-      "contacted": 496,
-      "actual_screens": 11,
-      "ats": 10,
+      "contacted": 601,
+      "actual_screens": 21,
+      "ats": 17,
       "offers": 1,
       "hires": 1,
       "hires_12w": 1,
-      "screens_12w": 63,
-      "ats_12w": 39,
+      "screens_12w": 73,
+      "ats_12w": 47,
       "jobs_60d": 1
     },
     "Wolt Volume|Evagelina Rapanaki": {
@@ -19064,20 +19208,20 @@
       "ats": 0,
       "offers": 0,
       "hires": 0,
-      "hires_12w": 19,
-      "screens_12w": 19,
-      "ats_12w": 19,
+      "hires_12w": 16,
+      "screens_12w": 16,
+      "ats_12w": 16,
       "jobs_60d": 14
     },
     "Wolt Volume|Fuad Safarov": {
-      "contacted": 4,
-      "actual_screens": 4,
-      "ats": 4,
-      "offers": 4,
-      "hires": 4,
-      "hires_12w": 35,
-      "screens_12w": 35,
-      "ats_12w": 35,
+      "contacted": 0,
+      "actual_screens": 0,
+      "ats": 0,
+      "offers": 0,
+      "hires": 0,
+      "hires_12w": 26,
+      "screens_12w": 26,
+      "ats_12w": 26,
       "jobs_60d": 0
     },
     "Wolt Volume|Iryna Dyda": {
@@ -19092,25 +19236,25 @@
       "jobs_60d": 2
     },
     "Wolt Market|Jan Dokulil": {
-      "contacted": 228,
-      "actual_screens": 32,
-      "ats": 18,
+      "contacted": 240,
+      "actual_screens": 45,
+      "ats": 24,
       "offers": 7,
       "hires": 7,
       "hires_12w": 8,
-      "screens_12w": 91,
-      "ats_12w": 50,
+      "screens_12w": 97,
+      "ats_12w": 51,
       "jobs_60d": 14
     },
     "Wolt NBB|Jelena Lacmanovic": {
-      "contacted": 144,
-      "actual_screens": 31,
+      "contacted": 147,
+      "actual_screens": 33,
       "ats": 14,
-      "offers": 7,
-      "hires": 8,
+      "offers": 6,
+      "hires": 7,
       "hires_12w": 17,
-      "screens_12w": 211,
-      "ats_12w": 102,
+      "screens_12w": 197,
+      "ats_12w": 95,
       "jobs_60d": 3
     },
     "Wolt NBB|Jovana Drakula": {
@@ -19120,53 +19264,53 @@
       "offers": 0,
       "hires": 0,
       "hires_12w": 0,
-      "screens_12w": 22,
+      "screens_12w": 21,
       "ats_12w": 10,
       "jobs_60d": 0
     },
     "Wolt Volume|Ketevan Khorava": {
-      "contacted": 32,
-      "actual_screens": 32,
-      "ats": 32,
-      "offers": 32,
-      "hires": 32,
-      "hires_12w": 218,
-      "screens_12w": 218,
-      "ats_12w": 218,
+      "contacted": 0,
+      "actual_screens": 0,
+      "ats": 0,
+      "offers": 0,
+      "hires": 0,
+      "hires_12w": 193,
+      "screens_12w": 193,
+      "ats_12w": 193,
       "jobs_60d": 1
     },
     "Wolt Germany|Lisa Gargulinska": {
-      "contacted": 42,
-      "actual_screens": 40,
-      "ats": 24,
-      "offers": 6,
-      "hires": 4,
-      "hires_12w": 6,
-      "screens_12w": 148,
-      "ats_12w": 86,
+      "contacted": 35,
+      "actual_screens": 33,
+      "ats": 20,
+      "offers": 4,
+      "hires": 5,
+      "hires_12w": 7,
+      "screens_12w": 144,
+      "ats_12w": 85,
       "jobs_60d": 13
     },
     "Wolt HQ|Nenad Skoko": {
-      "contacted": 70,
-      "actual_screens": 38,
-      "ats": 21,
+      "contacted": 74,
+      "actual_screens": 41,
+      "ats": 22,
       "offers": 2,
       "hires": 2,
-      "hires_12w": 7,
+      "hires_12w": 6,
       "screens_12w": 124,
-      "ats_12w": 83,
+      "ats_12w": 80,
       "jobs_60d": 3
     },
     "Wolt C&S|Niki Vokalkova": {
-      "contacted": 23,
-      "actual_screens": 24,
-      "ats": 15,
-      "offers": 4,
-      "hires": 3,
-      "hires_12w": 8,
-      "screens_12w": 142,
-      "ats_12w": 82,
-      "jobs_60d": 3
+      "contacted": 28,
+      "actual_screens": 29,
+      "ats": 19,
+      "offers": 5,
+      "hires": 4,
+      "hires_12w": 7,
+      "screens_12w": 132,
+      "ats_12w": 77,
+      "jobs_60d": 2
     },
     "Wolt HQ|Rafael Rosa": {
       "contacted": 1,
@@ -19175,8 +19319,8 @@
       "offers": 0,
       "hires": 0,
       "hires_12w": 2,
-      "screens_12w": 7,
-      "ats_12w": 7,
+      "screens_12w": 3,
+      "ats_12w": 3,
       "jobs_60d": 11
     },
     "Wolt Tech|Simon Siew": {
@@ -19185,20 +19329,20 @@
       "ats": 0,
       "offers": 0,
       "hires": 0,
-      "hires_12w": 4,
-      "screens_12w": 5,
-      "ats_12w": 5,
+      "hires_12w": 2,
+      "screens_12w": 1,
+      "ats_12w": 1,
       "jobs_60d": 8
     },
     "Wolt NBB|Tina Aramouni": {
       "contacted": 18,
       "actual_screens": 18,
-      "ats": 15,
+      "ats": 17,
       "offers": 5,
-      "hires": 6,
+      "hires": 5,
       "hires_12w": 8,
-      "screens_12w": 106,
-      "ats_12w": 103,
+      "screens_12w": 95,
+      "ats_12w": 93,
       "jobs_60d": 3
     },
     "Wolt Volume|Tinatini Karaulashvili": {
@@ -19207,9 +19351,9 @@
       "ats": 0,
       "offers": 0,
       "hires": 0,
-      "hires_12w": 71,
-      "screens_12w": 71,
-      "ats_12w": 71,
+      "hires_12w": 55,
+      "screens_12w": 55,
+      "ats_12w": 55,
       "jobs_60d": 4
     },
     "Wolt Tech|Vladimir Stankovic": {
@@ -19229,12 +19373,12 @@
       "ats": 0,
       "offers": 0,
       "hires": 0,
-      "hires_12w": 62,
-      "screens_12w": 68,
-      "ats_12w": 66,
+      "hires_12w": 56,
+      "screens_12w": 62,
+      "ats_12w": 60,
       "jobs_60d": 7
     },
-    "desk.ly|Lisa Gargulinska": {
+    "Tribe: Talent Pools|Iryna Dyda": {
       "contacted": 0,
       "actual_screens": 0,
       "ats": 0,
@@ -19243,7 +19387,7 @@
       "hires_12w": 0,
       "screens_12w": 0,
       "ats_12w": 0,
-      "jobs_60d": 2
+      "jobs_60d": 1
     },
     "Glovo|Ejla Suljcic": {
       "contacted": 0,
@@ -19256,7 +19400,7 @@
       "ats_12w": 0,
       "jobs_60d": 21
     },
-    "Tribe: Talent Pools|Iryna Dyda": {
+    "desk.ly|Lisa Gargulinska": {
       "contacted": 0,
       "actual_screens": 0,
       "ats": 0,
@@ -19265,7 +19409,7 @@
       "hires_12w": 0,
       "screens_12w": 0,
       "ats_12w": 0,
-      "jobs_60d": 1
+      "jobs_60d": 2
     },
     "Enam|Marko Pavicevic": {
       "contacted": 0,
@@ -19281,13 +19425,13 @@
   },
   "mbr_ts_actuals": {
     "Adis Prepoljac": {
-      "contacted_4w": 0,
-      "recruiter_screens_4w": 0,
-      "actual_screens_4w": 0,
-      "ats_4w": 0,
-      "hires_12w": 0,
-      "screens_12w": 24,
-      "ats_12w": 9
+      "contacted_4w": 24,
+      "recruiter_screens_4w": 10,
+      "actual_screens_4w": 6,
+      "ats_4w": 6,
+      "hires_12w": 1,
+      "screens_12w": 31,
+      "ats_12w": 15
     },
     "Aleksandra Markovic": {
       "contacted_4w": 0,
@@ -19295,125 +19439,125 @@
       "actual_screens_4w": 0,
       "ats_4w": 0,
       "hires_12w": 2,
-      "screens_12w": 56,
-      "ats_12w": 14
+      "screens_12w": 49,
+      "ats_12w": 13
     },
     "Andrea Akovic": {
-      "contacted_4w": 528,
-      "recruiter_screens_4w": 69,
-      "actual_screens_4w": 40,
-      "ats_4w": 18,
+      "contacted_4w": 623,
+      "recruiter_screens_4w": 72,
+      "actual_screens_4w": 53,
+      "ats_4w": 22,
       "hires_12w": 0,
-      "screens_12w": 79,
-      "ats_12w": 34
+      "screens_12w": 78,
+      "ats_12w": 28
     },
     "Ejla Suljcic": {
-      "contacted_4w": 539,
-      "recruiter_screens_4w": 102,
-      "actual_screens_4w": 53,
-      "ats_4w": 33,
+      "contacted_4w": 516,
+      "recruiter_screens_4w": 85,
+      "actual_screens_4w": 49,
+      "ats_4w": 30,
       "hires_12w": 2,
-      "screens_12w": 156,
-      "ats_12w": 91
+      "screens_12w": 165,
+      "ats_12w": 98
     },
     "Elena Petrovska": {
-      "contacted_4w": 618,
-      "recruiter_screens_4w": 57,
-      "actual_screens_4w": 12,
-      "ats_4w": 10,
+      "contacted_4w": 723,
+      "recruiter_screens_4w": 75,
+      "actual_screens_4w": 22,
+      "ats_4w": 17,
       "hires_12w": 2,
-      "screens_12w": 63,
-      "ats_12w": 39
+      "screens_12w": 73,
+      "ats_12w": 47
     },
     "Gustavo Loureiro Castro": {
-      "contacted_4w": 295,
-      "recruiter_screens_4w": 71,
-      "actual_screens_4w": 21,
-      "ats_4w": 22,
+      "contacted_4w": 434,
+      "recruiter_screens_4w": 80,
+      "actual_screens_4w": 25,
+      "ats_4w": 23,
       "hires_12w": 1,
-      "screens_12w": 81,
-      "ats_12w": 51
+      "screens_12w": 87,
+      "ats_12w": 54
     },
     "Iryna Dyda": {
-      "contacted_4w": 169,
-      "recruiter_screens_4w": 13,
-      "actual_screens_4w": 9,
-      "ats_4w": 8,
+      "contacted_4w": 239,
+      "recruiter_screens_4w": 25,
+      "actual_screens_4w": 18,
+      "ats_4w": 11,
       "hires_12w": 0,
-      "screens_12w": 9,
-      "ats_12w": 8
+      "screens_12w": 18,
+      "ats_12w": 11
     },
     "Jovana Drakula": {
-      "contacted_4w": 279,
-      "recruiter_screens_4w": 44,
-      "actual_screens_4w": 11,
-      "ats_4w": 16,
+      "contacted_4w": 352,
+      "recruiter_screens_4w": 55,
+      "actual_screens_4w": 41,
+      "ats_4w": 21,
       "hires_12w": 0,
-      "screens_12w": 71,
-      "ats_12w": 48
+      "screens_12w": 99,
+      "ats_12w": 57
     },
     "Marina Lazarevic": {
-      "contacted_4w": 365,
-      "recruiter_screens_4w": 54,
-      "actual_screens_4w": 42,
-      "ats_4w": 26,
-      "hires_12w": 5,
-      "screens_12w": 205,
-      "ats_12w": 93
+      "contacted_4w": 447,
+      "recruiter_screens_4w": 82,
+      "actual_screens_4w": 56,
+      "ats_4w": 33,
+      "hires_12w": 4,
+      "screens_12w": 216,
+      "ats_12w": 105
     },
     "Milica Veselinovic": {
-      "contacted_4w": 314,
-      "recruiter_screens_4w": 17,
-      "actual_screens_4w": 19,
-      "ats_4w": 11,
+      "contacted_4w": 247,
+      "recruiter_screens_4w": 12,
+      "actual_screens_4w": 18,
+      "ats_4w": 10,
       "hires_12w": 1,
-      "screens_12w": 57,
+      "screens_12w": 55,
       "ats_12w": 29
     },
     "Naledi Ngwenya": {
-      "contacted_4w": 503,
-      "recruiter_screens_4w": 26,
-      "actual_screens_4w": 1,
+      "contacted_4w": 444,
+      "recruiter_screens_4w": 25,
+      "actual_screens_4w": 3,
       "ats_4w": 2,
       "hires_12w": 0,
-      "screens_12w": 29,
+      "screens_12w": 31,
       "ats_12w": 9
     },
     "Nare Avetisyan": {
-      "contacted_4w": 573,
-      "recruiter_screens_4w": 116,
-      "actual_screens_4w": 70,
-      "ats_4w": 47,
+      "contacted_4w": 792,
+      "recruiter_screens_4w": 141,
+      "actual_screens_4w": 77,
+      "ats_4w": 50,
       "hires_12w": 1,
-      "screens_12w": 275,
-      "ats_12w": 163
+      "screens_12w": 297,
+      "ats_12w": 175
     },
     "Rodrigo Gomes": {
-      "contacted_4w": 112,
-      "recruiter_screens_4w": 6,
-      "actual_screens_4w": 2,
+      "contacted_4w": 207,
+      "recruiter_screens_4w": 15,
+      "actual_screens_4w": 4,
       "ats_4w": 1,
       "hires_12w": 1,
-      "screens_12w": 29,
+      "screens_12w": 27,
       "ats_12w": 13
     },
     "Valeriia Yurykova": {
-      "contacted_4w": 281,
-      "recruiter_screens_4w": 45,
-      "actual_screens_4w": 32,
+      "contacted_4w": 388,
+      "recruiter_screens_4w": 52,
+      "actual_screens_4w": 33,
       "ats_4w": 19,
       "hires_12w": 3,
-      "screens_12w": 115,
-      "ats_12w": 61
+      "screens_12w": 121,
+      "ats_12w": 65
     },
     "Zelimir Stajcic": {
-      "contacted_4w": 528,
-      "recruiter_screens_4w": 24,
-      "actual_screens_4w": 29,
-      "ats_4w": 19,
+      "contacted_4w": 530,
+      "recruiter_screens_4w": 23,
+      "actual_screens_4w": 28,
+      "ats_4w": 17,
       "hires_12w": 1,
-      "screens_12w": 85,
-      "ats_12w": 57
+      "screens_12w": 82,
+      "ats_12w": 54
     }
   },
   "mbr_ta_targets": [
@@ -19761,13 +19905,13 @@
     }
   ],
   "mbr_window": {
-    "start": "2026-03-16",
-    "end": "2026-04-12",
+    "start": "2026-03-23",
+    "end": "2026-04-19",
     "weeks": [
-      "w12",
       "w13",
       "w14",
-      "w15"
+      "w15",
+      "w16"
     ]
   },
   "mbr_active_excludes": [
@@ -19801,38 +19945,38 @@
     {
       "ts": "Ejla Suljcic",
       "active_pipelines": 39,
-      "contacted": 3982,
-      "positive_response": 492,
-      "recruiter_screens": 335,
-      "actual_screens": 204,
-      "ats": 120
+      "contacted": 4114,
+      "positive_response": 511,
+      "recruiter_screens": 350,
+      "actual_screens": 216,
+      "ats": 130
     },
     {
       "ts": "Jovana Drakula",
       "active_pipelines": 13,
       "contacted": 777,
-      "positive_response": 303,
-      "recruiter_screens": 155,
-      "actual_screens": 37,
+      "positive_response": 306,
+      "recruiter_screens": 158,
+      "actual_screens": 41,
       "ats": 43
     },
     {
       "ts": "Elena Petrovska",
       "active_pipelines": 10,
-      "contacted": 983,
-      "positive_response": 79,
-      "recruiter_screens": 58,
-      "actual_screens": 30,
-      "ats": 23
+      "contacted": 999,
+      "positive_response": 89,
+      "recruiter_screens": 61,
+      "actual_screens": 31,
+      "ats": 24
     },
     {
       "ts": "Nare Avetisyan",
       "active_pipelines": 10,
-      "contacted": 1874,
-      "positive_response": 450,
-      "recruiter_screens": 376,
-      "actual_screens": 229,
-      "ats": 148
+      "contacted": 1909,
+      "positive_response": 454,
+      "recruiter_screens": 379,
+      "actual_screens": 235,
+      "ats": 150
     },
     {
       "ts": "Milica Veselinovic",
@@ -19847,26 +19991,26 @@
       "ts": "Iryna Dyda",
       "active_pipelines": 8,
       "contacted": 451,
-      "positive_response": 45,
-      "recruiter_screens": 27,
-      "actual_screens": 4,
-      "ats": 12
+      "positive_response": 46,
+      "recruiter_screens": 28,
+      "actual_screens": 6,
+      "ats": 13
     },
     {
       "ts": "Valeriia Yurykova",
       "active_pipelines": 8,
       "contacted": 663,
       "positive_response": 0,
-      "recruiter_screens": 63,
-      "actual_screens": 54,
-      "ats": 25
+      "recruiter_screens": 64,
+      "actual_screens": 55,
+      "ats": 26
     },
     {
       "ts": "Gustavo Loureiro Castro",
       "active_pipelines": 7,
       "contacted": 1043,
-      "positive_response": 257,
-      "recruiter_screens": 162,
+      "positive_response": 260,
+      "recruiter_screens": 163,
       "actual_screens": 71,
       "ats": 47
     },
@@ -19874,27 +20018,27 @@
       "ts": "Marina Lazarevic",
       "active_pipelines": 7,
       "contacted": 620,
-      "positive_response": 92,
-      "recruiter_screens": 87,
-      "actual_screens": 54,
-      "ats": 35
+      "positive_response": 105,
+      "recruiter_screens": 89,
+      "actual_screens": 58,
+      "ats": 37
     },
     {
       "ts": "Zelimir Stajcic",
       "active_pipelines": 7,
-      "contacted": 3947,
-      "positive_response": 271,
-      "recruiter_screens": 226,
-      "actual_screens": 200,
-      "ats": 138
+      "contacted": 4034,
+      "positive_response": 275,
+      "recruiter_screens": 230,
+      "actual_screens": 204,
+      "ats": 141
     },
     {
       "ts": "Andrea Akovic",
       "active_pipelines": 5,
-      "contacted": 828,
-      "positive_response": 106,
-      "recruiter_screens": 92,
-      "actual_screens": 51,
+      "contacted": 861,
+      "positive_response": 111,
+      "recruiter_screens": 99,
+      "actual_screens": 55,
       "ats": 23
     },
     {
@@ -19909,9 +20053,9 @@
     {
       "ts": "Naledi Ngwenya",
       "active_pipelines": 5,
-      "contacted": 1598,
-      "positive_response": 129,
-      "recruiter_screens": 51,
+      "contacted": 1606,
+      "positive_response": 136,
+      "recruiter_screens": 53,
       "actual_screens": 7,
       "ats": 3
     },
@@ -19927,300 +20071,306 @@
     {
       "ts": "Rodrigo Gomes",
       "active_pipelines": 4,
-      "contacted": 143,
-      "positive_response": 10,
-      "recruiter_screens": 17,
-      "actual_screens": 5,
+      "contacted": 154,
+      "positive_response": 13,
+      "recruiter_screens": 19,
+      "actual_screens": 7,
       "ats": 1
     }
   ],
   "ta_ats_12w": {
-    "Wolt|Dolores Palotas": 61,
-    "Taxfix|Marina Nikolic": 144,
-    "Nexi |Andreas Weins": 37,
-    "Wolt|Zelimir Stajcic": 10,
-    "Fever|Lejla Silva": 6,
-    "Wolt|Fuad Safarov": 35,
-    "Wolt|Niki Vokalkova": 82,
-    "SevenRooms|Adelya Khakimova": 13,
-    "AVIV |Kristina Colovic": 66,
-    "Wolt|Ketevan Khorava": 218,
-    "DualEntry|Samantha Nel": 17,
-    "SevenRooms|Zelimir Stajcic": 47,
+    "AVIV |Kristina Colovic": 75,
+    "Wolt|Jelena  Lacmanovic": 95,
+    "Eucalyptus|Dušan Špica": 12,
+    "Aiven|Fuad Safarov": 9,
     "Wolt|Iryna Shumik": 1,
-    "Wolt|Jelena  Lacmanovic": 102,
-    "Wolt|Ejla Suljcic": 76,
-    "Doordash|Nidhi Raina": 110,
-    "Wolt|Evagelina Rapanaki": 19,
-    "Wolt|Elena Petrovska": 39,
-    "Wolt|Jan Dokulil": 50,
-    "Wolt|Simon  Siew": 5,
-    "Aiven|Vladimir Stankovic": 3,
-    "Wolt|Alexandra Richiteanu": 5,
     "FTAPI|Naledi Ngwenya": 4,
-    "Doordash|Danish Shams": 62,
-    "Wolt|Chantal Bozkurt": 154,
-    "AVIV |Jovana Drakula": 40,
-    "Wolt|Alexandra Constantinide": 4,
-    "Wolt|Akash Singh": 14,
-    "AVIV |Lejla Silva": 68,
-    "Eucalyptus|Meho Saracevic": 105,
-    "Glovo|Samantha Nel": 22,
-    "Wolt|Tinatini Karaulashvili": 71,
-    "AVIV |Wladyslaw Gadomski": 68,
-    "Wolt|Rafael Rosa": 7,
-    "DualEntry|Chené Elliot": 22,
-    "AVIV |Anna Tyulpanova": 87,
+    "Eucalyptus|Meho Saracevic": 100,
+    "Aiven|Vladimir Stankovic": 10,
+    "Wolt|Nenad Skoko": 80,
+    "Doordash|Akash Singh": 79,
     "Doordash|Milica Veselinovic": 4,
-    "Wolt|Vladimir Stankovic": 10,
-    "Wolt|Lisa Gargulinska": 86,
-    "SevenRooms|Milica Veselinovic": 10,
-    "DualEntry|Simon  Siew": 13,
-    "Aiven|Fuad Safarov": 8,
-    "PhantomBuster|Mateja Jokovic": 39,
-    "Scorewarrior|Mark Kandaurov": 35,
-    "Parloa|Jonaed Iqbal": 89,
-    "Wolt|Milica Veselinovic": 16,
+    "Wolt|Alexandra Constantinide": 4,
+    "Wolt|Lisa Gargulinska": 85,
+    "Wolt|Alisa Liddell": 85,
+    "Wolt|Milica Veselinovic": 14,
+    "SevenRooms|Zelimir Stajcic": 44,
     "AVIV |Alexandra Richiteanu": 50,
-    "Wolt|Adelya Khakimova": 31,
-    "Nexi |Maria Desiree Gerbore": 101,
+    "AVIV |Anna Tyulpanova": 94,
+    "SevenRooms|Adelya Khakimova": 14,
+    "Wolt|Dolores Palotas": 58,
+    "Wolt|Evagelina Rapanaki": 16,
+    "AVIV |Jovana Drakula": 49,
+    "Eucalyptus|Alisa Liddell": 9,
+    "Wolt|Zelimir Stajcic": 10,
+    "PhantomBuster|Mateja Jokovic": 42,
+    "Wolt|Zarina Amanbekova": 60,
+    "Glovo|Chené Elliot": 48,
     "Wolt|Jovana Drakula": 10,
-    "ABOUT YOU|Gustavo Loureiro Castro": 1,
-    "Parloa|Filip Nogowski": 81,
+    "SevenRooms|Milica Veselinovic": 12,
     "Wolt|Andras Toth": 1,
-    "Eucalyptus|Alisa Liddell": 2,
-    "Scorewarrior|Ekaterina Boyprav": 25,
-    "Doordash|Akash Singh": 100,
-    "Wolt|Alisa Liddell": 91,
-    "Eucalyptus|Dušan Špica": 7,
-    "Parloa|Gustavo Loureiro Castro": 19,
-    "Glovo|Chené Elliot": 38,
-    "Wolt|Zarina Amanbekova": 66,
-    "Enam|Aleksandra Vistac": 62,
-    "Wolt|Tina Aramouni": 103,
-    "Wolt|Nenad Skoko": 83
+    "Wolt|Rafael Rosa": 3,
+    "Nexi |Maria Desiree Gerbore": 103,
+    "Enam|Aleksandra Vistac": 59,
+    "Wolt|Ejla Suljcic": 85,
+    "Nexi |Andreas Weins": 27,
+    "DualEntry|Simon  Siew": 13,
+    "Wolt|Alexandra Richiteanu": 2,
+    "AVIV |Iryna Dyda": 1,
+    "Taxfix|Marina Nikolic": 137,
+    "Glovo|Samantha Nel": 28,
+    "Parloa|Filip Nogowski": 74,
+    "Wolt|Elena Petrovska": 47,
+    "Wolt|Akash Singh": 14,
+    "ABOUT YOU|Gustavo Loureiro Castro": 1,
+    "Wolt|Vladimir Stankovic": 10,
+    "Fever|Lejla Silva": 1,
+    "Scorewarrior|Ekaterina Boyprav": 20,
+    "Wolt|Tina Aramouni": 93,
+    "AVIV |Wladyslaw Gadomski": 77,
+    "Wolt|Jan Dokulil": 51,
+    "AVIV |Lejla Silva": 81,
+    "Wolt|Niki Vokalkova": 77,
+    "Doordash|Danish Shams": 55,
+    "Wolt|Adelya Khakimova": 28,
+    "Wolt|Fuad Safarov": 26,
+    "Wolt|Chantal Bozkurt": 142,
+    "Wolt|Simon  Siew": 1,
+    "Parloa|Gustavo Loureiro Castro": 22,
+    "DualEntry|Chené Elliot": 22,
+    "Wolt|Tinatini Karaulashvili": 55,
+    "Scorewarrior|Mark Kandaurov": 32,
+    "DualEntry|Samantha Nel": 16,
+    "Nexi |Adis Prepoljac": 6,
+    "Doordash|Nidhi Raina": 110,
+    "Wolt|Ketevan Khorava": 193,
+    "Parloa|Jonaed Iqbal": 89
   },
   "ta_screens_12w": {
-    "Wolt|Dolores Palotas": 71,
-    "Nexi |Andreas Weins": 70,
-    "Taxfix|Marina Nikolic": 176,
-    "SevenRooms|Adelya Khakimova": 19,
-    "Wolt|Niki Vokalkova": 142,
-    "Wolt|Zelimir Stajcic": 12,
-    "Fever|Lejla Silva": 7,
-    "Wolt|Fuad Safarov": 35,
-    "AVIV |Kristina Colovic": 115,
-    "DualEntry|Samantha Nel": 83,
-    "Wolt|Ketevan Khorava": 218,
+    "Eucalyptus|Dušan Špica": 30,
+    "Wolt|Jelena  Lacmanovic": 197,
+    "AVIV |Kristina Colovic": 129,
+    "Aiven|Fuad Safarov": 21,
+    "Aiven|Vladimir Stankovic": 27,
+    "FTAPI|Naledi Ngwenya": 11,
+    "Eucalyptus|Meho Saracevic": 215,
     "Wolt|Iryna Shumik": 1,
-    "Wolt|Jelena  Lacmanovic": 211,
-    "SevenRooms|Zelimir Stajcic": 73,
-    "Wolt|Ejla Suljcic": 136,
-    "Doordash|Nidhi Raina": 126,
-    "Wolt|Evagelina Rapanaki": 19,
-    "Wolt|Elena Petrovska": 63,
-    "Wolt|Jan Dokulil": 91,
-    "Wolt|Simon  Siew": 5,
-    "Wolt|Chené Elliot": 1,
-    "Wolt|Alexandra Constantinide": 4,
-    "Doordash|Danish Shams": 91,
-    "Aiven|Vladimir Stankovic": 7,
-    "Wolt|Alexandra Richiteanu": 8,
-    "FTAPI|Naledi Ngwenya": 9,
-    "Wolt|Chantal Bozkurt": 156,
-    "AVIV |Jovana Drakula": 47,
-    "Eucalyptus|Meho Saracevic": 219,
-    "AVIV |Wladyslaw Gadomski": 131,
-    "Wolt|Rafael Rosa": 7,
-    "Glovo|Samantha Nel": 46,
-    "AVIV |Lejla Silva": 105,
-    "Wolt|Akash Singh": 16,
-    "Wolt|Tinatini Karaulashvili": 71,
-    "Taxfix|Alexandra Felea": 1,
-    "AVIV |Anna Tyulpanova": 145,
-    "Wolt|Vladimir Stankovic": 18,
-    "Wolt|Lisa Gargulinska": 148,
+    "Wolt|Nenad Skoko": 124,
     "Doordash|Milica Veselinovic": 7,
-    "DualEntry|Chené Elliot": 69,
-    "PhantomBuster|Mateja Jokovic": 61,
+    "Doordash|Akash Singh": 113,
+    "Wolt|Alexandra Constantinide": 4,
+    "Wolt|Lisa Gargulinska": 144,
+    "Wolt|Milica Veselinovic": 26,
+    "SevenRooms|Zelimir Stajcic": 70,
     "AVIV |Alexandra Richiteanu": 129,
-    "Aiven|Fuad Safarov": 12,
+    "Wolt|Alisa Liddell": 85,
+    "Wolt|Dolores Palotas": 68,
+    "AVIV |Anna Tyulpanova": 160,
+    "SevenRooms|Adelya Khakimova": 23,
+    "Wolt|Evagelina Rapanaki": 16,
+    "Wolt|Zelimir Stajcic": 12,
+    "Glovo|Chené Elliot": 93,
+    "AVIV |Jovana Drakula": 76,
+    "Taxfix|Alexandra Felea": 1,
+    "Eucalyptus|Alisa Liddell": 16,
+    "PhantomBuster|Mateja Jokovic": 75,
+    "Wolt|Zarina Amanbekova": 62,
+    "SevenRooms|Milica Veselinovic": 23,
+    "Wolt|Jovana Drakula": 21,
     "DualEntry|Simon  Siew": 53,
-    "Parloa|Jonaed Iqbal": 170,
-    "Wolt|Milica Veselinovic": 30,
-    "SevenRooms|Milica Veselinovic": 21,
-    "Scorewarrior|Mark Kandaurov": 83,
-    "Wolt|Jovana Drakula": 22,
-    "Wolt|Adelya Khakimova": 59,
+    "Nexi |Andreas Weins": 48,
+    "Wolt|Rafael Rosa": 3,
+    "Wolt|Ejla Suljcic": 148,
+    "Enam|Aleksandra Vistac": 142,
+    "Nexi |Maria Desiree Gerbore": 216,
+    "Wolt|Alexandra Richiteanu": 2,
+    "Taxfix|Marina Nikolic": 166,
+    "AVIV |Iryna Dyda": 4,
+    "Parloa|Filip Nogowski": 121,
+    "Glovo|Samantha Nel": 64,
+    "Wolt|Elena Petrovska": 73,
+    "Wolt|Vladimir Stankovic": 18,
+    "Fever|Lejla Silva": 1,
+    "Wolt|Akash Singh": 16,
+    "Wolt|Chené Elliot": 1,
+    "AVIV |Wladyslaw Gadomski": 146,
     "ABOUT YOU|Gustavo Loureiro Castro": 1,
-    "Nexi |Maria Desiree Gerbore": 217,
-    "Eucalyptus|Alisa Liddell": 3,
-    "Scorewarrior|Ekaterina Boyprav": 54,
-    "Parloa|Filip Nogowski": 130,
-    "Eucalyptus|Dušan Špica": 19,
-    "Parloa|Gustavo Loureiro Castro": 32,
-    "Doordash|Akash Singh": 140,
-    "Wolt|Alisa Liddell": 91,
-    "Enam|Aleksandra Vistac": 149,
-    "Wolt|Tina Aramouni": 106,
-    "Glovo|Chené Elliot": 76,
-    "Wolt|Zarina Amanbekova": 68,
-    "Wolt|Nenad Skoko": 124
+    "Wolt|Tina Aramouni": 95,
+    "Scorewarrior|Ekaterina Boyprav": 45,
+    "Wolt|Jan Dokulil": 97,
+    "AVIV |Lejla Silva": 125,
+    "Wolt|Niki Vokalkova": 132,
+    "Wolt|Adelya Khakimova": 52,
+    "Doordash|Danish Shams": 75,
+    "Wolt|Fuad Safarov": 26,
+    "Wolt|Simon  Siew": 1,
+    "Wolt|Chantal Bozkurt": 144,
+    "Parloa|Gustavo Loureiro Castro": 36,
+    "DualEntry|Chené Elliot": 69,
+    "Doordash|Nidhi Raina": 126,
+    "Nexi |Adis Prepoljac": 7,
+    "Scorewarrior|Mark Kandaurov": 75,
+    "DualEntry|Samantha Nel": 75,
+    "Wolt|Tinatini Karaulashvili": 55,
+    "Wolt|Ketevan Khorava": 193,
+    "Parloa|Jonaed Iqbal": 161
   },
   "ta_ttf_12w": {
-    "Wolt|Dolores Palotas": 627,
-    "Taxfix|Marina Nikolic": 75,
-    "Nexi |Andreas Weins": 73,
-    "Wolt|Fuad Safarov": 25,
-    "Wolt|Niki Vokalkova": 72,
     "AVIV |Kristina Colovic": 38,
-    "DualEntry|Samantha Nel": 21,
-    "Wolt|Ketevan Khorava": 52,
     "Wolt|Iryna Shumik": 217,
+    "Wolt|Nenad Skoko": 64,
+    "Doordash|Akash Singh": 116,
+    "Wolt|Alexandra Constantinide": 350,
+    "AVIV |Alexandra Richiteanu": 43,
     "SevenRooms|Zelimir Stajcic": 161,
+    "Wolt|Milica Veselinovic": 260,
+    "Wolt|Alisa Liddell": 95,
+    "Wolt|Lisa Gargulinska": 161,
+    "Wolt|Dolores Palotas": 622,
+    "Wolt|Evagelina Rapanaki": 98,
+    "AVIV |Anna Tyulpanova": 26,
+    "Glovo|Chené Elliot": 48,
+    "Wolt|Zarina Amanbekova": 166,
+    "PhantomBuster|Mateja Jokovic": 42,
     "Wolt|Ejla Suljcic": 69,
-    "DualEntry|Simon Siew": 18,
+    "Enam|Aleksandra Vistac": 411,
+    "Nexi |Maria Desiree Gerbore": 32,
+    "Nexi |Andreas Weins": 73,
+    "Wolt|Rafael Rosa": 130,
+    "Wolt|Alexandra Richiteanu": 99,
+    "Eucalyptus|Meho Saracevic ": 51,
+    "Taxfix|Marina Nikolic": 73,
+    "Parloa|Filip Nogowski": 160,
+    "Glovo|Samantha Nel": 18,
     "Wolt|Elena Petrovska": 60,
     "Wolt|Chené Elliot": 59,
-    "Wolt|Evagelina Rapanaki": 97,
-    "Wolt|Jan Dokulil": 44,
-    "Wolt|Alexandra Richiteanu": 99,
-    "Doordash|Danish Shams": 39,
-    "Wolt|Chantal Bozkurt": 99,
-    "Wolt|Alexandra Constantinide": 350,
-    "Wolt|Tinatini Karaulashvili": 219,
-    "Glovo|Samantha Nel": 18,
-    "AVIV |Lejla Silva": 30,
-    "Wolt|Akash Singh": 54,
-    "Wolt|Rafael Rosa": 130,
-    "DualEntry|Chené Elliot": 9,
-    "Wolt|Jelena Lacmanovic": 78,
-    "Wolt|Lisa Gargulinska": 156,
-    "Wolt|Vladimir Stankovic": 368,
-    "AVIV |Anna Tyulpanova": 26,
-    "Wolt|Milica Veselinovic": 260,
-    "AVIV |Alexandra Richiteanu": 43,
-    "Parloa|Jonaed Iqbal": 84,
-    "Scorewarrior|Mark Kandaurov": 89,
-    "PhantomBuster|Mateja Jokovic": 37,
-    "Nexi |Maria Desiree Gerbore": 34,
-    "Wolt|Adelya Khakimova": 62,
-    "Scorewarrior|Ekaterina Boyprav": 140,
-    "Parloa|Filip Nogowski": 150,
-    "Parloa|Gustavo Loureiro Castro": 55,
-    "Wolt|Alisa Liddell": 93,
-    "Wolt|Simon Siew": 106,
-    "Doordash|Akash Singh": 113,
-    "Wolt|Zarina Amanbekova": 163,
     "Wolt|Tina Aramouni": 79,
-    "Enam|Aleksandra Vistac": 226,
-    "Wolt|Nenad Skoko": 69,
-    "Eucalyptus|Meho Saracevic ": 60
+    "Wolt|Vladimir Stankovic": 368,
+    "Wolt|Akash Singh": 54,
+    "Wolt|Niki Vokalkova": 63,
+    "Wolt|Jan Dokulil": 44,
+    "Wolt|Simon Siew": 109,
+    "AVIV |Lejla Silva": 30,
+    "Doordash|Danish Shams": 39,
+    "Wolt|Fuad Safarov": 25,
+    "Wolt|Adelya Khakimova": 62,
+    "Wolt|Chantal Bozkurt": 101,
+    "Wolt|Jelena Lacmanovic": 88,
+    "DualEntry|Chené Elliot": 9,
+    "DualEntry|Simon Siew": 18,
+    "Parloa|Gustavo Loureiro Castro": 55,
+    "Nexi |Adis Prepoljac": 0,
+    "DualEntry|Samantha Nel": 21,
+    "Wolt|Ketevan Khorava": 55,
+    "Wolt|Tinatini Karaulashvili": 184,
+    "Parloa|Jonaed Iqbal": 84,
+    "Scorewarrior|Mark Kandaurov": 89
   },
   "ta_jobs_60d": {
-    "Wolt|Milica Mladzic": 13,
-    "Nexi |Andreas Weins": 17,
-    "Taxfix|Marina Nikolic": 2,
-    "Wolt|Georgia Vasilaki": 1,
-    "Cohere|Martin Bernard": 1,
-    "Wolt|Jaksa Marojevic": 4,
-    "Wolt|Niki Vokalkova": 3,
-    "BD - Tribe|Salem Mansuri": 1,
-    "desk.ly|Lisa Gargulinska": 2,
-    "Wolt|Iryna Dyda": 2,
-    "Wolt|Ketevan Khorava": 1,
-    "Wolt|Kathleen Dongo": 1,
-    "Wolt|Dora Vrbanić": 1,
-    "Tribe - Marketing|Salem Mansuri": 1,
-    "Glovo|Ejla Suljcic": 21,
-    "Wolt|Iryna Shumik": 8,
-    "SevenRooms|Zelimir Stajcic": 5,
-    "Wolt|Jelena  Lacmanovic": 3,
-    "Kranus Health|Aleksandra Markovic": 1,
-    "Wolt|Ejla Suljcic": 8,
-    "Doordash|Nidhi Raina": 3,
-    "Wolt|Pratik  Sridhar": 2,
-    "Wolt|Elena Petrovska": 1,
-    "Tribe: Talent Pools|Iryna Dyda": 1,
-    "Wolt|Evagelina Rapanaki": 14,
-    "Wolt|Jan Dokulil": 14,
-    "Wolt|Simon  Siew": 8,
-    "Wolt|Nemanja Erdevički": 8,
-    "DualEntry|Chantal Bozkurt": 1,
-    "Wolt|Mia Gjorgievska": 1,
-    "Wolt|Chantal Bozkurt": 20,
-    "Wolt|Alexandra Constantinide": 11,
-    "Doordash|Danish Shams": 3,
-    "AVIV |Jovana Drakula": 6,
-    "FTAPI|Naledi Ngwenya": 4,
-    "Parloa|Mia Gjorgievska": 1,
-    "Wolt|Rafael Rosa": 11,
-    "Wolt|Tinatini Karaulashvili": 4,
-    "AVIV |Wladyslaw Gadomski": 2,
-    "Taxfix|Alexandra Felea": 3,
-    "Eucalyptus|Meho Saracevic": 4,
-    "Wolt|Tijana Lazovic": 1,
     "Aleph Alpha|Mia Gjorgievska": 1,
-    "Tribe - Marketing|Martin Bernard": 1,
-    "Doordash|Milica Veselinovic": 1,
-    "Wolt|Lisa Gargulinska": 13,
-    "AVIV |Anna Tyulpanova": 3,
-    "DualEntry|Simon  Siew": 1,
-    "Scorewarrior|Mark Kandaurov": 1,
-    "Wolt|Milica Veselinovic": 7,
-    "Glovo|Etienne Sargenton": 16,
-    "PhantomBuster|Mateja Jokovic": 2,
-    "Parloa|Jonaed Iqbal": 7,
-    "AVIV |Alexandra Richiteanu": 3,
-    "Wolt|Adelya Khakimova": 16,
-    "Nexi |Maria Desiree Gerbore": 2,
-    "Parloa|Filip Nogowski": 6,
-    "Scorewarrior|Ekaterina Boyprav": 3,
-    "Parloa|Gustavo Loureiro Castro": 1,
-    "Doordash|Akash Singh": 1,
-    "Wolt|Alisa Liddell": 10,
-    "Enam|Marko Pavicevic": 2,
-    "Wolt|Tina Aramouni": 3,
-    "Wolt|Zarina Amanbekova": 7,
-    "Enam|Aleksandra Vistac": 5,
-    "BD - Tribe|Martin Bernard": 1,
-    "Wolt|Tawfik Shadafna": 3,
+    "Wolt|Jelena  Lacmanovic": 3,
+    "FTAPI|Naledi Ngwenya": 4,
+    "Eucalyptus|Meho Saracevic": 4,
     "Wolt|Nenad Skoko": 3,
+    "Wolt|Pratik  Sridhar": 2,
+    "Wolt|Iryna Shumik": 8,
+    "Wolt|Tawfik Shadafna": 3,
+    "Tribe: Talent Pools|Iryna Dyda": 1,
+    "Doordash|Milica Veselinovic": 1,
+    "Doordash|Akash Singh": 1,
+    "Wolt|Mia Gjorgievska": 1,
+    "Wolt|Alexandra Constantinide": 11,
+    "Parloa|Mia Gjorgievska": 1,
+    "Wolt|Lisa Gargulinska": 13,
+    "Wolt|Milica Veselinovic": 7,
+    "SevenRooms|Zelimir Stajcic": 5,
+    "AVIV |Alexandra Richiteanu": 3,
+    "Wolt|Alisa Liddell": 11,
+    "Tribe - Marketing|Salem Mansuri": 1,
+    "SevenRooms|Adelya Khakimova": 1,
+    "Wolt|Evagelina Rapanaki": 14,
+    "AVIV |Anna Tyulpanova": 3,
+    "Wolt|Georgia Vasilaki": 1,
+    "AVIV |Jovana Drakula": 6,
+    "Wolt|Zarina Amanbekova": 7,
+    "BD - Tribe|Martin Bernard": 2,
+    "Glovo|Etienne Sargenton": 16,
+    "Taxfix|Alexandra Felea": 3,
+    "PhantomBuster|Mateja Jokovic": 5,
+    "Tribe - Marketing|Martin Bernard": 1,
+    "DualEntry|Simon  Siew": 1,
+    "Wolt|Rafael Rosa": 11,
+    "Nexi |Andreas Weins": 17,
+    "Enam|Aleksandra Vistac": 5,
+    "Wolt|Ejla Suljcic": 8,
+    "Nexi |Maria Desiree Gerbore": 2,
+    "Wolt|Tijana Lazovic": 1,
+    "Taxfix|Marina Nikolic": 2,
+    "Cohere|Martin Bernard": 1,
+    "Wolt|Nemanja Erdevički": 8,
+    "Wolt|Jaksa Marojevic": 4,
+    "Parloa|Filip Nogowski": 6,
+    "Kranus Health|Aleksandra Markovic": 1,
+    "Wolt|Elena Petrovska": 1,
+    "Wolt|Milica Mladzic": 13,
+    "Wolt|Tina Aramouni": 3,
+    "Scorewarrior|Ekaterina Boyprav": 3,
+    "AVIV |Wladyslaw Gadomski": 2,
+    "Wolt|Dora Vrbanić": 1,
+    "Wolt|Jan Dokulil": 14,
+    "Wolt|Iryna Dyda": 2,
+    "Wolt|Niki Vokalkova": 2,
+    "Wolt|Kathleen Dongo": 1,
+    "Doordash|Danish Shams": 3,
+    "Glovo|Ejla Suljcic": 21,
+    "Wolt|Adelya Khakimova": 17,
+    "desk.ly|Lisa Gargulinska": 2,
+    "DualEntry|Chantal Bozkurt": 1,
+    "Wolt|Chantal Bozkurt": 21,
+    "Wolt|Simon  Siew": 8,
+    "Parloa|Gustavo Loureiro Castro": 1,
+    "BD - Tribe|Salem Mansuri": 1,
+    "Wolt|Ketevan Khorava": 1,
+    "Scorewarrior|Mark Kandaurov": 1,
+    "Wolt|Tinatini Karaulashvili": 4,
+    "Enam|Marko Pavicevic": 2,
+    "Doordash|Nidhi Raina": 3,
+    "Parloa|Jonaed Iqbal": 7,
     "SevenRooms|Abigail Caliwag": 3
   },
   "ts_ats_12w": {
-    "Elena Petrovska": 39,
-    "Marina Lazarevic": 93,
-    "Iryna Dyda": 8,
-    "Adis Prepoljac": 9,
-    "Andrea Akovic": 34,
-    "Aleksandra Markovic": 14,
-    "Valeriia Yurykova": 61,
-    "Jovana Drakula": 48,
-    "Rodrigo Gomes": 13,
-    "Zelimir Stajcic": 57,
+    "Jovana Drakula": 57,
+    "Adis Prepoljac": 15,
+    "Elena Petrovska": 47,
+    "Valeriia Yurykova": 65,
+    "Iryna Dyda": 11,
+    "Naledi Ngwenya": 9,
+    "Nare Avetisyan": 175,
     "Milica Veselinovic": 29,
-    "Nare Avetisyan": 163,
-    "Ejla Suljcic": 91,
-    "Gustavo Loureiro Castro": 51,
-    "Naledi Ngwenya": 9
+    "Rodrigo Gomes": 13,
+    "Marina Lazarevic": 105,
+    "Zelimir Stajcic": 54,
+    "Ejla Suljcic": 98,
+    "Andrea Akovic": 28,
+    "Gustavo Loureiro Castro": 54,
+    "Aleksandra Markovic": 13
   },
   "ts_screens_12w": {
-    "Elena Petrovska": 63,
-    "Marina Lazarevic": 205,
-    "Iryna Dyda": 9,
-    "Adis Prepoljac": 24,
-    "Andrea Akovic": 79,
-    "Aleksandra Markovic": 56,
-    "Valeriia Yurykova": 115,
-    "Jovana Drakula": 71,
-    "Rodrigo Gomes": 29,
-    "Zelimir Stajcic": 85,
-    "Nare Avetisyan": 275,
-    "Milica Veselinovic": 57,
-    "Ejla Suljcic": 156,
-    "Gustavo Loureiro Castro": 81,
-    "Naledi Ngwenya": 29
+    "Jovana Drakula": 99,
+    "Adis Prepoljac": 31,
+    "Elena Petrovska": 73,
+    "Valeriia Yurykova": 121,
+    "Iryna Dyda": 18,
+    "Naledi Ngwenya": 31,
+    "Nare Avetisyan": 297,
+    "Milica Veselinovic": 55,
+    "Rodrigo Gomes": 27,
+    "Zelimir Stajcic": 82,
+    "Marina Lazarevic": 216,
+    "Ejla Suljcic": 165,
+    "Andrea Akovic": 78,
+    "Gustavo Loureiro Castro": 87,
+    "Aleksandra Markovic": 49
   },
   "wbr_ta_weekly_roster": {
     "w1": [
@@ -20885,6 +21035,47 @@
       "Wolt North, Baltics & Benelux|Tina Aramouni",
       "Wolt Tech|Ejla Suljcic",
       "Wolt Tech|Simon Siew"
+    ],
+    "w16": [
+      "Aiven|Fuad Safarov",
+      "Aiven|Vladimir Stankovic",
+      "Aviv|Alexandra Richiteanu",
+      "Aviv|Anna Tyulpanova",
+      "Aviv|Elena Gjorgieva",
+      "Aviv|Iryna Dyda",
+      "Aviv|Jovana Drakula",
+      "Aviv|Kristina Colovic",
+      "Aviv|Lejla Silva",
+      "Aviv|Wladyslaw Gadomski",
+      "DoorDash|Akash Singh",
+      "DoorDash|Danish Shams",
+      "DoorDash|Nidhi Raina",
+      "Enam|Aleksandra Vistac",
+      "Eucalyptus|Alisa Liddell",
+      "Eucalyptus|Dušan Špica",
+      "Eucalyptus|Meho Saracevic",
+      "Glovo|Chené Elliot",
+      "Glovo|Samantha Nel",
+      "Nexi|Adis Prepoljac",
+      "Nexi|Maria Desiree Gerbore",
+      "Parloa|Filip Nogowski",
+      "Parloa|Jonaed Iqbal",
+      "PhantomBuster|Mateja Jokovic",
+      "Scorewarrior|Ekaterina Boyprav",
+      "Taxfix|Marina Nikolic",
+      "Wolt Central & South|Niki Vokalkova",
+      "Wolt Germany|Lisa Gargulinska",
+      "Wolt HQ|Elena Petrovska",
+      "Wolt HQ|Milica Veselinovic",
+      "Wolt HQ|Nenad Skoko",
+      "Wolt HQ|Zelimir Stajcic",
+      "Wolt Market|Jan Dokulil",
+      "Wolt Market|Joanna Bober",
+      "Wolt North, Baltics & Benelux|Adelya Khakimova",
+      "Wolt North, Baltics & Benelux|Jelena Lacmanovic",
+      "Wolt North, Baltics & Benelux|Tina Aramouni",
+      "Wolt Tech|Ejla Suljcic",
+      "Wolt Tech|Simon Siew"
     ]
   },
   "wbr_ts_weekly_roster": {
@@ -21105,6 +21296,20 @@
       "Rodrigo Gomes",
       "Valeriia Yurykova",
       "Zelimir Stajcic"
+    ],
+    "w16": [
+      "Andrea Akovic",
+      "Elena Petrovska",
+      "Gustavo Loureiro Castro",
+      "Jovana Drakula",
+      "Marina Lazarevic",
+      "Mia Gjorgievska",
+      "Milica Veselinovic",
+      "Naledi Ngwenya",
+      "Nare Avetisyan",
+      "Rodrigo Gomes",
+      "Valeriia Yurykova",
+      "Zelimir Stajcic"
     ]
   },
   "ts_conversion_weekly": {
@@ -21113,7 +21318,7 @@
         "ts": "Rodrigo Gomes",
         "active_pipelines": 4,
         "contacted": 14,
-        "positive_response": 10,
+        "positive_response": 13,
         "recruiter_screens": 1,
         "actual_screens": 2,
         "ats": 2
@@ -21133,7 +21338,7 @@
         "ts": "Andrea Akovic",
         "active_pipelines": 5,
         "contacted": 66,
-        "positive_response": 106,
+        "positive_response": 111,
         "recruiter_screens": 23,
         "actual_screens": 11,
         "ats": 9
@@ -21142,7 +21347,7 @@
         "ts": "Iryna Dyda",
         "active_pipelines": 8,
         "contacted": 10,
-        "positive_response": 45,
+        "positive_response": 46,
         "recruiter_screens": 11,
         "actual_screens": 0,
         "ats": 10
@@ -21151,7 +21356,7 @@
         "ts": "Marina Lazarevic",
         "active_pipelines": 7,
         "contacted": 70,
-        "positive_response": 92,
+        "positive_response": 105,
         "recruiter_screens": 8,
         "actual_screens": 0,
         "ats": 0
@@ -21160,7 +21365,7 @@
         "ts": "Nare Avetisyan",
         "active_pipelines": 10,
         "contacted": 0,
-        "positive_response": 450,
+        "positive_response": 454,
         "recruiter_screens": 1,
         "actual_screens": 1,
         "ats": 3
@@ -21169,7 +21374,7 @@
         "ts": "Rodrigo Gomes",
         "active_pipelines": 4,
         "contacted": 110,
-        "positive_response": 10,
+        "positive_response": 13,
         "recruiter_screens": 9,
         "actual_screens": 7,
         "ats": 4
@@ -21178,7 +21383,7 @@
         "ts": "Zelimir Stajcic",
         "active_pipelines": 7,
         "contacted": 102,
-        "positive_response": 271,
+        "positive_response": 275,
         "recruiter_screens": 9,
         "actual_screens": 6,
         "ats": 5
@@ -21198,7 +21403,7 @@
         "ts": "Andrea Akovic",
         "active_pipelines": 5,
         "contacted": 144,
-        "positive_response": 106,
+        "positive_response": 111,
         "recruiter_screens": 51,
         "actual_screens": 34,
         "ats": 24
@@ -21207,7 +21412,7 @@
         "ts": "Ejla Suljcic",
         "active_pipelines": 39,
         "contacted": 79,
-        "positive_response": 492,
+        "positive_response": 511,
         "recruiter_screens": 5,
         "actual_screens": 2,
         "ats": 3
@@ -21216,7 +21421,7 @@
         "ts": "Elena Petrovska",
         "active_pipelines": 10,
         "contacted": 112,
-        "positive_response": 79,
+        "positive_response": 89,
         "recruiter_screens": 7,
         "actual_screens": 2,
         "ats": 2
@@ -21225,7 +21430,7 @@
         "ts": "Iryna Dyda",
         "active_pipelines": 8,
         "contacted": 46,
-        "positive_response": 45,
+        "positive_response": 46,
         "recruiter_screens": 16,
         "actual_screens": 3,
         "ats": 10
@@ -21234,7 +21439,7 @@
         "ts": "Marina Lazarevic",
         "active_pipelines": 7,
         "contacted": 254,
-        "positive_response": 92,
+        "positive_response": 105,
         "recruiter_screens": 61,
         "actual_screens": 12,
         "ats": 3
@@ -21261,7 +21466,7 @@
         "ts": "Nare Avetisyan",
         "active_pipelines": 10,
         "contacted": 0,
-        "positive_response": 450,
+        "positive_response": 454,
         "recruiter_screens": 1,
         "actual_screens": 1,
         "ats": 3
@@ -21270,7 +21475,7 @@
         "ts": "Rodrigo Gomes",
         "active_pipelines": 4,
         "contacted": 110,
-        "positive_response": 10,
+        "positive_response": 13,
         "recruiter_screens": 13,
         "actual_screens": 18,
         "ats": 8
@@ -21288,7 +21493,7 @@
         "ts": "Zelimir Stajcic",
         "active_pipelines": 7,
         "contacted": 221,
-        "positive_response": 271,
+        "positive_response": 275,
         "recruiter_screens": 13,
         "actual_screens": 12,
         "ats": 9
@@ -21317,7 +21522,7 @@
         "ts": "Andrea Akovic",
         "active_pipelines": 5,
         "contacted": 241,
-        "positive_response": 106,
+        "positive_response": 111,
         "recruiter_screens": 63,
         "actual_screens": 50,
         "ats": 35
@@ -21326,7 +21531,7 @@
         "ts": "Ejla Suljcic",
         "active_pipelines": 39,
         "contacted": 215,
-        "positive_response": 492,
+        "positive_response": 511,
         "recruiter_screens": 21,
         "actual_screens": 6,
         "ats": 6
@@ -21335,7 +21540,7 @@
         "ts": "Elena Petrovska",
         "active_pipelines": 10,
         "contacted": 277,
-        "positive_response": 79,
+        "positive_response": 89,
         "recruiter_screens": 18,
         "actual_screens": 4,
         "ats": 2
@@ -21344,7 +21549,7 @@
         "ts": "Gustavo Loureiro Castro",
         "active_pipelines": 7,
         "contacted": 145,
-        "positive_response": 257,
+        "positive_response": 260,
         "recruiter_screens": 6,
         "actual_screens": 0,
         "ats": 0
@@ -21353,7 +21558,7 @@
         "ts": "Iryna Dyda",
         "active_pipelines": 8,
         "contacted": 95,
-        "positive_response": 45,
+        "positive_response": 46,
         "recruiter_screens": 18,
         "actual_screens": 3,
         "ats": 10
@@ -21362,7 +21567,7 @@
         "ts": "Jovana Drakula",
         "active_pipelines": 13,
         "contacted": 1,
-        "positive_response": 303,
+        "positive_response": 306,
         "recruiter_screens": 1,
         "actual_screens": 1,
         "ats": 0
@@ -21371,7 +21576,7 @@
         "ts": "Marina Lazarevic",
         "active_pipelines": 7,
         "contacted": 412,
-        "positive_response": 92,
+        "positive_response": 105,
         "recruiter_screens": 83,
         "actual_screens": 30,
         "ats": 8
@@ -21398,7 +21603,7 @@
         "ts": "Nare Avetisyan",
         "active_pipelines": 10,
         "contacted": 144,
-        "positive_response": 450,
+        "positive_response": 454,
         "recruiter_screens": 13,
         "actual_screens": 5,
         "ats": 5
@@ -21407,7 +21612,7 @@
         "ts": "Rodrigo Gomes",
         "active_pipelines": 4,
         "contacted": 207,
-        "positive_response": 10,
+        "positive_response": 13,
         "recruiter_screens": 21,
         "actual_screens": 22,
         "ats": 8
@@ -21425,7 +21630,7 @@
         "ts": "Zelimir Stajcic",
         "active_pipelines": 7,
         "contacted": 372,
-        "positive_response": 271,
+        "positive_response": 275,
         "recruiter_screens": 27,
         "actual_screens": 19,
         "ats": 15
@@ -21454,7 +21659,7 @@
         "ts": "Andrea Akovic",
         "active_pipelines": 5,
         "contacted": 362,
-        "positive_response": 106,
+        "positive_response": 111,
         "recruiter_screens": 85,
         "actual_screens": 72,
         "ats": 39
@@ -21463,7 +21668,7 @@
         "ts": "Ejla Suljcic",
         "active_pipelines": 39,
         "contacted": 286,
-        "positive_response": 492,
+        "positive_response": 511,
         "recruiter_screens": 34,
         "actual_screens": 14,
         "ats": 11
@@ -21472,7 +21677,7 @@
         "ts": "Elena Petrovska",
         "active_pipelines": 10,
         "contacted": 452,
-        "positive_response": 79,
+        "positive_response": 89,
         "recruiter_screens": 28,
         "actual_screens": 7,
         "ats": 3
@@ -21481,7 +21686,7 @@
         "ts": "Gustavo Loureiro Castro",
         "active_pipelines": 7,
         "contacted": 275,
-        "positive_response": 257,
+        "positive_response": 260,
         "recruiter_screens": 23,
         "actual_screens": 6,
         "ats": 1
@@ -21490,7 +21695,7 @@
         "ts": "Iryna Dyda",
         "active_pipelines": 8,
         "contacted": 96,
-        "positive_response": 45,
+        "positive_response": 46,
         "recruiter_screens": 20,
         "actual_screens": 3,
         "ats": 10
@@ -21499,7 +21704,7 @@
         "ts": "Jovana Drakula",
         "active_pipelines": 13,
         "contacted": 30,
-        "positive_response": 303,
+        "positive_response": 306,
         "recruiter_screens": 17,
         "actual_screens": 16,
         "ats": 6
@@ -21508,7 +21713,7 @@
         "ts": "Marina Lazarevic",
         "active_pipelines": 7,
         "contacted": 660,
-        "positive_response": 92,
+        "positive_response": 105,
         "recruiter_screens": 136,
         "actual_screens": 47,
         "ats": 17
@@ -21535,7 +21740,7 @@
         "ts": "Nare Avetisyan",
         "active_pipelines": 10,
         "contacted": 237,
-        "positive_response": 450,
+        "positive_response": 454,
         "recruiter_screens": 19,
         "actual_screens": 9,
         "ats": 6
@@ -21544,7 +21749,7 @@
         "ts": "Rodrigo Gomes",
         "active_pipelines": 4,
         "contacted": 325,
-        "positive_response": 10,
+        "positive_response": 13,
         "recruiter_screens": 30,
         "actual_screens": 22,
         "ats": 8
@@ -21562,7 +21767,7 @@
         "ts": "Zelimir Stajcic",
         "active_pipelines": 7,
         "contacted": 525,
-        "positive_response": 271,
+        "positive_response": 275,
         "recruiter_screens": 34,
         "actual_screens": 25,
         "ats": 21
@@ -21591,7 +21796,7 @@
         "ts": "Andrea Akovic",
         "active_pipelines": 5,
         "contacted": 459,
-        "positive_response": 106,
+        "positive_response": 111,
         "recruiter_screens": 90,
         "actual_screens": 72,
         "ats": 39
@@ -21600,7 +21805,7 @@
         "ts": "Ejla Suljcic",
         "active_pipelines": 39,
         "contacted": 345,
-        "positive_response": 492,
+        "positive_response": 511,
         "recruiter_screens": 37,
         "actual_screens": 18,
         "ats": 13
@@ -21609,7 +21814,7 @@
         "ts": "Elena Petrovska",
         "active_pipelines": 10,
         "contacted": 716,
-        "positive_response": 79,
+        "positive_response": 89,
         "recruiter_screens": 44,
         "actual_screens": 19,
         "ats": 9
@@ -21618,7 +21823,7 @@
         "ts": "Gustavo Loureiro Castro",
         "active_pipelines": 7,
         "contacted": 480,
-        "positive_response": 257,
+        "positive_response": 260,
         "recruiter_screens": 37,
         "actual_screens": 11,
         "ats": 4
@@ -21627,7 +21832,7 @@
         "ts": "Iryna Dyda",
         "active_pipelines": 8,
         "contacted": 124,
-        "positive_response": 45,
+        "positive_response": 46,
         "recruiter_screens": 21,
         "actual_screens": 3,
         "ats": 10
@@ -21636,7 +21841,7 @@
         "ts": "Jovana Drakula",
         "active_pipelines": 13,
         "contacted": 120,
-        "positive_response": 303,
+        "positive_response": 306,
         "recruiter_screens": 29,
         "actual_screens": 34,
         "ats": 15
@@ -21645,7 +21850,7 @@
         "ts": "Marina Lazarevic",
         "active_pipelines": 7,
         "contacted": 857,
-        "positive_response": 92,
+        "positive_response": 105,
         "recruiter_screens": 159,
         "actual_screens": 81,
         "ats": 30
@@ -21672,7 +21877,7 @@
         "ts": "Naledi Ngwenya",
         "active_pipelines": 5,
         "contacted": 55,
-        "positive_response": 129,
+        "positive_response": 136,
         "recruiter_screens": 0,
         "actual_screens": 0,
         "ats": 0
@@ -21681,7 +21886,7 @@
         "ts": "Nare Avetisyan",
         "active_pipelines": 10,
         "contacted": 423,
-        "positive_response": 450,
+        "positive_response": 454,
         "recruiter_screens": 60,
         "actual_screens": 34,
         "ats": 20
@@ -21690,7 +21895,7 @@
         "ts": "Rodrigo Gomes",
         "active_pipelines": 4,
         "contacted": 428,
-        "positive_response": 10,
+        "positive_response": 13,
         "recruiter_screens": 38,
         "actual_screens": 25,
         "ats": 9
@@ -21708,7 +21913,7 @@
         "ts": "Zelimir Stajcic",
         "active_pipelines": 7,
         "contacted": 673,
-        "positive_response": 271,
+        "positive_response": 275,
         "recruiter_screens": 42,
         "actual_screens": 32,
         "ats": 28
@@ -21737,7 +21942,7 @@
         "ts": "Andrea Akovic",
         "active_pipelines": 5,
         "contacted": 547,
-        "positive_response": 106,
+        "positive_response": 111,
         "recruiter_screens": 98,
         "actual_screens": 72,
         "ats": 39
@@ -21746,7 +21951,7 @@
         "ts": "Ejla Suljcic",
         "active_pipelines": 39,
         "contacted": 633,
-        "positive_response": 492,
+        "positive_response": 511,
         "recruiter_screens": 79,
         "actual_screens": 37,
         "ats": 32
@@ -21755,7 +21960,7 @@
         "ts": "Elena Petrovska",
         "active_pipelines": 10,
         "contacted": 881,
-        "positive_response": 79,
+        "positive_response": 89,
         "recruiter_screens": 55,
         "actual_screens": 28,
         "ats": 15
@@ -21764,7 +21969,7 @@
         "ts": "Gustavo Loureiro Castro",
         "active_pipelines": 7,
         "contacted": 614,
-        "positive_response": 257,
+        "positive_response": 260,
         "recruiter_screens": 61,
         "actual_screens": 17,
         "ats": 8
@@ -21773,7 +21978,7 @@
         "ts": "Iryna Dyda",
         "active_pipelines": 8,
         "contacted": 245,
-        "positive_response": 45,
+        "positive_response": 46,
         "recruiter_screens": 24,
         "actual_screens": 3,
         "ats": 10
@@ -21782,7 +21987,7 @@
         "ts": "Jovana Drakula",
         "active_pipelines": 13,
         "contacted": 120,
-        "positive_response": 303,
+        "positive_response": 306,
         "recruiter_screens": 29,
         "actual_screens": 34,
         "ats": 15
@@ -21791,7 +21996,7 @@
         "ts": "Marina Lazarevic",
         "active_pipelines": 7,
         "contacted": 1011,
-        "positive_response": 92,
+        "positive_response": 105,
         "recruiter_screens": 175,
         "actual_screens": 108,
         "ats": 40
@@ -21818,7 +22023,7 @@
         "ts": "Naledi Ngwenya",
         "active_pipelines": 5,
         "contacted": 330,
-        "positive_response": 129,
+        "positive_response": 136,
         "recruiter_screens": 12,
         "actual_screens": 12,
         "ats": 3
@@ -21827,7 +22032,7 @@
         "ts": "Nare Avetisyan",
         "active_pipelines": 10,
         "contacted": 714,
-        "positive_response": 450,
+        "positive_response": 454,
         "recruiter_screens": 93,
         "actual_screens": 53,
         "ats": 30
@@ -21836,7 +22041,7 @@
         "ts": "Rodrigo Gomes",
         "active_pipelines": 4,
         "contacted": 531,
-        "positive_response": 10,
+        "positive_response": 13,
         "recruiter_screens": 47,
         "actual_screens": 30,
         "ats": 10
@@ -21854,7 +22059,7 @@
         "ts": "Zelimir Stajcic",
         "active_pipelines": 7,
         "contacted": 823,
-        "positive_response": 271,
+        "positive_response": 275,
         "recruiter_screens": 49,
         "actual_screens": 41,
         "ats": 32
@@ -21883,7 +22088,7 @@
         "ts": "Andrea Akovic",
         "active_pipelines": 5,
         "contacted": 548,
-        "positive_response": 106,
+        "positive_response": 111,
         "recruiter_screens": 99,
         "actual_screens": 72,
         "ats": 39
@@ -21892,7 +22097,7 @@
         "ts": "Ejla Suljcic",
         "active_pipelines": 39,
         "contacted": 813,
-        "positive_response": 492,
+        "positive_response": 511,
         "recruiter_screens": 101,
         "actual_screens": 55,
         "ats": 41
@@ -21901,7 +22106,7 @@
         "ts": "Elena Petrovska",
         "active_pipelines": 10,
         "contacted": 1035,
-        "positive_response": 79,
+        "positive_response": 89,
         "recruiter_screens": 67,
         "actual_screens": 38,
         "ats": 20
@@ -21910,7 +22115,7 @@
         "ts": "Gustavo Loureiro Castro",
         "active_pipelines": 7,
         "contacted": 799,
-        "positive_response": 257,
+        "positive_response": 260,
         "recruiter_screens": 80,
         "actual_screens": 23,
         "ats": 11
@@ -21919,7 +22124,7 @@
         "ts": "Iryna Dyda",
         "active_pipelines": 8,
         "contacted": 361,
-        "positive_response": 45,
+        "positive_response": 46,
         "recruiter_screens": 35,
         "actual_screens": 12,
         "ats": 14
@@ -21928,7 +22133,7 @@
         "ts": "Jovana Drakula",
         "active_pipelines": 13,
         "contacted": 217,
-        "positive_response": 303,
+        "positive_response": 306,
         "recruiter_screens": 45,
         "actual_screens": 34,
         "ats": 15
@@ -21937,7 +22142,7 @@
         "ts": "Marina Lazarevic",
         "active_pipelines": 7,
         "contacted": 1011,
-        "positive_response": 92,
+        "positive_response": 105,
         "recruiter_screens": 183,
         "actual_screens": 121,
         "ats": 46
@@ -21964,7 +22169,7 @@
         "ts": "Naledi Ngwenya",
         "active_pipelines": 5,
         "contacted": 605,
-        "positive_response": 129,
+        "positive_response": 136,
         "recruiter_screens": 25,
         "actual_screens": 18,
         "ats": 6
@@ -21973,7 +22178,7 @@
         "ts": "Nare Avetisyan",
         "active_pipelines": 10,
         "contacted": 1037,
-        "positive_response": 450,
+        "positive_response": 454,
         "recruiter_screens": 151,
         "actual_screens": 88,
         "ats": 52
@@ -21982,7 +22187,7 @@
         "ts": "Rodrigo Gomes",
         "active_pipelines": 4,
         "contacted": 632,
-        "positive_response": 10,
+        "positive_response": 13,
         "recruiter_screens": 52,
         "actual_screens": 35,
         "ats": 14
@@ -22000,7 +22205,7 @@
         "ts": "Zelimir Stajcic",
         "active_pipelines": 7,
         "contacted": 898,
-        "positive_response": 271,
+        "positive_response": 275,
         "recruiter_screens": 57,
         "actual_screens": 49,
         "ats": 35
@@ -22029,7 +22234,7 @@
         "ts": "Andrea Akovic",
         "active_pipelines": 5,
         "contacted": 548,
-        "positive_response": 106,
+        "positive_response": 111,
         "recruiter_screens": 99,
         "actual_screens": 72,
         "ats": 39
@@ -22038,7 +22243,7 @@
         "ts": "Ejla Suljcic",
         "active_pipelines": 39,
         "contacted": 969,
-        "positive_response": 492,
+        "positive_response": 511,
         "recruiter_screens": 109,
         "actual_screens": 68,
         "ats": 46
@@ -22047,7 +22252,7 @@
         "ts": "Elena Petrovska",
         "active_pipelines": 10,
         "contacted": 1150,
-        "positive_response": 79,
+        "positive_response": 89,
         "recruiter_screens": 82,
         "actual_screens": 45,
         "ats": 25
@@ -22056,7 +22261,7 @@
         "ts": "Gustavo Loureiro Castro",
         "active_pipelines": 7,
         "contacted": 856,
-        "positive_response": 257,
+        "positive_response": 260,
         "recruiter_screens": 92,
         "actual_screens": 44,
         "ats": 20
@@ -22065,7 +22270,7 @@
         "ts": "Iryna Dyda",
         "active_pipelines": 8,
         "contacted": 443,
-        "positive_response": 45,
+        "positive_response": 46,
         "recruiter_screens": 38,
         "actual_screens": 13,
         "ats": 14
@@ -22074,7 +22279,7 @@
         "ts": "Jovana Drakula",
         "active_pipelines": 13,
         "contacted": 346,
-        "positive_response": 303,
+        "positive_response": 306,
         "recruiter_screens": 81,
         "actual_screens": 34,
         "ats": 21
@@ -22083,7 +22288,7 @@
         "ts": "Marina Lazarevic",
         "active_pipelines": 7,
         "contacted": 1357,
-        "positive_response": 92,
+        "positive_response": 105,
         "recruiter_screens": 201,
         "actual_screens": 131,
         "ats": 51
@@ -22110,7 +22315,7 @@
         "ts": "Naledi Ngwenya",
         "active_pipelines": 5,
         "contacted": 867,
-        "positive_response": 129,
+        "positive_response": 136,
         "recruiter_screens": 33,
         "actual_screens": 21,
         "ats": 6
@@ -22119,7 +22324,7 @@
         "ts": "Nare Avetisyan",
         "active_pipelines": 10,
         "contacted": 1213,
-        "positive_response": 450,
+        "positive_response": 454,
         "recruiter_screens": 202,
         "actual_screens": 118,
         "ats": 64
@@ -22128,7 +22333,7 @@
         "ts": "Rodrigo Gomes",
         "active_pipelines": 4,
         "contacted": 735,
-        "positive_response": 10,
+        "positive_response": 13,
         "recruiter_screens": 59,
         "actual_screens": 38,
         "ats": 16
@@ -22146,7 +22351,7 @@
         "ts": "Zelimir Stajcic",
         "active_pipelines": 7,
         "contacted": 1031,
-        "positive_response": 271,
+        "positive_response": 275,
         "recruiter_screens": 62,
         "actual_screens": 54,
         "ats": 38
@@ -22175,7 +22380,7 @@
         "ts": "Andrea Akovic",
         "active_pipelines": 5,
         "contacted": 549,
-        "positive_response": 106,
+        "positive_response": 111,
         "recruiter_screens": 100,
         "actual_screens": 72,
         "ats": 39
@@ -22184,7 +22389,7 @@
         "ts": "Ejla Suljcic",
         "active_pipelines": 39,
         "contacted": 1206,
-        "positive_response": 492,
+        "positive_response": 511,
         "recruiter_screens": 138,
         "actual_screens": 85,
         "ats": 53
@@ -22193,7 +22398,7 @@
         "ts": "Elena Petrovska",
         "active_pipelines": 10,
         "contacted": 1303,
-        "positive_response": 79,
+        "positive_response": 89,
         "recruiter_screens": 96,
         "actual_screens": 51,
         "ats": 28
@@ -22202,7 +22407,7 @@
         "ts": "Gustavo Loureiro Castro",
         "active_pipelines": 7,
         "contacted": 937,
-        "positive_response": 257,
+        "positive_response": 260,
         "recruiter_screens": 104,
         "actual_screens": 53,
         "ats": 25
@@ -22211,7 +22416,7 @@
         "ts": "Iryna Dyda",
         "active_pipelines": 8,
         "contacted": 499,
-        "positive_response": 45,
+        "positive_response": 46,
         "recruiter_screens": 38,
         "actual_screens": 13,
         "ats": 16
@@ -22220,7 +22425,7 @@
         "ts": "Jovana Drakula",
         "active_pipelines": 13,
         "contacted": 456,
-        "positive_response": 303,
+        "positive_response": 306,
         "recruiter_screens": 113,
         "actual_screens": 34,
         "ats": 28
@@ -22229,7 +22434,7 @@
         "ts": "Marina Lazarevic",
         "active_pipelines": 7,
         "contacted": 1616,
-        "positive_response": 92,
+        "positive_response": 105,
         "recruiter_screens": 237,
         "actual_screens": 152,
         "ats": 59
@@ -22256,7 +22461,7 @@
         "ts": "Naledi Ngwenya",
         "active_pipelines": 5,
         "contacted": 1072,
-        "positive_response": 129,
+        "positive_response": 136,
         "recruiter_screens": 42,
         "actual_screens": 25,
         "ats": 6
@@ -22265,7 +22470,7 @@
         "ts": "Nare Avetisyan",
         "active_pipelines": 10,
         "contacted": 1514,
-        "positive_response": 450,
+        "positive_response": 454,
         "recruiter_screens": 246,
         "actual_screens": 158,
         "ats": 97
@@ -22274,7 +22479,7 @@
         "ts": "Rodrigo Gomes",
         "active_pipelines": 4,
         "contacted": 818,
-        "positive_response": 10,
+        "positive_response": 13,
         "recruiter_screens": 64,
         "actual_screens": 41,
         "ats": 18
@@ -22292,7 +22497,7 @@
         "ts": "Zelimir Stajcic",
         "active_pipelines": 7,
         "contacted": 1182,
-        "positive_response": 271,
+        "positive_response": 275,
         "recruiter_screens": 71,
         "actual_screens": 63,
         "ats": 43
@@ -22320,8 +22525,8 @@
       {
         "ts": "Andrea Akovic",
         "active_pipelines": 5,
-        "contacted": 752,
-        "positive_response": 106,
+        "contacted": 751,
+        "positive_response": 111,
         "recruiter_screens": 107,
         "actual_screens": 72,
         "ats": 40
@@ -22330,7 +22535,7 @@
         "ts": "Ejla Suljcic",
         "active_pipelines": 39,
         "contacted": 1372,
-        "positive_response": 492,
+        "positive_response": 511,
         "recruiter_screens": 162,
         "actual_screens": 104,
         "ats": 61
@@ -22339,7 +22544,7 @@
         "ts": "Elena Petrovska",
         "active_pipelines": 10,
         "contacted": 1374,
-        "positive_response": 79,
+        "positive_response": 89,
         "recruiter_screens": 100,
         "actual_screens": 54,
         "ats": 31
@@ -22348,7 +22553,7 @@
         "ts": "Gustavo Loureiro Castro",
         "active_pipelines": 7,
         "contacted": 1019,
-        "positive_response": 257,
+        "positive_response": 260,
         "recruiter_screens": 110,
         "actual_screens": 60,
         "ats": 29
@@ -22357,7 +22562,7 @@
         "ts": "Iryna Dyda",
         "active_pipelines": 8,
         "contacted": 556,
-        "positive_response": 45,
+        "positive_response": 46,
         "recruiter_screens": 40,
         "actual_screens": 13,
         "ats": 16
@@ -22366,7 +22571,7 @@
         "ts": "Jovana Drakula",
         "active_pipelines": 13,
         "contacted": 528,
-        "positive_response": 303,
+        "positive_response": 306,
         "recruiter_screens": 125,
         "actual_screens": 34,
         "ats": 33
@@ -22375,7 +22580,7 @@
         "ts": "Marina Lazarevic",
         "active_pipelines": 7,
         "contacted": 1810,
-        "positive_response": 92,
+        "positive_response": 105,
         "recruiter_screens": 270,
         "actual_screens": 174,
         "ats": 70
@@ -22402,7 +22607,7 @@
         "ts": "Naledi Ngwenya",
         "active_pipelines": 5,
         "contacted": 1207,
-        "positive_response": 129,
+        "positive_response": 136,
         "recruiter_screens": 43,
         "actual_screens": 25,
         "ats": 7
@@ -22411,7 +22616,7 @@
         "ts": "Nare Avetisyan",
         "active_pipelines": 10,
         "contacted": 1690,
-        "positive_response": 450,
+        "positive_response": 454,
         "recruiter_screens": 310,
         "actual_screens": 194,
         "ats": 120
@@ -22420,7 +22625,7 @@
         "ts": "Rodrigo Gomes",
         "active_pipelines": 4,
         "contacted": 966,
-        "positive_response": 10,
+        "positive_response": 13,
         "recruiter_screens": 70,
         "actual_screens": 45,
         "ats": 20
@@ -22438,7 +22643,7 @@
         "ts": "Zelimir Stajcic",
         "active_pipelines": 7,
         "contacted": 1329,
-        "positive_response": 271,
+        "positive_response": 275,
         "recruiter_screens": 75,
         "actual_screens": 68,
         "ats": 47
@@ -22466,8 +22671,8 @@
       {
         "ts": "Andrea Akovic",
         "active_pipelines": 5,
-        "contacted": 847,
-        "positive_response": 106,
+        "contacted": 846,
+        "positive_response": 111,
         "recruiter_screens": 129,
         "actual_screens": 74,
         "ats": 41
@@ -22476,7 +22681,7 @@
         "ts": "Ejla Suljcic",
         "active_pipelines": 39,
         "contacted": 1527,
-        "positive_response": 492,
+        "positive_response": 511,
         "recruiter_screens": 194,
         "actual_screens": 120,
         "ats": 74
@@ -22485,7 +22690,7 @@
         "ts": "Elena Petrovska",
         "active_pipelines": 10,
         "contacted": 1439,
-        "positive_response": 79,
+        "positive_response": 89,
         "recruiter_screens": 101,
         "actual_screens": 56,
         "ats": 32
@@ -22494,7 +22699,7 @@
         "ts": "Gustavo Loureiro Castro",
         "active_pipelines": 7,
         "contacted": 1047,
-        "positive_response": 257,
+        "positive_response": 260,
         "recruiter_screens": 116,
         "actual_screens": 62,
         "ats": 31
@@ -22503,7 +22708,7 @@
         "ts": "Iryna Dyda",
         "active_pipelines": 8,
         "contacted": 556,
-        "positive_response": 45,
+        "positive_response": 46,
         "recruiter_screens": 40,
         "actual_screens": 13,
         "ats": 16
@@ -22512,7 +22717,7 @@
         "ts": "Jovana Drakula",
         "active_pipelines": 13,
         "contacted": 546,
-        "positive_response": 303,
+        "positive_response": 306,
         "recruiter_screens": 132,
         "actual_screens": 34,
         "ats": 37
@@ -22521,7 +22726,7 @@
         "ts": "Marina Lazarevic",
         "active_pipelines": 7,
         "contacted": 1895,
-        "positive_response": 92,
+        "positive_response": 105,
         "recruiter_screens": 282,
         "actual_screens": 189,
         "ats": 80
@@ -22548,7 +22753,7 @@
         "ts": "Naledi Ngwenya",
         "active_pipelines": 5,
         "contacted": 1347,
-        "positive_response": 129,
+        "positive_response": 136,
         "recruiter_screens": 49,
         "actual_screens": 25,
         "ats": 7
@@ -22557,7 +22762,7 @@
         "ts": "Nare Avetisyan",
         "active_pipelines": 10,
         "contacted": 1699,
-        "positive_response": 450,
+        "positive_response": 454,
         "recruiter_screens": 323,
         "actual_screens": 214,
         "ats": 131
@@ -22566,7 +22771,7 @@
         "ts": "Rodrigo Gomes",
         "active_pipelines": 4,
         "contacted": 970,
-        "positive_response": 10,
+        "positive_response": 13,
         "recruiter_screens": 70,
         "actual_screens": 45,
         "ats": 20
@@ -22584,7 +22789,7 @@
         "ts": "Zelimir Stajcic",
         "active_pipelines": 7,
         "contacted": 1480,
-        "positive_response": 271,
+        "positive_response": 275,
         "recruiter_screens": 80,
         "actual_screens": 73,
         "ats": 52
@@ -22612,8 +22817,8 @@
       {
         "ts": "Andrea Akovic",
         "active_pipelines": 5,
-        "contacted": 1017,
-        "positive_response": 106,
+        "contacted": 1016,
+        "positive_response": 111,
         "recruiter_screens": 139,
         "actual_screens": 75,
         "ats": 42
@@ -22622,7 +22827,7 @@
         "ts": "Ejla Suljcic",
         "active_pipelines": 39,
         "contacted": 1662,
-        "positive_response": 492,
+        "positive_response": 511,
         "recruiter_screens": 217,
         "actual_screens": 133,
         "ats": 81
@@ -22631,7 +22836,7 @@
         "ts": "Elena Petrovska",
         "active_pipelines": 10,
         "contacted": 1633,
-        "positive_response": 79,
+        "positive_response": 89,
         "recruiter_screens": 115,
         "actual_screens": 58,
         "ats": 34
@@ -22640,7 +22845,7 @@
         "ts": "Gustavo Loureiro Castro",
         "active_pipelines": 7,
         "contacted": 1132,
-        "positive_response": 257,
+        "positive_response": 260,
         "recruiter_screens": 130,
         "actual_screens": 75,
         "ats": 48
@@ -22649,7 +22854,7 @@
         "ts": "Iryna Dyda",
         "active_pipelines": 8,
         "contacted": 562,
-        "positive_response": 45,
+        "positive_response": 46,
         "recruiter_screens": 42,
         "actual_screens": 13,
         "ats": 16
@@ -22658,7 +22863,7 @@
         "ts": "Jovana Drakula",
         "active_pipelines": 13,
         "contacted": 595,
-        "positive_response": 303,
+        "positive_response": 306,
         "recruiter_screens": 142,
         "actual_screens": 35,
         "ats": 47
@@ -22667,7 +22872,7 @@
         "ts": "Marina Lazarevic",
         "active_pipelines": 7,
         "contacted": 1895,
-        "positive_response": 92,
+        "positive_response": 105,
         "recruiter_screens": 285,
         "actual_screens": 193,
         "ats": 80
@@ -22694,7 +22899,7 @@
         "ts": "Naledi Ngwenya",
         "active_pipelines": 5,
         "contacted": 1521,
-        "positive_response": 129,
+        "positive_response": 136,
         "recruiter_screens": 60,
         "actual_screens": 25,
         "ats": 8
@@ -22703,7 +22908,7 @@
         "ts": "Nare Avetisyan",
         "active_pipelines": 10,
         "contacted": 1754,
-        "positive_response": 450,
+        "positive_response": 454,
         "recruiter_screens": 336,
         "actual_screens": 222,
         "ats": 135
@@ -22712,7 +22917,7 @@
         "ts": "Rodrigo Gomes",
         "active_pipelines": 4,
         "contacted": 970,
-        "positive_response": 10,
+        "positive_response": 13,
         "recruiter_screens": 71,
         "actual_screens": 46,
         "ats": 20
@@ -22730,7 +22935,7 @@
         "ts": "Zelimir Stajcic",
         "active_pipelines": 7,
         "contacted": 1583,
-        "positive_response": 271,
+        "positive_response": 275,
         "recruiter_screens": 85,
         "actual_screens": 82,
         "ats": 57
@@ -22758,8 +22963,8 @@
       {
         "ts": "Andrea Akovic",
         "active_pipelines": 5,
-        "contacted": 1150,
-        "positive_response": 106,
+        "contacted": 1149,
+        "positive_response": 111,
         "recruiter_screens": 154,
         "actual_screens": 86,
         "ats": 47
@@ -22768,7 +22973,7 @@
         "ts": "Ejla Suljcic",
         "active_pipelines": 39,
         "contacted": 1789,
-        "positive_response": 492,
+        "positive_response": 511,
         "recruiter_screens": 247,
         "actual_screens": 150,
         "ats": 92
@@ -22777,7 +22982,7 @@
         "ts": "Elena Petrovska",
         "active_pipelines": 10,
         "contacted": 1838,
-        "positive_response": 79,
+        "positive_response": 89,
         "recruiter_screens": 145,
         "actual_screens": 60,
         "ats": 35
@@ -22786,7 +22991,7 @@
         "ts": "Gustavo Loureiro Castro",
         "active_pipelines": 7,
         "contacted": 1234,
-        "positive_response": 257,
+        "positive_response": 260,
         "recruiter_screens": 152,
         "actual_screens": 78,
         "ats": 49
@@ -22795,7 +23000,7 @@
         "ts": "Iryna Dyda",
         "active_pipelines": 8,
         "contacted": 672,
-        "positive_response": 45,
+        "positive_response": 46,
         "recruiter_screens": 48,
         "actual_screens": 16,
         "ats": 19
@@ -22804,7 +23009,7 @@
         "ts": "Jovana Drakula",
         "active_pipelines": 13,
         "contacted": 697,
-        "positive_response": 303,
+        "positive_response": 306,
         "recruiter_screens": 157,
         "actual_screens": 35,
         "ats": 47
@@ -22813,7 +23018,7 @@
         "ts": "Marina Lazarevic",
         "active_pipelines": 7,
         "contacted": 2006,
-        "positive_response": 92,
+        "positive_response": 105,
         "recruiter_screens": 294,
         "actual_screens": 198,
         "ats": 83
@@ -22840,7 +23045,7 @@
         "ts": "Naledi Ngwenya",
         "active_pipelines": 5,
         "contacted": 1619,
-        "positive_response": 129,
+        "positive_response": 136,
         "recruiter_screens": 62,
         "actual_screens": 26,
         "ats": 8
@@ -22849,7 +23054,7 @@
         "ts": "Nare Avetisyan",
         "active_pipelines": 10,
         "contacted": 2012,
-        "positive_response": 450,
+        "positive_response": 454,
         "recruiter_screens": 387,
         "actual_screens": 237,
         "ats": 146
@@ -22858,7 +23063,7 @@
         "ts": "Rodrigo Gomes",
         "active_pipelines": 4,
         "contacted": 1034,
-        "positive_response": 10,
+        "positive_response": 13,
         "recruiter_screens": 72,
         "actual_screens": 47,
         "ats": 21
@@ -22876,7 +23081,7 @@
         "ts": "Zelimir Stajcic",
         "active_pipelines": 7,
         "contacted": 1705,
-        "positive_response": 271,
+        "positive_response": 275,
         "recruiter_screens": 96,
         "actual_screens": 90,
         "ats": 61
@@ -22904,8 +23109,8 @@
       {
         "ts": "Andrea Akovic",
         "active_pipelines": 5,
-        "contacted": 1280,
-        "positive_response": 106,
+        "contacted": 1279,
+        "positive_response": 111,
         "recruiter_screens": 176,
         "actual_screens": 112,
         "ats": 58
@@ -22914,7 +23119,7 @@
         "ts": "Ejla Suljcic",
         "active_pipelines": 39,
         "contacted": 1911,
-        "positive_response": 492,
+        "positive_response": 511,
         "recruiter_screens": 264,
         "actual_screens": 157,
         "ats": 94
@@ -22923,7 +23128,7 @@
         "ts": "Elena Petrovska",
         "active_pipelines": 10,
         "contacted": 1992,
-        "positive_response": 79,
+        "positive_response": 89,
         "recruiter_screens": 157,
         "actual_screens": 66,
         "ats": 41
@@ -22932,7 +23137,7 @@
         "ts": "Gustavo Loureiro Castro",
         "active_pipelines": 7,
         "contacted": 1314,
-        "positive_response": 257,
+        "positive_response": 260,
         "recruiter_screens": 181,
         "actual_screens": 81,
         "ats": 51
@@ -22941,7 +23146,7 @@
         "ts": "Iryna Dyda",
         "active_pipelines": 8,
         "contacted": 725,
-        "positive_response": 45,
+        "positive_response": 46,
         "recruiter_screens": 53,
         "actual_screens": 22,
         "ats": 24
@@ -22950,7 +23155,7 @@
         "ts": "Jovana Drakula",
         "active_pipelines": 13,
         "contacted": 807,
-        "positive_response": 303,
+        "positive_response": 306,
         "recruiter_screens": 169,
         "actual_screens": 45,
         "ats": 49
@@ -22959,7 +23164,7 @@
         "ts": "Marina Lazarevic",
         "active_pipelines": 7,
         "contacted": 2175,
-        "positive_response": 92,
+        "positive_response": 105,
         "recruiter_screens": 324,
         "actual_screens": 216,
         "ats": 96
@@ -22986,7 +23191,7 @@
         "ts": "Naledi Ngwenya",
         "active_pipelines": 5,
         "contacted": 1710,
-        "positive_response": 129,
+        "positive_response": 136,
         "recruiter_screens": 69,
         "actual_screens": 26,
         "ats": 9
@@ -22995,7 +23200,7 @@
         "ts": "Nare Avetisyan",
         "active_pipelines": 10,
         "contacted": 2263,
-        "positive_response": 450,
+        "positive_response": 454,
         "recruiter_screens": 426,
         "actual_screens": 264,
         "ats": 167
@@ -23004,7 +23209,7 @@
         "ts": "Rodrigo Gomes",
         "active_pipelines": 4,
         "contacted": 1078,
-        "positive_response": 10,
+        "positive_response": 13,
         "recruiter_screens": 76,
         "actual_screens": 47,
         "ats": 21
@@ -23022,7 +23227,7 @@
         "ts": "Zelimir Stajcic",
         "active_pipelines": 7,
         "contacted": 1857,
-        "positive_response": 271,
+        "positive_response": 275,
         "recruiter_screens": 99,
         "actual_screens": 97,
         "ats": 66
@@ -23050,36 +23255,36 @@
       {
         "ts": "Andrea Akovic",
         "active_pipelines": 5,
-        "contacted": 1381,
-        "positive_response": 106,
-        "recruiter_screens": 192,
-        "actual_screens": 123,
+        "contacted": 1469,
+        "positive_response": 111,
+        "recruiter_screens": 201,
+        "actual_screens": 127,
         "ats": 63
       },
       {
         "ts": "Ejla Suljcic",
         "active_pipelines": 39,
-        "contacted": 1911,
-        "positive_response": 492,
-        "recruiter_screens": 264,
-        "actual_screens": 157,
-        "ats": 94
+        "contacted": 2043,
+        "positive_response": 511,
+        "recruiter_screens": 279,
+        "actual_screens": 169,
+        "ats": 104
       },
       {
         "ts": "Elena Petrovska",
         "active_pipelines": 10,
-        "contacted": 2146,
-        "positive_response": 79,
-        "recruiter_screens": 173,
-        "actual_screens": 77,
-        "ats": 48
+        "contacted": 2162,
+        "positive_response": 89,
+        "recruiter_screens": 176,
+        "actual_screens": 78,
+        "ats": 49
       },
       {
         "ts": "Gustavo Loureiro Castro",
         "active_pipelines": 7,
-        "contacted": 1480,
-        "positive_response": 257,
-        "recruiter_screens": 193,
+        "contacted": 1481,
+        "positive_response": 260,
+        "recruiter_screens": 196,
         "actual_screens": 87,
         "ats": 54
       },
@@ -23087,28 +23292,28 @@
         "ts": "Iryna Dyda",
         "active_pipelines": 8,
         "contacted": 795,
-        "positive_response": 45,
-        "recruiter_screens": 62,
-        "actual_screens": 28,
-        "ats": 25
+        "positive_response": 46,
+        "recruiter_screens": 65,
+        "actual_screens": 31,
+        "ats": 27
       },
       {
         "ts": "Jovana Drakula",
         "active_pipelines": 13,
         "contacted": 898,
-        "positive_response": 303,
-        "recruiter_screens": 184,
-        "actual_screens": 71,
+        "positive_response": 306,
+        "recruiter_screens": 187,
+        "actual_screens": 75,
         "ats": 58
       },
       {
         "ts": "Marina Lazarevic",
         "active_pipelines": 7,
         "contacted": 2342,
-        "positive_response": 92,
-        "recruiter_screens": 362,
-        "actual_screens": 241,
-        "ats": 111
+        "positive_response": 105,
+        "recruiter_screens": 364,
+        "actual_screens": 245,
+        "ats": 113
       },
       {
         "ts": "Mia Gjorgievska",
@@ -23131,28 +23336,28 @@
       {
         "ts": "Naledi Ngwenya",
         "active_pipelines": 5,
-        "contacted": 1783,
-        "positive_response": 129,
-        "recruiter_screens": 72,
+        "contacted": 1791,
+        "positive_response": 136,
+        "recruiter_screens": 74,
         "actual_screens": 28,
         "ats": 9
       },
       {
         "ts": "Nare Avetisyan",
         "active_pipelines": 10,
-        "contacted": 2456,
-        "positive_response": 450,
-        "recruiter_screens": 461,
-        "actual_screens": 285,
-        "ats": 179
+        "contacted": 2491,
+        "positive_response": 454,
+        "recruiter_screens": 464,
+        "actual_screens": 291,
+        "ats": 181
       },
       {
         "ts": "Rodrigo Gomes",
         "active_pipelines": 4,
-        "contacted": 1164,
-        "positive_response": 10,
-        "recruiter_screens": 83,
-        "actual_screens": 47,
+        "contacted": 1177,
+        "positive_response": 13,
+        "recruiter_screens": 85,
+        "actual_screens": 49,
         "ats": 21
       },
       {
@@ -23160,18 +23365,164 @@
         "active_pipelines": 8,
         "contacted": 1807,
         "positive_response": 0,
-        "recruiter_screens": 174,
-        "actual_screens": 121,
-        "ats": 66
+        "recruiter_screens": 175,
+        "actual_screens": 123,
+        "ats": 67
       },
       {
         "ts": "Zelimir Stajcic",
         "active_pipelines": 7,
-        "contacted": 1923,
-        "positive_response": 271,
-        "recruiter_screens": 99,
-        "actual_screens": 97,
-        "ats": 66
+        "contacted": 2010,
+        "positive_response": 275,
+        "recruiter_screens": 103,
+        "actual_screens": 101,
+        "ats": 69
+      }
+    ],
+    "w17": [
+      {
+        "ts": "Adis Prepoljac",
+        "active_pipelines": 4,
+        "contacted": 788,
+        "positive_response": 0,
+        "recruiter_screens": 35,
+        "actual_screens": 30,
+        "ats": 15
+      },
+      {
+        "ts": "Aleksandra Markovic",
+        "active_pipelines": 0,
+        "contacted": 717,
+        "positive_response": 0,
+        "recruiter_screens": 100,
+        "actual_screens": 60,
+        "ats": 17
+      },
+      {
+        "ts": "Andrea Akovic",
+        "active_pipelines": 5,
+        "contacted": 1469,
+        "positive_response": 111,
+        "recruiter_screens": 201,
+        "actual_screens": 127,
+        "ats": 63
+      },
+      {
+        "ts": "Ejla Suljcic",
+        "active_pipelines": 39,
+        "contacted": 2043,
+        "positive_response": 511,
+        "recruiter_screens": 279,
+        "actual_screens": 169,
+        "ats": 104
+      },
+      {
+        "ts": "Elena Petrovska",
+        "active_pipelines": 10,
+        "contacted": 2162,
+        "positive_response": 89,
+        "recruiter_screens": 176,
+        "actual_screens": 78,
+        "ats": 49
+      },
+      {
+        "ts": "Gustavo Loureiro Castro",
+        "active_pipelines": 7,
+        "contacted": 1481,
+        "positive_response": 260,
+        "recruiter_screens": 197,
+        "actual_screens": 88,
+        "ats": 54
+      },
+      {
+        "ts": "Iryna Dyda",
+        "active_pipelines": 8,
+        "contacted": 795,
+        "positive_response": 46,
+        "recruiter_screens": 65,
+        "actual_screens": 31,
+        "ats": 27
+      },
+      {
+        "ts": "Jovana Drakula",
+        "active_pipelines": 13,
+        "contacted": 898,
+        "positive_response": 306,
+        "recruiter_screens": 187,
+        "actual_screens": 75,
+        "ats": 58
+      },
+      {
+        "ts": "Marina Lazarevic",
+        "active_pipelines": 7,
+        "contacted": 2342,
+        "positive_response": 105,
+        "recruiter_screens": 364,
+        "actual_screens": 245,
+        "ats": 113
+      },
+      {
+        "ts": "Mia Gjorgievska",
+        "active_pipelines": 5,
+        "contacted": 63,
+        "positive_response": 119,
+        "recruiter_screens": 0,
+        "actual_screens": 0,
+        "ats": 0
+      },
+      {
+        "ts": "Milica Veselinovic",
+        "active_pipelines": 9,
+        "contacted": 1456,
+        "positive_response": 69,
+        "recruiter_screens": 82,
+        "actual_screens": 65,
+        "ats": 34
+      },
+      {
+        "ts": "Naledi Ngwenya",
+        "active_pipelines": 5,
+        "contacted": 1791,
+        "positive_response": 136,
+        "recruiter_screens": 74,
+        "actual_screens": 28,
+        "ats": 9
+      },
+      {
+        "ts": "Nare Avetisyan",
+        "active_pipelines": 10,
+        "contacted": 2491,
+        "positive_response": 454,
+        "recruiter_screens": 464,
+        "actual_screens": 291,
+        "ats": 181
+      },
+      {
+        "ts": "Rodrigo Gomes",
+        "active_pipelines": 4,
+        "contacted": 1177,
+        "positive_response": 13,
+        "recruiter_screens": 85,
+        "actual_screens": 49,
+        "ats": 21
+      },
+      {
+        "ts": "Valeriia Yurykova",
+        "active_pipelines": 8,
+        "contacted": 1807,
+        "positive_response": 0,
+        "recruiter_screens": 175,
+        "actual_screens": 123,
+        "ats": 67
+      },
+      {
+        "ts": "Zelimir Stajcic",
+        "active_pipelines": 7,
+        "contacted": 2010,
+        "positive_response": 275,
+        "recruiter_screens": 103,
+        "actual_screens": 101,
+        "ats": 69
       }
     ]
   }

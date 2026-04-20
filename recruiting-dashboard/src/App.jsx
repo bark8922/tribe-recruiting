@@ -10,7 +10,12 @@ import dashboardDataSnowflake from './dashboard_data_snowflake.json';
 // WEEKS is now derived per-render from data.wbr_ta_weekly_roster keys so that
 // newly-added weeks (e.g. w16, w17) appear automatically once the weekly roster
 // syncs from Andy's Google Sheet. See derivation inside WBRTab.
-const WEEKLY_DIVISOR = 4.33;
+// WBR TA Target sheet values are WEEKLY targets (the "Month" column is the
+// period the target applies to, NOT the cadence). PBI compares weekly actual
+// directly to the target value — so no /4.33 divide. Verified against w16
+// Client's Target PBI screenshot 2026-04-20: Rule-B (no divide) matches 28/36
+// colored cells vs Rule-A (with /4.33) which only matched 11/36.
+const WEEKLY_DIVISOR = 1;
 
 // Client name normalization — matches Power BI's Replace Value steps exactly
 // PBI merges DoorDash → "Wolt HQ" and SevenRooms → "Wolt HQ" in target + notes tables

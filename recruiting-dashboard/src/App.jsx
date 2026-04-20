@@ -7,7 +7,9 @@ import { Search } from 'lucide-react';
 import dashboardDataPbi from './dashboard_data.json';
 import dashboardDataSnowflake from './dashboard_data_snowflake.json';
 
-const WEEKS = Array.from({ length: 15 }, (_, i) => i + 1);
+// WEEKS is now derived per-render from data.wbr_ta_weekly_roster keys so that
+// newly-added weeks (e.g. w16, w17) appear automatically once the weekly roster
+// syncs from Andy's Google Sheet. See derivation inside WBRTab.
 const WEEKLY_DIVISOR = 4.33;
 
 // Client name normalization — matches Power BI's Replace Value steps exactly
@@ -60,7 +62,30 @@ const getCellStyle = (actual, weeklyTarget) => {
 
 // WBR Tab
 const WBRTab = ({ data }) => {
-  const [selectedWeek, setSelectedWeek] = useState(15);
+  // Derive week list from the weekly roster (keys like "w15", "w16"). This
+  // auto-advances as Andy adds new weeks to the TA Weekly Note sheet.
+  const WEEKS = useMemo(() => {
+    const rosterKeys = Object.keys(data?.wbr_ta_weekly_roster || {});
+    const tsKeys = Object.keys(data?.wbr_ts_weekly_roster || {});
+    const allKeys = new Set([...rosterKeys, ...tsKeys]);
+    const nums = [...allKeys]
+      .filter((k) => /^w\d+$/.test(k))
+      .map((k) => parseInt(k.slice(1), 10))
+      .filter(Number.isFinite);
+    return nums.length ? nums.sort((a, b) => a - b) : [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+  }, [data]);
+
+  // Default to the latest available week so "opening the dashboard" always
+  // lands on the most recent completed week.
+  const [selectedWeek, setSelectedWeek] = useState(() => {
+    const rosterKeys = Object.keys(data?.wbr_ta_weekly_roster || {});
+    const tsKeys = Object.keys(data?.wbr_ts_weekly_roster || {});
+    const nums = [...new Set([...rosterKeys, ...tsKeys])]
+      .filter((k) => /^w\d+$/.test(k))
+      .map((k) => parseInt(k.slice(1), 10))
+      .filter(Number.isFinite);
+    return nums.length ? Math.max(...nums) : 15;
+  });
 
   // Build client summary for selected week
   const clientSummary = useMemo(() => {

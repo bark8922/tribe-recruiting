@@ -123,8 +123,13 @@ const WBRTab = ({ data }) => {
       summary[display].hires_target += (t.hires || 0) / WEEKLY_DIVISOR;
     });
 
-    // Add actuals
+    // Add actuals — skip "roster-only" target rows (empty team_group + all-zero targets).
+    // These are TAs added to the Weekly Note but not in the official TA Target sheet;
+    // PBI excludes them from the Client Summary. Example (w16): Iryna Dyda showed up
+    // under Aviv with 101 contacted, inflating Aviv from 549 (PBI) to 652. Filtering
+    // team_group='' brings Aviv to 551 (+2 vs PBI), screens 95 exact, ATS 47 exact.
     data.targets.forEach((t) => {
+      if (!t.team_group) return;  // skip roster-only placeholder TAs
       const display = normalizeClient(t.client);
       // Find matching actuals for this TA across all matching raw client keys
       Object.keys(data.wbr_actuals).forEach((key) => {
@@ -143,15 +148,55 @@ const WBRTab = ({ data }) => {
 
     });
 
-    // Add roles and 12w hires — data is now keyed by PBI-aligned client names
-    // Aggregate ALL entries per client (includes non-target TAs, matching PBI behavior)
-    Object.entries(data.roles || {}).forEach(([key, val]) => {
-      const client = key.split('|')[0];
-      if (summary[client]) summary[client].roles += val;
+    // --- # Jobs (roles) column ---
+    // data.roles is keyed by (raw_client|TA) and DOUBLE-COUNTS jobs that have
+    // multiple TAs assigned, so Aviv summed to 23 TA-assignments across 6 TAs
+    // while only having ~26 distinct jobs. Use data.jobs (one row per job)
+    // for a clean distinct count.
+    //
+    // Filters: is_job_archived=false AND is_external_recruiter=false
+    // (PBI excludes external-recruiter jobs from the WBR client summary.)
+    //
+    // Keboola uses a single catch-all 'Wolt' client_name for every Wolt
+    // sub-BU. To split those across Wolt HQ/Tech/Market/etc. we look up each
+    // job's job_recruiter in data.targets to find the TA's canonical client
+    // (sub-BU). Unmatched Wolt jobs stay unallocated rather than dumping into
+    // a default sub-BU.
+    const recruiterToWoltSubBu = new Map();
+    data.targets.forEach((t) => {
+      const ta = normalizeTa(t.ta);
+      const cl = normalizeClient(t.client);
+      if (ta && cl && cl.startsWith('Wolt') && !recruiterToWoltSubBu.has(ta)) {
+        recruiterToWoltSubBu.set(ta, cl);
+      }
     });
+
+    const seenJobIds = new Set();
+    (data.jobs || []).forEach((job) => {
+      if (String(job.is_job_archived).toLowerCase() !== 'false') return;
+      if (String(job.is_external_recruiter).toLowerCase() !== 'false') return;
+      if (seenJobIds.has(job.job_id)) return;
+      seenJobIds.add(job.job_id);
+
+      const raw = (job.client_name || '').trim();
+      let client = normalizeClient(raw);
+      if (client === 'Wolt') {
+        // Split Wolt catch-all via recruiter's canonical sub-BU
+        client = recruiterToWoltSubBu.get(normalizeTa(job.job_recruiter)) || null;
+      }
+      if (client && summary[client]) summary[client].roles += 1;
+    });
+
+    // --- Last 12w Hires column ---
+    // Normalize raw client key so 'AVIV ' → 'Aviv', 'Doordash' → 'Wolt HQ'.
+    // For raw 'Wolt' catch-all, split via the TA's canonical Wolt sub-BU.
     Object.entries(data.hires_12w || {}).forEach(([key, val]) => {
-      const client = key.split('|')[0];
-      if (summary[client]) summary[client].hires_12w += val;
+      const [rawClient, rawTa] = key.split('|');
+      let client = normalizeClient(rawClient);
+      if (client === 'Wolt') {
+        client = recruiterToWoltSubBu.get(normalizeTa(rawTa)) || null;
+      }
+      if (client && summary[client]) summary[client].hires_12w += val;
     });
 
     return Object.values(summary).sort((a, b) => a.client.localeCompare(b.client));

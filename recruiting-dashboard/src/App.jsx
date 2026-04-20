@@ -44,13 +44,27 @@ const kebolaClientMatches = (rawKeboolaClient, displayClient) => {
 // Normalize TA name — Keboola has double spaces for some names
 const normalizeTa = (name) => (name || '').replace(/\s+/g, ' ').trim();
 
-// Business unit group — PBI groups by CLIENT name, not the team_group field in targets
-// Aviv + all Wolt divisions (incl DoorDash/SevenRooms → Wolt HQ) = Dolphins & Whales
-// Everything else = Ponies & Unicorns
+// Business unit group — Dolphins & Whales vs Ponies & Unicorns.
+// Aviv, all Wolt divisions (incl DoorDash/SevenRooms → Wolt HQ), and Aiven are
+// Dolphins & Whales; everything else is Ponies & Unicorns.
+// The WBR TA Target sheet is the source of truth for per-TA team_group, but
+// some clients (Aiven) have rows with blank team_group values in the sheet,
+// so we also hardcode the fallback here. If the sheet gets updated, the
+// team_group field takes precedence via getBuGroupForTarget() below.
+const DOLPHINS_WHALES_CLIENTS = new Set(['Aviv', 'Aiven']);
 const getBuGroup = (displayClient) => {
   if (!displayClient) return 'Ponies/Unicorns';
-  if (displayClient === 'Aviv' || displayClient.startsWith('Wolt')) return 'Dolphins/Whales';
+  if (DOLPHINS_WHALES_CLIENTS.has(displayClient) || displayClient.startsWith('Wolt')) {
+    return 'Dolphins/Whales';
+  }
   return 'Ponies/Unicorns';
+};
+// Prefer the per-TA team_group from the target sheet when present; fall back
+// to the client-level mapping above when blank.
+const getBuGroupForTarget = (target, displayClient) => {
+  const raw = (target && target.team_group) ? target.team_group.trim() : '';
+  if (raw) return raw;
+  return getBuGroup(displayClient);
 };
 
 // Color based on % of target (5-tier heatmap) — matches Power BI exactly
@@ -344,6 +358,19 @@ const WBRTab = ({ data }) => {
           kebolaClientMatches(n.client || '', display)
       );
 
+      // Skip TAs who have zero weekly activity AND no comment/reasoning for
+      // the selected week — even if they're on the WBR target roster. Lets
+      // the table stay focused on people with something to review each week.
+      const hasWeeklyActivity =
+        (actual.contacted || 0) +
+        (actual.screened || 0) +
+        (actual.ats || 0) +
+        (actual.offers || 0) +
+        (actual.hires || 0) > 0;
+      const hasNote = !!((note?.comment && note.comment.trim()) ||
+                        (note?.reasoning && note.reasoning.trim()));
+      if (!hasWeeklyActivity && !hasNote) return;
+
       // Computed ratios
       const pctScreensToHires = screens12w > 0 ? Math.round((hires12w / screens12w) * 100) : null;
       const pctScreensToAts = actual.screened > 0 ? Math.round((actual.ats / actual.screened) * 100) : null;
@@ -351,7 +378,7 @@ const WBRTab = ({ data }) => {
       details.push({
         client: display,
         ta: t.ta,
-        team_group: getBuGroup(display),
+        team_group: getBuGroupForTarget(t, display),
         contacted: actual.contacted,
         screened: actual.screened,
         ats: actual.ats,
@@ -540,24 +567,24 @@ const WBRTab = ({ data }) => {
       <div className="bg-gray-800 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-white mb-4">TA Weekly Detail — Week {selectedWeek}</h3>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm" style={{ minWidth: '1400px' }}>
-            <thead>
-              <tr className="text-gray-300 border-b border-gray-600">
-                <th className="text-left px-2 py-2 sticky left-0 bg-gray-800 z-10">Client</th>
-                <th className="text-left px-2 py-2">TA</th>
-                <th className="text-center px-1 py-2 text-xs" title="Last 12 Weeks Hires">12w H</th>
-                <th className="text-center px-1 py-2 text-xs" title="Last 12 Weeks ATS">12w ATS</th>
-                <th className="text-center px-1 py-2 text-xs" title="Last 12 Weeks Screens">12w Scr</th>
-                <th className="text-center px-1 py-2 text-xs" title="Last 12w % Actual Screens to Hires">12w %S→H</th>
-                <th className="text-center px-1 py-2 text-xs" title="Last 12w Time to Fill (days)">12w TTF</th>
-                <th className="text-center px-1 py-2 text-xs" title="Weekly Hires">Hires</th>
-                <th className="text-center px-1 py-2 text-xs" title="Weekly Contacted">Cntd</th>
-                <th className="text-center px-1 py-2 text-xs" title="Weekly Actual Screens">Scrn</th>
-                <th className="text-center px-1 py-2 text-xs" title="Weekly ATS">ATS</th>
-                <th className="text-center px-1 py-2 text-xs" title="% Actual Screens to ATS">%S→A</th>
-                <th className="text-center px-1 py-2 text-xs" title="# Active Roles"># Jobs</th>
-                <th className="text-center px-1 py-2 text-xs" title="Jobs Opened > 60 days">{'>'}60d</th>
-                <th className="text-left px-2 py-2 text-xs min-w-[120px]">Comment</th>
+          <table className="w-full text-sm" style={{ minWidth: '1400px', borderCollapse: 'separate', borderSpacing: 0 }}>
+            <thead className="sticky top-0 z-20">
+              <tr className="text-gray-300 bg-gray-800">
+                <th className="text-left px-2 py-2 sticky left-0 bg-gray-800 z-30 border-b border-gray-600">Client</th>
+                <th className="text-left px-2 py-2 bg-gray-800 border-b border-gray-600">TA</th>
+                <th className="text-center px-1 py-2 text-xs bg-gray-800 border-b border-gray-600" title="Last 12 Weeks Hires">12w H</th>
+                <th className="text-center px-1 py-2 text-xs bg-gray-800 border-b border-gray-600" title="Last 12 Weeks ATS">12w ATS</th>
+                <th className="text-center px-1 py-2 text-xs bg-gray-800 border-b border-gray-600" title="Last 12 Weeks Screens">12w Scr</th>
+                <th className="text-center px-1 py-2 text-xs bg-gray-800 border-b border-gray-600" title="Last 12w % Actual Screens to Hires">12w %S→H</th>
+                <th className="text-center px-1 py-2 text-xs bg-gray-800 border-b border-gray-600" title="Last 12w Time to Fill (days)">12w TTF</th>
+                <th className="text-center px-1 py-2 text-xs bg-gray-800 border-b border-gray-600" title="Weekly Hires">Hires</th>
+                <th className="text-center px-1 py-2 text-xs bg-gray-800 border-b border-gray-600" title="Weekly Contacted">Cntd</th>
+                <th className="text-center px-1 py-2 text-xs bg-gray-800 border-b border-gray-600" title="Weekly Actual Screens">Scrn</th>
+                <th className="text-center px-1 py-2 text-xs bg-gray-800 border-b border-gray-600" title="Weekly ATS">ATS</th>
+                <th className="text-center px-1 py-2 text-xs bg-gray-800 border-b border-gray-600" title="% Actual Screens to ATS">%S→A</th>
+                <th className="text-center px-1 py-2 text-xs bg-gray-800 border-b border-gray-600" title="# Active Roles"># Jobs</th>
+                <th className="text-center px-1 py-2 text-xs bg-gray-800 border-b border-gray-600" title="Jobs Opened > 60 days">{'>'}60d</th>
+                <th className="text-left px-2 py-2 text-xs min-w-[120px] bg-gray-800 border-b border-gray-600">Comment</th>
               </tr>
             </thead>
             <tbody>

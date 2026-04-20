@@ -175,19 +175,46 @@ When any check trips, still save the rendered file locally under
 `refresh_staging/rendered_dashboard_data.json` for debugging but do NOT
 copy it to `dashboard_data_snowflake.json` and do NOT push.
 
+## Attribution rules (pinned by PBI validation 2026-04-20)
+
+These are the attribution rules `aux_12w.sql`, `wbr_weekly.sql`, and
+`wbr_jobs_weekly.sql` must preserve. Drifting any of these silently
+regresses accuracy by 5-35% on individual TAs.
+
+| Metric | Attribution | SQL location | PBI reference |
+|---|---|---|---|
+| Weekly Contacted / Screened / Actual Screens / ATS / Offers / Hires | `job.job_recruiter` on `candidate_stage.date_*` in week | `wbr_weekly.sql` | Aviv/Enam/Glovo all clients exact vs PBI w16 |
+| 12w Hires (TA) | `event.who_event_created_for` on authoritative Hired event | `aux_12w.sql` `hired_auth` (rn=1) | Aviv 9 exact, Wolt HQ 29, etc. |
+| **12w Screens / 12w ATS (TA)** | **`event.who_event_created_for`** on latest Evaluation / Interview event per `(candidate, date)` | `aux_12w.sql` `evaluation_auth` + `ats_auth` | Lejla 169/104, Jonaed 170/96 — ALL EXACT |
+| # Jobs per week | `DISTINCTCOUNT(event.job_id)` per `(client, event.who_event_created_for, week)` via `event.date_created` | `wbr_jobs_weekly.sql` | 129/130 = 99.2% |
+| Jobs open ≥ 60 days | `job.job_recruiter` | `aux_12w.sql` `jobs_60d_base` | matches live |
+
+**Do NOT** change 12w Screens / ATS back to `job.job_recruiter` — that
+under-counted Lejla by 44 screens, Jonaed by 12. **Do NOT** change 12w
+Hires to `job.job_recruiter` either — historical commit 037c452 already
+validated event-attribution for hires.
+
+**12w window boundary (2026-04-20 fix):** PBI's "Last 12 weeks" rolling
+window INCLUDES the current week. The anchor CTE must be
+`cur_wk = DATEADD('day', 6, DATE_TRUNC('week', CURRENT_DATE()))` (this
+week's Sunday inclusive), NOT `DATEADD('day', -1, …)` (last Sunday).
+Incorrect: Jonaed 158 screens. Correct: 170 (matches PBI).
+
 ## App.jsx schema dependencies — do NOT silently drop or rename
 
 The frontend WBR Client Summary relies on the following fields being present
-in `dashboard_data_snowflake.json` (and the PBI-side `dashboard_data.json`)
-with their current semantics. If a future `render_json.py` refactor removes
-or renames any of them, the live dashboard will silently go wrong:
+in `dashboard_data_snowflake.json` with their current semantics. If a future
+`render_json.py` refactor removes or renames any of them, the live dashboard
+will silently go wrong:
 
 | Field | Used for | Semantics |
 |-------|----------|-----------|
-| `targets[].team_group` | Filter roster-only TAs out of Client Summary | Empty string = roster placeholder (skip); non-empty = real TA (include). Do not collapse to a default value. |
+| `targets[].team_group` | Filter roster-only TAs; Wolt sub-BU recruiter map | Empty string = roster placeholder (skip); non-empty = real TA. Do not collapse to a default value. Wolt Tech screens inflated from 1 → 7 if we include empty-team_group rows in the Wolt sub-BU map. |
 | `targets[].contacted / actual_screens / moved_to_ats / hires` | Weekly target denominators for color thresholds | **WEEKLY** targets, not monthly. PBI compares weekly actual directly to this value. The "Month" column in the source sheet is the period the target applies to, not the cadence. Never apply a /4.33 divide. |
-| `mbr_client_totals[client].hires_12w` | Last 12w Hires column in Client Summary | Per-display-client rollup with Wolt sub-BU correctly split. Keyed by MBR-style names (`'Wolt C&S'`, `'Wolt NBB'`) — the UI maps these to display names. |
-| `wbr_ta_weekly_roster[wNN]` | Filter which TAs/clients are shown per week, and which jobs count towards # Jobs | List of `"client|TA"` pair strings. Must include the current ISO week as soon as the Weekly Note is updated. |
+| `targets` overall | Built fresh from `wbr_ta_target.csv` on every render | `render_json.load_ta_targets_from_csv(preserve_from_live=live['targets'])` picks the newest 2026 month per (Client, TA) with values; preserves team_group from live when present. Do NOT fall back to `live.targets` verbatim — that's the bug where Aiven stayed at 0/0/0 and lost its colors. |
+| `ta_weekly_notes` | Comments in TA Detail | Rebuilt from `wbr_ta_weekly_note.csv` (not carried forward from live). Without this rebuild, new-week comments (e.g. w16 after Andy edits the sheet) don't appear until the Bubble/n8n PBI-pipeline catches up. |
+| `mbr_client_totals[client].hires_12w` | Last 12w Hires column in Client Summary | Per-display-client rollup with Wolt sub-BU correctly split. Keyed by MBR-style names (`'Wolt C&S'`, `'Wolt NBB'`) — the UI maps these to display names. Total row sums ALL clients incl. Wolt Volume (matches PBI's Total=741 for w16 instead of the visible-sum 141). |
+| `wbr_ta_weekly_roster[wNN]` | Filter which TAs/clients are shown per week, and which jobs count towards # Jobs | List of `"client\|TA"` pair strings. Must include the current ISO week as soon as the Weekly Note is updated. |
 | `jobs[]` (with `job_id, client_name, job_recruiter, is_job_archived, is_external_recruiter`) | # Jobs fallback when `ta_jobs_weekly` is missing (older snapshots) | Raw Keboola client names (e.g. `'AVIV '`, `'Wolt'`); App.jsx normalizes. |
 | `ta_jobs_weekly[wNN][raw_client\|raw_ta]` | # Jobs column in WBR Client Summary (PBI DAX replica, 99.2% accurate vs PBI w16) | TA attribution = `event.who_event_created_for` (different from wbr_weekly's `job.job_recruiter`). Raw client name. App.jsx applies Wolt sub-BU split via `recruiterToWoltSubBu` + target-roster filter (`team_group` non-empty). |
 
@@ -196,9 +223,36 @@ or renames any of them, the live dashboard will silently go wrong:
 Removing `team_group` re-introduces the Iryna-Dyda +101 contacted over-count
 on Aviv. Removing `mbr_client_totals` re-introduces the 709 Wolt 12w-hires
 inflation. Removing `wbr_ta_weekly_roster` breaks the # Jobs filter and the
-per-week Client Summary itself.
+per-week Client Summary itself. Reverting the 12w window to last-Sunday
+loses Jonaed Iqbal's current-week screens (-12 gap).
+
+## App.jsx behavior rules — pinned by user requests
+
+The following behaviors in `recruiting-dashboard/src/App.jsx` were set
+deliberately during the 2026-04-20 calibration; they reference data field
+semantics above. Don't revert them without checking here.
+
+| Rule | Where | Why |
+|---|---|---|
+| Default dashboard tab = `'snowflake'` (not `'pbi'`) | `useState('snowflake')` | Snowflake pipeline is the accurate source of truth; the "Power BI" toggle is for legacy Bubble-pipeline comparison only. |
+| Client BU grouping is purely by display client name (NOT per-TA team_group) | `getBuGroup(displayClient)` + `DOLPHINS_WHALES_CLIENTS` set | Aviv TAs are individually labelled Ponies/Unicorns in the sheet (internal team-mgmt labels) even though Aviv the client is Dolphins & Whales. Using per-TA team_group split Aviv across both groups. |
+| Dolphins & Whales = `Aviv`, `Aiven`, any client starting with `Wolt` | `DOLPHINS_WHALES_CLIENTS` set | Everything else → Ponies & Unicorns. |
+| TA rows in WBR Client Summary actuals loop skip `team_group === ''` | `if (!t.team_group) return;` in clientSummary forEach | Keeps Iryna-Dyda-style weekly-note placeholders out of client totals. |
+| Wolt sub-BU recruiter map (`recruiterToWoltSubBu`) also filters `team_group === ''` | inside WBR tab | Without this, Simon Siew + Vladimir Stankovic (roster-only Wolt Tech entries) absorb cross-client Wolt screens and inflate Wolt Tech from 1 → 7. |
+| TA Detail table hides rows with no weekly activity AND no comment/reasoning | `if (!hasWeeklyActivity && !hasNote) return;` | Keeps the table focused on people with something to review. Rostered but idle TAs with a comment still render. |
+| TA Detail dedupes by `(display_client, normalizeTa(TA))`, keeps highest-activity row | `deduped` Map in taDetail | Zelimir Stajcic has target rows under both SevenRooms and Wolt HQ, both normalize to Wolt HQ — would render twice without dedupe. |
+| A repeated header `<tr>` renders under the Ponies & Unicorns banner | `repeatHeader` const in the render | sticky headers don't work because the table container is `overflow-x-auto` only; the duplicate is the guaranteed-working fallback. |
+| 12w Hires Total row sums ALL `mbr_client_totals` (includes Wolt Volume) | `Object.values(data.mbr_client_totals).reduce(...)` | Matches PBI Total=741 behaviour (visible rows sum to 141, but PBI's Total includes hidden Wolt Volume etc.). |
 
 ## Pending pipeline work (not yet in scope of this scheduled task)
+
+- **Wolt sub-BU event-level routing** (Elena Petrovska +34 case). She
+  works across multiple Wolt sub-BUs but `recruiterToWoltSubBu` assigns
+  her 100% to Wolt HQ, so cross-sub-BU events pile on Wolt HQ. Needs
+  per-event sub-BU lookup (use the specific job's sub-BU at event time,
+  not the TA's canonical assignment). Affects `aux_12w.sql` `evaluation_auth`
+  + `ats_auth` TA grouping — or handle downstream in `render_json.py`
+  when splitting raw `Wolt` into sub-BUs.
 
 - **Wolt Volume sub-BU assignment.** Three TAs (Anna Golubeva, Jaksa
   Marojevic, Nemanja Erdevički) emit jobs against raw `Wolt` but aren't

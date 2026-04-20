@@ -481,29 +481,27 @@ const WBRTab = ({ data }) => {
 
   // TS Overall Conversion Rate with Officially Assigned Active Pipelines
   // ─────────────────────────────────────────────────────────────────────
-  // All numerators + denominators come from Andy's `ts_conversion` export
-  // (ts_queries_v4.sql — validated vs PBI wk15).
-  // PBI's view scopes BOTH contacted and recruiter_screens to the active
-  // pipelines, which is why an unscoped ts_actuals aggregate produces the
-  // wrong %s. Using the scoped values from ts_conversion yields an exact
-  // match to PBI.
-  // Strict filter: job.job_sourcer = TS AND credited event from TS exists on the job.
+  // Source: data.ts_conversion (built from ts_conversion.sql → snowflake_ts_conversion.csv).
+  // Calibrated 2026-04-20 vs PBI w16 — 12/12 Active Pipelines exact, 12/12 colour
+  // triplets exact, 98.99% aggregate volume accuracy.
+  //
+  // Active Pipelines = job.job_sourcer = TS  AND  ≥1 event with credit_sourcer = TS
+  // on a candidate of that job (Andy Hsu rule, 2026-04-14).
+  //
+  // We deliberately do NOT fall back to data.ts_conversion_weekly — that legacy
+  // field was built from a cumulative ts_actuals aggregate and inflates AS/ATS
+  // wildly (Marina AS 61 → 245, Mia PR/Contacted → 188.9%). The scoped
+  // snapshot is the only correct source here.
+  //
   // Roster filter: ts_weekly entries for the selected week (same source of truth
-  // as the TS Weekly table above — Andy's WBR Target Google Sheet). Scopes to
-  // who was an active TS at the point in time of the selected week.
+  // as the TS Weekly table above — Andy's WBR Target Google Sheet).
   const tsConversion = useMemo(() => {
-    const weekKey = `w${selectedWeek}`;
     const activeRoster = new Set(
       (data.ts_weekly || [])
         .filter((t) => t.week === selectedWeek)
         .map((t) => t.ts)
     );
-    // Use per-week cumulative conversion data when available; fall back to
-    // static snapshot for backward compat.
-    const weeklyConv = data.ts_conversion_weekly?.[weekKey];
-    const source = weeklyConv
-      ? weeklyConv.filter((row) => activeRoster.has(row.ts))
-      : (data.ts_conversion || []).filter((row) => activeRoster.has(row.ts));
+    const source = (data.ts_conversion || []).filter((row) => activeRoster.has(row.ts));
     return source.map((row) => {
       const contacted = row.contacted || 0;
       const recruiterScreens = row.recruiter_screens || 0;
@@ -845,7 +843,7 @@ const WBRTab = ({ data }) => {
           </table>
         </div>
         <p className="text-xs text-gray-500 mt-3">
-          Source: <code className="text-gray-400">ts_queries_v4.sql</code> · Andy Hsu logic (2026-04-14) · Validated vs PBI week 15 at 99.4%
+          Source: <code className="text-gray-400">ts_conversion.sql</code> · Andy Hsu logic · Calibrated vs PBI w16 2026-04-20 — 12/12 Active Pipelines exact, 12/12 colour triplets exact, 98.99% aggregate volume accuracy
         </p>
       </div>
 

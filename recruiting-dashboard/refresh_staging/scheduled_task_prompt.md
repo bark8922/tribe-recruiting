@@ -51,7 +51,7 @@ and a final "DONE" line (10000+ total rows). If the script reports ERROR
 continue with stale CSVs. One-time dep install if needed:
 `pip install gspread google-auth --break-system-packages`.
 
-## Step 1 — Run 5 Keboola MCP queries
+## Step 1 — Run 6 Keboola MCP queries
 
 For each of these SQL files, read it from disk and call the Keboola MCP
 `query_data` tool (find the full tool name with ToolSearch, query
@@ -59,16 +59,17 @@ For each of these SQL files, read it from disk and call the Keboola MCP
 argument. Write the returned rows (header row + data rows) to the matching
 CSV file next to the SQL:
 
-| SQL file                 | Output CSV                    |
-| ------------------------ | ----------------------------- |
-| `wbr_weekly.sql`         | `snowflake_wbr.csv`           |
-| `wbr_jobs_weekly.sql`    | `snowflake_wbr_jobs.csv`      |
-| `ts_weekly.sql`          | `snowflake_ts.csv`            |
-| `ts_conversion.sql`      | `snowflake_ts_conversion.csv` |
-| `aux_12w.sql`            | `snowflake_aux_12w.csv`       |
+| SQL file                    | Output CSV                    |
+| --------------------------- | ----------------------------- |
+| `wbr_weekly.sql`            | `snowflake_wbr.csv`           |
+| `wbr_jobs_weekly.sql`       | `snowflake_wbr_jobs.csv`      |
+| `wbr_ts_jobs_weekly.sql`    | `snowflake_ts_jobs.csv`       |
+| `ts_weekly.sql`             | `snowflake_ts.csv`            |
+| `ts_conversion.sql`         | `snowflake_ts_conversion.csv` |
+| `aux_12w.sql`               | `snowflake_aux_12w.csv`       |
 
-Rough expected row counts: wbr ~670, wbr_jobs ~780, ts ~700,
-ts_conversion ~65, aux_12w ~250. If any query fails or returns zero rows,
+Rough expected row counts: wbr ~670, wbr_jobs ~780, ts_jobs ~820, ts ~700,
+ts_conversion ~65, aux_12w ~600. If any query fails or returns zero rows,
 abort — do NOT render with partial data.
 
 Note on wbr_jobs_weekly.sql: it uses a DIFFERENT TA attribution than
@@ -85,7 +86,7 @@ python3 refresh_daily.py
 ```
 
 This will:
-- Fail fast if any of the 5 CSVs is missing
+- Fail fast if any of the 6 CSVs is missing
 - Run `render_json.main()` → produces `rendered_dashboard_data.json`
 - Copy it to `<workspace>/dashboard_data.json` — WAIT, that mirrors the PBI
   file path. Override the mirror destination so this task mirrors ONLY the
@@ -126,7 +127,7 @@ after ~1-2 min.
 ## Step 4 — Verify & report
 
 In the task output, report:
-- Row counts for each of the 5 CSVs
+- Row counts for each of the 6 CSVs
 - Top-level key counts from `render_json.main()` stdout
 - Git commit SHA
 - Confirmation that the git diff contained only `dashboard_data_snowflake.json`
@@ -155,8 +156,9 @@ any of the following trip, do NOT auto-push — write a diff report to
 
 3. **Schema presence** — the output JSON must contain all of:
    `targets`, `wbr_actuals`, `mbr_client_totals`, `wbr_ta_weekly_roster`,
-   `jobs`, `mbr_ta_actuals`, `ta_jobs_weekly`. If any is missing or has
-   zero length, abort.
+   `jobs`, `mbr_ta_actuals`, `ta_jobs_weekly`, `ts_jobs_weekly`,
+   `ts_weekly`, `ta_weekly_notes`. If any is missing or has zero length,
+   abort.
 
 4. **Roster freshness** — `wbr_ta_weekly_roster` must contain the current
    ISO week (e.g. `w16` when running in 2026 week 16). If it doesn't, Step
@@ -268,5 +270,5 @@ semantics above. Don't revert them without checking here.
 - Hard-code Snowflake credentials — auth goes through Keboola MCP only.
 - Commit anything other than `dashboard_data_snowflake.json`.
 - Force-push. If `main` has diverged, abort and flag for human review.
-- Delete or modify files in `refresh_staging/` other than the 5 output CSVs
+- Delete or modify files in `refresh_staging/` other than the 6 output CSVs
   and `rendered_dashboard_data.json`.

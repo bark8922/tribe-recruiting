@@ -70,6 +70,7 @@ SNOW_WBR = HERE / "snowflake_wbr.csv"
 SNOW_WBR_JOBS = HERE / "snowflake_wbr_jobs.csv"
 SNOW_TS = HERE / "snowflake_ts.csv"
 SNOW_TS_CONV = HERE / "snowflake_ts_conversion.csv"
+SNOW_TS_JOBS = HERE / "snowflake_ts_jobs.csv"
 SNOW_AUX = HERE / "snowflake_aux_12w.csv"
 
 # WBR target sheet CSVs — synced by n8n workflow j5QsaTUpk4Nk1xhn.
@@ -518,6 +519,40 @@ def load_wbr():
             for m in ("contacted", "screened", "actual_screens", "ats", "offers", "hires"):
                 raw[(c, t)][wk][m] += int(row[m.upper()])
     return raw
+
+
+def load_ts_jobs_weekly():
+    """Return {f"w{n}": {ts: {num_jobs, num_tas, ta_names}}}, ISO 2026 only.
+
+    Sourced from snowflake_ts_jobs.csv (produced by wbr_ts_jobs_weekly.sql).
+    Drives the TS Weekly tab's `# Jobs`, `# TA`, and `TA Names` columns —
+    replaces the stale static `ts_jobs` dict that was carried forward from
+    live JSON and had wrong per-week counts (Andrea shown as 1/1/'Chené
+    Elliot' but PBI shows 7/4 with 4 names).
+
+    Returns empty dict if the file is missing (UI falls back to static ts_jobs)."""
+    out: dict[str, dict[str, dict]] = {}
+    if not SNOW_TS_JOBS.exists():
+        return out
+    with SNOW_TS_JOBS.open() as f:
+        for row in csv.DictReader(f):
+            try:
+                y = int(row["ISO_YEAR"])
+                wn = int(row["ISO_WEEK"])
+            except (ValueError, KeyError):
+                continue
+            if y != 2026 or wn < 1 or wn > 20:
+                continue
+            wk = f"w{wn}"
+            ts = (row.get("TS") or "").strip()
+            if not ts:
+                continue
+            out.setdefault(wk, {})[ts] = {
+                "num_jobs": int(row.get("NUM_JOBS") or 0),
+                "num_tas":  int(row.get("NUM_TAS")  or 0),
+                "ta_names": (row.get("TA_NAMES") or "").strip(),
+            }
+    return out
 
 
 def load_wbr_jobs():
@@ -1056,6 +1091,9 @@ def main():
     # targets with non-empty team_group. Validated 2026-04-20 vs PBI w16: 129
     # vs 130 (99.2%), 14/15 clients exact.
     out["ta_jobs_weekly"] = raw_wbr_jobs
+    # Per-week TS Jobs / TAs / TA names from wbr_ts_jobs_weekly.sql.
+    # Replaces the stale static `ts_jobs` for the TS Weekly tab.
+    out["ts_jobs_weekly"] = load_ts_jobs_weekly()
     out["ts_hires_12w"] = ts_hires_12w
     out["ts_ats_12w"] = ts_ats_12w
     out["ts_screens_12w"] = ts_screens_12w

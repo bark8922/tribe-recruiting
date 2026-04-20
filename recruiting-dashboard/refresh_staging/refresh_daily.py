@@ -49,6 +49,7 @@ REQUIRED_CSVS = [
     "snowflake_wbr_jobs.csv",
     "snowflake_ts.csv",
     "snowflake_ts_conversion.csv",
+    "snowflake_ts_jobs.csv",
     "snowflake_aux_12w.csv",
 ]
 

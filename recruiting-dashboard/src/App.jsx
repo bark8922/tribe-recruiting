@@ -434,11 +434,17 @@ const WBRTab = ({ data }) => {
     // Only show sourcers who have a ts_weekly entry for this week
     // (actuals-only sourcers without a weekly entry are excluded)
 
-    // Enrich all with actuals and job data
+    // Enrich all with actuals and job data, then drop rows with no activity
+    // AND no comment for the week (same rule we apply to TA Detail). Catches
+    // weekly-note placeholders like Mia Gjorgievska who show up on the roster
+    // but have nothing to review.
     return Object.values(tsMap).map((t) => {
       const tsName = t.ts;
       const actuals = data.ts_actuals?.[tsName]?.[weekKey] || {};
-      const jobs = data.ts_jobs?.[tsName] || {};
+      // Prefer the per-week ts_jobs_weekly (new pipeline metric) when present;
+      // fall back to the static ts_jobs dict for older snapshots.
+      const weeklyJobs = data.ts_jobs_weekly?.[weekKey]?.[tsName];
+      const jobs = weeklyJobs || data.ts_jobs?.[tsName] || {};
       const hires12w = data.ts_hires_12w?.[tsName] || 0;
 
       return {
@@ -454,6 +460,11 @@ const WBRTab = ({ data }) => {
         ta_names: jobs.ta_names || '',
         hires_12w: hires12w,
       };
+    }).filter((r) => {
+      const anyActivity = (r.contacted||0) + (r.recruiter_screens||0) + (r.actual_screens||0)
+        + (r.ats||0) + (r.offers||0) + (r.hires||0) + (r.num_jobs||0) > 0;
+      const hasNote = !!((r.comment && r.comment.trim()) || (r.reasoning && r.reasoning.trim()));
+      return anyActivity || hasNote;
     }).sort((a, b) => a.ts.localeCompare(b.ts));
   }, [data, selectedWeek]);
 

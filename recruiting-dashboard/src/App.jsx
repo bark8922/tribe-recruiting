@@ -44,13 +44,13 @@ const kebolaClientMatches = (rawKeboolaClient, displayClient) => {
 // Normalize TA name — Keboola has double spaces for some names
 const normalizeTa = (name) => (name || '').replace(/\s+/g, ' ').trim();
 
-// Business unit group — Dolphins & Whales vs Ponies & Unicorns.
-// Aviv, all Wolt divisions (incl DoorDash/SevenRooms → Wolt HQ), and Aiven are
-// Dolphins & Whales; everything else is Ponies & Unicorns.
-// The WBR TA Target sheet is the source of truth for per-TA team_group, but
-// some clients (Aiven) have rows with blank team_group values in the sheet,
-// so we also hardcode the fallback here. If the sheet gets updated, the
-// team_group field takes precedence via getBuGroupForTarget() below.
+// Business unit group — driven ENTIRELY by the display client name, not per-TA
+// team_group. Some Aviv TAs are tagged 'Ponies/Unicorns' in the target sheet
+// (internal team-management labels) even though Aviv the client belongs to
+// Dolphins & Whales. Using the client name keeps the dashboard's grouping
+// consistent with how the business reports by client.
+// Dolphins & Whales: Aviv, Aiven, all Wolt divisions (incl DoorDash/SevenRooms
+// → Wolt HQ via normalizeClient). Everything else → Ponies & Unicorns.
 const DOLPHINS_WHALES_CLIENTS = new Set(['Aviv', 'Aiven']);
 const getBuGroup = (displayClient) => {
   if (!displayClient) return 'Ponies/Unicorns';
@@ -58,13 +58,6 @@ const getBuGroup = (displayClient) => {
     return 'Dolphins/Whales';
   }
   return 'Ponies/Unicorns';
-};
-// Prefer the per-TA team_group from the target sheet when present; fall back
-// to the client-level mapping above when blank.
-const getBuGroupForTarget = (target, displayClient) => {
-  const raw = (target && target.team_group) ? target.team_group.trim() : '';
-  if (raw) return raw;
-  return getBuGroup(displayClient);
 };
 
 // Color based on % of target (5-tier heatmap) — matches Power BI exactly
@@ -378,7 +371,7 @@ const WBRTab = ({ data }) => {
       details.push({
         client: display,
         ta: t.ta,
-        team_group: getBuGroupForTarget(t, display),
+        team_group: getBuGroup(display),
         contacted: actual.contacted,
         screened: actual.screened,
         ats: actual.ats,
@@ -401,9 +394,23 @@ const WBRTab = ({ data }) => {
       });
     });
 
+    // Dedupe by (display_client, TA) — a single TA with multiple target rows
+    // that normalize to the same display client (e.g. Zelimir Stajcic has
+    // target rows under both SevenRooms and Wolt HQ, both of which normalize
+    // to 'Wolt HQ') would otherwise render twice. Keep the entry with
+    // non-empty activity if any; otherwise the first one.
+    const deduped = new Map();
+    details.forEach((row) => {
+      const key = `${row.client}|${normalizeTa(row.ta)}`;
+      const prev = deduped.get(key);
+      if (!prev) { deduped.set(key, row); return; }
+      const activityOf = (r) => (r.contacted||0)+(r.screened||0)+(r.ats||0)+(r.offers||0)+(r.hires||0);
+      if (activityOf(row) > activityOf(prev)) deduped.set(key, row);
+    });
+
     // Sort: group first, then client, then TA
     const groupOrder = { 'Dolphins/Whales': 0, 'Ponies/Unicorns': 1, 'Other': 2 };
-    return details.sort((a, b) => {
+    return Array.from(deduped.values()).sort((a, b) => {
       const ga = groupOrder[a.team_group] ?? 2;
       const gb = groupOrder[b.team_group] ?? 2;
       if (ga !== gb) return ga - gb;
@@ -588,9 +595,31 @@ const WBRTab = ({ data }) => {
               </tr>
             </thead>
             <tbody>
-              {['Dolphins/Whales', 'Ponies/Unicorns'].map((group) => {
+              {['Dolphins/Whales', 'Ponies/Unicorns'].map((group, groupIdx) => {
                 const groupRows = taDetail.filter(r => r.team_group === group);
                 if (groupRows.length === 0) return null;
+                // Repeat the header at the top of each group (after the first)
+                // so it stays visible when the user is scrolled past the first
+                // group's header. Requested 2026-04-20.
+                const repeatHeader = groupIdx > 0 ? (
+                  <tr className="text-gray-300 bg-gray-800 border-t border-gray-600">
+                    <th className="text-left px-2 py-2 sticky left-0 bg-gray-800">Client</th>
+                    <th className="text-left px-2 py-2">TA</th>
+                    <th className="text-center px-1 py-2 text-xs" title="Last 12 Weeks Hires">12w H</th>
+                    <th className="text-center px-1 py-2 text-xs" title="Last 12 Weeks ATS">12w ATS</th>
+                    <th className="text-center px-1 py-2 text-xs" title="Last 12 Weeks Screens">12w Scr</th>
+                    <th className="text-center px-1 py-2 text-xs" title="Last 12w % Actual Screens to Hires">12w %S→H</th>
+                    <th className="text-center px-1 py-2 text-xs" title="Last 12w Time to Fill (days)">12w TTF</th>
+                    <th className="text-center px-1 py-2 text-xs" title="Weekly Hires">Hires</th>
+                    <th className="text-center px-1 py-2 text-xs" title="Weekly Contacted">Cntd</th>
+                    <th className="text-center px-1 py-2 text-xs" title="Weekly Actual Screens">Scrn</th>
+                    <th className="text-center px-1 py-2 text-xs" title="Weekly ATS">ATS</th>
+                    <th className="text-center px-1 py-2 text-xs" title="% Actual Screens to ATS">%S→A</th>
+                    <th className="text-center px-1 py-2 text-xs" title="# Active Roles"># Jobs</th>
+                    <th className="text-center px-1 py-2 text-xs" title="Jobs Opened > 60 days">{'>'}60d</th>
+                    <th className="text-left px-2 py-2 text-xs min-w-[120px]">Comment</th>
+                  </tr>
+                ) : null;
                 return (
                   <React.Fragment key={group}>
                     <tr className="bg-gray-900">
@@ -598,6 +627,7 @@ const WBRTab = ({ data }) => {
                         {group === 'Dolphins/Whales' ? '🐬 Dolphins & Whales' : '🦄 Ponies & Unicorns'}
                       </td>
                     </tr>
+                    {repeatHeader}
                     {groupRows.map((row, idx) => {
                       const prevRow = idx > 0 ? groupRows[idx - 1] : null;
                       const isClientChange = !prevRow || prevRow.client !== row.client;

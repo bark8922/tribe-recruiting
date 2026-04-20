@@ -1,0 +1,603 @@
+ROLE,METRIC,CLIENT,WHO,VAL
+TA,ats,ABOUT YOU,Gustavo Loureiro Castro,1
+TA,ats,AVIV ,Alexandra Richiteanu,29
+TA,ats,AVIV ,Anna Tyulpanova,94
+TA,ats,AVIV ,Iryna Dyda,1
+TA,ats,AVIV ,Jovana Drakula,49
+TA,ats,AVIV ,Kristina Colovic,75
+TA,ats,AVIV ,Lejla Silva,102
+TA,ats,AVIV ,Wladyslaw Gadomski,77
+TA,ats,Aiven,Fuad Safarov,9
+TA,ats,Aiven,Vladimir Stankovic,10
+TA,ats,Doordash,Akash Singh,79
+TA,ats,Doordash,Danish Shams,55
+TA,ats,Doordash,Milica Veselinovic,4
+TA,ats,Doordash,Nidhi Raina,110
+TA,ats,DualEntry,Chené Elliot,22
+TA,ats,DualEntry,Samantha Nel,16
+TA,ats,DualEntry,Simon Siew,13
+TA,ats,Enam,Aleksandra Vistac,59
+TA,ats,Eucalyptus,Alisa Liddell,9
+TA,ats,Eucalyptus,Dušan Špica,12
+TA,ats,Eucalyptus,Meho Saracevic,100
+TA,ats,FTAPI,Naledi Ngwenya,4
+TA,ats,Fever,Andrea Akovic,3
+TA,ats,Fever,Lejla Silva,1
+TA,ats,Glovo,Chené Elliot,48
+TA,ats,Glovo,Samantha Nel,28
+TA,ats,Grover,Eduardo Moral,25
+TA,ats,Nexi ,Adis Prepoljac,6
+TA,ats,Nexi ,Andreas Weins,27
+TA,ats,Nexi ,Maria Desiree Gerbore,103
+TA,ats,Parloa,Filip Nogowski,74
+TA,ats,Parloa,Gustavo Loureiro Castro,22
+TA,ats,Parloa,Jonaed Iqbal,89
+TA,ats,PhantomBuster,Mateja Jokovic,42
+TA,ats,Scorewarrior,Ekaterina Boyprav,20
+TA,ats,Scorewarrior,Mark Kandaurov,32
+TA,ats,SevenRooms,Adelya Khakimova,14
+TA,ats,SevenRooms,Milica Veselinovic,12
+TA,ats,SevenRooms,Zelimir Stajcic,44
+TA,ats,Taxfix,Marina Nikolic,137
+TA,ats,Wolt,Adelya Khakimova,28
+TA,ats,Wolt,Akash Singh,14
+TA,ats,Wolt,Alexandra Constantinide,4
+TA,ats,Wolt,Alexandra Richiteanu,2
+TA,ats,Wolt,Alisa Liddell,85
+TA,ats,Wolt,Andras Toth,1
+TA,ats,Wolt,Chantal Bozkurt,142
+TA,ats,Wolt,Dolores Palotas,58
+TA,ats,Wolt,Ejla Suljcic,85
+TA,ats,Wolt,Elena Petrovska,47
+TA,ats,Wolt,Evagelina Rapanaki,16
+TA,ats,Wolt,Fuad Safarov,26
+TA,ats,Wolt,Iryna Shumik,1
+TA,ats,Wolt,Jan Dokulil,51
+TA,ats,Wolt,Jelena Lacmanovic,95
+TA,ats,Wolt,Jovana Drakula,10
+TA,ats,Wolt,Ketevan Khorava,193
+TA,ats,Wolt,Lisa Gargulinska,85
+TA,ats,Wolt,Milica Veselinovic,14
+TA,ats,Wolt,Nenad Skoko,80
+TA,ats,Wolt,Niki Vokalkova,77
+TA,ats,Wolt,Rafael Rosa,3
+TA,ats,Wolt,Simon Siew,1
+TA,ats,Wolt,Tina Aramouni,93
+TA,ats,Wolt,Tinatini Karaulashvili,55
+TA,ats,Wolt,Vladimir Stankovic,10
+TA,ats,Wolt,Zarina Amanbekova,60
+TA,ats,Wolt,Zelimir Stajcic,10
+TA,hires,AVIV ,Alexandra Richiteanu,1
+TA,hires,AVIV ,Anna Tyulpanova,2
+TA,hires,AVIV ,Kristina Colovic,3
+TA,hires,AVIV ,Lejla Silva,3
+TA,hires,Doordash,Akash Singh,11
+TA,hires,Doordash,Danish Shams,1
+TA,hires,DualEntry,Chené Elliot,1
+TA,hires,DualEntry,Samantha Nel,1
+TA,hires,DualEntry,Simon Siew,1
+TA,hires,Enam,Aleksandra Vistac,1
+TA,hires,Eucalyptus,Meho Saracevic ,4
+TA,hires,Glovo,Chené Elliot,1
+TA,hires,Glovo,Samantha Nel,2
+TA,hires,Grover,Eduardo Moral,2
+TA,hires,Nexi ,Adis Prepoljac,1
+TA,hires,Nexi ,Andreas Weins,2
+TA,hires,Nexi ,Maria Desiree Gerbore,9
+TA,hires,Parloa,Filip Nogowski,6
+TA,hires,Parloa,Gustavo Loureiro Castro,1
+TA,hires,Parloa,Jonaed Iqbal,10
+TA,hires,PhantomBuster,Mateja Jokovic,6
+TA,hires,Scorewarrior,Mark Kandaurov,3
+TA,hires,SevenRooms,Zelimir Stajcic,1
+TA,hires,Taxfix,Marina Nikolic,8
+TA,hires,Wolt,Adelya Khakimova,6
+TA,hires,Wolt,Akash Singh,4
+TA,hires,Wolt,Alexandra Constantinide,4
+TA,hires,Wolt,Alexandra Richiteanu,1
+TA,hires,Wolt,Alisa Liddell,84
+TA,hires,Wolt,Chantal Bozkurt,141
+TA,hires,Wolt,Chené Elliot,1
+TA,hires,Wolt,Dolores Palotas,57
+TA,hires,Wolt,Ejla Suljcic,1
+TA,hires,Wolt,Elena Petrovska,1
+TA,hires,Wolt,Evagelina Rapanaki,16
+TA,hires,Wolt,Fuad Safarov,26
+TA,hires,Wolt,Iryna Shumik,1
+TA,hires,Wolt,Jan Dokulil,8
+TA,hires,Wolt,Jelena Lacmanovic,17
+TA,hires,Wolt,Ketevan Khorava,193
+TA,hires,Wolt,Lisa Gargulinska,7
+TA,hires,Wolt,Milica Veselinovic,1
+TA,hires,Wolt,Nenad Skoko,6
+TA,hires,Wolt,Niki Vokalkova,7
+TA,hires,Wolt,Rafael Rosa,2
+TA,hires,Wolt,Simon Siew,2
+TA,hires,Wolt,Tina Aramouni,8
+TA,hires,Wolt,Tinatini Karaulashvili,55
+TA,hires,Wolt,Vladimir Stankovic,4
+TA,hires,Wolt,Zarina Amanbekova,56
+TA,jobs_60d,AVIV ,Alexandra Richiteanu,3
+TA,jobs_60d,AVIV ,Anna Tyulpanova,3
+TA,jobs_60d,AVIV ,Jovana Drakula,6
+TA,jobs_60d,AVIV ,Wladyslaw Gadomski,2
+TA,jobs_60d,Aleph Alpha,Mia Gjorgievska,1
+TA,jobs_60d,BD - Tribe,Martin Bernard,2
+TA,jobs_60d,BD - Tribe,Salem Mansuri,1
+TA,jobs_60d,Cohere,Martin Bernard,1
+TA,jobs_60d,Doordash,Akash Singh,1
+TA,jobs_60d,Doordash,Danish Shams,3
+TA,jobs_60d,Doordash,Milica Veselinovic,1
+TA,jobs_60d,Doordash,Nidhi Raina,3
+TA,jobs_60d,DualEntry,Chantal Bozkurt,1
+TA,jobs_60d,DualEntry,Simon  Siew,1
+TA,jobs_60d,Enam,Aleksandra Vistac,5
+TA,jobs_60d,Enam,Marko Pavicevic,2
+TA,jobs_60d,Eucalyptus,Meho Saracevic,4
+TA,jobs_60d,FTAPI,Naledi Ngwenya,4
+TA,jobs_60d,Glovo,Ejla Suljcic,21
+TA,jobs_60d,Glovo,Etienne Sargenton,16
+TA,jobs_60d,Kranus Health,Aleksandra Markovic,1
+TA,jobs_60d,Nexi ,Andreas Weins,17
+TA,jobs_60d,Nexi ,Maria Desiree Gerbore,2
+TA,jobs_60d,Parloa,Filip Nogowski,6
+TA,jobs_60d,Parloa,Gustavo Loureiro Castro,1
+TA,jobs_60d,Parloa,Jonaed Iqbal,7
+TA,jobs_60d,Parloa,Mia Gjorgievska,1
+TA,jobs_60d,PhantomBuster,Mateja Jokovic,5
+TA,jobs_60d,Scorewarrior,Ekaterina Boyprav,3
+TA,jobs_60d,Scorewarrior,Mark Kandaurov,1
+TA,jobs_60d,SevenRooms,Abigail Caliwag,3
+TA,jobs_60d,SevenRooms,Adelya Khakimova,1
+TA,jobs_60d,SevenRooms,Zelimir Stajcic,5
+TA,jobs_60d,Taxfix,Alexandra Felea,3
+TA,jobs_60d,Taxfix,Marina Nikolic,2
+TA,jobs_60d,Tribe - Marketing,Martin Bernard,1
+TA,jobs_60d,Tribe - Marketing,Salem Mansuri,1
+TA,jobs_60d,Tribe: Talent Pools,Iryna Dyda,1
+TA,jobs_60d,Wolt,Adelya Khakimova,17
+TA,jobs_60d,Wolt,Alexandra Constantinide,11
+TA,jobs_60d,Wolt,Alisa Liddell,11
+TA,jobs_60d,Wolt,Chantal Bozkurt,21
+TA,jobs_60d,Wolt,Dora Vrbanić,1
+TA,jobs_60d,Wolt,Ejla Suljcic,8
+TA,jobs_60d,Wolt,Elena Petrovska,1
+TA,jobs_60d,Wolt,Evagelina Rapanaki,14
+TA,jobs_60d,Wolt,Georgia Vasilaki,1
+TA,jobs_60d,Wolt,Iryna Dyda,2
+TA,jobs_60d,Wolt,Iryna Shumik,8
+TA,jobs_60d,Wolt,Jaksa Marojevic,4
+TA,jobs_60d,Wolt,Jan Dokulil,14
+TA,jobs_60d,Wolt,Jelena  Lacmanovic,2
+TA,jobs_60d,Wolt,Kathleen Dongo,1
+TA,jobs_60d,Wolt,Ketevan Khorava,1
+TA,jobs_60d,Wolt,Lisa Gargulinska,13
+TA,jobs_60d,Wolt,Mia Gjorgievska,1
+TA,jobs_60d,Wolt,Milica Mladzic,13
+TA,jobs_60d,Wolt,Milica Veselinovic,7
+TA,jobs_60d,Wolt,Nemanja Erdevički,8
+TA,jobs_60d,Wolt,Nenad Skoko,3
+TA,jobs_60d,Wolt,Niki Vokalkova,2
+TA,jobs_60d,Wolt,Pratik  Sridhar,2
+TA,jobs_60d,Wolt,Rafael Rosa,11
+TA,jobs_60d,Wolt,Simon  Siew,8
+TA,jobs_60d,Wolt,Tawfik Shadafna,3
+TA,jobs_60d,Wolt,Tijana Lazovic,1
+TA,jobs_60d,Wolt,Tina Aramouni,3
+TA,jobs_60d,Wolt,Tinatini Karaulashvili,4
+TA,jobs_60d,Wolt,Zarina Amanbekova,7
+TA,jobs_60d,desk.ly,Lisa Gargulinska,2
+TA,screens,ABOUT YOU,Gustavo Loureiro Castro,1
+TA,screens,AVIV ,Alexandra Richiteanu,84
+TA,screens,AVIV ,Anna Tyulpanova,154
+TA,screens,AVIV ,Iryna Dyda,6
+TA,screens,AVIV ,Jovana Drakula,41
+TA,screens,AVIV ,Kristina Colovic,129
+TA,screens,AVIV ,Lejla Silva,168
+TA,screens,AVIV ,Wladyslaw Gadomski,141
+TA,screens,Aiven,Fuad Safarov,18
+TA,screens,Aiven,Vladimir Stankovic,27
+TA,screens,Doordash,Akash Singh,113
+TA,screens,Doordash,Danish Shams,75
+TA,screens,Doordash,Milica Veselinovic,7
+TA,screens,Doordash,Nidhi Raina,124
+TA,screens,DualEntry,Chené Elliot,68
+TA,screens,DualEntry,Samantha Nel,70
+TA,screens,DualEntry,Simon Siew,52
+TA,screens,Enam,Aleksandra Vistac,142
+TA,screens,Eucalyptus,Alisa Liddell,16
+TA,screens,Eucalyptus,Dušan Špica,29
+TA,screens,Eucalyptus,Meho Saracevic,215
+TA,screens,FTAPI,Naledi Ngwenya,7
+TA,screens,Fever,Andrea Akovic,21
+TA,screens,Fever,Lejla Silva,1
+TA,screens,Glovo,Chené Elliot,92
+TA,screens,Glovo,Samantha Nel,60
+TA,screens,Grover,Eduardo Moral,52
+TA,screens,Nexi ,Adis Prepoljac,6
+TA,screens,Nexi ,Andreas Weins,48
+TA,screens,Nexi ,Maria Desiree Gerbore,214
+TA,screens,Parloa,Filip Nogowski,121
+TA,screens,Parloa,Gustavo Loureiro Castro,36
+TA,screens,Parloa,Jonaed Iqbal,158
+TA,screens,PhantomBuster,Mateja Jokovic,75
+TA,screens,Scorewarrior,Ekaterina Boyprav,45
+TA,screens,Scorewarrior,Mark Kandaurov,75
+TA,screens,SevenRooms,Adelya Khakimova,23
+TA,screens,SevenRooms,Milica Veselinovic,22
+TA,screens,SevenRooms,Zelimir Stajcic,70
+TA,screens,Taxfix,Alexandra Felea,1
+TA,screens,Taxfix,Marina Nikolic,166
+TA,screens,Wolt,Adelya Khakimova,52
+TA,screens,Wolt,Akash Singh,16
+TA,screens,Wolt,Alexandra Richiteanu,2
+TA,screens,Wolt,Chantal Bozkurt,3
+TA,screens,Wolt,Chené Elliot,1
+TA,screens,Wolt,Dolores Palotas,12
+TA,screens,Wolt,Ejla Suljcic,146
+TA,screens,Wolt,Elena Petrovska,73
+TA,screens,Wolt,Fuad Safarov,1
+TA,screens,Wolt,Jan Dokulil,96
+TA,screens,Wolt,Jelena Lacmanovic,193
+TA,screens,Wolt,Jovana Drakula,21
+TA,screens,Wolt,Lisa Gargulinska,144
+TA,screens,Wolt,Milica Veselinovic,26
+TA,screens,Wolt,Nenad Skoko,121
+TA,screens,Wolt,Niki Vokalkova,132
+TA,screens,Wolt,Rafael Rosa,3
+TA,screens,Wolt,Tina Aramouni,95
+TA,screens,Wolt,Vladimir Stankovic,18
+TA,screens,Wolt,Zarina Amanbekova,6
+TA,screens,Wolt,Zelimir Stajcic,12
+TA,ttf_cnt,AVIV ,Alexandra Richiteanu,1
+TA,ttf_cnt,AVIV ,Anna Tyulpanova,2
+TA,ttf_cnt,AVIV ,Kristina Colovic,3
+TA,ttf_cnt,AVIV ,Lejla Silva,3
+TA,ttf_cnt,Doordash,Akash Singh,11
+TA,ttf_cnt,Doordash,Danish Shams,1
+TA,ttf_cnt,DualEntry,Chené Elliot,1
+TA,ttf_cnt,DualEntry,Samantha Nel,1
+TA,ttf_cnt,DualEntry,Simon Siew,1
+TA,ttf_cnt,Enam,Aleksandra Vistac,1
+TA,ttf_cnt,Eucalyptus,Meho Saracevic ,4
+TA,ttf_cnt,Glovo,Chené Elliot,1
+TA,ttf_cnt,Glovo,Samantha Nel,2
+TA,ttf_cnt,Grover,Eduardo Moral,2
+TA,ttf_cnt,Nexi ,Adis Prepoljac,1
+TA,ttf_cnt,Nexi ,Andreas Weins,2
+TA,ttf_cnt,Nexi ,Maria Desiree Gerbore,9
+TA,ttf_cnt,Parloa,Filip Nogowski,6
+TA,ttf_cnt,Parloa,Gustavo Loureiro Castro,1
+TA,ttf_cnt,Parloa,Jonaed Iqbal,10
+TA,ttf_cnt,PhantomBuster,Mateja Jokovic,6
+TA,ttf_cnt,Scorewarrior,Mark Kandaurov,3
+TA,ttf_cnt,SevenRooms,Zelimir Stajcic,1
+TA,ttf_cnt,Taxfix,Marina Nikolic,8
+TA,ttf_cnt,Wolt,Adelya Khakimova,6
+TA,ttf_cnt,Wolt,Akash Singh,4
+TA,ttf_cnt,Wolt,Alexandra Constantinide,4
+TA,ttf_cnt,Wolt,Alexandra Richiteanu,1
+TA,ttf_cnt,Wolt,Alisa Liddell,84
+TA,ttf_cnt,Wolt,Chantal Bozkurt,141
+TA,ttf_cnt,Wolt,Chené Elliot,1
+TA,ttf_cnt,Wolt,Dolores Palotas,57
+TA,ttf_cnt,Wolt,Ejla Suljcic,1
+TA,ttf_cnt,Wolt,Elena Petrovska,1
+TA,ttf_cnt,Wolt,Evagelina Rapanaki,16
+TA,ttf_cnt,Wolt,Fuad Safarov,26
+TA,ttf_cnt,Wolt,Iryna Shumik,1
+TA,ttf_cnt,Wolt,Jan Dokulil,8
+TA,ttf_cnt,Wolt,Jelena Lacmanovic,17
+TA,ttf_cnt,Wolt,Ketevan Khorava,193
+TA,ttf_cnt,Wolt,Lisa Gargulinska,7
+TA,ttf_cnt,Wolt,Milica Veselinovic,1
+TA,ttf_cnt,Wolt,Nenad Skoko,6
+TA,ttf_cnt,Wolt,Niki Vokalkova,7
+TA,ttf_cnt,Wolt,Rafael Rosa,2
+TA,ttf_cnt,Wolt,Simon Siew,2
+TA,ttf_cnt,Wolt,Tina Aramouni,8
+TA,ttf_cnt,Wolt,Tinatini Karaulashvili,55
+TA,ttf_cnt,Wolt,Vladimir Stankovic,4
+TA,ttf_cnt,Wolt,Zarina Amanbekova,56
+TA,ttf_sum,AVIV ,Alexandra Richiteanu,43
+TA,ttf_sum,AVIV ,Anna Tyulpanova,52
+TA,ttf_sum,AVIV ,Kristina Colovic,113
+TA,ttf_sum,AVIV ,Lejla Silva,89
+TA,ttf_sum,Doordash,Akash Singh,1278
+TA,ttf_sum,Doordash,Danish Shams,39
+TA,ttf_sum,DualEntry,Chené Elliot,9
+TA,ttf_sum,DualEntry,Samantha Nel,21
+TA,ttf_sum,DualEntry,Simon Siew,18
+TA,ttf_sum,Enam,Aleksandra Vistac,411
+TA,ttf_sum,Eucalyptus,Meho Saracevic ,203
+TA,ttf_sum,Glovo,Chené Elliot,48
+TA,ttf_sum,Glovo,Samantha Nel,36
+TA,ttf_sum,Grover,Eduardo Moral,202
+TA,ttf_sum,Nexi ,Adis Prepoljac,0
+TA,ttf_sum,Nexi ,Andreas Weins,146
+TA,ttf_sum,Nexi ,Maria Desiree Gerbore,287
+TA,ttf_sum,Parloa,Filip Nogowski,957
+TA,ttf_sum,Parloa,Gustavo Loureiro Castro,55
+TA,ttf_sum,Parloa,Jonaed Iqbal,842
+TA,ttf_sum,PhantomBuster,Mateja Jokovic,249
+TA,ttf_sum,Scorewarrior,Mark Kandaurov,268
+TA,ttf_sum,SevenRooms,Zelimir Stajcic,161
+TA,ttf_sum,Taxfix,Marina Nikolic,583
+TA,ttf_sum,Wolt,Adelya Khakimova,369
+TA,ttf_sum,Wolt,Akash Singh,214
+TA,ttf_sum,Wolt,Alexandra Constantinide,1399
+TA,ttf_sum,Wolt,Alexandra Richiteanu,99
+TA,ttf_sum,Wolt,Alisa Liddell,8010
+TA,ttf_sum,Wolt,Chantal Bozkurt,14299
+TA,ttf_sum,Wolt,Chené Elliot,59
+TA,ttf_sum,Wolt,Dolores Palotas,35474
+TA,ttf_sum,Wolt,Ejla Suljcic,69
+TA,ttf_sum,Wolt,Elena Petrovska,60
+TA,ttf_sum,Wolt,Evagelina Rapanaki,1571
+TA,ttf_sum,Wolt,Fuad Safarov,652
+TA,ttf_sum,Wolt,Iryna Shumik,217
+TA,ttf_sum,Wolt,Jan Dokulil,348
+TA,ttf_sum,Wolt,Jelena Lacmanovic,1497
+TA,ttf_sum,Wolt,Ketevan Khorava,10560
+TA,ttf_sum,Wolt,Lisa Gargulinska,1125
+TA,ttf_sum,Wolt,Milica Veselinovic,260
+TA,ttf_sum,Wolt,Nenad Skoko,382
+TA,ttf_sum,Wolt,Niki Vokalkova,439
+TA,ttf_sum,Wolt,Rafael Rosa,259
+TA,ttf_sum,Wolt,Simon Siew,218
+TA,ttf_sum,Wolt,Tina Aramouni,630
+TA,ttf_sum,Wolt,Tinatini Karaulashvili,10095
+TA,ttf_sum,Wolt,Vladimir Stankovic,1470
+TA,ttf_sum,Wolt,Zarina Amanbekova,9276
+TS,ats,,Adelya Khakimova,41
+TS,ats,,Adis Prepoljac,15
+TS,ats,,Akash Singh,88
+TS,ats,,Aleksandra Markovic,13
+TS,ats,,Aleksandra Vistac,38
+TS,ats,,Alexandra Richiteanu,22
+TS,ats,,Alisa Liddell,94
+TS,ats,,Andras Toth,1
+TS,ats,,Andrea Akovic,28
+TS,ats,,Andreas Weins,26
+TS,ats,,Anna Tyulpanova,7
+TS,ats,,Chantal Bozkurt,149
+TS,ats,,Chené Elliot,47
+TS,ats,,Danish Shams,55
+TS,ats,,Dolores Palotas,59
+TS,ats,,Dušan Špica,26
+TS,ats,,Eduardo Moral,10
+TS,ats,,Ejla Suljcic,98
+TS,ats,,Ekaterina Boyprav,17
+TS,ats,,Elena Gjorgieva,30
+TS,ats,,Elena Petrovska,47
+TS,ats,,Evagelina Rapanaki,16
+TS,ats,,Filip Nogowski,43
+TS,ats,,Fuad Safarov,40
+TS,ats,,Gustavo Loureiro Castro,54
+TS,ats,,Iryna Dyda,11
+TS,ats,,Jan Dokulil,51
+TS,ats,,Jelena  Lacmanovic,70
+TS,ats,,Jonaed Iqbal,89
+TS,ats,,Jovana Drakula,57
+TS,ats,,Ketevan Khorava,193
+TS,ats,,Kristina Colovic,8
+TS,ats,,Lejla Silva,25
+TS,ats,,Lisa Gargulinska,75
+TS,ats,,Maria Desiree Gerbore,96
+TS,ats,,Marina Lazarevic,105
+TS,ats,,Marina Nikolic,101
+TS,ats,,Mark Kandaurov,32
+TS,ats,,Mateja Jokovic,42
+TS,ats,,Meho Saracevic,100
+TS,ats,,Milica Veselinovic,29
+TS,ats,,Naledi Ngwenya,9
+TS,ats,,Nare Avetisyan,175
+TS,ats,,Nenad Skoko,67
+TS,ats,,Nidhi Raina,103
+TS,ats,,Niki Vokalkova,77
+TS,ats,,Rafael Rosa,4
+TS,ats,,Rodrigo Gomes,13
+TS,ats,,Samantha Nel,38
+TS,ats,,Simon  Siew,13
+TS,ats,,Tina Aramouni,93
+TS,ats,,Tinatini Karaulashvili,55
+TS,ats,,Valeriia Yurykova,65
+TS,ats,,Vladimir Stankovic,20
+TS,ats,,Wladyslaw Gadomski,9
+TS,ats,,Zarina Amanbekova,60
+TS,ats,,Zelimir Stajcic,54
+TS,hires,,Adelya Khakimova,6
+TS,hires,,Adis Prepoljac,1
+TS,hires,,Akash Singh,14
+TS,hires,,Aleksandra Markovic,2
+TS,hires,,Aleksandra Vistac,1
+TS,hires,,Alexandra Richiteanu,2
+TS,hires,,Alisa Liddell,84
+TS,hires,,Andreas Weins,2
+TS,hires,,Anna Tyulpanova,1
+TS,hires,,Chantal Bozkurt,140
+TS,hires,,Chené Elliot,3
+TS,hires,,Danish Shams,1
+TS,hires,,Dolores Palotas,57
+TS,hires,,Eduardo Moral,1
+TS,hires,,Ejla Suljcic,2
+TS,hires,,Elena Gjorgieva,2
+TS,hires,,Elena Petrovska,2
+TS,hires,,Evagelina Rapanaki,16
+TS,hires,,Filip Nogowski,6
+TS,hires,,Fuad Safarov,32
+TS,hires,,Gustavo Loureiro Castro,1
+TS,hires,,Jan Dokulil,8
+TS,hires,,Jelena  Lacmanovic,17
+TS,hires,,Jonaed Iqbal,10
+TS,hires,,Ketevan Khorava,193
+TS,hires,,Lejla Silva,1
+TS,hires,,Lisa Gargulinska,7
+TS,hires,,Maria Desiree Gerbore,9
+TS,hires,,Marina Lazarevic,4
+TS,hires,,Marina Nikolic,5
+TS,hires,,Mark Kandaurov,3
+TS,hires,,Mateja Jokovic,6
+TS,hires,,Meho Saracevic,4
+TS,hires,,Milica Veselinovic,1
+TS,hires,,Nare Avetisyan,1
+TS,hires,,Nenad Skoko,4
+TS,hires,,Niki Vokalkova,7
+TS,hires,,Rafael Rosa,2
+TS,hires,,Rodrigo Gomes,1
+TS,hires,,Samantha Nel,3
+TS,hires,,Simon  Siew,2
+TS,hires,,Tina Aramouni,8
+TS,hires,,Tinatini Karaulashvili,55
+TS,hires,,Valeriia Yurykova,3
+TS,hires,,Vladimir Stankovic,3
+TS,hires,,Zarina Amanbekova,56
+TS,hires,,Zelimir Stajcic,1
+TS,screens,,Adelya Khakimova,73
+TS,screens,,Adis Prepoljac,30
+TS,screens,,Akash Singh,124
+TS,screens,,Aleksandra Markovic,48
+TS,screens,,Aleksandra Vistac,74
+TS,screens,,Alexandra Richiteanu,42
+TS,screens,,Alisa Liddell,16
+TS,screens,,Andrea Akovic,77
+TS,screens,,Andreas Weins,46
+TS,screens,,Anna Tyulpanova,17
+TS,screens,,Chantal Bozkurt,22
+TS,screens,,Chené Elliot,117
+TS,screens,,Danish Shams,75
+TS,screens,,Dolores Palotas,15
+TS,screens,,Dušan Špica,56
+TS,screens,,Eduardo Moral,19
+TS,screens,,Ejla Suljcic,163
+TS,screens,,Ekaterina Boyprav,37
+TS,screens,,Elena Gjorgieva,45
+TS,screens,,Elena Petrovska,73
+TS,screens,,Filip Nogowski,73
+TS,screens,,Fuad Safarov,16
+TS,screens,,Gustavo Loureiro Castro,87
+TS,screens,,Iryna Dyda,18
+TS,screens,,Jan Dokulil,96
+TS,screens,,Jelena  Lacmanovic,115
+TS,screens,,Jonaed Iqbal,156
+TS,screens,,Jovana Drakula,70
+TS,screens,,Kristina Colovic,19
+TS,screens,,Lejla Silva,42
+TS,screens,,Lisa Gargulinska,113
+TS,screens,,Maria Desiree Gerbore,201
+TS,screens,,Marina Lazarevic,215
+TS,screens,,Marina Nikolic,124
+TS,screens,,Mark Kandaurov,75
+TS,screens,,Marko Pavicevic,1
+TS,screens,,Mateja Jokovic,75
+TS,screens,,Meho Saracevic,215
+TS,screens,,Milica Veselinovic,54
+TS,screens,,Naledi Ngwenya,28
+TS,screens,,Nare Avetisyan,286
+TS,screens,,Nenad Skoko,104
+TS,screens,,Nidhi Raina,117
+TS,screens,,Niki Vokalkova,132
+TS,screens,,Rafael Rosa,10
+TS,screens,,Rodrigo Gomes,27
+TS,screens,,Samantha Nel,86
+TS,screens,,Simon  Siew,52
+TS,screens,,Tina Aramouni,95
+TS,screens,,Valeriia Yurykova,121
+TS,screens,,Vladimir Stankovic,43
+TS,screens,,Wladyslaw Gadomski,23
+TS,screens,,Zarina Amanbekova,6
+TS,screens,,Zelimir Stajcic,82
+TS,ttf_cnt,,Adelya Khakimova,6
+TS,ttf_cnt,,Adis Prepoljac,1
+TS,ttf_cnt,,Akash Singh,14
+TS,ttf_cnt,,Aleksandra Markovic,2
+TS,ttf_cnt,,Aleksandra Vistac,1
+TS,ttf_cnt,,Alexandra Richiteanu,2
+TS,ttf_cnt,,Alisa Liddell,84
+TS,ttf_cnt,,Andreas Weins,2
+TS,ttf_cnt,,Anna Tyulpanova,1
+TS,ttf_cnt,,Chantal Bozkurt,140
+TS,ttf_cnt,,Chené Elliot,3
+TS,ttf_cnt,,Danish Shams,1
+TS,ttf_cnt,,Dolores Palotas,57
+TS,ttf_cnt,,Eduardo Moral,1
+TS,ttf_cnt,,Ejla Suljcic,2
+TS,ttf_cnt,,Elena Gjorgieva,2
+TS,ttf_cnt,,Elena Petrovska,2
+TS,ttf_cnt,,Evagelina Rapanaki,16
+TS,ttf_cnt,,Filip Nogowski,6
+TS,ttf_cnt,,Fuad Safarov,32
+TS,ttf_cnt,,Gustavo Loureiro Castro,1
+TS,ttf_cnt,,Jan Dokulil,8
+TS,ttf_cnt,,Jelena  Lacmanovic,17
+TS,ttf_cnt,,Jonaed Iqbal,10
+TS,ttf_cnt,,Ketevan Khorava,193
+TS,ttf_cnt,,Lejla Silva,1
+TS,ttf_cnt,,Lisa Gargulinska,7
+TS,ttf_cnt,,Maria Desiree Gerbore,9
+TS,ttf_cnt,,Marina Lazarevic,4
+TS,ttf_cnt,,Marina Nikolic,5
+TS,ttf_cnt,,Mark Kandaurov,3
+TS,ttf_cnt,,Mateja Jokovic,6
+TS,ttf_cnt,,Meho Saracevic,4
+TS,ttf_cnt,,Milica Veselinovic,1
+TS,ttf_cnt,,Nare Avetisyan,1
+TS,ttf_cnt,,Nenad Skoko,4
+TS,ttf_cnt,,Niki Vokalkova,7
+TS,ttf_cnt,,Rafael Rosa,2
+TS,ttf_cnt,,Rodrigo Gomes,1
+TS,ttf_cnt,,Samantha Nel,3
+TS,ttf_cnt,,Simon  Siew,2
+TS,ttf_cnt,,Tina Aramouni,8
+TS,ttf_cnt,,Tinatini Karaulashvili,55
+TS,ttf_cnt,,Valeriia Yurykova,3
+TS,ttf_cnt,,Vladimir Stankovic,3
+TS,ttf_cnt,,Zarina Amanbekova,56
+TS,ttf_cnt,,Zelimir Stajcic,1
+TS,ttf_sum,,Adelya Khakimova,369
+TS,ttf_sum,,Adis Prepoljac,0
+TS,ttf_sum,,Akash Singh,1490
+TS,ttf_sum,,Aleksandra Markovic,455
+TS,ttf_sum,,Aleksandra Vistac,411
+TS,ttf_sum,,Alexandra Richiteanu,142
+TS,ttf_sum,,Alisa Liddell,8010
+TS,ttf_sum,,Andreas Weins,146
+TS,ttf_sum,,Anna Tyulpanova,28
+TS,ttf_sum,,Chantal Bozkurt,14232
+TS,ttf_sum,,Chené Elliot,116
+TS,ttf_sum,,Danish Shams,39
+TS,ttf_sum,,Dolores Palotas,35474
+TS,ttf_sum,,Eduardo Moral,137
+TS,ttf_sum,,Ejla Suljcic,71
+TS,ttf_sum,,Elena Gjorgieva,46
+TS,ttf_sum,,Elena Petrovska,174
+TS,ttf_sum,,Evagelina Rapanaki,1571
+TS,ttf_sum,,Filip Nogowski,957
+TS,ttf_sum,,Fuad Safarov,2335
+TS,ttf_sum,,Gustavo Loureiro Castro,55
+TS,ttf_sum,,Jan Dokulil,348
+TS,ttf_sum,,Jelena  Lacmanovic,1497
+TS,ttf_sum,,Jonaed Iqbal,842
+TS,ttf_sum,,Ketevan Khorava,10560
+TS,ttf_sum,,Lejla Silva,43
+TS,ttf_sum,,Lisa Gargulinska,1125
+TS,ttf_sum,,Maria Desiree Gerbore,287
+TS,ttf_sum,,Marina Lazarevic,222
+TS,ttf_sum,,Marina Nikolic,362
+TS,ttf_sum,,Mark Kandaurov,268
+TS,ttf_sum,,Mateja Jokovic,362
+TS,ttf_sum,,Meho Saracevic,203
+TS,ttf_sum,,Milica Veselinovic,260
+TS,ttf_sum,,Nare Avetisyan,24
+TS,ttf_sum,,Nenad Skoko,228
+TS,ttf_sum,,Niki Vokalkova,439
+TS,ttf_sum,,Rafael Rosa,259
+TS,ttf_sum,,Rodrigo Gomes,65
+TS,ttf_sum,,Samantha Nel,57
+TS,ttf_sum,,Simon  Siew,127
+TS,ttf_sum,,Tina Aramouni,630
+TS,ttf_sum,,Tinatini Karaulashvili,10095
+TS,ttf_sum,,Valeriia Yurykova,163
+TS,ttf_sum,,Vladimir Stankovic,1113
+TS,ttf_sum,,Zarina Amanbekova,9276
+TS,ttf_sum,,Zelimir Stajcic,161

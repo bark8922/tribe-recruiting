@@ -29,8 +29,12 @@
 
 WITH
 anchor AS (
+  -- cur_wk = Sunday of the CURRENT ISO week (inclusive). PBI's "Last 12 weeks"
+  -- rolling window includes the current week — not excludes it. Previous
+  -- DATEADD('day', -1, …) landed on last Sunday, dropping current-week events
+  -- and causing -12 screens for Jonaed (Parloa), -4 for Chené (Glovo), etc.
   SELECT
-    DATEADD('day', -1, DATE_TRUNC('week', CURRENT_DATE()))    AS cur_wk,
+    DATEADD('day',  6, DATE_TRUNC('week', CURRENT_DATE()))    AS cur_wk,
     DATEADD('week', -12, DATE_TRUNC('week', CURRENT_DATE()))  AS wk12
 ),
 cjc AS (

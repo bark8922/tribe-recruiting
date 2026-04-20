@@ -812,9 +812,13 @@ const WBRTab = ({ data }) => {
                 //   - % Contacted to Positive Response: green ≥20% (Gustavo 22%, Nare 23%, Jovana 39% green; Marina 18% red)
                 //   - % Screens to Actual Screen      : green ≥60% (Nare 61%, Zelimir 89% green; Andrea 55% red)
                 //   - % Actual Screens to ATS         : green ≥50% (Milica 50%, Valeriia 51% green; Naledi 43%, Mia 45% red)
+                // Tailwind v2 classes (dashboard loads tailwind@2.2.19 via CDN)
+                // — `/40` opacity syntax is v3+ and silently renders as no-op here.
                 const cell = (v, greenAt) => {
                   if (v == null) return 'text-gray-500';
-                  return v >= greenAt ? 'bg-green-700/40 text-white' : 'bg-red-700/40 text-white';
+                  return v >= greenAt
+                    ? 'bg-green-700 bg-opacity-40 text-white font-semibold'
+                    : 'bg-red-700 bg-opacity-40 text-white font-semibold';
                 };
                 return (
                   <tr key={idx} className={idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'}>

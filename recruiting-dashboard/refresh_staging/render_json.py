@@ -310,6 +310,39 @@ def load_ta_weekly_roster() -> dict[str, list[str]]:
     return {wk: sorted(v) for wk, v in out.items()}
 
 
+def load_ta_weekly_notes() -> list[dict]:
+    """Parse wbr_ta_weekly_note.csv → list of {client, ta, year, week, reasoning, comment}
+    rows, one per Client/TA/Week. Matches the shape App.jsx's taDetail lookup
+    uses: it searches for n.ta === t.ta && n.week === selectedWeek (selectedWeek
+    is the int week number). Only 2026 rows included.
+
+    This REPLACES the stale ta_weekly_notes carried forward from the live JSON
+    — without this, new weeks (w16, w17, ...) show no comments in TA Detail
+    until the separate Bubble/n8n pipeline catches up to refresh the PBI
+    dashboard_data.json. With this, the Snowflake-side JSON reflects the
+    current state of Andy's Google Sheet immediately."""
+    out: list[dict] = []
+    try:
+        f = WBR_TA_WEEKLY_NOTE_CSV.open()
+    except FileNotFoundError:
+        return out
+    with f:
+        for row in csv.DictReader(f):
+            wk_str = row.get("Week", "")
+            m = re.match(r"(\d{4})W(\d+)", wk_str)
+            if not m or m.group(1) != "2026":
+                continue
+            out.append({
+                "client": (row.get("Client") or "").strip(),
+                "ta": (row.get("TA") or "").strip(),
+                "year": 2026,
+                "week": int(m.group(2)),
+                "reasoning": (row.get("Reasoning") or "").strip() or None,
+                "comment": (row.get("Comment") or "").strip() or None,
+            })
+    return out
+
+
 def load_ts_weekly_roster() -> dict[str, list[str]]:
     """Parse wbr_ts_weekly.csv → {wN: ["TS1", "TS2", ...]} per week.
     Uses RAW TS names from the sheet. Only 2026 weeks included."""
@@ -776,6 +809,7 @@ def main():
     # Per-week rosters from TA Weekly Note / TS Weekly Note
     ta_weekly_roster = load_ta_weekly_roster()
     ts_weekly_roster = load_ts_weekly_roster()
+    ta_weekly_notes_from_csv = load_ta_weekly_notes()
 
     # Rebuild ts_weekly from CSV — the live JSON's version may be stale and
     # missing former TSes from earlier weeks (e.g. Ejla Suljcic w1 only).
@@ -914,6 +948,13 @@ def main():
     out["targets"] = existing_targets  # includes synthesized entries
     if ts_weekly_from_csv:
         out["ts_weekly"] = ts_weekly_from_csv  # rebuilt from CSV — includes all former TSes
+    if ta_weekly_notes_from_csv:
+        # Rebuilt from the Google-Sheet-synced CSV so new-week comments
+        # (e.g. w16 rolled in by Andy) appear in TA Detail immediately.
+        # Without this, ta_weekly_notes came from the live JSON which lags
+        # behind Andy's sheet by however long the Bubble/n8n PBI refresh takes.
+        print(f"  ta_weekly_notes rebuilt from CSV: {len(ta_weekly_notes_from_csv)} entries")
+        out["ta_weekly_notes"] = ta_weekly_notes_from_csv
 
     out["wbr_actuals"] = wbr_actuals
     out["weekly_trend"] = weekly_trend

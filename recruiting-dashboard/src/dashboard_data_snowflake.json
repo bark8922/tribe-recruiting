@@ -6974,6 +6974,102 @@
       "contacted_target": null,
       "reasoning": null,
       "comment": "good week , wrapping up a few roles \"150 is his target\" working with a ne TA"
+    },
+    {
+      "ts": "Gustavo Loureiro Castro",
+      "year": 2026,
+      "week": 16,
+      "contacted_target": 80,
+      "reasoning": null,
+      "comment": null
+    },
+    {
+      "ts": "Andrea Akovic",
+      "year": 2026,
+      "week": 16,
+      "contacted_target": 200,
+      "reasoning": null,
+      "comment": null
+    },
+    {
+      "ts": "Nare Avetisyan",
+      "year": 2026,
+      "week": 16,
+      "contacted_target": 180,
+      "reasoning": null,
+      "comment": null
+    },
+    {
+      "ts": "Valeriia Yurykova",
+      "year": 2026,
+      "week": 16,
+      "contacted_target": 70,
+      "reasoning": null,
+      "comment": null
+    },
+    {
+      "ts": "Elena Petrovska",
+      "year": 2026,
+      "week": 16,
+      "contacted_target": null,
+      "reasoning": null,
+      "comment": null
+    },
+    {
+      "ts": "Milica Veselinovic",
+      "year": 2026,
+      "week": 16,
+      "contacted_target": null,
+      "reasoning": null,
+      "comment": null
+    },
+    {
+      "ts": "Rodrigo Gomes",
+      "year": 2026,
+      "week": 16,
+      "contacted_target": 80,
+      "reasoning": null,
+      "comment": "Ramping up the projects with Vlad and Alex. RS number should be higher next week."
+    },
+    {
+      "ts": "Mia Gjorgievska",
+      "year": 2026,
+      "week": 16,
+      "contacted_target": null,
+      "reasoning": null,
+      "comment": null
+    },
+    {
+      "ts": "Marina Lazarevic",
+      "year": 2026,
+      "week": 16,
+      "contacted_target": 150,
+      "reasoning": null,
+      "comment": null
+    },
+    {
+      "ts": "Naledi Ngwenya",
+      "year": 2026,
+      "week": 16,
+      "contacted_target": 75,
+      "reasoning": null,
+      "comment": "Wrapping up the project with FTAPI, lots of unresponsiveness> dragging down the process > candidates dropping out"
+    },
+    {
+      "ts": "Jovana Drakula",
+      "year": 2026,
+      "week": 16,
+      "contacted_target": null,
+      "reasoning": null,
+      "comment": null
+    },
+    {
+      "ts": "Zelimir Stajcic",
+      "year": 2026,
+      "week": 16,
+      "contacted_target": null,
+      "reasoning": null,
+      "comment": null
     }
   ],
   "ta_weekly_notes": [
@@ -20939,6 +21035,47 @@
       "Wolt North, Baltics & Benelux|Tina Aramouni",
       "Wolt Tech|Ejla Suljcic",
       "Wolt Tech|Simon Siew"
+    ],
+    "w16": [
+      "Aiven|Fuad Safarov",
+      "Aiven|Vladimir Stankovic",
+      "Aviv|Alexandra Richiteanu",
+      "Aviv|Anna Tyulpanova",
+      "Aviv|Elena Gjorgieva",
+      "Aviv|Iryna Dyda",
+      "Aviv|Jovana Drakula",
+      "Aviv|Kristina Colovic",
+      "Aviv|Lejla Silva",
+      "Aviv|Wladyslaw Gadomski",
+      "DoorDash|Akash Singh",
+      "DoorDash|Danish Shams",
+      "DoorDash|Nidhi Raina",
+      "Enam|Aleksandra Vistac",
+      "Eucalyptus|Alisa Liddell",
+      "Eucalyptus|Dušan Špica",
+      "Eucalyptus|Meho Saracevic",
+      "Glovo|Chené Elliot",
+      "Glovo|Samantha Nel",
+      "Nexi|Adis Prepoljac",
+      "Nexi|Maria Desiree Gerbore",
+      "Parloa|Filip Nogowski",
+      "Parloa|Jonaed Iqbal",
+      "PhantomBuster|Mateja Jokovic",
+      "Scorewarrior|Ekaterina Boyprav",
+      "Taxfix|Marina Nikolic",
+      "Wolt Central & South|Niki Vokalkova",
+      "Wolt Germany|Lisa Gargulinska",
+      "Wolt HQ|Elena Petrovska",
+      "Wolt HQ|Milica Veselinovic",
+      "Wolt HQ|Nenad Skoko",
+      "Wolt HQ|Zelimir Stajcic",
+      "Wolt Market|Jan Dokulil",
+      "Wolt Market|Joanna Bober",
+      "Wolt North, Baltics & Benelux|Adelya Khakimova",
+      "Wolt North, Baltics & Benelux|Jelena Lacmanovic",
+      "Wolt North, Baltics & Benelux|Tina Aramouni",
+      "Wolt Tech|Ejla Suljcic",
+      "Wolt Tech|Simon Siew"
     ]
   },
   "wbr_ts_weekly_roster": {
@@ -21147,6 +21284,20 @@
       "Zelimir Stajcic"
     ],
     "w15": [
+      "Andrea Akovic",
+      "Elena Petrovska",
+      "Gustavo Loureiro Castro",
+      "Jovana Drakula",
+      "Marina Lazarevic",
+      "Mia Gjorgievska",
+      "Milica Veselinovic",
+      "Naledi Ngwenya",
+      "Nare Avetisyan",
+      "Rodrigo Gomes",
+      "Valeriia Yurykova",
+      "Zelimir Stajcic"
+    ],
+    "w16": [
       "Andrea Akovic",
       "Elena Petrovska",
       "Gustavo Loureiro Castro",

@@ -447,6 +447,12 @@ const WBRTab = ({ data }) => {
       const jobs = weeklyJobs || data.ts_jobs?.[tsName] || {};
       const hires12w = data.ts_hires_12w?.[tsName] || 0;
 
+      // Derived targets: the WBR TS Weekly Note sheet only has a `Contacted Target`
+      // column. PBI shows colors on Recruiter Screens / Actual Screens / ATS
+      // too — derived from the same per-TS target via typical funnel ratios.
+      // TSes without an explicit contacted target get a 100 default so cells
+      // still receive a color (matches PBI's behaviour of colouring every cell).
+      const contactedTarget = Number(t.contacted_target) || 100;
       return {
         ...t,
         contacted: actuals.contacted || 0,
@@ -459,6 +465,11 @@ const WBRTab = ({ data }) => {
         num_tas: jobs.num_tas || 0,
         ta_names: jobs.ta_names || '',
         hires_12w: hires12w,
+        contacted_target: t.contacted_target, // keep raw for display (blank if null)
+        recruiter_screens_target: Math.round(contactedTarget * 0.15),
+        actual_screens_target:    Math.round(contactedTarget * 0.10),
+        ats_target:               Math.round(contactedTarget * 0.05),
+        _contacted_color_target:  contactedTarget, // always non-null for getCellStyle
       };
     }).filter((r) => {
       const anyActivity = (r.contacted||0) + (r.recruiter_screens||0) + (r.actual_screens||0)
@@ -737,13 +748,19 @@ const WBRTab = ({ data }) => {
                   <tr key={idx} className={idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'}>
                     <td className="text-left px-2 py-2 text-white font-medium">{row.ts}</td>
                     <td className="text-center px-2 py-2 text-gray-300">{row.hires_12w}</td>
-                    <td className="text-center px-2 py-2" style={getCellStyle(row.contacted, row.contacted_target)}>
+                    <td className="text-center px-2 py-2" style={getCellStyle(row.contacted, row._contacted_color_target)}>
                       {row.contacted}
                     </td>
                     <td className="text-center px-2 py-2 text-gray-300">{row.contacted_target || '—'}</td>
-                    <td className="text-center px-2 py-2 text-gray-300">{row.recruiter_screens}</td>
-                    <td className="text-center px-2 py-2 text-gray-300">{row.actual_screens}</td>
-                    <td className="text-center px-2 py-2 text-gray-300">{row.ats}</td>
+                    <td className="text-center px-2 py-2" style={getCellStyle(row.recruiter_screens, row.recruiter_screens_target)}>
+                      {row.recruiter_screens}
+                    </td>
+                    <td className="text-center px-2 py-2" style={getCellStyle(row.actual_screens, row.actual_screens_target)}>
+                      {row.actual_screens}
+                    </td>
+                    <td className="text-center px-2 py-2" style={getCellStyle(row.ats, row.ats_target)}>
+                      {row.ats}
+                    </td>
                     <td className="text-center px-2 py-2 text-gray-300">{row.num_jobs}</td>
                     <td className="text-center px-2 py-2 text-gray-300">{row.num_tas}</td>
                     <td className="text-left px-2 py-2 text-gray-400 text-xs">{row.ta_names || '—'}</td>

@@ -25126,96 +25126,96 @@
   "ts_jobs_weekly": {
     "w2": {
       "Adelya Khakimova": {
-        "num_jobs": 9,
+        "num_jobs": 8,
         "num_tas": 0,
         "ta_names": ""
       },
       "Akash Singh": {
-        "num_jobs": 3,
+        "num_jobs": 1,
         "num_tas": 0,
         "ta_names": ""
       },
-      "Andrea Akovic": {
-        "num_jobs": 14,
-        "num_tas": 1,
-        "ta_names": "Lejla Silva"
+      "Iryna Dyda": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
       },
-      "Gustavo Loureiro Castro": {
-        "num_jobs": 3,
+      "Jan Dokulil": {
+        "num_jobs": 1,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Lisa Gargulinska": {
+        "num_jobs": 2,
         "num_tas": 0,
         "ta_names": ""
       },
       "Marina Lazarevic": {
-        "num_jobs": 5,
-        "num_tas": 2,
-        "ta_names": "Aleksandra Vistac, Meho Saracevic"
-      },
-      "Nare Avetisyan": {
-        "num_jobs": 1,
-        "num_tas": 1,
-        "ta_names": "Ekaterina Boyprav"
-      },
-      "Rodrigo Gomes": {
         "num_jobs": 2,
         "num_tas": 1,
-        "ta_names": "Eduardo Moral"
+        "ta_names": "Aleksandra Vistac"
+      },
+      "Meho Saracevic": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Zelimir Stajcic": {
-        "num_jobs": 3,
+        "num_jobs": 2,
         "num_tas": 0,
         "ta_names": ""
       }
     },
     "w3": {
       "Adelya Khakimova": {
-        "num_jobs": 9,
+        "num_jobs": 2,
         "num_tas": 0,
         "ta_names": ""
       },
       "Akash Singh": {
-        "num_jobs": 3,
+        "num_jobs": 1,
         "num_tas": 0,
         "ta_names": ""
       },
-      "Andrea Akovic": {
-        "num_jobs": 11,
-        "num_tas": 1,
-        "ta_names": "Lejla Silva"
+      "Ejla Suljcic": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Elena Petrovska": {
-        "num_jobs": 7,
-        "num_tas": 1,
-        "ta_names": "Marina Nikolic"
+        "num_jobs": 1,
+        "num_tas": 0,
+        "ta_names": ""
       },
-      "Gustavo Loureiro Castro": {
-        "num_jobs": 3,
+      "Jan Dokulil": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Lisa Gargulinska": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Maria Desiree Gerbore": {
+        "num_jobs": 2,
         "num_tas": 0,
         "ta_names": ""
       },
       "Marina Lazarevic": {
-        "num_jobs": 9,
-        "num_tas": 3,
-        "ta_names": "Aleksandra Vistac, Alexandra Richiteanu, Meho Saracevic"
+        "num_jobs": 2,
+        "num_tas": 1,
+        "ta_names": "Aleksandra Vistac"
       },
-      "Milica Veselinovic": {
-        "num_jobs": 6,
+      "Meho Saracevic": {
+        "num_jobs": 3,
         "num_tas": 0,
         "ta_names": ""
       },
-      "Nare Avetisyan": {
-        "num_jobs": 2,
-        "num_tas": 1,
-        "ta_names": "Ekaterina Boyprav"
-      },
-      "Rodrigo Gomes": {
-        "num_jobs": 2,
-        "num_tas": 1,
-        "ta_names": "Eduardo Moral"
-      },
-      "Valeriia Yurykova": {
-        "num_jobs": 2,
-        "num_tas": 2,
-        "ta_names": "Ekaterina Boyprav, Marina Nikolic"
+      "Nenad Skoko": {
+        "num_jobs": 1,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Zelimir Stajcic": {
         "num_jobs": 2,
@@ -25225,7 +25225,7 @@
     },
     "w4": {
       "Adelya Khakimova": {
-        "num_jobs": 6,
+        "num_jobs": 5,
         "num_tas": 0,
         "ta_names": ""
       },
@@ -25235,64 +25235,74 @@
         "ta_names": "Lisa Gargulinska"
       },
       "Akash Singh": {
-        "num_jobs": 2,
-        "num_tas": 0,
-        "ta_names": ""
-      },
-      "Andrea Akovic": {
-        "num_jobs": 10,
-        "num_tas": 1,
-        "ta_names": "Lejla Silva"
-      },
-      "Elena Petrovska": {
-        "num_jobs": 7,
-        "num_tas": 1,
-        "ta_names": "Marina Nikolic"
-      },
-      "Gustavo Loureiro Castro": {
-        "num_jobs": 3,
-        "num_tas": 1,
-        "ta_names": "Filip Nogowski"
-      },
-      "Jovana Drakula": {
         "num_jobs": 1,
         "num_tas": 0,
         "ta_names": ""
       },
-      "Marina Lazarevic": {
-        "num_jobs": 6,
-        "num_tas": 3,
-        "ta_names": "Aleksandra Vistac, Alexandra Richiteanu, Meho Saracevic"
+      "Ejla Suljcic": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
       },
-      "Milica Veselinovic": {
-        "num_jobs": 8,
+      "Elena Petrovska": {
+        "num_jobs": 1,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Gustavo Loureiro Castro": {
+        "num_jobs": 1,
         "num_tas": 1,
-        "ta_names": "Kasia Bieńczyk"
+        "ta_names": "Filip Nogowski"
+      },
+      "Jan Dokulil": {
+        "num_jobs": 5,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Lisa Gargulinska": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Maria Desiree Gerbore": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Marina Lazarevic": {
+        "num_jobs": 2,
+        "num_tas": 1,
+        "ta_names": "Aleksandra Vistac"
+      },
+      "Meho Saracevic": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Nare Avetisyan": {
-        "num_jobs": 6,
-        "num_tas": 2,
-        "ta_names": "Ekaterina Boyprav, Marina Nikolic"
-      },
-      "Rodrigo Gomes": {
         "num_jobs": 2,
         "num_tas": 1,
-        "ta_names": "Eduardo Moral"
+        "ta_names": "Ekaterina Boyprav"
+      },
+      "Nenad Skoko": {
+        "num_jobs": 1,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Valeriia Yurykova": {
-        "num_jobs": 10,
-        "num_tas": 3,
-        "ta_names": "Jelena  Lacmanovic, Marina Nikolic, Nenad Skoko"
+        "num_jobs": 3,
+        "num_tas": 2,
+        "ta_names": "Jelena  Lacmanovic, Nenad Skoko"
       },
       "Zelimir Stajcic": {
-        "num_jobs": 2,
+        "num_jobs": 1,
         "num_tas": 0,
         "ta_names": ""
       }
     },
     "w5": {
       "Adelya Khakimova": {
-        "num_jobs": 6,
+        "num_jobs": 5,
         "num_tas": 0,
         "ta_names": ""
       },
@@ -25302,71 +25312,81 @@
         "ta_names": "Andreas Weins, Lisa Gargulinska"
       },
       "Akash Singh": {
+        "num_jobs": 1,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Ejla Suljcic": {
         "num_jobs": 3,
         "num_tas": 0,
         "ta_names": ""
       },
-      "Andrea Akovic": {
-        "num_jobs": 16,
-        "num_tas": 1,
-        "ta_names": "Lejla Silva"
-      },
-      "Elena Petrovska": {
-        "num_jobs": 9,
-        "num_tas": 1,
-        "ta_names": "Marina Nikolic"
-      },
       "Gustavo Loureiro Castro": {
-        "num_jobs": 4,
+        "num_jobs": 2,
         "num_tas": 1,
         "ta_names": "Filip Nogowski"
       },
+      "Jan Dokulil": {
+        "num_jobs": 5,
+        "num_tas": 0,
+        "ta_names": ""
+      },
       "Jovana Drakula": {
-        "num_jobs": 3,
+        "num_jobs": 1,
         "num_tas": 1,
         "ta_names": "Ella Darie"
       },
+      "Lisa Gargulinska": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Maria Desiree Gerbore": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
+      },
       "Marina Lazarevic": {
-        "num_jobs": 10,
-        "num_tas": 5,
-        "ta_names": "Aleksandra Vistac, Alexandra Richiteanu, Anna Tyulpanova, Kristina Colovic, Simon  Siew"
-      },
-      "Milica Veselinovic": {
-        "num_jobs": 6,
-        "num_tas": 1,
-        "ta_names": "Jelena  Lacmanovic"
-      },
-      "Nare Avetisyan": {
-        "num_jobs": 6,
-        "num_tas": 4,
-        "ta_names": "Anna Tyulpanova, Ekaterina Boyprav, Marina Nikolic, Wladyslaw Gadomski"
-      },
-      "Rodrigo Gomes": {
         "num_jobs": 2,
         "num_tas": 1,
-        "ta_names": "Eduardo Moral"
+        "ta_names": "Anna Tyulpanova"
+      },
+      "Meho Saracevic": {
+        "num_jobs": 4,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Milica Veselinovic": {
+        "num_jobs": 1,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Nare Avetisyan": {
+        "num_jobs": 2,
+        "num_tas": 2,
+        "ta_names": "Anna Tyulpanova, Wladyslaw Gadomski"
       },
       "Valeriia Yurykova": {
-        "num_jobs": 12,
-        "num_tas": 4,
-        "ta_names": "Alexandra Richiteanu, Jelena  Lacmanovic, Marina Nikolic, Nenad Skoko"
-      },
-      "Zelimir Stajcic": {
-        "num_jobs": 4,
+        "num_jobs": 1,
         "num_tas": 1,
         "ta_names": "Jelena  Lacmanovic"
+      },
+      "Zelimir Stajcic": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
       }
     },
     "w6": {
       "Adelya Khakimova": {
-        "num_jobs": 7,
+        "num_jobs": 5,
         "num_tas": 0,
         "ta_names": ""
       },
       "Adis Prepoljac": {
-        "num_jobs": 5,
-        "num_tas": 3,
-        "ta_names": "Andreas Weins, Ella Darie, Lisa Gargulinska"
+        "num_jobs": 4,
+        "num_tas": 2,
+        "ta_names": "Andreas Weins, Lisa Gargulinska"
       },
       "Akash Singh": {
         "num_jobs": 1,
@@ -25374,64 +25394,84 @@
         "ta_names": ""
       },
       "Andrea Akovic": {
-        "num_jobs": 4,
+        "num_jobs": 3,
         "num_tas": 1,
         "ta_names": "Naledi Ngwenya"
       },
+      "Ejla Suljcic": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
+      },
       "Elena Petrovska": {
-        "num_jobs": 9,
-        "num_tas": 1,
-        "ta_names": "Aleksandra Vistac"
+        "num_jobs": 1,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Gustavo Loureiro Castro": {
-        "num_jobs": 8,
+        "num_jobs": 3,
         "num_tas": 1,
         "ta_names": "Filip Nogowski"
       },
-      "Jovana Drakula": {
-        "num_jobs": 6,
-        "num_tas": 3,
-        "ta_names": "Chené Elliot, Ella Darie, Simon  Siew"
+      "Jan Dokulil": {
+        "num_jobs": 5,
+        "num_tas": 0,
+        "ta_names": ""
       },
-      "Marina Lazarevic": {
-        "num_jobs": 8,
-        "num_tas": 4,
-        "ta_names": "Aleksandra Vistac, Anna Tyulpanova, Ella Darie, Kristina Colovic"
+      "Jovana Drakula": {
+        "num_jobs": 2,
+        "num_tas": 2,
+        "ta_names": "Ella Darie, Simon  Siew"
+      },
+      "Lisa Gargulinska": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Maria Desiree Gerbore": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Meho Saracevic": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Milica Veselinovic": {
-        "num_jobs": 9,
-        "num_tas": 1,
-        "ta_names": "Jelena  Lacmanovic"
+        "num_jobs": 1,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Naledi Ngwenya": {
-        "num_jobs": 3,
-        "num_tas": 2,
-        "ta_names": "Alexandra Richiteanu, Lejla Silva"
+        "num_jobs": 2,
+        "num_tas": 1,
+        "ta_names": "Alexandra Richiteanu"
       },
       "Nare Avetisyan": {
-        "num_jobs": 7,
-        "num_tas": 4,
-        "ta_names": "Anna Tyulpanova, Ekaterina Boyprav, Marina Nikolic, Wladyslaw Gadomski"
-      },
-      "Rodrigo Gomes": {
         "num_jobs": 3,
         "num_tas": 2,
-        "ta_names": "Eduardo Moral, Nenad Skoko"
+        "ta_names": "Anna Tyulpanova, Wladyslaw Gadomski"
+      },
+      "Nenad Skoko": {
+        "num_jobs": 1,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Valeriia Yurykova": {
-        "num_jobs": 12,
-        "num_tas": 4,
-        "ta_names": "Ella Darie, Jelena  Lacmanovic, Marina Nikolic, Nenad Skoko"
+        "num_jobs": 1,
+        "num_tas": 1,
+        "ta_names": "Nenad Skoko"
       },
       "Zelimir Stajcic": {
-        "num_jobs": 3,
+        "num_jobs": 2,
         "num_tas": 0,
         "ta_names": ""
       }
     },
     "w7": {
       "Adelya Khakimova": {
-        "num_jobs": 5,
+        "num_jobs": 4,
         "num_tas": 0,
         "ta_names": ""
       },
@@ -25441,59 +25481,104 @@
         "ta_names": "Chantal Bozkurt, Lisa Gargulinska"
       },
       "Akash Singh": {
-        "num_jobs": 3,
+        "num_jobs": 1,
         "num_tas": 0,
         "ta_names": ""
       },
       "Andrea Akovic": {
-        "num_jobs": 5,
+        "num_jobs": 3,
         "num_tas": 1,
         "ta_names": "Naledi Ngwenya"
       },
+      "Chené Elliot": {
+        "num_jobs": 1,
+        "num_tas": 1,
+        "ta_names": "Ella Darie"
+      },
+      "Ejla Suljcic": {
+        "num_jobs": 6,
+        "num_tas": 0,
+        "ta_names": ""
+      },
       "Elena Petrovska": {
-        "num_jobs": 8,
+        "num_jobs": 1,
         "num_tas": 0,
         "ta_names": ""
       },
       "Gustavo Loureiro Castro": {
-        "num_jobs": 7,
+        "num_jobs": 2,
         "num_tas": 1,
         "ta_names": "Filip Nogowski"
       },
-      "Marina Lazarevic": {
-        "num_jobs": 8,
-        "num_tas": 4,
-        "ta_names": "Aleksandra Vistac, Anna Tyulpanova, Kristina Colovic, Meho Saracevic"
+      "Iryna Dyda": {
+        "num_jobs": 1,
+        "num_tas": 1,
+        "ta_names": "Ella Darie"
+      },
+      "Jan Dokulil": {
+        "num_jobs": 7,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Lisa Gargulinska": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Maria Desiree Gerbore": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Marina Nikolic": {
+        "num_jobs": 1,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Mateja Jokovic": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Meho Saracevic": {
+        "num_jobs": 4,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Milica Veselinovic": {
-        "num_jobs": 8,
-        "num_tas": 1,
-        "ta_names": "Jelena  Lacmanovic"
+        "num_jobs": 1,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Naledi Ngwenya": {
-        "num_jobs": 8,
-        "num_tas": 2,
-        "ta_names": "Alexandra Richiteanu, Lejla Silva"
+        "num_jobs": 6,
+        "num_tas": 1,
+        "ta_names": "Alexandra Richiteanu"
       },
       "Nare Avetisyan": {
-        "num_jobs": 7,
-        "num_tas": 4,
-        "ta_names": "Anna Tyulpanova, Ekaterina Boyprav, Marina Nikolic, Wladyslaw Gadomski"
-      },
-      "Rodrigo Gomes": {
         "num_jobs": 3,
         "num_tas": 2,
-        "ta_names": "Eduardo Moral, Nenad Skoko"
+        "ta_names": "Anna Tyulpanova, Wladyslaw Gadomski"
+      },
+      "Nenad Skoko": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Samantha Nel": {
+        "num_jobs": 1,
+        "num_tas": 1,
+        "ta_names": "Ella Darie"
       },
       "Valeriia Yurykova": {
-        "num_jobs": 13,
-        "num_tas": 4,
-        "ta_names": "Ella Darie, Jelena  Lacmanovic, Marina Nikolic, Nenad Skoko"
+        "num_jobs": 2,
+        "num_tas": 2,
+        "ta_names": "Ella Darie, Jelena  Lacmanovic"
       },
       "Zelimir Stajcic": {
-        "num_jobs": 3,
-        "num_tas": 1,
-        "ta_names": "Akash Singh"
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
       }
     },
     "w8": {
@@ -25502,65 +25587,100 @@
         "num_tas": 0,
         "ta_names": ""
       },
-      "Adis Prepoljac": {
-        "num_jobs": 2,
-        "num_tas": 1,
-        "ta_names": "Lisa Gargulinska"
-      },
       "Akash Singh": {
-        "num_jobs": 3,
+        "num_jobs": 1,
         "num_tas": 0,
         "ta_names": ""
       },
       "Andrea Akovic": {
-        "num_jobs": 3,
+        "num_jobs": 1,
         "num_tas": 1,
         "ta_names": "Naledi Ngwenya"
       },
+      "Chené Elliot": {
+        "num_jobs": 1,
+        "num_tas": 1,
+        "ta_names": "Ella Darie"
+      },
+      "Ejla Suljcic": {
+        "num_jobs": 4,
+        "num_tas": 0,
+        "ta_names": ""
+      },
       "Elena Petrovska": {
-        "num_jobs": 8,
+        "num_jobs": 1,
         "num_tas": 0,
         "ta_names": ""
       },
       "Gustavo Loureiro Castro": {
-        "num_jobs": 8,
+        "num_jobs": 3,
         "num_tas": 2,
         "ta_names": "Ella Darie, Filip Nogowski"
+      },
+      "Iryna Dyda": {
+        "num_jobs": 2,
+        "num_tas": 1,
+        "ta_names": "Ella Darie"
+      },
+      "Jan Dokulil": {
+        "num_jobs": 4,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Jovana Drakula": {
         "num_jobs": 5,
         "num_tas": 0,
         "ta_names": ""
       },
-      "Marina Lazarevic": {
-        "num_jobs": 6,
-        "num_tas": 3,
-        "ta_names": "Aleksandra Vistac, Anna Tyulpanova, Kristina Colovic"
+      "Lisa Gargulinska": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Maria Desiree Gerbore": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Marina Nikolic": {
+        "num_jobs": 1,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Mateja Jokovic": {
+        "num_jobs": 5,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Meho Saracevic": {
+        "num_jobs": 4,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Milica Veselinovic": {
-        "num_jobs": 7,
-        "num_tas": 1,
-        "ta_names": "Jelena  Lacmanovic"
+        "num_jobs": 1,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Naledi Ngwenya": {
-        "num_jobs": 8,
-        "num_tas": 2,
-        "ta_names": "Alexandra Richiteanu, Lejla Silva"
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Nare Avetisyan": {
-        "num_jobs": 8,
-        "num_tas": 3,
-        "ta_names": "Anna Tyulpanova, Kristina Colovic, Wladyslaw Gadomski"
+        "num_jobs": 4,
+        "num_tas": 2,
+        "ta_names": "Anna Tyulpanova, Wladyslaw Gadomski"
       },
-      "Rodrigo Gomes": {
-        "num_jobs": 3,
-        "num_tas": 1,
-        "ta_names": "Eduardo Moral"
+      "Nenad Skoko": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Valeriia Yurykova": {
-        "num_jobs": 15,
-        "num_tas": 3,
-        "ta_names": "Jelena  Lacmanovic, Marina Nikolic, Nenad Skoko"
+        "num_jobs": 4,
+        "num_tas": 2,
+        "ta_names": "Jelena  Lacmanovic, Nenad Skoko"
       },
       "Zelimir Stajcic": {
         "num_jobs": 3,
@@ -25574,60 +25694,100 @@
         "num_tas": 0,
         "ta_names": ""
       },
-      "Adis Prepoljac": {
-        "num_jobs": 3,
-        "num_tas": 1,
-        "ta_names": "Lisa Gargulinska"
-      },
       "Akash Singh": {
-        "num_jobs": 3,
+        "num_jobs": 1,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Ejla Suljcic": {
+        "num_jobs": 5,
         "num_tas": 0,
         "ta_names": ""
       },
       "Elena Petrovska": {
-        "num_jobs": 10,
-        "num_tas": 2,
-        "ta_names": "Ella Darie, Marina Nikolic"
+        "num_jobs": 3,
+        "num_tas": 1,
+        "ta_names": "Ella Darie"
       },
       "Gustavo Loureiro Castro": {
-        "num_jobs": 10,
-        "num_tas": 2,
-        "ta_names": "Ella Darie, Filip Nogowski"
+        "num_jobs": 2,
+        "num_tas": 1,
+        "ta_names": "Ella Darie"
+      },
+      "Iryna Dyda": {
+        "num_jobs": 1,
+        "num_tas": 1,
+        "ta_names": "Ella Darie"
+      },
+      "Jan Dokulil": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Jovana Drakula": {
-        "num_jobs": 6,
+        "num_jobs": 4,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Lisa Gargulinska": {
+        "num_jobs": 4,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Maria Desiree Gerbore": {
+        "num_jobs": 2,
         "num_tas": 0,
         "ta_names": ""
       },
       "Marina Lazarevic": {
-        "num_jobs": 5,
-        "num_tas": 3,
-        "ta_names": "Aleksandra Vistac, Alexandra Richiteanu, Kristina Colovic"
+        "num_jobs": 1,
+        "num_tas": 1,
+        "ta_names": "Alexandra Richiteanu"
+      },
+      "Marina Nikolic": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Mateja Jokovic": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Meho Saracevic": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Milica Veselinovic": {
-        "num_jobs": 5,
+        "num_jobs": 2,
         "num_tas": 0,
         "ta_names": ""
       },
       "Naledi Ngwenya": {
-        "num_jobs": 5,
-        "num_tas": 1,
-        "ta_names": "Alexandra Richiteanu"
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Nare Avetisyan": {
-        "num_jobs": 10,
-        "num_tas": 5,
-        "ta_names": "Anna Tyulpanova, Ekaterina Boyprav, Kristina Colovic, Lejla Silva, Wladyslaw Gadomski"
+        "num_jobs": 3,
+        "num_tas": 2,
+        "ta_names": "Anna Tyulpanova, Wladyslaw Gadomski"
       },
-      "Rodrigo Gomes": {
-        "num_jobs": 2,
-        "num_tas": 1,
-        "ta_names": "Eduardo Moral"
+      "Nenad Skoko": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Samantha Nel": {
+        "num_jobs": 1,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Valeriia Yurykova": {
-        "num_jobs": 16,
-        "num_tas": 4,
-        "ta_names": "Ella Darie, Jelena  Lacmanovic, Marina Nikolic, Nenad Skoko"
+        "num_jobs": 1,
+        "num_tas": 1,
+        "ta_names": "Nenad Skoko"
       },
       "Zelimir Stajcic": {
         "num_jobs": 3,
@@ -25637,7 +25797,7 @@
     },
     "w10": {
       "Adelya Khakimova": {
-        "num_jobs": 3,
+        "num_jobs": 1,
         "num_tas": 0,
         "ta_names": ""
       },
@@ -25646,58 +25806,103 @@
         "num_tas": 0,
         "ta_names": ""
       },
-      "Andrea Akovic": {
+      "Chené Elliot": {
         "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Dušan Špica": {
+        "num_jobs": 3,
         "num_tas": 1,
-        "ta_names": "Naledi Ngwenya"
+        "ta_names": "Aleksandra Vistac"
+      },
+      "Ejla Suljcic": {
+        "num_jobs": 4,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Elena Petrovska": {
-        "num_jobs": 7,
+        "num_jobs": 2,
         "num_tas": 1,
         "ta_names": "Ella Darie"
       },
       "Gustavo Loureiro Castro": {
-        "num_jobs": 8,
-        "num_tas": 2,
-        "ta_names": "Ella Darie, Filip Nogowski"
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
       },
-      "Jovana Drakula": {
-        "num_jobs": 6,
+      "Iryna Dyda": {
+        "num_jobs": 1,
         "num_tas": 1,
         "ta_names": "Ella Darie"
       },
+      "Jan Dokulil": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Jovana Drakula": {
+        "num_jobs": 4,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Maria Desiree Gerbore": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
+      },
       "Marina Lazarevic": {
-        "num_jobs": 8,
-        "num_tas": 4,
-        "ta_names": "Aleksandra Vistac, Alexandra Richiteanu, Kristina Colovic, Meho Saracevic"
+        "num_jobs": 2,
+        "num_tas": 1,
+        "ta_names": "Alexandra Richiteanu"
+      },
+      "Marina Nikolic": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Mateja Jokovic": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Meho Saracevic": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Milica Veselinovic": {
-        "num_jobs": 8,
+        "num_jobs": 2,
         "num_tas": 0,
         "ta_names": ""
       },
       "Naledi Ngwenya": {
-        "num_jobs": 5,
-        "num_tas": 2,
-        "ta_names": "Alexandra Richiteanu, Lejla Silva"
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Nare Avetisyan": {
-        "num_jobs": 8,
-        "num_tas": 5,
-        "ta_names": "Alexandra Richiteanu, Anna Tyulpanova, Kristina Colovic, Lejla Silva, Wladyslaw Gadomski"
+        "num_jobs": 4,
+        "num_tas": 3,
+        "ta_names": "Alexandra Richiteanu, Anna Tyulpanova, Wladyslaw Gadomski"
       },
-      "Rodrigo Gomes": {
+      "Nenad Skoko": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Samantha Nel": {
         "num_jobs": 2,
-        "num_tas": 1,
-        "ta_names": "Eduardo Moral"
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Valeriia Yurykova": {
-        "num_jobs": 15,
-        "num_tas": 4,
-        "ta_names": "Ella Darie, Jelena  Lacmanovic, Marina Nikolic, Nenad Skoko"
+        "num_jobs": 3,
+        "num_tas": 2,
+        "ta_names": "Marina Nikolic, Nenad Skoko"
       },
       "Zelimir Stajcic": {
-        "num_jobs": 3,
+        "num_jobs": 1,
         "num_tas": 0,
         "ta_names": ""
       }
@@ -25708,60 +25913,110 @@
         "num_tas": 0,
         "ta_names": ""
       },
-      "Adis Prepoljac": {
+      "Andrea Akovic": {
+        "num_jobs": 2,
+        "num_tas": 2,
+        "ta_names": "Chené Elliot, Samantha Nel"
+      },
+      "Chené Elliot": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Dušan Špica": {
         "num_jobs": 1,
         "num_tas": 1,
-        "ta_names": "Lisa Gargulinska"
+        "ta_names": "Aleksandra Vistac"
       },
-      "Andrea Akovic": {
-        "num_jobs": 3,
-        "num_tas": 3,
-        "ta_names": "Chené Elliot, Naledi Ngwenya, Samantha Nel"
+      "Ejla Suljcic": {
+        "num_jobs": 4,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Elena Petrovska": {
-        "num_jobs": 4,
+        "num_jobs": 1,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Gustavo Loureiro Castro": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Iryna Dyda": {
+        "num_jobs": 1,
         "num_tas": 1,
         "ta_names": "Ella Darie"
       },
-      "Gustavo Loureiro Castro": {
-        "num_jobs": 10,
-        "num_tas": 2,
-        "ta_names": "Ella Darie, Filip Nogowski"
+      "Jan Dokulil": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Jovana Drakula": {
-        "num_jobs": 9,
-        "num_tas": 1,
-        "ta_names": "Salem Mansuri"
+        "num_jobs": 5,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Lisa Gargulinska": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Maria Desiree Gerbore": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Marina Lazarevic": {
-        "num_jobs": 7,
-        "num_tas": 2,
-        "ta_names": "Alexandra Richiteanu, Kristina Colovic"
+        "num_jobs": 1,
+        "num_tas": 1,
+        "ta_names": "Alexandra Richiteanu"
+      },
+      "Marina Nikolic": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Mateja Jokovic": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Meho Saracevic": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Milica Veselinovic": {
-        "num_jobs": 7,
+        "num_jobs": 1,
         "num_tas": 0,
         "ta_names": ""
       },
       "Naledi Ngwenya": {
-        "num_jobs": 6,
-        "num_tas": 1,
-        "ta_names": "Alexandra Richiteanu"
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Nare Avetisyan": {
-        "num_jobs": 6,
-        "num_tas": 5,
-        "ta_names": "Alexandra Richiteanu, Anna Tyulpanova, Kristina Colovic, Lejla Silva, Wladyslaw Gadomski"
-      },
-      "Rodrigo Gomes": {
-        "num_jobs": 4,
+        "num_jobs": 3,
         "num_tas": 2,
-        "ta_names": "Eduardo Moral, Maria Desiree Gerbore"
+        "ta_names": "Anna Tyulpanova, Wladyslaw Gadomski"
+      },
+      "Nenad Skoko": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Samantha Nel": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Valeriia Yurykova": {
-        "num_jobs": 13,
-        "num_tas": 4,
-        "ta_names": "Ella Darie, Jelena  Lacmanovic, Marina Nikolic, Nenad Skoko"
+        "num_jobs": 2,
+        "num_tas": 2,
+        "ta_names": "Jelena  Lacmanovic, Nenad Skoko"
       },
       "Zelimir Stajcic": {
         "num_jobs": 2,
@@ -25771,67 +26026,102 @@
     },
     "w12": {
       "Adelya Khakimova": {
-        "num_jobs": 4,
+        "num_jobs": 1,
         "num_tas": 0,
         "ta_names": ""
       },
       "Akash Singh": {
-        "num_jobs": 2,
+        "num_jobs": 1,
         "num_tas": 0,
         "ta_names": ""
       },
       "Andrea Akovic": {
+        "num_jobs": 2,
+        "num_tas": 2,
+        "ta_names": "Chené Elliot, Samantha Nel"
+      },
+      "Chené Elliot": {
         "num_jobs": 3,
-        "num_tas": 3,
-        "ta_names": "Chené Elliot, Naledi Ngwenya, Samantha Nel"
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Dušan Špica": {
+        "num_jobs": 5,
+        "num_tas": 2,
+        "ta_names": "Aleksandra Vistac, Lejla Silva"
+      },
+      "Ejla Suljcic": {
+        "num_jobs": 3,
+        "num_tas": 1,
+        "ta_names": "Nidhi Raina"
       },
       "Elena Petrovska": {
-        "num_jobs": 3,
+        "num_jobs": 2,
         "num_tas": 0,
         "ta_names": ""
       },
       "Gustavo Loureiro Castro": {
-        "num_jobs": 9,
-        "num_tas": 1,
-        "ta_names": "Filip Nogowski"
-      },
-      "Jovana Drakula": {
-        "num_jobs": 5,
+        "num_jobs": 3,
         "num_tas": 0,
         "ta_names": ""
       },
-      "Marina Lazarevic": {
-        "num_jobs": 7,
-        "num_tas": 3,
-        "ta_names": "Aleksandra Vistac, Alexandra Richiteanu, Kristina Colovic"
+      "Jan Dokulil": {
+        "num_jobs": 1,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Jovana Drakula": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Lisa Gargulinska": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Marina Nikolic": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Meho Saracevic": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Milica Veselinovic": {
-        "num_jobs": 8,
+        "num_jobs": 2,
         "num_tas": 0,
         "ta_names": ""
       },
       "Naledi Ngwenya": {
-        "num_jobs": 6,
-        "num_tas": 1,
-        "ta_names": "Alexandra Richiteanu"
+        "num_jobs": 4,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Nare Avetisyan": {
-        "num_jobs": 7,
-        "num_tas": 6,
-        "ta_names": "Alexandra Richiteanu, Anna Tyulpanova, Ekaterina Boyprav, Kristina Colovic, Lejla Silva, Wladyslaw Gadomski"
-      },
-      "Rodrigo Gomes": {
         "num_jobs": 2,
         "num_tas": 1,
-        "ta_names": "Eduardo Moral"
+        "ta_names": "Wladyslaw Gadomski"
+      },
+      "Nenad Skoko": {
+        "num_jobs": 4,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Samantha Nel": {
+        "num_jobs": 1,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Valeriia Yurykova": {
-        "num_jobs": 9,
-        "num_tas": 3,
-        "ta_names": "Jelena  Lacmanovic, Marina Nikolic, Nenad Skoko"
+        "num_jobs": 1,
+        "num_tas": 1,
+        "ta_names": "Jelena  Lacmanovic"
       },
       "Zelimir Stajcic": {
-        "num_jobs": 3,
+        "num_jobs": 2,
         "num_tas": 0,
         "ta_names": ""
       }
@@ -25842,63 +26132,118 @@
         "num_tas": 0,
         "ta_names": ""
       },
-      "Akash Singh": {
-        "num_jobs": 1,
-        "num_tas": 0,
-        "ta_names": ""
-      },
       "Andrea Akovic": {
         "num_jobs": 3,
         "num_tas": 2,
         "ta_names": "Chené Elliot, Samantha Nel"
       },
+      "Chené Elliot": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Dušan Špica": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Ejla Suljcic": {
+        "num_jobs": 4,
+        "num_tas": 1,
+        "ta_names": "Nidhi Raina"
+      },
       "Elena Petrovska": {
-        "num_jobs": 10,
+        "num_jobs": 4,
         "num_tas": 1,
         "ta_names": "Ella Darie"
       },
       "Gustavo Loureiro Castro": {
-        "num_jobs": 7,
+        "num_jobs": 4,
         "num_tas": 1,
         "ta_names": "Filip Nogowski"
       },
+      "Iryna Dyda": {
+        "num_jobs": 2,
+        "num_tas": 1,
+        "ta_names": "Lejla Silva"
+      },
+      "Jan Dokulil": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
+      },
       "Jovana Drakula": {
-        "num_jobs": 8,
-        "num_tas": 0,
-        "ta_names": ""
-      },
-      "Marina Lazarevic": {
-        "num_jobs": 11,
-        "num_tas": 5,
-        "ta_names": "Aleksandra Vistac, Anna Tyulpanova, Kristina Colovic, Lejla Silva, Wladyslaw Gadomski"
-      },
-      "Milica Veselinovic": {
-        "num_jobs": 6,
-        "num_tas": 0,
-        "ta_names": ""
-      },
-      "Naledi Ngwenya": {
         "num_jobs": 5,
         "num_tas": 0,
         "ta_names": ""
       },
-      "Nare Avetisyan": {
-        "num_jobs": 8,
-        "num_tas": 4,
-        "ta_names": "Alexandra Richiteanu, Anna Tyulpanova, Lejla Silva, Wladyslaw Gadomski"
+      "Lisa Gargulinska": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
       },
-      "Rodrigo Gomes": {
+      "Maria Desiree Gerbore": {
+        "num_jobs": 1,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Marina Lazarevic": {
+        "num_jobs": 7,
+        "num_tas": 3,
+        "ta_names": "Kristina Colovic, Lejla Silva, Wladyslaw Gadomski"
+      },
+      "Marina Nikolic": {
+        "num_jobs": 4,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Mateja Jokovic": {
+        "num_jobs": 6,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Meho Saracevic": {
+        "num_jobs": 4,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Milica Veselinovic": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Naledi Ngwenya": {
+        "num_jobs": 4,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Nare Avetisyan": {
         "num_jobs": 4,
         "num_tas": 3,
-        "ta_names": "Eduardo Moral, Ella Darie, Maria Desiree Gerbore"
+        "ta_names": "Alexandra Richiteanu, Anna Tyulpanova, Lejla Silva"
+      },
+      "Nenad Skoko": {
+        "num_jobs": 4,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Rodrigo Gomes": {
+        "num_jobs": 1,
+        "num_tas": 1,
+        "ta_names": "Ella Darie"
+      },
+      "Samantha Nel": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Valeriia Yurykova": {
-        "num_jobs": 9,
-        "num_tas": 4,
-        "ta_names": "Ella Darie, Jelena  Lacmanovic, Marina Nikolic, Nenad Skoko"
+        "num_jobs": 2,
+        "num_tas": 2,
+        "ta_names": "Ella Darie, Jelena  Lacmanovic"
       },
       "Zelimir Stajcic": {
-        "num_jobs": 3,
+        "num_jobs": 2,
         "num_tas": 0,
         "ta_names": ""
       }
@@ -25910,57 +26255,122 @@
         "ta_names": ""
       },
       "Andrea Akovic": {
+        "num_jobs": 2,
+        "num_tas": 2,
+        "ta_names": "Chené Elliot, Samantha Nel"
+      },
+      "Chené Elliot": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Dolores Palotas": {
+        "num_jobs": 2,
+        "num_tas": 1,
+        "ta_names": "Fuad Safarov"
+      },
+      "Dušan Špica": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Ejla Suljcic": {
         "num_jobs": 5,
-        "num_tas": 3,
-        "ta_names": "Chené Elliot, Naledi Ngwenya, Samantha Nel"
+        "num_tas": 1,
+        "ta_names": "Andreas Weins"
       },
       "Elena Petrovska": {
-        "num_jobs": 4,
+        "num_jobs": 3,
         "num_tas": 0,
         "ta_names": ""
       },
       "Gustavo Loureiro Castro": {
-        "num_jobs": 8,
-        "num_tas": 2,
-        "ta_names": "Filip Nogowski, Jonaed Iqbal"
+        "num_jobs": 3,
+        "num_tas": 1,
+        "ta_names": "Jonaed Iqbal"
+      },
+      "Iryna Dyda": {
+        "num_jobs": 2,
+        "num_tas": 1,
+        "ta_names": "Lejla Silva"
+      },
+      "Jan Dokulil": {
+        "num_jobs": 6,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Jovana Drakula": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Lisa Gargulinska": {
+        "num_jobs": 1,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Maria Desiree Gerbore": {
         "num_jobs": 5,
         "num_tas": 0,
         "ta_names": ""
       },
       "Marina Lazarevic": {
-        "num_jobs": 8,
-        "num_tas": 4,
-        "ta_names": "Aleksandra Vistac, Kristina Colovic, Meho Saracevic, Wladyslaw Gadomski"
+        "num_jobs": 5,
+        "num_tas": 2,
+        "ta_names": "Kristina Colovic, Wladyslaw Gadomski"
+      },
+      "Marina Nikolic": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Mateja Jokovic": {
+        "num_jobs": 1,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Meho Saracevic": {
+        "num_jobs": 4,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Milica Veselinovic": {
-        "num_jobs": 7,
+        "num_jobs": 4,
         "num_tas": 0,
         "ta_names": ""
       },
       "Naledi Ngwenya": {
-        "num_jobs": 5,
-        "num_tas": 1,
-        "ta_names": "Alexandra Richiteanu"
+        "num_jobs": 4,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Nare Avetisyan": {
-        "num_jobs": 8,
-        "num_tas": 4,
-        "ta_names": "Anna Tyulpanova, Ekaterina Boyprav, Lejla Silva, Wladyslaw Gadomski"
+        "num_jobs": 5,
+        "num_tas": 2,
+        "ta_names": "Anna Tyulpanova, Lejla Silva"
+      },
+      "Nenad Skoko": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Rodrigo Gomes": {
         "num_jobs": 2,
         "num_tas": 1,
         "ta_names": "Vladimir Stankovic"
       },
+      "Samantha Nel": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
+      },
       "Valeriia Yurykova": {
-        "num_jobs": 7,
-        "num_tas": 4,
-        "ta_names": "Ella Darie, Jelena  Lacmanovic, Marina Nikolic, Nenad Skoko"
+        "num_jobs": 3,
+        "num_tas": 2,
+        "ta_names": "Jelena  Lacmanovic, Marina Nikolic"
       },
       "Zelimir Stajcic": {
-        "num_jobs": 3,
+        "num_jobs": 2,
         "num_tas": 0,
         "ta_names": ""
       }
@@ -25976,38 +26386,88 @@
         "num_tas": 0,
         "ta_names": ""
       },
-      "Akash Singh": {
-        "num_jobs": 1,
-        "num_tas": 0,
-        "ta_names": ""
-      },
       "Andrea Akovic": {
-        "num_jobs": 7,
+        "num_jobs": 6,
         "num_tas": 4,
         "ta_names": "Chené Elliot, Kristina Colovic, Samantha Nel, Wladyslaw Gadomski"
       },
+      "Chené Elliot": {
+        "num_jobs": 4,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Dolores Palotas": {
+        "num_jobs": 7,
+        "num_tas": 3,
+        "ta_names": "Dušan Špica, Ella Darie, Fuad Safarov"
+      },
+      "Dušan Špica": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Ejla Suljcic": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
+      },
       "Elena Petrovska": {
-        "num_jobs": 8,
+        "num_jobs": 4,
         "num_tas": 0,
         "ta_names": ""
       },
       "Gustavo Loureiro Castro": {
-        "num_jobs": 9,
-        "num_tas": 3,
-        "ta_names": "Ella Darie, Filip Nogowski, Jonaed Iqbal"
+        "num_jobs": 4,
+        "num_tas": 2,
+        "ta_names": "Ella Darie, Filip Nogowski"
+      },
+      "Iryna Dyda": {
+        "num_jobs": 3,
+        "num_tas": 2,
+        "ta_names": "Alexandra Richiteanu, Lejla Silva"
+      },
+      "Jan Dokulil": {
+        "num_jobs": 4,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Jovana Drakula": {
-        "num_jobs": 9,
+        "num_jobs": 4,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Lisa Gargulinska": {
+        "num_jobs": 4,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Maria Desiree Gerbore": {
+        "num_jobs": 5,
         "num_tas": 0,
         "ta_names": ""
       },
       "Marina Lazarevic": {
-        "num_jobs": 11,
-        "num_tas": 5,
-        "ta_names": "Aleksandra Vistac, Alexandra Richiteanu, Kristina Colovic, Lejla Silva, Wladyslaw Gadomski"
+        "num_jobs": 5,
+        "num_tas": 2,
+        "ta_names": "Kristina Colovic, Wladyslaw Gadomski"
+      },
+      "Marina Nikolic": {
+        "num_jobs": 4,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Mateja Jokovic": {
+        "num_jobs": 4,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Meho Saracevic": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Milica Veselinovic": {
-        "num_jobs": 5,
+        "num_jobs": 1,
         "num_tas": 0,
         "ta_names": ""
       },
@@ -26017,22 +26477,32 @@
         "ta_names": ""
       },
       "Nare Avetisyan": {
-        "num_jobs": 11,
-        "num_tas": 6,
-        "ta_names": "Adis Prepoljac, Anna Golubeva, Anna Tyulpanova, Lejla Silva, Nemanja Erdevički, Wladyslaw Gadomski"
+        "num_jobs": 7,
+        "num_tas": 3,
+        "ta_names": "Adis Prepoljac, Anna Tyulpanova, Lejla Silva"
+      },
+      "Nenad Skoko": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Rodrigo Gomes": {
         "num_jobs": 5,
         "num_tas": 3,
         "ta_names": "Aleksandra Vistac, Jaksa Marojevic, Vladimir Stankovic"
       },
+      "Samantha Nel": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
+      },
       "Valeriia Yurykova": {
-        "num_jobs": 10,
+        "num_jobs": 4,
         "num_tas": 4,
         "ta_names": "Ella Darie, Jelena  Lacmanovic, Marina Nikolic, Nenad Skoko"
       },
       "Zelimir Stajcic": {
-        "num_jobs": 2,
+        "num_jobs": 1,
         "num_tas": 0,
         "ta_names": ""
       }
@@ -26044,133 +26514,168 @@
         "ta_names": ""
       },
       "Andrea Akovic": {
-        "num_jobs": 5,
-        "num_tas": 2,
-        "ta_names": "Chené Elliot, Samantha Nel"
+        "num_jobs": 1,
+        "num_tas": 1,
+        "ta_names": "Ella Darie"
+      },
+      "Chené Elliot": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Dolores Palotas": {
+        "num_jobs": 1,
+        "num_tas": 1,
+        "ta_names": "Fuad Safarov"
       },
       "Elena Petrovska": {
-        "num_jobs": 7,
+        "num_jobs": 1,
         "num_tas": 0,
         "ta_names": ""
       },
       "Gustavo Loureiro Castro": {
-        "num_jobs": 8,
-        "num_tas": 3,
-        "ta_names": "Ella Darie, Filip Nogowski, Jonaed Iqbal"
+        "num_jobs": 1,
+        "num_tas": 1,
+        "ta_names": "Ella Darie"
       },
       "Jovana Drakula": {
-        "num_jobs": 4,
+        "num_jobs": 2,
         "num_tas": 0,
         "ta_names": ""
       },
-      "Marina Lazarevic": {
-        "num_jobs": 7,
-        "num_tas": 4,
-        "ta_names": "Anna Tyulpanova, Kristina Colovic, Lejla Silva, Wladyslaw Gadomski"
+      "Maria Desiree Gerbore": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Meho Saracevic": {
+        "num_jobs": 1,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Naledi Ngwenya": {
-        "num_jobs": 2,
+        "num_jobs": 1,
         "num_tas": 0,
         "ta_names": ""
       },
       "Nare Avetisyan": {
-        "num_jobs": 4,
-        "num_tas": 2,
-        "ta_names": "Anna Tyulpanova, Lejla Silva"
-      },
-      "Rodrigo Gomes": {
-        "num_jobs": 3,
-        "num_tas": 2,
-        "ta_names": "Aleksandra Vistac, Vladimir Stankovic"
-      },
-      "Valeriia Yurykova": {
-        "num_jobs": 2,
+        "num_jobs": 1,
         "num_tas": 1,
-        "ta_names": "Jelena  Lacmanovic"
+        "ta_names": "Lejla Silva"
+      },
+      "Samantha Nel": {
+        "num_jobs": 1,
+        "num_tas": 0,
+        "ta_names": ""
       }
     },
     "w13": {
       "Akash Singh": {
-        "num_jobs": 2,
+        "num_jobs": 1,
         "num_tas": 0,
         "ta_names": ""
       },
       "Andrea Akovic": {
-        "num_jobs": 4,
-        "num_tas": 3,
-        "ta_names": "Chené Elliot, Naledi Ngwenya, Samantha Nel"
+        "num_jobs": 3,
+        "num_tas": 2,
+        "ta_names": "Chené Elliot, Samantha Nel"
+      },
+      "Chené Elliot": {
+        "num_jobs": 1,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Dušan Špica": {
+        "num_jobs": 2,
+        "num_tas": 1,
+        "ta_names": "Lejla Silva"
+      },
+      "Ejla Suljcic": {
+        "num_jobs": 3,
+        "num_tas": 1,
+        "ta_names": "Andreas Weins"
       },
       "Elena Petrovska": {
-        "num_jobs": 8,
+        "num_jobs": 4,
         "num_tas": 1,
         "ta_names": "Ella Darie"
       },
       "Gustavo Loureiro Castro": {
-        "num_jobs": 8,
+        "num_jobs": 4,
         "num_tas": 1,
         "ta_names": "Filip Nogowski"
       },
-      "Jovana Drakula": {
-        "num_jobs": 9,
+      "Jan Dokulil": {
+        "num_jobs": 6,
         "num_tas": 0,
         "ta_names": ""
       },
-      "Marina Lazarevic": {
-        "num_jobs": 7,
-        "num_tas": 3,
-        "ta_names": "Aleksandra Vistac, Alexandra Richiteanu, Kristina Colovic"
-      },
-      "Milica Veselinovic": {
+      "Jovana Drakula": {
         "num_jobs": 6,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Lisa Gargulinska": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Maria Desiree Gerbore": {
+        "num_jobs": 2,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Marina Nikolic": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Mateja Jokovic": {
+        "num_jobs": 5,
+        "num_tas": 0,
+        "ta_names": ""
+      },
+      "Meho Saracevic": {
+        "num_jobs": 3,
         "num_tas": 0,
         "ta_names": ""
       },
       "Naledi Ngwenya": {
-        "num_jobs": 6,
-        "num_tas": 1,
-        "ta_names": "Alexandra Richiteanu"
+        "num_jobs": 5,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Nare Avetisyan": {
-        "num_jobs": 5,
-        "num_tas": 3,
-        "ta_names": "Alexandra Richiteanu, Ekaterina Boyprav, Wladyslaw Gadomski"
-      },
-      "Rodrigo Gomes": {
         "num_jobs": 1,
         "num_tas": 1,
-        "ta_names": "Maria Desiree Gerbore"
+        "ta_names": "Wladyslaw Gadomski"
+      },
+      "Nenad Skoko": {
+        "num_jobs": 3,
+        "num_tas": 0,
+        "ta_names": ""
       },
       "Valeriia Yurykova": {
-        "num_jobs": 11,
-        "num_tas": 4,
-        "ta_names": "Ella Darie, Jelena  Lacmanovic, Marina Nikolic, Nenad Skoko"
+        "num_jobs": 2,
+        "num_tas": 2,
+        "ta_names": "Ella Darie, Jelena  Lacmanovic"
       },
       "Zelimir Stajcic": {
-        "num_jobs": 3,
+        "num_jobs": 2,
         "num_tas": 0,
         "ta_names": ""
       }
     },
     "w1": {
-      "Gustavo Loureiro Castro": {
-        "num_jobs": 5,
-        "num_tas": 0,
-        "ta_names": ""
-      },
       "Marina Lazarevic": {
-        "num_jobs": 4,
+        "num_jobs": 1,
         "num_tas": 1,
         "ta_names": "Aleksandra Vistac"
       },
-      "Nare Avetisyan": {
-        "num_jobs": 2,
-        "num_tas": 1,
-        "ta_names": "Ekaterina Boyprav"
-      },
-      "Rodrigo Gomes": {
-        "num_jobs": 3,
-        "num_tas": 1,
-        "ta_names": "Eduardo Moral"
+      "Nenad Skoko": {
+        "num_jobs": 1,
+        "num_tas": 0,
+        "ta_names": ""
       }
     }
   }

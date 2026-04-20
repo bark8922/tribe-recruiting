@@ -518,9 +518,10 @@ const WBRTab = ({ data }) => {
         recruiter_screens: recruiterScreens,
         actual_screens: actualScreens,
         ats,
-        pct_contacted_to_pr:  contacted        > 0 ? Math.round(positiveResponse / contacted        * 1000) / 10 : null,
-        pct_screen_to_actual: recruiterScreens > 0 ? Math.round(actualScreens    / recruiterScreens * 1000) / 10 : null,
-        pct_actual_to_ats:    actualScreens    > 0 ? Math.round(ats              / actualScreens    * 1000) / 10 : null,
+        // PBI treats 0-numerator rows as blank (no red colour), e.g. Valeriia w16 has PR=0 → blank cell.
+        pct_contacted_to_pr:  (contacted        > 0 && positiveResponse > 0) ? Math.round(positiveResponse / contacted        * 1000) / 10 : null,
+        pct_screen_to_actual: (recruiterScreens > 0 && actualScreens    > 0) ? Math.round(actualScreens    / recruiterScreens * 1000) / 10 : null,
+        pct_actual_to_ats:    (actualScreens    > 0 && ats              > 0) ? Math.round(ats              / actualScreens    * 1000) / 10 : null,
       };
     }).sort((a, b) => a.ts.localeCompare(b.ts));
   }, [data, selectedWeek]);
@@ -809,7 +810,10 @@ const WBRTab = ({ data }) => {
             <tbody>
               {tsConversion.map((row, idx) => {
                 const fmt = (v) => v == null ? '—' : `${v}%`;
-                // PBI-style conditional formatting thresholds (approximated from PBI screenshot)
+                // PBI conditional-formatting thresholds (calibrated vs PBI w16 screenshot 2026-04-20):
+                //   - % Contacted to Positive Response: green ≥20% (Gustavo 22%, Nare 23%, Jovana 39% green; Marina 18% red)
+                //   - % Screens to Actual Screen      : green ≥60% (Nare 61%, Zelimir 89% green; Andrea 55% red)
+                //   - % Actual Screens to ATS         : green ≥50% (Milica 50%, Valeriia 51% green; Naledi 43%, Mia 45% red)
                 const cell = (v, greenAt) => {
                   if (v == null) return 'text-gray-500';
                   return v >= greenAt ? 'bg-green-700/40 text-white' : 'bg-red-700/40 text-white';
@@ -820,9 +824,9 @@ const WBRTab = ({ data }) => {
                     <td className="text-center px-2 py-2 text-gray-300">{row.active_jobs}</td>
                     <td className={`text-center px-2 py-2 ${cell(row.pct_contacted_to_pr, 20)}`}>{fmt(row.pct_contacted_to_pr)}</td>
                     <td className="text-center px-2 py-2 text-gray-300">{row.positive_responses}</td>
-                    <td className={`text-center px-2 py-2 ${cell(row.pct_screen_to_actual, 75)}`}>{fmt(row.pct_screen_to_actual)}</td>
+                    <td className={`text-center px-2 py-2 ${cell(row.pct_screen_to_actual, 60)}`}>{fmt(row.pct_screen_to_actual)}</td>
                     <td className="text-center px-2 py-2 text-gray-300">{row.actual_screens}</td>
-                    <td className={`text-center px-2 py-2 ${cell(row.pct_actual_to_ats, 55)}`}>{fmt(row.pct_actual_to_ats)}</td>
+                    <td className={`text-center px-2 py-2 ${cell(row.pct_actual_to_ats, 50)}`}>{fmt(row.pct_actual_to_ats)}</td>
                     <td className="text-center px-2 py-2 text-gray-300">{row.ats}</td>
                   </tr>
                 );

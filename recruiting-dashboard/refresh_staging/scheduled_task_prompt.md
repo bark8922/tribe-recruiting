@@ -157,8 +157,8 @@ any of the following trip, do NOT auto-push — write a diff report to
 3. **Schema presence** — the output JSON must contain all of:
    `targets`, `wbr_actuals`, `mbr_client_totals`, `wbr_ta_weekly_roster`,
    `jobs`, `mbr_ta_actuals`, `ta_jobs_weekly`, `ts_jobs_weekly`,
-   `ts_weekly`, `ta_weekly_notes`. If any is missing or has zero length,
-   abort.
+   `ts_weekly`, `ta_weekly_notes`, `ts_conversion`. If any is missing or
+   has zero length, abort.
 
 4. **Roster freshness** — `wbr_ta_weekly_roster` must contain the current
    ISO week (e.g. `w16` when running in 2026 week 16). If it doesn't, Step
@@ -191,6 +191,7 @@ individual TAs/TSes.
 | **12w Screens / 12w ATS (TA)** | **`event.who_event_created_for`** on latest Evaluation / Interview event per `(candidate, date)` | `aux_12w.sql` `evaluation_auth` + `ats_auth` | Lejla 169/104, Jonaed 170/96 — ALL EXACT |
 | # Jobs per week (TA — WBR Client Summary) | `DISTINCTCOUNT(event.job_id)` per `(client, event.who_event_created_for, week)` via `event.date_created` | `wbr_jobs_weekly.sql` | 129/130 = 99.2% |
 | **# Jobs / # TA / TA Names per week (TS Weekly)** | **`DISTINCTCOUNT(event.job_id)` filtered to CONTACTED events only**: `(event_type='Moved to stage' AND moved_to_stage='Contacted') OR (event_type='Candidate created' AND moved_to_stage='Contacted')`, grouped by `TRIM(candidate.candidate_sourcer)`. `# TA` = DISTINCT `job.job_recruiter` EXCLUDING self (when TS = job_recruiter). | `wbr_ts_jobs_weekly.sql` | **10/11 TSes exact vs PBI w16, 11/11 TA names exact** (Andrea 7/4, Elena 4/0, Gustavo 4/2, Jovana 4/0, Marina 5/2, Milica 1/0, Naledi 4/0, Nare 7/3, Rodrigo 5/3, Valeriia 4/4, Zelimir 1/0) |
+| **TS Overall Conversion Rate — Active Pipelines + funnel (AP, C, PR, RS, AS, ATS per TS)** | **Active Pipelines** = `job.job_sourcer = TS` **AND** at least one event with `credit_sourcer(e) = TS` on a candidate of that job (Andy Hsu rule, 2026-04-14). Funnel counts = candidates on those active pipelines where an event credited to TS matches the stage. Filters: `job.test <> 'true'`, `candidate.is_candidate_archived <> 'true'`, `job.is_job_archived <> 'true'`, `job.job_sourcer` not in NULL/''/'-not available-'. Positive Response has DAX date gate `event.date_created >= '2025-04-14'`. AS/ATS require `candidate_stage.date_screen_actual`/`date_interview` 2024+. | `ts_conversion.sql` | **AP 12/12 exact + colour triplets 12/12 exact vs PBI w16; aggregate volume accuracy 98.99%** (sum of \|PR+AS+ATS deltas\| = 34 on a 3367 total). Per-row max cell delta ≤7 (Marina PR+7, Naledi PR+7, others ≤4). |
 | Jobs open ≥ 60 days | `job.job_recruiter` | `aux_12w.sql` `jobs_60d_base` | matches live |
 
 **Do NOT** change 12w Screens / ATS back to `job.job_recruiter`. **Do
@@ -224,6 +225,7 @@ will silently go wrong:
 | `wbr_ta_weekly_roster[wNN]` | Filter which TAs/clients are shown per week, and which jobs count towards # Jobs | List of `"client\|TA"` pair strings. Must include the current ISO week as soon as the Weekly Note is updated. |
 | `jobs[]` (with `job_id, client_name, job_recruiter, is_job_archived, is_external_recruiter`) | # Jobs fallback when `ta_jobs_weekly` is missing (older snapshots) | Raw Keboola client names (e.g. `'AVIV '`, `'Wolt'`); App.jsx normalizes. |
 | `ta_jobs_weekly[wNN][raw_client\|raw_ta]` | # Jobs column in WBR Client Summary (PBI DAX replica, 99.2% accurate vs PBI w16) | TA attribution = `event.who_event_created_for` (different from wbr_weekly's `job.job_recruiter`). Raw client name. App.jsx applies Wolt sub-BU split via `recruiterToWoltSubBu` + target-roster filter (`team_group` non-empty). |
+| `ts_conversion[]` (one row per TS, current-state snapshot) | TS Overall Conversion Rate table (AP, C, PR, RS, AS, ATS per TS) | Built from `snowflake_ts_conversion.csv` (`ts_conversion.sql`). Roster-filtered on the dashboard by `ts_weekly[week=N].ts`. Columns: `ts, active_pipelines, contacted, positive_response, recruiter_screens, actual_screens, ats`. 12/12 AP exact + 12/12 colour triplets vs PBI w16; 98.99% aggregate volume accuracy. Do NOT drop `recruiter_screens` — it's the hidden denominator for the `% Screens to Actual Screen` column. |
 
 **Why these are pinned:** verified against the PBI w16 screenshot
 2026-04-20. WBR totals at 100.0–100.8% accuracy rely on the full set.
@@ -250,6 +252,8 @@ semantics above. Don't revert them without checking here.
 | TA Detail dedupes by `(display_client, normalizeTa(TA))`, keeps highest-activity row | `deduped` Map in taDetail | Zelimir Stajcic has target rows under both SevenRooms and Wolt HQ, both normalize to Wolt HQ — would render twice without dedupe. |
 | A repeated header `<tr>` renders under the Ponies & Unicorns banner | `repeatHeader` const in the render | sticky headers don't work because the table container is `overflow-x-auto` only; the duplicate is the guaranteed-working fallback. |
 | 12w Hires Total row sums ALL `mbr_client_totals` (includes Wolt Volume) | `Object.values(data.mbr_client_totals).reduce(...)` | Matches PBI Total=741 behaviour (visible rows sum to 141, but PBI's Total includes hidden Wolt Volume etc.). |
+| TS Overall Conversion Rate colour thresholds: `%C→PR ≥20 green`, `%RS→AS ≥60 green`, `%AS→ATS ≥50 green` | `cell(pct, greenAt)` helper in TS Conversion table | Calibrated 12/12 vs PBI w16 screenshot. Do NOT revert to 75/55 (old eyeballed thresholds) — both regress 4+ colour cells (Nare/Marina/Milica). |
+| TS Conversion percent cells show `—` when numerator is 0 (not `0%` red) | `(contacted > 0 && positiveResponse > 0) ? ... : null` | PBI renders blank for 0-numerator rows (e.g. Valeriia w16 PR=0). Showing `0%` red distorts the scorecard. |
 
 ## Pending pipeline work (not yet in scope of this scheduled task)
 

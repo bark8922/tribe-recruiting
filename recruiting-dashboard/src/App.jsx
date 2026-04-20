@@ -171,38 +171,53 @@ const WBRTab = ({ data }) => {
       }
     });
 
-    // Also restrict to (client, recruiter) pairs that have at least one
-    // activity this week — this is the closest App.jsx-only approximation
-    // to the PBI DAX rule (DISTINCTCOUNT(event.job_id) where event.date_created
-    // is in the week). Still over/under by 10-15% per client since we don't
-    // have per-week event→job data, but totals 143 vs PBI 130 (110%) vs
-    // 163/125% with no roster filter. A proper fix needs a new pipeline
-    // metric — see refresh_staging/TODO_jobs_per_week.md (not yet created).
-    const activePairsForJobs = new Set();
-    (data.wbr_ta_weekly_roster?.[weekKey] || []).forEach((pair) => {
-      const [c, ta] = pair.split('|');
-      activePairsForJobs.add(`${normalizeClient(c)}|${normalizeTa(ta)}`);
+    // Prefer the pipeline-computed ta_jobs_weekly (PBI DAX replica:
+    // DISTINCTCOUNT(event.job_id) per (client, who_event_created_for, week))
+    // validated 2026-04-20 vs PBI w16 at 129/130 = 99.2% (14/15 exact).
+    // Filter to (display_client, TA) pairs present in data.targets with
+    // non-empty team_group — mirrors PBI's implicit WBR TA Target↔Actual
+    // relationship filter.
+    const targetRosterPairs = new Set();
+    data.targets.forEach((t) => {
+      if (!t.team_group) return;
+      targetRosterPairs.add(`${normalizeClient(t.client)}|${normalizeTa(t.ta)}`);
     });
 
-    const seenJobIds = new Set();
-    (data.jobs || []).forEach((job) => {
-      if (String(job.is_job_archived).toLowerCase() !== 'false') return;
-      if (String(job.is_external_recruiter).toLowerCase() !== 'false') return;
-      if (seenJobIds.has(job.job_id)) return;
-
-      const raw = (job.client_name || '').trim();
-      const rec = normalizeTa(job.job_recruiter);
-      let client = normalizeClient(raw);
-      if (client === 'Wolt') {
-        // Split Wolt catch-all via recruiter's canonical sub-BU
-        client = recruiterToWoltSubBu.get(rec) || null;
-      }
-      if (!client || !summary[client]) return;
-      // Require (display_client, recruiter) to be on the weekly roster
-      if (activePairsForJobs.size && !activePairsForJobs.has(`${client}|${rec}`)) return;
-      seenJobIds.add(job.job_id);
-      summary[client].roles += 1;
-    });
+    if (data.ta_jobs_weekly && data.ta_jobs_weekly[weekKey]) {
+      Object.entries(data.ta_jobs_weekly[weekKey]).forEach(([key, val]) => {
+        const [rawClient, rawTa] = key.split('|');
+        const rec = normalizeTa(rawTa);
+        let client = normalizeClient(rawClient);
+        if (client === 'Wolt') {
+          client = recruiterToWoltSubBu.get(rec) || null;
+        }
+        if (!client || !summary[client]) return;
+        if (!targetRosterPairs.has(`${client}|${rec}`)) return;
+        summary[client].roles += val;
+      });
+    } else {
+      // Fallback for older snapshots without ta_jobs_weekly: distinct-jobs
+      // approximation from data.jobs filtered by weekly roster. Yields ~110%
+      // of PBI vs 99.2% for the pipeline metric.
+      const rosterPairs = new Set();
+      (data.wbr_ta_weekly_roster?.[weekKey] || []).forEach((pair) => {
+        const [c, ta] = pair.split('|');
+        rosterPairs.add(`${normalizeClient(c)}|${normalizeTa(ta)}`);
+      });
+      const seenJobIds = new Set();
+      (data.jobs || []).forEach((job) => {
+        if (String(job.is_job_archived).toLowerCase() !== 'false') return;
+        if (String(job.is_external_recruiter).toLowerCase() !== 'false') return;
+        if (seenJobIds.has(job.job_id)) return;
+        const rec = normalizeTa(job.job_recruiter);
+        let client = normalizeClient((job.client_name || '').trim());
+        if (client === 'Wolt') client = recruiterToWoltSubBu.get(rec) || null;
+        if (!client || !summary[client]) return;
+        if (rosterPairs.size && !rosterPairs.has(`${client}|${rec}`)) return;
+        seenJobIds.add(job.job_id);
+        summary[client].roles += 1;
+      });
+    }
 
     // --- Last 12w Hires column ---
     // Use mbr_client_totals directly — it's the per-display-client rollup

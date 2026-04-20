@@ -6,6 +6,7 @@ consumes.
 
 Inputs (under refresh_staging/):
   snowflake_wbr.csv              raw per-week WBR grid (2026-01..2026-w15)
+  snowflake_wbr_jobs.csv         per-week # Jobs grid (wbr_jobs_weekly.sql)
   snowflake_ts.csv               raw per-week TS grid
   snowflake_ts_conversion.csv    per-TS Active Pipelines + funnel (w15 snapshot)
   snowflake_aux_12w.csv          long-format 12w + 60d rollups (TA + TS roles)
@@ -27,6 +28,8 @@ Computed fields:
   hires_12w             (raw client|ta → int)
   ta_ats_12w, ta_screens_12w, ta_ttf_12w, ta_jobs_60d (raw keys)
   ts_hires_12w, ts_ats_12w, ts_screens_12w (plain TS name, roster-scoped)
+  ta_jobs_weekly        (wNN → {raw_client|raw_ta: # jobs}; event.who_event_created_for
+                         attribution matching PBI DAX for WBR Client Summary # Jobs)
   mbr_ta_actuals        (display client|ta → 4w + 12w + 60d rollup)
   mbr_ts_actuals        (ts → 4w + 12w rollup)
   mbr_client_totals     (display client → 4w + 12w_hires rollup)
@@ -64,6 +67,7 @@ LIVE_JSON = ROOT / "dashboard_data.json"
 OUT_JSON = HERE / "rendered_dashboard_data.json"
 
 SNOW_WBR = HERE / "snowflake_wbr.csv"
+SNOW_WBR_JOBS = HERE / "snowflake_wbr_jobs.csv"
 SNOW_TS = HERE / "snowflake_ts.csv"
 SNOW_TS_CONV = HERE / "snowflake_ts_conversion.csv"
 SNOW_AUX = HERE / "snowflake_aux_12w.csv"
@@ -408,6 +412,35 @@ def load_wbr():
     return raw
 
 
+def load_wbr_jobs():
+    """Return jobs[f"w{n}"][f"{raw_client}|{raw_ta}"] = int, ISO 2026 only.
+
+    Sourced from snowflake_wbr_jobs.csv (produced by wbr_jobs_weekly.sql),
+    which attributes DISTINCTCOUNT(event.job_id) to event.who_event_created_for
+    per (client, TA, iso_year, iso_week). This is the PBI-DAX-compatible
+    attribution for the Client Summary # Jobs column — different from the
+    job.job_recruiter attribution used for other WBR metrics.
+
+    Returns empty dict if the file is missing (allows render to proceed with
+    older snapshots; the UI will fall back to 0 in that case)."""
+    out: dict[str, dict[str, int]] = {}
+    if not SNOW_WBR_JOBS.exists():
+        return out
+    with SNOW_WBR_JOBS.open() as f:
+        for row in csv.DictReader(f):
+            if int(row["ISO_YEAR"]) != 2026:
+                continue
+            wn = int(row["ISO_WEEK"])
+            if wn < 1 or wn > 16:
+                continue
+            wk = f"w{wn}"
+            c = row["CLIENT"]  # preserve raw spacing
+            t = row["TA"]
+            key = f"{c}|{t}"
+            out.setdefault(wk, {})[key] = int(row.get("JOBS", 0) or 0)
+    return out
+
+
 def load_ts():
     """Return raw[ts][f"w{n}"][metric] = int, ISO 2026 only."""
     raw = defaultdict(lambda: defaultdict(lambda: defaultdict(int)))
@@ -714,6 +747,7 @@ def build_mbr_client_totals(mbr_ta_actuals):
 def main():
     live = load_live()
     raw_wbr = load_wbr()
+    raw_wbr_jobs = load_wbr_jobs()
     raw_ts = load_ts()
     ts_conv_rows = load_ts_conversion()
     aux = load_aux()
@@ -756,7 +790,19 @@ def main():
     print(f"  TA weekly roster: {len(ta_weekly_roster)} weeks")
     print(f"  TS weekly roster: {len(ts_weekly_roster)} weeks")
 
-    mbr_weeks = (live.get("mbr_window") or {}).get("weeks", ["w12", "w13", "w14", "w15"])
+    # MBR window = last 4 weeks present in the TA weekly roster (which comes
+    # from Andy's Google Sheet). Auto-advances as new weeks are added. Falls
+    # back to the live JSON's mbr_window (if present) and finally to a
+    # hardcoded default so we never render an empty MBR.
+    _ta_week_nums = sorted({
+        int(k[1:]) for k in ta_weekly_roster.keys()
+        if isinstance(k, str) and k.startswith("w") and k[1:].isdigit()
+    })
+    if len(_ta_week_nums) >= 1:
+        _last4 = _ta_week_nums[-4:]
+        mbr_weeks = [f"w{n}" for n in _last4]
+    else:
+        mbr_weeks = (live.get("mbr_window") or {}).get("weeks", ["w12", "w13", "w14", "w15"])
 
     # Computed surfaces (roster-filtered)
     wbr_actuals = build_wbr_actuals(raw_wbr, wbr_wolt, ta_roster=ta_roster)
@@ -882,12 +928,31 @@ def main():
     out["ta_screens_12w"] = ta_screens_12w
     out["ta_ttf_12w"] = ta_ttf_12w
     out["ta_jobs_60d"] = ta_jobs_60d
+    # Per-week # Jobs for the WBR Client Summary. Keyed by w{N}/{raw_client|raw_ta}
+    # (TA = event.who_event_created_for). App.jsx normalizes client, splits Wolt
+    # sub-BUs via recruiter map, and filters to (client, TA) pairs present in
+    # targets with non-empty team_group. Validated 2026-04-20 vs PBI w16: 129
+    # vs 130 (99.2%), 14/15 clients exact.
+    out["ta_jobs_weekly"] = raw_wbr_jobs
     out["ts_hires_12w"] = ts_hires_12w
     out["ts_ats_12w"] = ts_ats_12w
     out["ts_screens_12w"] = ts_screens_12w
     out["mbr_ta_actuals"] = mbr_ta_actuals
     out["mbr_ts_actuals"] = mbr_ts_actuals
     out["mbr_client_totals"] = mbr_client_totals
+    # Overwrite mbr_window so the frontend sees the same weeks the MBR tables
+    # were actually computed from. Dates are ISO Mon-Sun for each week in 2026.
+    from datetime import date, timedelta
+    def _iso_monday(year: int, week: int) -> date:
+        jan4 = date(year, 1, 4)
+        jan4_monday = jan4 - timedelta(days=jan4.isoweekday() - 1)
+        return jan4_monday + timedelta(weeks=week - 1)
+    if mbr_weeks:
+        _first_n = int(mbr_weeks[0][1:])
+        _last_n = int(mbr_weeks[-1][1:])
+        _start = _iso_monday(2026, _first_n).isoformat()
+        _end = (_iso_monday(2026, _last_n) + timedelta(days=6)).isoformat()
+        out["mbr_window"] = {"start": _start, "end": _end, "weeks": list(mbr_weeks)}
     # Per-week rosters — used by App.jsx to filter client summary and TA/TS
     # detail tables to only show entries active in the selected week.
     out["wbr_ta_weekly_roster"] = ta_weekly_roster

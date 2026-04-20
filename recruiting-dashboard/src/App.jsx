@@ -171,32 +171,56 @@ const WBRTab = ({ data }) => {
       }
     });
 
+    // Also restrict to (client, recruiter) pairs that have at least one
+    // activity this week — this is the closest App.jsx-only approximation
+    // to the PBI DAX rule (DISTINCTCOUNT(event.job_id) where event.date_created
+    // is in the week). Still over/under by 10-15% per client since we don't
+    // have per-week event→job data, but totals 143 vs PBI 130 (110%) vs
+    // 163/125% with no roster filter. A proper fix needs a new pipeline
+    // metric — see refresh_staging/TODO_jobs_per_week.md (not yet created).
+    const activePairsForJobs = new Set();
+    (data.wbr_ta_weekly_roster?.[weekKey] || []).forEach((pair) => {
+      const [c, ta] = pair.split('|');
+      activePairsForJobs.add(`${normalizeClient(c)}|${normalizeTa(ta)}`);
+    });
+
     const seenJobIds = new Set();
     (data.jobs || []).forEach((job) => {
       if (String(job.is_job_archived).toLowerCase() !== 'false') return;
       if (String(job.is_external_recruiter).toLowerCase() !== 'false') return;
       if (seenJobIds.has(job.job_id)) return;
-      seenJobIds.add(job.job_id);
 
       const raw = (job.client_name || '').trim();
+      const rec = normalizeTa(job.job_recruiter);
       let client = normalizeClient(raw);
       if (client === 'Wolt') {
         // Split Wolt catch-all via recruiter's canonical sub-BU
-        client = recruiterToWoltSubBu.get(normalizeTa(job.job_recruiter)) || null;
+        client = recruiterToWoltSubBu.get(rec) || null;
       }
-      if (client && summary[client]) summary[client].roles += 1;
+      if (!client || !summary[client]) return;
+      // Require (display_client, recruiter) to be on the weekly roster
+      if (activePairsForJobs.size && !activePairsForJobs.has(`${client}|${rec}`)) return;
+      seenJobIds.add(job.job_id);
+      summary[client].roles += 1;
     });
 
     // --- Last 12w Hires column ---
-    // Normalize raw client key so 'AVIV ' → 'Aviv', 'Doordash' → 'Wolt HQ'.
-    // For raw 'Wolt' catch-all, split via the TA's canonical Wolt sub-BU.
-    Object.entries(data.hires_12w || {}).forEach(([key, val]) => {
-      const [rawClient, rawTa] = key.split('|');
-      let client = normalizeClient(rawClient);
-      if (client === 'Wolt') {
-        client = recruiterToWoltSubBu.get(normalizeTa(rawTa)) || null;
+    // Use mbr_client_totals directly — it's the per-display-client rollup
+    // of aux_12w hires with Wolt sub-BU correctly split via the MBR roster.
+    // data.hires_12w (keyed by raw 'Wolt|TA') would credit Ketevan Khorava
+    // with 193 Wolt hires via event.who_event_created_for attribution,
+    // inflating Wolt total to 709 (vs PBI ~82). mbr_client_totals sums
+    // to 148 vs PBI 141 (105% accuracy, 8/15 clients exact).
+    // MBR abbreviations → display names for the lookup.
+    const MBR_TO_DISPLAY = {
+      'Wolt C&S': 'Wolt Central & South',
+      'Wolt NBB': 'Wolt North, Baltics & Benelux',
+    };
+    Object.entries(data.mbr_client_totals || {}).forEach(([mbrClient, totals]) => {
+      const displayClient = MBR_TO_DISPLAY[mbrClient] || mbrClient;
+      if (summary[displayClient]) {
+        summary[displayClient].hires_12w = totals.hires_12w || 0;
       }
-      if (client && summary[client]) summary[client].hires_12w += val;
     });
 
     return Object.values(summary).sort((a, b) => a.client.localeCompare(b.client));

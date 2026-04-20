@@ -1290,9 +1290,9 @@ const ProjectDashboardTab = ({ data }) => {
 // Main Dashboard
 const RecruitingDashboard = () => {
   const [activeTab, setActiveTab] = useState('wbr');
-  // Data source toggle: 'pbi' = current Power BI / Bubble pipeline (source of truth)
-  //                     'snowflake' = new Keboola-Snowflake pipeline (parallel-run for validation)
-  const [dataSource, setDataSource] = useState('pbi');
+  // Data source toggle: 'snowflake' = Keboola-Snowflake pipeline (accurate, refreshed 3x/day)
+  //                     'pbi' = legacy Power BI / Bubble pipeline (kept for comparison)
+  const [dataSource, setDataSource] = useState('snowflake');
   const dashboardData = dataSource === 'pbi' ? dashboardDataPbi : dashboardDataSnowflake;
   return (
     <div className="min-h-screen bg-gray-900 text-white">

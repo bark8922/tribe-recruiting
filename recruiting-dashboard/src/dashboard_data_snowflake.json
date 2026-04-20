@@ -2,6 +2,24 @@
   "targets": [
     {
       "client": "Wolt Tech",
+      "ta": "Simon Siew",
+      "contacted": 30.0,
+      "actual_screens": 10.0,
+      "moved_to_ats": 9.0,
+      "hires": 0.58,
+      "team_group": ""
+    },
+    {
+      "client": "Wolt Tech",
+      "ta": "Vladimir Stankovic",
+      "contacted": 30.0,
+      "actual_screens": 10.0,
+      "moved_to_ats": 8.0,
+      "hires": 0.58,
+      "team_group": ""
+    },
+    {
+      "client": "Wolt Tech",
       "ta": "Ejla Suljcic",
       "contacted": 100.0,
       "actual_screens": 0.0,
@@ -65,6 +83,15 @@
     },
     {
       "client": "Wolt North, Baltics & Benelux",
+      "ta": "Jovana Drakula",
+      "contacted": 50.0,
+      "actual_screens": 7.0,
+      "moved_to_ats": 4.0,
+      "hires": 1.25,
+      "team_group": ""
+    },
+    {
+      "client": "Wolt North, Baltics & Benelux",
       "ta": "Adelya Khakimova",
       "contacted": 50.0,
       "actual_screens": 15.0,
@@ -82,13 +109,103 @@
       "team_group": "Dolphins/Whales"
     },
     {
-      "client": "Aiven",
+      "client": "Wolt Volume",
+      "ta": "Tinatini Karaulashvili",
+      "contacted": 0.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
+      "hires": 3.5,
+      "team_group": ""
+    },
+    {
+      "client": "Wolt Volume",
+      "ta": "Tomer Fattal",
+      "contacted": 0.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
+      "hires": 3.5,
+      "team_group": ""
+    },
+    {
+      "client": "Wolt Volume",
+      "ta": "Zarina Amanbekova",
+      "contacted": 0.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
+      "hires": 3.5,
+      "team_group": ""
+    },
+    {
+      "client": "Wolt Volume",
+      "ta": "Chantal Bozkurt",
+      "contacted": 0.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
+      "hires": 3.5,
+      "team_group": ""
+    },
+    {
+      "client": "Wolt Volume",
+      "ta": "Dolores Palotas",
+      "contacted": 0.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
+      "hires": 3.5,
+      "team_group": ""
+    },
+    {
+      "client": "Wolt Volume",
+      "ta": "Alisa Liddell",
+      "contacted": 0.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
+      "hires": 3.5,
+      "team_group": ""
+    },
+    {
+      "client": "Wolt Volume",
+      "ta": "Dora Vrbanic",
+      "contacted": 0.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
+      "hires": 3.5,
+      "team_group": ""
+    },
+    {
+      "client": "Wolt Volume",
       "ta": "Fuad Safarov",
       "contacted": 0.0,
       "actual_screens": 0.0,
       "moved_to_ats": 0.0,
       "hires": 3.5,
-      "team_group": "Dolphins/Whales"
+      "team_group": ""
+    },
+    {
+      "client": "Wolt Volume",
+      "ta": "Evagelina Rapanaki",
+      "contacted": 0.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
+      "hires": 3.5,
+      "team_group": ""
+    },
+    {
+      "client": "Wolt HQ",
+      "ta": "Chené Elliot",
+      "contacted": 30.0,
+      "actual_screens": 12.0,
+      "moved_to_ats": 8.0,
+      "hires": 1.0,
+      "team_group": ""
+    },
+    {
+      "client": "Wolt HQ",
+      "ta": "Rafael Rosa",
+      "contacted": 35.0,
+      "actual_screens": 7.0,
+      "moved_to_ats": 4.0,
+      "hires": 1.0,
+      "team_group": ""
     },
     {
       "client": "Wolt HQ",
@@ -101,12 +218,12 @@
     },
     {
       "client": "Wolt HQ",
-      "ta": "Elena Petrovska",
-      "contacted": 100.0,
-      "actual_screens": 4.0,
-      "moved_to_ats": 3.0,
-      "hires": 0.0,
-      "team_group": "Dolphins/Whales"
+      "ta": "Alexandra Richiteanu",
+      "contacted": 35.0,
+      "actual_screens": 12.0,
+      "moved_to_ats": 9.0,
+      "hires": 1.0,
+      "team_group": ""
     },
     {
       "client": "Wolt HQ",
@@ -129,7 +246,7 @@
     {
       "client": "Enam",
       "ta": "Aleksandra Vistac",
-      "contacted": 30.0,
+      "contacted": 70.0,
       "actual_screens": 17.0,
       "moved_to_ats": 7.0,
       "hires": 0.0,
@@ -191,12 +308,12 @@
     },
     {
       "client": "Nexi",
-      "ta": "Adis Prepoljac",
+      "ta": "Andreas Weins",
       "contacted": 100.0,
       "actual_screens": 20.0,
       "moved_to_ats": 10.0,
       "hires": 0.0,
-      "team_group": "Ponies/Unicorns"
+      "team_group": ""
     },
     {
       "client": "Grover",
@@ -227,12 +344,57 @@
     },
     {
       "client": "Fever",
+      "ta": "Lejla Silva",
+      "contacted": 0.0,
+      "actual_screens": 30.0,
+      "moved_to_ats": 15.0,
+      "hires": 0.0,
+      "team_group": ""
+    },
+    {
+      "client": "Fever",
       "ta": "Andrea Akovic",
       "contacted": 200.0,
       "actual_screens": 0.0,
       "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": "Ponies/Unicorns"
+    },
+    {
+      "client": "Scorewarrior",
+      "ta": "Mark Kandaurov",
+      "contacted": 100.0,
+      "actual_screens": 10.0,
+      "moved_to_ats": 3.0,
+      "hires": 0.0,
+      "team_group": ""
+    },
+    {
+      "client": "DualEntry",
+      "ta": "Samantha Nel",
+      "contacted": 100.0,
+      "actual_screens": 20.0,
+      "moved_to_ats": 10.0,
+      "hires": 0.0,
+      "team_group": ""
+    },
+    {
+      "client": "DualEntry",
+      "ta": "Simon Siew",
+      "contacted": 100.0,
+      "actual_screens": 20.0,
+      "moved_to_ats": 10.0,
+      "hires": 0.0,
+      "team_group": ""
+    },
+    {
+      "client": "DualEntry",
+      "ta": "Chené Elliot",
+      "contacted": 100.0,
+      "actual_screens": 20.0,
+      "moved_to_ats": 10.0,
+      "hires": 0.0,
+      "team_group": ""
     },
     {
       "client": "Aviv",
@@ -280,13 +442,22 @@
       "team_group": "Dolphins/Whales"
     },
     {
-      "client": "Aviv",
-      "ta": "Jovana Drakula",
+      "client": "Wolt Volume",
+      "ta": "Ketevan Khorava",
+      "contacted": 0.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
+      "hires": 3.5,
+      "team_group": ""
+    },
+    {
+      "client": "Nexi",
+      "ta": "Adis Prepoljac",
       "contacted": 100.0,
-      "actual_screens": 6.0,
-      "moved_to_ats": 4.0,
+      "actual_screens": 20.0,
+      "moved_to_ats": 10.0,
       "hires": 0.0,
-      "team_group": "Dolphins/Whales"
+      "team_group": "Ponies/Unicorns"
     },
     {
       "client": "PhantomBuster",
@@ -296,6 +467,24 @@
       "moved_to_ats": 10.0,
       "hires": 0.0,
       "team_group": "Ponies/Unicorns"
+    },
+    {
+      "client": "Wolt HQ",
+      "ta": "Elena Petrovska",
+      "contacted": 100.0,
+      "actual_screens": 4.0,
+      "moved_to_ats": 3.0,
+      "hires": 0.0,
+      "team_group": "Dolphins/Whales"
+    },
+    {
+      "client": "Aviv",
+      "ta": "Jovana Drakula",
+      "contacted": 100.0,
+      "actual_screens": 6.0,
+      "moved_to_ats": 4.0,
+      "hires": 0.0,
+      "team_group": "Dolphins/Whales"
     },
     {
       "client": "Glovo",
@@ -336,10 +525,19 @@
     {
       "client": "Aiven",
       "ta": "Vladimir Stankovic",
-      "contacted": 0.0,
-      "actual_screens": 0.0,
-      "moved_to_ats": 0.0,
+      "contacted": 50.0,
+      "actual_screens": 12.0,
+      "moved_to_ats": 5.0,
       "hires": 0.0,
+      "team_group": "Dolphins/Whales"
+    },
+    {
+      "client": "Aiven",
+      "ta": "Fuad Safarov",
+      "contacted": 50.0,
+      "actual_screens": 12.0,
+      "moved_to_ats": 5.0,
+      "hires": 3.5,
       "team_group": "Dolphins/Whales"
     },
     {
@@ -361,33 +559,6 @@
       "team_group": ""
     },
     {
-      "client": "Fever",
-      "ta": "Lejla Silva",
-      "contacted": 0,
-      "actual_screens": 0,
-      "moved_to_ats": 0,
-      "hires": 0,
-      "team_group": ""
-    },
-    {
-      "client": "Nexi",
-      "ta": "Andreas Weins",
-      "contacted": 0,
-      "actual_screens": 0,
-      "moved_to_ats": 0,
-      "hires": 0,
-      "team_group": ""
-    },
-    {
-      "client": "Scorewarrior",
-      "ta": "Mark Kandaurov",
-      "contacted": 0,
-      "actual_screens": 0,
-      "moved_to_ats": 0,
-      "hires": 0,
-      "team_group": ""
-    },
-    {
       "client": "Taxfix",
       "ta": "Wladyslaw Gadomski",
       "contacted": 0,
@@ -397,170 +568,8 @@
       "team_group": ""
     },
     {
-      "client": "Wolt HQ",
-      "ta": "Alexandra Richiteanu",
-      "contacted": 0,
-      "actual_screens": 0,
-      "moved_to_ats": 0,
-      "hires": 0,
-      "team_group": ""
-    },
-    {
-      "client": "Wolt HQ",
-      "ta": "Chené Elliot",
-      "contacted": 0,
-      "actual_screens": 0,
-      "moved_to_ats": 0,
-      "hires": 0,
-      "team_group": ""
-    },
-    {
-      "client": "Wolt HQ",
-      "ta": "Rafael Rosa",
-      "contacted": 0,
-      "actual_screens": 0,
-      "moved_to_ats": 0,
-      "hires": 0,
-      "team_group": ""
-    },
-    {
       "client": "Wolt Market",
       "ta": "Joanna Bober",
-      "contacted": 0,
-      "actual_screens": 0,
-      "moved_to_ats": 0,
-      "hires": 0,
-      "team_group": ""
-    },
-    {
-      "client": "Wolt North, Baltics & Benelux",
-      "ta": "Jovana Drakula",
-      "contacted": 0,
-      "actual_screens": 0,
-      "moved_to_ats": 0,
-      "hires": 0,
-      "team_group": ""
-    },
-    {
-      "client": "Wolt Tech",
-      "ta": "Simon Siew",
-      "contacted": 0,
-      "actual_screens": 0,
-      "moved_to_ats": 0,
-      "hires": 0,
-      "team_group": ""
-    },
-    {
-      "client": "Wolt Tech",
-      "ta": "Vladimir Stankovic",
-      "contacted": 0,
-      "actual_screens": 0,
-      "moved_to_ats": 0,
-      "hires": 0,
-      "team_group": ""
-    },
-    {
-      "client": "Wolt Volume",
-      "ta": "Alisa Liddell",
-      "contacted": 0,
-      "actual_screens": 0,
-      "moved_to_ats": 0,
-      "hires": 0,
-      "team_group": ""
-    },
-    {
-      "client": "Wolt Volume",
-      "ta": "Chantal Bozkurt",
-      "contacted": 0,
-      "actual_screens": 0,
-      "moved_to_ats": 0,
-      "hires": 0,
-      "team_group": ""
-    },
-    {
-      "client": "Wolt Volume",
-      "ta": "Dolores Palotas",
-      "contacted": 0,
-      "actual_screens": 0,
-      "moved_to_ats": 0,
-      "hires": 0,
-      "team_group": ""
-    },
-    {
-      "client": "Wolt Volume",
-      "ta": "Dora Vrbanic",
-      "contacted": 0,
-      "actual_screens": 0,
-      "moved_to_ats": 0,
-      "hires": 0,
-      "team_group": ""
-    },
-    {
-      "client": "Wolt Volume",
-      "ta": "Evagelina Rapanaki",
-      "contacted": 0,
-      "actual_screens": 0,
-      "moved_to_ats": 0,
-      "hires": 0,
-      "team_group": ""
-    },
-    {
-      "client": "Wolt Volume",
-      "ta": "Fuad Safarov",
-      "contacted": 0,
-      "actual_screens": 0,
-      "moved_to_ats": 0,
-      "hires": 0,
-      "team_group": ""
-    },
-    {
-      "client": "Wolt Volume",
-      "ta": "Tinatini Karaulashvili",
-      "contacted": 0,
-      "actual_screens": 0,
-      "moved_to_ats": 0,
-      "hires": 0,
-      "team_group": ""
-    },
-    {
-      "client": "Wolt Volume",
-      "ta": "Tomer Fattal",
-      "contacted": 0,
-      "actual_screens": 0,
-      "moved_to_ats": 0,
-      "hires": 0,
-      "team_group": ""
-    },
-    {
-      "client": "Wolt Volume",
-      "ta": "Zarina Amanbekova",
-      "contacted": 0,
-      "actual_screens": 0,
-      "moved_to_ats": 0,
-      "hires": 0,
-      "team_group": ""
-    },
-    {
-      "client": "DualEntry",
-      "ta": "Samantha Nel",
-      "contacted": 0,
-      "actual_screens": 0,
-      "moved_to_ats": 0,
-      "hires": 0,
-      "team_group": ""
-    },
-    {
-      "client": "DualEntry",
-      "ta": "Chené Elliot",
-      "contacted": 0,
-      "actual_screens": 0,
-      "moved_to_ats": 0,
-      "hires": 0,
-      "team_group": ""
-    },
-    {
-      "client": "Wolt Volume",
-      "ta": "Ketevan Khorava",
       "contacted": 0,
       "actual_screens": 0,
       "moved_to_ats": 0,
@@ -579,15 +588,6 @@
     {
       "client": "DualEntry",
       "ta": "JP Davidtz",
-      "contacted": 0,
-      "actual_screens": 0,
-      "moved_to_ats": 0,
-      "hires": 0,
-      "team_group": ""
-    },
-    {
-      "client": "DualEntry",
-      "ta": "Simon Siew",
       "contacted": 0,
       "actual_screens": 0,
       "moved_to_ats": 0,

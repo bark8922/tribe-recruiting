@@ -310,6 +310,81 @@ def load_ta_weekly_roster() -> dict[str, list[str]]:
     return {wk: sorted(v) for wk, v in out.items()}
 
 
+def load_ta_targets_from_csv(preserve_from_live: list[dict] | None = None) -> list[dict]:
+    """Build the `targets` top-level list from wbr_ta_target.csv for the most
+    recent 2026 month with a non-zero row per (Client, TA). Preserves team_group
+    from the live JSON (the Bubble/n8n pipeline carries that labelling) when
+    available; defaults to the client-level Dolphins/Whales or Ponies/Unicorns
+    mapping otherwise.
+
+    Without this the `targets` field was being carried forward verbatim from
+    live dashboard_data.json via dict(live), which meant Aiven/new-TAs had
+    contacted=0 / actual_screens=0 / moved_to_ats=0 (their old values) even
+    after Andy set positive targets in the sheet — the WBR Client Summary
+    color thresholds silently skipped those cells because the denominator
+    was 0.
+    """
+    try:
+        f = WBR_TA_TARGET_CSV.open()
+    except FileNotFoundError:
+        return list(preserve_from_live or [])
+
+    live_lookup: dict[tuple[str, str], dict] = {}
+    for row in (preserve_from_live or []):
+        key = (fold_name(row.get("client", "")), fold_name(row.get("ta", "")))
+        live_lookup.setdefault(key, row)
+
+    # Group by (client, TA); pick the newest month's values.
+    latest: dict[tuple[str, str], tuple[int, dict]] = {}
+    with f:
+        for row in csv.DictReader(f):
+            try:
+                y = int(row["Year"])
+                m_ = int(row["Month"])
+            except (ValueError, KeyError):
+                continue
+            if y != 2026:
+                continue
+            client = (row.get("Client") or "").strip()
+            ta = (row.get("TA") or "").strip()
+            if not client or not ta:
+                continue
+
+            def _num(v: str) -> float:
+                try:
+                    return float(v) if v not in (None, "", " ") else 0.0
+                except ValueError:
+                    return 0.0
+
+            entry = {
+                "client": client,
+                "ta": ta,
+                "contacted":      _num(row.get("Contacted") or ""),
+                "actual_screens": _num(row.get("Actual Screens") or ""),
+                "moved_to_ats":   _num(row.get("Moved to ATS") or ""),
+                "hires":          _num(row.get("Hires") or ""),
+            }
+            key = (fold_name(client), fold_name(ta))
+            # Preserve team_group from live if present; default client-based mapping
+            live_row = live_lookup.get(key)
+            tg = (live_row.get("team_group") or "").strip() if live_row else ""
+            entry["team_group"] = tg  # empty string = roster-only; keep live's label
+
+            cur = latest.get(key)
+            if cur is None or m_ > cur[0]:
+                latest[key] = (m_, entry)
+
+    out: list[dict] = [v[1] for v in latest.values()]
+    # Add any live rows not in CSV (e.g. synthesized weekly-roster-only rows)
+    # so we don't drop existing behaviour downstream.
+    csv_keys = set(latest.keys())
+    for row in (preserve_from_live or []):
+        key = (fold_name(row.get("client", "")), fold_name(row.get("ta", "")))
+        if key not in csv_keys:
+            out.append(row)
+    return out
+
+
 def load_ta_weekly_notes() -> list[dict]:
     """Parse wbr_ta_weekly_note.csv → list of {client, ta, year, week, reasoning, comment}
     rows, one per Client/TA/Week. Matches the shape App.jsx's taDetail lookup
@@ -912,10 +987,16 @@ def main():
                 })
         ts_conversion_weekly[wk_key] = week_rows
 
+    # Build targets from wbr_ta_target.csv (current-month values) instead of
+    # carrying forward stale numbers from live. Preserves team_group labels
+    # from live where available.
+    csv_targets = load_ta_targets_from_csv(preserve_from_live=live.get("targets", []))
+    print(f"  targets rebuilt from CSV: {len(csv_targets)} entries")
+
     # Synthesize target entries for TAs in weekly roster but not in targets.
     # This ensures former/mid-month TAs show up in the TA detail table with
     # their actuals (targets = 0) when viewing earlier weeks.
-    existing_targets = list(live.get("targets", []))
+    existing_targets = list(csv_targets)
     existing_pairs = {
         f"{fold_name(t.get('client',''))}|{fold_name(t.get('ta',''))}"
         for t in existing_targets

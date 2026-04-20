@@ -812,23 +812,25 @@ const WBRTab = ({ data }) => {
                 //   - % Contacted to Positive Response: green ≥20% (Gustavo 22%, Nare 23%, Jovana 39% green; Marina 18% red)
                 //   - % Screens to Actual Screen      : green ≥60% (Nare 61%, Zelimir 89% green; Andrea 55% red)
                 //   - % Actual Screens to ATS         : green ≥50% (Milica 50%, Valeriia 51% green; Naledi 43%, Mia 45% red)
-                // Tailwind v2 classes (dashboard loads tailwind@2.2.19 via CDN)
-                // — `/40` opacity syntax is v3+ and silently renders as no-op here.
-                const cell = (v, greenAt) => {
-                  if (v == null) return 'text-gray-500';
+                // Use the same hex colours as getCellStyle (#166534 green / #991b1b red) so the
+                // TS Conversion table matches the rest of the dashboard's palette. Inline style
+                // instead of Tailwind classes — the dashboard ships Tailwind v2 via CDN and the
+                // opacity syntax isn't available.
+                const binaryCell = (v, greenAt) => {
+                  if (v == null) return {};
                   return v >= greenAt
-                    ? 'bg-green-700 bg-opacity-40 text-white font-semibold'
-                    : 'bg-red-700 bg-opacity-40 text-white font-semibold';
+                    ? { backgroundColor: '#166534', color: '#bbf7d0' }
+                    : { backgroundColor: '#991b1b', color: '#fecaca' };
                 };
                 return (
                   <tr key={idx} className={idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'}>
                     <td className="text-left px-2 py-2 text-white font-medium">{row.ts}</td>
                     <td className="text-center px-2 py-2 text-gray-300">{row.active_jobs}</td>
-                    <td className={`text-center px-2 py-2 ${cell(row.pct_contacted_to_pr, 20)}`}>{fmt(row.pct_contacted_to_pr)}</td>
+                    <td className="text-center px-2 py-2" style={binaryCell(row.pct_contacted_to_pr, 20)}>{fmt(row.pct_contacted_to_pr)}</td>
                     <td className="text-center px-2 py-2 text-gray-300">{row.positive_responses}</td>
-                    <td className={`text-center px-2 py-2 ${cell(row.pct_screen_to_actual, 60)}`}>{fmt(row.pct_screen_to_actual)}</td>
+                    <td className="text-center px-2 py-2" style={binaryCell(row.pct_screen_to_actual, 60)}>{fmt(row.pct_screen_to_actual)}</td>
                     <td className="text-center px-2 py-2 text-gray-300">{row.actual_screens}</td>
-                    <td className={`text-center px-2 py-2 ${cell(row.pct_actual_to_ats, 50)}`}>{fmt(row.pct_actual_to_ats)}</td>
+                    <td className="text-center px-2 py-2" style={binaryCell(row.pct_actual_to_ats, 50)}>{fmt(row.pct_actual_to_ats)}</td>
                     <td className="text-center px-2 py-2 text-gray-300">{row.ats}</td>
                   </tr>
                 );

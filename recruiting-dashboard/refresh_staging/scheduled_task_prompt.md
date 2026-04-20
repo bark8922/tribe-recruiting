@@ -179,22 +179,27 @@ copy it to `dashboard_data_snowflake.json` and do NOT push.
 
 ## Attribution rules (pinned by PBI validation 2026-04-20)
 
-These are the attribution rules `aux_12w.sql`, `wbr_weekly.sql`, and
-`wbr_jobs_weekly.sql` must preserve. Drifting any of these silently
-regresses accuracy by 5-35% on individual TAs.
+These are the attribution rules `aux_12w.sql`, `wbr_weekly.sql`,
+`wbr_jobs_weekly.sql`, and `wbr_ts_jobs_weekly.sql` must preserve.
+Drifting any of these silently regresses accuracy by 5-35%+ on
+individual TAs/TSes.
 
 | Metric | Attribution | SQL location | PBI reference |
 |---|---|---|---|
-| Weekly Contacted / Screened / Actual Screens / ATS / Offers / Hires | `job.job_recruiter` on `candidate_stage.date_*` in week | `wbr_weekly.sql` | Aviv/Enam/Glovo all clients exact vs PBI w16 |
-| 12w Hires (TA) | `event.who_event_created_for` on authoritative Hired event | `aux_12w.sql` `hired_auth` (rn=1) | Aviv 9 exact, Wolt HQ 29, etc. |
+| Weekly Contacted / Screened / Actual Screens / ATS / Offers / Hires (TA) | `job.job_recruiter` on `candidate_stage.date_*` in week | `wbr_weekly.sql` | Aviv/Enam/Glovo exact |
+| 12w Hires (TA) | `event.who_event_created_for` on authoritative Hired event (rn=1) | `aux_12w.sql` `hired_auth` | Aviv 9 exact |
 | **12w Screens / 12w ATS (TA)** | **`event.who_event_created_for`** on latest Evaluation / Interview event per `(candidate, date)` | `aux_12w.sql` `evaluation_auth` + `ats_auth` | Lejla 169/104, Jonaed 170/96 — ALL EXACT |
-| # Jobs per week | `DISTINCTCOUNT(event.job_id)` per `(client, event.who_event_created_for, week)` via `event.date_created` | `wbr_jobs_weekly.sql` | 129/130 = 99.2% |
+| # Jobs per week (TA — WBR Client Summary) | `DISTINCTCOUNT(event.job_id)` per `(client, event.who_event_created_for, week)` via `event.date_created` | `wbr_jobs_weekly.sql` | 129/130 = 99.2% |
+| **# Jobs / # TA / TA Names per week (TS Weekly)** | **`DISTINCTCOUNT(event.job_id)` filtered to CONTACTED events only**: `(event_type='Moved to stage' AND moved_to_stage='Contacted') OR (event_type='Candidate created' AND moved_to_stage='Contacted')`, grouped by `TRIM(candidate.candidate_sourcer)`. `# TA` = DISTINCT `job.job_recruiter` EXCLUDING self (when TS = job_recruiter). | `wbr_ts_jobs_weekly.sql` | **10/11 TSes exact vs PBI w16, 11/11 TA names exact** (Andrea 7/4, Elena 4/0, Gustavo 4/2, Jovana 4/0, Marina 5/2, Milica 1/0, Naledi 4/0, Nare 7/3, Rodrigo 5/3, Valeriia 4/4, Zelimir 1/0) |
 | Jobs open ≥ 60 days | `job.job_recruiter` | `aux_12w.sql` `jobs_60d_base` | matches live |
 
-**Do NOT** change 12w Screens / ATS back to `job.job_recruiter` — that
-under-counted Lejla by 44 screens, Jonaed by 12. **Do NOT** change 12w
-Hires to `job.job_recruiter` either — historical commit 037c452 already
-validated event-attribution for hires.
+**Do NOT** change 12w Screens / ATS back to `job.job_recruiter`. **Do
+NOT** change 12w Hires to `job.job_recruiter`. **Do NOT** remove the
+Contacted-only filter from `wbr_ts_jobs_weekly.sql` — counting all
+events (downstream screens/interviews/hires) inflates TS # Jobs by 2x
+(Jovana 4 → 9, Marina 5 → 11, Elena 4 → 8). The Contacted filter is
+what separates "jobs the TS is actively sourcing this week" from
+"jobs the TS has any historical touch on."
 
 **12w window boundary (2026-04-20 fix):** PBI's "Last 12 weeks" rolling
 window INCLUDES the current week. The anchor CTE must be

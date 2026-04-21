@@ -51,48 +51,14 @@ and a final "DONE" line (10000+ total rows). If the script reports ERROR
 continue with stale CSVs. One-time dep install if needed:
 `pip install gspread google-auth --break-system-packages`.
 
-## Step 1 — Run 6 Keboola MCP queries
+## Step 1 — Pull all Snowflake-derived CSVs from Keboola Storage API
 
-For each of these SQL files, read it from disk and call the Keboola MCP
-`query_data` tool (find the full tool name with ToolSearch, query
-"query_data keboola"). Pass the full file contents as the `sql_statement`
-argument. Write the returned rows (header row + data rows) to the matching
-CSV file next to the SQL:
+All 9 CSVs consumed by `render_json.py` now come from Keboola Storage API,
+not MCP `query_data`. The underlying transformations are wired into the
+Keboola Flow `01kpqyq1pz6qpmk7m9s4qx8gmg` which runs on cron `40 14,20,8`
+Europe/Prague — so by the time this task runs the output tables are fresh.
 
-| SQL file                           | Output CSV                                  |
-| ---------------------------------- | ------------------------------------------- |
-| `wbr_weekly.sql`                   | `snowflake_wbr.csv`                         |
-| `wbr_jobs_weekly.sql`              | `snowflake_wbr_jobs.csv`                    |
-| `wbr_ts_jobs_weekly.sql`           | `snowflake_ts_jobs.csv`                     |
-| `ts_weekly.sql`                    | `snowflake_ts.csv`                          |
-| `ts_conversion.sql`                | `snowflake_ts_conversion.csv`               |
-| `aux_12w.sql`                      | `snowflake_aux_12w.csv`                     |
-
-Rough expected row counts: wbr ~670, wbr_jobs ~780, ts_jobs ~820, ts ~700,
-ts_conversion ~65, aux_12w ~600. If any query fails or returns zero rows,
-abort — do NOT render with partial data.
-
-`project_dashboard.sql` and `project_dashboard_hires.sql` are NOT run via MCP
-here — their output is too large for the MCP response cap. Step 1c fetches them
-via the Keboola Storage API instead. Do not add them to this Step 1 loop.
-
-Note on wbr_jobs_weekly.sql: it uses a DIFFERENT TA attribution than
-wbr_weekly.sql. Jobs are grouped by `event.who_event_created_for` (PBI DAX
-replica) rather than `job.job_recruiter`, so some TAs in the output CSV
-won't appear in wbr_weekly.sql and vice versa. render_json.py handles both
-attributions separately — don't try to merge them into one CSV.
-
-## Step 1c — Pull Project Dashboard tables from Keboola Storage API
-
-The Project Dashboard tab is fed by two Keboola Snowflake transformations whose
-output tables live in `out.c-Project-Dashboard---weekly-funnel.project_dashboard`
-and `out.c-Project-Dashboard---hires-drill-down.project_dashboard_hires`. Unlike
-the WBR/MBR SQLs (which are small enough to fetch via MCP `query_data`), the
-Project Dashboard output is ~600KB and exceeds the MCP response token cap. We
-fetch it via the Storage API instead.
-
-The token is read from the `KEBOOLA_READONLY_TOKEN` environment variable. Export
-it before running this task:
+The token lives in env var `KEBOOLA_READONLY_TOKEN`; export it first:
 
 ```bash
 # The actual token value is baked into the live Cowork scheduled task
@@ -102,26 +68,44 @@ it before running this task:
 export KEBOOLA_READONLY_TOKEN=855-10199057-REDACTED
 ```
 
-Then `refresh_daily.py` (Step 2) will call `pull_project_dashboard.py` automatically
-at the start of the refresh. The helper downloads both tables and saves them as:
+Then `refresh_daily.py` (Step 2) calls `pull_project_dashboard.py` automatically
+at the top of the orchestration. That helper downloads all 9 tables and writes
+them as:
 
-- `snowflake_project_dashboard.csv`
-- `snowflake_project_dashboard_hires.csv`
+| Keboola table                                                                   | Output CSV                                  |
+| ------------------------------------------------------------------------------- | ------------------------------------------- |
+| `out.c-Project-Dashboard---weekly-funnel.project_dashboard`                     | `snowflake_project_dashboard.csv`           |
+| `out.c-Project-Dashboard---hires-drill-down.project_dashboard_hires`            | `snowflake_project_dashboard_hires.csv`     |
+| `out.c-MBR-Contacted---event-based-attribution.mbr_contacted_ev`                | `snowflake_mbr_contacted_ev.csv`            |
+| `out.c-WBRMBR-weekly-aggregations.wbr_weekly`                                   | `snowflake_wbr.csv`                         |
+| `out.c-WBRMBR-weekly-aggregations.wbr_jobs_weekly`                              | `snowflake_wbr_jobs.csv`                    |
+| `out.c-WBRMBR-weekly-aggregations.wbr_ts_jobs_weekly`                           | `snowflake_ts_jobs.csv`                     |
+| `out.c-WBRMBR-weekly-aggregations.ts_weekly`                                    | `snowflake_ts.csv`                          |
+| `out.c-WBRMBR-weekly-aggregations.ts_conversion`                                | `snowflake_ts_conversion.csv`               |
+| `out.c-WBRMBR-weekly-aggregations.aux_12w`                                      | `snowflake_aux_12w.csv`                     |
 
-If the env var is not set, the pull is skipped silently and the dashboard
-renders without Project Dashboard data (tab shows placeholder). WBR/MBR still
-work.
+Rough expected row counts: wbr ~700, wbr_jobs ~815, ts_jobs ~585, ts ~750,
+ts_conversion ~64, aux_12w ~608, project_dashboard ~3,900, project_dashboard_hires
+~2,800, mbr_contacted_ev ~500. If any pull fails or returns zero rows,
+`refresh_daily.py` aborts during `check_inputs()` — do NOT render with partial data.
 
-**Note on data freshness:** the two transformations that populate these tables
-are NOT scheduled (as of 2026-04-21). They run when someone clicks Run in the
-Keboola UI OR when they're wired into the Keboola Flow. This step curls whatever
-is currently in the output tables — so if the transformations haven't been
-re-run recently, the Project Dashboard tab shows stale data. Post-MVP migration
-(after April 30) will move all three tabs fully onto Keboola's schedule.
+If `KEBOOLA_READONLY_TOKEN` is not set, the pull skips silently and
+`check_inputs()` fails with a clear "Missing input CSVs" error. Don't try to
+fall back to MCP `query_data` — the transformations are the source of truth
+now (they have additional filters and attribution fixes applied vs. the
+raw SQL files in this directory).
 
-Transformation configs for reference:
+Transformation configs for reference (all 4 are wired into Flow 01kpqyq1pz6qpmk7m9s4qx8gmg):
 - [Project Dashboard - weekly funnel](https://connection.eu-central-1.keboola.com/admin/projects/855/transformations-v2/keboola.snowflake-transformation/01kpqh9r7g2z66c8vvdr5d87xd)
 - [Project Dashboard - hires drill-down](https://connection.eu-central-1.keboola.com/admin/projects/855/transformations-v2/keboola.snowflake-transformation/01kpqharhz3seww52sms915216)
+- [MBR Contacted event-based attribution](https://connection.eu-central-1.keboola.com/admin/projects/855/transformations-v2/keboola.snowflake-transformation/01kpqxgczrvb92e95y6dh7zxmh)
+- [WBR/MBR weekly aggregations](https://connection.eu-central-1.keboola.com/admin/projects/855/transformations-v2/keboola.snowflake-transformation/01kpr0tr0dt5ryf96a5zk85bx7)
+
+Note on wbr_jobs_weekly: it uses a DIFFERENT TA attribution than
+wbr_weekly. Jobs are grouped by `event.who_event_created_for` (PBI DAX
+replica) rather than `job.job_recruiter`, so some TAs in the output CSV
+won't appear in wbr_weekly and vice versa. render_json.py handles both
+attributions separately — don't try to merge them into one CSV.
 
 ## Step 2 — Render + mirror locally
 

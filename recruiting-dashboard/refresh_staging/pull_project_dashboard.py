@@ -1,33 +1,52 @@
-"""pull_project_dashboard.py — download Project Dashboard tables from Keboola Storage API.
+"""pull_project_dashboard.py — download Snowflake-derived tables from Keboola Storage API.
 
-Fetches the two Project Dashboard output tables that the Snowflake transformations
-produce and saves them as CSVs in refresh_staging/. Invoked by refresh_daily.py
-at the top of the orchestration so the CSVs exist before render_json.py runs.
+Originally pulled the 2 Project Dashboard tables. As of 2026-04-21 (Phase 2 step 1)
+it also pulls the 6 WBR/MBR weekly aggregation tables that previously came from
+the scheduled-task prompt's MCP `query_data` calls — so the MCP-query step in the
+prompt can be retired once this pull is proven stable.
+
+Outputs (written alongside refresh_daily.py):
+  - snowflake_project_dashboard.csv        (weekly funnel)
+  - snowflake_project_dashboard_hires.csv  (hires drill-down)
+  - snowflake_mbr_contacted_ev.csv         (event-based Contacted attribution)
+  - snowflake_wbr.csv                      (wbr_weekly)
+  - snowflake_wbr_jobs.csv                 (wbr_jobs_weekly)
+  - snowflake_ts_jobs.csv                  (wbr_ts_jobs_weekly)
+  - snowflake_ts.csv                       (ts_weekly)
+  - snowflake_ts_conversion.csv            (ts_conversion)
+  - snowflake_aux_12w.csv                  (aux_12w)
 
 Why Storage API (not MCP query_data):
-  The Project Dashboard SQL output is ~600KB of CSV. The Keboola MCP's query_data
-  response is capped at ~56KB of tokens, so we can't fetch it directly. The
-  Storage API has no such cap and streams the full table via a signed S3 URL.
+  Original reason (Project Dashboard only): project_dashboard.sql output is
+  ~600KB of CSV. The Keboola MCP's query_data response is capped at ~56KB of
+  tokens, so we couldn't fetch it directly. The Storage API has no such cap
+  and streams the full table via a signed S3 URL.
+  After Phase 2: even for the smaller WBR/MBR tables we prefer this path
+  because the MCP-query step only runs when Cowork is open; the Keboola
+  transformations run on their own Flow schedule, so the Storage API pull
+  sees fresh data 3x/day regardless of laptop state.
 
 Authentication:
   Reads the Keboola Storage API token from environment variable
-  KEBOOLA_READONLY_TOKEN. The token only needs READ access to the two project
-  dashboard output buckets:
+  KEBOOLA_READONLY_TOKEN. The token needs READ access to these output buckets:
     - out.c-Project-Dashboard---weekly-funnel
     - out.c-Project-Dashboard---hires-drill-down
+    - out.c-MBR-Contacted---event-based-attribution
+    - out.c-WBRMBR-weekly-aggregations
 
   Generate a token in Keboola UI → Settings → API Tokens → "+ New Token".
 
 Keboola transformations that produce these tables:
-  - Project Dashboard - weekly funnel     (config 01kpqh9r7g2z66c8vvdr5d87xd)
-  - Project Dashboard - hires drill-down  (config 01kpqharhz3seww52sms915216)
+  - Project Dashboard - weekly funnel        (config 01kpqh9r7g2z66c8vvdr5d87xd)
+  - Project Dashboard - hires drill-down     (config 01kpqharhz3seww52sms915216)
+  - MBR Contacted event-based attribution    (config 01kpqxgczrvb92e95y6dh7zxmh)
+  - WBR/MBR weekly aggregations              (config 01kpr0tr0dt5ryf96a5zk85bx7)
 
 Data freshness:
   This script curls whatever is CURRENTLY in the Keboola output tables. The
-  transformations do NOT run on this script's schedule — they run when someone
-  clicks Run in Keboola OR when the transformations are added to the Keboola
-  Flow's schedule (post-MVP migration). If the transformation hasn't been
-  re-run recently, this pull returns the stale data. Accepted trade-off for v1.
+  transformations run on the Keboola Flow's cron (40 14,20,8 Prague, 3x/day).
+  If the transformation hasn't been re-run recently, this pull returns stale
+  data. Accepted trade-off; Flow guarantees freshness within 6 hours.
 
 Usage:
   export KEBOOLA_READONLY_TOKEN=855-NNNNN-...
@@ -61,6 +80,22 @@ TABLES = [
      HERE / "snowflake_project_dashboard_hires.csv"),
     ("out.c-MBR-Contacted---event-based-attribution.mbr_contacted_ev",
      HERE / "snowflake_mbr_contacted_ev.csv"),
+    # WBR/MBR weekly aggregations (Phase 2, config 01kpr0tr0dt5ryf96a5zk85bx7)
+    # Replaces the MCP query_data x6 step that previously ran in the Cowork
+    # scheduled-task prompt. Keep output filenames identical to the CSV names
+    # refresh_daily.py already expects — drop-in swap.
+    ("out.c-WBRMBR-weekly-aggregations.wbr_weekly",
+     HERE / "snowflake_wbr.csv"),
+    ("out.c-WBRMBR-weekly-aggregations.wbr_jobs_weekly",
+     HERE / "snowflake_wbr_jobs.csv"),
+    ("out.c-WBRMBR-weekly-aggregations.wbr_ts_jobs_weekly",
+     HERE / "snowflake_ts_jobs.csv"),
+    ("out.c-WBRMBR-weekly-aggregations.ts_weekly",
+     HERE / "snowflake_ts.csv"),
+    ("out.c-WBRMBR-weekly-aggregations.ts_conversion",
+     HERE / "snowflake_ts_conversion.csv"),
+    ("out.c-WBRMBR-weekly-aggregations.aux_12w",
+     HERE / "snowflake_aux_12w.csv"),
 ]
 
 log = logging.getLogger("pull_project_dashboard")

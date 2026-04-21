@@ -82,6 +82,7 @@ SNOW_TS_JOBS = HERE / "snowflake_ts_jobs.csv"
 SNOW_AUX = HERE / "snowflake_aux_12w.csv"
 SNOW_PROJECT_DASHBOARD = HERE / "snowflake_project_dashboard.csv"
 SNOW_PROJECT_HIRES = HERE / "snowflake_project_dashboard_hires.csv"
+SNOW_MBR_CONTACTED_EV = HERE / "snowflake_mbr_contacted_ev.csv"
 
 # WBR target sheet CSVs — synced by n8n workflow j5QsaTUpk4Nk1xhn.
 # These are the SINGLE SOURCE OF TRUTH for who appears in the dashboard:
@@ -564,6 +565,32 @@ def load_ts_jobs_weekly():
             }
     return out
 
+
+
+def load_mbr_contacted_ev():
+    """Return list of dicts from snowflake_mbr_contacted_ev.csv.
+
+    Keeps RAW client name (so we can route Wolt / Doordash / SevenRooms via
+    the mbr_wolt_roster at MBR-build time, matching mbr_display_for). Returns
+    empty list if the CSV is missing (render_json.py falls back to the
+    candidate_stage-based Contacted)."""
+    out = []
+    if not SNOW_MBR_CONTACTED_EV.exists():
+        return out
+    with SNOW_MBR_CONTACTED_EV.open() as f:
+        for row in csv.DictReader(f):
+            try:
+                client = (row.get("CLIENT") or "").strip()
+                ta = (row.get("TA") or "").strip()
+                y = int(row.get("ISO_YEAR") or 0)
+                w = int(row.get("ISO_WEEK") or 0)
+                n = int(row.get("CONTACTED_EV") or 0)
+            except (ValueError, KeyError):
+                continue
+            if not client or not ta:
+                continue
+            out.append((client, ta, y, w, n))
+    return out
 
 
 def load_project_dashboard():
@@ -1129,6 +1156,32 @@ def main():
                                           ta_roster=ta_roster,
                                           active_target_pairs=active_target_pairs,
                                           weekly_active_pairs=weekly_active_pairs)
+
+    # Override MBR Contacted with event-based counts (who_event_created_for)
+    # Matches PBI DAX. Iterates (disp, fold_ta, year, week) entries and sums
+    # only those within mbr_weeks and in the weekly roster for that week.
+    ev_contacted = load_mbr_contacted_ev()
+    if ev_contacted:
+        mbr_week_nums = {int(w[1:]) for w in mbr_weeks if isinstance(w, str) and w.startswith("w")}
+        # Zero out existing Contacted counts; we'll rebuild from event-based
+        for key in list(mbr_ta_actuals.keys()):
+            mbr_ta_actuals[key]["contacted"] = 0
+        for raw_c, raw_ta, y, wk, n in ev_contacted:
+            if y != 2026 or wk not in mbr_week_nums:
+                continue
+            norm_ta = norm_name(raw_ta)
+            # Route Wolt/DoorDash/SevenRooms via the TA's sub-BU roster —
+            # same logic as mbr_display_for used when building the table.
+            disp = mbr_display_for(raw_c, norm_ta, mbr_wolt)
+            fold_ta = fold_name(raw_ta)
+            if weekly_active_pairs is not None:
+                roster = weekly_active_pairs.get(wk, set())
+                if (disp, fold_ta) not in roster:
+                    continue
+            key = f"{disp}|{norm_ta}"
+            if key in mbr_ta_actuals:
+                mbr_ta_actuals[key]["contacted"] += n
+        print(f"  mbr Contacted overridden with event-based attribution")
     mbr_ts_actuals = build_mbr_ts_actuals(raw_ts, aux, mbr_weeks, ts_roster=ts_roster)
     mbr_client_totals = build_mbr_client_totals(mbr_ta_actuals)
 

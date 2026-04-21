@@ -19555,7 +19555,7 @@
   },
   "mbr_client_totals": {
     "Aviv": {
-      "contacted": 2012,
+      "contacted": 1908,
       "actual_screens": 245,
       "ats": 141,
       "offers": 0,
@@ -19563,7 +19563,7 @@
       "hires_12w": 9
     },
     "Aiven": {
-      "contacted": 223,
+      "contacted": 217,
       "actual_screens": 48,
       "ats": 19,
       "offers": 0,
@@ -19571,7 +19571,7 @@
       "hires_12w": 0
     },
     "Wolt HQ": {
-      "contacted": 1516,
+      "contacted": 1515,
       "actual_screens": 113,
       "ats": 71,
       "offers": 7,
@@ -19587,7 +19587,7 @@
       "hires_12w": 1
     },
     "Eucalyptus": {
-      "contacted": 677,
+      "contacted": 458,
       "actual_screens": 110,
       "ats": 59,
       "offers": 3,
@@ -19603,7 +19603,7 @@
       "hires_12w": 4
     },
     "Nexi": {
-      "contacted": 611,
+      "contacted": 610,
       "actual_screens": 79,
       "ats": 51,
       "offers": 4,
@@ -19635,7 +19635,7 @@
       "hires_12w": 0
     },
     "Wolt NBB": {
-      "contacted": 186,
+      "contacted": 185,
       "actual_screens": 62,
       "ats": 36,
       "offers": 11,
@@ -19667,7 +19667,7 @@
       "hires_12w": 1
     },
     "Wolt Market": {
-      "contacted": 240,
+      "contacted": 238,
       "actual_screens": 45,
       "ats": 24,
       "offers": 7,
@@ -19693,7 +19693,7 @@
   },
   "mbr_ta_actuals": {
     "Aviv|Alexandra Richiteanu": {
-      "contacted": 108,
+      "contacted": 7,
       "actual_screens": 15,
       "ats": 5,
       "offers": 0,
@@ -19704,7 +19704,7 @@
       "jobs_60d": 3
     },
     "Aviv|Anna Tyulpanova": {
-      "contacted": 303,
+      "contacted": 301,
       "actual_screens": 39,
       "ats": 26,
       "offers": 0,
@@ -19737,7 +19737,7 @@
       "jobs_60d": 0
     },
     "Aviv|Lejla Silva": {
-      "contacted": 711,
+      "contacted": 710,
       "actual_screens": 73,
       "ats": 49,
       "offers": 0,
@@ -19759,7 +19759,7 @@
       "jobs_60d": 2
     },
     "Aiven|Fuad Safarov": {
-      "contacted": 118,
+      "contacted": 112,
       "actual_screens": 21,
       "ats": 9,
       "offers": 0,
@@ -19847,7 +19847,7 @@
       "jobs_60d": 0
     },
     "Eucalyptus|Dušan Špica": {
-      "contacted": 248,
+      "contacted": 247,
       "actual_screens": 28,
       "ats": 12,
       "offers": 0,
@@ -19858,7 +19858,7 @@
       "jobs_60d": 0
     },
     "Eucalyptus|Meho Saracevic": {
-      "contacted": 282,
+      "contacted": 64,
       "actual_screens": 66,
       "ats": 38,
       "offers": 3,
@@ -19902,7 +19902,7 @@
       "jobs_60d": 0
     },
     "Nexi|Maria Desiree Gerbore": {
-      "contacted": 559,
+      "contacted": 558,
       "actual_screens": 72,
       "ats": 45,
       "offers": 3,
@@ -19968,7 +19968,7 @@
       "jobs_60d": 0
     },
     "Wolt NBB|Adelya Khakimova": {
-      "contacted": 21,
+      "contacted": 20,
       "actual_screens": 11,
       "ats": 5,
       "offers": 0,
@@ -20034,7 +20034,7 @@
       "jobs_60d": 1
     },
     "Wolt Market|Jan Dokulil": {
-      "contacted": 240,
+      "contacted": 238,
       "actual_screens": 45,
       "ats": 24,
       "offers": 7,
@@ -20067,7 +20067,7 @@
       "jobs_60d": 13
     },
     "Wolt HQ|Nenad Skoko": {
-      "contacted": 74,
+      "contacted": 73,
       "actual_screens": 41,
       "ats": 22,
       "offers": 2,

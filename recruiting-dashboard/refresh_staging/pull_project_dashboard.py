@@ -59,6 +59,8 @@ TABLES = [
      HERE / "snowflake_project_dashboard.csv"),
     ("out.c-Project-Dashboard---hires-drill-down.project_dashboard_hires",
      HERE / "snowflake_project_dashboard_hires.csv"),
+    ("out.c-MBR-Contacted---event-based-attribution.mbr_contacted_ev",
+     HERE / "snowflake_mbr_contacted_ev.csv"),
 ]
 
 log = logging.getLogger("pull_project_dashboard")

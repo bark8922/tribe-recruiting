@@ -22,16 +22,14 @@ Cowork scheduled task. End-to-end:
 
 Required user_properties:
   - #github_token — GitHub PAT with contents:write on bark8922/tribe-recruiting.
-                    (Same PAT as the scheduled task; could in theory be scoped
-                    tighter to just this one file but not worth the effort.)
 
-Input mapping (destination filenames are what render_json.py expects):
-  Snowflake outputs → refresh_staging/*.csv
+Input mapping destinations (what render_json.py expects):
+  Snowflake outputs → refresh_staging/*.csv:
     snowflake_wbr.csv, snowflake_wbr_jobs.csv, snowflake_ts_jobs.csv,
     snowflake_ts.csv, snowflake_ts_conversion.csv, snowflake_aux_12w.csv,
     snowflake_project_dashboard.csv, snowflake_project_dashboard_hires.csv,
     snowflake_mbr_contacted_ev.csv
-  Google Sheet tabs → wbr_static/*.csv
+  Google Sheet tabs → wbr_static/*.csv:
     wbr_ta_target.csv, wbr_ta_weekly_note.csv, wbr_ts_weekly.csv,
     wbr_ir.csv, wbr_reasoning_guidance.csv
 """
@@ -40,7 +38,6 @@ from __future__ import annotations
 import base64
 import json
 import logging
-import os
 import shutil
 import sys
 import urllib.request
@@ -59,13 +56,13 @@ def stage_inputs(ci: CommonInterface, flat: Path) -> None:
 
     render_json.py computes ROOT = Path(__file__).parent.parent, so if it
     lives at <flat>/refresh_staging/render_json.py then ROOT = <flat> and:
-      - WBR_TA_TARGET_CSV   = <flat>/wbr_static/wbr_ta_target.csv
-      - LIVE_JSON           = <flat>/dashboard_data.json
-      - OUT_JSON            = <flat>/refresh_staging/rendered_dashboard_data.json
+      WBR_TA_TARGET_CSV = <flat>/wbr_static/wbr_ta_target.csv
+      LIVE_JSON         = <flat>/dashboard_data.json
+      OUT_JSON          = <flat>/refresh_staging/rendered_dashboard_data.json
     """
-    # Keboola clones the repo to /code/repo_clone and runs keboola_entry.py from
-    # there, but Path.cwd() is /data/ at runtime. Derive the repo root from the
-    # script's own location instead of relying on cwd.
+    # Keboola clones the repo to /code/repo_clone and runs this script from
+    # there, but Path.cwd() is /data/ at runtime. Derive the repo root from
+    # the script's own location.
     # keboola_entry.py lives at <repo>/recruiting-dashboard/refresh_staging/keboola_entry.py
     repo_root = Path(__file__).resolve().parent.parent.parent
     src_dir = repo_root / "recruiting-dashboard" / "refresh_staging"
@@ -75,16 +72,20 @@ def stage_inputs(ci: CommonInterface, flat: Path) -> None:
     (flat / "refresh_staging").mkdir(parents=True, exist_ok=True)
     (flat / "wbr_static").mkdir(parents=True, exist_ok=True)
 
-    # Copy render_json.py (and any helpers) from the cloned repo
+    # Copy render_json.py (+ any siblings) from the cloned repo
+    copied = 0
     for p in src_dir.iterdir():
         if p.suffix in {".py", ".sql", ".md"}:
             shutil.copy(p, flat / "refresh_staging" / p.name)
+            copied += 1
+    logging.info("Copied %d files from %s", copied, src_dir)
 
     # Copy the PBI-side JSON (render_json.py's static-fields source)
     shutil.copy(src_json, flat / "dashboard_data.json")
+    logging.info("Copied %s -> %s", src_json.name, flat / "dashboard_data.json")
 
-    # Route each Keboola input table to the right folder based on filename
-    # convention. destination is the filename set in the input mapping.
+    # Route each Keboola input table to the right folder by filename prefix
+    staged = 0
     for tbl in ci.get_input_tables_definitions():
         name = Path(tbl.full_path).name
         if name.startswith("snowflake_"):
@@ -95,14 +96,15 @@ def stage_inputs(ci: CommonInterface, flat: Path) -> None:
             logging.warning("Unmapped input table %s — dropping into refresh_staging/", name)
             dst = flat / "refresh_staging" / name
         shutil.copy(tbl.full_path, dst)
+        staged += 1
         logging.info("  staged %s (%d KB)", dst.relative_to(flat), dst.stat().st_size // 1024)
+    logging.info("Staged %d input tables total", staged)
 
 
 def run_render(flat: Path) -> Path:
     """Run render_json.main() from the staged flat layout. Returns the output path."""
     staging = flat / "refresh_staging"
     sys.path.insert(0, str(staging))
-    # Import render_json after sys.path is set so it resolves ROOT correctly
     import render_json  # type: ignore
     logging.info("Running render_json.main()")
     render_json.main()
@@ -122,16 +124,12 @@ def push_to_github(token: str, content: str) -> str:
         "User-Agent": "keboola-custom-python-tribe-recruiting",
     }
 
-    # Fetch current file SHA (required by the PUT API for updates)
     req = urllib.request.Request(f"{url}?ref=main", headers=headers)
     with urllib.request.urlopen(req, timeout=30) as r:
         current = json.loads(r.read())
     sha = current["sha"]
     logging.info("Current file sha: %s", sha[:10])
 
-    # PUT new content. GitHub's Contents API expects base64-encoded body
-    # with a 76-col line length — the api accepts any valid base64, so
-    # stdlib b64encode works.
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     body = json.dumps(
         {
@@ -158,21 +156,32 @@ def main() -> int:
         format="%(asctime)s [%(levelname)s] %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
     )
+    logging.info("=== keboola_entry.py start ===")
 
     ci = CommonInterface()
     params = ci.configuration.parameters
 
-    token_key = "#github_token"
-    if token_key not in params:
-        # user_properties is the canonical place for secrets in this component
-        token_key_up = params.get("user_properties", {}).get("#github_token")
-        if not token_key_up:
-            raise RuntimeError(
-                "Missing #github_token in configuration parameters (expected either "
-                "at top-level params or under user_properties.#github_token)."
-            )
-        github_token = token_key_up
-    else:
-        github_token = params[token_key]
+    # Accept #github_token either at top-level params or under user_properties
+    github_token = params.get("#github_token")
+    if not github_token:
+        github_token = params.get("user_properties", {}).get("#github_token")
+    if not github_token:
+        raise RuntimeError(
+            "Missing #github_token in configuration parameters (expected either "
+            "at top-level params or under user_properties.#github_token)."
+        )
 
-   
+    flat = Path("/tmp/flat")
+    shutil.rmtree(flat, ignore_errors=True)
+    flat.mkdir(parents=True)
+
+    stage_inputs(ci, flat)
+    out_path = run_render(flat)
+    content = out_path.read_text(encoding="utf-8")
+
+    sha = push_to_github(github_token, content)
+    logging.info("=== done commit=%s size=%dKB ===", sha[:10], len(content) // 1024)
+    return 0
+
+
+# Keboola's Custom Python co

@@ -32,6 +32,7 @@ Run:
 from __future__ import annotations
 
 import argparse
+import os
 import logging
 import shutil
 import sys
@@ -53,6 +54,15 @@ REQUIRED_CSVS = [
     "snowflake_aux_12w.csv",
 ]
 
+# Project Dashboard CSVs — opt-in. Once the scheduled-task prompt is updated to
+# produce these (from project_dashboard.sql / project_dashboard_hires.sql) they
+# will be picked up automatically. Missing = render_json.py skips the
+# project_dashboard output surface (UI falls back to placeholder).
+OPTIONAL_CSVS = [
+    "snowflake_project_dashboard.csv",
+    "snowflake_project_dashboard_hires.csv",
+]
+
 log = logging.getLogger("refresh_daily")
 
 
@@ -62,6 +72,27 @@ def _setup_logging(level: str = "INFO") -> None:
         format="%(asctime)s [%(levelname)s] %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
     )
+
+
+def pull_project_dashboard_optional() -> None:
+    """Run pull_project_dashboard.py if KEBOOLA_READONLY_TOKEN is set.
+
+    This fetches the two Project Dashboard tables from Keboola Storage API and
+    saves them as CSVs next to the other snowflake_*.csv files so render_json.py
+    picks them up. Skips silently if the token isn't set — the pipeline will
+    still render WBR/MBR and leave project_dashboard empty (UI shows placeholder).
+    """
+    if not os.environ.get("KEBOOLA_READONLY_TOKEN"):
+        log.info("  KEBOOLA_READONLY_TOKEN not set — skipping Project Dashboard pull")
+        return
+    log.info("Pulling Project Dashboard tables from Keboola Storage API")
+    import subprocess
+    r = subprocess.run(["python3", str(HERE / "pull_project_dashboard.py")],
+                       capture_output=True, text=True, timeout=180)
+    for line in (r.stdout + r.stderr).splitlines():
+        log.info("  %s", line)
+    if r.returncode != 0:
+        log.warning("  Project Dashboard pull failed (rc=%d) — continuing without fresh data", r.returncode)
 
 
 def check_inputs() -> None:
@@ -78,6 +109,13 @@ def check_inputs() -> None:
         p = HERE / c
         age_h = (time.time() - p.stat().st_mtime) / 3600
         log.info("  %s: %d KB (age %.1fh)", c, p.stat().st_size // 1024, age_h)
+    for c in OPTIONAL_CSVS:
+        p = HERE / c
+        if p.exists():
+            age_h = (time.time() - p.stat().st_mtime) / 3600
+            log.info("  %s: %d KB (age %.1fh) [optional]", c, p.stat().st_size // 1024, age_h)
+        else:
+            log.info("  %s: MISSING [optional - Project Dashboard will use placeholder]", c)
 
 
 def render_dashboard() -> Path:
@@ -113,6 +151,7 @@ def main() -> int:
     _setup_logging(args.log_level)
 
     t0 = time.time()
+    pull_project_dashboard_optional()
     check_inputs()
     rendered = render_dashboard()
 

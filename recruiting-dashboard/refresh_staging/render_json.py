@@ -59,11 +59,11 @@ import unicodedata
 from collections import defaultdict
 from pathlib import Path
 
-
 # Upper ISO-week bound for the WBR CSV loaders. Computed dynamically so the
 # render doesn't silently drop current-week TA data when the ISO week rolls.
 # (Previous hardcoded `> 16` cap made TA surfaces miss w17 while TS surfaces
-# kept showing it on 2026-04-21.) +2 buffer handles year-end rollover.
+# kept showing it — "TS works, TA doesn't" — on 2026-04-21.) +2 buffer handles
+# year-end rollover and any clock skew between the SQL run and render.
 MAX_ISO_WEEK = datetime.date.today().isocalendar().week + 2
 
 HERE = Path(__file__).resolve().parent
@@ -80,6 +80,8 @@ SNOW_TS = HERE / "snowflake_ts.csv"
 SNOW_TS_CONV = HERE / "snowflake_ts_conversion.csv"
 SNOW_TS_JOBS = HERE / "snowflake_ts_jobs.csv"
 SNOW_AUX = HERE / "snowflake_aux_12w.csv"
+SNOW_PROJECT_DASHBOARD = HERE / "snowflake_project_dashboard.csv"
+SNOW_PROJECT_HIRES = HERE / "snowflake_project_dashboard_hires.csv"
 
 # WBR target sheet CSVs — synced by n8n workflow j5QsaTUpk4Nk1xhn.
 # These are the SINGLE SOURCE OF TRUTH for who appears in the dashboard:
@@ -563,6 +565,81 @@ def load_ts_jobs_weekly():
     return out
 
 
+
+def load_project_dashboard():
+    """Return {"rows": [...]} from snowflake_project_dashboard.csv.
+
+    Produced by project_dashboard.sql — per-(client, job, TA, TS, category,
+    source, external, day) funnel counts with 6 metrics (contacted, PR,
+    actual_screens, ats, offered, hired). Powers the Project Dashboard tab.
+
+    Attribution validated 2026-04-20 against PBIX Overview (Apr 13-19):
+    24/24 per-client metrics within 1-3 units.
+
+    File is opt-in. Returns empty list if missing so legacy runs still work."""
+    if not SNOW_PROJECT_DASHBOARD.exists():
+        return {"rows": []}
+    rows = []
+    with SNOW_PROJECT_DASHBOARD.open() as f:
+        for row in csv.DictReader(f):
+            client = (row.get("CLIENT") or "").strip()
+            if client in INTERNAL_CLIENTS:
+                continue
+            rows.append({
+                "client":                 client,
+                "job_id":                 (row.get("JOB_ID") or "").strip(),
+                "job_title":              (row.get("JOB_TITLE") or "").strip(),
+                "job_category":           (row.get("JOB_CATEGORY") or "").strip(),
+                "ta":                     (row.get("TA") or "").strip(),
+                "ts":                     (row.get("TS") or "").strip(),
+                "candidate_source":       (row.get("CANDIDATE_SOURCE") or "").strip(),
+                "is_external_recruiter":  (row.get("IS_EXTERNAL_RECRUITER") or "").strip().lower() == "true",
+                "iso_year":               int(row.get("ISO_YEAR") or 0),
+                "iso_week":               int(row.get("ISO_WEEK") or 0),
+                "viewed":                 int(row.get("VIEWED") or 0),
+                "contacted":              int(row.get("CONTACTED") or 0),
+                "positive_response":      int(row.get("POSITIVE_RESPONSE") or 0),
+                "screens":                int(row.get("SCREENS") or 0),
+                "actual_screens":         int(row.get("ACTUAL_SCREENS") or 0),
+                "ats":                    int(row.get("ATS") or 0),
+                "offered":                int(row.get("OFFERED") or 0),
+                "hired":                  int(row.get("HIRED") or 0),
+            })
+    return {"rows": rows}
+
+
+def load_project_hires():
+    """Return list of per-hire rows from snowflake_project_dashboard_hires.csv.
+
+    Produced by project_dashboard_hires.sql — one row per hired candidate
+    since 2025-01-01. Powers the collapsed "Hires in period" drill-down.
+
+    File is opt-in. Returns empty list if missing."""
+    if not SNOW_PROJECT_HIRES.exists():
+        return []
+    out = []
+    with SNOW_PROJECT_HIRES.open() as f:
+        for row in csv.DictReader(f):
+            client = (row.get("CLIENT") or "").strip()
+            if client in INTERNAL_CLIENTS:
+                continue
+            out.append({
+                "candidate_id":           (row.get("CANDIDATE_ID") or "").strip(),
+                "client":                 client,
+                "job_id":                 (row.get("JOB_ID") or "").strip(),
+                "job_title":              (row.get("JOB_TITLE") or "").strip(),
+                "ta":                     (row.get("TA") or "").strip(),
+                "ts":                     (row.get("TS") or "").strip(),
+                "candidate_source":       (row.get("CANDIDATE_SOURCE") or "").strip(),
+                "is_external_recruiter":  (row.get("IS_EXTERNAL_RECRUITER") or "").strip().lower() == "true",
+                "date_contacted":         (row.get("DATE_CONTACTED") or "").strip() or None,
+                "date_screen_actual":     (row.get("DATE_SCREEN_ACTUAL") or "").strip() or None,
+                "date_offer":             (row.get("DATE_OFFER") or "").strip() or None,
+                "date_hired":             (row.get("DATE_HIRED") or "").strip() or None,
+            })
+    return out
+
+
 def load_wbr_jobs():
     """Return jobs[f"w{n}"][f"{raw_client}|{raw_ta}"] = int, ISO 2026 only.
 
@@ -688,9 +765,9 @@ def build_wbr_actuals(raw_wbr, wbr_wolt_roster, ta_roster=None):
 def build_weekly_trend(raw_wbr, min_week: int = 2, max_week: int = MAX_ISO_WEEK):
     """Sum all (client, TA) cells per ISO week → list of {week, contacted, screened, ats, offers, hires}.
     screened here follows App.jsx fallback: actual_screens || screened.
-    Week range: w2..MAX_ISO_WEEK (dynamic current-ISO-week ceiling) to match
-    live dashboard: drops near-empty w1, keeps current partial week.
-    Upper bound auto-rolls with the calendar — no manual bump."""
+    Week range defaults to w2..MAX_ISO_WEEK (dynamic current-ISO-week ceiling)
+    to match the live dashboard: drops near-empty w1, keeps current partial
+    week. The upper bound auto-rolls with the calendar — no manual bump."""
     per_week = defaultdict(lambda: defaultdict(int))
     for (rc, rt), weeks in raw_wbr.items():
         if rc.strip() in INTERNAL_CLIENTS:
@@ -947,9 +1024,13 @@ def main():
     # from Andy's Google Sheet). Auto-advances as new weeks are added. Falls
     # back to the live JSON's mbr_window (if present) and finally to a
     # hardcoded default so we never render an empty MBR.
+    # Only include weeks that have completed (Sunday in the past). The current
+    # ISO week is always partial at any time before end-of-Sunday, so drop it.
+    _current_iso_week = datetime.date.today().isocalendar().week
     _ta_week_nums = sorted({
         int(k[1:]) for k in ta_weekly_roster.keys()
         if isinstance(k, str) and k.startswith("w") and k[1:].isdigit()
+        and int(k[1:]) < _current_iso_week
     })
     if len(_ta_week_nums) >= 1:
         _last4 = _ta_week_nums[-4:]
@@ -1103,6 +1184,15 @@ def main():
     # Per-week TS Jobs / TAs / TA names from wbr_ts_jobs_weekly.sql.
     # Replaces the stale static `ts_jobs` for the TS Weekly tab.
     out["ts_jobs_weekly"] = load_ts_jobs_weekly()
+    # Project Dashboard — per-day per-(client, job, TA, TS, source, external) funnel
+    # counts + line-level hires. Both opt-in (load_project_* gracefully return
+    # empty when the CSV is missing). Frontend filters/aggregates client-side.
+    out["project_dashboard"] = load_project_dashboard()
+    out["project_dashboard_hires"] = load_project_hires()
+    if out["project_dashboard"]["rows"]:
+        print(f"  project_dashboard: {len(out['project_dashboard']['rows'])} rows")
+    if out["project_dashboard_hires"]:
+        print(f"  project_dashboard_hires: {len(out['project_dashboard_hires'])} hires")
     out["ts_hires_12w"] = ts_hires_12w
     out["ts_ats_12w"] = ts_ats_12w
     out["ts_screens_12w"] = ts_screens_12w

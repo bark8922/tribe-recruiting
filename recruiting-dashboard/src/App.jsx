@@ -389,7 +389,7 @@ const WBRTab = ({ data }) => {
         screened_target: (t.actual_screens || 0) / WEEKLY_DIVISOR,
         ats_target: (t.moved_to_ats || 0) / WEEKLY_DIVISOR,
         hires_target: (t.hires || 0) / WEEKLY_DIVISOR,
-        comment: note?.comment || '',
+        comment: note?.comment || note?.reasoning || '',
         reasoning: note?.reasoning || '',
       });
     });
@@ -884,6 +884,10 @@ const MBRTab = ({ data }) => {
     // Map of latest comment per normalized TA key (from ta_weekly_notes, picking latest week available)
     const latestNote = {};
     (data.ta_weekly_notes || []).forEach(n => {
+      // Skip rows with no content (Andy sometimes adds placeholder weeks with
+      // empty comment AND reasoning — they shouldn't overwrite an earlier
+      // week's real comment).
+      if (!n.comment && !n.reasoning) return;
       const key = `${normalizeTa(n.ta)}`;
       if (!latestNote[key] || n.week > latestNote[key].week) {
         latestNote[key] = n;
@@ -898,7 +902,10 @@ const MBRTab = ({ data }) => {
       result.push({
         client: t.client,
         ta: t.ta,
-        team_group: t.team_group,
+        // Derive BU group from the client (matches WBR). Overrides per-TA
+        // team_group set in Andy's target sheet so e.g. Aiven TAs tagged
+        // Ponies/Unicorns still roll up to Dolphins/Whales at the BU level.
+        team_group: getBuGroup(t.client),
         contacted: a.contacted || 0,
         actual_screens: a.actual_screens || 0,
         ats: a.ats || 0,
@@ -913,7 +920,7 @@ const MBRTab = ({ data }) => {
         ats_target: t.moved_to_ats || 0,
         hires_target: t.hires || 0,
         pct_screens_to_hires: a.screens_12w > 0 ? Math.round((a.hires_12w || 0) / a.screens_12w * 100) : null,
-        comment: note?.comment || '',
+        comment: note?.comment || note?.reasoning || '',
       });
     });
     const groupOrder = { 'Dolphins/Whales': 0, 'Ponies/Unicorns': 1 };
@@ -1175,148 +1182,641 @@ const MBRTab = ({ data }) => {
   );
 };
 
-// Project Dashboard Tab
+// Project Dashboard Tab — mirrors PBIX Overview page with client-grouped collapsible sections
+// Data surfaces (produced by refresh_staging/project_dashboard{,_hires}.sql):
+//   data.project_dashboard.rows — per-(client, job, TA, TS, source, ext, iso week) funnel
+//   data.project_dashboard_hires — one row per hired candidate since 2025-01-01
+// Validated 2026-04-20 vs PBIX Overview page Apr 13-19 (24/24 per-client within 1-3 units).
+
+const PD_PERIODS = [
+  ['last_week',  'Last full week (Mon-Sun)'],
+  ['last_4w',    'Last 4 weeks'],
+  ['last_month', 'Last calendar month'],
+  ['last_12w',   'Last 12 weeks'],
+  ['qtd',        'Quarter to date'],
+  ['ytd',        'Year to date'],
+  ['all',        'All time (2026+)'],
+];
+
+const pdPeriodWindow = (period) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const dow = today.getDay();
+  const daysToMonday = dow === 0 ? 6 : dow - 1;
+  const thisMonday = new Date(today.getTime() - daysToMonday * 86400000);
+  const addDays = (d, n) => new Date(d.getTime() + n * 86400000);
+  switch (period) {
+    case 'last_week':  return [addDays(thisMonday, -7),  addDays(thisMonday, -1)];
+    case 'last_4w':    return [addDays(thisMonday, -28), addDays(thisMonday, -1)];
+    case 'last_month': {
+      const first = new Date(today.getFullYear(), today.getMonth(), 1);
+      const endPrev = addDays(first, -1);
+      return [new Date(endPrev.getFullYear(), endPrev.getMonth(), 1), endPrev];
+    }
+    case 'last_12w':   return [addDays(thisMonday, -84), addDays(thisMonday, -1)];
+    case 'qtd':        return [new Date(today.getFullYear(), Math.floor(today.getMonth() / 3) * 3, 1), today];
+    case 'ytd':        return [new Date(today.getFullYear(), 0, 1), today];
+    case 'all':
+    default:           return [new Date('2026-01-01'), today];
+  }
+};
+
+const pdIsoDate = (d) => {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+};
+
+const pdIsoKey = (d) => {
+  const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  const day = t.getUTCDay() || 7;
+  t.setUTCDate(t.getUTCDate() + 4 - day);
+  const yearStart = new Date(Date.UTC(t.getUTCFullYear(), 0, 1));
+  const wk = Math.ceil((((t - yearStart) / 86400000) + 1) / 7);
+  return `${t.getUTCFullYear()}-W${String(wk).padStart(2, '0')}`;
+};
+
+const pdWeekSetFor = (start, end) => {
+  const set = new Set();
+  const cur = new Date(start.getTime());
+  while (cur <= end) { set.add(pdIsoKey(cur)); cur.setDate(cur.getDate() + 1); }
+  return set;
+};
+
+// Project Dashboard client normalization — unlike normalizeClient (which merges
+// Doordash/SevenRooms into "Wolt HQ" for MBR/WBR), PD keeps them as distinct
+// clients to match how the external PBIX Project Dashboard displays them.
+const normalizeClientPD = (client) => {
+  if (!client) return client;
+  const trimmed = client.trim();
+  if (trimmed.toUpperCase() === 'AVIV') return 'Aviv';
+  if (trimmed.toLowerCase() === 'doordash') return 'DoorDash';
+  if (trimmed.toLowerCase() === 'sevenrooms') return 'SevenRooms';
+  if (trimmed.toLowerCase() === 'nexi') return 'Nexi';
+  return trimmed;
+};
+
+const pdPct = (v) => v == null ? '—' : `${(v * 100).toFixed(0)}%`;
+
 const ProjectDashboardTab = ({ data }) => {
-  const [selectedClient, setSelectedClient] = useState('');
-  const [searchTitle, setSearchTitle] = useState('');
-  const [sortField, setSortField] = useState('client');
+  const [period, setPeriod] = useState('last_week');
+  const [customStart, setCustomStart] = useState('');
+  const [customEnd, setCustomEnd] = useState('');
+  const [searchText, setSearchText] = useState('');
+  const [filterClient, setFilterClient] = useState('');
+  const [filterTa, setFilterTa] = useState('');
+  const [filterTs, setFilterTs] = useState('');
+  const [filterCategory, setFilterCategory] = useState('');
+  const [filterSource, setFilterSource] = useState('');
+  const [showExternal, setShowExternal] = useState(true);
+  const [hiresOpen, setHiresOpen] = useState(false);
+  const [expandedJobs, setExpandedJobs] = useState(new Set());
+  const [expandedTas, setExpandedTas] = useState(new Set());
+  const [expandedTses, setExpandedTses] = useState(new Set());
 
-  const activeJobs = useMemo(() => data.jobs.filter((j) => !j.is_ext), [data]);
+  const pdRows = (data.project_dashboard && data.project_dashboard.rows) || [];
+  const pdHires = data.project_dashboard_hires || [];
 
-  const uniqueClients = useMemo(() => {
-    const s = new Set();
-    activeJobs.forEach((j) => s.add(normalizeClient(j.client)));
-    return Array.from(s).sort();
-  }, [activeJobs]);
+  const usingCustom = !!(customStart && customEnd);
+  const [startDate, endDate] = useMemo(() => {
+    if (usingCustom) return [new Date(customStart), new Date(customEnd)];
+    return pdPeriodWindow(period);
+  }, [period, customStart, customEnd, usingCustom]);
+  const startStr = pdIsoDate(startDate);
+  const endStr = pdIsoDate(endDate);
+  const weekSet = useMemo(() => pdWeekSetFor(startDate, endDate), [startDate, endDate]);
 
-  const kpis = useMemo(() => {
-    return activeJobs.reduce(
-      (acc, j) => ({
-        openRoles: acc.openRoles + 1,
-        contacted: acc.contacted + (j.contacted || 0),
-        screened: acc.screened + (j.screened || 0),
-        hires: acc.hires + (j.hires || 0),
-      }),
-      { openRoles: 0, contacted: 0, screened: 0, hires: 0 }
-    );
-  }, [activeJobs]);
-
-  const getDaysOpen = (d) => Math.floor((new Date('2026-04-10') - new Date(d)) / 86400000);
-
-  const filteredJobs = useMemo(() => {
-    let jobs = activeJobs;
-    if (selectedClient) jobs = jobs.filter((j) => normalizeClient(j.client) === selectedClient);
-    if (searchTitle) jobs = jobs.filter((j) => j.title.toLowerCase().includes(searchTitle.toLowerCase()));
-    return jobs.sort((a, b) => {
-      let av, bv;
-      switch (sortField) {
-        case 'client': av = normalizeClient(a.client); bv = normalizeClient(b.client); break;
-        case 'title': av = a.title; bv = b.title; break;
-        case 'ta': av = a.ta || ''; bv = b.ta || ''; break;
-        case 'contacted': av = a.contacted || 0; bv = b.contacted || 0; break;
-        case 'screened': av = a.screened || 0; bv = b.screened || 0; break;
-        case 'hires': av = a.hires || 0; bv = b.hires || 0; break;
-        case 'days_open': av = getDaysOpen(a.date_created); bv = getDaysOpen(b.date_created); break;
-        default: return 0;
+  const filtered = useMemo(() => {
+    const s = searchText.trim().toLowerCase();
+    return pdRows.filter((r) => {
+      const wk = `${r.iso_year}-W${String(r.iso_week).padStart(2, '0')}`;
+      if (!weekSet.has(wk)) return false;
+      if (!showExternal && r.is_external_recruiter) return false;
+      if (filterClient && normalizeClientPD(r.client) !== filterClient) return false;
+      if (filterTa && r.ta !== filterTa) return false;
+      if (filterTs && r.ts !== filterTs) return false;
+      if (filterCategory && r.job_category !== filterCategory) return false;
+      if (filterSource && r.candidate_source !== filterSource) return false;
+      if (s) {
+        const hay = `${r.client} ${r.job_title} ${r.ta} ${r.ts} ${r.job_category}`.toLowerCase();
+        if (!hay.includes(s)) return false;
       }
-      return av < bv ? -1 : av > bv ? 1 : 0;
+      return true;
     });
-  }, [activeJobs, selectedClient, searchTitle, sortField]);
+  }, [pdRows, weekSet, searchText, filterClient, filterTa, filterTs, filterCategory, filterSource, showExternal]);
 
-  const clientHiresChart = useMemo(() => {
-    const s = {};
-    activeJobs.forEach((j) => {
-      const c = normalizeClient(j.client);
-      s[c] = (s[c] || 0) + (j.hires || 0);
+  const kpis = useMemo(() => filtered.reduce((a, r) => ({
+    contacted: a.contacted + r.contacted,
+    positive_response: a.positive_response + r.positive_response,
+    actual_screens: a.actual_screens + r.actual_screens,
+    ats: a.ats + r.ats,
+    offered: a.offered + r.offered,
+    hired: a.hired + r.hired,
+  }), { contacted: 0, positive_response: 0, actual_screens: 0, ats: 0, offered: 0, hired: 0 }), [filtered]);
+
+  // ── Client summary (for section headers) ──
+  const byClient = useMemo(() => {
+    const m = new Map();
+    for (const r of filtered) {
+      const c = normalizeClientPD(r.client);
+      if (!m.has(c)) m.set(c, { client: c, jobIds: new Set(), tas: new Set(), tses: new Set(),
+        viewed: 0, contacted: 0, positive_response: 0, screens: 0, actual_screens: 0, ats: 0, offered: 0, hired: 0 });
+      const row = m.get(c);
+      row.jobIds.add(r.job_id);
+      if (r.ta) row.tas.add(r.ta);
+      if (r.ts) row.tses.add(r.ts);
+      row.viewed += (r.viewed || 0); row.contacted += r.contacted; row.positive_response += r.positive_response;
+      row.screens += (r.screens || 0); row.actual_screens += r.actual_screens; row.ats += r.ats;
+      row.offered += r.offered; row.hired += r.hired;
+    }
+    return Array.from(m.values()).sort((a, b) => a.client.localeCompare(b.client));
+  }, [filtered]);
+
+  // ── Per-client job rollup ──
+  const jobsByClient = useMemo(() => {
+    const m = new Map();
+    for (const r of filtered) {
+      const c = normalizeClientPD(r.client);
+      const key = `${c}|${r.job_id}`;
+      if (!m.has(key)) m.set(key, {
+        client: c, job_id: r.job_id, job_title: r.job_title, job_category: r.job_category,
+        is_external_recruiter: r.is_external_recruiter, tas: new Set(), tses: new Set(),
+        viewed: 0, contacted: 0, positive_response: 0, screens: 0, actual_screens: 0, ats: 0, offered: 0, hired: 0,
+      });
+      const row = m.get(key);
+      if (r.ta) row.tas.add(r.ta);
+      if (r.ts) row.tses.add(r.ts);
+      row.viewed += (r.viewed || 0); row.contacted += r.contacted; row.positive_response += r.positive_response;
+      row.screens += (r.screens || 0); row.actual_screens += r.actual_screens; row.ats += r.ats;
+      row.offered += r.offered; row.hired += r.hired;
+    }
+    const by = {};
+    for (const row of m.values()) {
+      const ex = row.is_external_recruiter;
+      row.ta_display = Array.from(row.tas).sort().join(', ');
+      row.ts_display = Array.from(row.tses).sort().join(', ');
+      row.pct_v_c = ex ? null : (row.viewed ? row.contacted / row.viewed : null);
+      row.pct_c_pr = ex ? null : (row.contacted ? row.positive_response / row.contacted : null);
+      row.pct_s_as = ex ? null : (row.screens ? row.actual_screens / row.screens : null);
+      row.pct_as_ats = ex ? null : (row.actual_screens ? row.ats / row.actual_screens : null);
+      row.pct_ats_off = ex ? null : (row.ats ? row.offered / row.ats : null);
+      row.pct_c_hire = ex ? null : (row.contacted ? row.hired / row.contacted : null);
+      (by[row.client] ||= []).push(row);
+    }
+    // Jobs sorted A-Z by title within each client (Blake's preference)
+    for (const c in by) by[c].sort((a, b) => (a.job_title || '').localeCompare(b.job_title || ''));
+    return by;
+  }, [filtered]);
+
+  // ── Per-client TA rollup ──
+  const tasByClient = useMemo(() => {
+    const m = new Map();
+    for (const r of filtered) {
+      if (!r.ta) continue;
+      const c = normalizeClientPD(r.client);
+      const key = `${c}|${r.ta}`;
+      if (!m.has(key)) m.set(key, {
+        client: c, ta: r.ta, jobIds: new Set(),
+        viewed: 0, contacted: 0, positive_response: 0, screens: 0, actual_screens: 0, ats: 0, offered: 0, hired: 0,
+      });
+      const row = m.get(key);
+      row.jobIds.add(r.job_id);
+      row.viewed += (r.viewed || 0); row.contacted += r.contacted; row.positive_response += r.positive_response;
+      row.screens += (r.screens || 0); row.actual_screens += r.actual_screens; row.ats += r.ats;
+      row.offered += r.offered; row.hired += r.hired;
+    }
+    const by = {};
+    for (const row of m.values()) {
+      row.num_jobs = row.jobIds.size;
+      row.pct_response = row.contacted ? row.positive_response / row.contacted : null;
+      (by[row.client] ||= []).push(row);
+    }
+    for (const c in by) by[c].sort((a, b) => (a.ta || '').localeCompare(b.ta || ''));
+    return by;
+  }, [filtered]);
+
+  // ── Per-client TS rollup ──
+  const tsesByClient = useMemo(() => {
+    const m = new Map();
+    for (const r of filtered) {
+      if (!r.ts) continue;
+      const c = normalizeClientPD(r.client);
+      const key = `${c}|${r.ts}`;
+      if (!m.has(key)) m.set(key, {
+        client: c, ts: r.ts, jobIds: new Set(),
+        viewed: 0, contacted: 0, positive_response: 0, screens: 0, actual_screens: 0, ats: 0, offered: 0, hired: 0,
+      });
+      const row = m.get(key);
+      row.jobIds.add(r.job_id);
+      row.viewed += (r.viewed || 0); row.contacted += r.contacted; row.positive_response += r.positive_response;
+      row.screens += (r.screens || 0); row.actual_screens += r.actual_screens; row.ats += r.ats;
+      row.offered += r.offered; row.hired += r.hired;
+    }
+    const by = {};
+    for (const row of m.values()) {
+      row.num_jobs = row.jobIds.size;
+      (by[row.client] ||= []).push(row);
+    }
+    for (const c in by) by[c].sort((a, b) => (a.ts || '').localeCompare(b.ts || ''));
+    return by;
+  }, [filtered]);
+
+  // Filter dropdown options
+  const uniqueClients    = useMemo(() => Array.from(new Set(pdRows.map((r) => normalizeClientPD(r.client)))).sort(), [pdRows]);
+  const uniqueTas        = useMemo(() => Array.from(new Set(pdRows.map((r) => r.ta).filter(Boolean))).sort(), [pdRows]);
+  const uniqueTses       = useMemo(() => Array.from(new Set(pdRows.map((r) => r.ts).filter(Boolean))).sort(), [pdRows]);
+  const uniqueCategories = useMemo(() => Array.from(new Set(pdRows.map((r) => r.job_category).filter(Boolean))).sort(), [pdRows]);
+  const uniqueSources    = useMemo(() => Array.from(new Set(pdRows.map((r) => r.candidate_source).filter(Boolean))).sort(), [pdRows]);
+
+  const filteredHires = useMemo(() => {
+    const s = searchText.trim().toLowerCase();
+    return pdHires.filter((h) => {
+      if (!h.date_hired) return false;
+      if (h.date_hired < startStr || h.date_hired > endStr) return false;
+      if (!showExternal && h.is_external_recruiter) return false;
+      if (filterClient && normalizeClientPD(h.client) !== filterClient) return false;
+      if (filterTa && h.ta !== filterTa) return false;
+      if (filterTs && h.ts !== filterTs) return false;
+      if (filterSource && h.candidate_source !== filterSource) return false;
+      if (s) {
+        const hay = `${h.client} ${h.job_title} ${h.ta} ${h.ts}`.toLowerCase();
+        if (!hay.includes(s)) return false;
+      }
+      return true;
     });
-    return Object.entries(s).map(([c, h]) => ({ client: c, hires: h })).sort((a, b) => b.hires - a.hires).slice(0, 10);
-  }, [activeJobs]);
+  }, [pdHires, startStr, endStr, searchText, filterClient, filterTa, filterTs, filterSource, showExternal]);
+
+  const toggle = (set, setSet, client) => {
+    const n = new Set(set);
+    n.has(client) ? n.delete(client) : n.add(client);
+    setSet(n);
+  };
+  const expandAll = (section) => {
+    const all = new Set(byClient.map((c) => c.client));
+    if (section === 'jobs') setExpandedJobs(all);
+    if (section === 'tas') setExpandedTas(all);
+    if (section === 'tses') setExpandedTses(all);
+  };
+  const collapseAll = (section) => {
+    if (section === 'jobs') setExpandedJobs(new Set());
+    if (section === 'tas') setExpandedTas(new Set());
+    if (section === 'tses') setExpandedTses(new Set());
+  };
+
+  if (pdRows.length === 0) {
+    return (
+      <div className="bg-gray-800 rounded-lg p-8 text-center">
+        <div className="text-lg text-white mb-3">Project Dashboard data not available yet</div>
+        <div className="text-sm text-gray-400" style={{ maxWidth: 640, margin: '0 auto' }}>
+          Keboola transformation output hasn't landed in <span className="font-mono bg-gray-700 px-1 rounded">snowflake_project_dashboard.csv</span> yet.
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-4 gap-4">
-        {[
-          ['Open Roles', kpis.openRoles],
-          ['Total Contacted', kpis.contacted],
-          ['Total Screened', kpis.screened],
-          ['Total Hires', kpis.hires],
-        ].map(([label, val]) => (
-          <div key={label} className="bg-gray-800 rounded-lg p-4 border border-gray-700">
-            <div className="text-gray-400 text-sm">{label}</div>
-            <div className="text-3xl font-bold text-white mt-2">{val}</div>
+    <div className="space-y-4">
+      {/* Filter bar */}
+      <div className="bg-gray-800 rounded-lg p-4">
+        <div className="flex flex-wrap gap-3 items-center">
+          <select value={period} onChange={(e) => { setPeriod(e.target.value); setCustomStart(''); setCustomEnd(''); }}
+            disabled={usingCustom}
+            className="px-3 py-2 bg-gray-700 text-white rounded border border-gray-600 text-sm">
+            {PD_PERIODS.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+          </select>
+          <div className="flex items-center gap-1 text-xs text-gray-400">
+            <span>or custom:</span>
+            <input type="date" value={customStart} onChange={(e) => setCustomStart(e.target.value)}
+              className="px-2 py-1 bg-gray-700 text-white rounded border border-gray-600 text-xs" />
+            <span>→</span>
+            <input type="date" value={customEnd} onChange={(e) => setCustomEnd(e.target.value)}
+              className="px-2 py-1 bg-gray-700 text-white rounded border border-gray-600 text-xs" />
+            {usingCustom && (
+              <button onClick={() => { setCustomStart(''); setCustomEnd(''); }}
+                className="ml-1 px-2 py-1 text-xs text-gray-300 hover:text-white">clear</button>
+            )}
           </div>
-        ))}
-      </div>
-
-      <div className="bg-gray-800 rounded-lg p-4">
-        <h3 className="text-lg font-semibold text-white mb-4">Weekly Contacted Trend</h3>
-        <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={data.weekly_trend} margin={{ top: 5, right: 30, left: 0, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#444" />
-            <XAxis dataKey="week" stroke="#999" label={{ value: 'Week', position: 'insideBottomRight', offset: -5, fill: '#999' }} />
-            <YAxis stroke="#999" />
-            <Tooltip contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #444' }} labelStyle={{ color: '#fff' }} />
-            <Legend />
-            <Line type="monotone" dataKey="contacted" stroke="#60a5fa" dot={{ fill: '#60a5fa', r: 4 }} activeDot={{ r: 6 }} />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
-
-      <div className="bg-gray-800 rounded-lg p-4">
-        <h3 className="text-lg font-semibold text-white mb-4">Job Performance</h3>
-        <div className="flex gap-3 mb-4">
-          <div className="flex-1 relative">
+          <span className="text-xs text-gray-400 ml-auto">window: {startStr} → {endStr}</span>
+        </div>
+        <div className="flex flex-wrap gap-3 items-center mt-3">
+          <div className="flex-1 relative" style={{ minWidth: 220 }}>
             <Search className="absolute left-2 top-2.5 w-4 h-4 text-gray-500" />
-            <input type="text" placeholder="Search job title..." value={searchTitle} onChange={(e) => setSearchTitle(e.target.value)}
+            <input type="text" placeholder="Search client / title / TA / TS / category..."
+              value={searchText} onChange={(e) => setSearchText(e.target.value)}
               className="w-full pl-8 pr-3 py-2 bg-gray-700 text-white rounded border border-gray-600 text-sm placeholder-gray-500" />
           </div>
-          <select value={selectedClient} onChange={(e) => setSelectedClient(e.target.value)}
+          <select value={filterClient} onChange={(e) => setFilterClient(e.target.value)}
             className="px-3 py-2 bg-gray-700 text-white rounded border border-gray-600 text-sm">
             <option value="">All Clients</option>
             {uniqueClients.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
+          <select value={filterTa} onChange={(e) => setFilterTa(e.target.value)}
+            className="px-3 py-2 bg-gray-700 text-white rounded border border-gray-600 text-sm">
+            <option value="">All TAs</option>
+            {uniqueTas.map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
+          <select value={filterTs} onChange={(e) => setFilterTs(e.target.value)}
+            className="px-3 py-2 bg-gray-700 text-white rounded border border-gray-600 text-sm">
+            <option value="">All TSes</option>
+            {uniqueTses.map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
+          <select value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)}
+            className="px-3 py-2 bg-gray-700 text-white rounded border border-gray-600 text-sm">
+            <option value="">All Categories</option>
+            {uniqueCategories.map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
+          <select value={filterSource} onChange={(e) => setFilterSource(e.target.value)}
+            className="px-3 py-2 bg-gray-700 text-white rounded border border-gray-600 text-sm">
+            <option value="">All Sources</option>
+            {uniqueSources.map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
+          <label className="flex items-center gap-2 text-sm text-gray-300">
+            <input type="checkbox" checked={showExternal} onChange={(e) => setShowExternal(e.target.checked)} />
+            Include external recruiters
+          </label>
+        </div>
+      </div>
+
+      {/* KPI cards */}
+      <div className="grid grid-cols-6 gap-4">
+        {[
+          ['Contacted', kpis.contacted],
+          ['Positive Response', kpis.positive_response],
+          ['Actual Screens', kpis.actual_screens],
+          ['ATS', kpis.ats],
+          ['Offered', kpis.offered],
+          ['Hired', kpis.hired],
+        ].map(([label, val]) => (
+          <div key={label} className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+            <div className="text-gray-400 text-xs uppercase tracking-wide">{label}</div>
+            <div className="text-3xl font-bold text-white mt-2">{val.toLocaleString()}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Section 1: Job Performance (grouped by client, collapsible) */}
+      <div className="bg-gray-800 rounded-lg p-4">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-lg font-semibold text-white">Job Performance by Client ({byClient.length} clients, {Object.values(jobsByClient).reduce((n, a) => n + a.length, 0)} jobs)</h3>
+          <div className="flex gap-2 text-xs">
+            <button onClick={() => expandAll('jobs')} className="px-2 py-1 text-gray-300 hover:text-white">Expand all</button>
+            <button onClick={() => collapseAll('jobs')} className="px-2 py-1 text-gray-300 hover:text-white">Collapse all</button>
+          </div>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-gray-300 border-b border-gray-700">
-                {[['client','Client'],['title','Job Title'],['ta','TA'],['','Category'],['contacted','Contacted'],['screened','Screened'],['','ATS'],['','Offers'],['hires','Hires'],['days_open','Days Open']].map(([f,l]) => (
-                  <th key={l} className={`${f ? 'cursor-pointer hover:text-white' : ''} ${['Category','Contacted','Screened','ATS','Offers','Hires','Days Open'].includes(l) ? 'text-center' : 'text-left'} px-3 py-2`}
-                    onClick={() => f && setSortField(f)}>{l}</th>
-                ))}
+              <tr className="text-gray-300 border-b border-gray-700 text-xs">
+                <th className="text-left px-2 py-1" style={{ width: 22 }}></th>
+                <th className="text-left px-2 py-1">Client / Job</th>
+                <th className="text-center px-1 py-1"># Jobs</th>
+                <th className="text-center px-1 py-1">Viewed</th>
+                <th className="text-center px-1 py-1">Contacted</th>
+                <th className="text-center px-1 py-1">Pos Resp</th>
+                <th className="text-center px-1 py-1">Screens</th>
+                <th className="text-center px-1 py-1">Actual Screens</th>
+                <th className="text-center px-1 py-1">ATS</th>
+                <th className="text-center px-1 py-1">Offered</th>
+                <th className="text-center px-1 py-1">Hired</th>
+                <th className="text-center px-1 py-1">% V→C</th>
+                <th className="text-center px-1 py-1">% C→PR</th>
+                <th className="text-center px-1 py-1">% S→AS</th>
+                <th className="text-center px-1 py-1">% AS→ATS</th>
+                <th className="text-center px-1 py-1">% ATS→Off</th>
+                <th className="text-center px-1 py-1">% C→H</th>
               </tr>
             </thead>
             <tbody>
-              {filteredJobs.map((j, idx) => (
-                <tr key={idx} className={j.screened > 25 && j.hires === 0 ? 'bg-red-900 bg-opacity-20' : idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'}>
-                  <td className="text-left px-3 py-2 text-white font-medium">{normalizeClient(j.client)}</td>
-                  <td className="text-left px-3 py-2 text-gray-300">{j.title}</td>
-                  <td className="text-left px-3 py-2 text-gray-300">{j.ta || '—'}</td>
-                  <td className="text-left px-3 py-2 text-gray-300">{j.category}</td>
-                  <td className="text-center px-3 py-2 text-gray-300">{j.contacted || 0}</td>
-                  <td className="text-center px-3 py-2 text-gray-300">{j.screened || 0}</td>
-                  <td className="text-center px-3 py-2 text-gray-300">{j.ats || 0}</td>
-                  <td className="text-center px-3 py-2 text-gray-300">{j.offers || 0}</td>
-                  <td className="text-center px-3 py-2 text-gray-300">{j.hires || 0}</td>
-                  <td className="text-center px-3 py-2 text-gray-300">{getDaysOpen(j.date_created)}</td>
-                </tr>
-              ))}
+              {byClient.map((c) => {
+                const open = expandedJobs.has(c.client);
+                const jobRows = jobsByClient[c.client] || [];
+                const pctVC = c.viewed ? c.contacted / c.viewed : null;
+                const pctCPR = c.contacted ? c.positive_response / c.contacted : null;
+                const pctSAS = c.screens ? c.actual_screens / c.screens : null;
+                const pctASATS = c.actual_screens ? c.ats / c.actual_screens : null;
+                const pctATSOFF = c.ats ? c.offered / c.ats : null;
+                const pctCH = c.contacted ? c.hired / c.contacted : null;
+                return (
+                  <React.Fragment key={c.client}>
+                    <tr className="cursor-pointer hover:bg-gray-700 border-t border-gray-700"
+                        style={{ backgroundColor: '#374151' }}
+                        onClick={() => toggle(expandedJobs, setExpandedJobs, c.client)}>
+                      <td className="px-2 py-1 text-gray-400">{open ? '▼' : '▶'}</td>
+                      <td className="px-2 py-1 text-white font-semibold">{c.client}</td>
+                      <td className="text-center px-1 py-1 text-gray-300">{jobRows.length}</td>
+                      <td className="text-center px-1 py-1 text-gray-200">{c.viewed}</td>
+                      <td className="text-center px-1 py-1 text-gray-200 font-medium">{c.contacted}</td>
+                      <td className="text-center px-1 py-1 text-gray-200">{c.positive_response}</td>
+                      <td className="text-center px-1 py-1 text-gray-200">{c.screens}</td>
+                      <td className="text-center px-1 py-1 text-gray-200">{c.actual_screens}</td>
+                      <td className="text-center px-1 py-1 text-gray-200">{c.ats}</td>
+                      <td className="text-center px-1 py-1 text-gray-200">{c.offered}</td>
+                      <td className="text-center px-1 py-1 text-gray-200 font-medium">{c.hired}</td>
+                      <td className="text-center px-1 py-1 text-gray-400">{pdPct(pctVC)}</td>
+                      <td className="text-center px-1 py-1 text-gray-400">{pdPct(pctCPR)}</td>
+                      <td className="text-center px-1 py-1 text-gray-400">{pdPct(pctSAS)}</td>
+                      <td className="text-center px-1 py-1 text-gray-400">{pdPct(pctASATS)}</td>
+                      <td className="text-center px-1 py-1 text-gray-400">{pdPct(pctATSOFF)}</td>
+                      <td className="text-center px-1 py-1 text-gray-400">{pdPct(pctCH)}</td>
+                    </tr>
+                    {open && jobRows.map((r, i) => (
+                      <tr key={`${c.client}|${r.job_id}`}
+                          className={r.actual_screens > 25 && r.hired === 0 ? 'bg-red-900 bg-opacity-20' : ''}
+                          style={r.actual_screens > 25 && r.hired === 0 ? {} : { backgroundColor: i % 2 === 0 ? '#1F2937' : '#232B3A' }}>
+                        <td></td>
+                        <td className="px-4 py-0.5 text-gray-300 text-xs leading-tight">
+                          ↳ {r.job_title}{r.is_external_recruiter && <span className="ml-1 text-yellow-400">EXT</span>}
+                          <span className="text-gray-500"> · {r.ta_display || '—'}{r.ts_display ? ` · TS: ${r.ts_display}` : ''}</span>
+                        </td>
+                        <td></td>
+                        <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.viewed}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.contacted}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.positive_response}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.screens}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.actual_screens}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.ats}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.offered}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.hired}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-500 text-xs">{pdPct(r.pct_v_c)}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-500 text-xs">{pdPct(r.pct_c_pr)}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-500 text-xs">{pdPct(r.pct_s_as)}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-500 text-xs">{pdPct(r.pct_as_ats)}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-500 text-xs">{pdPct(r.pct_ats_off)}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-500 text-xs">{pdPct(r.pct_c_hire)}</td>
+                      </tr>
+                    ))}
+                  </React.Fragment>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+        <div className="mt-2 text-xs text-gray-500">% columns exclude jobs flagged EXT. Click a client row to expand.</div>
+      </div>
+
+      {/* Section 2: TA Overview */}
+      <div className="bg-gray-800 rounded-lg p-4">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-lg font-semibold text-white">TA Overview by Client ({byClient.length} clients)</h3>
+          <div className="flex gap-2 text-xs">
+            <button onClick={() => expandAll('tas')} className="px-2 py-1 text-gray-300 hover:text-white">Expand all</button>
+            <button onClick={() => collapseAll('tas')} className="px-2 py-1 text-gray-300 hover:text-white">Collapse all</button>
+          </div>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="text-gray-300 border-b border-gray-700 text-xs">
+                <th className="text-left px-2 py-1" style={{ width: 22 }}></th>
+                <th className="text-left px-2 py-1">Client / TA</th>
+                <th className="text-center px-1 py-1"># TAs</th>
+                <th className="text-center px-1 py-1">Contacted</th>
+                <th className="text-center px-1 py-1">Pos Resp</th>
+                <th className="text-center px-1 py-1">% Response</th>
+                <th className="text-center px-1 py-1">Actual Screens</th>
+                <th className="text-center px-1 py-1">ATS</th>
+                <th className="text-center px-1 py-1">Offered</th>
+                <th className="text-center px-1 py-1">Hires</th>
+                <th className="text-center px-1 py-1"># Jobs</th>
+              </tr>
+            </thead>
+            <tbody>
+              {byClient.map((c) => {
+                const open = expandedTas.has(c.client);
+                const taRows = tasByClient[c.client] || [];
+                const pctResp = c.contacted ? c.positive_response / c.contacted : null;
+                return (
+                  <React.Fragment key={c.client}>
+                    <tr className="cursor-pointer hover:bg-gray-700 border-t border-gray-700"
+                        style={{ backgroundColor: '#374151' }}
+                        onClick={() => toggle(expandedTas, setExpandedTas, c.client)}>
+                      <td className="px-2 py-1 text-gray-400">{open ? '▼' : '▶'}</td>
+                      <td className="px-2 py-1 text-white font-semibold">{c.client}</td>
+                      <td className="text-center px-1 py-1 text-gray-300">{taRows.length}</td>
+                      <td className="text-center px-1 py-1 text-gray-200 font-medium">{c.contacted}</td>
+                      <td className="text-center px-1 py-1 text-gray-200">{c.positive_response}</td>
+                      <td className="text-center px-1 py-1 text-gray-400">{pdPct(pctResp)}</td>
+                      <td className="text-center px-1 py-1 text-gray-200">{c.actual_screens}</td>
+                      <td className="text-center px-1 py-1 text-gray-200">{c.ats}</td>
+                      <td className="text-center px-1 py-1 text-gray-200">{c.offered}</td>
+                      <td className="text-center px-1 py-1 text-gray-200 font-medium">{c.hired}</td>
+                      <td className="text-center px-1 py-1 text-gray-300">{c.jobIds.size}</td>
+                    </tr>
+                    {open && taRows.map((r, i) => (
+                      <tr key={`${c.client}|${r.ta}`}
+                          style={{ backgroundColor: i % 2 === 0 ? '#1F2937' : '#232B3A' }}>
+                        <td></td>
+                        <td className="px-4 py-0.5 text-gray-300 text-xs leading-tight">↳ {r.ta}</td>
+                        <td></td>
+                        <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.contacted}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.positive_response}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-500 text-xs">{pdPct(r.pct_response)}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.actual_screens}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.ats}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.offered}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.hired}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.num_jobs}</td>
+                      </tr>
+                    ))}
+                  </React.Fragment>
+                );
+              })}
             </tbody>
           </table>
         </div>
       </div>
 
+      {/* Section 3: TS Overview */}
       <div className="bg-gray-800 rounded-lg p-4">
-        <h3 className="text-lg font-semibold text-white mb-4">Hires by Client (Top 10)</h3>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={clientHiresChart} margin={{ top: 5, right: 30, left: 0, bottom: 30 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#444" />
-            <XAxis dataKey="client" stroke="#999" angle={-45} textAnchor="end" height={80} />
-            <YAxis stroke="#999" />
-            <Tooltip contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #444' }} labelStyle={{ color: '#fff' }} />
-            <Bar dataKey="hires" fill="#10b981" />
-          </BarChart>
-        </ResponsiveContainer>
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-lg font-semibold text-white">TS Overview by Client ({Object.keys(tsesByClient).length} clients with TS activity)</h3>
+          <div className="flex gap-2 text-xs">
+            <button onClick={() => expandAll('tses')} className="px-2 py-1 text-gray-300 hover:text-white">Expand all</button>
+            <button onClick={() => collapseAll('tses')} className="px-2 py-1 text-gray-300 hover:text-white">Collapse all</button>
+          </div>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="text-gray-300 border-b border-gray-700 text-xs">
+                <th className="text-left px-2 py-1" style={{ width: 22 }}></th>
+                <th className="text-left px-2 py-1">Client / TS</th>
+                <th className="text-center px-1 py-1"># TSes</th>
+                <th className="text-center px-1 py-1">Contacted</th>
+                <th className="text-center px-1 py-1">Hired</th>
+                <th className="text-center px-1 py-1"># Jobs</th>
+              </tr>
+            </thead>
+            <tbody>
+              {byClient.filter(c => tsesByClient[c.client]?.length).map((c) => {
+                const open = expandedTses.has(c.client);
+                const tsRows = tsesByClient[c.client] || [];
+                return (
+                  <React.Fragment key={c.client}>
+                    <tr className="cursor-pointer hover:bg-gray-700 border-t border-gray-700"
+                        style={{ backgroundColor: '#374151' }}
+                        onClick={() => toggle(expandedTses, setExpandedTses, c.client)}>
+                      <td className="px-2 py-1 text-gray-400">{open ? '▼' : '▶'}</td>
+                      <td className="px-2 py-1 text-white font-semibold">{c.client}</td>
+                      <td className="text-center px-1 py-1 text-gray-300">{tsRows.length}</td>
+                      <td className="text-center px-1 py-1 text-gray-200 font-medium">{c.contacted}</td>
+                      <td className="text-center px-1 py-1 text-gray-200 font-medium">{c.hired}</td>
+                      <td className="text-center px-1 py-1 text-gray-300">{c.jobIds.size}</td>
+                    </tr>
+                    {open && tsRows.map((r, i) => (
+                      <tr key={`${c.client}|${r.ts}`}
+                          style={{ backgroundColor: i % 2 === 0 ? '#1F2937' : '#232B3A' }}>
+                        <td></td>
+                        <td className="px-4 py-0.5 text-gray-300 text-xs leading-tight">↳ {r.ts}</td>
+                        <td></td>
+                        <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.contacted}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.hired}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.num_jobs}</td>
+                      </tr>
+                    ))}
+                  </React.Fragment>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Hires drill-down */}
+      <div className="bg-gray-800 rounded-lg p-4">
+        <button onClick={() => setHiresOpen(!hiresOpen)} className="text-lg font-semibold text-white w-full text-left">
+          {hiresOpen ? '▼' : '▶'} Hires in period ({filteredHires.length})
+        </button>
+        {hiresOpen && (
+          <div className="overflow-x-auto mt-3">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-gray-300 border-b border-gray-700">
+                  {['Hire Date','Client','Job Title','TA','TS','Source','Contacted','Actual Screen','Offer','Ext?'].map((l) => (
+                    <th key={l} className="text-left px-3 py-2">{l}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {filteredHires.map((h) => (
+                  <tr key={h.candidate_id} className="border-t border-gray-700">
+                    <td className="px-3 py-2 text-white">{h.date_hired}</td>
+                    <td className="px-3 py-2 text-gray-300">{normalizeClientPD(h.client)}</td>
+                    <td className="px-3 py-2 text-gray-300">{h.job_title}</td>
+                    <td className="px-3 py-2 text-gray-300">{h.ta || '—'}</td>
+                    <td className="px-3 py-2 text-gray-300">{h.ts || '—'}</td>
+                    <td className="px-3 py-2 text-gray-300">{h.candidate_source || '—'}</td>
+                    <td className="px-3 py-2 text-gray-400 text-xs">{h.date_contacted || '—'}</td>
+                    <td className="px-3 py-2 text-gray-400 text-xs">{h.date_screen_actual || '—'}</td>
+                    <td className="px-3 py-2 text-gray-400 text-xs">{h.date_offer || '—'}</td>
+                    <td className="px-3 py-2 text-gray-400">{h.is_external_recruiter ? 'Yes' : ''}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </div>
   );

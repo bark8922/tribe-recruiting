@@ -875,12 +875,21 @@ def mbr_display_for(raw_client: str, raw_ta_norm: str, mbr_wolt_roster: dict) ->
     return mbr_normalize_client(raw_client)
 
 
-def build_mbr_ta_actuals(raw_wbr, aux, mbr_wolt_roster, mbr_weeks: list[str], ta_roster=None):
+def build_mbr_ta_actuals(raw_wbr, aux, mbr_wolt_roster, mbr_weeks: list[str], ta_roster=None,
+                          active_target_pairs=None):
     """Produce {display|TA: {contacted, actual_screens, ats, offers, hires,
                              hires_12w, screens_12w, ats_12w, jobs_60d}}.
     4w fields sourced from snowflake_wbr per mbr_weeks (w12-w15 default).
     12w + 60d fields sourced from snowflake_aux_12w TA rows.
-    If ta_roster is given, only include TAs in that set."""
+    If ta_roster is given, only include TAs in that set.
+    If active_target_pairs is given (set of (display_client, fold_ta)), only
+    include (client, TA) combos present in the target list — this matches
+    PBI's MBR scoping. Without it, TAs with activity on clients they're NOT
+    targeted for (e.g. Alisa Liddell helping on Wolt Volume jobs while
+    targeted only at Eucalyptus) would incorrectly bubble up under that
+    non-target client. That's the root of Wolt Volume showing 9 hires that
+    PBI shows as 0.
+    """
     out = defaultdict(lambda: dict(
         contacted=0, actual_screens=0, ats=0, offers=0, hires=0,
         hires_12w=0, screens_12w=0, ats_12w=0, jobs_60d=0,
@@ -895,6 +904,8 @@ def build_mbr_ta_actuals(raw_wbr, aux, mbr_wolt_roster, mbr_weeks: list[str], ta
         if is_ghost_ta(rc, rt):
             continue
         disp = mbr_display_for(rc, nt, mbr_wolt_roster)
+        if active_target_pairs is not None and (disp, fold_name(rt)) not in active_target_pairs:
+            continue
         key = f"{disp}|{nt}"
         for wk in mbr_weeks:
             mv = weeks.get(wk, {})
@@ -919,6 +930,8 @@ def build_mbr_ta_actuals(raw_wbr, aux, mbr_wolt_roster, mbr_weeks: list[str], ta
         if is_ghost_ta(c, w):
             continue
         disp = mbr_display_for(c, nt, mbr_wolt_roster)
+        if active_target_pairs is not None and (disp, fold_name(w)) not in active_target_pairs:
+            continue
         key = f"{disp}|{nt}"
         out[key][metric_map[m]] += v
     # Drop empty rows
@@ -1068,7 +1081,19 @@ def main():
     ts_ats_12w = build_raw_ts_dict(aux, "ats", roster=ts_roster)
     ts_screens_12w = build_raw_ts_dict(aux, "screens", roster=ts_roster)
 
-    mbr_ta_actuals = build_mbr_ta_actuals(raw_wbr, aux, mbr_wolt, mbr_weeks, ta_roster=ta_roster)
+    # Build (display_client, fold_ta) set from target rows — scopes MBR to only
+    # the (Client, TA) combinations Andy has in the target sheet, matching PBI.
+    active_target_pairs = set()
+    for t in (live.get("mbr_ta_targets") or []):
+        tc = (t.get("client") or "").strip()
+        disp_c = ABBREV.get(tc, tc)  # normalize long-form Wolt to ABBREV
+        ta_f = fold_name(t.get("ta") or "")
+        if disp_c and ta_f:
+            active_target_pairs.add((disp_c, ta_f))
+
+    mbr_ta_actuals = build_mbr_ta_actuals(raw_wbr, aux, mbr_wolt, mbr_weeks,
+                                          ta_roster=ta_roster,
+                                          active_target_pairs=active_target_pairs)
     mbr_ts_actuals = build_mbr_ts_actuals(raw_ts, aux, mbr_weeks, ts_roster=ts_roster)
     mbr_client_totals = build_mbr_client_totals(mbr_ta_actuals)
 

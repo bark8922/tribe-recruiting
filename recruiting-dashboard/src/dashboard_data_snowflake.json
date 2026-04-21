@@ -19571,12 +19571,12 @@
       "hires_12w": 0
     },
     "Wolt HQ": {
-      "contacted": 1517,
+      "contacted": 1516,
       "actual_screens": 113,
       "ats": 71,
       "offers": 7,
       "hires": 10,
-      "hires_12w": 29
+      "hires_12w": 25
     },
     "Enam": {
       "contacted": 249,
@@ -19603,12 +19603,12 @@
       "hires_12w": 4
     },
     "Nexi": {
-      "contacted": 613,
-      "actual_screens": 81,
-      "ats": 52,
+      "contacted": 611,
+      "actual_screens": 79,
+      "ats": 51,
       "offers": 4,
       "hires": 4,
-      "hires_12w": 12
+      "hires_12w": 10
     },
     "Parloa": {
       "contacted": 165,
@@ -19627,12 +19627,12 @@
       "hires_12w": 6
     },
     "Scorewarrior": {
-      "contacted": 48,
-      "actual_screens": 31,
-      "ats": 14,
+      "contacted": 34,
+      "actual_screens": 12,
+      "ats": 7,
       "offers": 0,
       "hires": 0,
-      "hires_12w": 3
+      "hires_12w": 0
     },
     "Wolt NBB": {
       "contacted": 186,
@@ -19650,21 +19650,13 @@
       "hires": 2,
       "hires_12w": 8
     },
-    "Wolt Volume": {
-      "contacted": 14,
-      "actual_screens": 14,
-      "ats": 10,
-      "offers": 9,
-      "hires": 9,
-      "hires_12w": 628
-    },
     "Wolt Tech": {
       "contacted": 453,
       "actual_screens": 46,
       "ats": 27,
       "offers": 1,
       "hires": 1,
-      "hires_12w": 7
+      "hires_12w": 1
     },
     "Wolt Market": {
       "contacted": 240,
@@ -19901,17 +19893,6 @@
       "ats_12w": 6,
       "jobs_60d": 0
     },
-    "Nexi|Andreas Weins": {
-      "contacted": 2,
-      "actual_screens": 2,
-      "ats": 1,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 2,
-      "screens_12w": 48,
-      "ats_12w": 27,
-      "jobs_60d": 17
-    },
     "Nexi|Maria Desiree Gerbore": {
       "contacted": 559,
       "actual_screens": 72,
@@ -19967,17 +19948,6 @@
       "ats_12w": 20,
       "jobs_60d": 3
     },
-    "Scorewarrior|Mark Kandaurov": {
-      "contacted": 14,
-      "actual_screens": 19,
-      "ats": 7,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 3,
-      "screens_12w": 75,
-      "ats_12w": 32,
-      "jobs_60d": 1
-    },
     "Wolt NBB|Adelya Khakimova": {
       "contacted": 21,
       "actual_screens": 11,
@@ -20011,72 +19981,6 @@
       "ats_12w": 137,
       "jobs_60d": 2
     },
-    "Wolt HQ|Alexandra Richiteanu": {
-      "contacted": 0,
-      "actual_screens": 0,
-      "ats": 0,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 1,
-      "screens_12w": 2,
-      "ats_12w": 2,
-      "jobs_60d": 0
-    },
-    "Wolt Volume|Alisa Liddell": {
-      "contacted": 9,
-      "actual_screens": 9,
-      "ats": 9,
-      "offers": 9,
-      "hires": 9,
-      "hires_12w": 84,
-      "screens_12w": 0,
-      "ats_12w": 85,
-      "jobs_60d": 12
-    },
-    "Wolt Volume|Chantal Bozkurt": {
-      "contacted": 0,
-      "actual_screens": 0,
-      "ats": 0,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 141,
-      "screens_12w": 3,
-      "ats_12w": 142,
-      "jobs_60d": 21
-    },
-    "Wolt HQ|Chené Elliot": {
-      "contacted": 0,
-      "actual_screens": 0,
-      "ats": 0,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 1,
-      "screens_12w": 1,
-      "ats_12w": 0,
-      "jobs_60d": 0
-    },
-    "Wolt Volume|Dolores Palotas": {
-      "contacted": 5,
-      "actual_screens": 5,
-      "ats": 1,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 57,
-      "screens_12w": 12,
-      "ats_12w": 58,
-      "jobs_60d": 0
-    },
-    "Wolt HQ|Dora Vrbanić": {
-      "contacted": 0,
-      "actual_screens": 0,
-      "ats": 0,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 0,
-      "screens_12w": 0,
-      "ats_12w": 0,
-      "jobs_60d": 1
-    },
     "Wolt Tech|Ejla Suljcic": {
       "contacted": 453,
       "actual_screens": 46,
@@ -20099,39 +20003,6 @@
       "ats_12w": 50,
       "jobs_60d": 1
     },
-    "Wolt Volume|Evagelina Rapanaki": {
-      "contacted": 0,
-      "actual_screens": 0,
-      "ats": 0,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 16,
-      "screens_12w": 0,
-      "ats_12w": 16,
-      "jobs_60d": 14
-    },
-    "Wolt Volume|Fuad Safarov": {
-      "contacted": 0,
-      "actual_screens": 0,
-      "ats": 0,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 26,
-      "screens_12w": 1,
-      "ats_12w": 26,
-      "jobs_60d": 0
-    },
-    "Wolt Volume|Iryna Dyda": {
-      "contacted": 0,
-      "actual_screens": 0,
-      "ats": 0,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 0,
-      "screens_12w": 0,
-      "ats_12w": 0,
-      "jobs_60d": 2
-    },
     "Wolt Market|Jan Dokulil": {
       "contacted": 240,
       "actual_screens": 45,
@@ -20153,28 +20024,6 @@
       "screens_12w": 197,
       "ats_12w": 97,
       "jobs_60d": 2
-    },
-    "Wolt NBB|Jovana Drakula": {
-      "contacted": 0,
-      "actual_screens": 0,
-      "ats": 0,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 0,
-      "screens_12w": 21,
-      "ats_12w": 10,
-      "jobs_60d": 0
-    },
-    "Wolt Volume|Ketevan Khorava": {
-      "contacted": 0,
-      "actual_screens": 0,
-      "ats": 0,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 193,
-      "screens_12w": 0,
-      "ats_12w": 193,
-      "jobs_60d": 1
     },
     "Wolt Germany|Lisa Gargulinska": {
       "contacted": 35,
@@ -20209,28 +20058,6 @@
       "ats_12w": 77,
       "jobs_60d": 2
     },
-    "Wolt HQ|Rafael Rosa": {
-      "contacted": 1,
-      "actual_screens": 0,
-      "ats": 0,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 2,
-      "screens_12w": 3,
-      "ats_12w": 3,
-      "jobs_60d": 11
-    },
-    "Wolt Tech|Simon Siew": {
-      "contacted": 0,
-      "actual_screens": 0,
-      "ats": 0,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 2,
-      "screens_12w": 0,
-      "ats_12w": 1,
-      "jobs_60d": 8
-    },
     "Wolt NBB|Tina Aramouni": {
       "contacted": 18,
       "actual_screens": 18,
@@ -20241,72 +20068,6 @@
       "screens_12w": 95,
       "ats_12w": 93,
       "jobs_60d": 3
-    },
-    "Wolt Volume|Tinatini Karaulashvili": {
-      "contacted": 0,
-      "actual_screens": 0,
-      "ats": 0,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 55,
-      "screens_12w": 0,
-      "ats_12w": 55,
-      "jobs_60d": 4
-    },
-    "Wolt Tech|Vladimir Stankovic": {
-      "contacted": 0,
-      "actual_screens": 0,
-      "ats": 0,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 4,
-      "screens_12w": 18,
-      "ats_12w": 10,
-      "jobs_60d": 0
-    },
-    "Wolt Volume|Zarina Amanbekova": {
-      "contacted": 0,
-      "actual_screens": 0,
-      "ats": 0,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 56,
-      "screens_12w": 6,
-      "ats_12w": 60,
-      "jobs_60d": 7
-    },
-    "Glovo|Ejla Suljcic": {
-      "contacted": 0,
-      "actual_screens": 0,
-      "ats": 0,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 0,
-      "screens_12w": 0,
-      "ats_12w": 0,
-      "jobs_60d": 21
-    },
-    "Aviv|Iryna Dyda": {
-      "contacted": 0,
-      "actual_screens": 0,
-      "ats": 0,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 0,
-      "screens_12w": 6,
-      "ats_12w": 1,
-      "jobs_60d": 0
-    },
-    "Enam|Marko Pavicevic": {
-      "contacted": 0,
-      "actual_screens": 0,
-      "ats": 0,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 0,
-      "screens_12w": 0,
-      "ats_12w": 0,
-      "jobs_60d": 2
     }
   },
   "mbr_ts_actuals": {

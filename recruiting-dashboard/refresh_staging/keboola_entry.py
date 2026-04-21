@@ -1,8 +1,3 @@
-import sys as _sys
-print("=== keboola_entry.py loaded ===", flush=True)
-_sys.stderr.write("=== keboola_entry.py stderr ===\n")
-_sys.stderr.flush()
-
 """keboola_entry.py — Custom Python component entrypoint for the recruiting dashboard refresh.
 
 See commit history for full design notes. Short version:
@@ -12,7 +7,13 @@ See commit history for full design notes. Short version:
   4. Call render_json.main()
   5. PUT output to recruiting-dashboard/src/dashboard_data_snowflake.json
 """
-from __future__ import annotations
+# NOTE: no `from __future__ import annotations` — we're on Python 3.13 (PEP 649
+# default) and the component is strict about __future__ import ordering.
+
+import sys as _sys
+print("=== keboola_entry.py loaded ===", flush=True)
+_sys.stderr.write("=== keboola_entry.py stderr ===\n")
+_sys.stderr.flush()
 
 import base64
 import json
@@ -139,7 +140,4 @@ def main():
     return 0
 
 
-print("=== about to call main() ===", flush=True)
-_rc = main()
-print(f"=== main() returned {_rc} ===", flush=True)
-sys.exit(_rc)
+print("==

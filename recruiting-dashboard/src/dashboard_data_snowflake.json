@@ -702,6 +702,14 @@
         "ats": 1,
         "offers": 0,
         "hires": 0
+      },
+      "w17": {
+        "contacted": 25,
+        "screened": 2,
+        "actual_screens": 1,
+        "ats": 0,
+        "offers": 0,
+        "hires": 0
       }
     },
     "Aviv|Anna Tyulpanova": {
@@ -792,6 +800,14 @@
         "ats": 7,
         "offers": 0,
         "hires": 0
+      },
+      "w17": {
+        "contacted": 0,
+        "screened": 6,
+        "actual_screens": 0,
+        "ats": 0,
+        "offers": 0,
+        "hires": 0
       }
     },
     "Aviv|Jovana Drakula": {
@@ -880,6 +896,14 @@
         "screened": 18,
         "actual_screens": 30,
         "ats": 9,
+        "offers": 0,
+        "hires": 0
+      },
+      "w17": {
+        "contacted": 23,
+        "screened": 4,
+        "actual_screens": 4,
+        "ats": 1,
         "offers": 0,
         "hires": 0
       }
@@ -980,6 +1004,14 @@
         "ats": 9,
         "offers": 0,
         "hires": 0
+      },
+      "w17": {
+        "contacted": 0,
+        "screened": 18,
+        "actual_screens": 7,
+        "ats": 5,
+        "offers": 0,
+        "hires": 0
       }
     },
     "Aviv|Lejla Silva": {
@@ -1076,6 +1108,14 @@
         "screened": 20,
         "actual_screens": 20,
         "ats": 13,
+        "offers": 0,
+        "hires": 0
+      },
+      "w17": {
+        "contacted": 49,
+        "screened": 3,
+        "actual_screens": 6,
+        "ats": 5,
         "offers": 0,
         "hires": 0
       }
@@ -1176,6 +1216,14 @@
         "ats": 9,
         "offers": 0,
         "hires": 0
+      },
+      "w17": {
+        "contacted": 0,
+        "screened": 14,
+        "actual_screens": 6,
+        "ats": 3,
+        "offers": 0,
+        "hires": 0
       }
     },
     "Aiven|Fuad Safarov": {
@@ -1194,6 +1242,14 @@
         "ats": 1,
         "offers": 0,
         "hires": 0
+      },
+      "w17": {
+        "contacted": 20,
+        "screened": 1,
+        "actual_screens": 0,
+        "ats": 0,
+        "offers": 0,
+        "hires": 0
       }
     },
     "Aiven|Vladimir Stankovic": {
@@ -1210,6 +1266,14 @@
         "screened": 26,
         "actual_screens": 20,
         "ats": 7,
+        "offers": 0,
+        "hires": 0
+      },
+      "w17": {
+        "contacted": 7,
+        "screened": 1,
+        "actual_screens": 0,
+        "ats": 0,
         "offers": 0,
         "hires": 0
       }
@@ -1750,6 +1814,14 @@
         "ats": 1,
         "offers": 0,
         "hires": 0
+      },
+      "w17": {
+        "contacted": 3,
+        "screened": 3,
+        "actual_screens": 1,
+        "ats": 0,
+        "offers": 0,
+        "hires": 0
       }
     },
     "Eucalyptus|Alisa Liddell": {
@@ -1766,6 +1838,14 @@
         "screened": 18,
         "actual_screens": 14,
         "ats": 7,
+        "offers": 0,
+        "hires": 0
+      },
+      "w17": {
+        "contacted": 0,
+        "screened": 0,
+        "actual_screens": 1,
+        "ats": 1,
         "offers": 0,
         "hires": 0
       }
@@ -1792,6 +1872,14 @@
         "screened": 12,
         "actual_screens": 9,
         "ats": 5,
+        "offers": 0,
+        "hires": 0
+      },
+      "w17": {
+        "contacted": 0,
+        "screened": 3,
+        "actual_screens": 4,
+        "ats": 0,
         "offers": 0,
         "hires": 0
       }
@@ -1916,6 +2004,14 @@
         "ats": 9,
         "offers": 2,
         "hires": 0
+      },
+      "w17": {
+        "contacted": 3,
+        "screened": 3,
+        "actual_screens": 3,
+        "ats": 1,
+        "offers": 0,
+        "hires": 0
       }
     },
     "Fever|Lejla Silva": {
@@ -2008,6 +2104,14 @@
         "ats": 10,
         "offers": 3,
         "hires": 1
+      },
+      "w17": {
+        "contacted": 5,
+        "screened": 6,
+        "actual_screens": 4,
+        "ats": 2,
+        "offers": 0,
+        "hires": 0
       }
     },
     "Glovo|Maria Desiree Gerbore": {
@@ -2082,6 +2186,14 @@
         "screened": 18,
         "actual_screens": 18,
         "ats": 6,
+        "offers": 0,
+        "hires": 0
+      },
+      "w17": {
+        "contacted": 19,
+        "screened": 7,
+        "actual_screens": 2,
+        "ats": 2,
         "offers": 0,
         "hires": 0
       }
@@ -2290,6 +2402,14 @@
         "ats": 14,
         "offers": 0,
         "hires": 1
+      },
+      "w17": {
+        "contacted": 4,
+        "screened": 7,
+        "actual_screens": 7,
+        "ats": 5,
+        "offers": 1,
+        "hires": 0
       }
     },
     "Parloa|Filip Nogowski": {
@@ -2542,6 +2662,14 @@
         "ats": 0,
         "offers": 0,
         "hires": 0
+      },
+      "w17": {
+        "contacted": 13,
+        "screened": 14,
+        "actual_screens": 14,
+        "ats": 7,
+        "offers": 0,
+        "hires": 0
       }
     },
     "PhantomBuster|Mateja Jokovic": {
@@ -2616,6 +2744,14 @@
         "ats": 3,
         "offers": 3,
         "hires": 4
+      },
+      "w17": {
+        "contacted": 0,
+        "screened": 1,
+        "actual_screens": 1,
+        "ats": 0,
+        "offers": 0,
+        "hires": 0
       }
     },
     "Scorewarrior|Ekaterina Boyprav": {
@@ -2900,6 +3036,14 @@
         "screened": 5,
         "actual_screens": 4,
         "ats": 1,
+        "offers": 0,
+        "hires": 0
+      },
+      "w17": {
+        "contacted": 6,
+        "screened": 6,
+        "actual_screens": 7,
+        "ats": 2,
         "offers": 0,
         "hires": 0
       }
@@ -3936,6 +4080,14 @@
         "ats": 8,
         "offers": 0,
         "hires": 0
+      },
+      "w17": {
+        "contacted": 43,
+        "screened": 24,
+        "actual_screens": 3,
+        "ats": 3,
+        "offers": 0,
+        "hires": 0
       }
     },
     "Wolt Volume|Evagelina Rapanaki": {
@@ -4344,6 +4496,14 @@
         "ats": 6,
         "offers": 3,
         "hires": 2
+      },
+      "w17": {
+        "contacted": 3,
+        "screened": 4,
+        "actual_screens": 4,
+        "ats": 2,
+        "offers": 0,
+        "hires": 1
       }
     },
     "Wolt North, Baltics & Benelux|Jovana Drakula": {
@@ -4924,6 +5084,14 @@
         "ats": 4,
         "offers": 1,
         "hires": 1
+      },
+      "w17": {
+        "contacted": 0,
+        "screened": 0,
+        "actual_screens": 0,
+        "ats": 0,
+        "offers": 1,
+        "hires": 0
       }
     },
     "Wolt HQ|Rafael Rosa": {
@@ -17584,6 +17752,14 @@
       "ats": 188,
       "offers": 20,
       "hires": 14
+    },
+    {
+      "week": 17,
+      "contacted": 228,
+      "screened": 86,
+      "ats": 40,
+      "offers": 3,
+      "hires": 1
     }
   ],
   "ts_actuals": {
@@ -19379,15 +19555,15 @@
   },
   "mbr_client_totals": {
     "Aviv": {
-      "contacted": 1828,
-      "actual_screens": 200,
-      "ats": 115,
+      "contacted": 1925,
+      "actual_screens": 224,
+      "ats": 129,
       "offers": 0,
       "hires": 0,
       "hires_12w": 9
     },
     "Aiven": {
-      "contacted": 223,
+      "contacted": 250,
       "actual_screens": 48,
       "ats": 19,
       "offers": 0,
@@ -19395,9 +19571,9 @@
       "hires_12w": 0
     },
     "Wolt HQ": {
-      "contacted": 1268,
-      "actual_screens": 96,
-      "ats": 61,
+      "contacted": 1317,
+      "actual_screens": 106,
+      "ats": 66,
       "offers": 4,
       "hires": 2,
       "hires_12w": 29
@@ -19411,48 +19587,48 @@
       "hires_12w": 3
     },
     "Enam": {
-      "contacted": 202,
-      "actual_screens": 25,
+      "contacted": 205,
+      "actual_screens": 26,
       "ats": 7,
       "offers": 0,
       "hires": 0,
       "hires_12w": 1
     },
     "Eucalyptus": {
-      "contacted": 469,
-      "actual_screens": 97,
-      "ats": 50,
+      "contacted": 472,
+      "actual_screens": 105,
+      "ats": 52,
       "offers": 2,
       "hires": 1,
       "hires_12w": 4
     },
     "Glovo": {
-      "contacted": 528,
-      "actual_screens": 103,
-      "ats": 48,
+      "contacted": 552,
+      "actual_screens": 109,
+      "ats": 52,
       "offers": 5,
       "hires": 3,
       "hires_12w": 4
     },
     "Nexi": {
-      "contacted": 357,
-      "actual_screens": 60,
-      "ats": 39,
-      "offers": 2,
+      "contacted": 361,
+      "actual_screens": 67,
+      "ats": 44,
+      "offers": 3,
       "hires": 4,
       "hires_12w": 12
     },
     "Parloa": {
-      "contacted": 113,
-      "actual_screens": 43,
-      "ats": 30,
+      "contacted": 126,
+      "actual_screens": 57,
+      "ats": 37,
       "offers": 7,
       "hires": 4,
       "hires_12w": 16
     },
     "PhantomBuster": {
       "contacted": 95,
-      "actual_screens": 27,
+      "actual_screens": 28,
       "ats": 12,
       "offers": 4,
       "hires": 4,
@@ -19475,11 +19651,11 @@
       "hires_12w": 8
     },
     "Wolt NBB": {
-      "contacted": 123,
-      "actual_screens": 41,
-      "ats": 24,
+      "contacted": 126,
+      "actual_screens": 45,
+      "ats": 26,
       "offers": 5,
-      "hires": 5,
+      "hires": 6,
       "hires_12w": 32
     },
     "Wolt Volume": {
@@ -19518,15 +19694,15 @@
       "contacted": 17,
       "actual_screens": 18,
       "ats": 12,
-      "offers": 1,
+      "offers": 2,
       "hires": 1,
       "hires_12w": 7
     }
   },
   "mbr_ta_actuals": {
     "Aviv|Alexandra Richiteanu": {
-      "contacted": 103,
-      "actual_screens": 4,
+      "contacted": 128,
+      "actual_screens": 5,
       "ats": 1,
       "offers": 0,
       "hires": 0,
@@ -19547,9 +19723,9 @@
       "jobs_60d": 3
     },
     "Aviv|Jovana Drakula": {
-      "contacted": 303,
-      "actual_screens": 40,
-      "ats": 11,
+      "contacted": 326,
+      "actual_screens": 44,
+      "ats": 12,
       "offers": 0,
       "hires": 0,
       "hires_12w": 0,
@@ -19559,8 +19735,8 @@
     },
     "Aviv|Kristina Colovic": {
       "contacted": 210,
-      "actual_screens": 25,
-      "ats": 17,
+      "actual_screens": 32,
+      "ats": 22,
       "offers": 0,
       "hires": 0,
       "hires_12w": 3,
@@ -19569,9 +19745,9 @@
       "jobs_60d": 0
     },
     "Aviv|Lejla Silva": {
-      "contacted": 637,
-      "actual_screens": 62,
-      "ats": 43,
+      "contacted": 686,
+      "actual_screens": 68,
+      "ats": 48,
       "offers": 0,
       "hires": 0,
       "hires_12w": 3,
@@ -19581,8 +19757,8 @@
     },
     "Aviv|Wladyslaw Gadomski": {
       "contacted": 272,
-      "actual_screens": 30,
-      "ats": 17,
+      "actual_screens": 36,
+      "ats": 20,
       "offers": 0,
       "hires": 0,
       "hires_12w": 0,
@@ -19591,7 +19767,7 @@
       "jobs_60d": 2
     },
     "Aiven|Fuad Safarov": {
-      "contacted": 118,
+      "contacted": 138,
       "actual_screens": 21,
       "ats": 9,
       "offers": 0,
@@ -19602,7 +19778,7 @@
       "jobs_60d": 0
     },
     "Aiven|Vladimir Stankovic": {
-      "contacted": 105,
+      "contacted": 112,
       "actual_screens": 27,
       "ats": 10,
       "offers": 0,
@@ -19701,8 +19877,8 @@
       "jobs_60d": 1
     },
     "Enam|Aleksandra Vistac": {
-      "contacted": 202,
-      "actual_screens": 25,
+      "contacted": 205,
+      "actual_screens": 26,
       "ats": 7,
       "offers": 0,
       "hires": 0,
@@ -19713,8 +19889,8 @@
     },
     "Eucalyptus|Alisa Liddell": {
       "contacted": 147,
-      "actual_screens": 16,
-      "ats": 9,
+      "actual_screens": 17,
+      "ats": 10,
       "offers": 0,
       "hires": 0,
       "hires_12w": 0,
@@ -19724,7 +19900,7 @@
     },
     "Eucalyptus|Dušan Špica": {
       "contacted": 248,
-      "actual_screens": 28,
+      "actual_screens": 32,
       "ats": 12,
       "offers": 0,
       "hires": 0,
@@ -19734,9 +19910,9 @@
       "jobs_60d": 0
     },
     "Eucalyptus|Meho Saracevic": {
-      "contacted": 74,
-      "actual_screens": 53,
-      "ats": 29,
+      "contacted": 77,
+      "actual_screens": 56,
+      "ats": 30,
       "offers": 2,
       "hires": 1,
       "hires_12w": 4,
@@ -19756,9 +19932,9 @@
       "jobs_60d": 0
     },
     "Glovo|Chené Elliot": {
-      "contacted": 311,
-      "actual_screens": 61,
-      "ats": 32,
+      "contacted": 316,
+      "actual_screens": 65,
+      "ats": 34,
       "offers": 3,
       "hires": 1,
       "hires_12w": 2,
@@ -19767,9 +19943,9 @@
       "jobs_60d": 0
     },
     "Glovo|Samantha Nel": {
-      "contacted": 217,
-      "actual_screens": 42,
-      "ats": 16,
+      "contacted": 236,
+      "actual_screens": 44,
+      "ats": 18,
       "offers": 2,
       "hires": 2,
       "hires_12w": 2,
@@ -19800,10 +19976,10 @@
       "jobs_60d": 17
     },
     "Nexi|Maria Desiree Gerbore": {
-      "contacted": 304,
-      "actual_screens": 52,
-      "ats": 33,
-      "offers": 1,
+      "contacted": 308,
+      "actual_screens": 59,
+      "ats": 38,
+      "offers": 2,
       "hires": 3,
       "hires_12w": 9,
       "screens_12w": 221,
@@ -19822,9 +19998,9 @@
       "jobs_60d": 6
     },
     "Parloa|Jonaed Iqbal": {
-      "contacted": 69,
-      "actual_screens": 28,
-      "ats": 19,
+      "contacted": 82,
+      "actual_screens": 42,
+      "ats": 26,
       "offers": 3,
       "hires": 3,
       "hires_12w": 10,
@@ -19834,7 +20010,7 @@
     },
     "PhantomBuster|Mateja Jokovic": {
       "contacted": 95,
-      "actual_screens": 27,
+      "actual_screens": 28,
       "ats": 12,
       "offers": 4,
       "hires": 4,
@@ -19866,9 +20042,9 @@
       "jobs_60d": 1
     },
     "Wolt HQ|Adelya Khakimova": {
-      "contacted": 21,
-      "actual_screens": 11,
-      "ats": 5,
+      "contacted": 27,
+      "actual_screens": 18,
+      "ats": 7,
       "offers": 0,
       "hires": 0,
       "hires_12w": 0,
@@ -19987,9 +20163,9 @@
       "jobs_60d": 8
     },
     "Wolt HQ|Elena Petrovska": {
-      "contacted": 478,
-      "actual_screens": 19,
-      "ats": 15,
+      "contacted": 521,
+      "actual_screens": 22,
+      "ats": 18,
       "offers": 0,
       "hires": 0,
       "hires_12w": 1,
@@ -20042,11 +20218,11 @@
       "jobs_60d": 14
     },
     "Wolt NBB|Jelena Lacmanovic": {
-      "contacted": 109,
-      "actual_screens": 27,
-      "ats": 11,
+      "contacted": 112,
+      "actual_screens": 31,
+      "ats": 13,
       "offers": 3,
-      "hires": 2,
+      "hires": 3,
       "hires_12w": 18,
       "screens_12w": 197,
       "ats_12w": 97,
@@ -20100,7 +20276,7 @@
       "contacted": 17,
       "actual_screens": 18,
       "ats": 12,
-      "offers": 1,
+      "offers": 2,
       "hires": 1,
       "hires_12w": 7,
       "screens_12w": 132,
@@ -25099,6 +25275,36 @@
       "Wolt|Nenad Skoko": 5,
       "Wolt|Niki Vokalkova": 5,
       "Wolt|Tina Aramouni": 2
+    },
+    "w17": {
+      "AVIV |Alexandra Richiteanu": 2,
+      "AVIV |Anna Tyulpanova": 3,
+      "AVIV |Iryna Dyda": 2,
+      "AVIV |Jovana Drakula": 4,
+      "AVIV |Kristina Colovic": 3,
+      "AVIV |Lejla Silva": 2,
+      "AVIV |Wladyslaw Gadomski": 3,
+      "Aiven|Fuad Safarov": 2,
+      "Aiven|Vladimir Stankovic": 2,
+      "BD - Tribe|Martin Bernard": 1,
+      "Enam|Aleksandra Vistac": 3,
+      "Eucalyptus|Alisa Liddell": 2,
+      "Eucalyptus|Dušan Špica": 3,
+      "Eucalyptus|Meho Saracevic": 2,
+      "FTAPI|Naledi Ngwenya": 4,
+      "Glovo|Chené Elliot": 5,
+      "Glovo|Samantha Nel": 2,
+      "Nexi |Maria Desiree Gerbore": 5,
+      "Parloa|Filip Nogowski": 2,
+      "Parloa|Gustavo Loureiro Castro": 4,
+      "Parloa|Jonaed Iqbal": 4,
+      "PhantomBuster|Mateja Jokovic": 1,
+      "SevenRooms|Adelya Khakimova": 1,
+      "Taxfix|Marina Nikolic": 2,
+      "Tribe.xyz (IR)|Ella Darie": 1,
+      "Wolt|Elena Petrovska": 7,
+      "Wolt|Jelena Lacmanovic": 5,
+      "Wolt|Niki Vokalkova": 1
     },
     "w2": {
       "Doordash|Akash Singh": 1,

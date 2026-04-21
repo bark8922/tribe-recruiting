@@ -96,6 +96,15 @@ TABLES = [
      HERE / "snowflake_ts_conversion.csv"),
     ("out.c-WBRMBR-weekly-aggregations.aux_12w",
      HERE / "snowflake_aux_12w.csv"),
+    # Note: the Google Drive extractor (config 01kpr3tek8ezs48pg02e60jdpe) also
+    # writes 5 sheet tabs to in.c-wbr-sheet.wbr_{ta_target,ta_weekly_note,
+    # ts_weekly,ir,reasoning_guidance}. We intentionally do NOT pull those
+    # here yet — sync_google_sheet.py (Step 1a in the scheduled task) still
+    # runs and writes the same CSVs directly from the live sheet with no
+    # Flow-schedule lag. Pulling from Keboola would overwrite fresh CSVs
+    # with up-to-6h stale ones. Retire sync_google_sheet.py (and uncomment
+    # these entries) when the Custom Python render component ships and the
+    # Cowork task goes away.
 ]
 
 log = logging.getLogger("pull_project_dashboard")
@@ -169,29 +178,4 @@ def _export_one(table_id: str, out_path: Path, token: str) -> None:
         parts.append(data)
 
     out_path.write_bytes(b"".join(parts))
-    lines = sum(1 for _ in out_path.open())
-    log.info("  wrote %s: %d lines (%d KB)",
-             out_path.name, lines, out_path.stat().st_size // 1024)
-
-
-def main() -> int:
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s [%(levelname)s] %(message)s",
-        datefmt="%Y-%m-%d %H:%M:%S",
-    )
-    try:
-        token = _get_token()
-    except RuntimeError as e:
-        log.error("%s", e)
-        return 1
-
-    t0 = time.time()
-    for table_id, out_path in TABLES:
-        _export_one(table_id, out_path, token)
-    log.info("Pull complete in %.1fs", time.time() - t0)
-    return 0
-
-
-if __name__ == "__main__":
-    sys.exit(main())
+    lines = sum(1 for _ in out_path.op

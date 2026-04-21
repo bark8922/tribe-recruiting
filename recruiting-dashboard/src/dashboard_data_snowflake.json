@@ -4,8 +4,8 @@
       "client": "Wolt Tech",
       "ta": "Simon Siew",
       "contacted": 30.0,
-      "actual_screens": 10.0,
-      "moved_to_ats": 9.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.58,
       "team_group": ""
     },
@@ -13,8 +13,8 @@
       "client": "Wolt Tech",
       "ta": "Vladimir Stankovic",
       "contacted": 30.0,
-      "actual_screens": 10.0,
-      "moved_to_ats": 8.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.58,
       "team_group": ""
     },
@@ -31,8 +31,8 @@
       "client": "DoorDash",
       "ta": "Akash Singh",
       "contacted": 0.0,
-      "actual_screens": 10.0,
-      "moved_to_ats": 8.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": "Dolphins/Whales"
     },
@@ -40,8 +40,8 @@
       "client": "DoorDash",
       "ta": "Danish Shams",
       "contacted": 0.0,
-      "actual_screens": 10.0,
-      "moved_to_ats": 8.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": "Dolphins/Whales"
     },
@@ -49,8 +49,8 @@
       "client": "DoorDash",
       "ta": "Nidhi Raina",
       "contacted": 0.0,
-      "actual_screens": 10.0,
-      "moved_to_ats": 8.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": "Dolphins/Whales"
     },
@@ -58,8 +58,8 @@
       "client": "Wolt Market",
       "ta": "Jan Dokulil",
       "contacted": 120.0,
-      "actual_screens": 19.0,
-      "moved_to_ats": 10.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 1.25,
       "team_group": "Dolphins/Whales"
     },
@@ -67,8 +67,8 @@
       "client": "Wolt North, Baltics & Benelux",
       "ta": "Jelena Lacmanovic",
       "contacted": 70.0,
-      "actual_screens": 15.0,
-      "moved_to_ats": 8.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 1.25,
       "team_group": "Dolphins/Whales"
     },
@@ -76,8 +76,8 @@
       "client": "Wolt North, Baltics & Benelux",
       "ta": "Tina Aramouni",
       "contacted": 20.0,
-      "actual_screens": 10.0,
-      "moved_to_ats": 8.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 1.25,
       "team_group": "Dolphins/Whales"
     },
@@ -85,8 +85,8 @@
       "client": "Wolt North, Baltics & Benelux",
       "ta": "Jovana Drakula",
       "contacted": 50.0,
-      "actual_screens": 7.0,
-      "moved_to_ats": 4.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 1.25,
       "team_group": ""
     },
@@ -94,8 +94,8 @@
       "client": "Wolt North, Baltics & Benelux",
       "ta": "Adelya Khakimova",
       "contacted": 50.0,
-      "actual_screens": 15.0,
-      "moved_to_ats": 8.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 1.25,
       "team_group": "Dolphins/Whales"
     },
@@ -103,8 +103,8 @@
       "client": "Wolt Central & South",
       "ta": "Niki Vokalkova",
       "contacted": 0.0,
-      "actual_screens": 15.0,
-      "moved_to_ats": 8.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 1.25,
       "team_group": "Dolphins/Whales"
     },
@@ -193,8 +193,8 @@
       "client": "Wolt HQ",
       "ta": "Chené Elliot",
       "contacted": 30.0,
-      "actual_screens": 12.0,
-      "moved_to_ats": 8.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 1.0,
       "team_group": ""
     },
@@ -202,8 +202,8 @@
       "client": "Wolt HQ",
       "ta": "Rafael Rosa",
       "contacted": 35.0,
-      "actual_screens": 7.0,
-      "moved_to_ats": 4.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 1.0,
       "team_group": ""
     },
@@ -211,8 +211,8 @@
       "client": "Wolt HQ",
       "ta": "Nenad Skoko",
       "contacted": 60.0,
-      "actual_screens": 15.0,
-      "moved_to_ats": 8.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 1.0,
       "team_group": "Dolphins/Whales"
     },
@@ -220,8 +220,8 @@
       "client": "Wolt HQ",
       "ta": "Alexandra Richiteanu",
       "contacted": 35.0,
-      "actual_screens": 12.0,
-      "moved_to_ats": 9.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 1.0,
       "team_group": ""
     },
@@ -229,8 +229,8 @@
       "client": "Wolt HQ",
       "ta": "Milica Veselinovic",
       "contacted": 100.0,
-      "actual_screens": 4.0,
-      "moved_to_ats": 3.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 1.0,
       "team_group": "Dolphins/Whales"
     },
@@ -238,8 +238,8 @@
       "client": "Wolt Germany",
       "ta": "Lisa Gargulinska",
       "contacted": 100.0,
-      "actual_screens": 15.0,
-      "moved_to_ats": 8.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 1.25,
       "team_group": "Dolphins/Whales"
     },
@@ -247,8 +247,8 @@
       "client": "Enam",
       "ta": "Aleksandra Vistac",
       "contacted": 70.0,
-      "actual_screens": 17.0,
-      "moved_to_ats": 7.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": "Ponies/Unicorns"
     },
@@ -256,8 +256,8 @@
       "client": "Parloa",
       "ta": "Filip Nogowski",
       "contacted": 50.0,
-      "actual_screens": 15.0,
-      "moved_to_ats": 8.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": "Ponies/Unicorns"
     },
@@ -265,8 +265,8 @@
       "client": "Scorewarrior",
       "ta": "Ekaterina Boyprav",
       "contacted": 200.0,
-      "actual_screens": 8.0,
-      "moved_to_ats": 3.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": "Ponies/Unicorns"
     },
@@ -274,8 +274,8 @@
       "client": "Taxfix",
       "ta": "Marina Nikolic",
       "contacted": 40.0,
-      "actual_screens": 15.0,
-      "moved_to_ats": 5.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": "Ponies/Unicorns"
     },
@@ -283,8 +283,8 @@
       "client": "SevenRooms",
       "ta": "Zelimir Stajcic",
       "contacted": 100.0,
-      "actual_screens": 5.0,
-      "moved_to_ats": 3.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": "Dolphins/Whales"
     },
@@ -292,8 +292,8 @@
       "client": "Eucalyptus",
       "ta": "Meho Saracevic",
       "contacted": 100.0,
-      "actual_screens": 15.0,
-      "moved_to_ats": 7.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": "Ponies/Unicorns"
     },
@@ -301,8 +301,8 @@
       "client": "Nexi",
       "ta": "Maria Desiree Gerbore",
       "contacted": 100.0,
-      "actual_screens": 20.0,
-      "moved_to_ats": 10.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": "Ponies/Unicorns"
     },
@@ -310,8 +310,8 @@
       "client": "Nexi",
       "ta": "Andreas Weins",
       "contacted": 100.0,
-      "actual_screens": 20.0,
-      "moved_to_ats": 10.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": ""
     },
@@ -319,8 +319,8 @@
       "client": "Grover",
       "ta": "Eduardo Moral",
       "contacted": 200.0,
-      "actual_screens": 20.0,
-      "moved_to_ats": 10.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": "Ponies/Unicorns"
     },
@@ -337,8 +337,8 @@
       "client": "Parloa",
       "ta": "Jonaed Iqbal",
       "contacted": 100.0,
-      "actual_screens": 15.0,
-      "moved_to_ats": 8.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": "Ponies/Unicorns"
     },
@@ -346,8 +346,8 @@
       "client": "Fever",
       "ta": "Lejla Silva",
       "contacted": 0.0,
-      "actual_screens": 30.0,
-      "moved_to_ats": 15.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": ""
     },
@@ -364,8 +364,8 @@
       "client": "Scorewarrior",
       "ta": "Mark Kandaurov",
       "contacted": 100.0,
-      "actual_screens": 10.0,
-      "moved_to_ats": 3.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": ""
     },
@@ -373,8 +373,8 @@
       "client": "DualEntry",
       "ta": "Samantha Nel",
       "contacted": 100.0,
-      "actual_screens": 20.0,
-      "moved_to_ats": 10.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": ""
     },
@@ -382,8 +382,8 @@
       "client": "DualEntry",
       "ta": "Simon Siew",
       "contacted": 100.0,
-      "actual_screens": 20.0,
-      "moved_to_ats": 10.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": ""
     },
@@ -391,8 +391,8 @@
       "client": "DualEntry",
       "ta": "Chené Elliot",
       "contacted": 100.0,
-      "actual_screens": 20.0,
-      "moved_to_ats": 10.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": ""
     },
@@ -400,8 +400,8 @@
       "client": "Aviv",
       "ta": "Anna Tyulpanova",
       "contacted": 70.0,
-      "actual_screens": 15.0,
-      "moved_to_ats": 10.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": "Ponies/Unicorns"
     },
@@ -409,8 +409,8 @@
       "client": "Aviv",
       "ta": "Wladyslaw Gadomski",
       "contacted": 70.0,
-      "actual_screens": 15.0,
-      "moved_to_ats": 10.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": "Ponies/Unicorns"
     },
@@ -418,8 +418,8 @@
       "client": "Aviv",
       "ta": "Lejla Silva",
       "contacted": 70.0,
-      "actual_screens": 15.0,
-      "moved_to_ats": 10.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": "Ponies/Unicorns"
     },
@@ -427,8 +427,8 @@
       "client": "Aviv",
       "ta": "Kristina Colovic",
       "contacted": 70.0,
-      "actual_screens": 15.0,
-      "moved_to_ats": 10.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": "Ponies/Unicorns"
     },
@@ -436,8 +436,8 @@
       "client": "Aviv",
       "ta": "Alexandra Richiteanu",
       "contacted": 70.0,
-      "actual_screens": 15.0,
-      "moved_to_ats": 10.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": "Dolphins/Whales"
     },
@@ -454,8 +454,8 @@
       "client": "Nexi",
       "ta": "Adis Prepoljac",
       "contacted": 100.0,
-      "actual_screens": 20.0,
-      "moved_to_ats": 10.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": "Ponies/Unicorns"
     },
@@ -463,8 +463,8 @@
       "client": "PhantomBuster",
       "ta": "Mateja Jokovic",
       "contacted": 100.0,
-      "actual_screens": 15.0,
-      "moved_to_ats": 10.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": "Ponies/Unicorns"
     },
@@ -472,8 +472,8 @@
       "client": "Wolt HQ",
       "ta": "Elena Petrovska",
       "contacted": 100.0,
-      "actual_screens": 4.0,
-      "moved_to_ats": 3.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": "Dolphins/Whales"
     },
@@ -481,8 +481,8 @@
       "client": "Aviv",
       "ta": "Jovana Drakula",
       "contacted": 100.0,
-      "actual_screens": 6.0,
-      "moved_to_ats": 4.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": "Dolphins/Whales"
     },
@@ -490,8 +490,8 @@
       "client": "Glovo",
       "ta": "Chené Elliot",
       "contacted": 70.0,
-      "actual_screens": 15.0,
-      "moved_to_ats": 10.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": "Dolphins/Whales"
     },
@@ -499,8 +499,8 @@
       "client": "Glovo",
       "ta": "Samantha Nel",
       "contacted": 70.0,
-      "actual_screens": 15.0,
-      "moved_to_ats": 10.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": "Ponies/Unicorns"
     },
@@ -508,8 +508,8 @@
       "client": "Eucalyptus",
       "ta": "Dušan Špica",
       "contacted": 100.0,
-      "actual_screens": 15.0,
-      "moved_to_ats": 7.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": "Ponies/Unicorns"
     },
@@ -517,8 +517,8 @@
       "client": "Eucalyptus",
       "ta": "Alisa Liddell",
       "contacted": 100.0,
-      "actual_screens": 15.0,
-      "moved_to_ats": 7.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": "Dolphins/Whales"
     },
@@ -526,8 +526,8 @@
       "client": "Aiven",
       "ta": "Vladimir Stankovic",
       "contacted": 50.0,
-      "actual_screens": 12.0,
-      "moved_to_ats": 5.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": "Dolphins/Whales"
     },
@@ -535,8 +535,8 @@
       "client": "Aiven",
       "ta": "Fuad Safarov",
       "contacted": 50.0,
-      "actual_screens": 12.0,
-      "moved_to_ats": 5.0,
+      "actual_screens": 0.0,
+      "moved_to_ats": 0.0,
       "hires": 3.5,
       "team_group": "Dolphins/Whales"
     },
@@ -5819,7 +5819,7 @@
       "ts": "Andrea Akovic",
       "year": 2026,
       "week": 2,
-      "contacted_target": 70,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -5843,7 +5843,7 @@
       "ts": "Aleksandra Markovic",
       "year": 2026,
       "week": 2,
-      "contacted_target": 220,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "OOO"
     },
@@ -5899,7 +5899,7 @@
       "ts": "Marina Lazarevic",
       "year": 2026,
       "week": 2,
-      "contacted_target": 100,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "ooo 3 days this week, lower RS due to holidays"
     },
@@ -5923,7 +5923,7 @@
       "ts": "Andrea Akovic",
       "year": 2026,
       "week": 3,
-      "contacted_target": 70,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -5939,7 +5939,7 @@
       "ts": "Valeriia Yurykova",
       "year": 2026,
       "week": 3,
-      "contacted_target": 60,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -5947,7 +5947,7 @@
       "ts": "Aleksandra Markovic",
       "year": 2026,
       "week": 3,
-      "contacted_target": 230,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "lower number of calls and Moved to ATS, due to delay with contacting and scheduling (ooo)"
     },
@@ -5963,7 +5963,7 @@
       "ts": "Elena Petrovska",
       "year": 2026,
       "week": 3,
-      "contacted_target": 100,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "still wiiting for more roles, most of the TA's intevriews were pushed to this week"
     },
@@ -5979,7 +5979,7 @@
       "ts": "Milica Veselinovic",
       "year": 2026,
       "week": 3,
-      "contacted_target": 100,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "good week, she didnt get feedback on a few candiates the TA's met to see if the were move to ATS"
     },
@@ -6003,7 +6003,7 @@
       "ts": "Marina Lazarevic",
       "year": 2026,
       "week": 3,
-      "contacted_target": 100,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "lower moved to ATS due to specific requirements, Enam project"
     },
@@ -6019,7 +6019,7 @@
       "ts": "Gustavo Loureiro Castro",
       "year": 2026,
       "week": 4,
-      "contacted_target": 100,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "Onboarding with new client. Ramping up."
     },
@@ -6027,7 +6027,7 @@
       "ts": "Andrea Akovic",
       "year": 2026,
       "week": 4,
-      "contacted_target": 70,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -6035,7 +6035,7 @@
       "ts": "Nare Avetisyan",
       "year": 2026,
       "week": 4,
-      "contacted_target": 130,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -6043,7 +6043,7 @@
       "ts": "Valeriia Yurykova",
       "year": 2026,
       "week": 4,
-      "contacted_target": 150,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "first week supporting new TAs"
     },
@@ -6051,7 +6051,7 @@
       "ts": "Aleksandra Markovic",
       "year": 2026,
       "week": 4,
-      "contacted_target": 200,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "lower number of moved to ATS, tranferred to new project in this week"
     },
@@ -6075,7 +6075,7 @@
       "ts": "Iryna Dyda",
       "year": 2026,
       "week": 4,
-      "contacted_target": 0,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "fully with IR - 2 sprints"
     },
@@ -6091,7 +6091,7 @@
       "ts": "Rodrigo Gomes",
       "year": 2026,
       "week": 4,
-      "contacted_target": 100,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "Coming back from vacation. Ramping up sourcing."
     },
@@ -6107,7 +6107,7 @@
       "ts": "Marina Lazarevic",
       "year": 2026,
       "week": 4,
-      "contacted_target": 150,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -6115,7 +6115,7 @@
       "ts": "Adis Prepoljac",
       "year": 2026,
       "week": 4,
-      "contacted_target": 150,
+      "contacted_target": null,
       "reasoning": "Market-related: Limited Talent Pool",
       "comment": "first week supporting Lisa, still aligning but roles are already exhausted; also started supporting Samantha with admin/cleanup"
     },
@@ -6123,7 +6123,7 @@
       "ts": "Gustavo Loureiro Castro",
       "year": 2026,
       "week": 5,
-      "contacted_target": 100,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -6131,7 +6131,7 @@
       "ts": "Andrea Akovic",
       "year": 2026,
       "week": 5,
-      "contacted_target": 100,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -6139,7 +6139,7 @@
       "ts": "Nare Avetisyan",
       "year": 2026,
       "week": 5,
-      "contacted_target": 70,
+      "contacted_target": null,
       "reasoning": "Internal-related: Out of Office",
       "comment": "OoO for three days. Started with stealth client this week. Sourcing target is incorrect (counted weeks that Nare was on vacation)."
     },
@@ -6147,7 +6147,7 @@
       "ts": "Valeriia Yurykova",
       "year": 2026,
       "week": 5,
-      "contacted_target": 200,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -6155,7 +6155,7 @@
       "ts": "Aleksandra Markovic",
       "year": 2026,
       "week": 5,
-      "contacted_target": 150,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "Monthly: lower moved to ATS due  delay with contacting and scheduling the candidates"
     },
@@ -6179,7 +6179,7 @@
       "ts": "Iryna Dyda",
       "year": 2026,
       "week": 5,
-      "contacted_target": 0,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -6195,7 +6195,7 @@
       "ts": "Rodrigo Gomes",
       "year": 2026,
       "week": 5,
-      "contacted_target": 120,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "Two roles, candidates for PM in later stages. BE role moving well. Sourcing target is incorrect (counted weeks that Rodrigo was on vacation)."
     },
@@ -6211,7 +6211,7 @@
       "ts": "Marina Lazarevic",
       "year": 2026,
       "week": 5,
-      "contacted_target": 150,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -6219,7 +6219,7 @@
       "ts": "Adis Prepoljac",
       "year": 2026,
       "week": 5,
-      "contacted_target": 200,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "supporting Lisa and Andreas; also supporting Sam with application review for DE (800 app); Andreas's pipelines are not being contacted yet, so just building the numbers"
     },
@@ -6227,7 +6227,7 @@
       "ts": "Gustavo Loureiro Castro",
       "year": 2026,
       "week": 6,
-      "contacted_target": 100,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -6235,7 +6235,7 @@
       "ts": "Andrea Akovic",
       "year": 2026,
       "week": 6,
-      "contacted_target": 200,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "new client onboarding week"
     },
@@ -6243,7 +6243,7 @@
       "ts": "Nare Avetisyan",
       "year": 2026,
       "week": 6,
-      "contacted_target": 120,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -6251,7 +6251,7 @@
       "ts": "Valeriia Yurykova",
       "year": 2026,
       "week": 6,
-      "contacted_target": 150,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -6299,7 +6299,7 @@
       "ts": "Rodrigo Gomes",
       "year": 2026,
       "week": 6,
-      "contacted_target": 100,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "Working on only two roles with specific requirements. But both positions have promissing sourced candidates in final stages."
     },
@@ -6315,7 +6315,7 @@
       "ts": "Marina Lazarevic",
       "year": 2026,
       "week": 6,
-      "contacted_target": 100,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -6331,7 +6331,7 @@
       "ts": "Naledi Ngwenya",
       "year": 2026,
       "week": 6,
-      "contacted_target": 120,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -6339,7 +6339,7 @@
       "ts": "Gustavo Loureiro Castro",
       "year": 2026,
       "week": 7,
-      "contacted_target": 100,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -6347,7 +6347,7 @@
       "ts": "Andrea Akovic",
       "year": 2026,
       "week": 7,
-      "contacted_target": 0,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "2nd week with the client"
     },
@@ -6355,7 +6355,7 @@
       "ts": "Nare Avetisyan",
       "year": 2026,
       "week": 7,
-      "contacted_target": 110,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -6363,7 +6363,7 @@
       "ts": "Valeriia Yurykova",
       "year": 2026,
       "week": 7,
-      "contacted_target": 170,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -6371,7 +6371,7 @@
       "ts": "Zelimir Stajcic",
       "year": 2026,
       "week": 7,
-      "contacted_target": 100,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "Good week"
     },
@@ -6387,7 +6387,7 @@
       "ts": "Iryna Dyda",
       "year": 2026,
       "week": 7,
-      "contacted_target": 0,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -6403,7 +6403,7 @@
       "ts": "Rodrigo Gomes",
       "year": 2026,
       "week": 7,
-      "contacted_target": 100,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "Only 1 role left after offer accepted for PM role."
     },
@@ -6419,7 +6419,7 @@
       "ts": "Marina Lazarevic",
       "year": 2026,
       "week": 7,
-      "contacted_target": 100,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -6427,7 +6427,7 @@
       "ts": "Adis Prepoljac",
       "year": 2026,
       "week": 7,
-      "contacted_target": 200,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -6435,7 +6435,7 @@
       "ts": "Naledi Ngwenya",
       "year": 2026,
       "week": 7,
-      "contacted_target": 350,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -6443,7 +6443,7 @@
       "ts": "Gustavo Loureiro Castro",
       "year": 2026,
       "week": 8,
-      "contacted_target": 100,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -6459,7 +6459,7 @@
       "ts": "Nare Avetisyan",
       "year": 2026,
       "week": 8,
-      "contacted_target": 170,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -6467,7 +6467,7 @@
       "ts": "Valeriia Yurykova",
       "year": 2026,
       "week": 8,
-      "contacted_target": 160,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -6483,7 +6483,7 @@
       "ts": "Elena Petrovska",
       "year": 2026,
       "week": 8,
-      "contacted_target": 150,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "good week, 2 finals on her roles"
     },
@@ -6499,7 +6499,7 @@
       "ts": "Rodrigo Gomes",
       "year": 2026,
       "week": 8,
-      "contacted_target": 100,
+      "contacted_target": null,
       "reasoning": "Market-related: Limited Talent Pool",
       "comment": "Closed one role and is working on just one backend role. Limited pool is making sourcing extremely time consuming."
     },
@@ -6523,7 +6523,7 @@
       "ts": "Adis Prepoljac",
       "year": 2026,
       "week": 8,
-      "contacted_target": 0,
+      "contacted_target": null,
       "reasoning": "Client-related: Client Delay",
       "comment": "onboarding at Nexi as TA, waiting on accessess (sourcing unofficially in the meantime to prep the pipelines)"
     },
@@ -6531,7 +6531,7 @@
       "ts": "Naledi Ngwenya",
       "year": 2026,
       "week": 8,
-      "contacted_target": 300,
+      "contacted_target": null,
       "reasoning": "Candidate-related: Candidate Engagement Problems",
       "comment": "joined FTAPI, high targets, low response&interest rates; LI blocked her account for almost a full day which caused delays"
     },
@@ -6539,7 +6539,7 @@
       "ts": "Jovana Drakula",
       "year": 2026,
       "week": 8,
-      "contacted_target": 100,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "woking exec roles very speciic requirements, will push for over 100 this week"
     },
@@ -6547,7 +6547,7 @@
       "ts": "Gustavo Loureiro Castro",
       "year": 2026,
       "week": 9,
-      "contacted_target": 50,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "Some candidates are on uncontacted stage (total with contacted is 50). Focused on market mapping this week for two roles. MBR: progress is being made in different roles, but interview load on TAs on Parloa, HM calls overload in tech roles + multiple changes in prios and requirement changes is causing some delays."
     },
@@ -6563,7 +6563,7 @@
       "ts": "Nare Avetisyan",
       "year": 2026,
       "week": 9,
-      "contacted_target": 100,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "MBR: Working with AVIV. No major issues to report."
     },
@@ -6571,7 +6571,7 @@
       "ts": "Valeriia Yurykova",
       "year": 2026,
       "week": 9,
-      "contacted_target": 100,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "MBR: Working on challenging markets (Wolt Iceland, Wolt Market, Niche roles with Taxfix), but volume of interviews and feedback from TAs is good."
     },
@@ -6595,7 +6595,7 @@
       "ts": "Rodrigo Gomes",
       "year": 2026,
       "week": 9,
-      "contacted_target": 100,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "Started two role this week, ramping up on these. BE role is in final stages, and the talent pool is quite limited. MBR: Working on two pipelines for Grover that are quite exausthed. In spite of this, one role has been closed with a sourced candidate and the BE role is also in the closing stages. Coming of the project on the 17th of March."
     },
@@ -6611,7 +6611,7 @@
       "ts": "Marina Lazarevic",
       "year": 2026,
       "week": 9,
-      "contacted_target": 300,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "MBR Started sourcing for a new stealth-mode project without formal job descriptions, requiring proactive market mapping and targeted outreach. Hybrid work model remains the primary hiring blocker, significantly reducing candidate interest due to office attendance requirements. After returning from one week off and facing 0 calls booked due to a role being placed on hold and the talent pool already being dry, executed a high-volume sourcing push for two new roles (350 candidates contacted, 18 responses so far) to rebuild pipeline and generate interviews. (WBR: low candidate interest in hybrid working model)"
     },
@@ -6619,7 +6619,7 @@
       "ts": "Naledi Ngwenya",
       "year": 2026,
       "week": 9,
-      "contacted_target": 250,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "MBR: Joined FTAPI in Andrea's place, build stakeholder relationships and communication, all good so far. (WBR: low interest and conversions)"
     },
@@ -6635,7 +6635,7 @@
       "ts": "Gustavo Loureiro Castro",
       "year": 2026,
       "week": 10,
-      "contacted_target": 50,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -6651,7 +6651,7 @@
       "ts": "Nare Avetisyan",
       "year": 2026,
       "week": 10,
-      "contacted_target": 150,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "requirements changed for middle and junior C# developers and we had to put on hold the candidates already booked into Recruiter Screen, as a result we also lost 2 final/offer candidates - junior one on offer stage, and the other candidate was evaluated as middle in thend , both got rejected because of the changes. Right now they want only seniors, and opened junior role in different location"
     },
@@ -6659,7 +6659,7 @@
       "ts": "Valeriia Yurykova",
       "year": 2026,
       "week": 10,
-      "contacted_target": 70,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -6667,7 +6667,7 @@
       "ts": "Elena Petrovska",
       "year": 2026,
       "week": 10,
-      "contacted_target": 100,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "Less roles ( 1) and heling with IR"
     },
@@ -6675,7 +6675,7 @@
       "ts": "Milica Veselinovic",
       "year": 2026,
       "week": 10,
-      "contacted_target": 100,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "Only helping with 1 role"
     },
@@ -6683,7 +6683,7 @@
       "ts": "Rodrigo Gomes",
       "year": 2026,
       "week": 10,
-      "contacted_target": 80,
+      "contacted_target": null,
       "reasoning": "Market-related: Limited Talent Pool",
       "comment": "Same as last week. Wrapping up with Grover and working on just two role with dry pipelines"
     },
@@ -6699,7 +6699,7 @@
       "ts": "Marina Lazarevic",
       "year": 2026,
       "week": 10,
-      "contacted_target": 150,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "Lower number of Moved to ATS due to specific requriements"
     },
@@ -6707,7 +6707,7 @@
       "ts": "Naledi Ngwenya",
       "year": 2026,
       "week": 10,
-      "contacted_target": 200,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "lower number of calls and moved to ATS - specific market and lot of blockers on the clients side"
     },
@@ -6723,7 +6723,7 @@
       "ts": "Zelimir Stajcic",
       "year": 2026,
       "week": 10,
-      "contacted_target": 100,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "Less roles"
     },
@@ -6731,7 +6731,7 @@
       "ts": "Gustavo Loureiro Castro",
       "year": 2026,
       "week": 11,
-      "contacted_target": 50,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "Kicked off three new roles this week - candidates are on uncontacted stage. Total is 97. Only actively contacting for 1 role."
     },
@@ -6739,7 +6739,7 @@
       "ts": "Andrea Akovic",
       "year": 2026,
       "week": 11,
-      "contacted_target": 200,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "First week with supporting Glovo (lower RS, Moved to ATS)"
     },
@@ -6747,7 +6747,7 @@
       "ts": "Nare Avetisyan",
       "year": 2026,
       "week": 11,
-      "contacted_target": 120,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "Android role in Romania, that I was sourcing extensively was put on hold"
     },
@@ -6755,7 +6755,7 @@
       "ts": "Valeriia Yurykova",
       "year": 2026,
       "week": 11,
-      "contacted_target": 100,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "only sourcing and not contacting for Marina"
     },
@@ -6779,7 +6779,7 @@
       "ts": "Rodrigo Gomes",
       "year": 2026,
       "week": 11,
-      "contacted_target": 140,
+      "contacted_target": null,
       "reasoning": "Internal-related: Project/Contract Closing",
       "comment": "Wrapping up with Grover."
     },
@@ -6795,7 +6795,7 @@
       "ts": "Marina Lazarevic",
       "year": 2026,
       "week": 11,
-      "contacted_target": 150,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -6803,7 +6803,7 @@
       "ts": "Naledi Ngwenya",
       "year": 2026,
       "week": 11,
-      "contacted_target": 180,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "Technical issues with the extension this week + recontacting old candidates > slower progress on the client side, only 1 TA conducting the calls"
     },
@@ -6827,7 +6827,7 @@
       "ts": "Gustavo Loureiro Castro",
       "year": 2026,
       "week": 12,
-      "contacted_target": 50,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "Issues with extension are affecting number of sourced candidates. Will check this."
     },
@@ -6835,7 +6835,7 @@
       "ts": "Andrea Akovic",
       "year": 2026,
       "week": 12,
-      "contacted_target": 90,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "2nd week with supporting Glovo TAs, lower number of Moved to ATS & Screens due to already booked calendar"
     },
@@ -6843,7 +6843,7 @@
       "ts": "Nare Avetisyan",
       "year": 2026,
       "week": 12,
-      "contacted_target": 120,
+      "contacted_target": null,
       "reasoning": "Client-related: Role Availability",
       "comment": "C# roles got cancelled, I sourced 400+ candidates for this role and we cancelled all interviews (recruiter screens and any technical stages scheduled). Waiting on clarity to understand what to source next."
     },
@@ -6851,7 +6851,7 @@
       "ts": "Valeriia Yurykova",
       "year": 2026,
       "week": 12,
-      "contacted_target": 50,
+      "contacted_target": null,
       "reasoning": "Internal-related: Project/Contract Closing",
       "comment": "Support with Taxfix is finishing. Will have two offers to wrap up the collaboration with Marina."
     },
@@ -6875,7 +6875,7 @@
       "ts": "Rodrigo Gomes",
       "year": 2026,
       "week": 12,
-      "contacted_target": 140,
+      "contacted_target": null,
       "reasoning": "Internal-related: Project/Contract Closing",
       "comment": "Finished with Grover on Thursday"
     },
@@ -6891,7 +6891,7 @@
       "ts": "Marina Lazarevic",
       "year": 2026,
       "week": 12,
-      "contacted_target": 70,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "Lower number of Moved to ATS & Screens > only 1 TA doing the calls, still high volume in sourcing + calendar fully booked until April"
     },
@@ -6899,7 +6899,7 @@
       "ts": "Naledi Ngwenya",
       "year": 2026,
       "week": 12,
-      "contacted_target": 125,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -6923,7 +6923,7 @@
       "ts": "Gustavo Loureiro Castro",
       "year": 2026,
       "week": 13,
-      "contacted_target": 50,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "Cleaned the pipeline for the Principal role and updated tribe dashboard, so data is a bit weird on my and Filips side."
     },
@@ -6931,7 +6931,7 @@
       "ts": "Andrea Akovic",
       "year": 2026,
       "week": 13,
-      "contacted_target": 170,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "No calls yet, TAs ooo"
     },
@@ -6939,7 +6939,7 @@
       "ts": "Nare Avetisyan",
       "year": 2026,
       "week": 13,
-      "contacted_target": 50,
+      "contacted_target": null,
       "reasoning": "Client-related: Role Availability",
       "comment": "the week was slow in terms of sourcing as most of the roles on Aviv side were either cancelled or on hold. I mostly worked on reengaging the candidates already in our pipeline for the roles that are still open (because those are already quite exhausted ) + prepared an extensive report with Wlad for the Backend Engineer including market research and the job done until now for this role, all challenged we encountered as well as suggestions how we can move forward. We have 7 finalists with Wlad for both Backend and QA, hoping for an offer!"
     },
@@ -6947,7 +6947,7 @@
       "ts": "Valeriia Yurykova",
       "year": 2026,
       "week": 13,
-      "contacted_target": 40,
+      "contacted_target": null,
       "reasoning": "Internal-related: Project/Contract Closing",
       "comment": "OOO for 2 days, was travelling back home Things with Nenad a little slow, no sourcing for him this week; with Jelena - tough exhausted positions, can’t contact for one of those, HM needs to check the profiles first; no sourcing for Marina - her contract with TaxFix is ending next week."
     },
@@ -6971,7 +6971,7 @@
       "ts": "Rodrigo Gomes",
       "year": 2026,
       "week": 13,
-      "contacted_target": 0,
+      "contacted_target": null,
       "reasoning": "Internal-related: Out of Office",
       "comment": "OoO"
     },
@@ -6987,7 +6987,7 @@
       "ts": "Marina Lazarevic",
       "year": 2026,
       "week": 13,
-      "contacted_target": 70,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "Most roles with Aviv closed or on hold, this weeks's focus was recontacting the old candidates"
     },
@@ -6995,7 +6995,7 @@
       "ts": "Naledi Ngwenya",
       "year": 2026,
       "week": 13,
-      "contacted_target": 75,
+      "contacted_target": null,
       "reasoning": "Client-related: Client Delay",
       "comment": "Technical issues with the extension; lowe conversions due to blockers on the clients side."
     },
@@ -7019,7 +7019,7 @@
       "ts": "Gustavo Loureiro Castro",
       "year": 2026,
       "week": 14,
-      "contacted_target": 90,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "MBR: Actual Screens might be higher, but TAs on the client side are taking a bit of time to share feedback on Greenhouse."
     },
@@ -7027,7 +7027,7 @@
       "ts": "Andrea Akovic",
       "year": 2026,
       "week": 14,
-      "contacted_target": 100,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "MBR: Lower Moved to ATS and Actual screens due to unstable projects in the last 2 months; Started supporting Glovo TAs 3 weeks ago, so it took some time to start converting. Also, holidays and vacations affected the Acrual sreens number"
     },
@@ -7035,7 +7035,7 @@
       "ts": "Nare Avetisyan",
       "year": 2026,
       "week": 14,
-      "contacted_target": 70,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -7043,7 +7043,7 @@
       "ts": "Valeriia Yurykova",
       "year": 2026,
       "week": 14,
-      "contacted_target": 160,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "40 candidates were sourced for Nenad, as he prepares to kick off a role, they will be added to Tribe dashboard and contacted later. MBR: most of her roles went through some start/stop. Roles with wolt are starting to pick up again, and for Taxfix there was a slowdown due to the contract ending, but the contract was then extended, so activity picked up again."
     },
@@ -7067,7 +7067,7 @@
       "ts": "Rodrigo Gomes",
       "year": 2026,
       "week": 14,
-      "contacted_target": 100,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "Started supporting Maria, and Vlad + IR. Additionaly, he has been involved in multiple projects that he has been focusing on since stopping work with Grover. MBR: Grover's contract finished during this month. Rodrigo has been supporting different TAs and has recently started working with Vlad for Aiven, so things should stabalise for next month."
     },
@@ -7083,7 +7083,7 @@
       "ts": "Marina Lazarevic",
       "year": 2026,
       "week": 14,
-      "contacted_target": 70,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -7091,7 +7091,7 @@
       "ts": "Naledi Ngwenya",
       "year": 2026,
       "week": 14,
-      "contacted_target": 75,
+      "contacted_target": null,
       "reasoning": "Client-related: Client Delay",
       "comment": "MBR: Lower interview conversion isn’t a sourcing issue as pipeline and engagement are there. The main blockers are on the FTAPI side: slow/irregular feedback, limited interview capacity (only 1 TA doing interviews and being overbooked), and after she submits the candidate to ATS, they are waiting for HM to approve the first call with TA. Last minute cancellations, no shows on calls with her, oftern vague rejection reasons, which slows things down further despite a strong push on her side. So overall, conversion is lower because the process is heavy and slow, not due to lack of relevant candidates. For context, a candidate sourced in early Feb only reached final stage this week."
     },
@@ -7115,7 +7115,7 @@
       "ts": "Gustavo Loureiro Castro",
       "year": 2026,
       "week": 15,
-      "contacted_target": 80,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "Low sourcing due to unexpected active week in the Data Plugin project fixing user issues so we move faster + the market for the positions seemed slightly difficult considering the client’s high bar."
     },
@@ -7123,7 +7123,7 @@
       "ts": "Andrea Akovic",
       "year": 2026,
       "week": 15,
-      "contacted_target": 120,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -7131,7 +7131,7 @@
       "ts": "Nare Avetisyan",
       "year": 2026,
       "week": 15,
-      "contacted_target": 200,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -7139,7 +7139,7 @@
       "ts": "Valeriia Yurykova",
       "year": 2026,
       "week": 15,
-      "contacted_target": 80,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -7163,7 +7163,7 @@
       "ts": "Rodrigo Gomes",
       "year": 2026,
       "week": 15,
-      "contacted_target": 120,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -7179,7 +7179,7 @@
       "ts": "Marina Lazarevic",
       "year": 2026,
       "week": 15,
-      "contacted_target": 160,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -7187,7 +7187,7 @@
       "ts": "Naledi Ngwenya",
       "year": 2026,
       "week": 15,
-      "contacted_target": 75,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -7195,7 +7195,7 @@
       "ts": "Jovana Drakula",
       "year": 2026,
       "week": 15,
-      "contacted_target": 100,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "Good week, she has 3 execs at finals"
     },
@@ -7211,7 +7211,7 @@
       "ts": "Gustavo Loureiro Castro",
       "year": 2026,
       "week": 16,
-      "contacted_target": 80,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -7219,7 +7219,7 @@
       "ts": "Andrea Akovic",
       "year": 2026,
       "week": 16,
-      "contacted_target": 200,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -7227,7 +7227,7 @@
       "ts": "Nare Avetisyan",
       "year": 2026,
       "week": 16,
-      "contacted_target": 180,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -7235,7 +7235,7 @@
       "ts": "Valeriia Yurykova",
       "year": 2026,
       "week": 16,
-      "contacted_target": 70,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -7259,7 +7259,7 @@
       "ts": "Rodrigo Gomes",
       "year": 2026,
       "week": 16,
-      "contacted_target": 80,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "Ramping up the projects with Vlad and Alex. RS number should be higher next week."
     },
@@ -7275,7 +7275,7 @@
       "ts": "Marina Lazarevic",
       "year": 2026,
       "week": 16,
-      "contacted_target": 150,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },
@@ -7283,7 +7283,7 @@
       "ts": "Naledi Ngwenya",
       "year": 2026,
       "week": 16,
-      "contacted_target": 75,
+      "contacted_target": null,
       "reasoning": null,
       "comment": "Wrapping up the project with FTAPI, lots of unresponsiveness> dragging down the process > candidates dropping out"
     },
@@ -7315,7 +7315,7 @@
       "ts": "Andrea Akovic",
       "year": 2026,
       "week": 17,
-      "contacted_target": 250,
+      "contacted_target": null,
       "reasoning": null,
       "comment": null
     },

@@ -63,9 +63,14 @@ def stage_inputs(ci: CommonInterface, flat: Path) -> None:
       - LIVE_JSON           = <flat>/dashboard_data.json
       - OUT_JSON            = <flat>/refresh_staging/rendered_dashboard_data.json
     """
-    repo_root = Path.cwd()
+    # Keboola clones the repo to /code/repo_clone and runs keboola_entry.py from
+    # there, but Path.cwd() is /data/ at runtime. Derive the repo root from the
+    # script's own location instead of relying on cwd.
+    # keboola_entry.py lives at <repo>/recruiting-dashboard/refresh_staging/keboola_entry.py
+    repo_root = Path(__file__).resolve().parent.parent.parent
     src_dir = repo_root / "recruiting-dashboard" / "refresh_staging"
     src_json = repo_root / "recruiting-dashboard" / "src" / "dashboard_data.json"
+    logging.info("Repo root resolved to %s", repo_root)
 
     (flat / "refresh_staging").mkdir(parents=True, exist_ok=True)
     (flat / "wbr_static").mkdir(parents=True, exist_ok=True)
@@ -170,18 +175,4 @@ def main() -> int:
     else:
         github_token = params[token_key]
 
-    flat = Path("/tmp/flat")
-    shutil.rmtree(flat, ignore_errors=True)
-    flat.mkdir(parents=True)
-
-    stage_inputs(ci, flat)
-    out_path = run_render(flat)
-    content = out_path.read_text(encoding="utf-8")
-
-    sha = push_to_github(github_token, content)
-    logging.info("Done. commit=%s size=%dKB", sha[:10], len(content) // 1024)
-    return 0
-
-
-if __name__ == "__main__":
-    sys.exit(main())
+   

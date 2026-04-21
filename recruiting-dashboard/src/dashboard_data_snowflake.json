@@ -19571,20 +19571,12 @@
       "hires_12w": 0
     },
     "Wolt HQ": {
-      "contacted": 1538,
-      "actual_screens": 124,
-      "ats": 76,
+      "contacted": 1517,
+      "actual_screens": 113,
+      "ats": 71,
       "offers": 7,
       "hires": 10,
       "hires_12w": 29
-    },
-    "DualEntry": {
-      "contacted": 0,
-      "actual_screens": 0,
-      "ats": 0,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 3
     },
     "Enam": {
       "contacted": 249,
@@ -19642,6 +19634,14 @@
       "hires": 0,
       "hires_12w": 3
     },
+    "Wolt NBB": {
+      "contacted": 186,
+      "actual_screens": 62,
+      "ats": 36,
+      "offers": 11,
+      "hires": 12,
+      "hires_12w": 32
+    },
     "Taxfix": {
       "contacted": 407,
       "actual_screens": 36,
@@ -19649,14 +19649,6 @@
       "offers": 2,
       "hires": 2,
       "hires_12w": 8
-    },
-    "Wolt NBB": {
-      "contacted": 165,
-      "actual_screens": 51,
-      "ats": 31,
-      "offers": 11,
-      "hires": 12,
-      "hires_12w": 32
     },
     "Wolt Volume": {
       "contacted": 14,
@@ -19832,50 +19824,6 @@
       "ats_12w": 110,
       "jobs_60d": 3
     },
-    "DualEntry|Chantal Bozkurt": {
-      "contacted": 0,
-      "actual_screens": 0,
-      "ats": 0,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 0,
-      "screens_12w": 0,
-      "ats_12w": 0,
-      "jobs_60d": 1
-    },
-    "DualEntry|Chené Elliot": {
-      "contacted": 0,
-      "actual_screens": 0,
-      "ats": 0,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 1,
-      "screens_12w": 68,
-      "ats_12w": 22,
-      "jobs_60d": 0
-    },
-    "DualEntry|Samantha Nel": {
-      "contacted": 0,
-      "actual_screens": 0,
-      "ats": 0,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 1,
-      "screens_12w": 70,
-      "ats_12w": 16,
-      "jobs_60d": 0
-    },
-    "DualEntry|Simon Siew": {
-      "contacted": 0,
-      "actual_screens": 0,
-      "ats": 0,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 1,
-      "screens_12w": 52,
-      "ats_12w": 13,
-      "jobs_60d": 1
-    },
     "Enam|Aleksandra Vistac": {
       "contacted": 249,
       "actual_screens": 32,
@@ -19919,17 +19867,6 @@
       "screens_12w": 218,
       "ats_12w": 101,
       "jobs_60d": 4
-    },
-    "Fever|Lejla Silva": {
-      "contacted": 0,
-      "actual_screens": 0,
-      "ats": 0,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 0,
-      "screens_12w": 1,
-      "ats_12w": 1,
-      "jobs_60d": 0
     },
     "Glovo|Chené Elliot": {
       "contacted": 435,
@@ -20041,16 +19978,16 @@
       "ats_12w": 32,
       "jobs_60d": 1
     },
-    "Wolt HQ|Adelya Khakimova": {
+    "Wolt NBB|Adelya Khakimova": {
       "contacted": 21,
       "actual_screens": 11,
       "ats": 5,
       "offers": 0,
       "hires": 0,
-      "hires_12w": 0,
-      "screens_12w": 30,
-      "ats_12w": 16,
-      "jobs_60d": 1
+      "hires_12w": 6,
+      "screens_12w": 82,
+      "ats_12w": 44,
+      "jobs_60d": 18
     },
     "Wolt HQ|Zelimir Stajcic": {
       "contacted": 530,
@@ -20073,17 +20010,6 @@
       "screens_12w": 166,
       "ats_12w": 137,
       "jobs_60d": 2
-    },
-    "Wolt NBB|Adelya Khakimova": {
-      "contacted": 0,
-      "actual_screens": 0,
-      "ats": 0,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 6,
-      "screens_12w": 52,
-      "ats_12w": 28,
-      "jobs_60d": 17
     },
     "Wolt HQ|Alexandra Richiteanu": {
       "contacted": 0,
@@ -20140,7 +20066,7 @@
       "ats_12w": 58,
       "jobs_60d": 0
     },
-    "Wolt|Dora Vrbanić": {
+    "Wolt HQ|Dora Vrbanić": {
       "contacted": 0,
       "actual_screens": 0,
       "ats": 0,
@@ -20349,17 +20275,6 @@
       "ats_12w": 60,
       "jobs_60d": 7
     },
-    "Tribe: Talent Pools|Iryna Dyda": {
-      "contacted": 0,
-      "actual_screens": 0,
-      "ats": 0,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 0,
-      "screens_12w": 0,
-      "ats_12w": 0,
-      "jobs_60d": 1
-    },
     "Glovo|Ejla Suljcic": {
       "contacted": 0,
       "actual_screens": 0,
@@ -20381,17 +20296,6 @@
       "screens_12w": 6,
       "ats_12w": 1,
       "jobs_60d": 0
-    },
-    "desk.ly|Lisa Gargulinska": {
-      "contacted": 0,
-      "actual_screens": 0,
-      "ats": 0,
-      "offers": 0,
-      "hires": 0,
-      "hires_12w": 0,
-      "screens_12w": 0,
-      "ats_12w": 0,
-      "jobs_60d": 2
     },
     "Enam|Marko Pavicevic": {
       "contacted": 0,
@@ -20765,15 +20669,6 @@
       "contacted": 100.0,
       "actual_screens": 15.0,
       "moved_to_ats": 8.0,
-      "hires": 0.0,
-      "team_group": "Ponies/Unicorns"
-    },
-    {
-      "client": "Fever",
-      "ta": "Andrea Akovic",
-      "contacted": 200.0,
-      "actual_screens": 0.0,
-      "moved_to_ats": 0.0,
       "hires": 0.0,
       "team_group": "Ponies/Unicorns"
     },

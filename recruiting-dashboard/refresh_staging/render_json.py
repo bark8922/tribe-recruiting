@@ -858,13 +858,20 @@ def build_raw_ts_dict(aux, metric, roster: set | None = None):
 # ── MBR rollups (ABBREV keys) ────────────────────────────────────────────────
 
 def mbr_display_for(raw_client: str, raw_ta_norm: str, mbr_wolt_roster: dict) -> str:
-    """Matches rollup_mbr_ta.py::display_for.
-       - Wolt-raw → roster lookup (fallback: "Wolt")
-       - Doordash/SevenRooms → mbr_normalize_client → "Wolt HQ"
-       - Else → mbr_normalize_client"""
+    """Route a raw (client, TA) pair to an MBR display client.
+
+    - Wolt / DoorDash / SevenRooms → TA's Wolt sub-BU per the roster.
+      (Previously DoorDash/SevenRooms were hardcoded to Wolt HQ regardless
+      of the TA, which caused e.g. Adelya Khakimova's DoorDash activity to
+      land under Wolt HQ while her target sheet puts her at Wolt NBB. This
+      is also the +22/-20 HQ/NBB drift root cause.)
+    - Fallback when the TA has no roster entry: Wolt HQ (safe default since
+      Wolt HQ is the largest bucket).
+    - Else → mbr_normalize_client (AVIV→Aviv, Nexi→Nexi, etc.)
+    """
     lc = (raw_client or "").strip().lower()
-    if lc == "wolt":
-        return mbr_wolt_roster.get(raw_ta_norm, "Wolt")
+    if lc in ("wolt", "doordash", "sevenrooms"):
+        return mbr_wolt_roster.get(raw_ta_norm, "Wolt HQ")
     return mbr_normalize_client(raw_client)
 
 
@@ -1064,6 +1071,32 @@ def main():
     mbr_ta_actuals = build_mbr_ta_actuals(raw_wbr, aux, mbr_wolt, mbr_weeks, ta_roster=ta_roster)
     mbr_ts_actuals = build_mbr_ts_actuals(raw_ts, aux, mbr_weeks, ts_roster=ts_roster)
     mbr_client_totals = build_mbr_client_totals(mbr_ta_actuals)
+
+    # Filter MBR output to clients Andy marks active. Without this, non-MBR
+    # clients like DualEntry (which has some candidate activity) and Fever
+    # (which has a dangling target row) leak into the MBR tables. Uses
+    # live["mbr_active_clients"] as the authoritative list.
+    active_clients = set(live.get("mbr_active_clients") or [])
+    if active_clients:
+        # Allow the long-form Wolt client names in targets to resolve against
+        # the ABBREV-form active list (target rows arrive as e.g.
+        # "Wolt North, Baltics & Benelux" but the active list is "Wolt NBB").
+        def _client_is_active(c):
+            if c in active_clients:
+                return True
+            abbrev = ABBREV.get((c or "").strip())
+            return abbrev in active_clients if abbrev else False
+        mbr_ta_actuals = {k: v for k, v in mbr_ta_actuals.items()
+                          if k.split("|", 1)[0] in active_clients}
+        mbr_client_totals = {k: v for k, v in mbr_client_totals.items()
+                             if k in active_clients}
+        # Scope the target list too — otherwise Fever/Grover dangling target
+        # rows show up as empty-data rows in the MBR TA table.
+        live_targets = live.get("mbr_ta_targets") or []
+        filtered_targets = [t for t in live_targets if _client_is_active(t.get("client"))]
+        live["mbr_ta_targets"] = filtered_targets
+        print(f"  mbr filtered to {len(active_clients)} active clients "
+              f"(targets {len(live_targets)} -> {len(filtered_targets)})")
 
     # ts_conversion — static snapshot (lifetime scoped to Active Pipelines).
     ts_conversion = [

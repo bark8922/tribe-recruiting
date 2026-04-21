@@ -95,7 +95,11 @@ The token is read from the `KEBOOLA_READONLY_TOKEN` environment variable. Export
 it before running this task:
 
 ```bash
-export KEBOOLA_READONLY_TOKEN=855-10199057-...
+# The actual token value is baked into the live Cowork scheduled task
+# (task id: tribe-recruiting-dashboard-refresh) — it is NOT checked into
+# this repo copy. To view/rotate: Keboola → Settings → API Tokens, named
+# "Project Dashboard - read only".
+export KEBOOLA_READONLY_TOKEN=855-10199057-REDACTED
 ```
 
 Then `refresh_daily.py` (Step 2) will call `pull_project_dashboard.py` automatically

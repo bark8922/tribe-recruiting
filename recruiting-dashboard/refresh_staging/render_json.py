@@ -51,12 +51,20 @@ Run:
 from __future__ import annotations
 
 import csv
+import datetime
 import json
 import os
 import re
 import unicodedata
 from collections import defaultdict
 from pathlib import Path
+
+
+# Upper ISO-week bound for the WBR CSV loaders. Computed dynamically so the
+# render doesn't silently drop current-week TA data when the ISO week rolls.
+# (Previous hardcoded `> 16` cap made TA surfaces miss w17 while TS surfaces
+# kept showing it on 2026-04-21.) +2 buffer handles year-end rollover.
+MAX_ISO_WEEK = datetime.date.today().isocalendar().week + 2
 
 HERE = Path(__file__).resolve().parent
 # ROOT = the workspace folder (Recruiting Dashboard). When this script lives at
@@ -511,7 +519,7 @@ def load_wbr():
             if int(row["ISO_YEAR"]) != 2026:
                 continue
             wn = int(row["ISO_WEEK"])
-            if wn < 1 or wn > 16:
+            if wn < 1 or wn > MAX_ISO_WEEK:
                 continue
             wk = f"w{wn}"
             c = row["CLIENT"]
@@ -574,7 +582,7 @@ def load_wbr_jobs():
             if int(row["ISO_YEAR"]) != 2026:
                 continue
             wn = int(row["ISO_WEEK"])
-            if wn < 1 or wn > 16:
+            if wn < 1 or wn > MAX_ISO_WEEK:
                 continue
             wk = f"w{wn}"
             c = row["CLIENT"]  # preserve raw spacing
@@ -677,11 +685,12 @@ def build_wbr_actuals(raw_wbr, wbr_wolt_roster, ta_roster=None):
     return {k: {wk: dict(mv) for wk, mv in weeks.items()} for k, weeks in out.items()}
 
 
-def build_weekly_trend(raw_wbr, min_week: int = 2, max_week: int = 16):
+def build_weekly_trend(raw_wbr, min_week: int = 2, max_week: int = MAX_ISO_WEEK):
     """Sum all (client, TA) cells per ISO week → list of {week, contacted, screened, ats, offers, hires}.
     screened here follows App.jsx fallback: actual_screens || screened.
-    Week range: w2..w16 to match live dashboard (live drops near-empty w1,
-    keeps current partial w16). Adjust if cadence changes."""
+    Week range: w2..MAX_ISO_WEEK (dynamic current-ISO-week ceiling) to match
+    live dashboard: drops near-empty w1, keeps current partial week.
+    Upper bound auto-rolls with the calendar — no manual bump."""
     per_week = defaultdict(lambda: defaultdict(int))
     for (rc, rt), weeks in raw_wbr.items():
         if rc.strip() in INTERNAL_CLIENTS:

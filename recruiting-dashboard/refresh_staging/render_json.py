@@ -876,7 +876,7 @@ def mbr_display_for(raw_client: str, raw_ta_norm: str, mbr_wolt_roster: dict) ->
 
 
 def build_mbr_ta_actuals(raw_wbr, aux, mbr_wolt_roster, mbr_weeks: list[str], ta_roster=None,
-                          active_target_pairs=None):
+                          active_target_pairs=None, weekly_active_pairs=None):
     """Produce {display|TA: {contacted, actual_screens, ats, offers, hires,
                              hires_12w, screens_12w, ats_12w, jobs_60d}}.
     4w fields sourced from snowflake_wbr per mbr_weeks (w12-w15 default).
@@ -904,10 +904,20 @@ def build_mbr_ta_actuals(raw_wbr, aux, mbr_wolt_roster, mbr_weeks: list[str], ta
         if is_ghost_ta(rc, rt):
             continue
         disp = mbr_display_for(rc, nt, mbr_wolt_roster)
-        if active_target_pairs is not None and (disp, fold_name(rt)) not in active_target_pairs:
-            continue
+        ta_fold = fold_name(rt)
         key = f"{disp}|{nt}"
         for wk in mbr_weeks:
+            # Weekly-roster scoping: only count this (disp, TA) for weeks where
+            # the TA is on Andy's weekly roster for that client. This matches
+            # PBI — e.g. Mark Kandaurov is on Scorewarrior w13 only (dropped
+            # w14-w16), so his w13 contacts count but w14-w16 don't.
+            if weekly_active_pairs is not None:
+                wk_num = int(wk[1:]) if isinstance(wk, str) and wk.startswith("w") else None
+                roster = weekly_active_pairs.get(wk_num, set()) if wk_num is not None else set()
+                if (disp, ta_fold) not in roster:
+                    continue
+            elif active_target_pairs is not None and (disp, ta_fold) not in active_target_pairs:
+                continue
             mv = weeks.get(wk, {})
             out[key]["contacted"] += mv.get("contacted", 0)
             out[key]["actual_screens"] += mv.get("actual_screens", 0)
@@ -1086,14 +1096,39 @@ def main():
     active_target_pairs = set()
     for t in (live.get("mbr_ta_targets") or []):
         tc = (t.get("client") or "").strip()
-        disp_c = ABBREV.get(tc, tc)  # normalize long-form Wolt to ABBREV
+        disp_c = ABBREV.get(tc, tc)
         ta_f = fold_name(t.get("ta") or "")
         if disp_c and ta_f:
             active_target_pairs.add((disp_c, ta_f))
 
+    # Weekly roster per-week: Andy's wbr_ta_weekly_note.csv → {wk_num: set((disp_c, fold_ta))}.
+    # PBI scopes each MBR week by this list (not by the monthly target list), so
+    # e.g. a TA who was active on Scorewarrior w13 but dropped off in w14-w16
+    # gets counted for w13 only. Using ta_weekly_roster (already loaded above).
+    weekly_active_pairs = {}
+    for wk_key, pairs in (ta_weekly_roster or {}).items():
+        if not (isinstance(wk_key, str) and wk_key.startswith("w")):
+            continue
+        try:
+            wk_num = int(wk_key[1:])
+        except ValueError:
+            continue
+        s_set = set()
+        for pair in pairs:
+            parts = pair.split("|", 1)
+            if len(parts) != 2:
+                continue
+            client_raw = parts[0].strip()
+            disp_c = mbr_normalize_client(client_raw)
+            ta_f = fold_name(parts[1])
+            if disp_c and ta_f:
+                s_set.add((disp_c, ta_f))
+        weekly_active_pairs[wk_num] = s_set
+
     mbr_ta_actuals = build_mbr_ta_actuals(raw_wbr, aux, mbr_wolt, mbr_weeks,
                                           ta_roster=ta_roster,
-                                          active_target_pairs=active_target_pairs)
+                                          active_target_pairs=active_target_pairs,
+                                          weekly_active_pairs=weekly_active_pairs)
     mbr_ts_actuals = build_mbr_ts_actuals(raw_ts, aux, mbr_weeks, ts_roster=ts_roster)
     mbr_client_totals = build_mbr_client_totals(mbr_ta_actuals)
 

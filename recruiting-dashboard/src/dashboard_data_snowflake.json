@@ -19627,9 +19627,9 @@
       "hires_12w": 6
     },
     "Scorewarrior": {
-      "contacted": 34,
-      "actual_screens": 12,
-      "ats": 7,
+      "contacted": 42,
+      "actual_screens": 19,
+      "ats": 9,
       "offers": 0,
       "hires": 0,
       "hires_12w": 0
@@ -19649,6 +19649,14 @@
       "offers": 2,
       "hires": 2,
       "hires_12w": 8
+    },
+    "Wolt Volume": {
+      "contacted": 4,
+      "actual_screens": 4,
+      "ats": 0,
+      "offers": 0,
+      "hires": 0,
+      "hires_12w": 0
     },
     "Wolt Tech": {
       "contacted": 453,
@@ -19948,6 +19956,17 @@
       "ats_12w": 20,
       "jobs_60d": 3
     },
+    "Scorewarrior|Mark Kandaurov": {
+      "contacted": 8,
+      "actual_screens": 7,
+      "ats": 2,
+      "offers": 0,
+      "hires": 0,
+      "hires_12w": 0,
+      "screens_12w": 0,
+      "ats_12w": 0,
+      "jobs_60d": 0
+    },
     "Wolt NBB|Adelya Khakimova": {
       "contacted": 21,
       "actual_screens": 11,
@@ -19980,6 +19999,17 @@
       "screens_12w": 166,
       "ats_12w": 137,
       "jobs_60d": 2
+    },
+    "Wolt Volume|Dolores Palotas": {
+      "contacted": 4,
+      "actual_screens": 4,
+      "ats": 0,
+      "offers": 0,
+      "hires": 0,
+      "hires_12w": 0,
+      "screens_12w": 0,
+      "ats_12w": 0,
+      "jobs_60d": 0
     },
     "Wolt Tech|Ejla Suljcic": {
       "contacted": 453,

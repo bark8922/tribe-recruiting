@@ -52,6 +52,15 @@ const normalizeTa = (name) => (name || '').replace(/\s+/g, ' ').trim();
 // Dolphins & Whales: Aviv, Aiven, all Wolt divisions (incl DoorDash/SevenRooms
 // → Wolt HQ via normalizeClient). Everything else → Ponies & Unicorns.
 const DOLPHINS_WHALES_CLIENTS = new Set(['Aviv', 'Aiven']);
+
+// MBR target rows come from Andy's sheet in long form ("Wolt North, Baltics & Benelux")
+// but mbr_ta_actuals is keyed in ABBREV form ("Wolt NBB"). Without this map,
+// every NBB/C&S TA shows zeros (Adelya, Jelena, Tina, etc.).
+const MBR_WOLT_ABBREV = {
+  'Wolt Central & South': 'Wolt C&S',
+  'Wolt North, Baltics & Benelux': 'Wolt NBB',
+};
+const mbrAbbrevClient = (c) => MBR_WOLT_ABBREV[(c || '').trim()] || c;
 const getBuGroup = (displayClient) => {
   if (!displayClient) return 'Ponies/Unicorns';
   if (DOLPHINS_WHALES_CLIENTS.has(displayClient) || displayClient.startsWith('Wolt')) {
@@ -896,16 +905,17 @@ const MBRTab = ({ data }) => {
 
     const result = [];
     targets.forEach(t => {
-      const key = `${t.client}|${normalizeTa(t.ta)}`;
+      const displayClient = mbrAbbrevClient(t.client);
+      const key = `${displayClient}|${normalizeTa(t.ta)}`;
       const a = data.mbr_ta_actuals?.[key] || {};
       const note = latestNote[normalizeTa(t.ta)];
       result.push({
-        client: t.client,
+        client: displayClient,
         ta: t.ta,
         // Derive BU group from the client (matches WBR). Overrides per-TA
         // team_group set in Andy's target sheet so e.g. Aiven TAs tagged
         // Ponies/Unicorns still roll up to Dolphins/Whales at the BU level.
-        team_group: getBuGroup(t.client),
+        team_group: getBuGroup(displayClient),
         contacted: a.contacted || 0,
         actual_screens: a.actual_screens || 0,
         ats: a.ats || 0,
@@ -935,11 +945,15 @@ const MBRTab = ({ data }) => {
 
   // TS rows from mbr_ts_actuals — only include sourcers with a ts_weekly target row
   const tsRows = useMemo(() => {
+    // Use dynamic MBR window (w13-w16 as of 2026-04-21), not a hardcoded range.
+    // data.mbr_window.weeks is set by render_json.py to the last 4 complete Mon-Sun weeks.
+    const mbrWeekNums = new Set(
+      (data.mbr_window?.weeks || []).map(w => parseInt(String(w).replace(/^w/, '')))
+    );
     const targets = {};
     (data.ts_weekly || []).forEach(t => {
-      // Sum monthly target = sum of weekly targets across the 4 MBR weeks
       const wNum = parseInt(String(t.week));
-      if (wNum >= 12 && wNum <= 15) {
+      if (mbrWeekNums.has(wNum)) {
         targets[t.ts] = (targets[t.ts] || 0) + (Number(t.contacted_target) || 0);
       }
     });
@@ -970,7 +984,14 @@ const MBRTab = ({ data }) => {
         comment: latestComment[ts]?.comment || '',
       });
     });
-    return rows.sort((a, b) => a.ts.localeCompare(b.ts));
+    // Mia filter: drop TSes with no actuals in the MBR window AND no comment —
+    // they shouldn't clutter the list just because a target exists.
+    const tsRowsFiltered = rows.filter((r) =>
+      (r.contacted > 0) || (r.actual_screens > 0) || (r.ats > 0) ||
+      (r.hires_12w > 0) || (r.screens_12w > 0) || (r.ats_12w > 0) ||
+      (r.recruiter_screens > 0) || !!r.comment
+    );
+    return tsRowsFiltered.sort((a, b) => a.ts.localeCompare(b.ts));
   }, [data]);
 
   const clientTotals = clientRows.reduce((acc, r) => ({

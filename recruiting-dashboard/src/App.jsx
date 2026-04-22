@@ -553,16 +553,16 @@ const WBRTab = ({ data }) => {
       <div className="bg-gray-800 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-white mb-4">Client Summary — Week {selectedWeek}</h3>
         <div style={{ overflowX: 'auto' }}>
-          <table className="text-sm" style={{ width: '720px', maxWidth: '100%', margin: '0 auto', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
+          <table className="text-sm" style={{ width: '780px', maxWidth: '100%', margin: '0 auto', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
             <colgroup>
-              <col style={{ width: '120px' }} />
+              <col style={{ width: '180px' }} />
+              <col style={{ width: '60px' }} />
+              <col style={{ width: '90px' }} />
+              <col style={{ width: '80px' }} />
+              <col style={{ width: '65px' }} />
               <col style={{ width: '70px' }} />
-              <col style={{ width: '95px' }} />
-              <col style={{ width: '85px' }} />
+              <col style={{ width: '65px' }} />
               <col style={{ width: '70px' }} />
-              <col style={{ width: '75px' }} />
-              <col style={{ width: '70px' }} />
-              <col style={{ width: '95px' }} />
             </colgroup>
             <thead>
               <tr className="text-gray-300 border-b border-gray-600">
@@ -579,7 +579,7 @@ const WBRTab = ({ data }) => {
             <tbody>
               {clientSummary.map((row, idx) => (
                 <tr key={idx} className={`${idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'} hover:bg-gray-700`}>
-                  <td className="text-left px-3 py-2 text-white font-medium whitespace-nowrap">{row.client}</td>
+                  <td className="text-left px-3 py-2 text-white font-medium whitespace-normal align-top">{row.client}</td>
                   <td className="text-center px-2 py-2 text-gray-300">{row.roles}</td>
                   <td className="text-center px-2 py-2" style={getCellStyle(row.contacted, row.contacted_target)}>
                     {row.contacted}
@@ -614,7 +614,7 @@ const WBRTab = ({ data }) => {
       <div className="bg-gray-800 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-white mb-4">TA Weekly Detail — Week {selectedWeek}</h3>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm" style={{ minWidth: '1400px', tableLayout: 'fixed', borderCollapse: 'separate', borderSpacing: 0 }}>
+          <table className="text-sm" style={{ width: '1500px', maxWidth: '100%', margin: '0 auto', tableLayout: 'fixed', borderCollapse: 'separate', borderSpacing: 0 }}>
             <colgroup>
               <col style={{ width: '100px' }} />
               <col style={{ width: '140px' }} />
@@ -710,7 +710,7 @@ const WBRTab = ({ data }) => {
                           <td className="text-center px-2 py-2 text-gray-400">{row.pct_screens_to_ats != null ? `${row.pct_screens_to_ats}%` : '—'}</td>
                           <td className="text-center px-2 py-2 text-gray-300">{row.roles || ''}</td>
                           <td className="text-center px-2 py-2 text-gray-300">{row.jobs_60d || ''}</td>
-                          <td className="text-left px-3 py-2 text-gray-300 align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>
+                          <td className="text-left px-3 py-3 text-gray-300 align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: '1.55' }}>
                             {row.comment || '—'}
                           </td>
                         </tr>
@@ -762,7 +762,7 @@ const WBRTab = ({ data }) => {
       <div className="bg-gray-800 rounded-lg p-4">
           <h3 className="text-lg font-semibold text-white mb-4">TS (Sourcer) Weekly — Week {selectedWeek}</h3>
           <div style={{ overflowX: 'auto' }}>
-            <table className="text-sm" style={{ width: '100%', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
+            <table className="text-sm" style={{ width: '1500px', maxWidth: '100%', margin: '0 auto', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
               <colgroup>
                 <col style={{ width: '150px' }} />
                 <col style={{ width: '65px' }} />
@@ -773,8 +773,8 @@ const WBRTab = ({ data }) => {
                 <col style={{ width: '65px' }} />
                 <col style={{ width: '65px' }} />
                 <col style={{ width: '55px' }} />
-                <col style={{ minWidth: '220px' }} />
-                <col style={{ minWidth: '380px' }} />
+                <col style={{ width: '240px' }} />
+                <col style={{ width: '390px' }} />
               </colgroup>
               <thead>
                 <tr className="text-gray-300 border-b border-gray-600">
@@ -811,8 +811,8 @@ const WBRTab = ({ data }) => {
                     </td>
                     <td className="text-center px-2 py-2 text-gray-300 align-top">{row.num_jobs}</td>
                     <td className="text-center px-2 py-2 text-gray-300 align-top">{row.num_tas}</td>
-                    <td className="text-left px-3 py-2 text-gray-300 align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>{row.ta_names || '—'}</td>
-                    <td className="text-left px-3 py-2 text-gray-300 align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>{row.comment || '—'}</td>
+                    <td className="text-left px-3 py-3 text-gray-300 align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: '1.55' }}>{row.ta_names || '—'}</td>
+                    <td className="text-left px-3 py-3 text-gray-300 align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: '1.55' }}>{row.comment || '—'}</td>
                   </tr>
                 ))}
                 <tr className="bg-gray-750 border-t border-gray-600 font-bold text-base">
@@ -1101,7 +1101,7 @@ const MBRTab = ({ data }) => {
       <div className="bg-gray-800 rounded-lg p-4" key={group}>
         <h3 className="text-lg font-semibold text-white mb-4">{label} — TAs (Last 4 Weeks)</h3>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm" style={{ minWidth: '1400px', tableLayout: 'fixed' }}>
+          <table className="text-sm" style={{ width: '1500px', maxWidth: '100%', margin: '0 auto', tableLayout: 'fixed' }}>
             <colgroup>
               <col style={{ width: '100px' }} />
               <col style={{ width: '140px' }} />
@@ -1118,7 +1118,7 @@ const MBRTab = ({ data }) => {
               <col style={{ width: '55px' }} />
               <col style={{ width: '50px' }} />
               <col style={{ width: '55px' }} />
-              <col style={{ minWidth: '380px' }} />
+              <col style={{ width: '395px' }} />
             </colgroup>
             <thead>
               <tr className="text-gray-300 border-b border-gray-600">
@@ -1161,7 +1161,7 @@ const MBRTab = ({ data }) => {
                     <td className="text-center px-2 py-2" style={getCellStyle(r.ats, r.ats_target)}>{r.ats || ''}</td>
                     <td className="text-center px-2 py-2 text-gray-500">{r.ats_target || '—'}</td>
                     <td className="text-center px-2 py-2 text-gray-300">{r.jobs_60d || ''}</td>
-                    <td className="text-left px-3 py-2 text-gray-300 align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>{r.comment || '—'}</td>
+                    <td className="text-left px-3 py-3 text-gray-300 align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: '1.55' }}>{r.comment || '—'}</td>
                   </tr>
                 );
               })}
@@ -1225,7 +1225,7 @@ const MBRTab = ({ data }) => {
             <tbody>
               {clientRows.map((row, idx) => (
                 <tr key={idx} className={`${idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'} hover:bg-gray-700`}>
-                  <td className="text-left px-3 py-2 text-white font-medium whitespace-nowrap">{row.client}</td>
+                  <td className="text-left px-3 py-2 text-white font-medium whitespace-normal align-top">{row.client}</td>
                   <td className="text-center px-2 py-2 text-gray-300">{row.hires_12w}</td>
                   <td className="text-center px-2 py-2" style={getCellStyle(row.hires, row.hires_target)}>{row.hires}</td>
                   <td className="text-center px-2 py-2" style={getCellStyle(row.contacted, row.contacted_target)}>{row.contacted}</td>
@@ -1258,7 +1258,7 @@ const MBRTab = ({ data }) => {
       <div className="bg-gray-800 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-white mb-4">TS's Target — Last 4 Weeks</h3>
         <div style={{ overflowX: 'auto' }}>
-          <table className="text-sm" style={{ width: '100%', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
+          <table className="text-sm" style={{ width: '1300px', maxWidth: '100%', margin: '0 auto', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
             <colgroup>
               <col style={{ width: '150px' }} />
               <col style={{ width: '65px' }} />
@@ -1268,7 +1268,7 @@ const MBRTab = ({ data }) => {
               <col style={{ width: '80px' }} />
               <col style={{ width: '80px' }} />
               <col style={{ width: '65px' }} />
-              <col style={{ minWidth: '380px' }} />
+              <col style={{ width: '425px' }} />
             </colgroup>
             <thead>
               <tr className="text-gray-300 border-b border-gray-600">
@@ -1294,7 +1294,7 @@ const MBRTab = ({ data }) => {
                   <td className="text-center px-2 py-2 align-top" style={getCellStyle(r.recruiter_screens, r.recruiter_screens_target)}>{r.recruiter_screens}</td>
                   <td className="text-center px-2 py-2 align-top" style={getCellStyle(r.actual_screens, r.actual_screens_target)}>{r.actual_screens}</td>
                   <td className="text-center px-2 py-2 align-top" style={getCellStyle(r.ats, r.ats_target)}>{r.ats}</td>
-                  <td className="text-left px-3 py-2 text-gray-300 align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>{r.comment || '—'}</td>
+                  <td className="text-left px-3 py-3 text-gray-300 align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: '1.55' }}>{r.comment || '—'}</td>
                 </tr>
               ))}
               <tr className="bg-gray-700 border-t border-gray-600 font-bold text-base">

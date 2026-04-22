@@ -553,57 +553,57 @@ const WBRTab = ({ data }) => {
       <div className="bg-gray-800 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-white mb-4">Client Summary — Week {selectedWeek}</h3>
         <div style={{ overflowX: 'auto' }}>
-          <table className="text-sm" style={{ width: '600px', margin: '0 auto', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
+          <table className="text-sm" style={{ width: '720px', maxWidth: '100%', margin: '0 auto', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
             <colgroup>
-              <col style={{ width: '110px' }} />
-              <col style={{ width: '55px' }} />
+              <col style={{ width: '120px' }} />
+              <col style={{ width: '70px' }} />
+              <col style={{ width: '95px' }} />
               <col style={{ width: '85px' }} />
+              <col style={{ width: '70px' }} />
               <col style={{ width: '75px' }} />
-              <col style={{ width: '55px' }} />
-              <col style={{ width: '60px' }} />
-              <col style={{ width: '55px' }} />
-              <col style={{ width: '80px' }} />
+              <col style={{ width: '70px' }} />
+              <col style={{ width: '95px' }} />
             </colgroup>
             <thead>
               <tr className="text-gray-300 border-b border-gray-600">
-                <th className="text-left px-2 py-1">Client</th>
-                <th className="text-center px-1 py-1">Roles</th>
-                <th className="text-center px-1 py-1">Contacted</th>
-                <th className="text-center px-1 py-1">Screens</th>
-                <th className="text-center px-1 py-1">ATS</th>
-                <th className="text-center px-1 py-1">Offers</th>
-                <th className="text-center px-1 py-1">Hires</th>
-                <th className="text-center px-1 py-1 text-xs" title="Last 12w Hires">12w H</th>
+                <th className="text-left px-3 py-2">Client</th>
+                <th className="text-center px-2 py-2">Roles</th>
+                <th className="text-center px-2 py-2">Contacted</th>
+                <th className="text-center px-2 py-2">Screens</th>
+                <th className="text-center px-2 py-2">ATS</th>
+                <th className="text-center px-2 py-2">Offers</th>
+                <th className="text-center px-2 py-2">Hires</th>
+                <th className="text-center px-2 py-2" title="Last 12w Hires">12w H</th>
               </tr>
             </thead>
             <tbody>
               {clientSummary.map((row, idx) => (
-                <tr key={idx} className={idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'}>
-                  <td className="text-left px-2 py-1 text-white font-medium whitespace-nowrap">{row.client}</td>
-                  <td className="text-center px-1 py-1 text-gray-300">{row.roles}</td>
-                  <td className="text-center px-1 py-1" style={getCellStyle(row.contacted, row.contacted_target)}>
+                <tr key={idx} className={`${idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'} hover:bg-gray-700`}>
+                  <td className="text-left px-3 py-2 text-white font-medium whitespace-nowrap">{row.client}</td>
+                  <td className="text-center px-2 py-2 text-gray-300">{row.roles}</td>
+                  <td className="text-center px-2 py-2" style={getCellStyle(row.contacted, row.contacted_target)}>
                     {row.contacted}
                   </td>
-                  <td className="text-center px-1 py-1" style={getCellStyle(row.screened, row.screened_target)}>
+                  <td className="text-center px-2 py-2" style={getCellStyle(row.screened, row.screened_target)}>
                     {row.screened}
                   </td>
-                  <td className="text-center px-1 py-1" style={getCellStyle(row.ats, row.ats_target)}>
+                  <td className="text-center px-2 py-2" style={getCellStyle(row.ats, row.ats_target)}>
                     {row.ats}
                   </td>
-                  <td className="text-center px-1 py-1 text-gray-300">{row.offers}</td>
-                  <td className="text-center px-1 py-1 text-gray-300">{row.hires}</td>
-                  <td className="text-center px-1 py-1 text-gray-300">{row.hires_12w}</td>
+                  <td className="text-center px-2 py-2 text-gray-300">{row.offers}</td>
+                  <td className="text-center px-2 py-2 text-gray-300">{row.hires}</td>
+                  <td className="text-center px-2 py-2 text-gray-300">{row.hires_12w}</td>
                 </tr>
               ))}
-              <tr className="bg-gray-700 border-t border-gray-600 font-semibold">
-                <td className="text-left px-2 py-1 text-white">Total</td>
-                <td className="text-center px-1 py-1 text-white">{clientSummary.reduce((sum, r) => sum + r.roles, 0)}</td>
-                <td className="text-center px-1 py-1 text-white">{clientSummary.reduce((sum, r) => sum + r.contacted, 0)}</td>
-                <td className="text-center px-1 py-1 text-white">{clientSummary.reduce((sum, r) => sum + r.screened, 0)}</td>
-                <td className="text-center px-1 py-1 text-white">{clientSummary.reduce((sum, r) => sum + r.ats, 0)}</td>
-                <td className="text-center px-1 py-1 text-white">{clientSummary.reduce((sum, r) => sum + r.offers, 0)}</td>
-                <td className="text-center px-1 py-1 text-white">{clientSummary.reduce((sum, r) => sum + r.hires, 0)}</td>
-                <td className="text-center px-1 py-1 text-white" title="Sum of 12w hires across ALL active clients (includes Wolt Volume + other hidden rows), to match PBI's Total behaviour">{Object.values(data.mbr_client_totals || {}).reduce((s, v) => s + (v.hires_12w || 0), 0) || clientSummary.reduce((sum, r) => sum + r.hires_12w, 0)}</td>
+              <tr className="bg-gray-700 border-t border-gray-600 font-bold text-base">
+                <td className="text-left px-3 py-2 text-white">Total</td>
+                <td className="text-center px-2 py-2 text-white">{clientSummary.reduce((sum, r) => sum + r.roles, 0)}</td>
+                <td className="text-center px-2 py-2 text-white">{clientSummary.reduce((sum, r) => sum + r.contacted, 0)}</td>
+                <td className="text-center px-2 py-2 text-white">{clientSummary.reduce((sum, r) => sum + r.screened, 0)}</td>
+                <td className="text-center px-2 py-2 text-white">{clientSummary.reduce((sum, r) => sum + r.ats, 0)}</td>
+                <td className="text-center px-2 py-2 text-white">{clientSummary.reduce((sum, r) => sum + r.offers, 0)}</td>
+                <td className="text-center px-2 py-2 text-white">{clientSummary.reduce((sum, r) => sum + r.hires, 0)}</td>
+                <td className="text-center px-2 py-2 text-white" title="Sum of 12w hires across ALL active clients (includes Wolt Volume + other hidden rows), to match PBI's Total behaviour">{Object.values(data.mbr_client_totals || {}).reduce((s, v) => s + (v.hires_12w || 0), 0) || clientSummary.reduce((sum, r) => sum + r.hires_12w, 0)}</td>
               </tr>
             </tbody>
           </table>
@@ -616,39 +616,39 @@ const WBRTab = ({ data }) => {
         <div className="overflow-x-auto">
           <table className="w-full text-sm" style={{ minWidth: '1400px', tableLayout: 'fixed', borderCollapse: 'separate', borderSpacing: 0 }}>
             <colgroup>
-              <col style={{ width: '85px' }} />
-              <col style={{ width: '120px' }} />
-              <col style={{ width: '42px' }} />
-              <col style={{ width: '52px' }} />
-              <col style={{ width: '52px' }} />
-              <col style={{ width: '56px' }} />
-              <col style={{ width: '52px' }} />
-              <col style={{ width: '46px' }} />
-              <col style={{ width: '48px' }} />
-              <col style={{ width: '44px' }} />
-              <col style={{ width: '42px' }} />
-              <col style={{ width: '48px' }} />
-              <col style={{ width: '52px' }} />
-              <col style={{ width: '44px' }} />
-              <col style={{ minWidth: '300px' }} />
+              <col style={{ width: '100px' }} />
+              <col style={{ width: '140px' }} />
+              <col style={{ width: '60px' }} />
+              <col style={{ width: '70px' }} />
+              <col style={{ width: '70px' }} />
+              <col style={{ width: '75px' }} />
+              <col style={{ width: '70px' }} />
+              <col style={{ width: '65px' }} />
+              <col style={{ width: '65px' }} />
+              <col style={{ width: '65px' }} />
+              <col style={{ width: '60px' }} />
+              <col style={{ width: '65px' }} />
+              <col style={{ width: '65px' }} />
+              <col style={{ width: '60px' }} />
+              <col style={{ minWidth: '380px' }} />
             </colgroup>
             <thead className="sticky top-0 z-20">
               <tr className="text-gray-300 bg-gray-800">
-                <th className="text-left px-2 py-2 sticky left-0 bg-gray-800 z-30 border-b border-gray-600">Client</th>
-                <th className="text-left px-2 py-2 bg-gray-800 border-b border-gray-600">TA</th>
-                <th className="text-center px-1 py-2 text-xs bg-gray-800 border-b border-gray-600" title="Last 12 Weeks Hires">12w H</th>
-                <th className="text-center px-1 py-2 text-xs bg-gray-800 border-b border-gray-600" title="Last 12 Weeks ATS">12w ATS</th>
-                <th className="text-center px-1 py-2 text-xs bg-gray-800 border-b border-gray-600" title="Last 12 Weeks Screens">12w Scr</th>
-                <th className="text-center px-1 py-2 text-xs bg-gray-800 border-b border-gray-600" title="Last 12w % Actual Screens to Hires">12w %S→H</th>
-                <th className="text-center px-1 py-2 text-xs bg-gray-800 border-b border-gray-600" title="Last 12w Time to Fill (days)">12w TTF</th>
-                <th className="text-center px-1 py-2 text-xs bg-gray-800 border-b border-gray-600" title="Weekly Hires">Hires</th>
-                <th className="text-center px-1 py-2 text-xs bg-gray-800 border-b border-gray-600" title="Weekly Contacted">Cntd</th>
-                <th className="text-center px-1 py-2 text-xs bg-gray-800 border-b border-gray-600" title="Weekly Actual Screens">Scrn</th>
-                <th className="text-center px-1 py-2 text-xs bg-gray-800 border-b border-gray-600" title="Weekly ATS">ATS</th>
-                <th className="text-center px-1 py-2 text-xs bg-gray-800 border-b border-gray-600" title="% Actual Screens to ATS">%S→A</th>
-                <th className="text-center px-1 py-2 text-xs bg-gray-800 border-b border-gray-600" title="# Active Roles"># Jobs</th>
-                <th className="text-center px-1 py-2 text-xs bg-gray-800 border-b border-gray-600" title="Jobs Opened > 60 days">{'>'}60d</th>
-                <th className="text-left px-2 py-2 text-xs min-w-[120px] bg-gray-800 border-b border-gray-600">Comment</th>
+                <th className="text-left px-3 py-2 sticky left-0 bg-gray-800 z-30 border-b border-gray-600">Client</th>
+                <th className="text-left px-3 py-2 bg-gray-800 border-b border-gray-600">TA</th>
+                <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Last 12 Weeks Hires">12w H</th>
+                <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Last 12 Weeks ATS">12w ATS</th>
+                <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Last 12 Weeks Screens">12w Scr</th>
+                <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Last 12w % Actual Screens to Hires">12w %S→H</th>
+                <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Last 12w Time to Fill (days)">12w TTF</th>
+                <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Weekly Hires">Hires</th>
+                <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Weekly Contacted">Cntd</th>
+                <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Weekly Actual Screens">Scrn</th>
+                <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Weekly ATS">ATS</th>
+                <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="% Actual Screens to ATS">%S→A</th>
+                <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="# Active Roles"># Jobs</th>
+                <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Jobs Opened > 60 days">{'>'}60d</th>
+                <th className="text-left px-3 py-2 bg-gray-800 border-b border-gray-600">Comment</th>
               </tr>
             </thead>
             <tbody>
@@ -660,21 +660,21 @@ const WBRTab = ({ data }) => {
                 // group's header. Requested 2026-04-20.
                 const repeatHeader = groupIdx > 0 ? (
                   <tr className="text-gray-300 bg-gray-800 border-t border-gray-600">
-                    <th className="text-left px-2 py-2 sticky left-0 bg-gray-800">Client</th>
-                    <th className="text-left px-2 py-2">TA</th>
-                    <th className="text-center px-1 py-2 text-xs" title="Last 12 Weeks Hires">12w H</th>
-                    <th className="text-center px-1 py-2 text-xs" title="Last 12 Weeks ATS">12w ATS</th>
-                    <th className="text-center px-1 py-2 text-xs" title="Last 12 Weeks Screens">12w Scr</th>
-                    <th className="text-center px-1 py-2 text-xs" title="Last 12w % Actual Screens to Hires">12w %S→H</th>
-                    <th className="text-center px-1 py-2 text-xs" title="Last 12w Time to Fill (days)">12w TTF</th>
-                    <th className="text-center px-1 py-2 text-xs" title="Weekly Hires">Hires</th>
-                    <th className="text-center px-1 py-2 text-xs" title="Weekly Contacted">Cntd</th>
-                    <th className="text-center px-1 py-2 text-xs" title="Weekly Actual Screens">Scrn</th>
-                    <th className="text-center px-1 py-2 text-xs" title="Weekly ATS">ATS</th>
-                    <th className="text-center px-1 py-2 text-xs" title="% Actual Screens to ATS">%S→A</th>
-                    <th className="text-center px-1 py-2 text-xs" title="# Active Roles"># Jobs</th>
-                    <th className="text-center px-1 py-2 text-xs" title="Jobs Opened > 60 days">{'>'}60d</th>
-                    <th className="text-left px-2 py-2 text-xs min-w-[120px]">Comment</th>
+                    <th className="text-left px-3 py-2 sticky left-0 bg-gray-800">Client</th>
+                    <th className="text-left px-3 py-2">TA</th>
+                    <th className="text-center px-2 py-2" title="Last 12 Weeks Hires">12w H</th>
+                    <th className="text-center px-2 py-2" title="Last 12 Weeks ATS">12w ATS</th>
+                    <th className="text-center px-2 py-2" title="Last 12 Weeks Screens">12w Scr</th>
+                    <th className="text-center px-2 py-2" title="Last 12w % Actual Screens to Hires">12w %S→H</th>
+                    <th className="text-center px-2 py-2" title="Last 12w Time to Fill (days)">12w TTF</th>
+                    <th className="text-center px-2 py-2" title="Weekly Hires">Hires</th>
+                    <th className="text-center px-2 py-2" title="Weekly Contacted">Cntd</th>
+                    <th className="text-center px-2 py-2" title="Weekly Actual Screens">Scrn</th>
+                    <th className="text-center px-2 py-2" title="Weekly ATS">ATS</th>
+                    <th className="text-center px-2 py-2" title="% Actual Screens to ATS">%S→A</th>
+                    <th className="text-center px-2 py-2" title="# Active Roles"># Jobs</th>
+                    <th className="text-center px-2 py-2" title="Jobs Opened > 60 days">{'>'}60d</th>
+                    <th className="text-left px-3 py-2">Comment</th>
                   </tr>
                 ) : null;
                 return (
@@ -689,69 +689,69 @@ const WBRTab = ({ data }) => {
                       const prevRow = idx > 0 ? groupRows[idx - 1] : null;
                       const isClientChange = !prevRow || prevRow.client !== row.client;
                       return (
-                        <tr key={`${group}-${idx}`} className={`${idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'} ${isClientChange ? 'border-t border-gray-600' : ''}`}>
-                          <td className="text-left px-2 py-1 text-white font-medium sticky left-0 bg-inherit z-10 text-xs whitespace-normal align-top">{isClientChange ? row.client : ''}</td>
-                          <td className="text-left px-2 py-1 text-gray-300 text-xs whitespace-normal align-top">{row.ta}</td>
-                          <td className="text-center px-1 py-2 text-gray-300">{row.hires_12w || '—'}</td>
-                          <td className="text-center px-1 py-2 text-gray-300">{row.ats_12w || '—'}</td>
-                          <td className="text-center px-1 py-2 text-gray-300">{row.screens_12w || '—'}</td>
-                          <td className="text-center px-1 py-2 text-gray-400">{row.pct_screens_to_hires != null ? `${row.pct_screens_to_hires}%` : '—'}</td>
-                          <td className="text-center px-1 py-2 text-gray-400">{row.ttf_12w != null ? row.ttf_12w : '—'}</td>
-                          <td className="text-center px-1 py-2 text-gray-300">{row.hires || ''}</td>
-                          <td className="text-center px-1 py-2" style={getCellStyle(row.contacted, row.contacted_target)}>
+                        <tr key={`${group}-${idx}`} className={`${idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'} ${isClientChange ? 'border-t border-gray-600' : ''} hover:bg-gray-700`}>
+                          <td className="text-left px-3 py-2 text-white font-medium sticky left-0 bg-inherit z-10 whitespace-normal align-top">{isClientChange ? row.client : ''}</td>
+                          <td className="text-left px-3 py-2 text-gray-300 whitespace-normal align-top">{row.ta}</td>
+                          <td className="text-center px-2 py-2 text-gray-300">{row.hires_12w || '—'}</td>
+                          <td className="text-center px-2 py-2 text-gray-300">{row.ats_12w || '—'}</td>
+                          <td className="text-center px-2 py-2 text-gray-300">{row.screens_12w || '—'}</td>
+                          <td className="text-center px-2 py-2 text-gray-400">{row.pct_screens_to_hires != null ? `${row.pct_screens_to_hires}%` : '—'}</td>
+                          <td className="text-center px-2 py-2 text-gray-400">{row.ttf_12w != null ? row.ttf_12w : '—'}</td>
+                          <td className="text-center px-2 py-2 text-gray-300">{row.hires || ''}</td>
+                          <td className="text-center px-2 py-2" style={getCellStyle(row.contacted, row.contacted_target)}>
                             {row.contacted || ''}
                           </td>
-                          <td className="text-center px-1 py-2" style={getCellStyle(row.screened, row.screened_target)}>
+                          <td className="text-center px-2 py-2" style={getCellStyle(row.screened, row.screened_target)}>
                             {row.screened || ''}
                           </td>
-                          <td className="text-center px-1 py-2" style={getCellStyle(row.ats, row.ats_target)}>
+                          <td className="text-center px-2 py-2" style={getCellStyle(row.ats, row.ats_target)}>
                             {row.ats || ''}
                           </td>
-                          <td className="text-center px-1 py-2 text-gray-400">{row.pct_screens_to_ats != null ? `${row.pct_screens_to_ats}%` : '—'}</td>
-                          <td className="text-center px-1 py-2 text-gray-300">{row.roles || ''}</td>
-                          <td className="text-center px-1 py-2 text-gray-300">{row.jobs_60d || ''}</td>
-                          <td className="text-left px-2 py-1 text-gray-300 text-xs align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>
+                          <td className="text-center px-2 py-2 text-gray-400">{row.pct_screens_to_ats != null ? `${row.pct_screens_to_ats}%` : '—'}</td>
+                          <td className="text-center px-2 py-2 text-gray-300">{row.roles || ''}</td>
+                          <td className="text-center px-2 py-2 text-gray-300">{row.jobs_60d || ''}</td>
+                          <td className="text-left px-3 py-2 text-gray-300 align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>
                             {row.comment || '—'}
                           </td>
                         </tr>
                       );
                     })}
-                    <tr className="bg-gray-700 font-semibold" style={{ borderTop: '2px solid #6B7280' }}>
-                      <td className="text-left px-2 py-2 text-white sticky left-0 bg-gray-700 z-10">{group} Total</td>
-                      <td className="text-left px-2 py-2 text-gray-300">—</td>
-                      <td className="text-center px-1 py-2 text-white">{groupRows.reduce((s, r) => s + r.hires_12w, 0)}</td>
-                      <td className="text-center px-1 py-2 text-white">{groupRows.reduce((s, r) => s + r.ats_12w, 0)}</td>
-                      <td className="text-center px-1 py-2 text-white">{groupRows.reduce((s, r) => s + r.screens_12w, 0)}</td>
-                      <td className="text-center px-1 py-2 text-white">—</td>
-                      <td className="text-center px-1 py-2 text-white">—</td>
-                      <td className="text-center px-1 py-2 text-white">{groupRows.reduce((s, r) => s + r.hires, 0)}</td>
-                      <td className="text-center px-1 py-2 text-white">{groupRows.reduce((s, r) => s + r.contacted, 0)}</td>
-                      <td className="text-center px-1 py-2 text-white">{groupRows.reduce((s, r) => s + r.screened, 0)}</td>
-                      <td className="text-center px-1 py-2 text-white">{groupRows.reduce((s, r) => s + r.ats, 0)}</td>
-                      <td className="text-center px-1 py-2 text-white">—</td>
-                      <td className="text-center px-1 py-2 text-white">{groupRows.reduce((s, r) => s + r.roles, 0)}</td>
-                      <td className="text-center px-1 py-2 text-white">{groupRows.reduce((s, r) => s + r.jobs_60d, 0)}</td>
-                      <td className="text-left px-2 py-2 text-gray-400">—</td>
+                    <tr className="bg-gray-700 font-bold text-base" style={{ borderTop: '2px solid #6B7280' }}>
+                      <td className="text-left px-3 py-2 text-white sticky left-0 bg-gray-700 z-10">{group} Total</td>
+                      <td className="text-left px-3 py-2 text-gray-300">—</td>
+                      <td className="text-center px-2 py-2 text-white">{groupRows.reduce((s, r) => s + r.hires_12w, 0)}</td>
+                      <td className="text-center px-2 py-2 text-white">{groupRows.reduce((s, r) => s + r.ats_12w, 0)}</td>
+                      <td className="text-center px-2 py-2 text-white">{groupRows.reduce((s, r) => s + r.screens_12w, 0)}</td>
+                      <td className="text-center px-2 py-2 text-white">—</td>
+                      <td className="text-center px-2 py-2 text-white">—</td>
+                      <td className="text-center px-2 py-2 text-white">{groupRows.reduce((s, r) => s + r.hires, 0)}</td>
+                      <td className="text-center px-2 py-2 text-white">{groupRows.reduce((s, r) => s + r.contacted, 0)}</td>
+                      <td className="text-center px-2 py-2 text-white">{groupRows.reduce((s, r) => s + r.screened, 0)}</td>
+                      <td className="text-center px-2 py-2 text-white">{groupRows.reduce((s, r) => s + r.ats, 0)}</td>
+                      <td className="text-center px-2 py-2 text-white">—</td>
+                      <td className="text-center px-2 py-2 text-white">{groupRows.reduce((s, r) => s + r.roles, 0)}</td>
+                      <td className="text-center px-2 py-2 text-white">{groupRows.reduce((s, r) => s + r.jobs_60d, 0)}</td>
+                      <td className="text-left px-3 py-2 text-gray-400">—</td>
                     </tr>
                   </React.Fragment>
                 );
               })}
-              <tr className="bg-gray-600 border-t-2 border-gray-500 font-bold">
-                <td className="text-left px-2 py-2 text-white sticky left-0 bg-gray-600 z-10">Grand Total</td>
-                <td className="text-left px-2 py-2 text-gray-300">—</td>
-                <td className="text-center px-1 py-2 text-white">{taDetail.reduce((s, r) => s + r.hires_12w, 0)}</td>
-                <td className="text-center px-1 py-2 text-white">{taDetail.reduce((s, r) => s + r.ats_12w, 0)}</td>
-                <td className="text-center px-1 py-2 text-white">{taDetail.reduce((s, r) => s + r.screens_12w, 0)}</td>
-                <td className="text-center px-1 py-2 text-white">—</td>
-                <td className="text-center px-1 py-2 text-white">—</td>
-                <td className="text-center px-1 py-2 text-white">{taDetail.reduce((s, r) => s + r.hires, 0)}</td>
-                <td className="text-center px-1 py-2 text-white">{taDetail.reduce((s, r) => s + r.contacted, 0)}</td>
-                <td className="text-center px-1 py-2 text-white">{taDetail.reduce((s, r) => s + r.screened, 0)}</td>
-                <td className="text-center px-1 py-2 text-white">{taDetail.reduce((s, r) => s + r.ats, 0)}</td>
-                <td className="text-center px-1 py-2 text-white">—</td>
-                <td className="text-center px-1 py-2 text-white">{taDetail.reduce((s, r) => s + r.roles, 0)}</td>
-                <td className="text-center px-1 py-2 text-white">{taDetail.reduce((s, r) => s + r.jobs_60d, 0)}</td>
-                <td className="text-left px-2 py-2 text-gray-400">—</td>
+              <tr className="bg-gray-600 border-t-2 border-gray-500 font-bold text-base">
+                <td className="text-left px-3 py-2 text-white sticky left-0 bg-gray-600 z-10">Grand Total</td>
+                <td className="text-left px-3 py-2 text-gray-300">—</td>
+                <td className="text-center px-2 py-2 text-white">{taDetail.reduce((s, r) => s + r.hires_12w, 0)}</td>
+                <td className="text-center px-2 py-2 text-white">{taDetail.reduce((s, r) => s + r.ats_12w, 0)}</td>
+                <td className="text-center px-2 py-2 text-white">{taDetail.reduce((s, r) => s + r.screens_12w, 0)}</td>
+                <td className="text-center px-2 py-2 text-white">—</td>
+                <td className="text-center px-2 py-2 text-white">—</td>
+                <td className="text-center px-2 py-2 text-white">{taDetail.reduce((s, r) => s + r.hires, 0)}</td>
+                <td className="text-center px-2 py-2 text-white">{taDetail.reduce((s, r) => s + r.contacted, 0)}</td>
+                <td className="text-center px-2 py-2 text-white">{taDetail.reduce((s, r) => s + r.screened, 0)}</td>
+                <td className="text-center px-2 py-2 text-white">{taDetail.reduce((s, r) => s + r.ats, 0)}</td>
+                <td className="text-center px-2 py-2 text-white">—</td>
+                <td className="text-center px-2 py-2 text-white">{taDetail.reduce((s, r) => s + r.roles, 0)}</td>
+                <td className="text-center px-2 py-2 text-white">{taDetail.reduce((s, r) => s + r.jobs_60d, 0)}</td>
+                <td className="text-left px-3 py-2 text-gray-400">—</td>
               </tr>
             </tbody>
           </table>
@@ -764,69 +764,69 @@ const WBRTab = ({ data }) => {
           <div style={{ overflowX: 'auto' }}>
             <table className="text-sm" style={{ width: '100%', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
               <colgroup>
-                <col style={{ width: '140px' }} />
-                <col style={{ width: '52px' }} />
+                <col style={{ width: '150px' }} />
+                <col style={{ width: '65px' }} />
+                <col style={{ width: '90px' }} />
+                <col style={{ width: '60px' }} />
                 <col style={{ width: '80px' }} />
-                <col style={{ width: '52px' }} />
-                <col style={{ width: '70px' }} />
-                <col style={{ width: '70px' }} />
-                <col style={{ width: '52px' }} />
-                <col style={{ width: '52px' }} />
-                <col style={{ width: '42px' }} />
-                <col style={{ minWidth: '180px' }} />
-                <col style={{ minWidth: '280px' }} />
+                <col style={{ width: '80px' }} />
+                <col style={{ width: '65px' }} />
+                <col style={{ width: '65px' }} />
+                <col style={{ width: '55px' }} />
+                <col style={{ minWidth: '220px' }} />
+                <col style={{ minWidth: '380px' }} />
               </colgroup>
               <thead>
                 <tr className="text-gray-300 border-b border-gray-600">
-                  <th className="text-left px-2 py-1">Sourcer</th>
-                  <th className="text-center px-1 py-1 text-xs" title="Last 12w Hires">12w H</th>
-                  <th className="text-center px-1 py-1">Contacted</th>
-                  <th className="text-center px-1 py-1 text-xs">Tgt</th>
-                  <th className="text-center px-1 py-1 text-xs">Rec Scrn</th>
-                  <th className="text-center px-1 py-1 text-xs">Act Scrn</th>
-                  <th className="text-center px-1 py-1 text-xs">ATS</th>
-                  <th className="text-center px-1 py-1 text-xs"># Jobs</th>
-                  <th className="text-center px-1 py-1 text-xs"># TA</th>
-                  <th className="text-left px-2 py-1 text-xs">TA Names</th>
-                  <th className="text-left px-2 py-1 text-xs">Comment</th>
+                  <th className="text-left px-3 py-2">Sourcer</th>
+                  <th className="text-center px-2 py-2" title="Last 12w Hires">12w H</th>
+                  <th className="text-center px-2 py-2">Contacted</th>
+                  <th className="text-center px-2 py-2">Tgt</th>
+                  <th className="text-center px-2 py-2">Rec Scrn</th>
+                  <th className="text-center px-2 py-2">Act Scrn</th>
+                  <th className="text-center px-2 py-2">ATS</th>
+                  <th className="text-center px-2 py-2"># Jobs</th>
+                  <th className="text-center px-2 py-2"># TA</th>
+                  <th className="text-left px-3 py-2">TA Names</th>
+                  <th className="text-left px-3 py-2">Comment</th>
                 </tr>
               </thead>
               <tbody>
                 {tsData.map((row, idx) => (
-                  <tr key={idx} className={idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'}>
-                    <td className="text-left px-2 py-1 text-white font-medium whitespace-normal align-top">{row.ts}</td>
-                    <td className="text-center px-1 py-1 text-gray-300 align-top">{row.hires_12w}</td>
-                    <td className="text-center px-1 py-1 align-top" style={getCellStyle(row.contacted, row._contacted_color_target)}>
+                  <tr key={idx} className={`${idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'} hover:bg-gray-700`}>
+                    <td className="text-left px-3 py-2 text-white font-medium whitespace-normal align-top">{row.ts}</td>
+                    <td className="text-center px-2 py-2 text-gray-300 align-top">{row.hires_12w}</td>
+                    <td className="text-center px-2 py-2 align-top" style={getCellStyle(row.contacted, row._contacted_color_target)}>
                       {row.contacted}
                     </td>
-                    <td className="text-center px-1 py-1 text-gray-300 align-top">{row.contacted_target || '—'}</td>
-                    <td className="text-center px-1 py-1 align-top" style={getCellStyle(row.recruiter_screens, row.recruiter_screens_target)}>
+                    <td className="text-center px-2 py-2 text-gray-300 align-top">{row.contacted_target || '—'}</td>
+                    <td className="text-center px-2 py-2 align-top" style={getCellStyle(row.recruiter_screens, row.recruiter_screens_target)}>
                       {row.recruiter_screens}
                     </td>
-                    <td className="text-center px-1 py-1 align-top" style={getCellStyle(row.actual_screens, row.actual_screens_target)}>
+                    <td className="text-center px-2 py-2 align-top" style={getCellStyle(row.actual_screens, row.actual_screens_target)}>
                       {row.actual_screens}
                     </td>
-                    <td className="text-center px-1 py-1 align-top" style={getCellStyle(row.ats, row.ats_target)}>
+                    <td className="text-center px-2 py-2 align-top" style={getCellStyle(row.ats, row.ats_target)}>
                       {row.ats}
                     </td>
-                    <td className="text-center px-1 py-1 text-gray-300 align-top">{row.num_jobs}</td>
-                    <td className="text-center px-1 py-1 text-gray-300 align-top">{row.num_tas}</td>
-                    <td className="text-left px-2 py-1 text-gray-400 text-xs align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>{row.ta_names || '—'}</td>
-                    <td className="text-left px-2 py-1 text-gray-300 text-xs align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>{row.comment || '—'}</td>
+                    <td className="text-center px-2 py-2 text-gray-300 align-top">{row.num_jobs}</td>
+                    <td className="text-center px-2 py-2 text-gray-300 align-top">{row.num_tas}</td>
+                    <td className="text-left px-3 py-2 text-gray-300 align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>{row.ta_names || '—'}</td>
+                    <td className="text-left px-3 py-2 text-gray-300 align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>{row.comment || '—'}</td>
                   </tr>
                 ))}
-                <tr className="bg-gray-750 border-t border-gray-600 font-semibold">
-                  <td className="text-left px-2 py-1 text-white">Total</td>
-                  <td className="text-center px-1 py-1 text-white">{tsData.reduce((sum, r) => sum + r.hires_12w, 0)}</td>
-                  <td className="text-center px-1 py-1 text-white">{tsData.reduce((sum, r) => sum + r.contacted, 0)}</td>
-                  <td className="text-center px-1 py-1 text-white">{Number(tsData.reduce((sum, r) => sum + (Number(r.contacted_target) || 0), 0)).toFixed(1)}</td>
-                  <td className="text-center px-1 py-1 text-white">{tsData.reduce((sum, r) => sum + r.recruiter_screens, 0)}</td>
-                  <td className="text-center px-1 py-1 text-white">{tsData.reduce((sum, r) => sum + r.actual_screens, 0)}</td>
-                  <td className="text-center px-1 py-1 text-white">{tsData.reduce((sum, r) => sum + r.ats, 0)}</td>
-                  <td className="text-center px-1 py-1 text-white">{tsData.reduce((sum, r) => sum + r.num_jobs, 0)}</td>
-                  <td className="text-center px-1 py-1 text-white">{tsData.reduce((sum, r) => sum + r.num_tas, 0)}</td>
-                  <td className="text-left px-2 py-1 text-gray-400">—</td>
-                  <td className="text-left px-2 py-1 text-gray-400">—</td>
+                <tr className="bg-gray-750 border-t border-gray-600 font-bold text-base">
+                  <td className="text-left px-3 py-2 text-white">Total</td>
+                  <td className="text-center px-2 py-2 text-white">{tsData.reduce((sum, r) => sum + r.hires_12w, 0)}</td>
+                  <td className="text-center px-2 py-2 text-white">{tsData.reduce((sum, r) => sum + r.contacted, 0)}</td>
+                  <td className="text-center px-2 py-2 text-white">{Number(tsData.reduce((sum, r) => sum + (Number(r.contacted_target) || 0), 0)).toFixed(1)}</td>
+                  <td className="text-center px-2 py-2 text-white">{tsData.reduce((sum, r) => sum + r.recruiter_screens, 0)}</td>
+                  <td className="text-center px-2 py-2 text-white">{tsData.reduce((sum, r) => sum + r.actual_screens, 0)}</td>
+                  <td className="text-center px-2 py-2 text-white">{tsData.reduce((sum, r) => sum + r.ats, 0)}</td>
+                  <td className="text-center px-2 py-2 text-white">{tsData.reduce((sum, r) => sum + r.num_jobs, 0)}</td>
+                  <td className="text-center px-2 py-2 text-white">{tsData.reduce((sum, r) => sum + r.num_tas, 0)}</td>
+                  <td className="text-left px-3 py-2 text-gray-400">—</td>
+                  <td className="text-left px-3 py-2 text-gray-400">—</td>
                 </tr>
               </tbody>
             </table>
@@ -840,17 +840,27 @@ const WBRTab = ({ data }) => {
           Pipelines where the sourcer is officially assigned <em>and</em> actively working the pipeline.
           Funnel metrics count candidates on those pipelines only.
         </p>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+        <div style={{ overflowX: 'auto' }}>
+          <table className="text-sm" style={{ width: '900px', maxWidth: '100%', margin: '0 auto', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
+            <colgroup>
+              <col style={{ width: '150px' }} />
+              <col style={{ width: '90px' }} />
+              <col style={{ width: '120px' }} />
+              <col style={{ width: '90px' }} />
+              <col style={{ width: '120px' }} />
+              <col style={{ width: '90px' }} />
+              <col style={{ width: '120px' }} />
+              <col style={{ width: '70px' }} />
+            </colgroup>
             <thead>
               <tr className="text-gray-300 border-b border-gray-600">
-                <th className="text-left px-2 py-2">TS</th>
+                <th className="text-left px-3 py-2">TS</th>
                 <th className="text-center px-2 py-2">Active Jobs</th>
-                <th className="text-center px-2 py-2">% Contacted to Positive Response</th>
-                <th className="text-center px-2 py-2">Positive Response</th>
-                <th className="text-center px-2 py-2">% Screens to Actual Screen</th>
-                <th className="text-center px-2 py-2">Actual Screens</th>
-                <th className="text-center px-2 py-2">% Actual Screens to ATS</th>
+                <th className="text-center px-2 py-2" title="% Contacted to Positive Response">% C→PR</th>
+                <th className="text-center px-2 py-2">Positive Resp</th>
+                <th className="text-center px-2 py-2" title="% Recruiter Screens to Actual Screens">% S→AS</th>
+                <th className="text-center px-2 py-2">Actual Scrn</th>
+                <th className="text-center px-2 py-2" title="% Actual Screens to ATS">% AS→ATS</th>
                 <th className="text-center px-2 py-2">ATS</th>
               </tr>
             </thead>
@@ -872,8 +882,8 @@ const WBRTab = ({ data }) => {
                     : { backgroundColor: '#991b1b', color: '#fecaca' };
                 };
                 return (
-                  <tr key={idx} className={idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'}>
-                    <td className="text-left px-2 py-2 text-white font-medium">{row.ts}</td>
+                  <tr key={idx} className={`${idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'} hover:bg-gray-700`}>
+                    <td className="text-left px-3 py-2 text-white font-medium">{row.ts}</td>
                     <td className="text-center px-2 py-2 text-gray-300">{row.active_jobs}</td>
                     <td className="text-center px-2 py-2" style={binaryCell(row.pct_contacted_to_pr, 20)}>{fmt(row.pct_contacted_to_pr)}</td>
                     <td className="text-center px-2 py-2 text-gray-300">{row.positive_responses}</td>
@@ -884,8 +894,8 @@ const WBRTab = ({ data }) => {
                   </tr>
                 );
               })}
-              <tr className="bg-gray-700 border-t border-gray-600 font-semibold">
-                <td className="text-left px-2 py-2 text-white">Total</td>
+              <tr className="bg-gray-700 border-t border-gray-600 font-bold text-base">
+                <td className="text-left px-3 py-2 text-white">Total</td>
                 <td className="text-center px-2 py-2 text-white">{tsConversion.reduce((s, r) => s + r.active_jobs, 0)}</td>
                 <td className="text-center px-2 py-2 text-white">—</td>
                 <td className="text-center px-2 py-2 text-white">{tsConversion.reduce((s, r) => s + r.positive_responses, 0)}</td>
@@ -1091,43 +1101,43 @@ const MBRTab = ({ data }) => {
       <div className="bg-gray-800 rounded-lg p-4" key={group}>
         <h3 className="text-lg font-semibold text-white mb-4">{label} — TAs (Last 4 Weeks)</h3>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm" style={{ minWidth: '1300px', tableLayout: 'fixed' }}>
+          <table className="w-full text-sm" style={{ minWidth: '1400px', tableLayout: 'fixed' }}>
             <colgroup>
-              <col style={{ width: '85px' }} />
-              <col style={{ width: '120px' }} />
-              <col style={{ width: '42px' }} />
-              <col style={{ width: '52px' }} />
-              <col style={{ width: '52px' }} />
-              <col style={{ width: '56px' }} />
-              <col style={{ width: '46px' }} />
-              <col style={{ width: '40px' }} />
-              <col style={{ width: '48px' }} />
-              <col style={{ width: '40px' }} />
-              <col style={{ width: '46px' }} />
-              <col style={{ width: '40px' }} />
-              <col style={{ width: '42px' }} />
-              <col style={{ width: '40px' }} />
-              <col style={{ width: '44px' }} />
-              <col style={{ minWidth: '320px' }} />
+              <col style={{ width: '100px' }} />
+              <col style={{ width: '140px' }} />
+              <col style={{ width: '55px' }} />
+              <col style={{ width: '65px' }} />
+              <col style={{ width: '65px' }} />
+              <col style={{ width: '70px' }} />
+              <col style={{ width: '60px' }} />
+              <col style={{ width: '50px' }} />
+              <col style={{ width: '65px' }} />
+              <col style={{ width: '50px' }} />
+              <col style={{ width: '60px' }} />
+              <col style={{ width: '50px' }} />
+              <col style={{ width: '55px' }} />
+              <col style={{ width: '50px' }} />
+              <col style={{ width: '55px' }} />
+              <col style={{ minWidth: '380px' }} />
             </colgroup>
             <thead>
               <tr className="text-gray-300 border-b border-gray-600">
-                <th className="text-left px-2 py-1 sticky left-0 bg-gray-800 z-10">Client</th>
-                <th className="text-left px-2 py-1">TA</th>
-                <th className="text-center px-1 py-1 text-xs" title="Last 12w Hires">12w H</th>
-                <th className="text-center px-1 py-1 text-xs" title="Last 12w ATS">12w ATS</th>
-                <th className="text-center px-1 py-1 text-xs" title="Last 12w Screens">12w Scr</th>
-                <th className="text-center px-1 py-1 text-xs" title="12w % Screens → Hires">12w %S→H</th>
-                <th className="text-center px-1 py-1 text-xs" title="4w Hires">Hires</th>
-                <th className="text-center px-1 py-1 text-xs">Tgt</th>
-                <th className="text-center px-1 py-1 text-xs" title="4w Contacted">Cntd</th>
-                <th className="text-center px-1 py-1 text-xs">Tgt</th>
-                <th className="text-center px-1 py-1 text-xs" title="4w Actual Screens">Scrn</th>
-                <th className="text-center px-1 py-1 text-xs">Tgt</th>
-                <th className="text-center px-1 py-1 text-xs" title="4w Moved to ATS">ATS</th>
-                <th className="text-center px-1 py-1 text-xs">Tgt</th>
-                <th className="text-center px-1 py-1 text-xs" title="Jobs Opened &gt; 60 days">{'>'}60d</th>
-                <th className="text-left px-2 py-1 text-xs">Latest Comment</th>
+                <th className="text-left px-3 py-2 sticky left-0 bg-gray-800 z-10">Client</th>
+                <th className="text-left px-3 py-2">TA</th>
+                <th className="text-center px-2 py-2" title="Last 12w Hires">12w H</th>
+                <th className="text-center px-2 py-2" title="Last 12w ATS">12w ATS</th>
+                <th className="text-center px-2 py-2" title="Last 12w Screens">12w Scr</th>
+                <th className="text-center px-2 py-2" title="12w % Screens → Hires">12w %S→H</th>
+                <th className="text-center px-2 py-2" title="4w Hires">Hires</th>
+                <th className="text-center px-2 py-2">Tgt</th>
+                <th className="text-center px-2 py-2" title="4w Contacted">Cntd</th>
+                <th className="text-center px-2 py-2">Tgt</th>
+                <th className="text-center px-2 py-2" title="4w Actual Screens">Scrn</th>
+                <th className="text-center px-2 py-2">Tgt</th>
+                <th className="text-center px-2 py-2" title="4w Moved to ATS">ATS</th>
+                <th className="text-center px-2 py-2">Tgt</th>
+                <th className="text-center px-2 py-2" title="Jobs Opened &gt; 60 days">{'>'}60d</th>
+                <th className="text-left px-3 py-2">Latest Comment</th>
               </tr>
             </thead>
             <tbody>
@@ -1135,43 +1145,43 @@ const MBRTab = ({ data }) => {
                 const prev = idx > 0 ? rows[idx - 1] : null;
                 const clientChange = !prev || prev.client !== r.client;
                 return (
-                  <tr key={idx} className={`${idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'} ${clientChange ? 'border-t border-gray-600' : ''}`}>
-                    <td className="text-left px-2 py-1 text-white font-medium sticky left-0 bg-inherit z-10 text-xs whitespace-normal align-top">{clientChange ? r.client : ''}</td>
-                    <td className="text-left px-2 py-1 text-gray-300 text-xs whitespace-normal align-top">{r.ta}</td>
-                    <td className="text-center px-1 py-1 text-gray-300">{r.hires_12w || '—'}</td>
-                    <td className="text-center px-1 py-1 text-gray-300">{r.ats_12w || '—'}</td>
-                    <td className="text-center px-1 py-1 text-gray-300">{r.screens_12w || '—'}</td>
-                    <td className="text-center px-1 py-1 text-gray-400">{r.pct_screens_to_hires != null ? `${r.pct_screens_to_hires}%` : '—'}</td>
-                    <td className="text-center px-1 py-1 text-gray-300">{r.hires || ''}</td>
-                    <td className="text-center px-1 py-1 text-gray-500">{r.hires_target ? r.hires_target.toFixed(1) : '—'}</td>
-                    <td className="text-center px-1 py-1" style={getCellStyle(r.contacted, r.contacted_target)}>{r.contacted || ''}</td>
-                    <td className="text-center px-1 py-1 text-gray-500">{r.contacted_target || '—'}</td>
-                    <td className="text-center px-1 py-1" style={getCellStyle(r.actual_screens, r.actual_screens_target)}>{r.actual_screens || ''}</td>
-                    <td className="text-center px-1 py-1 text-gray-500">{r.actual_screens_target || '—'}</td>
-                    <td className="text-center px-1 py-1" style={getCellStyle(r.ats, r.ats_target)}>{r.ats || ''}</td>
-                    <td className="text-center px-1 py-1 text-gray-500">{r.ats_target || '—'}</td>
-                    <td className="text-center px-1 py-1 text-gray-300">{r.jobs_60d || ''}</td>
-                    <td className="text-left px-2 py-1 text-gray-300 text-xs align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>{r.comment || '—'}</td>
+                  <tr key={idx} className={`${idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'} ${clientChange ? 'border-t border-gray-600' : ''} hover:bg-gray-700`}>
+                    <td className="text-left px-3 py-2 text-white font-medium sticky left-0 bg-inherit z-10 whitespace-normal align-top">{clientChange ? r.client : ''}</td>
+                    <td className="text-left px-3 py-2 text-gray-300 whitespace-normal align-top">{r.ta}</td>
+                    <td className="text-center px-2 py-2 text-gray-300">{r.hires_12w || '—'}</td>
+                    <td className="text-center px-2 py-2 text-gray-300">{r.ats_12w || '—'}</td>
+                    <td className="text-center px-2 py-2 text-gray-300">{r.screens_12w || '—'}</td>
+                    <td className="text-center px-2 py-2 text-gray-400">{r.pct_screens_to_hires != null ? `${r.pct_screens_to_hires}%` : '—'}</td>
+                    <td className="text-center px-2 py-2 text-gray-300">{r.hires || ''}</td>
+                    <td className="text-center px-2 py-2 text-gray-500">{r.hires_target ? r.hires_target.toFixed(1) : '—'}</td>
+                    <td className="text-center px-2 py-2" style={getCellStyle(r.contacted, r.contacted_target)}>{r.contacted || ''}</td>
+                    <td className="text-center px-2 py-2 text-gray-500">{r.contacted_target || '—'}</td>
+                    <td className="text-center px-2 py-2" style={getCellStyle(r.actual_screens, r.actual_screens_target)}>{r.actual_screens || ''}</td>
+                    <td className="text-center px-2 py-2 text-gray-500">{r.actual_screens_target || '—'}</td>
+                    <td className="text-center px-2 py-2" style={getCellStyle(r.ats, r.ats_target)}>{r.ats || ''}</td>
+                    <td className="text-center px-2 py-2 text-gray-500">{r.ats_target || '—'}</td>
+                    <td className="text-center px-2 py-2 text-gray-300">{r.jobs_60d || ''}</td>
+                    <td className="text-left px-3 py-2 text-gray-300 align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>{r.comment || '—'}</td>
                   </tr>
                 );
               })}
-              <tr className="bg-gray-700 font-semibold" style={{ borderTop: '2px solid #6B7280' }}>
-                <td className="text-left px-2 py-1 text-white sticky left-0 bg-gray-700 z-10 text-xs">{group} Total</td>
-                <td className="text-left px-2 py-1 text-gray-300">—</td>
-                <td className="text-center px-1 py-1 text-white">{totals.hires_12w}</td>
-                <td className="text-center px-1 py-1 text-white">{totals.ats_12w}</td>
-                <td className="text-center px-1 py-1 text-white">{totals.screens_12w}</td>
-                <td className="text-center px-1 py-1 text-white">—</td>
-                <td className="text-center px-1 py-1 text-white">{totals.hires}</td>
-                <td className="text-center px-1 py-1 text-white">{totals.hires_target.toFixed(1)}</td>
-                <td className="text-center px-1 py-1 text-white">{totals.contacted}</td>
-                <td className="text-center px-1 py-1 text-white">{totals.contacted_target}</td>
-                <td className="text-center px-1 py-1 text-white">{totals.actual_screens}</td>
-                <td className="text-center px-1 py-1 text-white">{totals.actual_screens_target}</td>
-                <td className="text-center px-1 py-1 text-white">{totals.ats}</td>
-                <td className="text-center px-1 py-1 text-white">{totals.ats_target}</td>
-                <td className="text-center px-1 py-1 text-white">{totals.jobs_60d}</td>
-                <td className="text-left px-2 py-1 text-gray-400">—</td>
+              <tr className="bg-gray-700 font-bold text-base" style={{ borderTop: '2px solid #6B7280' }}>
+                <td className="text-left px-3 py-2 text-white sticky left-0 bg-gray-700 z-10">{group} Total</td>
+                <td className="text-left px-3 py-2 text-gray-300">—</td>
+                <td className="text-center px-2 py-2 text-white">{totals.hires_12w}</td>
+                <td className="text-center px-2 py-2 text-white">{totals.ats_12w}</td>
+                <td className="text-center px-2 py-2 text-white">{totals.screens_12w}</td>
+                <td className="text-center px-2 py-2 text-white">—</td>
+                <td className="text-center px-2 py-2 text-white">{totals.hires}</td>
+                <td className="text-center px-2 py-2 text-white">{totals.hires_target.toFixed(1)}</td>
+                <td className="text-center px-2 py-2 text-white">{totals.contacted}</td>
+                <td className="text-center px-2 py-2 text-white">{totals.contacted_target}</td>
+                <td className="text-center px-2 py-2 text-white">{totals.actual_screens}</td>
+                <td className="text-center px-2 py-2 text-white">{totals.actual_screens_target}</td>
+                <td className="text-center px-2 py-2 text-white">{totals.ats}</td>
+                <td className="text-center px-2 py-2 text-white">{totals.ats_target}</td>
+                <td className="text-center px-2 py-2 text-white">{totals.jobs_60d}</td>
+                <td className="text-left px-3 py-2 text-gray-400">—</td>
               </tr>
             </tbody>
           </table>
@@ -1191,47 +1201,47 @@ const MBRTab = ({ data }) => {
       <div className="bg-gray-800 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-white mb-4">Client's Target — Last 4 Weeks</h3>
         <div style={{ overflowX: 'auto' }}>
-          <table className="text-sm" style={{ width: '540px', margin: '0 auto', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
+          <table className="text-sm" style={{ width: '780px', maxWidth: '100%', margin: '0 auto', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
             <colgroup>
-              <col style={{ width: '110px' }} />
-              <col style={{ width: '55px' }} />
-              <col style={{ width: '55px' }} />
-              <col style={{ width: '85px' }} />
+              <col style={{ width: '130px' }} />
+              <col style={{ width: '75px' }} />
+              <col style={{ width: '70px' }} />
+              <col style={{ width: '100px' }} />
+              <col style={{ width: '95px' }} />
+              <col style={{ width: '70px' }} />
               <col style={{ width: '80px' }} />
-              <col style={{ width: '60px' }} />
-              <col style={{ width: '65px' }} />
             </colgroup>
             <thead>
               <tr className="text-gray-300 border-b border-gray-600">
-                <th className="text-left px-2 py-1">Client</th>
-                <th className="text-center px-1 py-1 text-xs" title="Last 12w Hires">12w H</th>
-                <th className="text-center px-1 py-1">Hires</th>
-                <th className="text-center px-1 py-1">Contacted</th>
-                <th className="text-center px-1 py-1">Act Scrn</th>
-                <th className="text-center px-1 py-1">ATS</th>
-                <th className="text-center px-1 py-1">Offers</th>
+                <th className="text-left px-3 py-2">Client</th>
+                <th className="text-center px-2 py-2" title="Last 12w Hires">12w H</th>
+                <th className="text-center px-2 py-2">Hires</th>
+                <th className="text-center px-2 py-2">Contacted</th>
+                <th className="text-center px-2 py-2">Act Scrn</th>
+                <th className="text-center px-2 py-2">ATS</th>
+                <th className="text-center px-2 py-2">Offers</th>
               </tr>
             </thead>
             <tbody>
               {clientRows.map((row, idx) => (
-                <tr key={idx} className={idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'}>
-                  <td className="text-left px-2 py-1 text-white font-medium whitespace-nowrap">{row.client}</td>
-                  <td className="text-center px-1 py-1 text-gray-300">{row.hires_12w}</td>
-                  <td className="text-center px-1 py-1" style={getCellStyle(row.hires, row.hires_target)}>{row.hires}</td>
-                  <td className="text-center px-1 py-1" style={getCellStyle(row.contacted, row.contacted_target)}>{row.contacted}</td>
-                  <td className="text-center px-1 py-1" style={getCellStyle(row.actual_screens, row.actual_screens_target)}>{row.actual_screens}</td>
-                  <td className="text-center px-1 py-1" style={getCellStyle(row.ats, row.ats_target)}>{row.ats}</td>
-                  <td className="text-center px-1 py-1 text-gray-300">{row.offers}</td>
+                <tr key={idx} className={`${idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'} hover:bg-gray-700`}>
+                  <td className="text-left px-3 py-2 text-white font-medium whitespace-nowrap">{row.client}</td>
+                  <td className="text-center px-2 py-2 text-gray-300">{row.hires_12w}</td>
+                  <td className="text-center px-2 py-2" style={getCellStyle(row.hires, row.hires_target)}>{row.hires}</td>
+                  <td className="text-center px-2 py-2" style={getCellStyle(row.contacted, row.contacted_target)}>{row.contacted}</td>
+                  <td className="text-center px-2 py-2" style={getCellStyle(row.actual_screens, row.actual_screens_target)}>{row.actual_screens}</td>
+                  <td className="text-center px-2 py-2" style={getCellStyle(row.ats, row.ats_target)}>{row.ats}</td>
+                  <td className="text-center px-2 py-2 text-gray-300">{row.offers}</td>
                 </tr>
               ))}
-              <tr className="bg-gray-700 border-t border-gray-600 font-semibold">
-                <td className="text-left px-2 py-1 text-white">Total</td>
-                <td className="text-center px-1 py-1 text-white">{clientTotals.hires_12w}</td>
-                <td className="text-center px-1 py-1 text-white">{clientTotals.hires}</td>
-                <td className="text-center px-1 py-1 text-white">{clientTotals.contacted}</td>
-                <td className="text-center px-1 py-1 text-white">{clientTotals.actual_screens}</td>
-                <td className="text-center px-1 py-1 text-white">{clientTotals.ats}</td>
-                <td className="text-center px-1 py-1 text-white">{clientTotals.offers}</td>
+              <tr className="bg-gray-700 border-t border-gray-600 font-bold text-base">
+                <td className="text-left px-3 py-2 text-white">Total</td>
+                <td className="text-center px-2 py-2 text-white">{clientTotals.hires_12w}</td>
+                <td className="text-center px-2 py-2 text-white">{clientTotals.hires}</td>
+                <td className="text-center px-2 py-2 text-white">{clientTotals.contacted}</td>
+                <td className="text-center px-2 py-2 text-white">{clientTotals.actual_screens}</td>
+                <td className="text-center px-2 py-2 text-white">{clientTotals.ats}</td>
+                <td className="text-center px-2 py-2 text-white">{clientTotals.offers}</td>
               </tr>
             </tbody>
           </table>
@@ -1250,53 +1260,53 @@ const MBRTab = ({ data }) => {
         <div style={{ overflowX: 'auto' }}>
           <table className="text-sm" style={{ width: '100%', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
             <colgroup>
-              <col style={{ width: '140px' }} />
-              <col style={{ width: '50px' }} />
+              <col style={{ width: '150px' }} />
               <col style={{ width: '65px' }} />
+              <col style={{ width: '85px' }} />
+              <col style={{ width: '90px' }} />
+              <col style={{ width: '60px' }} />
               <col style={{ width: '80px' }} />
-              <col style={{ width: '50px' }} />
+              <col style={{ width: '80px' }} />
               <col style={{ width: '65px' }} />
-              <col style={{ width: '65px' }} />
-              <col style={{ width: '50px' }} />
-              <col style={{ minWidth: '400px' }} />
+              <col style={{ minWidth: '380px' }} />
             </colgroup>
             <thead>
               <tr className="text-gray-300 border-b border-gray-600">
-                <th className="text-left px-2 py-1">Sourcer</th>
-                <th className="text-center px-1 py-1 text-xs" title="Last 12w Hires">12w H</th>
-                <th className="text-center px-1 py-1 text-xs" title="Last 12w % Actual Screens → ATS">12w %S→A</th>
-                <th className="text-center px-1 py-1">Contacted</th>
-                <th className="text-center px-1 py-1 text-xs">Tgt</th>
-                <th className="text-center px-1 py-1 text-xs">Rec Scrn</th>
-                <th className="text-center px-1 py-1 text-xs">Act Scrn</th>
-                <th className="text-center px-1 py-1 text-xs">ATS</th>
-                <th className="text-left px-2 py-1 text-xs">Latest Comment</th>
+                <th className="text-left px-3 py-2">Sourcer</th>
+                <th className="text-center px-2 py-2" title="Last 12w Hires">12w H</th>
+                <th className="text-center px-2 py-2" title="Last 12w % Actual Screens → ATS">12w %S→A</th>
+                <th className="text-center px-2 py-2">Contacted</th>
+                <th className="text-center px-2 py-2">Tgt</th>
+                <th className="text-center px-2 py-2">Rec Scrn</th>
+                <th className="text-center px-2 py-2">Act Scrn</th>
+                <th className="text-center px-2 py-2">ATS</th>
+                <th className="text-left px-3 py-2">Latest Comment</th>
               </tr>
             </thead>
             <tbody>
               {tsRows.map((r, idx) => (
-                <tr key={idx} className={idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'}>
-                  <td className="text-left px-2 py-1 text-white font-medium whitespace-normal align-top">{r.ts}</td>
-                  <td className="text-center px-1 py-1 text-gray-300 align-top">{r.hires_12w || '—'}</td>
-                  <td className="text-center px-1 py-1 text-gray-400 align-top">{r.pct_actual_to_ats_12w != null ? `${r.pct_actual_to_ats_12w}%` : '—'}</td>
-                  <td className="text-center px-1 py-1 align-top" style={getCellStyle(r.contacted, r._contacted_color_target)}>{r.contacted}</td>
-                  <td className="text-center px-1 py-1 text-gray-500 align-top">{r.contacted_target || '—'}</td>
-                  <td className="text-center px-1 py-1 align-top" style={getCellStyle(r.recruiter_screens, r.recruiter_screens_target)}>{r.recruiter_screens}</td>
-                  <td className="text-center px-1 py-1 align-top" style={getCellStyle(r.actual_screens, r.actual_screens_target)}>{r.actual_screens}</td>
-                  <td className="text-center px-1 py-1 align-top" style={getCellStyle(r.ats, r.ats_target)}>{r.ats}</td>
-                  <td className="text-left px-2 py-1 text-gray-300 text-xs align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>{r.comment || '—'}</td>
+                <tr key={idx} className={`${idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'} hover:bg-gray-700`}>
+                  <td className="text-left px-3 py-2 text-white font-medium whitespace-normal align-top">{r.ts}</td>
+                  <td className="text-center px-2 py-2 text-gray-300 align-top">{r.hires_12w || '—'}</td>
+                  <td className="text-center px-2 py-2 text-gray-400 align-top">{r.pct_actual_to_ats_12w != null ? `${r.pct_actual_to_ats_12w}%` : '—'}</td>
+                  <td className="text-center px-2 py-2 align-top" style={getCellStyle(r.contacted, r._contacted_color_target)}>{r.contacted}</td>
+                  <td className="text-center px-2 py-2 text-gray-500 align-top">{r.contacted_target || '—'}</td>
+                  <td className="text-center px-2 py-2 align-top" style={getCellStyle(r.recruiter_screens, r.recruiter_screens_target)}>{r.recruiter_screens}</td>
+                  <td className="text-center px-2 py-2 align-top" style={getCellStyle(r.actual_screens, r.actual_screens_target)}>{r.actual_screens}</td>
+                  <td className="text-center px-2 py-2 align-top" style={getCellStyle(r.ats, r.ats_target)}>{r.ats}</td>
+                  <td className="text-left px-3 py-2 text-gray-300 align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>{r.comment || '—'}</td>
                 </tr>
               ))}
-              <tr className="bg-gray-700 border-t border-gray-600 font-semibold">
-                <td className="text-left px-2 py-1 text-white">Total</td>
-                <td className="text-center px-1 py-1 text-white">{tsRows.reduce((s, r) => s + r.hires_12w, 0)}</td>
-                <td className="text-center px-1 py-1 text-white">—</td>
-                <td className="text-center px-1 py-1 text-white">{tsRows.reduce((s, r) => s + r.contacted, 0)}</td>
-                <td className="text-center px-1 py-1 text-white">{tsRows.reduce((s, r) => s + r.contacted_target, 0)}</td>
-                <td className="text-center px-1 py-1 text-white">{tsRows.reduce((s, r) => s + r.recruiter_screens, 0)}</td>
-                <td className="text-center px-1 py-1 text-white">{tsRows.reduce((s, r) => s + r.actual_screens, 0)}</td>
-                <td className="text-center px-1 py-1 text-white">{tsRows.reduce((s, r) => s + r.ats, 0)}</td>
-                <td className="text-left px-2 py-1 text-gray-400">—</td>
+              <tr className="bg-gray-700 border-t border-gray-600 font-bold text-base">
+                <td className="text-left px-3 py-2 text-white">Total</td>
+                <td className="text-center px-2 py-2 text-white">{tsRows.reduce((s, r) => s + r.hires_12w, 0)}</td>
+                <td className="text-center px-2 py-2 text-white">—</td>
+                <td className="text-center px-2 py-2 text-white">{tsRows.reduce((s, r) => s + r.contacted, 0)}</td>
+                <td className="text-center px-2 py-2 text-white">{tsRows.reduce((s, r) => s + r.contacted_target, 0)}</td>
+                <td className="text-center px-2 py-2 text-white">{tsRows.reduce((s, r) => s + r.recruiter_screens, 0)}</td>
+                <td className="text-center px-2 py-2 text-white">{tsRows.reduce((s, r) => s + r.actual_screens, 0)}</td>
+                <td className="text-center px-2 py-2 text-white">{tsRows.reduce((s, r) => s + r.ats, 0)}</td>
+                <td className="text-left px-3 py-2 text-gray-400">—</td>
               </tr>
             </tbody>
           </table>

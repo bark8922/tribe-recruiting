@@ -1151,7 +1151,7 @@ const MBRTab = ({ data }) => {
       <div className="bg-gray-800 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-white mb-4">Client's Target — Last 4 Weeks</h3>
         <div style={{ overflowX: 'auto' }}>
-          <table className="text-sm" style={{ width: '540px', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
+          <table className="text-sm" style={{ width: '540px', margin: '0 auto', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
             <colgroup>
               <col style={{ width: '110px' }} />
               <col style={{ width: '55px' }} />

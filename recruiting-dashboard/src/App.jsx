@@ -108,6 +108,97 @@ const WBRTab = ({ data }) => {
     return nums.length ? Math.max(...nums) : 15;
   });
 
+  // Drill-down modal — click a Client, TA, or TS row to see last 6 weeks.
+  // { kind: 'client'|'ta'|'ts', title, displayClient?, taName?, tsName? }
+  const [drillDown, setDrillDown] = useState(null);
+
+  // 6 weeks ending at the currently selected week (w12-w17 if selectedWeek=17).
+  const drillWeeks = useMemo(
+    () => [5,4,3,2,1,0].map(i => `w${selectedWeek - i}`),
+    [selectedWeek]
+  );
+
+  // Aggregate wbr_actuals for a given TA across all of their clients.
+  const drillTaWeekly = (taName) => {
+    const normalized = normalizeTa(taName);
+    const out = {};
+    for (const [key, byWeek] of Object.entries(data.wbr_actuals || {})) {
+      const [, keyTa] = key.split('|');
+      if (normalizeTa(keyTa) !== normalized) continue;
+      for (const [wk, v] of Object.entries(byWeek || {})) {
+        const b = out[wk] || { contacted: 0, screened: 0, actual_screens: 0, ats: 0, offers: 0, hires: 0 };
+        b.contacted      += v.contacted || 0;
+        b.screened       += v.screened || 0;
+        b.actual_screens += v.actual_screens || 0;
+        b.ats            += v.ats || 0;
+        b.offers         += v.offers || 0;
+        b.hires          += v.hires || 0;
+        out[wk] = b;
+      }
+    }
+    return out;
+  };
+
+  // TS weekly is already indexed: ts_actuals[ts][wk] = metrics.
+  const drillTsWeekly = (tsName) => data.ts_actuals?.[tsName] || {};
+
+  // Aggregate wbr_actuals for a DISPLAY client across all TAs (matching the
+  // Client Summary rollup logic with Wolt sub-BU routing via kebolaClientMatches).
+  const drillClientWeekly = (displayClient) => {
+    const out = {};
+    const targetsByTa = (data.targets || []).filter(t => t.team_group && normalizeClient(t.client) === displayClient);
+    for (const t of targetsByTa) {
+      const targetTaNorm = normalizeTa(t.ta);
+      for (const [key, byWeek] of Object.entries(data.wbr_actuals || {})) {
+        const [rawClient, rawTa] = key.split('|');
+        if (!kebolaClientMatches(rawClient, displayClient)) continue;
+        if (normalizeTa(rawTa) !== targetTaNorm) continue;
+        for (const [wk, v] of Object.entries(byWeek || {})) {
+          const b = out[wk] || { contacted: 0, screened: 0, actual_screens: 0, ats: 0, offers: 0, hires: 0 };
+          b.contacted      += v.contacted || 0;
+          b.screened       += v.actual_screens || v.screened || 0;
+          b.actual_screens += v.actual_screens || 0;
+          b.ats            += v.ats || 0;
+          b.offers         += v.offers || 0;
+          b.hires          += v.hires || 0;
+          out[wk] = b;
+        }
+      }
+    }
+    return out;
+  };
+
+  // Weekly targets for a TA (sum across their client assignments).
+  const drillTaTargets = (taName) => {
+    const normalized = normalizeTa(taName);
+    return (data.targets || [])
+      .filter(t => t.team_group && normalizeTa(t.ta) === normalized)
+      .reduce((a, r) => ({
+        contacted:      a.contacted      + (Number(r.contacted) || 0),
+        actual_screens: a.actual_screens + (Number(r.actual_screens) || 0),
+        moved_to_ats:   a.moved_to_ats   + (Number(r.moved_to_ats) || 0),
+        hires:          a.hires          + (Number(r.hires) || 0),
+      }), { contacted: 0, actual_screens: 0, moved_to_ats: 0, hires: 0 });
+  };
+
+  // Weekly targets for a DISPLAY client (sum of rostered TAs' targets).
+  const drillClientTargets = (displayClient) =>
+    (data.targets || [])
+      .filter(t => t.team_group && normalizeClient(t.client) === displayClient)
+      .reduce((a, r) => ({
+        contacted:      a.contacted      + (Number(r.contacted) || 0),
+        actual_screens: a.actual_screens + (Number(r.actual_screens) || 0),
+        moved_to_ats:   a.moved_to_ats   + (Number(r.moved_to_ats) || 0),
+        hires:          a.hires          + (Number(r.hires) || 0),
+      }), { contacted: 0, actual_screens: 0, moved_to_ats: 0, hires: 0 });
+
+  // Per-week TS contacted target from Andy's sheet; falls back to 100 if blank.
+  const drillTsContactedTarget = (tsName, wkKey) => {
+    const wNum = parseInt(wkKey.replace(/^w/, ''));
+    const rec = (data.ts_weekly || []).find(t => t.ts === tsName && t.week === wNum);
+    return Number(rec?.contacted_target) || 100;
+  };
+
   // Build client summary for selected week
   const clientSummary = useMemo(() => {
     const weekKey = `w${selectedWeek}`;
@@ -535,6 +626,97 @@ const WBRTab = ({ data }) => {
 
   return (
     <div className="space-y-6">
+      {drillDown && (
+        <div
+          onClick={(e) => { if (e.target === e.currentTarget) setDrillDown(null); }}
+          style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.75)', zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}
+        >
+          <div className="bg-gray-800 rounded-lg" style={{ maxWidth: '900px', width: '100%', maxHeight: '90vh', overflowY: 'auto', padding: '1.5rem' }}>
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-lg font-semibold text-white">{drillDown.title}</h3>
+              <button onClick={() => setDrillDown(null)} className="text-gray-400 hover:text-white px-2 py-1">✕</button>
+            </div>
+            <p className="text-xs text-gray-500 mb-4">Last 6 weeks ending at the currently selected week ({drillWeeks[0]} → {drillWeeks[drillWeeks.length-1]}). Colors use this person's weekly target from Andy's sheet.</p>
+            <table className="text-sm" style={{ width: '100%', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
+              <colgroup>
+                <col style={{ width: '70px' }} />
+                <col style={{ width: '100px' }} />
+                {drillDown.kind === 'ts' && <col style={{ width: '100px' }} />}
+                <col style={{ width: '100px' }} />
+                <col style={{ width: '80px' }} />
+                <col style={{ width: '80px' }} />
+                <col style={{ width: '80px' }} />
+              </colgroup>
+              <thead>
+                <tr className="text-gray-300 border-b border-gray-600">
+                  <th className="text-left px-3 py-2">Week</th>
+                  <th className="text-center px-2 py-2">Contacted</th>
+                  {drillDown.kind === 'ts' && <th className="text-center px-2 py-2">Rec Scrn</th>}
+                  <th className="text-center px-2 py-2">Act Scrn</th>
+                  <th className="text-center px-2 py-2">ATS</th>
+                  <th className="text-center px-2 py-2">Offers</th>
+                  <th className="text-center px-2 py-2">Hires</th>
+                </tr>
+              </thead>
+              <tbody>
+                {drillWeeks.map((wk, idx) => {
+                  const byWeek = drillDown.kind === 'ta' ? drillTaWeekly(drillDown.taName)
+                              : drillDown.kind === 'ts' ? drillTsWeekly(drillDown.tsName)
+                              : drillClientWeekly(drillDown.displayClient);
+                  const v = byWeek[wk] || {};
+                  let contactedTgt, asTgt, atsTgt, rsTgt = null, hiresTgt;
+                  if (drillDown.kind === 'ta') {
+                    const t = drillTaTargets(drillDown.taName);
+                    contactedTgt = t.contacted; asTgt = t.actual_screens; atsTgt = t.moved_to_ats; hiresTgt = t.hires;
+                  } else if (drillDown.kind === 'ts') {
+                    contactedTgt = drillTsContactedTarget(drillDown.tsName, wk);
+                    rsTgt = Math.round(contactedTgt * 0.15);
+                    asTgt = Math.round(contactedTgt * 0.10);
+                    atsTgt = Math.round(contactedTgt * 0.05);
+                    hiresTgt = 0;
+                  } else {
+                    const t = drillClientTargets(drillDown.displayClient);
+                    contactedTgt = t.contacted; asTgt = t.actual_screens; atsTgt = t.moved_to_ats; hiresTgt = t.hires;
+                  }
+                  return (
+                    <tr key={wk} className={idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'}>
+                      <td className="text-left px-3 py-2 text-white font-medium">{wk}</td>
+                      <td className="text-center px-2 py-2" style={getCellStyle(v.contacted || 0, contactedTgt)}>{v.contacted || 0}</td>
+                      {drillDown.kind === 'ts' && (
+                        <td className="text-center px-2 py-2" style={getCellStyle(v.recruiter_screens || v.screened || 0, rsTgt)}>{v.recruiter_screens || v.screened || 0}</td>
+                      )}
+                      <td className="text-center px-2 py-2" style={getCellStyle(v.actual_screens || 0, asTgt)}>{v.actual_screens || 0}</td>
+                      <td className="text-center px-2 py-2" style={getCellStyle(v.ats || 0, atsTgt)}>{v.ats || 0}</td>
+                      <td className="text-center px-2 py-2 text-gray-300">{v.offers || 0}</td>
+                      <td className="text-center px-2 py-2" style={hiresTgt > 0 ? getCellStyle(v.hires || 0, hiresTgt) : undefined}>{v.hires || 0}</td>
+                    </tr>
+                  );
+                })}
+                <tr className="bg-gray-700 font-bold text-base border-t border-gray-600">
+                  <td className="text-left px-3 py-2 text-white">6w Total</td>
+                  {(() => {
+                    const byWeek = drillDown.kind === 'ta' ? drillTaWeekly(drillDown.taName)
+                                : drillDown.kind === 'ts' ? drillTsWeekly(drillDown.tsName)
+                                : drillClientWeekly(drillDown.displayClient);
+                    const sumKey = (k) => drillWeeks.reduce((s, wk) => s + ((byWeek[wk] || {})[k] || 0), 0);
+                    const cells = [
+                      sumKey('contacted'),
+                      ...(drillDown.kind === 'ts' ? [drillWeeks.reduce((s, wk) => s + (((byWeek[wk] || {}).recruiter_screens) || ((byWeek[wk] || {}).screened) || 0), 0)] : []),
+                      sumKey('actual_screens'),
+                      sumKey('ats'),
+                      sumKey('offers'),
+                      sumKey('hires'),
+                    ];
+                    return cells.map((v, i) => <td key={i} className="text-center px-2 py-2 text-white">{v}</td>);
+                  })()}
+                </tr>
+              </tbody>
+            </table>
+            <p className="text-xs text-gray-500 mt-4">Click outside this panel or press ✕ to close.</p>
+          </div>
+        </div>
+      )}
+
       {/* Week Selector */}
       <div className="flex items-center gap-3">
         <label className="text-sm font-medium text-gray-300">Select Week:</label>
@@ -547,6 +729,7 @@ const WBRTab = ({ data }) => {
             <option key={w} value={w}>Week {w}</option>
           ))}
         </select>
+        <span className="text-xs text-gray-500 ml-2">Tip: click any Client, TA, or TS row below for a 6-week drill-down</span>
       </div>
 
       {/* Client Summary — compact 600px centered */}
@@ -578,7 +761,12 @@ const WBRTab = ({ data }) => {
             </thead>
             <tbody>
               {clientSummary.map((row, idx) => (
-                <tr key={idx} className={`${idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'} hover:bg-gray-700`}>
+                <tr
+                  key={idx}
+                  onClick={() => setDrillDown({ kind: 'client', displayClient: row.client, title: `${row.client} · Last 6 weeks` })}
+                  className={`${idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'} hover:bg-gray-700 cursor-pointer`}
+                  title="Click for 6-week drill-down"
+                >
                   <td className="text-left px-3 py-2 text-white font-medium whitespace-normal align-top">{row.client}</td>
                   <td className="text-center px-2 py-2 text-gray-300">{row.roles}</td>
                   <td className="text-center px-2 py-2" style={getCellStyle(row.contacted, row.contacted_target)}>
@@ -689,7 +877,12 @@ const WBRTab = ({ data }) => {
                       const prevRow = idx > 0 ? groupRows[idx - 1] : null;
                       const isClientChange = !prevRow || prevRow.client !== row.client;
                       return (
-                        <tr key={`${group}-${idx}`} className={`${idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'} ${isClientChange ? 'border-t border-gray-600' : ''} hover:bg-gray-700`}>
+                        <tr
+                          key={`${group}-${idx}`}
+                          onClick={() => setDrillDown({ kind: 'ta', taName: row.ta, title: `${row.ta} · Last 6 weeks` })}
+                          className={`${idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'} ${isClientChange ? 'border-t border-gray-600' : ''} hover:bg-gray-700 cursor-pointer`}
+                          title="Click for 6-week drill-down"
+                        >
                           <td className="text-left px-3 py-2 text-white font-medium sticky left-0 bg-inherit z-10 whitespace-normal align-top">{isClientChange ? row.client : ''}</td>
                           <td className="text-left px-3 py-2 text-gray-300 whitespace-normal align-top">{row.ta}</td>
                           <td className="text-center px-2 py-2 text-gray-300">{row.hires_12w || '—'}</td>
@@ -793,7 +986,12 @@ const WBRTab = ({ data }) => {
               </thead>
               <tbody>
                 {tsData.map((row, idx) => (
-                  <tr key={idx} className={`${idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'} hover:bg-gray-700`}>
+                  <tr
+                    key={idx}
+                    onClick={() => setDrillDown({ kind: 'ts', tsName: row.ts, title: `${row.ts} · Last 6 weeks` })}
+                    className={`${idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'} hover:bg-gray-700 cursor-pointer`}
+                    title="Click for 6-week drill-down"
+                  >
                     <td className="text-left px-3 py-2 text-white font-medium whitespace-normal align-top">{row.ts}</td>
                     <td className="text-center px-2 py-2 text-gray-300 align-top">{row.hires_12w}</td>
                     <td className="text-center px-2 py-2 align-top" style={getCellStyle(row.contacted, row._contacted_color_target)}>

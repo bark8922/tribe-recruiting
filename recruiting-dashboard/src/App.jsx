@@ -871,10 +871,8 @@ const MBRTab = ({ data }) => {
   const MBR_WEEKS = (data.mbr_window?.weeks || ['w12','w13','w14','w15']);
   const windowLabel = `${data.mbr_window?.start || '2026-03-16'} → ${data.mbr_window?.end || '2026-04-12'}`;
 
-  // Build client-level rows from mbr_client_totals (Keboola-sourced, includes Wolt subdivisions)
-  // Also sum mbr_ta_targets to display-client level so we can color actuals vs target.
-  // Targets are WEEKLY; the MBR window covers MBR_WEEKS.length weeks (usually 4), so
-  // we multiply by that for the 4w comparison (matches WBR's PBI-verified approach).
+  // Build client-level rows from mbr_client_totals + per-client targets
+  // (sum mbr_ta_targets per display client, x weekCount for the 4w window).
   const clientRows = useMemo(() => {
     const weekCount = MBR_WEEKS.length || 4;
     const clientTargets = {};
@@ -888,7 +886,6 @@ const MBRTab = ({ data }) => {
       bucket.hires          += (Number(t.hires) || 0) * weekCount;
       clientTargets[disp] = bucket;
     });
-
     const rows = Object.entries(data.mbr_client_totals || {}).map(([client, t]) => {
       const tg = clientTargets[client] || { contacted: 0, actual_screens: 0, moved_to_ats: 0, hires: 0 };
       return {
@@ -905,7 +902,6 @@ const MBRTab = ({ data }) => {
         hires_target:          tg.hires,
       };
     });
-    // hide all-zero rows
     return rows.filter(r => r.contacted + r.actual_screens + r.ats + r.offers + r.hires + r.hires_12w > 0)
                .sort((a, b) => a.client.localeCompare(b.client));
   }, [data]);
@@ -994,10 +990,6 @@ const MBRTab = ({ data }) => {
     const weekCount = mbrWeekNums.size || 4;
     Object.keys(targets).forEach(ts => {
       const a = data.mbr_ts_actuals?.[ts] || {};
-      // Derived funnel targets for colouring RS / AS / ATS — mirrors the WBR TS
-      // Weekly ratio approach (0.15 / 0.10 / 0.05 of contacted target). TSes
-      // without an explicit contacted_target in the sheet get 100/week as a
-      // default so cells still receive a colour (matches WBR behaviour).
       const contactedTarget = targets[ts] || (100 * weekCount);
       rows.push({
         ts,
@@ -1055,8 +1047,6 @@ const MBRTab = ({ data }) => {
       hires_target: a.hires_target + r.hires_target,
     }), { contacted:0, actual_screens:0, ats:0, hires:0, hires_12w:0, ats_12w:0, screens_12w:0, jobs_60d:0, contacted_target:0, actual_screens_target:0, ats_target:0, hires_target:0 });
 
-    // MBR TA table — narrow Client (85) + TA (120), all numeric cols minimal,
-    // Comment takes the remainder with large min-width so it's readable.
     return (
       <div className="bg-gray-800 rounded-lg p-4" key={group}>
         <h3 className="text-lg font-semibold text-white mb-4">{label} — TAs (Last 4 Weeks)</h3>
@@ -1121,7 +1111,7 @@ const MBRTab = ({ data }) => {
                     <td className="text-center px-1 py-1" style={getCellStyle(r.ats, r.ats_target)}>{r.ats || ''}</td>
                     <td className="text-center px-1 py-1 text-gray-500">{r.ats_target || '—'}</td>
                     <td className="text-center px-1 py-1 text-gray-300">{r.jobs_60d || ''}</td>
-                    <td className="text-left px-2 py-1 text-gray-400 text-xs whitespace-normal align-top" title={r.comment}>{r.comment || '—'}</td>
+                    <td className="text-left px-2 py-1 text-gray-300 text-xs align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>{r.comment || '—'}</td>
                   </tr>
                 );
               })}
@@ -1157,7 +1147,7 @@ const MBRTab = ({ data }) => {
         <div className="text-xl font-semibold text-white mt-1">Window: {windowLabel} (weeks {MBR_WEEKS.join(', ')})</div>
       </div>
 
-      {/* 1. Client's Target — total width 540px, Client col 110px. */}
+      {/* 1. Client's Target — compact 540px, colgroup widths, color coding */}
       <div className="bg-gray-800 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-white mb-4">Client's Target — Last 4 Weeks</h3>
         <div style={{ overflowX: 'auto' }}>
@@ -1214,10 +1204,7 @@ const MBRTab = ({ data }) => {
       {/* 3. Dolphins & Whales */}
       {renderTaGroup('Dolphins/Whales')}
 
-      {/* 4. TS Target Last 4 Weeks — explicit column widths via colgroup.
-          Numeric columns fixed to small px widths; comment column takes all
-          remaining space via 'auto' and whitespace-normal so Andy's full
-          comment is visible. */}
+      {/* 4. TS Target — colgroup with narrow numeric cols, wide comment */}
       <div className="bg-gray-800 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-white mb-4">TS's Target — Last 4 Weeks</h3>
         <div style={{ overflowX: 'auto' }}>
@@ -1923,4 +1910,60 @@ const ProjectDashboardTab = ({ data }) => {
 // Main Dashboard
 const RecruitingDashboard = () => {
   const [activeTab, setActiveTab] = useState('wbr');
-  // Data source toggle: 'snowflake' = Keboola-
+  // Data source toggle: 'snowflake' = Keboola-Snowflake pipeline (accurate, refreshed 3x/day)
+  //                     'pbi' = legacy Power BI / Bubble pipeline (kept for comparison)
+  const [dataSource, setDataSource] = useState('snowflake');
+  const dashboardData = dataSource === 'pbi' ? dashboardDataPbi : dashboardDataSnowflake;
+  return (
+    <div className="min-h-screen bg-gray-900 text-white">
+      <div className="bg-gray-800 border-b border-gray-700 px-6 py-6 flex items-start justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-white">Tribe.xyz Recruiting Dashboard</h1>
+          <p className="text-sm text-gray-400 mt-1">
+            {dataSource === 'pbi' ? 'Power BI / Bubble pipeline' : 'Snowflake pipeline (parallel-run)'}
+          </p>
+        </div>
+        <div className="flex items-center gap-2 bg-gray-900 border border-gray-700 rounded-lg p-1">
+          {[
+            ['pbi', 'Power BI'],
+            ['snowflake', 'Snowflake'],
+          ].map(([val, label]) => (
+            <button
+              key={val}
+              onClick={() => setDataSource(val)}
+              className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
+                dataSource === val
+                  ? 'bg-white text-gray-900'
+                  : 'text-gray-400 hover:text-gray-200'
+              }`}
+              title={val === 'pbi'
+                ? 'Current source of truth: Bubble → n8n → data.json'
+                : 'New: Keboola MCP → render_json → dashboard_data_snowflake.json'}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="bg-gray-800 border-b border-gray-700 px-6">
+        <div className="flex gap-8">
+          {['wbr', 'mbr', 'project'].map((tab) => (
+            <button key={tab} onClick={() => setActiveTab(tab)}
+              className={`py-4 px-2 font-medium border-b-2 transition-colors ${
+                activeTab === tab ? 'text-white border-white' : 'text-gray-400 border-transparent hover:text-gray-300'
+              }`}>
+              {tab === 'wbr' ? 'WBR' : tab === 'mbr' ? 'MBR' : 'Project Dashboard'}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="px-6 py-6">
+        {activeTab === 'wbr' && <WBRTab data={dashboardData} />}
+        {activeTab === 'mbr' && <MBRTab data={dashboardData} />}
+        {activeTab === 'project' && <ProjectDashboardTab data={dashboardData} />}
+      </div>
+    </div>
+  );
+};
+
+export default RecruitingDashboard;

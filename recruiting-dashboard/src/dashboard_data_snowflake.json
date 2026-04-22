@@ -7388,7 +7388,7 @@
       "ts": "Marina Lazarevic",
       "year": 2026,
       "week": 17,
-      "contacted_target": null,
+      "contacted_target": 100,
       "reasoning": null,
       "comment": null
     },
@@ -7396,7 +7396,7 @@
       "ts": "Naledi Ngwenya",
       "year": 2026,
       "week": 17,
-      "contacted_target": null,
+      "contacted_target": 75,
       "reasoning": null,
       "comment": null
     },

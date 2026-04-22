@@ -1055,32 +1055,30 @@ const MBRTab = ({ data }) => {
       hires_target: a.hires_target + r.hires_target,
     }), { contacted:0, actual_screens:0, ats:0, hires:0, hires_12w:0, ats_12w:0, screens_12w:0, jobs_60d:0, contacted_target:0, actual_screens_target:0, ats_target:0, hires_target:0 });
 
-    // MBR TA table — narrow Client + TA (2026-04-22), wider Comment.
-    // Prior layout had Client/TA columns auto-sized and Comment truncated to
-    // max-w-xs, so the latest comment was mostly invisible. Now Client=110px,
-    // TA=130px, Comment allowed to wrap and take up the remaining space.
+    // MBR TA table — narrow Client (85) + TA (120), all numeric cols minimal,
+    // Comment takes the remainder with large min-width so it's readable.
     return (
       <div className="bg-gray-800 rounded-lg p-4" key={group}>
         <h3 className="text-lg font-semibold text-white mb-4">{label} — TAs (Last 4 Weeks)</h3>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm" style={{ minWidth: '1400px', tableLayout: 'fixed' }}>
+          <table className="w-full text-sm" style={{ minWidth: '1300px', tableLayout: 'fixed' }}>
             <colgroup>
-              <col style={{ width: '110px' }} />
-              <col style={{ width: '130px' }} />
-              <col style={{ width: '48px' }} />
-              <col style={{ width: '56px' }} />
-              <col style={{ width: '56px' }} />
-              <col style={{ width: '56px' }} />
+              <col style={{ width: '85px' }} />
+              <col style={{ width: '120px' }} />
+              <col style={{ width: '42px' }} />
               <col style={{ width: '52px' }} />
-              <col style={{ width: '44px' }} />
-              <col style={{ width: '56px' }} />
-              <col style={{ width: '44px' }} />
               <col style={{ width: '52px' }} />
-              <col style={{ width: '44px' }} />
+              <col style={{ width: '56px' }} />
+              <col style={{ width: '46px' }} />
+              <col style={{ width: '40px' }} />
               <col style={{ width: '48px' }} />
+              <col style={{ width: '40px' }} />
+              <col style={{ width: '46px' }} />
+              <col style={{ width: '40px' }} />
+              <col style={{ width: '42px' }} />
+              <col style={{ width: '40px' }} />
               <col style={{ width: '44px' }} />
-              <col style={{ width: '48px' }} />
-              <col />
+              <col style={{ minWidth: '320px' }} />
             </colgroup>
             <thead>
               <tr className="text-gray-300 border-b border-gray-600">
@@ -1159,21 +1157,19 @@ const MBRTab = ({ data }) => {
         <div className="text-xl font-semibold text-white mt-1">Window: {windowLabel} (weeks {MBR_WEEKS.join(', ')})</div>
       </div>
 
-      {/* 1. Client's Target — compact layout with hard-coded column widths.
-          Iterating on a previous tailwind-only attempt (max-w-3xl) that didn't
-          visibly tighten spacing. */}
+      {/* 1. Client's Target — total width 540px, Client col 110px. */}
       <div className="bg-gray-800 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-white mb-4">Client's Target — Last 4 Weeks</h3>
         <div style={{ overflowX: 'auto' }}>
-          <table className="text-sm" style={{ width: '680px', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
+          <table className="text-sm" style={{ width: '540px', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
             <colgroup>
-              <col style={{ width: '180px' }} />
-              <col style={{ width: '70px' }} />
-              <col style={{ width: '70px' }} />
-              <col style={{ width: '90px' }} />
-              <col style={{ width: '90px' }} />
-              <col style={{ width: '70px' }} />
+              <col style={{ width: '110px' }} />
+              <col style={{ width: '55px' }} />
+              <col style={{ width: '55px' }} />
+              <col style={{ width: '85px' }} />
               <col style={{ width: '80px' }} />
+              <col style={{ width: '60px' }} />
+              <col style={{ width: '65px' }} />
             </colgroup>
             <thead>
               <tr className="text-gray-300 border-b border-gray-600">
@@ -1227,15 +1223,15 @@ const MBRTab = ({ data }) => {
         <div style={{ overflowX: 'auto' }}>
           <table className="text-sm" style={{ width: '100%', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
             <colgroup>
-              <col style={{ width: '170px' }} />
-              <col style={{ width: '60px' }} />
-              <col style={{ width: '70px' }} />
-              <col style={{ width: '85px' }} />
-              <col style={{ width: '55px' }} />
-              <col style={{ width: '70px' }} />
-              <col style={{ width: '70px' }} />
-              <col style={{ width: '55px' }} />
-              <col />
+              <col style={{ width: '140px' }} />
+              <col style={{ width: '50px' }} />
+              <col style={{ width: '65px' }} />
+              <col style={{ width: '80px' }} />
+              <col style={{ width: '50px' }} />
+              <col style={{ width: '65px' }} />
+              <col style={{ width: '65px' }} />
+              <col style={{ width: '50px' }} />
+              <col style={{ minWidth: '400px' }} />
             </colgroup>
             <thead>
               <tr className="text-gray-300 border-b border-gray-600">
@@ -1916,4 +1912,15 @@ const ProjectDashboardTab = ({ data }) => {
                 ))}
               </tbody>
             </table>
-   
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+
+// Main Dashboard
+const RecruitingDashboard = () => {
+  const [activeTab, setActiveTab] = useState('wbr');
+  // Data source toggle: 'snowflake' = Keboola-

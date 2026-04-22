@@ -921,63 +921,6 @@ const MBRTab = ({ data }) => {
   const MBR_WEEKS = (data.mbr_window?.weeks || ['w12','w13','w14','w15']);
   const windowLabel = `${data.mbr_window?.start || '2026-03-16'} → ${data.mbr_window?.end || '2026-04-12'}`;
 
-  // Drill-down modal — click a TA or TS row to see their last 6 weeks of activity.
-  // State: null or { kind: 'ta'|'ts', title: string, clientKey?: string, taName?: string, tsName?: string }
-  const [drillDown, setDrillDown] = React.useState(null);
-
-  // Build the list of weeks to show: 6 weeks ending at max(MBR_WEEKS).
-  const drillWeeks = useMemo(() => {
-    const maxWk = Math.max(...MBR_WEEKS.map(w => parseInt(String(w).replace(/^w/, ''))));
-    const out = [];
-    for (let i = 5; i >= 0; i--) out.push(`w${maxWk - i}`);
-    return out;
-  }, [data]);
-
-  // Aggregate wbr_actuals across all client keys for a given TA (normalized name match).
-  // Returns {wN: {contacted, actual_screens, ats, offers, hires}}.
-  const taWeekly = (taName) => {
-    const normalized = normalizeTa(taName);
-    const out = {};
-    for (const [key, byWeek] of Object.entries(data.wbr_actuals || {})) {
-      const [, keyTa] = key.split('|');
-      if (normalizeTa(keyTa) !== normalized) continue;
-      for (const [wk, vals] of Object.entries(byWeek || {})) {
-        const bucket = out[wk] || { contacted: 0, actual_screens: 0, ats: 0, offers: 0, hires: 0, screened: 0 };
-        bucket.contacted      += (vals.contacted || 0);
-        bucket.actual_screens += (vals.actual_screens || 0);
-        bucket.ats            += (vals.ats || 0);
-        bucket.offers         += (vals.offers || 0);
-        bucket.hires          += (vals.hires || 0);
-        bucket.screened       += (vals.screened || 0);
-        out[wk] = bucket;
-      }
-    }
-    return out;
-  };
-
-  // TS weekly: ts_actuals[ts][wk] already has the per-week data.
-  const tsWeekly = (tsName) => data.ts_actuals?.[tsName] || {};
-
-  // Fetch the weekly Contacted target for a TS from ts_weekly (Andy's sheet).
-  const tsContactedTargetForWeek = (tsName, wkKey) => {
-    const wNum = parseInt(wkKey.replace(/^w/, ''));
-    const rec = (data.ts_weekly || []).find(t => t.ts === tsName && t.week === wNum);
-    return Number(rec?.contacted_target) || null;
-  };
-
-  // Find the targets[] entry for this TA — use the first match by normalized TA.
-  const taTargetsFor = (taName) => {
-    const normalized = normalizeTa(taName);
-    const rows = (data.targets || []).filter(t => normalizeTa(t.ta) === normalized);
-    // Sum across clients (if TA works on multiple) to get total weekly target.
-    return rows.reduce((a, r) => ({
-      contacted:      a.contacted + (Number(r.contacted) || 0),
-      actual_screens: a.actual_screens + (Number(r.actual_screens) || 0),
-      moved_to_ats:   a.moved_to_ats + (Number(r.moved_to_ats) || 0),
-      hires:          a.hires + (Number(r.hires) || 0),
-    }), { contacted: 0, actual_screens: 0, moved_to_ats: 0, hires: 0 });
-  };
-
   // Build client-level rows from mbr_client_totals + per-client targets
   // (sum mbr_ta_targets per display client, x weekCount for the 4w window).
   const clientRows = useMemo(() => {
@@ -1202,12 +1145,7 @@ const MBRTab = ({ data }) => {
                 const prev = idx > 0 ? rows[idx - 1] : null;
                 const clientChange = !prev || prev.client !== r.client;
                 return (
-                  <tr
-                    key={idx}
-                    onClick={() => setDrillDown({ kind: 'ta', taName: r.ta, title: `${r.ta} · Last 6 weeks` })}
-                    className={`${idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'} ${clientChange ? 'border-t border-gray-600' : ''} hover:bg-gray-700 cursor-pointer`}
-                    title="Click to see last 6 weeks"
-                  >
+                  <tr key={idx} className={`${idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'} ${clientChange ? 'border-t border-gray-600' : ''} hover:bg-gray-700`}>
                     <td className="text-left px-3 py-2 text-white font-medium sticky left-0 bg-inherit z-10 whitespace-normal align-top">{clientChange ? r.client : ''}</td>
                     <td className="text-left px-3 py-2 text-gray-300 whitespace-normal align-top">{r.ta}</td>
                     <td className="text-center px-2 py-2 text-gray-300">{r.hires_12w || '—'}</td>
@@ -1254,80 +1192,8 @@ const MBRTab = ({ data }) => {
 
   return (
     <div className="space-y-6">
-      {drillDown && (
-        <div
-          onClick={(e) => { if (e.target === e.currentTarget) setDrillDown(null); }}
-          style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.75)', zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}
-        >
-          <div className="bg-gray-800 rounded-lg" style={{ maxWidth: '900px', width: '100%', maxHeight: '90vh', overflowY: 'auto', padding: '1.5rem' }}>
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-lg font-semibold text-white">{drillDown.title}</h3>
-              <button onClick={() => setDrillDown(null)} className="text-gray-400 hover:text-white px-2 py-1">✕</button>
-            </div>
-            <p className="text-xs text-gray-500 mb-4">Last 6 weeks of activity ({drillWeeks[0]} → {drillWeeks[drillWeeks.length-1]}). Colors use this person's weekly target from Andy's sheet.</p>
-            <table className="text-sm" style={{ width: '100%', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
-              <colgroup>
-                <col style={{ width: '70px' }} />
-                <col style={{ width: '100px' }} />
-                {drillDown.kind === 'ts' && <col style={{ width: '110px' }} />}
-                <col style={{ width: '100px' }} />
-                <col style={{ width: '80px' }} />
-                <col style={{ width: '80px' }} />
-                <col style={{ width: '80px' }} />
-              </colgroup>
-              <thead>
-                <tr className="text-gray-300 border-b border-gray-600">
-                  <th className="text-left px-3 py-2">Week</th>
-                  <th className="text-center px-2 py-2">Contacted</th>
-                  {drillDown.kind === 'ts' && <th className="text-center px-2 py-2">Rec Scrn</th>}
-                  <th className="text-center px-2 py-2">Act Scrn</th>
-                  <th className="text-center px-2 py-2">ATS</th>
-                  <th className="text-center px-2 py-2">Offers</th>
-                  <th className="text-center px-2 py-2">Hires</th>
-                </tr>
-              </thead>
-              <tbody>
-                {drillWeeks.map((wk, idx) => {
-                  const byWeek = drillDown.kind === 'ta' ? taWeekly(drillDown.taName) : tsWeekly(drillDown.tsName);
-                  const v = byWeek[wk] || {};
-                  const targets = drillDown.kind === 'ta' ? taTargetsFor(drillDown.taName) : null;
-                  const tsTgt = drillDown.kind === 'ts' ? tsContactedTargetForWeek(drillDown.tsName, wk) : null;
-                  const contactedTgt = drillDown.kind === 'ta' ? targets.contacted : (tsTgt || 100);
-                  const asTgt   = drillDown.kind === 'ta' ? targets.actual_screens : Math.round(contactedTgt * 0.10);
-                  const atsTgt  = drillDown.kind === 'ta' ? targets.moved_to_ats   : Math.round(contactedTgt * 0.05);
-                  const rsTgt   = drillDown.kind === 'ts' ? Math.round(contactedTgt * 0.15) : null;
-                  const hiresTgt = drillDown.kind === 'ta' ? targets.hires : 0;
-                  return (
-                    <tr key={wk} className={idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'}>
-                      <td className="text-left px-3 py-2 text-white font-medium">{wk}</td>
-                      <td className="text-center px-2 py-2" style={getCellStyle(v.contacted || 0, contactedTgt)}>{v.contacted || 0}</td>
-                      {drillDown.kind === 'ts' && (
-                        <td className="text-center px-2 py-2" style={getCellStyle(v.recruiter_screens || v.screened || 0, rsTgt)}>{v.recruiter_screens || v.screened || 0}</td>
-                      )}
-                      <td className="text-center px-2 py-2" style={getCellStyle(v.actual_screens || 0, asTgt)}>{v.actual_screens || 0}</td>
-                      <td className="text-center px-2 py-2" style={getCellStyle(v.ats || 0, atsTgt)}>{v.ats || 0}</td>
-                      <td className="text-center px-2 py-2 text-gray-300">{v.offers || 0}</td>
-                      <td className="text-center px-2 py-2" style={hiresTgt > 0 ? getCellStyle(v.hires || 0, hiresTgt) : undefined}>{v.hires || 0}</td>
-                    </tr>
-                  );
-                })}
-                <tr className="bg-gray-700 font-bold text-base border-t border-gray-600">
-                  <td className="text-left px-3 py-2 text-white">6w Total</td>
-                  {['contacted','recruiter_screens','actual_screens','ats','offers','hires'].filter(k => drillDown.kind === 'ts' || k !== 'recruiter_screens').map(k => {
-                    const byWeek = drillDown.kind === 'ta' ? taWeekly(drillDown.taName) : tsWeekly(drillDown.tsName);
-                    const sum = drillWeeks.reduce((s, wk) => s + ((byWeek[wk] || {})[k] || (k === 'recruiter_screens' ? (byWeek[wk] || {}).screened || 0 : 0)), 0);
-                    return <td key={k} className="text-center px-2 py-2 text-white">{sum}</td>;
-                  })}
-                </tr>
-              </tbody>
-            </table>
-            <p className="text-xs text-gray-500 mt-4">Click outside this panel or press ✕ to close.</p>
-          </div>
-        </div>
-      )}
-
       <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
-        <div className="text-sm text-gray-400">Monthly Business Review — last 4 weeks · <span className="text-gray-500">(click any TA or TS row for 6-week drill-down)</span></div>
+        <div className="text-sm text-gray-400">Monthly Business Review — last 4 weeks</div>
         <div className="text-xl font-semibold text-white mt-1">Window: {windowLabel} (weeks {MBR_WEEKS.join(', ')})</div>
       </div>
 
@@ -1419,12 +1285,7 @@ const MBRTab = ({ data }) => {
             </thead>
             <tbody>
               {tsRows.map((r, idx) => (
-                <tr
-                  key={idx}
-                  onClick={() => setDrillDown({ kind: 'ts', tsName: r.ts, title: `${r.ts} · Last 6 weeks` })}
-                  className={`${idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'} hover:bg-gray-700 cursor-pointer`}
-                  title="Click to see last 6 weeks"
-                >
+                <tr key={idx} className={`${idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'} hover:bg-gray-700`}>
                   <td className="text-left px-3 py-2 text-white font-medium whitespace-normal align-top">{r.ts}</td>
                   <td className="text-center px-2 py-2 text-gray-300 align-top">{r.hires_12w || '—'}</td>
                   <td className="text-center px-2 py-2 text-gray-400 align-top">{r.pct_actual_to_ats_12w != null ? `${r.pct_actual_to_ats_12w}%` : '—'}</td>

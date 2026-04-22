@@ -872,16 +872,39 @@ const MBRTab = ({ data }) => {
   const windowLabel = `${data.mbr_window?.start || '2026-03-16'} → ${data.mbr_window?.end || '2026-04-12'}`;
 
   // Build client-level rows from mbr_client_totals (Keboola-sourced, includes Wolt subdivisions)
+  // Also sum mbr_ta_targets to display-client level so we can color actuals vs target.
+  // Targets are WEEKLY; the MBR window covers MBR_WEEKS.length weeks (usually 4), so
+  // we multiply by that for the 4w comparison (matches WBR's PBI-verified approach).
   const clientRows = useMemo(() => {
-    const rows = Object.entries(data.mbr_client_totals || {}).map(([client, t]) => ({
-      client,
-      contacted: t.contacted || 0,
-      actual_screens: t.actual_screens || 0,
-      ats: t.ats || 0,
-      offers: t.offers || 0,
-      hires: t.hires || 0,
-      hires_12w: t.hires_12w || 0,
-    }));
+    const weekCount = MBR_WEEKS.length || 4;
+    const clientTargets = {};
+    (data.mbr_ta_targets || []).forEach((t) => {
+      const disp = mbrAbbrevClient(t.client);
+      if (!disp) return;
+      const bucket = clientTargets[disp] || { contacted: 0, actual_screens: 0, moved_to_ats: 0, hires: 0 };
+      bucket.contacted      += (Number(t.contacted) || 0) * weekCount;
+      bucket.actual_screens += (Number(t.actual_screens) || 0) * weekCount;
+      bucket.moved_to_ats   += (Number(t.moved_to_ats) || 0) * weekCount;
+      bucket.hires          += (Number(t.hires) || 0) * weekCount;
+      clientTargets[disp] = bucket;
+    });
+
+    const rows = Object.entries(data.mbr_client_totals || {}).map(([client, t]) => {
+      const tg = clientTargets[client] || { contacted: 0, actual_screens: 0, moved_to_ats: 0, hires: 0 };
+      return {
+        client,
+        contacted: t.contacted || 0,
+        actual_screens: t.actual_screens || 0,
+        ats: t.ats || 0,
+        offers: t.offers || 0,
+        hires: t.hires || 0,
+        hires_12w: t.hires_12w || 0,
+        contacted_target:      tg.contacted,
+        actual_screens_target: tg.actual_screens,
+        ats_target:            tg.moved_to_ats,
+        hires_target:          tg.hires,
+      };
+    });
     // hide all-zero rows
     return rows.filter(r => r.contacted + r.actual_screens + r.ats + r.offers + r.hires + r.hires_12w > 0)
                .sort((a, b) => a.client.localeCompare(b.client));
@@ -968,15 +991,25 @@ const MBRTab = ({ data }) => {
       if (curRank > prevRank) latestComment[key] = t;
     });
     const rows = [];
+    const weekCount = mbrWeekNums.size || 4;
     Object.keys(targets).forEach(ts => {
       const a = data.mbr_ts_actuals?.[ts] || {};
+      // Derived funnel targets for colouring RS / AS / ATS — mirrors the WBR TS
+      // Weekly ratio approach (0.15 / 0.10 / 0.05 of contacted target). TSes
+      // without an explicit contacted_target in the sheet get 100/week as a
+      // default so cells still receive a colour (matches WBR behaviour).
+      const contactedTarget = targets[ts] || (100 * weekCount);
       rows.push({
         ts,
         contacted: a.contacted_4w || 0,
         contacted_target: targets[ts],
+        _contacted_color_target: contactedTarget,
         recruiter_screens: a.recruiter_screens_4w || 0,
+        recruiter_screens_target: Math.round(contactedTarget * 0.15),
         actual_screens: a.actual_screens_4w || 0,
+        actual_screens_target: Math.round(contactedTarget * 0.10),
         ats: a.ats_4w || 0,
+        ats_target: Math.round(contactedTarget * 0.05),
         hires_12w: a.hires_12w || 0,
         screens_12w: a.screens_12w || 0,
         ats_12w: a.ats_12w || 0,
@@ -1125,10 +1158,10 @@ const MBRTab = ({ data }) => {
                 <tr key={idx} className={idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'}>
                   <td className="text-left px-2 py-2 text-white font-medium">{row.client}</td>
                   <td className="text-center px-2 py-2 text-gray-300">{row.hires_12w}</td>
-                  <td className="text-center px-2 py-2 text-gray-300">{row.hires}</td>
-                  <td className="text-center px-2 py-2 text-gray-300">{row.contacted}</td>
-                  <td className="text-center px-2 py-2 text-gray-300">{row.actual_screens}</td>
-                  <td className="text-center px-2 py-2 text-gray-300">{row.ats}</td>
+                  <td className="text-center px-2 py-2" style={getCellStyle(row.hires, row.hires_target)}>{row.hires}</td>
+                  <td className="text-center px-2 py-2" style={getCellStyle(row.contacted, row.contacted_target)}>{row.contacted}</td>
+                  <td className="text-center px-2 py-2" style={getCellStyle(row.actual_screens, row.actual_screens_target)}>{row.actual_screens}</td>
+                  <td className="text-center px-2 py-2" style={getCellStyle(row.ats, row.ats_target)}>{row.ats}</td>
                   <td className="text-center px-2 py-2 text-gray-300">{row.offers}</td>
                 </tr>
               ))}
@@ -1176,11 +1209,11 @@ const MBRTab = ({ data }) => {
                   <td className="text-left px-2 py-2 text-white font-medium">{r.ts}</td>
                   <td className="text-center px-2 py-2 text-gray-300">{r.hires_12w || '—'}</td>
                   <td className="text-center px-2 py-2 text-gray-400">{r.pct_actual_to_ats_12w != null ? `${r.pct_actual_to_ats_12w}%` : '—'}</td>
-                  <td className="text-center px-2 py-2" style={getCellStyle(r.contacted, r.contacted_target)}>{r.contacted}</td>
+                  <td className="text-center px-2 py-2" style={getCellStyle(r.contacted, r._contacted_color_target)}>{r.contacted}</td>
                   <td className="text-center px-2 py-2 text-gray-500">{r.contacted_target || '—'}</td>
-                  <td className="text-center px-2 py-2 text-gray-300">{r.recruiter_screens}</td>
-                  <td className="text-center px-2 py-2 text-gray-300">{r.actual_screens}</td>
-                  <td className="text-center px-2 py-2 text-gray-300">{r.ats}</td>
+                  <td className="text-center px-2 py-2" style={getCellStyle(r.recruiter_screens, r.recruiter_screens_target)}>{r.recruiter_screens}</td>
+                  <td className="text-center px-2 py-2" style={getCellStyle(r.actual_screens, r.actual_screens_target)}>{r.actual_screens}</td>
+                  <td className="text-center px-2 py-2" style={getCellStyle(r.ats, r.ats_target)}>{r.ats}</td>
                   <td className="text-left px-2 py-2 text-gray-400 text-xs max-w-xs truncate" title={r.comment}>{r.comment || '—'}</td>
                 </tr>
               ))}

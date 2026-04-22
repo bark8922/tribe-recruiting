@@ -904,7 +904,7 @@ const WBRTab = ({ data }) => {
                           <td className="text-center px-2 py-2 text-gray-300">{row.roles || ''}</td>
                           <td className="text-center px-2 py-2 text-gray-300">{row.jobs_60d || ''}</td>
                           <td className="text-left px-3 py-3 text-gray-300 align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: '1.55' }}>
-                            {row.comment || '—'}
+                            {row.comment ? row.comment : <span className="inline-block px-2 py-0.5 rounded text-xs font-semibold" style={{ backgroundColor: '#991b1b', color: '#fecaca' }}>⚠ Missing comment</span>}
                           </td>
                         </tr>
                       );
@@ -1010,7 +1010,7 @@ const WBRTab = ({ data }) => {
                     <td className="text-center px-2 py-2 text-gray-300 align-top">{row.num_jobs}</td>
                     <td className="text-center px-2 py-2 text-gray-300 align-top">{row.num_tas}</td>
                     <td className="text-left px-3 py-3 text-gray-300 align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: '1.55' }}>{row.ta_names || '—'}</td>
-                    <td className="text-left px-3 py-3 text-gray-300 align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: '1.55' }}>{row.comment || '—'}</td>
+                    <td className="text-left px-3 py-3 text-gray-300 align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: '1.55' }}>{row.comment ? row.comment : <span className="inline-block px-2 py-0.5 rounded text-xs font-semibold" style={{ backgroundColor: '#991b1b', color: '#fecaca' }}>⚠ Missing comment</span>}</td>
                   </tr>
                 ))}
                 <tr className="bg-gray-750 border-t border-gray-600 font-bold text-base">

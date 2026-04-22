@@ -1521,6 +1521,7 @@ const MBRTab = ({ data }) => {
 // Validated 2026-04-20 vs PBIX Overview page Apr 13-19 (24/24 per-client within 1-3 units).
 
 const PD_PERIODS = [
+  ['this_week',  'This week (Mon-today)'],
   ['last_week',  'Last full week (Mon-Sun)'],
   ['last_4w',    'Last 4 weeks'],
   ['last_month', 'Last calendar month'],
@@ -1538,6 +1539,7 @@ const pdPeriodWindow = (period) => {
   const thisMonday = new Date(today.getTime() - daysToMonday * 86400000);
   const addDays = (d, n) => new Date(d.getTime() + n * 86400000);
   switch (period) {
+    case 'this_week':  return [thisMonday, today];
     case 'last_week':  return [addDays(thisMonday, -7),  addDays(thisMonday, -1)];
     case 'last_4w':    return [addDays(thisMonday, -28), addDays(thisMonday, -1)];
     case 'last_month': {

@@ -1159,44 +1159,53 @@ const MBRTab = ({ data }) => {
         <div className="text-xl font-semibold text-white mt-1">Window: {windowLabel} (weeks {MBR_WEEKS.join(', ')})</div>
       </div>
 
-      {/* 1. Client's Target — compact layout (2026-04-22): table was w-full
-          stretching edge-to-edge; constrained to max-w-3xl so numeric columns
-          sit close together for visual comparison, matching PBI density. */}
+      {/* 1. Client's Target — compact layout with hard-coded column widths.
+          Iterating on a previous tailwind-only attempt (max-w-3xl) that didn't
+          visibly tighten spacing. */}
       <div className="bg-gray-800 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-white mb-4">Client's Target — Last 4 Weeks</h3>
-        <div className="overflow-x-auto">
-          <table className="text-sm max-w-3xl" style={{ tableLayout: 'auto' }}>
+        <div style={{ overflowX: 'auto' }}>
+          <table className="text-sm" style={{ width: '680px', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
+            <colgroup>
+              <col style={{ width: '180px' }} />
+              <col style={{ width: '70px' }} />
+              <col style={{ width: '70px' }} />
+              <col style={{ width: '90px' }} />
+              <col style={{ width: '90px' }} />
+              <col style={{ width: '70px' }} />
+              <col style={{ width: '80px' }} />
+            </colgroup>
             <thead>
               <tr className="text-gray-300 border-b border-gray-600">
-                <th className="text-left px-3 py-1">Client</th>
-                <th className="text-center px-3 py-1 text-xs" title="Last 12w Hires">12w H</th>
-                <th className="text-center px-3 py-1">Hires</th>
-                <th className="text-center px-3 py-1">Contacted</th>
-                <th className="text-center px-3 py-1">Act Scrn</th>
-                <th className="text-center px-3 py-1">ATS</th>
-                <th className="text-center px-3 py-1">Offers</th>
+                <th className="text-left px-2 py-1">Client</th>
+                <th className="text-center px-1 py-1 text-xs" title="Last 12w Hires">12w H</th>
+                <th className="text-center px-1 py-1">Hires</th>
+                <th className="text-center px-1 py-1">Contacted</th>
+                <th className="text-center px-1 py-1">Act Scrn</th>
+                <th className="text-center px-1 py-1">ATS</th>
+                <th className="text-center px-1 py-1">Offers</th>
               </tr>
             </thead>
             <tbody>
               {clientRows.map((row, idx) => (
                 <tr key={idx} className={idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'}>
-                  <td className="text-left px-3 py-1 text-white font-medium whitespace-nowrap">{row.client}</td>
-                  <td className="text-center px-3 py-1 text-gray-300">{row.hires_12w}</td>
-                  <td className="text-center px-3 py-1" style={getCellStyle(row.hires, row.hires_target)}>{row.hires}</td>
-                  <td className="text-center px-3 py-1" style={getCellStyle(row.contacted, row.contacted_target)}>{row.contacted}</td>
-                  <td className="text-center px-3 py-1" style={getCellStyle(row.actual_screens, row.actual_screens_target)}>{row.actual_screens}</td>
-                  <td className="text-center px-3 py-1" style={getCellStyle(row.ats, row.ats_target)}>{row.ats}</td>
-                  <td className="text-center px-3 py-1 text-gray-300">{row.offers}</td>
+                  <td className="text-left px-2 py-1 text-white font-medium whitespace-nowrap">{row.client}</td>
+                  <td className="text-center px-1 py-1 text-gray-300">{row.hires_12w}</td>
+                  <td className="text-center px-1 py-1" style={getCellStyle(row.hires, row.hires_target)}>{row.hires}</td>
+                  <td className="text-center px-1 py-1" style={getCellStyle(row.contacted, row.contacted_target)}>{row.contacted}</td>
+                  <td className="text-center px-1 py-1" style={getCellStyle(row.actual_screens, row.actual_screens_target)}>{row.actual_screens}</td>
+                  <td className="text-center px-1 py-1" style={getCellStyle(row.ats, row.ats_target)}>{row.ats}</td>
+                  <td className="text-center px-1 py-1 text-gray-300">{row.offers}</td>
                 </tr>
               ))}
               <tr className="bg-gray-700 border-t border-gray-600 font-semibold">
-                <td className="text-left px-3 py-1 text-white">Total</td>
-                <td className="text-center px-3 py-1 text-white">{clientTotals.hires_12w}</td>
-                <td className="text-center px-3 py-1 text-white">{clientTotals.hires}</td>
-                <td className="text-center px-3 py-1 text-white">{clientTotals.contacted}</td>
-                <td className="text-center px-3 py-1 text-white">{clientTotals.actual_screens}</td>
-                <td className="text-center px-3 py-1 text-white">{clientTotals.ats}</td>
-                <td className="text-center px-3 py-1 text-white">{clientTotals.offers}</td>
+                <td className="text-left px-2 py-1 text-white">Total</td>
+                <td className="text-center px-1 py-1 text-white">{clientTotals.hires_12w}</td>
+                <td className="text-center px-1 py-1 text-white">{clientTotals.hires}</td>
+                <td className="text-center px-1 py-1 text-white">{clientTotals.contacted}</td>
+                <td className="text-center px-1 py-1 text-white">{clientTotals.actual_screens}</td>
+                <td className="text-center px-1 py-1 text-white">{clientTotals.ats}</td>
+                <td className="text-center px-1 py-1 text-white">{clientTotals.offers}</td>
               </tr>
             </tbody>
           </table>
@@ -1209,13 +1218,25 @@ const MBRTab = ({ data }) => {
       {/* 3. Dolphins & Whales */}
       {renderTaGroup('Dolphins/Whales')}
 
-      {/* 4. TS Target Last 4 Weeks — compact (2026-04-22): numeric columns
-          were too spread; tightened px to px-2/py-1 and wrapped comment cell
-          in whitespace-normal + flex min-w so the full comment is readable. */}
+      {/* 4. TS Target Last 4 Weeks — explicit column widths via colgroup.
+          Numeric columns fixed to small px widths; comment column takes all
+          remaining space via 'auto' and whitespace-normal so Andy's full
+          comment is visible. */}
       <div className="bg-gray-800 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-white mb-4">TS's Target — Last 4 Weeks</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+        <div style={{ overflowX: 'auto' }}>
+          <table className="text-sm" style={{ width: '100%', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
+            <colgroup>
+              <col style={{ width: '170px' }} />
+              <col style={{ width: '60px' }} />
+              <col style={{ width: '70px' }} />
+              <col style={{ width: '85px' }} />
+              <col style={{ width: '55px' }} />
+              <col style={{ width: '70px' }} />
+              <col style={{ width: '70px' }} />
+              <col style={{ width: '55px' }} />
+              <col />
+            </colgroup>
             <thead>
               <tr className="text-gray-300 border-b border-gray-600">
                 <th className="text-left px-2 py-1">Sourcer</th>
@@ -1226,21 +1247,21 @@ const MBRTab = ({ data }) => {
                 <th className="text-center px-1 py-1 text-xs">Rec Scrn</th>
                 <th className="text-center px-1 py-1 text-xs">Act Scrn</th>
                 <th className="text-center px-1 py-1 text-xs">ATS</th>
-                <th className="text-left px-2 py-1 text-xs" style={{ minWidth: '340px', width: '50%' }}>Latest Comment</th>
+                <th className="text-left px-2 py-1 text-xs">Latest Comment</th>
               </tr>
             </thead>
             <tbody>
               {tsRows.map((r, idx) => (
                 <tr key={idx} className={idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'}>
-                  <td className="text-left px-2 py-1 text-white font-medium whitespace-nowrap">{r.ts}</td>
-                  <td className="text-center px-1 py-1 text-gray-300">{r.hires_12w || '—'}</td>
-                  <td className="text-center px-1 py-1 text-gray-400">{r.pct_actual_to_ats_12w != null ? `${r.pct_actual_to_ats_12w}%` : '—'}</td>
-                  <td className="text-center px-1 py-1" style={getCellStyle(r.contacted, r._contacted_color_target)}>{r.contacted}</td>
-                  <td className="text-center px-1 py-1 text-gray-500">{r.contacted_target || '—'}</td>
-                  <td className="text-center px-1 py-1" style={getCellStyle(r.recruiter_screens, r.recruiter_screens_target)}>{r.recruiter_screens}</td>
-                  <td className="text-center px-1 py-1" style={getCellStyle(r.actual_screens, r.actual_screens_target)}>{r.actual_screens}</td>
-                  <td className="text-center px-1 py-1" style={getCellStyle(r.ats, r.ats_target)}>{r.ats}</td>
-                  <td className="text-left px-2 py-1 text-gray-400 text-xs whitespace-normal align-top" title={r.comment}>{r.comment || '—'}</td>
+                  <td className="text-left px-2 py-1 text-white font-medium whitespace-normal align-top">{r.ts}</td>
+                  <td className="text-center px-1 py-1 text-gray-300 align-top">{r.hires_12w || '—'}</td>
+                  <td className="text-center px-1 py-1 text-gray-400 align-top">{r.pct_actual_to_ats_12w != null ? `${r.pct_actual_to_ats_12w}%` : '—'}</td>
+                  <td className="text-center px-1 py-1 align-top" style={getCellStyle(r.contacted, r._contacted_color_target)}>{r.contacted}</td>
+                  <td className="text-center px-1 py-1 text-gray-500 align-top">{r.contacted_target || '—'}</td>
+                  <td className="text-center px-1 py-1 align-top" style={getCellStyle(r.recruiter_screens, r.recruiter_screens_target)}>{r.recruiter_screens}</td>
+                  <td className="text-center px-1 py-1 align-top" style={getCellStyle(r.actual_screens, r.actual_screens_target)}>{r.actual_screens}</td>
+                  <td className="text-center px-1 py-1 align-top" style={getCellStyle(r.ats, r.ats_target)}>{r.ats}</td>
+                  <td className="text-left px-2 py-1 text-gray-300 text-xs align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>{r.comment || '—'}</td>
                 </tr>
               ))}
               <tr className="bg-gray-700 border-t border-gray-600 font-semibold">
@@ -1895,28 +1916,4 @@ const ProjectDashboardTab = ({ data }) => {
                 ))}
               </tbody>
             </table>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
-
-
-// Main Dashboard
-const RecruitingDashboard = () => {
-  const [activeTab, setActiveTab] = useState('wbr');
-  // Data source toggle: 'snowflake' = Keboola-Snowflake pipeline (accurate, refreshed 3x/day)
-  //                     'pbi' = legacy Power BI / Bubble pipeline (kept for comparison)
-  const [dataSource, setDataSource] = useState('snowflake');
-  const dashboardData = dataSource === 'pbi' ? dashboardDataPbi : dashboardDataSnowflake;
-  return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <div className="bg-gray-800 border-b border-gray-700 px-6 py-6 flex items-start justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-white">Tribe.xyz Recruiting Dashboard</h1>
-          <p className="text-sm text-gray-400 mt-1">
-            {dataSource === 'pbi' ? 'Power BI / Bubble pipeline' : 'Snowflake pipeline (parallel-run)'}
-          </p>
-        </div>
-        <div className="
+   

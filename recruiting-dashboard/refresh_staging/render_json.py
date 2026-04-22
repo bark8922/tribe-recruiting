@@ -368,12 +368,15 @@ def load_ta_targets_from_csv(preserve_from_live: list[dict] | None = None) -> li
                 except ValueError:
                     return 0.0
 
+            # Keboola's Google Drive extractor sanitizes column names (spaces
+            # → underscores); sync_google_sheet.py preserves the originals.
+            # Accept both so render_json works under either pipeline.
             entry = {
                 "client": client,
                 "ta": ta,
                 "contacted":      _num(row.get("Contacted") or ""),
-                "actual_screens": _num(row.get("Actual Screens") or ""),
-                "moved_to_ats":   _num(row.get("Moved to ATS") or ""),
+                "actual_screens": _num(row.get("Actual Screens") or row.get("Actual_Screens") or ""),
+                "moved_to_ats":   _num(row.get("Moved to ATS") or row.get("Moved_to_ATS") or ""),
                 "hires":          _num(row.get("Hires") or ""),
             }
             key = (fold_name(client), fold_name(ta))
@@ -473,7 +476,8 @@ def build_ts_weekly_from_csv() -> list[dict]:
                 "ts": ts,
                 "year": 2026,
                 "week": int(m.group(2)),
-                "contacted_target": _safe_int(row.get("Contacted Target")),
+                # Accept "Contacted Target" (sync_google_sheet) or "Contacted_Target" (Keboola extractor)
+                "contacted_target": _safe_int(row.get("Contacted Target") or row.get("Contacted_Target")),
                 "reasoning": (row.get("Reasoning") or "").strip() or None,
                 "comment": (row.get("Comment") or "").strip() or None,
             })

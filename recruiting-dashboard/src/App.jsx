@@ -369,6 +369,20 @@ const WBRTab = ({ data }) => {
     );
     const hasWeeklyRoster = weeklyRoster.length > 0;
 
+    // Rebuild the Wolt catch-all → sub-BU map (same logic as the client-
+    // summary useMemo, but that map is scoped there). Only (client, TA)
+    // pairs with non-empty team_group so roster placeholders don't absorb
+    // Wolt-catch-all jobs from unrelated TAs.
+    const recruiterToWoltSubBu = new Map();
+    data.targets.forEach((t) => {
+      if (!t.team_group) return;
+      const ta = normalizeTa(t.ta);
+      const cl = normalizeClient(t.client);
+      if (ta && cl && cl.startsWith('Wolt') && !recruiterToWoltSubBu.has(ta)) {
+        recruiterToWoltSubBu.set(ta, cl);
+      }
+    });
+
     data.targets.forEach((t) => {
       const display = normalizeClient(t.client);
       // Skip (client, TA) pairs not in the weekly note for this week
@@ -389,14 +403,34 @@ const WBRTab = ({ data }) => {
         }
       });
 
-      // Roles for this TA
+      // Roles for this TA — use ta_jobs_weekly (PBI-parity DISTINCTCOUNT
+      // per (client, who_event_created_for, week)) instead of the static
+      // data.roles map. data.roles is a cumulative-ever count with no week
+      // filter, no archived/external filter, and no Wolt sub-BU routing, so
+      // it wildly over/under-counts vs PBI (Alisa 2→16, Jovana 6→21,
+      // Elena 10→1). Wolt catch-all rows are re-routed to the TA's
+      // display sub-BU via recruiterToWoltSubBu (built in the client-summary
+      // useMemo above for the same purpose).
       let roles = 0;
-      Object.keys(data.roles || {}).forEach((key) => {
-        const [rClient, rTa] = key.split('|');
-        if (kebolaClientMatches(rClient, display) && normalizeTa(rTa) === normalizeTa(t.ta)) {
-          roles += data.roles[key] || 0;
-        }
-      });
+      if (data.ta_jobs_weekly && data.ta_jobs_weekly[weekKey]) {
+        Object.entries(data.ta_jobs_weekly[weekKey]).forEach(([key, val]) => {
+          const [rawClient, rawTa] = key.split('|');
+          if (normalizeTa(rawTa) !== normalizeTa(t.ta)) return;
+          let routedClient = normalizeClient(rawClient);
+          if (routedClient === 'Wolt') {
+            routedClient = recruiterToWoltSubBu.get(normalizeTa(rawTa)) || null;
+          }
+          if (routedClient === display) roles += val;
+        });
+      } else {
+        // Fallback to data.roles for older snapshots without ta_jobs_weekly
+        Object.keys(data.roles || {}).forEach((key) => {
+          const [rClient, rTa] = key.split('|');
+          if (kebolaClientMatches(rClient, display) && normalizeTa(rTa) === normalizeTa(t.ta)) {
+            roles += data.roles[key] || 0;
+          }
+        });
+      }
 
       // 12w hires for this TA
       let hires12w = 0;

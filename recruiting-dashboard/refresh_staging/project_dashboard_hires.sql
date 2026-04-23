@@ -36,7 +36,7 @@ job_meta AS (
   WHERE LOWER(NULLIF(j."test",'')) <> 'true'
     AND cl."client_name" IS NOT NULL
     AND cl."client_name" <> ''
-    AND cl."client_name" NOT IN ('Tribe.xyz','Tribe.xyz (IR)','BD - Tribe','Tribe - Marketing','Kamila AI - TEST','Bubble test')
+    AND cl."client_name" NOT IN ('BD - Tribe','Tribe - Marketing','Kamila AI - TEST','Bubble test')
 ),
 stage AS (
   SELECT

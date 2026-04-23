@@ -1604,6 +1604,7 @@ const ProjectDashboardTab = ({ data }) => {
   const [filterCategory, setFilterCategory] = useState('');
   const [filterSource, setFilterSource] = useState('');
   const [showExternal, setShowExternal] = useState(true);
+  const [showInternal, setShowInternal] = useState(true);
   const [hiresOpen, setHiresOpen] = useState(false);
   const [expandedJobs, setExpandedJobs] = useState(new Set());
   const [expandedTas, setExpandedTas] = useState(new Set());
@@ -1627,6 +1628,7 @@ const ProjectDashboardTab = ({ data }) => {
       const wk = `${r.iso_year}-W${String(r.iso_week).padStart(2, '0')}`;
       if (!weekSet.has(wk)) return false;
       if (!showExternal && r.is_external_recruiter) return false;
+      if (!showInternal && (r.client === 'Tribe.xyz' || r.client === 'Tribe.xyz (IR)')) return false;
       if (filterClient && normalizeClientPD(r.client) !== filterClient) return false;
       if (filterTa && r.ta !== filterTa) return false;
       if (filterTs && r.ts !== filterTs) return false;
@@ -1638,7 +1640,7 @@ const ProjectDashboardTab = ({ data }) => {
       }
       return true;
     });
-  }, [pdRows, weekSet, searchText, filterClient, filterTa, filterTs, filterCategory, filterSource, showExternal]);
+  }, [pdRows, weekSet, searchText, filterClient, filterTa, filterTs, filterCategory, filterSource, showExternal, showInternal]);
 
   const kpis = useMemo(() => filtered.reduce((a, r) => ({
     contacted: a.contacted + r.contacted,
@@ -1769,6 +1771,7 @@ const ProjectDashboardTab = ({ data }) => {
       if (!h.date_hired) return false;
       if (h.date_hired < startStr || h.date_hired > endStr) return false;
       if (!showExternal && h.is_external_recruiter) return false;
+      if (!showInternal && (h.client === 'Tribe.xyz' || h.client === 'Tribe.xyz (IR)')) return false;
       if (filterClient && normalizeClientPD(h.client) !== filterClient) return false;
       if (filterTa && h.ta !== filterTa) return false;
       if (filterTs && h.ts !== filterTs) return false;
@@ -1779,7 +1782,7 @@ const ProjectDashboardTab = ({ data }) => {
       }
       return true;
     });
-  }, [pdHires, startStr, endStr, searchText, filterClient, filterTa, filterTs, filterSource, showExternal]);
+  }, [pdHires, startStr, endStr, searchText, filterClient, filterTa, filterTs, filterSource, showExternal, showInternal]);
 
   const toggle = (set, setSet, client) => {
     const n = new Set(set);
@@ -1868,6 +1871,10 @@ const ProjectDashboardTab = ({ data }) => {
           <label className="flex items-center gap-2 text-sm text-gray-300">
             <input type="checkbox" checked={showExternal} onChange={(e) => setShowExternal(e.target.checked)} />
             Include external recruiters
+          </label>
+          <label className="flex items-center gap-2 text-sm text-gray-300">
+            <input type="checkbox" checked={showInternal} onChange={(e) => setShowInternal(e.target.checked)} />
+            Include Tribe internal roles
           </label>
         </div>
       </div>

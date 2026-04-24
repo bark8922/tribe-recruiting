@@ -2198,6 +2198,282 @@ const ProjectDashboardTab = ({ data }) => {
 };
 
 
+// ---------- Time to Hire Tab ----------
+// Metric definitions (from Andy's homework doc + PBI DAX):
+//   Time to Hire    = date_first_hired - date_first_hired_contacted  (> 0 only)
+//   Time to Find    = date_first_hired_contacted - date_created      (> 0 only)
+//   Time to Fill    = date_first_hired - date_created                (> 0 only)
+// Filters match PBI: not test, not archived, not external recruiter,
+//   client not in (Tribe.xyz, Kamila AI - TEST), job_title not blank.
+// Uses FIRST HIRED CANDIDATE per job (Andy Q8).
+const avgPositive = (arr, key) => {
+  const vs = arr.map(r => r[key]).filter(v => typeof v === 'number' && v > 0);
+  if (!vs.length) return null;
+  return Math.round(vs.reduce((s, v) => s + v, 0) / vs.length);
+};
+const countPositive = (arr, key) => arr.filter(r => r[key] > 0).length;
+
+const TTHTab = ({ data }) => {
+  const jobs = data.tth_jobs || [];
+  const monthly = data.tth_monthly || [];
+
+  // Filters
+  const [year, setYear] = useState('All');
+  const [client, setClient] = useState('All');
+  const [ta, setTa] = useState('All');
+  const [techRole, setTechRole] = useState('All');
+  const [drillClient, setDrillClient] = useState(null);      // expanded row in table 1
+  const [drillCategory, setDrillCategory] = useState(null);  // expanded row in table 2
+
+  // Available filter options
+  const years = useMemo(() => {
+    const ys = new Set(jobs.map(j => (j.date_first_hired || '').slice(0, 4)).filter(Boolean));
+    return ['All', ...Array.from(ys).sort().reverse()];
+  }, [jobs]);
+  const clients = useMemo(() => {
+    const cs = new Set(jobs.map(j => j.client).filter(Boolean));
+    return ['All', ...Array.from(cs).sort()];
+  }, [jobs]);
+  const tas = useMemo(() => {
+    const ts = new Set(jobs.map(j => j.ta).filter(Boolean));
+    return ['All', ...Array.from(ts).sort()];
+  }, [jobs]);
+
+  // Apply filters to get working set
+  const filtered = useMemo(() => {
+    return jobs.filter(j => {
+      if (year !== 'All' && (j.date_first_hired || '').slice(0, 4) !== year) return false;
+      if (client !== 'All' && j.client !== client) return false;
+      if (ta !== 'All' && j.ta !== ta) return false;
+      if (techRole !== 'All' && j.tech_role !== techRole) return false;
+      return true;
+    });
+  }, [jobs, year, client, ta, techRole]);
+
+  // KPI totals
+  const kpis = useMemo(() => ({
+    jobs: filtered.length,
+    tth: avgPositive(filtered, 'tth'),
+    t2find: avgPositive(filtered, 't2find'),
+    t2fill: avgPositive(filtered, 't2fill'),
+  }), [filtered]);
+
+  // Per-client aggregation
+  const byClient = useMemo(() => {
+    const groups = {};
+    filtered.forEach(j => { (groups[j.client] = groups[j.client] || []).push(j); });
+    return Object.entries(groups).map(([name, js]) => ({
+      client: name,
+      jobs: js.length,
+      tth: avgPositive(js, 'tth'),
+      t2find: avgPositive(js, 't2find'),
+      t2fill: avgPositive(js, 't2fill'),
+      items: js,
+    })).sort((a, b) => b.jobs - a.jobs);
+  }, [filtered]);
+
+  // Per-category aggregation (with subcategory drill-down)
+  const byCategory = useMemo(() => {
+    const groups = {};
+    filtered.forEach(j => { (groups[j.job_category] = groups[j.job_category] || []).push(j); });
+    return Object.entries(groups).map(([cat, js]) => {
+      const subGroups = {};
+      js.forEach(j => { (subGroups[j.job_subcategory || '-'] = subGroups[j.job_subcategory || '-'] || []).push(j); });
+      const subs = Object.entries(subGroups).map(([s, ss]) => ({
+        subcategory: s, jobs: ss.length,
+        tth: avgPositive(ss, 'tth'),
+        t2find: avgPositive(ss, 't2find'),
+        t2fill: avgPositive(ss, 't2fill'),
+      })).sort((a, b) => b.jobs - a.jobs);
+      return {
+        category: cat, jobs: js.length,
+        tth: avgPositive(js, 'tth'),
+        t2find: avgPositive(js, 't2find'),
+        t2fill: avgPositive(js, 't2fill'),
+        subs,
+      };
+    }).sort((a, b) => b.jobs - a.jobs);
+  }, [filtered]);
+
+  // Monthly trend
+  const trend = useMemo(() => {
+    const groups = {};
+    filtered.forEach(j => {
+      const mo = (j.date_first_hired || '').slice(0, 7);
+      if (!mo) return;
+      (groups[mo] = groups[mo] || []).push(j);
+    });
+    return Object.entries(groups).map(([month, js]) => ({
+      month,
+      monthLabel: new Date(month + '-01').toLocaleString('en-US', { month: 'short', year: 'numeric' }),
+      tth: avgPositive(js, 'tth'),
+      t2find: avgPositive(js, 't2find'),
+      t2fill: avgPositive(js, 't2fill'),
+    })).sort((a, b) => a.month.localeCompare(b.month));
+  }, [filtered]);
+
+  const Kpi = ({ label, value }) => (
+    <div className="bg-blue-100 text-blue-900 rounded-lg px-4 py-3 min-w-[120px] flex-1">
+      <div className="text-2xl font-bold">{value == null ? '-' : value}</div>
+      <div className="text-xs text-blue-800 mt-1">{label}</div>
+    </div>
+  );
+
+  const Select = ({ label, value, onChange, options }) => (
+    <div>
+      <div className="text-xs text-gray-400 mb-1">{label}</div>
+      <select value={value} onChange={e => onChange(e.target.value)}
+        className="w-full bg-gray-800 border border-gray-700 text-white text-sm rounded px-2 py-1">
+        {options.map(o => <option key={o} value={o}>{o}</option>)}
+      </select>
+    </div>
+  );
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-start justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-white">Time to Hire</h2>
+          <div className="text-sm text-gray-400 mt-1 max-w-3xl leading-relaxed">
+            <div><span className="font-semibold">Time to Hire:</span> days between contacted date and hired date of the first hire</div>
+            <div><span className="font-semibold">Time to Find a Hire:</span> days between job creation date and contacted date of the first hire</div>
+            <div><span className="font-semibold">Time to Fill:</span> days between job creation date and first hired date</div>
+          </div>
+        </div>
+        <div className="text-xs text-gray-500">
+          {jobs.length} jobs rostered &middot; source: Snowflake job table
+        </div>
+      </div>
+
+      <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-3">
+        <Select label="Year" value={year} onChange={setYear} options={years} />
+        <Select label="Client" value={client} onChange={setClient} options={clients} />
+        <Select label="TA" value={ta} onChange={setTa} options={tas} />
+        <Select label="Tech Role" value={techRole} onChange={setTechRole} options={['All', 'Yes', 'No']} />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div className="flex flex-col gap-3">
+          <Kpi label="# Jobs" value={kpis.jobs} />
+          <Kpi label="Time to Hire" value={kpis.tth} />
+          <Kpi label="Time to Find a Hire" value={kpis.t2find} />
+          <Kpi label="Time to Fill" value={kpis.t2fill} />
+        </div>
+        <div className="lg:col-span-2 bg-gray-800 border border-gray-700 rounded-lg p-4">
+          <div className="text-sm font-semibold text-white mb-2">Month Trends</div>
+          <ResponsiveContainer width="100%" height={260}>
+            <LineChart data={trend} margin={{ top: 10, right: 20, bottom: 10, left: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+              <XAxis dataKey="monthLabel" stroke="#9CA3AF" fontSize={11} />
+              <YAxis stroke="#9CA3AF" fontSize={11} />
+              <Tooltip contentStyle={{ backgroundColor: '#1F2937', border: '1px solid #374151', borderRadius: '6px' }} labelStyle={{ color: '#F3F4F6' }} />
+              <Legend wrapperStyle={{ fontSize: 12 }} />
+              <Line type="monotone" dataKey="tth" name="Time to Hire" stroke="#22C55E" strokeWidth={2} dot={{ r: 3 }} />
+              <Line type="monotone" dataKey="t2find" name="Time to Find a Hire" stroke="#F59E0B" strokeWidth={2} dot={{ r: 3 }} />
+              <Line type="monotone" dataKey="t2fill" name="Time to Fill" stroke="#3B82F6" strokeWidth={2} dot={{ r: 3 }} />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      <div className="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden">
+        <div className="px-4 py-3 bg-gray-700 text-sm font-semibold text-white">
+          First Hired per Job by Client / Job Title
+        </div>
+        <div className="overflow-x-auto">
+          <table className="min-w-full text-sm">
+            <thead className="bg-gray-900 text-gray-300">
+              <tr>
+                <th className="text-left px-4 py-2 font-medium">Client</th>
+                <th className="text-right px-3 py-2 font-medium"># Jobs</th>
+                <th className="text-right px-3 py-2 font-medium">Time to Hire</th>
+                <th className="text-right px-3 py-2 font-medium">Time to Find a Hire</th>
+                <th className="text-right px-3 py-2 font-medium">Time to Fill</th>
+              </tr>
+            </thead>
+            <tbody>
+              {byClient.map(row => (
+                <React.Fragment key={row.client}>
+                  <tr onClick={() => setDrillClient(drillClient === row.client ? null : row.client)}
+                    className="border-t border-gray-700 hover:bg-gray-700 cursor-pointer">
+                    <td className="px-4 py-2 text-white">
+                      <span className="inline-block w-3 text-gray-400">{drillClient === row.client ? '\u25BE' : '\u25B8'}</span> {row.client}
+                    </td>
+                    <td className="px-3 py-2 text-right text-gray-300">{row.jobs}</td>
+                    <td className="px-3 py-2 text-right text-gray-300">{row.tth ?? '-'}</td>
+                    <td className="px-3 py-2 text-right text-gray-300">{row.t2find ?? '-'}</td>
+                    <td className="px-3 py-2 text-right text-gray-300">{row.t2fill ?? '-'}</td>
+                  </tr>
+                  {drillClient === row.client && row.items.map(j => (
+                    <tr key={j.job_id} className="border-t border-gray-700/50 bg-gray-900/40 text-xs">
+                      <td className="px-4 py-1.5 pl-10 text-gray-300 max-w-[420px] truncate" title={j.job_title}>
+                        {j.job_title}
+                      </td>
+                      <td className="px-3 py-1.5 text-right text-gray-500">1</td>
+                      <td className="px-3 py-1.5 text-right text-gray-400">{j.tth || '-'}</td>
+                      <td className="px-3 py-1.5 text-right text-gray-400">{j.t2find || '-'}</td>
+                      <td className="px-3 py-1.5 text-right text-gray-400">{j.t2fill || '-'}</td>
+                    </tr>
+                  ))}
+                </React.Fragment>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div className="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden">
+        <div className="px-4 py-3 bg-gray-700 text-sm font-semibold text-white">
+          First Hired per Job by Job Category / Subcategory
+        </div>
+        <div className="overflow-x-auto">
+          <table className="min-w-full text-sm">
+            <thead className="bg-gray-900 text-gray-300">
+              <tr>
+                <th className="text-left px-4 py-2 font-medium">Job Category</th>
+                <th className="text-right px-3 py-2 font-medium"># Jobs</th>
+                <th className="text-right px-3 py-2 font-medium">Time to Hire</th>
+                <th className="text-right px-3 py-2 font-medium">Time to Find a Hire</th>
+                <th className="text-right px-3 py-2 font-medium">Time to Fill</th>
+              </tr>
+            </thead>
+            <tbody>
+              {byCategory.map(row => (
+                <React.Fragment key={row.category}>
+                  <tr onClick={() => setDrillCategory(drillCategory === row.category ? null : row.category)}
+                    className="border-t border-gray-700 hover:bg-gray-700 cursor-pointer">
+                    <td className="px-4 py-2 text-white">
+                      <span className="inline-block w-3 text-gray-400">{drillCategory === row.category ? '\u25BE' : '\u25B8'}</span> {row.category || '(no category)'}
+                    </td>
+                    <td className="px-3 py-2 text-right text-gray-300">{row.jobs}</td>
+                    <td className="px-3 py-2 text-right text-gray-300">{row.tth ?? '-'}</td>
+                    <td className="px-3 py-2 text-right text-gray-300">{row.t2find ?? '-'}</td>
+                    <td className="px-3 py-2 text-right text-gray-300">{row.t2fill ?? '-'}</td>
+                  </tr>
+                  {drillCategory === row.category && row.subs.map(sub => (
+                    <tr key={sub.subcategory} className="border-t border-gray-700/50 bg-gray-900/40 text-xs">
+                      <td className="px-4 py-1.5 pl-10 text-gray-300">{sub.subcategory}</td>
+                      <td className="px-3 py-1.5 text-right text-gray-400">{sub.jobs}</td>
+                      <td className="px-3 py-1.5 text-right text-gray-400">{sub.tth ?? '-'}</td>
+                      <td className="px-3 py-1.5 text-right text-gray-400">{sub.t2find ?? '-'}</td>
+                      <td className="px-3 py-1.5 text-right text-gray-400">{sub.t2fill ?? '-'}</td>
+                    </tr>
+                  ))}
+                </React.Fragment>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div className="text-xs text-gray-500 mt-2">
+        Computed from <code className="text-gray-400">job.date_first_hired / date_first_hired_contacted / date_created</code> &mdash;
+        excludes jobs where diff = 0 (per Andy&apos;s rule). ~95%+ match vs Power BI Time to Hire page (small drift from data refresh lag).
+      </div>
+    </div>
+  );
+};
+
 // Main Dashboard
 const RecruitingDashboard = () => {
   const [activeTab, setActiveTab] = useState('wbr');
@@ -2238,12 +2514,12 @@ const RecruitingDashboard = () => {
       </div>
       <div className="bg-gray-800 border-b border-gray-700 px-6">
         <div className="flex gap-8">
-          {['wbr', 'mbr', 'project'].map((tab) => (
+          {['wbr', 'mbr', 'project', 'tth'].map((tab) => (
             <button key={tab} onClick={() => setActiveTab(tab)}
               className={`py-4 px-2 font-medium border-b-2 transition-colors ${
                 activeTab === tab ? 'text-white border-white' : 'text-gray-400 border-transparent hover:text-gray-300'
               }`}>
-              {tab === 'wbr' ? 'WBR' : tab === 'mbr' ? 'MBR' : 'Project Dashboard'}
+              {tab === 'wbr' ? 'WBR' : tab === 'mbr' ? 'MBR' : tab === 'project' ? 'Project Dashboard' : 'Time to Hire'}
             </button>
           ))}
         </div>
@@ -2252,6 +2528,7 @@ const RecruitingDashboard = () => {
         {activeTab === 'wbr' && <WBRTab data={dashboardData} />}
         {activeTab === 'mbr' && <MBRTab data={dashboardData} />}
         {activeTab === 'project' && <ProjectDashboardTab data={dashboardData} />}
+        {activeTab === 'tth' && <TTHTab data={dashboardData} />}
       </div>
     </div>
   );

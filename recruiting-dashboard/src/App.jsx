@@ -2184,6 +2184,21 @@ const avgWithFlag = (arr, key, flagKey) => {
   if (!vs.length) return null;
   return Math.round(vs.reduce((s, v) => s + v, 0) / vs.length);
 };
+// Avg using per-job month-list inclusion (PBI DAX semantics).
+// Row included if any entry in row[monthsKey] is in periodMonths Set.
+// Falls back to row[fallbackFlagKey] === 1 when the row lacks a month-list
+// (legacy data produced before the TTH transformation shipped).
+const avgByMonths = (arr, valueKey, monthsKey, periodMonths, fallbackFlagKey) => {
+  const vs = arr.filter(r => {
+    const ms = r[monthsKey];
+    if (Array.isArray(ms) && ms.length > 0) {
+      return ms.some(m => periodMonths.has(m));
+    }
+    return fallbackFlagKey ? Number(r[fallbackFlagKey]) === 1 : false;
+  }).map(r => r[valueKey]).filter(v => typeof v === 'number');
+  if (!vs.length) return null;
+  return Math.round(vs.reduce((s, v) => s + v, 0) / vs.length);
+};
 const countPositive = (arr, key) => arr.filter(r => r[key] > 0).length;
 
 const TTHTab = ({ data }) => {
@@ -2238,10 +2253,29 @@ const TTHTab = ({ data }) => {
     return hms.some(m => m.slice(0,4) === year);
   };
 
-  // Year-specific flag keys for T2F/T2Fi (PBI DAX candidate-level filter per year).
-  // For month/quarter filters, use the year's flags. For 'All', fall back to legacy combined flags.
+  // Year-specific flag keys — fallback for legacy data without t2f_months.
   const t2fFlag = year === 'All' ? 'has_t2f' : `has_t2f_${year}`;
   const t2fiFlag = year === 'All' ? 'has_t2fi' : `has_t2fi_${year}`;
+  // Set of YYYY-MM strings matching the current year/quarter/month filter.
+  // Used with avgByMonths for PBI-accurate month-level T2F/T2Fi filtering.
+  const periodMonths = useMemo(() => {
+    const set = new Set();
+    if (year === 'All') {
+      jobs.forEach(j => (j.hire_months || []).forEach(m => { if (m) set.add(m); }));
+      return set;
+    }
+    if (month !== 'All') { set.add(month); return set; }
+    if (quarter !== 'All') {
+      const qn = Number(quarter.replace('Q', ''));
+      for (let i = 0; i < 3; i++) {
+        const mm = String(qn * 3 - 2 + i).padStart(2, '0');
+        set.add(`${year}-${mm}`);
+      }
+      return set;
+    }
+    for (let i = 1; i <= 12; i++) set.add(`${year}-${String(i).padStart(2, '0')}`);
+    return set;
+  }, [jobs, year, quarter, month]);
 
   // Apply filters to get working set
   const filtered = useMemo(() => {
@@ -2258,8 +2292,8 @@ const TTHTab = ({ data }) => {
   const kpis = useMemo(() => ({
     jobs: filtered.length,
     tth: avgPositive(filtered, 'tth'),
-    t2find: avgWithFlag(filtered, 't2find', t2fFlag),
-    t2fill: avgWithFlag(filtered, 't2fill', t2fiFlag),
+    t2find: avgByMonths(filtered, 't2find', 't2f_months', periodMonths, t2fFlag),
+    t2fill: avgByMonths(filtered, 't2fill', 't2fi_months', periodMonths, t2fiFlag),
   }), [filtered, t2fFlag, t2fiFlag]);
 
   // Per-client aggregation
@@ -2270,11 +2304,11 @@ const TTHTab = ({ data }) => {
       client: name,
       jobs: js.length,
       tth: avgPositive(js, 'tth'),
-      t2find: avgWithFlag(js, 't2find', t2fFlag),
-      t2fill: avgWithFlag(js, 't2fill', t2fiFlag),
+      t2find: avgByMonths(js, 't2find', 't2f_months', periodMonths, t2fFlag),
+      t2fill: avgByMonths(js, 't2fill', 't2fi_months', periodMonths, t2fiFlag),
       items: js,
     })).sort((a, b) => b.jobs - a.jobs);
-  }, [filtered, t2fFlag, t2fiFlag]);
+  }, [filtered, periodMonths, t2fFlag, t2fiFlag]);
 
   // Per-category aggregation (with subcategory drill-down)
   const byCategory = useMemo(() => {
@@ -2286,18 +2320,18 @@ const TTHTab = ({ data }) => {
       const subs = Object.entries(subGroups).map(([s, ss]) => ({
         subcategory: s, jobs: ss.length,
         tth: avgPositive(ss, 'tth'),
-        t2find: avgWithFlag(ss, 't2find', t2fFlag),
-        t2fill: avgWithFlag(ss, 't2fill', t2fiFlag),
+        t2find: avgByMonths(ss, 't2find', 't2f_months', periodMonths, t2fFlag),
+        t2fill: avgByMonths(ss, 't2fill', 't2fi_months', periodMonths, t2fiFlag),
       })).sort((a, b) => b.jobs - a.jobs);
       return {
         category: cat, jobs: js.length,
         tth: avgPositive(js, 'tth'),
-        t2find: avgWithFlag(js, 't2find', t2fFlag),
-        t2fill: avgWithFlag(js, 't2fill', t2fiFlag),
+        t2find: avgByMonths(js, 't2find', 't2f_months', periodMonths, t2fFlag),
+        t2fill: avgByMonths(js, 't2fill', 't2fi_months', periodMonths, t2fiFlag),
         subs,
       };
     }).sort((a, b) => b.jobs - a.jobs);
-  }, [filtered, t2fFlag, t2fiFlag]);
+  }, [filtered, periodMonths, t2fFlag, t2fiFlag]);
 
   // Monthly trend — iterate each job's hire_months and bucket (each job counts once per month with a hire).
   // For trend, per-month flag is based on the month's year (e.g., 2025-04 uses has_t2f_2025).
@@ -2312,12 +2346,13 @@ const TTHTab = ({ data }) => {
     });
     return Object.entries(groups).map(([mo, js]) => {
       const yr = mo.slice(0,4);
+      const moSet = new Set([mo]);
       return {
         month: mo,
         monthLabel: new Date(mo + '-01').toLocaleString('en-US', { month: 'short', year: 'numeric' }),
         tth: avgPositive(js, 'tth'),
-        t2find: avgWithFlag(js, 't2find', `has_t2f_${yr}`),
-        t2fill: avgWithFlag(js, 't2fill', `has_t2fi_${yr}`),
+        t2find: avgByMonths(js, 't2find', 't2f_months', moSet, `has_t2f_${yr}`),
+        t2fill: avgByMonths(js, 't2fill', 't2fi_months', moSet, `has_t2fi_${yr}`),
       };
     }).sort((a, b) => a.month.localeCompare(b.month));
   }, [filtered, year]);

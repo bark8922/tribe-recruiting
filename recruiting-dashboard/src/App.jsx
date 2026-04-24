@@ -2217,19 +2217,30 @@ const TTHTab = ({ data }) => {
   const jobs = data.tth_jobs || [];
   const monthly = data.tth_monthly || [];
 
-  // Filters
-  const [year, setYear] = useState('All');
+  // Filters — period (Year/Quarter/Month), client, TA, tech role
+  const [year, setYear] = useState('2026');
+  const [quarter, setQuarter] = useState('All');
+  const [month, setMonth] = useState('All');
   const [client, setClient] = useState('All');
   const [ta, setTa] = useState('All');
   const [techRole, setTechRole] = useState('All');
   const [drillClient, setDrillClient] = useState(null);      // expanded row in table 1
   const [drillCategory, setDrillCategory] = useState(null);  // expanded row in table 2
 
-  // Available filter options
+  // Available filter options — derive from hire_months (ANY hire, matching PBI)
   const years = useMemo(() => {
-    const ys = new Set(jobs.map(j => (j.date_first_hired || '').slice(0, 4)).filter(Boolean));
+    const ys = new Set();
+    jobs.forEach(j => (j.hire_months || []).forEach(m => { if (m) ys.add(m.slice(0,4)); }));
     return ['All', ...Array.from(ys).sort().reverse()];
   }, [jobs]);
+  const months = useMemo(() => {
+    if (year === 'All') return ['All'];
+    const ms = new Set();
+    jobs.forEach(j => (j.hire_months || []).forEach(m => {
+      if (m && m.slice(0,4) === year) ms.add(m);
+    }));
+    return ['All', ...Array.from(ms).sort()];
+  }, [jobs, year]);
   const clients = useMemo(() => {
     const cs = new Set(jobs.map(j => j.client).filter(Boolean));
     return ['All', ...Array.from(cs).sort()];
@@ -2239,16 +2250,31 @@ const TTHTab = ({ data }) => {
     return ['All', ...Array.from(ts).sort()];
   }, [jobs]);
 
+  // A period-match predicate: does this job have any hire falling in the selected year/quarter/month?
+  const jobMatchesPeriod = (j) => {
+    if (year === 'All') return true;
+    const hms = j.hire_months || [];
+    if (!hms.length) return false;
+    if (month !== 'All') return hms.includes(month);
+    if (quarter !== 'All') {
+      // quarter format: "Q1".."Q4", months Q1=01-03, Q2=04-06, Q3=07-09, Q4=10-12
+      const qNum = Number(quarter.replace('Q',''));
+      const qMonths = [qNum*3-2, qNum*3-1, qNum*3].map(n => String(n).padStart(2,'0'));
+      return hms.some(m => m.slice(0,4) === year && qMonths.includes(m.slice(5,7)));
+    }
+    return hms.some(m => m.slice(0,4) === year);
+  };
+
   // Apply filters to get working set
   const filtered = useMemo(() => {
     return jobs.filter(j => {
-      if (year !== 'All' && (j.date_first_hired || '').slice(0, 4) !== year) return false;
+      if (!jobMatchesPeriod(j)) return false;
       if (client !== 'All' && j.client !== client) return false;
       if (ta !== 'All' && j.ta !== ta) return false;
       if (techRole !== 'All' && j.tech_role !== techRole) return false;
       return true;
     });
-  }, [jobs, year, client, ta, techRole]);
+  }, [jobs, year, quarter, month, client, ta, techRole]);
 
   // KPI totals
   const kpis = useMemo(() => ({
@@ -2295,22 +2321,24 @@ const TTHTab = ({ data }) => {
     }).sort((a, b) => b.jobs - a.jobs);
   }, [filtered]);
 
-  // Monthly trend
+  // Monthly trend — iterate each job's hire_months and bucket (each job counts once per month with a hire)
   const trend = useMemo(() => {
     const groups = {};
     filtered.forEach(j => {
-      const mo = (j.date_first_hired || '').slice(0, 7);
-      if (!mo) return;
-      (groups[mo] = groups[mo] || []).push(j);
+      (j.hire_months || []).forEach(mo => {
+        if (!mo) return;
+        if (year !== 'All' && mo.slice(0,4) !== year) return;
+        (groups[mo] = groups[mo] || []).push(j);
+      });
     });
-    return Object.entries(groups).map(([month, js]) => ({
-      month,
-      monthLabel: new Date(month + '-01').toLocaleString('en-US', { month: 'short', year: 'numeric' }),
+    return Object.entries(groups).map(([mo, js]) => ({
+      month: mo,
+      monthLabel: new Date(mo + '-01').toLocaleString('en-US', { month: 'short', year: 'numeric' }),
       tth: avgPositive(js, 'tth'),
       t2find: avgPositive(js, 't2find'),
       t2fill: avgPositive(js, 't2fill'),
     })).sort((a, b) => a.month.localeCompare(b.month));
-  }, [filtered]);
+  }, [filtered, year]);
 
   const Kpi = ({ label, value }) => (
     <div className="bg-blue-100 text-blue-900 rounded-lg px-4 py-3 min-w-[120px] flex-1">
@@ -2345,8 +2373,10 @@ const TTHTab = ({ data }) => {
         </div>
       </div>
 
-      <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-3">
-        <Select label="Year" value={year} onChange={setYear} options={years} />
+      <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+        <Select label="Year" value={year} onChange={v => { setYear(v); setQuarter('All'); setMonth('All'); }} options={years} />
+        <Select label="Quarter" value={quarter} onChange={v => { setQuarter(v); setMonth('All'); }} options={year === 'All' ? ['All'] : ['All', 'Q1', 'Q2', 'Q3', 'Q4']} />
+        <Select label="Month" value={month} onChange={setMonth} options={months} />
         <Select label="Client" value={client} onChange={setClient} options={clients} />
         <Select label="TA" value={ta} onChange={setTa} options={tas} />
         <Select label="Tech Role" value={techRole} onChange={setTechRole} options={['All', 'Yes', 'No']} />

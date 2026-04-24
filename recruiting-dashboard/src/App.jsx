@@ -2238,6 +2238,11 @@ const TTHTab = ({ data }) => {
     return hms.some(m => m.slice(0,4) === year);
   };
 
+  // Year-specific flag keys for T2F/T2Fi (PBI DAX candidate-level filter per year).
+  // For month/quarter filters, use the year's flags. For 'All', fall back to legacy combined flags.
+  const t2fFlag = year === 'All' ? 'has_t2f' : `has_t2f_${year}`;
+  const t2fiFlag = year === 'All' ? 'has_t2fi' : `has_t2fi_${year}`;
+
   // Apply filters to get working set
   const filtered = useMemo(() => {
     return jobs.filter(j => {
@@ -2253,9 +2258,9 @@ const TTHTab = ({ data }) => {
   const kpis = useMemo(() => ({
     jobs: filtered.length,
     tth: avgPositive(filtered, 'tth'),
-    t2find: avgWithFlag(filtered, 't2find', 'has_t2f'),
-    t2fill: avgWithFlag(filtered, 't2fill', 'has_t2fi'),
-  }), [filtered]);
+    t2find: avgWithFlag(filtered, 't2find', t2fFlag),
+    t2fill: avgWithFlag(filtered, 't2fill', t2fiFlag),
+  }), [filtered, t2fFlag, t2fiFlag]);
 
   // Per-client aggregation
   const byClient = useMemo(() => {
@@ -2265,11 +2270,11 @@ const TTHTab = ({ data }) => {
       client: name,
       jobs: js.length,
       tth: avgPositive(js, 'tth'),
-      t2find: avgWithFlag(js, 't2find', 'has_t2f'),
-      t2fill: avgWithFlag(js, 't2fill', 'has_t2fi'),
+      t2find: avgWithFlag(js, 't2find', t2fFlag),
+      t2fill: avgWithFlag(js, 't2fill', t2fiFlag),
       items: js,
     })).sort((a, b) => b.jobs - a.jobs);
-  }, [filtered]);
+  }, [filtered, t2fFlag, t2fiFlag]);
 
   // Per-category aggregation (with subcategory drill-down)
   const byCategory = useMemo(() => {
@@ -2281,20 +2286,21 @@ const TTHTab = ({ data }) => {
       const subs = Object.entries(subGroups).map(([s, ss]) => ({
         subcategory: s, jobs: ss.length,
         tth: avgPositive(ss, 'tth'),
-        t2find: avgWithFlag(ss, 't2find', 'has_t2f'),
-        t2fill: avgWithFlag(ss, 't2fill', 'has_t2fi'),
+        t2find: avgWithFlag(ss, 't2find', t2fFlag),
+        t2fill: avgWithFlag(ss, 't2fill', t2fiFlag),
       })).sort((a, b) => b.jobs - a.jobs);
       return {
         category: cat, jobs: js.length,
         tth: avgPositive(js, 'tth'),
-        t2find: avgWithFlag(js, 't2find', 'has_t2f'),
-        t2fill: avgWithFlag(js, 't2fill', 'has_t2fi'),
+        t2find: avgWithFlag(js, 't2find', t2fFlag),
+        t2fill: avgWithFlag(js, 't2fill', t2fiFlag),
         subs,
       };
     }).sort((a, b) => b.jobs - a.jobs);
-  }, [filtered]);
+  }, [filtered, t2fFlag, t2fiFlag]);
 
-  // Monthly trend — iterate each job's hire_months and bucket (each job counts once per month with a hire)
+  // Monthly trend — iterate each job's hire_months and bucket (each job counts once per month with a hire).
+  // For trend, per-month flag is based on the month's year (e.g., 2025-04 uses has_t2f_2025).
   const trend = useMemo(() => {
     const groups = {};
     filtered.forEach(j => {
@@ -2304,13 +2310,16 @@ const TTHTab = ({ data }) => {
         (groups[mo] = groups[mo] || []).push(j);
       });
     });
-    return Object.entries(groups).map(([mo, js]) => ({
-      month: mo,
-      monthLabel: new Date(mo + '-01').toLocaleString('en-US', { month: 'short', year: 'numeric' }),
-      tth: avgPositive(js, 'tth'),
-      t2find: avgWithFlag(js, 't2find', 'has_t2f'),
-      t2fill: avgWithFlag(js, 't2fill', 'has_t2fi'),
-    })).sort((a, b) => a.month.localeCompare(b.month));
+    return Object.entries(groups).map(([mo, js]) => {
+      const yr = mo.slice(0,4);
+      return {
+        month: mo,
+        monthLabel: new Date(mo + '-01').toLocaleString('en-US', { month: 'short', year: 'numeric' }),
+        tth: avgPositive(js, 'tth'),
+        t2find: avgWithFlag(js, 't2find', `has_t2f_${yr}`),
+        t2fill: avgWithFlag(js, 't2fill', `has_t2fi_${yr}`),
+      };
+    }).sort((a, b) => a.month.localeCompare(b.month));
   }, [filtered, year]);
 
   const Kpi = ({ label, value }) => (
@@ -2355,15 +2364,14 @@ const TTHTab = ({ data }) => {
         <Select label="Tech Role" value={techRole} onChange={setTechRole} options={['All', 'Yes', 'No']} />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div className="flex flex-col gap-3">
-          <Kpi label="# Jobs" value={kpis.jobs} />
-          <Kpi label="Time to Hire" value={kpis.tth} />
-          <Kpi label="Time to Find a Hire" value={kpis.t2find} />
-          <Kpi label="Time to Fill" value={kpis.t2fill} />
-        </div>
-        <div className="lg:col-span-2 bg-gray-800 border border-gray-700 rounded-lg p-4">
-          <div className="text-sm font-semibold text-white mb-2">Month Trends</div>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <Kpi label="# Jobs" value={kpis.jobs} />
+        <Kpi label="Time to Hire" value={kpis.tth} />
+        <Kpi label="Time to Find a Hire" value={kpis.t2find} />
+        <Kpi label="Time to Fill" value={kpis.t2fill} />
+      </div>
+      <div className="bg-gray-800 border border-gray-700 rounded-lg p-4">
+        <div className="text-sm font-semibold text-white mb-2">Month Trends</div>
           <ResponsiveContainer width="100%" height={260}>
             <LineChart data={trend} margin={{ top: 10, right: 20, bottom: 10, left: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
@@ -2376,9 +2384,9 @@ const TTHTab = ({ data }) => {
               <Line type="monotone" dataKey="t2fill" name="Time to Fill" stroke="#3B82F6" strokeWidth={2} dot={{ r: 3 }} />
             </LineChart>
           </ResponsiveContainer>
-        </div>
       </div>
 
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
       <div className="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden">
         <div className="px-4 py-3 bg-gray-700 text-sm font-semibold text-white">
           First Hired per Job by Client / Job Title
@@ -2467,6 +2475,7 @@ const TTHTab = ({ data }) => {
             </tbody>
           </table>
         </div>
+      </div>
       </div>
 
       <div className="text-xs text-gray-500 mt-2">

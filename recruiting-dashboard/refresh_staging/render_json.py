@@ -83,6 +83,7 @@ SNOW_AUX = HERE / "snowflake_aux_12w.csv"
 SNOW_PROJECT_DASHBOARD = HERE / "snowflake_project_dashboard.csv"
 SNOW_PROJECT_HIRES = HERE / "snowflake_project_dashboard_hires.csv"
 SNOW_MBR_CONTACTED_EV = HERE / "snowflake_mbr_contacted_ev.csv"
+SNOW_TTH_JOBS = HERE / "snowflake_tth_jobs.csv"
 
 # WBR target sheet CSVs — synced by n8n workflow j5QsaTUpk4Nk1xhn.
 # These are the SINGLE SOURCE OF TRUTH for who appears in the dashboard:
@@ -669,6 +670,93 @@ def load_project_hires():
                 "date_hired":             (row.get("DATE_HIRED") or "").strip() or None,
             })
     return out
+
+
+def load_tth_jobs():
+    """Return {"tth_jobs": [...], "tth_monthly": [...]} from snowflake_tth_jobs.csv.
+
+    Produced by the TTH transformation (01kpztmw7d7911kbmyrdf7gcq5) - one row
+    per job that has >=1 candidate_stage.date_created >= 2023-01-01. Each row
+    carries per-year has_t2f_YYYY / has_t2fi_YYYY inclusion flags plus two
+    comma-separated month-lists (t2f_months, t2fi_months) for PBI-accurate
+    month-level filtering.
+
+    Powers the Time to Hire dashboard tab. Returns empty lists if the CSV is
+    missing so legacy runs without TTH inputs still render the rest of the
+    dashboard."""
+    if not SNOW_TTH_JOBS.exists():
+        return {"tth_jobs": [], "tth_monthly": [], "tth_summary": {"jobs_total": 0, "note": "snowflake_tth_jobs.csv not staged"}}
+
+    jobs = []
+    with SNOW_TTH_JOBS.open() as f:
+        for row in csv.DictReader(f):
+            months_all = [m.strip() for m in (row.get("cand_months") or row.get("CAND_MONTHS") or "").split(",") if m.strip()]
+            t2f_months = [m.strip() for m in (row.get("t2f_months") or row.get("T2F_MONTHS") or "").split(",") if m.strip()]
+            t2fi_months = [m.strip() for m in (row.get("t2fi_months") or row.get("T2FI_MONTHS") or "").split(",") if m.strip()]
+            def _ival(k):
+                v = row.get(k) or row.get(k.upper()) or "0"
+                try: return int(v)
+                except: return 0
+            jobs.append({
+                "job_id":                     (row.get("job_id") or row.get("JOB_ID") or "").strip(),
+                "client":                     (row.get("client_name") or row.get("CLIENT_NAME") or "").strip(),
+                "job_title":                  (row.get("job_title") or row.get("JOB_TITLE") or ""),
+                "job_category":               (row.get("job_category") or row.get("JOB_CATEGORY") or "Other"),
+                "job_subcategory":            (row.get("job_subcategory") or row.get("JOB_SUBCATEGORY") or ""),
+                "ta":                         (row.get("ta") or row.get("TA") or ""),
+                "date_created":               (row.get("date_created") or row.get("DATE_CREATED") or ""),
+                "date_first_hired":           (row.get("date_first_hired") or row.get("DATE_FIRST_HIRED") or ""),
+                "date_first_hired_contacted": (row.get("date_first_hired_contacted") or row.get("DATE_FIRST_HIRED_CONTACTED") or ""),
+                "tth":           _ival("tth"),
+                "t2find":        _ival("t2find"),
+                "t2fill":        _ival("t2fill"),
+                "has_t2f_2023":  _ival("has_t2f_2023"),
+                "has_t2fi_2023": _ival("has_t2fi_2023"),
+                "has_t2f_2024":  _ival("has_t2f_2024"),
+                "has_t2fi_2024": _ival("has_t2fi_2024"),
+                "has_t2f_2025":  _ival("has_t2f_2025"),
+                "has_t2fi_2025": _ival("has_t2fi_2025"),
+                "has_t2f_2026":  _ival("has_t2f_2026"),
+                "has_t2fi_2026": _ival("has_t2fi_2026"),
+                "has_t2f":       _ival("has_t2f"),
+                "has_t2fi":      _ival("has_t2fi"),
+                "tech_role":     (row.get("tech_role") or row.get("TECH_ROLE") or "No"),
+                "hire_months":   months_all,
+                "t2f_months":    t2f_months,
+                "t2fi_months":   t2fi_months,
+            })
+
+    # Monthly aggregation: for each month found in any job's hire_months,
+    # compute #Jobs, avg TTH (tth > 0), avg T2F (month in t2f_months),
+    # avg T2Fi (month in t2fi_months). Matches the dashboard's Month Trends chart.
+    from collections import defaultdict
+    by_month = defaultdict(list)
+    for j in jobs:
+        for m in j["hire_months"]:
+            by_month[m].append(j)
+    monthly = []
+    for m in sorted(by_month.keys()):
+        js = by_month[m]
+        tth_vals = [x["tth"] for x in js if x["tth"] > 0]
+        t2f_vals = [x["t2find"] for x in js if m in x["t2f_months"]]
+        t2fi_vals = [x["t2fill"] for x in js if m in x["t2fi_months"]]
+        monthly.append({
+            "month":  m,
+            "jobs":   len(js),
+            "tth":    round(sum(tth_vals)/len(tth_vals), 2) if tth_vals else None,
+            "t2find": round(sum(t2f_vals)/len(t2f_vals), 2) if t2f_vals else None,
+            "t2fill": round(sum(t2fi_vals)/len(t2fi_vals), 2) if t2fi_vals else None,
+        })
+
+    return {
+        "tth_jobs":    jobs,
+        "tth_monthly": monthly,
+        "tth_summary": {
+            "jobs_total": len(jobs),
+            "source": "out.c-TTH---tth-jobs.tth_jobs via Keboola Flow",
+        },
+    }
+
 
 
 def load_wbr_jobs():
@@ -1343,6 +1431,14 @@ def main():
         print(f"  project_dashboard: {len(out['project_dashboard']['rows'])} rows")
     if out["project_dashboard_hires"]:
         print(f"  project_dashboard_hires: {len(out['project_dashboard_hires'])} hires")
+    # Time to Hire tab — tth_jobs + tth_monthly from snowflake_tth_jobs.csv.
+    # Opt-in: returns empty lists if the CSV is missing.
+    _tth = load_tth_jobs()
+    out["tth_jobs"] = _tth["tth_jobs"]
+    out["tth_monthly"] = _tth["tth_monthly"]
+    out["tth_summary"] = _tth["tth_summary"]
+    if _tth["tth_jobs"]:
+        print(f"  tth_jobs: {len(_tth['tth_jobs'])} jobs, {len(_tth['tth_monthly'])} monthly buckets")
     out["ts_hires_12w"] = ts_hires_12w
     out["ts_ats_12w"] = ts_ats_12w
     out["ts_screens_12w"] = ts_screens_12w

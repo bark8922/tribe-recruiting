@@ -369,20 +369,6 @@ const WBRTab = ({ data }) => {
     );
     const hasWeeklyRoster = weeklyRoster.length > 0;
 
-    // Rebuild the Wolt catch-all → sub-BU map (same logic as the client-
-    // summary useMemo, but that map is scoped there). Only (client, TA)
-    // pairs with non-empty team_group so roster placeholders don't absorb
-    // Wolt-catch-all jobs from unrelated TAs.
-    const recruiterToWoltSubBu = new Map();
-    data.targets.forEach((t) => {
-      if (!t.team_group) return;
-      const ta = normalizeTa(t.ta);
-      const cl = normalizeClient(t.client);
-      if (ta && cl && cl.startsWith('Wolt') && !recruiterToWoltSubBu.has(ta)) {
-        recruiterToWoltSubBu.set(ta, cl);
-      }
-    });
-
     data.targets.forEach((t) => {
       const display = normalizeClient(t.client);
       // Skip (client, TA) pairs not in the weekly note for this week
@@ -403,34 +389,14 @@ const WBRTab = ({ data }) => {
         }
       });
 
-      // Roles for this TA — use ta_jobs_weekly (PBI-parity DISTINCTCOUNT
-      // per (client, who_event_created_for, week)) instead of the static
-      // data.roles map. data.roles is a cumulative-ever count with no week
-      // filter, no archived/external filter, and no Wolt sub-BU routing, so
-      // it wildly over/under-counts vs PBI (Alisa 2→16, Jovana 6→21,
-      // Elena 10→1). Wolt catch-all rows are re-routed to the TA's
-      // display sub-BU via recruiterToWoltSubBu (built in the client-summary
-      // useMemo above for the same purpose).
+      // Roles for this TA
       let roles = 0;
-      if (data.ta_jobs_weekly && data.ta_jobs_weekly[weekKey]) {
-        Object.entries(data.ta_jobs_weekly[weekKey]).forEach(([key, val]) => {
-          const [rawClient, rawTa] = key.split('|');
-          if (normalizeTa(rawTa) !== normalizeTa(t.ta)) return;
-          let routedClient = normalizeClient(rawClient);
-          if (routedClient === 'Wolt') {
-            routedClient = recruiterToWoltSubBu.get(normalizeTa(rawTa)) || null;
-          }
-          if (routedClient === display) roles += val;
-        });
-      } else {
-        // Fallback to data.roles for older snapshots without ta_jobs_weekly
-        Object.keys(data.roles || {}).forEach((key) => {
-          const [rClient, rTa] = key.split('|');
-          if (kebolaClientMatches(rClient, display) && normalizeTa(rTa) === normalizeTa(t.ta)) {
-            roles += data.roles[key] || 0;
-          }
-        });
-      }
+      Object.keys(data.roles || {}).forEach((key) => {
+        const [rClient, rTa] = key.split('|');
+        if (kebolaClientMatches(rClient, display) && normalizeTa(rTa) === normalizeTa(t.ta)) {
+          roles += data.roles[key] || 0;
+        }
+      });
 
       // 12w hires for this TA
       let hires12w = 0;
@@ -2211,6 +2177,13 @@ const avgPositive = (arr, key) => {
   if (!vs.length) return null;
   return Math.round(vs.reduce((s, v) => s + v, 0) / vs.length);
 };
+// Avg using per-job include flag (e.g., has_t2f=1 means include, 0 means exclude).
+// Matches PBI DAX: candidate-level filter determines inclusion, not the job value > 0.
+const avgWithFlag = (arr, key, flagKey) => {
+  const vs = arr.filter(r => Number(r[flagKey]) === 1).map(r => r[key]).filter(v => typeof v === 'number');
+  if (!vs.length) return null;
+  return Math.round(vs.reduce((s, v) => s + v, 0) / vs.length);
+};
 const countPositive = (arr, key) => arr.filter(r => r[key] > 0).length;
 
 const TTHTab = ({ data }) => {
@@ -2280,8 +2253,8 @@ const TTHTab = ({ data }) => {
   const kpis = useMemo(() => ({
     jobs: filtered.length,
     tth: avgPositive(filtered, 'tth'),
-    t2find: avgPositive(filtered, 't2find'),
-    t2fill: avgPositive(filtered, 't2fill'),
+    t2find: avgWithFlag(filtered, 't2find', 'has_t2f'),
+    t2fill: avgWithFlag(filtered, 't2fill', 'has_t2fi'),
   }), [filtered]);
 
   // Per-client aggregation
@@ -2292,8 +2265,8 @@ const TTHTab = ({ data }) => {
       client: name,
       jobs: js.length,
       tth: avgPositive(js, 'tth'),
-      t2find: avgPositive(js, 't2find'),
-      t2fill: avgPositive(js, 't2fill'),
+      t2find: avgWithFlag(js, 't2find', 'has_t2f'),
+      t2fill: avgWithFlag(js, 't2fill', 'has_t2fi'),
       items: js,
     })).sort((a, b) => b.jobs - a.jobs);
   }, [filtered]);
@@ -2308,14 +2281,14 @@ const TTHTab = ({ data }) => {
       const subs = Object.entries(subGroups).map(([s, ss]) => ({
         subcategory: s, jobs: ss.length,
         tth: avgPositive(ss, 'tth'),
-        t2find: avgPositive(ss, 't2find'),
-        t2fill: avgPositive(ss, 't2fill'),
+        t2find: avgWithFlag(ss, 't2find', 'has_t2f'),
+        t2fill: avgWithFlag(ss, 't2fill', 'has_t2fi'),
       })).sort((a, b) => b.jobs - a.jobs);
       return {
         category: cat, jobs: js.length,
         tth: avgPositive(js, 'tth'),
-        t2find: avgPositive(js, 't2find'),
-        t2fill: avgPositive(js, 't2fill'),
+        t2find: avgWithFlag(js, 't2find', 'has_t2f'),
+        t2fill: avgWithFlag(js, 't2fill', 'has_t2fi'),
         subs,
       };
     }).sort((a, b) => b.jobs - a.jobs);
@@ -2335,8 +2308,8 @@ const TTHTab = ({ data }) => {
       month: mo,
       monthLabel: new Date(mo + '-01').toLocaleString('en-US', { month: 'short', year: 'numeric' }),
       tth: avgPositive(js, 'tth'),
-      t2find: avgPositive(js, 't2find'),
-      t2fill: avgPositive(js, 't2fill'),
+      t2find: avgWithFlag(js, 't2find', 'has_t2f'),
+      t2fill: avgWithFlag(js, 't2fill', 'has_t2fi'),
     })).sort((a, b) => a.month.localeCompare(b.month));
   }, [filtered, year]);
 
@@ -2507,8 +2480,6 @@ const TTHTab = ({ data }) => {
 // Main Dashboard
 const RecruitingDashboard = () => {
   const [activeTab, setActiveTab] = useState('wbr');
-  // Data source toggle: 'snowflake' = Keboola-Snowflake pipeline (accurate, refreshed 3x/day)
-  //                     'pbi' = legacy Power BI / Bubble pipeline (kept for comparison)
   const [dataSource, setDataSource] = useState('snowflake');
   const dashboardData = dataSource === 'pbi' ? dashboardDataPbi : dashboardDataSnowflake;
   return (
@@ -2521,22 +2492,9 @@ const RecruitingDashboard = () => {
           </p>
         </div>
         <div className="flex items-center gap-2 bg-gray-900 border border-gray-700 rounded-lg p-1">
-          {[
-            ['pbi', 'Power BI'],
-            ['snowflake', 'Snowflake'],
-          ].map(([val, label]) => (
-            <button
-              key={val}
-              onClick={() => setDataSource(val)}
-              className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
-                dataSource === val
-                  ? 'bg-white text-gray-900'
-                  : 'text-gray-400 hover:text-gray-200'
-              }`}
-              title={val === 'pbi'
-                ? 'Current source of truth: Bubble → n8n → data.json'
-                : 'New: Keboola MCP → render_json → dashboard_data_snowflake.json'}
-            >
+          {[['pbi','Power BI'],['snowflake','Snowflake']].map(([val,label]) => (
+            <button key={val} onClick={() => setDataSource(val)}
+              className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${dataSource === val ? 'bg-white text-gray-900' : 'text-gray-400 hover:text-gray-200'}`}>
               {label}
             </button>
           ))}
@@ -2546,9 +2504,7 @@ const RecruitingDashboard = () => {
         <div className="flex gap-8">
           {['wbr', 'mbr', 'project', 'tth'].map((tab) => (
             <button key={tab} onClick={() => setActiveTab(tab)}
-              className={`py-4 px-2 font-medium border-b-2 transition-colors ${
-                activeTab === tab ? 'text-white border-white' : 'text-gray-400 border-transparent hover:text-gray-300'
-              }`}>
+              className={`py-4 px-2 font-medium border-b-2 transition-colors ${activeTab === tab ? 'text-white border-white' : 'text-gray-400 border-transparent hover:text-gray-300'}`}>
               {tab === 'wbr' ? 'WBR' : tab === 'mbr' ? 'MBR' : tab === 'project' ? 'Project Dashboard' : 'Time to Hire'}
             </button>
           ))}

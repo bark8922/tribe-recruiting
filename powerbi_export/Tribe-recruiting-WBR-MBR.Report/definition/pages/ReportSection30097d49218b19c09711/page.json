@@ -1,0 +1,26 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "ReportSection30097d49218b19c09711",
+  "displayName": "Internal Recruiting",
+  "displayOption": "ActualSize",
+  "height": 1000,
+  "width": 1280,
+  "visibility": "HiddenInViewMode",
+  "visualInteractions": [
+    {
+      "source": "71fec9ac866477207d29",
+      "target": "77a5e01f47c105096600",
+      "type": "DataFilter"
+    },
+    {
+      "source": "890cf295903a3040b8e9",
+      "target": "77a5e01f47c105096600",
+      "type": "DataFilter"
+    },
+    {
+      "source": "54ed708d288055c43141",
+      "target": "77a5e01f47c105096600",
+      "type": "DataFilter"
+    }
+  ]
+}

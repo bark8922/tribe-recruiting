@@ -1,0 +1,70 @@
+table client
+	lineageTag: be197825-5b0b-4e16-b9a8-21f8236ca9fc
+
+	column client_id
+		dataType: string
+		lineageTag: bf761d8d-7942-4b48-82d9-f9f93a7903fe
+		summarizeBy: none
+		sourceColumn: client_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column client_name
+		dataType: string
+		lineageTag: 998567b9-5341-437d-8763-4852ab70778d
+		summarizeBy: none
+		sourceColumn: client_name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_client_archived
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 4b807625-557f-4ed7-99ae-c5c40b99e127
+		summarizeBy: none
+		sourceColumn: is_client_archived
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column test
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 14b1d667-4c59-4e7b-82ed-e906f307c0cf
+		summarizeBy: none
+		sourceColumn: test
+
+		annotation SummarizationSetBy = Automatic
+
+	column client_wolt_group =
+			
+			IF (
+			    client[client_name] IN { "SevenRooms", "Doordash" },
+			    "Wolt",
+			    client[client_name]
+			)
+		lineageTag: 4ebd1061-bed6-47ee-b88d-30ce1f2f74cf
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition client-faa1ce2a-7670-4f9f-a273-3964654f1c9d = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases("je92638.eu-central-1.snowflakecomputing.com","READER_WH_129",[Implementation="2.0"]),
+				    KEBOOLA_855_942138244_Database = Source{[Name="KEBOOLA_855_942138244",Kind="Database"]}[Data],
+				    READER_SCHEMA_855_942138244_Schema = KEBOOLA_855_942138244_Database{[Name="READER_SCHEMA_855_942138244",Kind="Schema"]}[Data],
+				    v2_client_Table = READER_SCHEMA_855_942138244_Schema{[Name="v2_client",Kind="Table"]}[Data]
+				in
+				    v2_client_Table
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

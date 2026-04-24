@@ -1,0 +1,78 @@
+table 'Historical Manager Structure WBR'
+	lineageTag: c0431619-522e-4f79-9a14-c65bebbc5854
+
+	column 'Employee Number'
+		dataType: string
+		lineageTag: 1adc90d8-91e8-4023-b829-ba1ac742e534
+		summarizeBy: none
+		sourceColumn: Employee Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Tribster Name'
+		dataType: string
+		lineageTag: 3e85c058-114b-4c8f-a0a1-a39e1cc31ecb
+		summarizeBy: none
+		sourceColumn: Tribster Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Report_To
+		dataType: string
+		lineageTag: a116cc03-f029-4e0b-9636-96aa675b2f98
+		summarizeBy: none
+		sourceColumn: Report_To
+
+		annotation SummarizationSetBy = Automatic
+
+	column WeekInt
+		dataType: int64
+		formatString: 0
+		lineageTag: b78b190d-e923-4a29-8de4-318b85f97c4d
+		summarizeBy: sum
+		sourceColumn: WeekInt
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Manager Key'
+		dataType: string
+		lineageTag: e59b4671-b004-4126-aa0d-20eba4958ca2
+		summarizeBy: none
+		sourceColumn: Manager Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column Report_To_Next_L2
+		dataType: string
+		lineageTag: 9569a69b-2045-44b8-b0dc-652b3a97ada1
+		summarizeBy: none
+		sourceColumn: Report_To_Next_L2
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Business Unit' = ```
+			SWITCH(TRUE(), 
+			'Historical Manager Structure WBR'[Report_To_Next_L2]="Tijana Lazovic", "Ponies and Unicorns",
+			'Historical Manager Structure WBR'[Report_To_Next_L2]="Kristjana Thorarinsdottir", "Dolphins and Whales",
+			"Other (Internal & Old Org Structure")
+			```
+		lineageTag: 9ab94e06-4b3e-490f-b818-3cf538379eb6
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Historical Manager Structure WBR' = m
+		mode: import
+		source =
+				let
+				    Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/1IQMe6ryE_L_BryONqeiCKfvlvc0hpyIPrkayl1gI4bI/edit?gid=0#gid=0"),
+				    Sheet1_Table = Source{[name="Sheet1",ItemKind="Table"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Table, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Employee Number", type text}, {"Tribster Name", type text}, {"Report_To", type text}, {"WeekInt", Int64.Type}, {"Manager Key",  type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

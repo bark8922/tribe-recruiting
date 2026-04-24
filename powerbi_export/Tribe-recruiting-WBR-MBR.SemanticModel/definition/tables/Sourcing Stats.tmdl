@@ -1,0 +1,71 @@
+table 'Sourcing Stats'
+	lineageTag: 5f9a8660-b389-4bd1-997e-a31ecdbcba3d
+
+	column who_created_event_first
+		lineageTag: 527ab9eb-d77a-42fb-93c9-209d02b5e34d
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: event[who_created_event_first]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Viewed
+		formatString: 0
+		lineageTag: 46ba00b9-0cb6-4427-98c4-c4df1e742987
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Viewed]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'More than 200' = IF('Sourcing Stats'[Viewed]>=200, 1, BLANK())
+		formatString: 0
+		lineageTag: ebda951a-3f3f-4ab8-8801-b57fd6b067e6
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column '100- 200' = IF('Sourcing Stats'[Viewed]<200 && 'Sourcing Stats'[Viewed]>=100, 1, BLANK())
+		formatString: 0
+		lineageTag: 6f6eb0ce-6a78-4a28-913a-87561895187e
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Less than 50' = IF('Sourcing Stats'[Viewed]<50, 1, BLANK())
+		formatString: 0
+		lineageTag: a82e5ddb-0414-435b-ad6e-f34ad14d02bd
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		formatString: General Date
+		lineageTag: 73e7e590-d830-4177-9afa-d437ab2c1555
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[Date]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 50-100 = IF('Sourcing Stats'[Viewed]>=50 && 'Sourcing Stats'[Viewed]<100, 1, BLANK())
+		formatString: 0
+		lineageTag: a00ddea3-401b-4fac-a022-a02cbd027139
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Sourcing Stats' = calculated
+		mode: import
+		source = ```
+				CALCULATETABLE(SUMMARIZECOLUMNS(
+				    event[who_created_event_first],
+				    'Calendar'[Date],
+				    "Viewed", [# events - LinkedIn visited (date created)]),
+				    'Calendar'[is_last_6_weeks]="Yes",    
+				    job[job_title]<>BLANK(), client[client_name]<>BLANK(), SEARCH("Test", client[client_name],1, BLANK())=BLANK(),
+				    'Calendar'[DayOfWeekName]<>"Saturday", 'Calendar'[DayOfWeekName]<>"Sunday")
+				```
+
+	annotation PBI_Id = 0eff1784e57b4309928bb60d96ae555f
+

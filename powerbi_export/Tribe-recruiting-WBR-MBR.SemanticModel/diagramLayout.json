@@ -1,0 +1,462 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 716.19748118776579,
+        "y": 849.44352419944312
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 2099.6215048117506,
+            "y": 1177.0658956156578
+          },
+          "nodeIndex": "candidate",
+          "nodeLineageTag": "50130d7c-a657-4492-8f4b-72b55ca79a4c",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 16
+        },
+        {
+          "location": {
+            "x": 2676.8086080385965,
+            "y": 1110.8570179866849
+          },
+          "nodeIndex": "candidate_stage",
+          "nodeLineageTag": "d1f551c1-0a79-4403-9430-f9ea6a656d37",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 17
+        },
+        {
+          "location": {
+            "x": 2780.6917545375222,
+            "y": 1466.7563644621814
+          },
+          "nodeIndex": "client",
+          "nodeLineageTag": "be197825-5b0b-4e16-b9a8-21f8236ca9fc",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 10
+        },
+        {
+          "location": {
+            "x": 1719.1062921153575,
+            "y": 1067.7426512936709
+          },
+          "nodeIndex": "event",
+          "nodeLineageTag": "231a5651-a331-49cd-ba05-e24f1ee23633",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 28
+        },
+        {
+          "location": {
+            "x": 2175.5282120411844,
+            "y": 1533.6422262911365
+          },
+          "nodeIndex": "job",
+          "nodeLineageTag": "a7dfb17c-1f9f-4cba-8a22-e0689eca880b",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 34
+        },
+        {
+          "location": {
+            "x": 2563.0282928522579,
+            "y": 753.593227251378
+          },
+          "nodeIndex": "screen",
+          "nodeLineageTag": "97b393d4-8cf2-45ad-bdc5-e9f8a2f77462",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 12
+        },
+        {
+          "location": {
+            "x": 2012.9963164920259,
+            "y": 819.78799840995589
+          },
+          "nodeIndex": "talent",
+          "nodeLineageTag": "16890528-728a-45fa-979d-afd53f5555be",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 9
+        },
+        {
+          "location": {
+            "x": 2369.428936665252,
+            "y": 497.1743965966607
+          },
+          "nodeIndex": "talent_email",
+          "nodeLineageTag": "5a2b6624-3d1c-4c40-92f4-dd771ebd2857",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 8
+        },
+        {
+          "location": {
+            "x": 3343.3739398725484,
+            "y": 998.1406674445725
+          },
+          "nodeIndex": "talent_employer",
+          "nodeLineageTag": "e693c787-64c5-449e-a173-a8fd08b098d0",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 7
+        },
+        {
+          "location": {
+            "x": 2388.4744545677408,
+            "y": 1110.8485790103277
+          },
+          "nodeIndex": "Calendar",
+          "nodeLineageTag": "5a4cf454-111c-4c83-b5b8-bcf43dbb4d22",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 29
+        },
+        {
+          "location": {
+            "x": 3627.3739398725484,
+            "y": 912.1406674445725
+          },
+          "nodeIndex": "Metrics",
+          "nodeLineageTag": "dfec7543-44b0-4c28-b710-6ec4093ad37a",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 13
+        },
+        {
+          "location": {
+            "x": 1697.5339453090519,
+            "y": 787.75761794277469
+          },
+          "nodeIndex": "User",
+          "nodeLineageTag": "1485e575-7427-4962-b2e5-3ac545668f77",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 21
+        },
+        {
+          "location": {
+            "x": 3911.3739398725484,
+            "y": 1010.1406674445725
+          },
+          "nodeIndex": "LastRefreshedDate",
+          "nodeLineageTag": "29c09aea-50da-43e6-ae5f-9ca8936d9c5a",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 298.44409765391993,
+            "y": 372.30403483259215
+          },
+          "nodeIndex": "WBR TA Target",
+          "nodeLineageTag": "f0f0afb2-b1a7-407d-a5ec-d3b618062139",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 15
+        },
+        {
+          "location": {
+            "x": 4195.3739398725484,
+            "y": 912.1406674445725
+          },
+          "nodeIndex": "WBR Client History",
+          "nodeLineageTag": "db49cbba-0030-40c8-8c41-5e898d9bb62d",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 11
+        },
+        {
+          "location": {
+            "x": 715.982334207004,
+            "y": 851.73269329664981
+          },
+          "nodeIndex": "WBR TA Actual",
+          "nodeLineageTag": "25c4f3b3-1c02-449c-95e1-ed495ffd4c75",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 30
+        },
+        {
+          "location": {
+            "x": 1265.8667423704273,
+            "y": 351.68922502189753
+          },
+          "nodeIndex": "WBR TS Actual",
+          "nodeLineageTag": "309f4fc6-8780-4bda-8938-ece48bdb32a5",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 24
+        },
+        {
+          "location": {
+            "x": 1057.6527150498937,
+            "y": -10
+          },
+          "nodeIndex": "WBR TS Comment",
+          "nodeLineageTag": "a0a3d333-281a-46b8-bdd0-68f2c7e3ab25",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 265.01939300372436,
+            "y": 837.25425100288646
+          },
+          "nodeIndex": "WBR TA Comment",
+          "nodeLineageTag": "aa0b726d-a60e-4ff3-992c-7b005c9d640e",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 1291.8683690233415,
+            "y": 1011.9714619981457
+          },
+          "nodeIndex": "Org",
+          "nodeLineageTag": "d67aa9b3-b466-4c8b-8694-3f85110a7e7f",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 22
+        },
+        {
+          "location": {
+            "x": 443.72564885923248,
+            "y": 1207.7900790222823
+          },
+          "nodeIndex": "WBR Job open 60d",
+          "nodeLineageTag": "0be6157a-0c95-4865-8878-86d803ef67ba",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 18
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 387.43844974941334
+          },
+          "nodeIndex": "OKR TA",
+          "nodeLineageTag": "02a20a13-baf9-4ed3-b7fc-6940726721e7",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 19
+        },
+        {
+          "location": {
+            "x": 927.60752131488607,
+            "y": 293.82948881051379
+          },
+          "nodeIndex": "Calendar WBR",
+          "nodeLineageTag": "d76f3745-ae93-450b-9994-15a6afce1028",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 31
+        },
+        {
+          "location": {
+            "x": 2850.8253110382275,
+            "y": 688.55773005014362
+          },
+          "nodeIndex": "analytic_usage",
+          "nodeLineageTag": "5178bc04-baa6-4403-b2e0-bc1f55958f83",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 20
+        },
+        {
+          "location": {
+            "x": 1408.9623465822281,
+            "y": 707.557186305537
+          },
+          "nodeIndex": "Sourcing Stats",
+          "nodeLineageTag": "5f9a8660-b389-4bd1-997e-a31ecdbcba3d",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 14
+        },
+        {
+          "location": {
+            "x": 1675.856892730827,
+            "y": 1422.1096553388024
+          },
+          "nodeIndex": "Org_WBR",
+          "nodeLineageTag": "33268a87-c3cf-4657-a881-d57555d6b20d",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 23
+        },
+        {
+          "location": {
+            "x": 1840.3983311590987,
+            "y": 1732.0175943173931
+          },
+          "nodeIndex": "Current_TA",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 1391.71923833222,
+            "y": 1675.5507031729057
+          },
+          "nodeIndex": "Current_TS",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 2130.5666081893769,
+            "y": 1890.281334889145
+          },
+          "nodeIndex": "Temp_Inactive_Jobs_Sourcers_WBR",
+          "nodeLineageTag": "f0147031-c346-44b5-866e-3654bd3e641c",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 746.40077342945642,
+            "y": 546.98912740752939
+          },
+          "nodeIndex": "Historical Manager Structure WBR",
+          "nodeLineageTag": "c0431619-522e-4f79-9a14-c65bebbc5854",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 25
+        },
+        {
+          "location": {
+            "x": 1984.3350645209357,
+            "y": 613.15640323273692
+          },
+          "nodeIndex": "Sourcing Team List",
+          "nodeLineageTag": "d497d62c-7b4b-48a5-827e-e5a8698d4bd6",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 26
+        },
+        {
+          "location": {
+            "x": 1002.3310991824233,
+            "y": 1171.5830541814696
+          },
+          "nodeIndex": "WBR Job from Aug 2025",
+          "nodeLineageTag": "5fd86fda-cff1-4027-aa73-cbad1b691c84",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 27
+        },
+        {
+          "location": {
+            "x": 725.68075683253437,
+            "y": 1231.3570154788451
+          },
+          "nodeIndex": "WBR TA Job",
+          "nodeLineageTag": "dbef0171-2658-42ca-8f7e-bd7092b402bb",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 32
+        },
+        {
+          "location": {
+            "x": 2589.3009781175147,
+            "y": 1762.7247629483547
+          },
+          "nodeIndex": "IR Comment",
+          "nodeLineageTag": "6c1d1bd6-993d-4f7c-bc69-cd45daf1338c",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 33
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 78.051098291065728,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

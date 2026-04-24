@@ -1,0 +1,10 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "ReportSection3fd8ba0abdc92022d43a",
+  "displayName": "TS summary tooltip",
+  "displayOption": "FitToPage",
+  "height": 400,
+  "width": 600,
+  "visibility": "HiddenInViewMode",
+  "type": "Tooltip"
+}

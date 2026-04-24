@@ -1,0 +1,46 @@
+table 'Sourcing Team List'
+	lineageTag: d497d62c-7b4b-48a5-827e-e5a8698d4bd6
+
+	column Name
+		dataType: string
+		lineageTag: 335b89c8-b505-4933-bfdb-c087dd3d0c9c
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Employee Number'
+		dataType: string
+		lineageTag: 958811dc-15aa-4534-ad36-580e69735eb6
+		summarizeBy: none
+		sourceColumn: Employee Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Moved to TA Position Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: fd6a4334-920f-4657-b2a9-29c19209b10d
+		summarizeBy: none
+		sourceColumn: Moved to TA Position Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition 'Sourcing Team List' = m
+		mode: import
+		source =
+				let
+				    Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/1jhLTNYC4EoSq9Wd7kXWF13qCnLKObnS1Gf9ZfY46Jh8/edit?gid=1774878141#gid=1774878141"),
+				    #"Sheet 1_Table" = Source{[name="Sheet 1",ItemKind="Table"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Sheet 1_Table", [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Name", type text}, {"Employee Number", type text}, {"Moved to TA Position Date", type date}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each [Employee Number] <> null and [Employee Number] <> "")
+				in
+				    #"Filtered Rows"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

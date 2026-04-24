@@ -1,0 +1,663 @@
+table 'WBR TA Actual'
+	lineageTag: 25c4f3b3-1c02-449c-95e1-ed495ffd4c75
+
+	measure 'Screens color' =
+			IF(SELECTEDVALUE('WBR TA Actual'[TA Reasoning]) IN {"Internal-related: Out of Office", "Client-related: Client Delay"}, -1,
+			IF([% Actual Screens Target]>=1.2 && MAX('WBR TA Actual'[Screens Target])<>0, 120, //>120%
+			IF([% Actual Screens Target]>=1 && [% Actual Screens Target]<1.2 && MAX('WBR TA Actual'[Screens Target])<>0, 100, //100-150%
+			IF([% Actual Screens Target]>=0.75 && [% Actual Screens Target]<1 && MAX('WBR TA Actual'[Screens Target])<>0, 75,
+			IF([% Actual Screens Target]>=0.5 && [% Actual Screens Target]<0.75 && MAX('WBR TA Actual'[Screens Target])<>0, 50,
+			IF([% Actual Screens Target]>0 && [% Actual Screens Target]<0.5 && MAX('WBR TA Actual'[Screens Target])<>0, 0, //<50%
+			IF(MAX('WBR TA Actual'[Actual screens])=0, -2)))))))
+		lineageTag: 020d900b-e47e-4e69-a125-876cbcf13e85
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Contacted color' =
+			IF(SELECTEDVALUE('WBR TA Actual'[TA Reasoning]) IN {"Internal-related: Out of Office", "Client-related: Client Delay"}, -1,
+			IF([% Contacted Target]>=1.2 && MAX('WBR TA Actual'[Contacted Target])<>0, 120, //>120%
+			IF([% Contacted Target]>=1 && [% Contacted Target]<1.2 && MAX('WBR TA Actual'[Contacted Target])<>0, 100, //100-150%
+			IF([% Contacted Target]>=0.75 && [% Contacted Target]<1 && MAX('WBR TA Actual'[Contacted Target])<>0, 75,
+			IF([% Contacted Target]>=0.5 && [% Contacted Target]<0.75 && MAX('WBR TA Actual'[Contacted Target])<>0, 50,
+			IF([% Contacted Target]>0 && [% Contacted Target]<0.5 && MAX('WBR TA Actual'[Contacted Target])<>0, 0, //<50%
+			IF(MAX('WBR TA Actual'[Contacted])=0, -2)))))))
+		formatString: 0
+		lineageTag: 4c3fe574-7bcd-47d2-ad37-73487e5d5cb9
+
+	measure 'Moved to ATS color' =
+			IF(SELECTEDVALUE('WBR TA Actual'[TA Reasoning]) IN {"Internal-related: Out of Office", "Client-related: Client Delay"}, -1,
+			IF([% Moved to ATS Target]>=1.2 && MAX('WBR TA Actual'[Moved to ATS Target])<>0, 120, //>120%
+			IF([% Moved to ATS Target]>=1 && [% Moved to ATS Target]<1.2 && MAX('WBR TA Actual'[Moved to ATS Target])<>0, 100, //100-120%
+			IF([% Moved to ATS Target]>=0.75 && [% Moved to ATS Target]<1 && MAX('WBR TA Actual'[Moved to ATS Target])<>0, 75,
+			IF([% Moved to ATS Target]>=0.5 && [% Moved to ATS Target]<0.75 && MAX('WBR TA Actual'[Moved to ATS Target])<>0, 50,
+			IF([% Moved to ATS Target]>0 && [% Moved to ATS Target]<0.5 && MAX('WBR TA Actual'[Moved to ATS Target])<>0, 0, //<50%
+			IF(MAX('WBR TA Actual'[Moved to ATS])=0, -2)))))))
+		formatString: 0
+		lineageTag: bb55a155-13d7-41e8-81dc-574ca27ba11f
+
+	measure 'Contacted percentage' =
+			var perc = SUM('WBR TA Actual'[Contacted]) / MIN('WBR TA Actual'[Contacted Target])
+			RETURN
+			IF(perc>1, 1.1, perc)
+		lineageTag: fa891066-9600-4e20-8a94-9e0f278549e6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Last 12w Hires' =
+			IF(SUM('WBR TA Actual'[Contacted])+SUM('WBR TA Actual'[Actual screens])+SUM('WBR TA Actual'[Moved to ATS])+SUM('WBR TA Actual'[Hires])<>0,
+			    CALCULATE(SUM('WBR TA Actual'[Hires]), 'WBR TA Actual'[is_last_12_weeks]="Yes", ALL('Calendar WBR')))
+		formatString: 0
+		lineageTag: d0f607ab-5cc7-4de1-9fdb-45de13ec82eb
+
+	measure 'Last 12w Wolt number' =
+			//IF(SUM('WBR TA Actual'[Contacted])+SUM('WBR TA Actual'[Actual screens])+SUM('WBR TA Actual'[Moved to ATS])<>0 && (SELECTEDVALUE('WBR TA Actual'[Client])IN {"Wolt Expansion", "Wolt Market", "Wolt North, Baltics & Benelux", "Wolt Central & South", "Wolt HQ", "Wolt Germany"} ||
+			 IF(SELECTEDVALUE('WBR TA Actual'[Client])="Wolt Volume",
+			    CALCULATE(SUM('WBR TA Actual'[Hires]), 'WBR TA Actual'[is_last_12_weeks]="Yes", ALL('Calendar WBR')))
+		formatString: 0
+		lineageTag: d0cff6fd-4a9a-4522-9488-056a4ea320ae
+
+	measure 'Wolt last 12w TAs' =
+			
+			// var woltB =  CALCULATE(COUNTROWS('WBR TA Actual'), 'WBR TA Actual'[Client] IN {"Wolt Expansion", "Wolt Market", "Wolt North, Baltics & Benelux", "Wolt Central & South", "Wolt HQ", "Wolt Germany"} && 'WBR TA Actual'[Client]<>"Wolt Volume", 'WBR TA Actual'[is_last_12_weeks]="Yes", ALL('Calendar WBR'))*1.25
+			var woltV =  CALCULATE(COUNTROWS('WBR TA Actual'), 'WBR TA Actual'[Client]="Wolt Volume", 'WBR TA Actual'[is_last_12_weeks]="Yes", ALL('Calendar WBR'))*1.75
+			// var toge = IF(SELECTEDVALUE('WBR TA Actual'[Client]) IN {"Wolt Expansion", "Wolt Market", "Wolt North, Baltics & Benelux", "Wolt Central & South", "Wolt HQ", "Wolt Germany"}, woltB, IF(SELECTEDVALUE('WBR TA Actual'[Client])="Wolt Volume", woltV))
+			//var target = DIVIDE([Last 12w Wolt number], toge)
+			RETURN SWITCH(TRUE(),
+			[Last 12w Wolt number]=0, -1,
+			woltV>=1.2, 1.2,
+			woltV<1.2 && woltV>=1, 1,
+			woltV<1 && woltV>-0.75, 0.75,
+			woltV<0.75 && woltV>=0.5, 0.5,
+			woltV<0.5, 0, -1)
+			
+			//target>=1.5, 1.5,
+			//target<1.5 && target>=1, 1,
+			//target<1 && target>-0.75, 0.75,
+			//target<0.75 && target>=0.5, 0.5,
+			//target<0.5, 0, -1)
+		formatString: 0%;-0%;0%
+		lineageTag: 88854845-de82-414f-a714-48e447221427
+
+	measure '% Moved to ATS Target' =
+			var target = SUM('WBR TA Actual'[Moved to ATS])/SUM('WBR TA Actual'[Moved to ATS Target])
+			RETURN IF(SUM('WBR TA Actual'[Moved to ATS])=0 || SUM('WBR TA Actual'[Moved to ATS Target])=0, BLANK(), target)
+		formatString: 0%;-0%;0%
+		lineageTag: 91c61c76-8550-404a-a3c5-e09d39617ff3
+
+	measure '% Contacted Target' =
+			var target = SUM('WBR TA Actual'[Contacted])/SUM('WBR TA Actual'[Contacted Target])
+			RETURN IF(SUM('WBR TA Actual'[Contacted])=0 || SUM('WBR TA Actual'[Contacted Target])=0, BLANK(), target)
+		formatString: 0%;-0%;0%
+		lineageTag: a7599a3e-63d1-428b-964f-aeedd380eece
+
+	measure '% Actual Screens Target' =
+			var target = SUM('WBR TA Actual'[Actual screens])/SUM('WBR TA Actual'[Screens Target])
+			RETURN IF(SUM('WBR TA Actual'[Actual screens])=0 || SUM('WBR TA Actual'[Screens Target])=0, BLANK(), target)
+		formatString: 0%;-0%;0%
+		lineageTag: 333e76f5-75e9-46d7-8807-8c44c33ed9b9
+
+	measure 'Last 12w Time to Fill' = ```
+			IF([Last 12w Hires]<>0, 
+			CALCULATE(AVERAGE('WBR TA Actual'[Time to Fill]), 'WBR TA Actual'[is_last_12_weeks]="Yes", ALL('Calendar WBR')))
+			```
+		formatString: 0
+		lineageTag: ac2be86a-4a5f-43b8-9bc7-e68def813303
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Contacted OKR number' =
+			SWITCH(TRUE(),
+			[% Contacted Target]>=1.5 && MAX('WBR TA Actual'[Contacted Target])<>0, 5, //>150%
+			[% Contacted Target]>=1 && [% Contacted Target]<1.5 && MAX('WBR TA Actual'[Contacted Target])<>0, 4, //100-150%
+			[% Contacted Target]>=0.75 && [% Contacted Target]<1 && MAX('WBR TA Actual'[Contacted Target])<>0, 3,
+			[% Contacted Target]>=0.5 && [% Contacted Target]<0.75 && MAX('WBR TA Actual'[Contacted Target])<>0, 2,
+			[% Contacted Target]>0 && [% Contacted Target]<0.5 && MAX('WBR TA Actual'[Contacted Target])<>0, 1, //<50%
+			MAX('WBR TA Actual'[Contacted])=0, BLANK())
+		formatString: 0
+		lineageTag: dfb0e0c3-2e07-49d9-912d-a134286c7980
+
+	measure 'Screens OKR number' =
+			SWITCH(TRUE(),
+			[% Actual Screens Target]>=1.5 && MAX('WBR TA Actual'[Screens Target])<>0, 5, //>150%
+			[% Actual Screens Target]>=1 && [% Actual Screens Target]<1.5 && MAX('WBR TA Actual'[Screens Target])<>0, 4, //100-150%
+			[% Actual Screens Target]>=0.75 && [% Actual Screens Target]<1 && MAX('WBR TA Actual'[Screens Target])<>0, 3,
+			[% Actual Screens Target]>=0.5 && [% Actual Screens Target]<0.75 && MAX('WBR TA Actual'[Screens Target])<>0, 2,
+			[% Actual Screens Target]>0 && [% Actual Screens Target]<0.5 && MAX('WBR TA Actual'[Screens Target])<>0, 1, //<50%
+			MAX('WBR TA Actual'[Actual screens])=0, BLANK())
+		formatString: 0
+		lineageTag: f9eae004-a0df-4a73-b6f0-2f0189ba4ae6
+
+	measure 'Moved to ATS OKR number' =
+			SWITCH(TRUE(),
+			[% Moved to ATS Target]>=1.5 && MAX('WBR TA Actual'[Moved to ATS Target])<>0, 5, //>150%
+			[% Moved to ATS Target]>=1 && [% Moved to ATS Target]<1.5 && MAX('WBR TA Actual'[Moved to ATS Target])<>0, 4, //100-150%
+			[% Moved to ATS Target]>=0.75 && [% Moved to ATS Target]<1 && MAX('WBR TA Actual'[Moved to ATS Target])<>0, 3,
+			[% Moved to ATS Target]>=0.5 && [% Moved to ATS Target]<0.75 && MAX('WBR TA Actual'[Moved to ATS Target])<>0, 2,
+			[% Moved to ATS Target]>0 && [% Moved to ATS Target]<0.5 && MAX('WBR TA Actual'[Moved to ATS Target])<>0, 1, //<50%
+			MAX('WBR TA Actual'[Moved to ATS])=0, BLANK())
+		formatString: 0
+		lineageTag: 0ac82deb-36b3-4de4-9bd1-914a5911292f
+
+	measure 'OKR average' = ([Contacted OKR number]+[Moved to ATS OKR number]+[Screens OKR number])/3
+		formatString: 0
+		lineageTag: 861684fe-772f-485b-afe0-1f832114ba42
+
+	measure 'Last 12w Wolt %' = ```
+			SWITCH(TRUE(),
+			SUM('WBR TA Actual'[Contacted])+SUM('WBR TA Actual'[Actual screens])+SUM('WBR TA Actual'[Moved to ATS])+SUM('WBR TA Actual'[Hires])<>0 && SELECTEDVALUE('WBR TA Actual'[Client]) IN {"Wolt Expansion", "Wolt Market", "Wolt North, Baltics & Benelux", "Wolt Central & South", "Wolt Germany"}, 
+			    [Last 12w Hires]/15,
+			
+			SUM('WBR TA Actual'[Contacted])+SUM('WBR TA Actual'[Actual screens])+SUM('WBR TA Actual'[Moved to ATS])+SUM('WBR TA Actual'[Hires])<>0 && SELECTEDVALUE('WBR TA Actual'[Client])="Wolt HQ", 
+			    [Last 12w Hires]/12,
+			
+			SUM('WBR TA Actual'[Contacted])+SUM('WBR TA Actual'[Actual screens])+SUM('WBR TA Actual'[Moved to ATS])+SUM('WBR TA Actual'[Hires])<>0 && SELECTEDVALUE('WBR TA Actual'[Client])="Wolt Tech",
+			    [Last 12w Hires]/7,    
+			
+			SUM('WBR TA Actual'[Contacted])+SUM('WBR TA Actual'[Actual screens])+SUM('WBR TA Actual'[Moved to ATS])+SUM('WBR TA Actual'[Hires])<>0 && SELECTEDVALUE('WBR TA Actual'[Client])="Wolt Volume",
+			     [Last 12w Hires]/42
+			)
+			```
+		lineageTag: dbb004ad-9e07-4449-b46e-a01893049697
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Missing comment' = SUM('WBR TA Actual'[Missing comment]) + SUM('WBR TS Actual'[Missing comment])
+		formatString: 0
+		lineageTag: dd6dea75-3162-48df-ad79-d4a0b64586bb
+
+	measure 'Last 12w ATS' =
+			IF(SUM('WBR TA Actual'[Contacted])+SUM('WBR TA Actual'[Actual screens])+SUM('WBR TA Actual'[Moved to ATS])+SUM('WBR TA Actual'[Hires])<>0,
+			    CALCULATE(SUM('WBR TA Actual'[Moved to ATS]), 'WBR TA Actual'[is_last_12_weeks]="Yes", ALL('Calendar WBR')))
+		formatString: 0
+		lineageTag: f6d8f7d2-e285-4c9f-8d48-e1912049fbf5
+
+	measure 'Last 12w Actual Screens' =
+			IF(SUM('WBR TA Actual'[Contacted])+SUM('WBR TA Actual'[Actual screens])+SUM('WBR TA Actual'[Moved to ATS])+SUM('WBR TA Actual'[Hires])<>0,
+			    CALCULATE(SUM('WBR TA Actual'[Actual screens]), 'WBR TA Actual'[is_last_12_weeks]="Yes", ALL('Calendar WBR')))
+		formatString: 0
+		lineageTag: edeb18fe-d567-4b3e-a458-0c229ed14252
+
+	measure 'Total TA - OKR comment' = CALCULATE(COUNTROWS('WBR TA Actual'), FILTER('WBR TA Actual', 'WBR TA Actual'[Client]<>BLANK()))
+		formatString: 0
+		lineageTag: af762d75-fe61-4605-b2f5-4dc35a078998
+
+	measure 'Total TA + TS - OKR comment' = [Total TA - OKR comment]+[Total TS - OKR comment]
+		formatString: 0
+		lineageTag: 30d8a981-fb09-4265-9daf-1f86d848c84b
+
+	measure '% Missing comment' = 1 - DIVIDE([Total Missing comment], [Total TA + TS - OKR comment])
+		formatString: 0%;-0%;0%
+		lineageTag: a9f2c9b1-da95-480e-a3b3-7292a08a8edb
+
+	measure 'Latest comment MBR' =
+			
+			VAR TA = SELECTEDVALUE('WBR TA Actual'[who_event_created_for])
+			VAR LatestWeek =
+			    CALCULATE(
+			        MAX('WBR TA Actual'[WeekInt]),
+			        FILTER(
+			            'WBR TA Actual',
+			            'WBR TA Actual'[who_event_created_for] = TA &&
+			            (NOT(ISBLANK('WBR TA Actual'[Comment]) || 'WBR TA Actual'[Comment]=""))
+			        )
+			    )
+			RETURN
+			    CALCULATE(
+			        MAX('WBR TA Actual'[Comment]),
+			        FILTER(
+			            'WBR TA Actual',
+			            'WBR TA Actual'[who_event_created_for] = TA &&
+			            'WBR TA Actual'[WeekInt] = LatestWeek
+			        )
+			    )
+		lineageTag: 472530cf-9a0b-4d06-b1fc-847f1dde1d81
+
+	measure 'Last 12w ATS Target' =
+			IF(SUM('WBR TA Actual'[Contacted])+SUM('WBR TA Actual'[Actual screens])+SUM('WBR TA Actual'[Moved to ATS])+SUM('WBR TA Actual'[Hires])<>0,
+			    CALCULATE(SUM('WBR TA Actual'[Moved to ATS Target]), 'WBR TA Actual'[is_last_12_weeks]="Yes", ALL('Calendar WBR')))
+		lineageTag: 65c90338-8eef-481a-b00c-fd1ff0c618ac
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Last 12w ATS % target' = DIVIDE([Last 12w ATS], [Last 12w ATS Target], 0)
+		lineageTag: 2c42160a-4d3b-480b-bd7b-b4bcb6bab56a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Last 12w Actual Screens Target' =
+			IF(SUM('WBR TA Actual'[Contacted])+SUM('WBR TA Actual'[Actual screens])+SUM('WBR TA Actual'[Moved to ATS])+SUM('WBR TA Actual'[Hires])<>0,
+			    CALCULATE(SUM('WBR TA Actual'[Screens Target]), 'WBR TA Actual'[is_last_12_weeks]="Yes", ALL('Calendar WBR')))
+		lineageTag: aa26128b-d278-4032-b1a4-cb5a8648e7b1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Last 12w Actual Screens % Target' = DIVIDE([Last 12w Actual Screens], [Last 12w Actual Screens Target], 0)
+		lineageTag: f9bf6860-26a0-460c-9f3c-c6057a724aa4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '# Data Cleanliness/Hygiene' = CALCULATE(COUNT('WBR TA Actual'[who_event_created_for]), FILTER('WBR TA Actual', 'WBR TA Actual'[Data Cleanliness/Hygiene]="No"))
+		formatString: 0
+		lineageTag: f2b5ddb5-b48a-4799-98c0-1f576263bfe0
+
+	measure 'Last 12w % Actual Screens to Hires' = DIVIDE([Last 12w Hires], [Last 12w Actual Screens], 0)
+		formatString: 0%;-0%;0%
+		lineageTag: 64b9c6bd-656e-4a2b-9345-c1381441218f
+
+	measure '% Actual Screens to ATS' =
+			IF(SUM('WBR TA Actual'[Actual screens])=0, BLANK(),
+			    SUM('WBR TA Actual'[Moved to ATS]) /SUM('WBR TA Actual'[Actual screens]))
+		formatString: 0%;-0%;0%
+		lineageTag: b4421187-47bd-48fc-b011-b25379b1d01b
+
+	measure '% TA Reach Actual Screen Target' = DIVIDE(SUM('WBR TA Actual'[Reach Actual Screen Target]), SUM('WBR TA Actual'[Valid TA for reach actual screens]))
+		formatString: 0%;-0%;0%
+		lineageTag: 3c7b0e57-9562-4ee5-943c-d3843fa799cf
+
+	measure '% Actual Screens to Hired' =
+			IF(SUM('WBR TA Actual'[Actual screens])=0, BLANK(),
+			    SUM('WBR TA Actual'[Hires]) /SUM('WBR TA Actual'[Actual screens]))
+		formatString: 0%;-0%;0%
+		lineageTag: ed399905-4c71-4106-acc1-73623e39a171
+
+	measure '% Data Cleanliness/Hygiene' = DIVIDE([# Data Cleanliness/Hygiene], CALCULATE(COUNT('WBR TA Actual'[who_event_created_for]), 'WBR TA Actual'[WeekInt]>=11))
+		formatString: 0%;-0%;0%
+		lineageTag: e4b93d9d-b947-47f1-8ee2-f8e52d5fce85
+
+	column Year
+		formatString: 0
+		lineageTag: 64aeaf25-5408-4431-b971-da650731838b
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Calendar[Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Contacted
+		formatString: 0
+		lineageTag: ead76e95-d859-4eee-9bf4-8e378db1cfba
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Contacted]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Actual screens'
+		formatString: 0
+		lineageTag: f1016d58-3435-4943-b939-fddadf60c842
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Actual screens]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Week start end'
+		lineageTag: 1e86ecfe-435d-4073-a8ad-7c148630981d
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[Week start end]
+		sortByColumn: 'Week sort'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Screens Target' = ```
+			RELATED('WBR TA Target'[Actual Screens]) 
+			```
+		formatString: 0
+		lineageTag: 2d13e671-ef49-4568-99d9-58328d122559
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Week sort'
+		formatString: 0
+		lineageTag: 2cc17fe8-ff86-48cb-8a9f-65272af43d0a
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Calendar[Week sort]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Contacted Target' = RELATED('WBR TA Target'[Contacted])
+		formatString: 0
+		lineageTag: 09c751a1-9f68-4f8f-ade1-71a050927dd7
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Moved to ATS'
+		formatString: 0
+		lineageTag: c6eb41f4-c8ac-46e2-934c-d7958572cd3f
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Moved to ATS]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Moved to ATS Target' = RELATED('WBR TA Target'[Moved to ATS])
+		formatString: 0
+		lineageTag: d2dcfe40-928a-4611-9855-b2fda4a79d09
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'TA Client Key' = 'WBR TA Actual'[client_name]&'WBR TA Actual'[who_event_created_for]&'WBR TA Actual'[Year]&'WBR TA Actual'[Month]
+		lineageTag: 2ee9c572-b604-498e-b2b6-ae016366df25
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Client = ```
+			var valid = IF(RELATED('WBR TA Target'[Client])<>BLANK(), 1, 0)
+			RETURN
+			IF('WBR TA Actual'[client_name]<>"Wolt" && valid=1, 'WBR TA Actual'[client_name], 
+			IF('WBR TA Actual'[client_name]="Wolt" && valid=1, RELATED('WBR TA Target'[Client])))
+			```
+		lineageTag: b08b163c-57cc-4cc1-99a8-f9bc7c2c5e3f
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column WeekInt
+		formatString: 0
+		lineageTag: 87a425e1-1817-46b1-9f85-ef1091f51c08
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Calendar[WeekInt]
+		sortByColumn: 'Week sort'
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_last_12_weeks
+		lineageTag: 22e80e75-17c9-4668-9b60-33c1117f17cb
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[is_last_12_weeks]
+
+		annotation SummarizationSetBy = Automatic
+
+	column '# Jobs'
+		formatString: 0
+		lineageTag: 1aa03fc0-c4f3-4300-a767-49b2805124a0
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [# Jobs]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Offers
+		formatString: 0
+		lineageTag: d53d8c7e-71a0-4cb1-b7f9-7950c5939a27
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Offers]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Hires
+		formatString: 0
+		lineageTag: d7d0354d-1046-4936-8b68-54e950a621ff
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Hires]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Concat_comment = 'WBR TA Actual'[Week start end]&'WBR TA Actual'[who_event_created_for]&'WBR TA Actual'[Client]
+		lineageTag: fabd9317-e890-40b1-a0a8-50524f44f83b
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Comment = RELATED('WBR TA Comment'[Comment])
+		lineageTag: 72652e34-f5f9-48c9-a0c6-6723d8c6e378
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month =
+			var num = LEFT(RIGHT('WBR TA Actual'[Week start end], 3),2)
+			RETURN
+			IF(LEFT(num, 1)="/", RIGHT(num, 1), num)
+		lineageTag: 61151bd7-d768-41de-8492-0ef514f808c0
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Q =
+			SWITCH(TRUE(),
+			'WBR TA Actual'[Month] IN {"1","2","3"}, "Q1",
+			'WBR TA Actual'[Month] IN {"4","5","6"}, "Q2",
+			'WBR TA Actual'[Month] IN {"7","8","9"}, "Q3",
+			'WBR TA Actual'[Month] IN {"10","11","12"}, "Q4")
+		lineageTag: 1f4c16c2-d69e-45ae-a446-75d98dae59e2
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Week rank' = ```
+			var weekrank = RANKX('WBR TA Actual', 'WBR TA Actual'[Week sort],,ASC,Dense)
+			RETURN
+			SWITCH(TRUE(),
+			weekrank>=1 && weekrank<12, "12w",
+			weekrank>=12 && weekrank<24, "24w",
+			weekrank>=24 && weekrank<36, "36w",
+			weekrank>=36 && weekrank<48, "48w", 
+			BLANK())
+			```
+		lineageTag: 8035efc1-9978-49df-ac91-05ff1ee78e76
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Test = RANKX('WBR TA Actual', 'WBR TA Actual'[Week sort],,ASC,Dense)
+		formatString: 0
+		lineageTag: efeae091-8250-46b6-b307-7507bc357aad
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sourcer
+		lineageTag: 6cfe39d9-3b96-4b8a-bef3-1aec5b87e428
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Sourcer]
+
+		annotation SummarizationSetBy = Automatic
+
+	column '# Sourcer' = ```
+			SWITCH(TRUE(),
+			'WBR TA Actual'[Sourcer]=BLANK(), 0, 
+			LEN(SUBSTITUTE('WBR TA Actual'[Sourcer]," ",""))-LEN(SUBSTITUTE(SUBSTITUTE('WBR TA Actual'[Sourcer]," ",""), ",",""))+1)
+			```
+		formatString: 0
+		lineageTag: e1161eaa-c27f-4605-8878-bf98dd1967da
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Time to Fill'
+		formatString: 0
+		lineageTag: 936005f7-39cd-4dd8-9ca2-bb1272a97859
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Time to Fill]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column 'Job 60 days' = RELATED('WBR Job open 60d'[# Jobs 60d])
+		formatString: 0
+		lineageTag: 37d0eb2c-ec24-477b-93f4-de655bed095b
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column who_event_created_for
+		lineageTag: 485d85cc-faa9-42f1-a626-f0c2bda1589a
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: event[who_event_created_for]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Manager = RELATED('Historical Manager Structure WBR'[Report_To])
+		lineageTag: 003340c4-f198-489f-b3c7-f63f96ee74b7
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Missing comment' = ```
+			SWITCH(TRUE(),
+			'WBR TA Actual'[Contacted]=BLANK() && 'WBR TA Actual'[Actual screens]=BLANK() && 'WBR TA Actual'[Moved to ATS]=BLANK(), 0,
+			('WBR TA Actual'[Contacted]<'WBR TA Actual'[Contacted Target] || 'WBR TA Actual'[Actual screens]<'WBR TA Actual'[Screens Target] || 'WBR TA Actual'[Moved to ATS]<'WBR TA Actual'[Moved to ATS Target]) && 'WBR TA Actual'[Comment]=BLANK(), 1
+			, 
+			0)
+			```
+		formatString: 0
+		lineageTag: 7169de27-f7b5-4fe2-b037-1b31761fd3f2
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'TA& Cient jobs 60d' = 'WBR TA Actual'[who_event_created_for]&'WBR TA Actual'[client_name]
+		lineageTag: b2ef51aa-7c7f-4ad5-8ab9-2c85b8859845
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Client Wrap tooltip' = LEFT('WBR TA Actual'[Client], 13)
+		lineageTag: 2c76bc1a-4d86-492b-b621-09c1e10acaf8
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Exclude OKR' = RELATED('WBR TA Comment'[Exclude OKR])
+		lineageTag: 2efdd8e0-a16c-4055-a29f-af2b0491bce4
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Data Cleanliness/Hygiene' = RELATED('WBR TA Comment'[Data Cleanliness/Hygiene])
+		lineageTag: 36c2c808-515a-48fc-8943-7702c62a512d
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Employee number' = RELATED(User[employee_number])
+		lineageTag: 7df0ffd7-8b75-4e7d-8291-f967980fb966
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Historical Manager Key' = 'WBR TA Actual'[Employee number] & "-" & 'WBR TA Actual'[WeekInt]
+		lineageTag: 3e2e4dea-689d-4e8c-906b-7a3c79100f3f
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Reach Actual Screen Target' = IF('WBR TA Actual'[Screens Target]<>BLANK() && 'WBR TA Actual'[Screens Target]<>0 && 'WBR TA Actual'[Actual screens]>='WBR TA Actual'[Screens Target] && 'WBR TA Actual'[Actual screens]<>BLANK(), 1, 0)
+		formatString: 0
+		lineageTag: eb612abc-3f4f-41cc-9872-d2d327cdac41
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Valid TA for reach actual screens' =
+			IF('WBR TA Actual'[Screens Target]<>BLANK() && 'WBR TA Actual'[Screens Target]<>0 && 'WBR TA Actual'[Actual screens]<>BLANK() &&
+			('WBR TA Actual'[Exclude OKR]<>"Yes" || 'WBR TA Actual'[Actual screens]>='WBR TA Actual'[Screens Target]), 1, 0)
+		formatString: 0
+		lineageTag: c4fb9c86-dd89-4d34-82c0-ecb8f0b3aa38
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column client_id
+		lineageTag: e561285a-667e-4f0d-9555-2a659631b8bf
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: client[client_id]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Key Job concat' = 'WBR TA Actual'[Week start end] & " " & 'WBR TA Actual'[client_id] & " " & 'WBR TA Actual'[who_event_created_for]
+		lineageTag: 94b88a53-fc02-43b5-86a3-1fbb180544e4
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Early warning'
+		formatString: 0
+		lineageTag: 5c4015e3-9478-41a3-a0b6-3da8a8a80861
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Early warning]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'TA Reasoning' = RELATED('WBR TA Comment'[Reasoning])
+		lineageTag: c7f49e0b-2779-4c12-831e-1c9c2524317a
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Not TA' = IF('WBR TA Actual'[Screens Target]=BLANK() && 'WBR TA Actual'[Moved to ATS Target]=BLANK(), "Not TA")
+		lineageTag: 253b6f42-233b-4ad7-8c26-95ff5fa172f3
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Hires Target' = RELATED('WBR TA Target'[Hires])
+		lineageTag: 5bab301e-725d-404e-94a2-1f26360cb32e
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column client_wolt_group
+		lineageTag: 64d99a6f-a7f6-459e-8591-9009450254df
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: client[client_wolt_group]
+
+		annotation SummarizationSetBy = Automatic
+
+	column client_name = 'WBR TA Actual'[client_wolt_group]
+		lineageTag: a6b1e658-a5fe-41cb-8d39-7ea334fe6083
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'WBR TA Actual-2f39880c-f159-4ef8-92d8-92ab0baa7d4f' = calculated
+		mode: import
+		source = ```
+				CALCULATETABLE(SUMMARIZECOLUMNS(
+				    'Calendar'[Year], 
+				    'Calendar'[Week sort],
+				    'Calendar'[Week start end],
+				    'Calendar'[WeekInt],
+				    'Calendar'[is_last_12_weeks],
+				    client[client_wolt_group],
+				    client[client_id],
+				    event[who_event_created_for],
+				    "Sourcer", CONCATENATEX(
+				        FILTER(
+				            SUMMARIZE(event, event[who_event_created_for], event[who_created_event]),
+				            event[who_event_created_for]<>event[who_created_event] && event[who_created_event]<>BLANK()),
+				        event[who_created_event], ", ", event[who_created_event]
+				        ),
+				    "# Jobs", CALCULATE(DISTINCTCOUNT(event[job_id]), USERELATIONSHIP('Calendar'[Date], event[date_created])),
+				    "Early warning", SUM(job[Early warning]),
+				    "Time to Fill", [Candidate - Time to Fill (Hired date)],
+				    "Contacted", [# events - contacted (date created)],
+				    "Actual screens", [# candidates - actual screen (actual screen date)], 
+				    "Moved to ATS", [# candidates - move to ATS (moved date)],
+				    "Offers", [# candidates - offer (offered date)],
+				    "Hires", [# candidates - hired (hired date)]),
+				    job[job_title]<>BLANK(), candidate[is_candidate_archived]=FALSE(), client[client_name]<>BLANK(), NOT(client[client_name] IN {"Tribe.xyz", "Kamila AI - TEST"}), job[test]<>TRUE(), event[who_event_created_for]<>BLANK(), 'Calendar'[Year]>=2024)
+				```
+
+	annotation PBI_Id = 377713785b5044e4aa9870ca3394d660
+

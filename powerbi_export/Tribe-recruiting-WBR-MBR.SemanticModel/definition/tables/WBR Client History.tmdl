@@ -1,0 +1,128 @@
+table 'WBR Client History'
+	lineageTag: db49cbba-0030-40c8-8c41-5e898d9bb62d
+
+	measure 'Contacted Target Reached %' = ```
+			var con = CALCULATE(COUNT('WBR Client History'[Week start end]), 'WBR Client History'[Contacted Reached]="Reached")+0
+			var wee = DISTINCTCOUNT('WBR Client History'[Week start end]) 
+			RETURN
+			con/wee
+			```
+		formatString: 0%;-0%;0%
+		lineageTag: 569f5460-9f0c-46d3-965a-e72fe3e841f6
+
+	measure 'Screens Target Reached %' = ```
+			var scr = CALCULATE(COUNT('WBR Client History'[Week start end]), 'WBR Client History'[Screens Reached]="Reached")+0
+			var wee = DISTINCTCOUNT('WBR Client History'[Week start end]) 
+			RETURN
+			scr/wee
+			```
+		formatString: 0%;-0%;0%
+		lineageTag: 22a28db7-5f49-4fe9-b826-17bdc0152b4e
+
+	column Contacted
+		formatString: 0
+		lineageTag: a2891c06-811b-4509-8347-739b4ce773fe
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Contacted]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Moved to ATS'
+		formatString: 0
+		lineageTag: 4b7ef01c-26d1-4154-b2a6-05e4e161ba15
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Moved to ATS]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Contacted Target'
+		lineageTag: aee70dca-84f9-4210-bc2b-f906de6a3f57
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Contacted Target]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Moved to ATS Target'
+		lineageTag: 8dc606ed-df79-4d34-af80-b55c3bc108d0
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Moved to ATS Target]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Contacted Reached' = ```
+			IF('WBR Client History'[Contacted]>='WBR Client History'[Contacted Target], "Reached", "No")
+			
+			```
+		lineageTag: 60ed6cbe-3570-4065-ad90-29e02a80dea5
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Client
+		lineageTag: be4c56a3-53fa-4edc-9c08-bf7a90228a79
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: WBR TA Target[Client]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Week start end'
+		lineageTag: 16305713-8dd8-4c92-bf47-47f157b30aee
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: WBR TA Actual[Week start end]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Screens
+		formatString: 0
+		lineageTag: c4a9ec6c-61b1-4726-8bd3-bbd00c33f8eb
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Screens]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Screens Target'
+		lineageTag: 31d75904-422b-4fa4-8113-c28aee31dfab
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Screens Target]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Screens Reached' = ```
+			IF('WBR Client History'[Screens]>='WBR Client History'[Screens Target], "Reached", BLANK())
+			
+			```
+		lineageTag: fff24cd3-b34c-4eca-b981-4629243b184f
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'WBR Client History-5405bd8d-0064-4555-9928-78e77ec87f8a' = calculated
+		mode: import
+		source =
+				CALCULATETABLE(SUMMARIZECOLUMNS(
+				    'WBR TA Target'[Client],
+				    'WBR TA Actual'[Week start end],
+				    "Contacted", SUM('WBR TA Actual'[Contacted]),
+				    "Screens", SUM('WBR TA Actual'[Actual screens]),
+				    "Moved to ATS", SUM('WBR TA Actual'[Moved to ATS]),
+				    "Contacted Target", SUM('WBR TA Actual'[Contacted Target]),
+				    "Screens Target", SUM('WBR TA Actual'[Moved to ATS Target]),
+				    "Moved to ATS Target", SUM('WBR TA Actual'[Moved to ATS Target])),
+				    'WBR TA Actual'[Client]<>BLANK(), 'WBR TA Actual'[is_last_12_weeks]="Yes")
+
+	annotation PBI_Id = b57e949f7c9a4d2c9d66bce37093712a
+

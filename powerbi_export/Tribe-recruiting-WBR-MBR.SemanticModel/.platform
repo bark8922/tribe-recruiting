@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Tribe-recruiting-WBR-MBR"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "d7566429-5f14-4aba-8013-5f9e5846c40e"
+  }
+}

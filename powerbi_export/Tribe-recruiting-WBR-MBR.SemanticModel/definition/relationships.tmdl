@@ -1,0 +1,213 @@
+relationship 7a70f7e1-2d42-4f0e-9f02-a380da461310
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: candidate_stage.candidate_id
+	toColumn: candidate.candidate_id
+
+relationship 3fd0cfcc-caca-4f4b-a189-272f809de1af
+	crossFilteringBehavior: bothDirections
+	fromColumn: event.candidate_id
+	toColumn: candidate.candidate_id
+
+relationship 651e6e58-6895-454e-84f7-6b5a952a091f
+	fromColumn: screen.candidate_id
+	toColumn: candidate.candidate_id
+
+relationship f24c89f5-5197-478e-a561-371eda64813b
+	crossFilteringBehavior: bothDirections
+	fromColumn: candidate.job_id
+	toColumn: job.job_id
+
+relationship 0c995c9d-8848-4eb1-801f-0264f6ac5c7c
+	crossFilteringBehavior: bothDirections
+	fromColumn: candidate.talent_id
+	toColumn: talent.talent_id
+
+relationship cb5025af-00d4-4311-b31d-3a3612f279cc
+	isActive: false
+	fromColumn: event.talent_id
+	toColumn: talent.talent_id
+
+relationship d9dec006-3a8a-4612-8a01-fa1563fba40f
+	fromColumn: talent_email.talent_id
+	toColumn: talent.talent_id
+
+relationship 5c5a5c0d-6475-42b0-8b92-5c5252e20f6b
+	crossFilteringBehavior: bothDirections
+	fromColumn: job.client_id
+	toColumn: client.client_id
+
+relationship 87f943e0-1f41-40f2-a356-23689c4ed040
+	fromColumn: candidate_stage.date_contacted
+	toColumn: Calendar.Date
+
+relationship 47459e49-2280-471e-97cc-b8e82fb7e050
+	isActive: false
+	fromColumn: event.date_created
+	toColumn: Calendar.Date
+
+relationship d242eb09-b1cc-4205-94b7-4efc6f11b6f7
+	isActive: false
+	fromColumn: candidate_stage.date_interview
+	toColumn: Calendar.Date
+
+relationship 59bd8830-4ae3-49ba-befe-1424ded3ad3b
+	isActive: false
+	fromColumn: event.job_id
+	toColumn: job.job_id
+
+relationship d9c62f5a-70f4-4487-996b-8558828b6633
+	isActive: false
+	fromColumn: candidate_stage.date_created
+	toColumn: Calendar.Date
+
+relationship a5d60cf9-59e1-4cb1-84ac-cbc63f7e307d
+	isActive: false
+	fromColumn: candidate_stage.date_offer
+	toColumn: Calendar.Date
+
+relationship a202115e-44ff-412e-89cd-220db4e1001c
+	isActive: false
+	fromColumn: candidate_stage.date_hired
+	toColumn: Calendar.Date
+
+relationship 634d6d61-b8c9-44ea-b47f-c364d92d09ae
+	isActive: false
+	fromColumn: candidate_stage.date_screen_actual
+	toColumn: Calendar.Date
+
+relationship bc015db5-e408-4b6c-b59b-1550fbebe070
+	isActive: false
+	fromColumn: screen.date_created
+	toColumn: Calendar.Date
+
+relationship 6bf75f86-5ec1-4f07-a725-200849f856b8
+	isActive: false
+	fromColumn: talent.date_created
+	toColumn: Calendar.Date
+
+relationship 081b3079-df98-4281-a5cd-bc927985297d
+	isActive: false
+	fromColumn: candidate_stage.date_screen
+	toColumn: Calendar.Date
+
+relationship b4881267-a355-4d54-8542-a1d081a1fbfb
+	fromColumn: 'WBR TA Actual'.'TA Client Key'
+	toColumn: 'WBR TA Target'.'TA Client Key'
+
+relationship bcc16979-d9af-4859-8831-b180e759d64e
+	fromColumn: 'WBR TA Actual'.Concat_comment
+	toColumn: 'WBR TA Comment'.Concat
+
+relationship 3508478f-ce0a-48d1-aa06-df04eb80496c
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'WBR TS Actual'.Concat_comment
+	toColumn: 'WBR TS Comment'.Concat
+
+relationship 0b2413e9-44a9-4878-a1cc-92e4fe4c2155
+	isActive: false
+	fromColumn: candidate_stage.'Last update'
+	toColumn: Calendar.Date
+
+relationship cbf92c1a-5d94-4274-8a14-4f240d79740a
+	isActive: false
+	fromColumn: job.date_created
+	toColumn: Calendar.Date
+
+relationship 728a0d40-2211-4340-8082-db8530586c16
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: Org.'Employee #'
+	toColumn: User.employee_number
+
+relationship 7046fe7b-4ee2-44be-87bd-ae94fbe78ee4
+	fromColumn: analytic_usage.created_date
+	toColumn: Calendar.Date
+
+relationship a4cb5b98-74ad-4dfd-9097-4bc11b3160db
+	crossFilteringBehavior: bothDirections
+	toCardinality: many
+	fromColumn: event.who_created_event_first
+	toColumn: 'Sourcing Stats'.who_created_event_first
+
+relationship 07317332-cbdb-4ff4-b348-1b75ce9c0647
+	fromColumn: 'WBR TA Actual'.'TA& Cient jobs 60d'
+	toColumn: 'WBR Job open 60d'.Contacy
+
+relationship 992af001-5ff0-4182-a4ed-360b6c074e10
+	crossFilteringBehavior: bothDirections
+	fromColumn: Org_WBR.'Employee #'
+	toColumn: User.employee_number
+
+relationship 8014ce35-a84a-4fe5-9288-9d91dc47a8ca
+	crossFilteringBehavior: bothDirections
+	toCardinality: many
+	fromColumn: 'OKR TA'.TA
+	toColumn: 'WBR TA Target'.TA
+
+relationship f8e01e6f-ce32-2d77-dc8d-a257355abad4
+	fromColumn: event.who_event_created_for
+	toColumn: Current_TA.TA
+
+relationship a24ce1e9-3669-3e61-9c49-7dd292ee1878
+	fromColumn: event.who_created_event_first
+	toColumn: Current_TS.TS
+
+relationship c1a6007b-eac2-346a-adcd-4339acfce400
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: Temp_Inactive_Jobs_Sourcers_WBR.job_id
+	toColumn: job.job_id
+
+relationship 3e3fb92a-bd74-ae3a-096b-66fb9b721157
+	crossFilteringBehavior: bothDirections
+	fromColumn: event.who_created_event_first
+	toColumn: User.user_name
+
+relationship e6d9ec45-f564-ca18-9ecc-2b1fac86e9cd
+	fromColumn: 'WBR TA Actual'.'Historical Manager Key'
+	toColumn: 'Historical Manager Structure WBR'.'Manager Key'
+
+relationship fb6ce802-584f-d35f-c4c3-d3b8741a1e7b
+	fromColumn: 'WBR TS Actual'.'Historical Manager Key TS'
+	toColumn: 'Historical Manager Structure WBR'.'Manager Key'
+
+relationship 48ff531f-8b75-2773-ece1-a17cb403458b
+	fromColumn: event.'Sourcer Employee Number'
+	toColumn: 'Sourcing Team List'.'Employee Number'
+
+relationship 085e29f0-18a8-e8a3-db38-3a61bbc0f46e
+	fromColumn: 'WBR TA Actual'.'TA& Cient jobs 60d'
+	toColumn: 'WBR Job from Aug 2025'.Contact
+
+relationship 3f9cefb3-94b7-da0d-a32e-4a20b78d6c32
+	fromColumn: 'WBR TA Job'.'Key Job concat'
+	toColumn: 'WBR TA Actual'.'Key Job concat'
+
+relationship a11c089d-dbc4-798e-ee54-088560290cc1
+	toCardinality: many
+	fromColumn: 'IR Comment'.Week
+	toColumn: Calendar.'Week start end'
+
+relationship 427c47d5-ac3b-1de4-2ca5-2a58e065ccc9
+	crossFilteringBehavior: bothDirections
+	fromColumn: 'IR Comment'.Job_ID
+	toColumn: job.job_id
+
+relationship 4b367e39-1d82-42de-ade9-38d5ab0f5866
+	fromColumn: 'WBR TA Actual'.'Week start end'
+	toColumn: 'Calendar WBR'.'Week start end'
+
+relationship 1216df2a-1c05-42b8-8856-15fc1796e528
+	fromColumn: 'WBR TA Actual'.who_event_created_for
+	toColumn: User.user_name
+
+relationship be15af3b-cd97-423c-996c-99b517d508b4
+	fromColumn: 'WBR TS Actual'.'Week start end'
+	toColumn: 'Calendar WBR'.'Week start end'
+
+relationship 45969555-0ce7-4520-881c-32ebcf97531e
+	fromColumn: 'WBR TS Actual'.who_created_event_first
+	toColumn: User.user_name
+

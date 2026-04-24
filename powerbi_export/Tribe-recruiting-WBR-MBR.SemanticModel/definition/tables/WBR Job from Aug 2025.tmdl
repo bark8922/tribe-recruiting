@@ -1,0 +1,46 @@
+table 'WBR Job from Aug 2025'
+	lineageTag: 5fd86fda-cff1-4027-aa73-cbad1b691c84
+
+	column client_name
+		lineageTag: 5b4284f5-9797-4757-a3df-e1bc59052fc9
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: client[client_name]
+
+		annotation SummarizationSetBy = Automatic
+
+	column '# Jobs'
+		formatString: 0
+		lineageTag: c9c1e5cb-e626-490a-ad05-db0ac6e813e3
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [# Jobs]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Contact = 'WBR Job from Aug 2025'[who_event_created_for] & 'WBR Job from Aug 2025'[client_name]
+		lineageTag: 963b7517-081c-4ce9-aef1-e19075d0234e
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column who_event_created_for
+		lineageTag: 8272a2ca-b469-495d-a191-a272a4bbf605
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: event[who_event_created_for]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'WBR Job from Aug 2025' = calculated
+		mode: import
+		source =
+				CALCULATETABLE(SUMMARIZECOLUMNS(
+				    client[client_name],
+				    event[who_event_created_for],
+				    "# Jobs", DISTINCTCOUNT(job[job_id])
+				    ),
+				    client[client_name]<>"Tribe.xyz", client[client_name]<>BLANK(), event[date_created]>=DATE(2025,7,28), candidate[is_candidate_archived]=FALSE())
+
+	annotation PBI_Id = c35d3b4c85b64272b9675e670528ef31
+

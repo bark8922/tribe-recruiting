@@ -1,0 +1,323 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "f4b2cce12632a4129501",
+  "displayName": "Internal Recruitment",
+  "displayOption": "ActualSize",
+  "height": 1300,
+  "width": 1280,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "Filterb294273fc118e0d65c7c",
+        "ordinal": 0,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "client"
+              }
+            },
+            "Property": "client_name"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "c",
+              "Entity": "client",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "And": {
+                  "Left": {
+                    "Not": {
+                      "Expression": {
+                        "Contains": {
+                          "Left": {
+                            "Column": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Source": "c"
+                                }
+                              },
+                              "Property": "client_name"
+                            }
+                          },
+                          "Right": {
+                            "Literal": {
+                              "Value": "'test'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "Right": {
+                    "Not": {
+                      "Expression": {
+                        "Contains": {
+                          "Left": {
+                            "Column": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Source": "c"
+                                }
+                              },
+                              "Property": "client_name"
+                            }
+                          },
+                          "Right": {
+                            "Literal": {
+                              "Value": "'fake'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User",
+        "objects": {
+          "general": [
+            {
+              "properties": {}
+            }
+          ]
+        }
+      },
+      {
+        "name": "Filterc79244dc3884500d2a9d",
+        "ordinal": 1,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "job"
+              }
+            },
+            "Property": "job_title"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "j",
+              "Entity": "job",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "In": {
+                      "Expressions": [
+                        {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Source": "j"
+                              }
+                            },
+                            "Property": "job_title"
+                          }
+                        }
+                      ],
+                      "Values": [
+                        [
+                          {
+                            "Literal": {
+                              "Value": "null"
+                            }
+                          }
+                        ]
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User",
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "isInvertedSelectionMode": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "3e2cbe740ef276c48c7c",
+        "ordinal": 2,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "client"
+              }
+            },
+            "Property": "client_name"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "c",
+              "Entity": "client",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "c"
+                          }
+                        },
+                        "Property": "client_name"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Tribe.xyz (IR)'"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      }
+    ],
+    "filterSortOrder": "Custom"
+  },
+  "objects": {
+    "background": [
+      {
+        "properties": {
+          "color": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#F0F2F5'"
+                  }
+                }
+              }
+            }
+          },
+          "transparency": {
+            "expr": {
+              "Literal": {
+                "Value": "0D"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "visibility": "HiddenInViewMode",
+  "visualInteractions": [
+    {
+      "source": "beb7d4d67f71c31c3daa",
+      "target": "33df18a02f285fec1c9c",
+      "type": "DataFilter"
+    },
+    {
+      "source": "3f12bc3e9180227cc7bb",
+      "target": "33df18a02f285fec1c9c",
+      "type": "DataFilter"
+    },
+    {
+      "source": "2e422ecb012663186f78",
+      "target": "33df18a02f285fec1c9c",
+      "type": "DataFilter"
+    },
+    {
+      "source": "d6d8241854304f156b0f",
+      "target": "33df18a02f285fec1c9c",
+      "type": "DataFilter"
+    },
+    {
+      "source": "6a6dcea72d437643fe09",
+      "target": "33df18a02f285fec1c9c",
+      "type": "DataFilter"
+    },
+    {
+      "source": "6b5f764942a522021046",
+      "target": "33df18a02f285fec1c9c",
+      "type": "DataFilter"
+    },
+    {
+      "source": "d6d8241854304f156b0f",
+      "target": "6a6dcea72d437643fe09",
+      "type": "DataFilter"
+    },
+    {
+      "source": "beb7d4d67f71c31c3daa",
+      "target": "6a6dcea72d437643fe09",
+      "type": "DataFilter"
+    },
+    {
+      "source": "6b5f764942a522021046",
+      "target": "6a6dcea72d437643fe09",
+      "type": "DataFilter"
+    },
+    {
+      "source": "6505117cf31e5dfd52cd",
+      "target": "3380d91dd9b9f482cf29",
+      "type": "NoFilter"
+    },
+    {
+      "source": "56f6f97b1076459797e7",
+      "target": "6a6dcea72d437643fe09",
+      "type": "DataFilter"
+    },
+    {
+      "source": "56f6f97b1076459797e7",
+      "target": "33df18a02f285fec1c9c",
+      "type": "DataFilter"
+    },
+    {
+      "source": "56f6f97b1076459797e7",
+      "target": "6e41a5bc51659260c4ef",
+      "type": "NoFilter"
+    }
+  ]
+}

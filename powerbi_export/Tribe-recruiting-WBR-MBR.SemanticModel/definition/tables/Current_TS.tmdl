@@ -1,0 +1,50 @@
+table Current_TS
+	lineageTag: 6a649b51-b889-4f4a-a0b8-e2d4f4d68f14
+
+	column TS
+		dataType: string
+		lineageTag: ee829ae6-61e6-49bf-a968-47417be374de
+		summarizeBy: none
+		sourceColumn: TS
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Week
+		dataType: string
+		lineageTag: 1b5adea4-21a4-4de5-812f-c19a425e9eb9
+		summarizeBy: none
+		sourceColumn: Week
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Current_TS-d47b42a8-95da-44ec-94b5-5cf6088fbd2d = m
+		mode: import
+		source =
+				let
+				    Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/1Hyb5M244bkh9ygxnssq_wppWxrT0KtGeVFEYvHVoouc/edit#gid=1802525365"),
+				    #"TS Weekly Note (not used)_Table" = Source{[name="TS Weekly Note",ItemKind="Table"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(#"TS Weekly Note (not used)_Table", [PromoteAllScalars=true]),
+				    #"Filtered Rows2" = Table.SelectRows(#"Promoted Headers", each [Year] <> 2023 and [Year] <> 2024),
+				    #"Inserted Text Before Delimiter" = Table.AddColumn(#"Filtered Rows2", "Text Before Delimiter", each Text.BeforeDelimiter([#"Week"], " "), type text),
+				    #"Extracted Text After Delimiter" = Table.TransformColumns(#"Inserted Text Before Delimiter", {{"Text Before Delimiter", each Text.AfterDelimiter(_, "W"), type text}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Extracted Text After Delimiter",{{"Text Before Delimiter", Int64.Type}}),
+				    #"Added Custom1" = Table.AddColumn(#"Changed Type", "YearWeek", each [Year]*100 + [Text Before Delimiter]),
+				    #"Added Custom" = Table.AddColumn(#"Added Custom1", "Max", each List.Max(#"Added Custom1"[YearWeek])),
+				    #"Added Conditional Column" = Table.AddColumn(#"Added Custom", "Keep", each if [YearWeek] = [Max] then 1 else 0),
+				    #"Filtered Rows1" = Table.SelectRows(#"Added Conditional Column", each [Keep] = 1),
+				    #"Filtered Rows" = Table.SelectRows(#"Filtered Rows1", each [TS] <> null and [TS] <> ""),
+				    #"Trimmed Text" = Table.TransformColumns(#"Filtered Rows",{{"TS", Text.Trim, type text}}),
+				    #"Removed Other Columns" = Table.SelectColumns(#"Trimmed Text",{"TS", "Week"})
+				in
+				    #"Removed Other Columns"
+
+	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

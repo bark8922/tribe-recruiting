@@ -1,0 +1,393 @@
+table 'WBR TS Actual'
+	lineageTag: 309f4fc6-8780-4bda-8938-ece48bdb32a5
+
+	measure 'Last 12w Hires TS' =
+			IF(SUM('WBR TS Actual'[Contacted])+SUM('WBR TS Actual'[Viewed])<>0,
+			    CALCULATE(SUM('WBR TS Actual'[Hires]), 'WBR TS Actual'[is_last_12_weeks]="Yes", ALL('Calendar WBR')))
+		formatString: 0
+		lineageTag: 9985edcd-db74-43a6-be41-ccf91b5f8907
+
+	measure '% Contacted Target TS' = ```
+			var target = SUM('WBR TS Actual'[Contacted])/SUM('WBR TS Actual'[Target])
+			RETURN IF(SELECTEDVALUE('WBR TS Actual'[TS Reasoning]) IN {"Internal-related: Out of Office", "Client-related: Client Delay"}, -1,
+			IF(SUM('WBR TS Actual'[Contacted])=0, BLANK(), 
+			target))
+			```
+		lineageTag: ec70d294-3d2f-4746-b7de-2f10ffacdf3c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Last 12w % Contacted to Screens' = IF(SUM('WBR TS Actual'[Contacted])+SUM('WBR TS Actual'[Viewed])<>0, CALCULATE(SUM('WBR TS Actual'[Screens])/SUM('WBR TS Actual'[Contacted]), 'WBR TS Actual'[is_last_12_weeks]="Yes", ALL('Calendar WBR')))
+		formatString: 0%;-0%;0%
+		lineageTag: 27847c8b-c0d4-4e5f-9330-ef3a4af35b3d
+
+	measure 'Last 12w % Actual Screens to ATS' =
+			IF(SUM('WBR TS Actual'[Actual Screens])=0, BLANK(),
+			    CALCULATE(SUM('WBR TS Actual'[ATS])/SUM('WBR TS Actual'[Actual Screens]), 'WBR TS Actual'[is_last_12_weeks]="Yes", ALL('Calendar WBR')))
+		formatString: 0%;-0%;0%
+		lineageTag: 166a98e0-32e7-448d-bea4-004fc53691cb
+
+	measure 'Total TS - OKR comment' = CALCULATE(COUNTROWS('WBR TS Actual'), FILTER('WBR TS Comment', 'WBR TS Comment'[Concat]<>BLANK()))
+		formatString: 0
+		lineageTag: 9addca53-c2fd-46ce-906e-dacfc1ffe339
+
+	measure 'Rolling 12 weeks Actual Screens' = ```
+			
+			VAR ThisWeek = YEAR(TODAY()) * 100 + WEEKNUM(TODAY(), 2) -- Get current week YYYYWW
+			VAR CurrentWeek = MAX('WBR TS Actual'[weekint]) -- Get the week being evaluated in the row
+			VAR CurrentUser = SELECTEDVALUE('WBR TS Actual'[who_created_event_first]) -- Get the current user in the row
+			VAR Last12Weeks = 
+			    FILTER(
+			        ALL('WBR TS Actual'), 
+			        'WBR TS Actual'[weekint] <= CurrentWeek && -- Only past and current weeks
+			        'WBR TS Actual'[weekint] >= CurrentWeek - 3 && -- Last 3 weeks from the row's week
+			        'WBR TS Actual'[who_created_event_first] = CurrentUser -- Ensure it's for the same user
+			    )
+			RETURN 
+			    IF(
+			        CurrentWeek > ThisWeek, 
+			        BLANK(), -- Ignore future weeks
+			        SUMX(Last12Weeks, 'WBR TS Actual'[Actual Screens])
+			    )
+			
+			```
+		formatString: 0
+		lineageTag: b4f98d05-441a-4239-a483-c62fd1e2c506
+
+	measure 'Last 12w % Sreens to Actual Screens' =
+			IF(SUM('WBR TS Actual'[Screens])=0, BLANK(),
+			    CALCULATE(SUM('WBR TS Actual'[Actual Screens])/SUM('WBR TS Actual'[Screens]), 'WBR TS Actual'[is_last_12_weeks]="Yes", ALL('Calendar WBR')))
+		formatString: 0%;-0%;0%
+		lineageTag: eab484d1-e64e-45e2-b209-844757d0d0e2
+
+	measure '% Positive Response / Contacted' =
+			IF(SUM('WBR TS Actual'[Positive Response])=0, BLANK(),
+			    DIVIDE(SUM('WBR TS Actual'[Positive Response]), SUM('WBR TS Actual'[Contacted])))
+		formatString: 0%;-0%;0%
+		lineageTag: f340aceb-7913-4960-8612-6aff336d551f
+
+	measure 'Last 4w % Actual Screens to ATS' =
+			IF(SUM('WBR TS Actual'[Actual Screens])=0, BLANK(),
+			    CALCULATE(SUM('WBR TS Actual'[ATS])/SUM('WBR TS Actual'[Actual Screens]), 'WBR TS Actual'[is_last_4_weeks]="Yes", ALL('Calendar WBR')))
+		formatString: 0%;-0%;0%
+		lineageTag: f9721b18-dcdb-4f59-9b7e-f56e5f02210f
+
+	measure 'Last 4w % Sreens to Actual Screens' =
+			IF(SUM('WBR TS Actual'[Screens])=0, BLANK(),
+			    CALCULATE(SUM('WBR TS Actual'[Actual Screens])/SUM('WBR TS Actual'[Screens]), 'WBR TS Actual'[is_last_4_weeks]="Yes", ALL('Calendar WBR')))
+		formatString: 0%;-0%;0%
+		lineageTag: e92bfe4f-3f32-4b4d-a670-fbf5921e0651
+
+	measure 'Screens target %' =
+			var avge = DIVIDE(SUM('WBR TS Actual'[Screens]), DISTINCTCOUNT('WBR TS Actual'[Week start end]))
+			RETURN avge / 10
+			-- weekly screens target is 10
+		lineageTag: 4da5f5ff-0746-463b-96b4-2b29af511c6c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'ATS target %' =
+			var avge = DIVIDE(SUM('WBR TS Actual'[ATS]), DISTINCTCOUNT('WBR TS Actual'[Week start end]))
+			RETURN IF(SELECTEDVALUE('WBR TS Actual'[TS Reasoning]) IN {"Internal-related: Out of Office", "Client-related: Client Delay"}, -1,
+			avge / 4)
+			-- weekly ATS target is 4
+		lineageTag: a59143b8-5f70-4cc8-952e-1a56f98dea3b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Latest comment MBR TS' =
+			
+			VAR TS = SELECTEDVALUE('WBR TS Actual'[who_created_event_first])
+			VAR LatestWeek =
+			    CALCULATE(
+			        MAX('WBR TS Actual'[WeekInt]),
+			        FILTER(
+			            'WBR TS Actual',
+			            'WBR TS Actual'[who_created_event_first] = TS &&
+			            (NOT(ISBLANK('WBR TS Actual'[Comment]) || 'WBR TS Actual'[Comment]=""))
+			        )
+			    )
+			RETURN
+			    CALCULATE(
+			        MAX('WBR TS Actual'[Comment]),
+			        FILTER(
+			            'WBR TS Actual',
+			            'WBR TS Actual'[who_created_event_first] = TS &&
+			            'WBR TS Actual'[WeekInt] = LatestWeek
+			        )
+			    )
+		lineageTag: d207de2d-0bd2-48d9-b14c-f4e88263a739
+
+	measure 'Actual Sreens target %' =
+			var avge = DIVIDE(SUM('WBR TS Actual'[Actual Screens]), DISTINCTCOUNT('WBR TS Actual'[Week start end]))
+			RETURN IF(SELECTEDVALUE('WBR TS Actual'[TS Reasoning]) IN {"Internal-related: Out of Office", "Client-related: Client Delay"}, -1,
+			avge / 7)
+			-- weekly Actual Sreens target is 7
+		lineageTag: f32de30a-6436-40fb-92d4-b7773c1619d3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Recruiter Screens %' =
+			var avge = DIVIDE(SUM('WBR TS Actual'[Screens]), DISTINCTCOUNT('WBR TS Actual'[Week start end]))
+			RETURN IF(SELECTEDVALUE('WBR TS Actual'[TS Reasoning]) IN {"Internal-related: Out of Office", "Client-related: Client Delay"}, -1,
+			avge / 10)
+			-- weeklyRecuiter Screen target is 10
+		lineageTag: c25e3193-930f-4b6c-b5e1-07ed0542cff9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Year
+		formatString: 0
+		lineageTag: fc0a4431-dd86-4f3b-817a-f44c8d756ede
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Calendar[Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Week sort'
+		formatString: 0
+		lineageTag: 0d474b67-fd50-4985-8d07-b631eed2f112
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Calendar[Week sort]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Week start end'
+		lineageTag: b1aed621-dd31-4a6d-ade2-c2216fa9a9a0
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[Week start end]
+		sortByColumn: 'Week sort'
+
+		annotation SummarizationSetBy = Automatic
+
+	column WeekInt
+		formatString: 0
+		lineageTag: 0e0fc57a-179d-4cfe-9b6e-906ef7b9e8fd
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Calendar[WeekInt]
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_last_12_weeks
+		lineageTag: dbc244ac-ceeb-41b5-8c06-008c66294f32
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[is_last_12_weeks]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Contacted
+		formatString: #,0
+		lineageTag: fde92850-4f2d-471e-966e-bec2dcadc658
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Contacted]
+
+		annotation SummarizationSetBy = Automatic
+
+	column '# Jobs'
+		formatString: 0
+		lineageTag: 91f395d2-8f9b-460d-82e6-d105f0d2e61d
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [# Jobs]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Concat_comment = 'WBR TS Actual'[Week start end]&'WBR TS Actual'[who_created_event_first]
+		lineageTag: 6947164b-dc0c-4086-a8df-b69e9338d46b
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Comment = RELATED('WBR TS Comment'[Comment])
+		lineageTag: eeec77b8-7efc-4447-af84-8068d3010d2d
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column TA
+		lineageTag: 20fdcaa7-e495-401e-a472-abbc059474fd
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [TA]
+
+		annotation SummarizationSetBy = Automatic
+
+	column '# TA' = ```
+			SWITCH(TRUE(),
+			'WBR TS Actual'[TA]=BLANK(), 0, 
+			LEN(SUBSTITUTE('WBR TS Actual'[TA]," ",""))-LEN(SUBSTITUTE(SUBSTITUTE('WBR TS Actual'[TA], ",","")," ", ""))+1)
+			```
+		formatString: 0
+		lineageTag: 25129877-3c77-47c1-ad86-73e0d85f9fdf
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Hires
+		formatString: 0
+		lineageTag: d3490470-a708-4bb6-a4db-f1b60d26a856
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Hires]
+
+		annotation SummarizationSetBy = Automatic
+
+	column who_created_event_first
+		lineageTag: 110b16ef-ed6e-47c6-b4f7-5666df1d110e
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: event[who_created_event_first]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Manager = RELATED('Historical Manager Structure WBR'[Report_To])
+		lineageTag: 661bd23e-66ac-44eb-a793-47aba4aa0196
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Missing comment' =
+			SWITCH(TRUE(),
+			[% Contacted Target TS]<1 && 'WBR TS Actual'[Comment]=BLANK() && RELATED('WBR TS Comment'[Concat])<>BLANK() && 'WBR TS Actual'[WeekInt]<=202515, 1,
+			[% Contacted Target TS]<1 && 'WBR TS Actual'[Screens]<10 && 'WBR TS Actual'[Comment]=BLANK() && RELATED('WBR TS Comment'[Concat])<>BLANK() && 'WBR TS Actual'[WeekInt]>=202516, 1,
+			0)
+		formatString: 0
+		lineageTag: d4311320-1efa-48b6-9981-4e266f188333
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sourced
+		formatString: #,0
+		lineageTag: 8a8cc3ed-8ca7-4773-8a55-e7971b3cac51
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Sourced]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Target =
+			var target = RELATED('WBR TS Comment'[Contacted Target])
+			RETURN IF(target=BLANK(), 200, target)
+		formatString: #,0
+		lineageTag: ab083a39-1234-4056-8a55-0ec70e024526
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Actual Screens'
+		formatString: 0
+		lineageTag: f65e66ce-9012-42af-88fc-2aedb7eba3c7
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Actual Screens]
+
+		annotation SummarizationSetBy = Automatic
+
+	column ATS
+		formatString: 0
+		lineageTag: d1ef5546-3176-449c-99e0-f9abbb83321d
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [ATS]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Screens
+		formatString: 0
+		lineageTag: d288c607-39c9-4617-af54-18ffa313c105
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Screens]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Viewed
+		formatString: #,0
+		lineageTag: 1db7779e-48b5-40f8-834c-e2f7c2e3781b
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Viewed]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Positive Response'
+		formatString: 0
+		lineageTag: b0e323de-7fb7-422e-a000-f39b375db6f5
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Positive Response]
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_last_4_weeks
+		lineageTag: 594eab74-1fb4-4be9-a1e8-bafce0fe407d
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[is_last_4_weeks]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Historical Manager Key TS' = RELATED(User[employee_number]) & "-" & 'WBR TS Actual'[WeekInt]
+		lineageTag: acbc826c-83b9-485e-8146-55b1db6ee35b
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'TS Reasoning' = RELATED('WBR TS Comment'[Reasoning])
+		lineageTag: e9c510aa-7370-4a15-9453-926fdc08f823
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Not TS' = IF(RELATED('WBR TS Comment'[TS])=BLANK(), "Not TS")
+		lineageTag: 6259262d-3fec-4890-81af-5855bad87e07
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'WBR TS Actual-dbbfc327-fc56-4adc-8de0-af8ae117fc54' = calculated
+		mode: import
+		source = ```
+				CALCULATETABLE(SUMMARIZECOLUMNS(
+				    'Calendar'[Year],    
+				    'Calendar'[Week sort],
+				    'Calendar'[Week start end],
+				    'Calendar'[WeekInt],
+				    'Calendar'[is_last_12_weeks],
+				    'Calendar'[is_last_4_weeks],
+				    event[who_created_event_first],
+				    "TA",
+				        CONCATENATEX(
+				        FILTER(
+				            VALUES(event[who_event_created_for]),
+				            event[who_event_created_for] <> SELECTEDVALUE(event[who_created_event_first]) &&
+				            NOT ISBLANK(event[who_event_created_for])
+				        ),
+				        event[who_event_created_for],
+				        ", ",
+				        event[who_event_created_for],
+				        ASC
+				    ),
+				    "# Jobs", DISTINCTCOUNT(event[job_id]),
+				    "Viewed", [# events - LinkedIn visited (date created)],
+				    --"AI Viewed", [Kamila Talent]+0,
+				    --"Non-AI Viewed", CALCULATE([# events - LinkedIn visited (date created)], event[is_event_createdby_ai]=FALSE())+0,
+				    "Sourced", [# events - sourced (sourced date)],
+				    "Contacted", [# candidates - contacted (contacted date)],
+				    "Positive Response", [# candidates - positive response],
+				    "Screens", [# candidates - screen (screened date)],
+				    "Actual Screens", [# candidates - actual screen (actual screen date)],
+				    "ATS", [# candidates - move to ATS (moved date)],
+				    "Hires", [# candidates - hired (hired date)]),
+				    job[job_title]<>BLANK(), event[who_created_event_first]<>BLANK(), candidate[is_candidate_archived]=FALSE(), job[test]<>TRUE(), 'Calendar'[Year]>=2024)
+				```
+
+	annotation PBI_Id = 59ce56154e234937a936bda73744c3ae
+

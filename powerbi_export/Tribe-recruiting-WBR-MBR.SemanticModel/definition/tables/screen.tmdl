@@ -1,0 +1,167 @@
+table screen
+	lineageTag: 97b393d4-8cf2-45ad-bdc5-e9f8a2f77462
+
+	column screen_id
+		dataType: string
+		lineageTag: 94e7ad06-69ac-404a-bb60-659e646284b3
+		summarizeBy: none
+		sourceColumn: screen_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column candidate_id
+		dataType: string
+		lineageTag: e288eecf-ccfc-4b59-a912-075690dee4b4
+		summarizeBy: none
+		sourceColumn: candidate_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_created
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 062097f1-224b-448a-aa60-8977243e643c
+		summarizeBy: none
+		sourceColumn: date_created
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column current_salary
+		dataType: double
+		lineageTag: 1a83846e-19d6-4ca9-b413-ab8a712c77e4
+		summarizeBy: sum
+		sourceColumn: current_salary
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column current_salary_currency
+		dataType: string
+		lineageTag: f624e965-a87f-4036-91bc-50c36f51175f
+		summarizeBy: none
+		sourceColumn: current_salary_currency
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column desired_salary
+		dataType: double
+		formatString: #,0
+		lineageTag: 6faab233-a97d-41f7-ae34-3b90ce4f3851
+		summarizeBy: sum
+		sourceColumn: desired_salary
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column desired_salary_currency
+		dataType: string
+		lineageTag: 50a9e6ad-8e69-4278-8069-e96551c6c622
+		summarizeBy: none
+		sourceColumn: desired_salary_currency
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column location
+		dataType: string
+		lineageTag: 96912dbc-43ae-4c6e-9125-d2b3754845f3
+		summarizeBy: none
+		sourceColumn: location
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column rating
+		dataType: double
+		lineageTag: 31d80f2a-8d10-41ee-803f-04728ba145c4
+		summarizeBy: sum
+		sourceColumn: rating
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column user_recruiter
+		dataType: string
+		lineageTag: 32ddda64-e502-4c3b-aaae-606deee05498
+		summarizeBy: none
+		sourceColumn: user_recruiter
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column relocation
+		dataType: string
+		lineageTag: 9f620593-6264-4b11-9bbd-adfa0eb5ab83
+		summarizeBy: none
+		sourceColumn: relocation
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column salary_type
+		dataType: string
+		lineageTag: 29110cc2-2f92-4530-8b54-973657ab1f51
+		summarizeBy: none
+		sourceColumn: salary_type
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column start_date
+		dataType: string
+		lineageTag: 57e91f95-1a36-45c7-a106-22f9a2194929
+		summarizeBy: none
+		sourceColumn: start_date
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column visa
+		dataType: string
+		lineageTag: 6c164ef9-e856-428c-b944-c55f6f9d9562
+		summarizeBy: none
+		sourceColumn: visa
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition screen-d16c80e5-a374-4a05-95f8-7c3a9b1dc49d = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases("je92638.eu-central-1.snowflakecomputing.com","READER_WH_129",[Implementation="2.0"]),
+				    KEBOOLA_855_942138244_Database = Source{[Name="KEBOOLA_855_942138244",Kind="Database"]}[Data],
+				    READER_SCHEMA_855_942138244_Schema = KEBOOLA_855_942138244_Database{[Name="READER_SCHEMA_855_942138244",Kind="Schema"]}[Data],
+				    v2_screen_Table = READER_SCHEMA_855_942138244_Schema{[Name="v2_screen",Kind="Table"]}[Data],
+				    #"Filtered Rows" = Table.SelectRows(v2_screen_Table, each [date_created] >= #"Start Date")
+				in
+				    #"Filtered Rows"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

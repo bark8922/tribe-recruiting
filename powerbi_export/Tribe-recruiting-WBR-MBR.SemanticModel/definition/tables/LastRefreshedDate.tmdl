@@ -1,0 +1,34 @@
+table LastRefreshedDate
+	lineageTag: 29c09aea-50da-43e6-ae5f-9ca8936d9c5a
+
+	measure 'Last refreshed date' = "Last Updated: " & FORMAT(MAX(LastRefreshedDate[LastRefreshedDate]), "YYYY-MM-DD HH:MM") & " (CET)"
+		lineageTag: c4512518-555a-4be3-a728-75e0360a36a7
+
+	column LastRefreshedDate
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn:ss
+		lineageTag: 4d0a27bb-303f-4861-93dd-354f3c169440
+		summarizeBy: none
+		sourceColumn: LastRefreshedDate
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	partition LastRefreshedDate-b7c1544c-c325-4850-8fc4-59f92a274b00 = m
+		mode: import
+		source =
+				let
+				  UTC_DateTimeZone = DateTimeZone.UtcNow(),
+				  UTC_Date         = Date.From(UTC_DateTimeZone),
+				  StartSummerTime  = Date.StartOfWeek(#date(Date.Year(UTC_Date), 3, 31), Day.Sunday),
+				  StartWinterTime  = Date.StartOfWeek(#date(Date.Year(UTC_Date), 10, 31), Day.Sunday),
+				  UTC_Offset       = if UTC_Date >= StartSummerTime and UTC_Date < StartWinterTime then 2 else 1,
+				  CET_Timezone     = DateTimeZone.SwitchZone(UTC_DateTimeZone, UTC_Offset)
+				in
+				  CET_Timezone
+
+	annotation PBI_ResultType = DateTimeZone
+

@@ -1,0 +1,94 @@
+table 'IR Comment'
+	lineageTag: 6c1d1bd6-993d-4f7c-bc69-cd45daf1338c
+
+	column Role
+		dataType: string
+		lineageTag: ef96fdc0-7b71-48c0-a15b-020fc34f8d23
+		summarizeBy: none
+		sourceColumn: Role
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: adb2af8c-0d34-4208-9dba-edc05bd5000b
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Week
+		dataType: string
+		lineageTag: 5b5a0162-a60c-4d24-ab3b-45f351d14b9d
+		summarizeBy: none
+		sourceColumn: Week
+
+		annotation SummarizationSetBy = Automatic
+
+	column Client
+		dataType: string
+		lineageTag: eb81ec6a-a866-4c0a-affc-897edec8a4a6
+		summarizeBy: none
+		sourceColumn: Client
+
+		annotation SummarizationSetBy = Automatic
+
+	column Headcount
+		dataType: int64
+		formatString: 0
+		lineageTag: e712c460-7848-46d4-80d3-e9a52b63cd2c
+		summarizeBy: sum
+		sourceColumn: Headcount
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status
+		dataType: string
+		lineageTag: 1ff6e213-6803-425b-b2f1-7efe59f5a421
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column Outcome
+		dataType: string
+		lineageTag: 3f8fa2c0-0740-4944-804d-c9e1915eb4b4
+		summarizeBy: none
+		sourceColumn: Outcome
+
+		annotation SummarizationSetBy = Automatic
+
+	column Job_ID
+		dataType: string
+		lineageTag: bc7d4bd8-e038-465c-9c7c-e043b9adcfa1
+		summarizeBy: none
+		sourceColumn: Job_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Column1
+		dataType: string
+		lineageTag: ccb44722-88e4-402a-9c00-e4be547af944
+		summarizeBy: none
+		sourceColumn: Column1
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'IR Comment' = m
+		mode: import
+		source =
+				let
+				    Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/1Hyb5M244bkh9ygxnssq_wppWxrT0KtGeVFEYvHVoouc/edit?gid=1898344035#gid=1898344035"),
+				    IR_Table = Source{[name="IR",ItemKind="Table"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(IR_Table, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Role", type text}, {"Year", Int64.Type}, {"Week", type text}, {"Client", type text}, {"Headcount", Int64.Type}, {"Status", type text}, {"Outcome", type text}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each [Job_ID] <> null and [Job_ID] <> ""),
+				    #"Filtered Rows1" = Table.SelectRows(#"Filtered Rows", each [Week] <> null and [Week] <> "")
+				in
+				    #"Filtered Rows1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,208 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+  "name": "826dbcb2c431a28dc1c3",
+  "position": {
+    "x": 207.8817733990148,
+    "y": 71.921182266009865,
+    "z": 9000,
+    "height": 436.45320197044339,
+    "width": 376.35467980295573,
+    "tabOrder": 9000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Navigate to the ",
+                    "textStyle": {
+                      "fontSize": "10pt"
+                    }
+                  },
+                  {
+                    "value": "Salaries",
+                    "textStyle": {
+                      "fontSize": "10pt"
+                    },
+                    "url": "https://overview.tribe.xyz/salaries"
+                  },
+                  {
+                    "value": " page on the platform and select the client and the responsible recruiter. ",
+                    "textStyle": {
+                      "fontSize": "10pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Enter the missing salary or adjust the number if it is too low or too high, as indicated by the dashboard.",
+                    "textStyle": {
+                      "fontSize": "10pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Please note that the salary is listed as an ",
+                    "textStyle": {
+                      "fontSize": "10pt"
+                    }
+                  },
+                  {
+                    "value": "annual ",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "10pt",
+                      "color": "#f80000"
+                    }
+                  },
+                  {
+                    "value": "salary, not a monthly one.",
+                    "textStyle": {
+                      "fontSize": "10pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "If possible, try to enter the annual salary in euros at the current exchange rate (you don't need to alter any historical data, only do this if you are entering a missing salary or an adjustment). ",
+                    "textStyle": {
+                      "fontSize": "10pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "The dashboard uses the following exchange rate for salaries not in Euros.",
+                    "textStyle": {
+                      "fontSize": "10pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Croatian kuna: 0.13"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Czech koruna: 0.04"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Danish krone: 0.13"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Dollar: 0.93"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Hungarian forint: 0.0026"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Norwegian Krone: 0.09"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Polish złoty: 0.22"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Pound: 1.16"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Rupee: 0.011"
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Swedish krona: 0.09"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

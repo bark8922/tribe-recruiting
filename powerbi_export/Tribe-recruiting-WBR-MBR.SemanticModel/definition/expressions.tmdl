@@ -1,0 +1,75 @@
+expression 'Start Date' = #date(2024, 1, 1) meta [IsParameterQuery = true, IsParameterQueryRequired = true, Type = "Date"]
+	lineageTag: 462c97ed-9bba-4b23-9be7-5b8d8d2cae5a
+
+	annotation PBI_ResultType = Date
+
+	annotation PBI_NavigationStepName = Navigation
+
+expression screen_lang =
+		let
+		    Source = Snowflake.Databases("je92638.eu-central-1.snowflakecomputing.com","READER_WH_129",[Implementation="2.0"]),
+		    KEBOOLA_855_942138244_Database = Source{[Name="KEBOOLA_855_942138244",Kind="Database"]}[Data],
+		    READER_SCHEMA_855_942138244_Schema = KEBOOLA_855_942138244_Database{[Name="READER_SCHEMA_855_942138244",Kind="Schema"]}[Data],
+		    v2_screen_lang_Table = READER_SCHEMA_855_942138244_Schema{[Name="v2_screen_lang",Kind="Table"]}[Data]
+		in
+		    v2_screen_lang_Table
+	lineageTag: 4ef15910-0ae8-47cb-82ff-5b4e5ba36e39
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression screen_techstack =
+		let
+		    Source = Snowflake.Databases("je92638.eu-central-1.snowflakecomputing.com","READER_WH_129",[Implementation="2.0"]),
+		    KEBOOLA_855_942138244_Database = Source{[Name="KEBOOLA_855_942138244",Kind="Database"]}[Data],
+		    READER_SCHEMA_855_942138244_Schema = KEBOOLA_855_942138244_Database{[Name="READER_SCHEMA_855_942138244",Kind="Schema"]}[Data],
+		    v2_screen_techstack_Table = READER_SCHEMA_855_942138244_Schema{[Name="v2_screen_techstack",Kind="Table"]}[Data]
+		in
+		    v2_screen_techstack_Table
+	lineageTag: c11cee81-3697-48f6-844f-d8ba6d15e3f5
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+
+expression talent_position =
+		let
+		    Source = Snowflake.Databases("je92638.eu-central-1.snowflakecomputing.com","READER_WH_129",[Implementation="2.0"]),
+		    KEBOOLA_855_942138244_Database = Source{[Name="KEBOOLA_855_942138244",Kind="Database"]}[Data],
+		    READER_SCHEMA_855_942138244_Schema = KEBOOLA_855_942138244_Database{[Name="READER_SCHEMA_855_942138244",Kind="Schema"]}[Data],
+		    v2_talent_position_Table = READER_SCHEMA_855_942138244_Schema{[Name="v2_talent_position",Kind="Table"]}[Data]
+		in
+		    v2_talent_position_Table
+	lineageTag: 2f578cf8-b848-45a3-9b7d-c4bb311692a6
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Exception
+
+expression Org_manager =
+		let
+		    Source = Csv.Document(Web.Contents("https://api.bamboohr.com/api/gateway.php/tribexyz/v1/reports/127?format=csv"),[Delimiter=",", Columns=10, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+		    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}, {"Column2", type text}, {"Column3", type text}, {"Column4", type text}, {"Column5", type text}}),
+		    #"Promoted Headers" = Table.PromoteHeaders(#"Changed Type", [PromoteAllScalars=true]),
+		    #"Split Column by Delimiter" = Table.SplitColumn(#"Promoted Headers", "Supervisor name", Splitter.SplitTextByDelimiter(", ", QuoteStyle.Csv), {"Supervisor name.1", "Supervisor name.2"}),
+		    #"Added Custom" = Table.AddColumn(#"Split Column by Delimiter", "Name", each [First Name] & " " & [Last Name]),
+		    #"Added Custom1" = Table.AddColumn(#"Added Custom", "Manager", each [Supervisor name.2] & " " & [Supervisor name.1]),
+		    #"Renamed Columns" = Table.RenameColumns(#"Added Custom1",{{"Work Email", "Email"}}),
+		    #"Filtered Rows1" = Table.SelectRows(#"Renamed Columns", each ([Employment Status] <> "Terminated")),
+		    #"Removed Other Columns" = Table.SelectColumns(#"Filtered Rows1",{"Location", "Employee #", "Employment Status", "Name", "Manager"}),
+		    #"Filtered Rows" = Table.SelectRows(#"Removed Other Columns", each [Manager] <> null and [Manager] <> ""),
+		    #"Merged Queries" = Table.NestedJoin(#"Filtered Rows", {"Name"}, #"Filtered Rows", {"Manager"}, "Filtered Rows", JoinKind.LeftOuter),
+		    #"Expanded Filtered Rows" = Table.ExpandTableColumn(#"Merged Queries", "Filtered Rows", {"Manager"}, {"Filtered Rows.Manager"}),
+		    #"Filtered Rows2" = Table.SelectRows(#"Expanded Filtered Rows", each [Filtered Rows.Manager] <> null and [Filtered Rows.Manager] <> ""),
+		    #"Removed Duplicates" = Table.Distinct(#"Filtered Rows2", {"Employee #"}),
+		    #"Removed Columns" = Table.RemoveColumns(#"Removed Duplicates",{"Manager"}),
+		    #"Renamed Columns1" = Table.RenameColumns(#"Removed Columns",{{"Filtered Rows.Manager", "Manager"}})
+		in
+		    #"Renamed Columns1"
+	lineageTag: 536ded47-6142-479c-9739-1684e019d7a1
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

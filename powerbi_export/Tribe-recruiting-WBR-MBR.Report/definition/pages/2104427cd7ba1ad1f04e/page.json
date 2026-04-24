@@ -1,0 +1,43 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "2104427cd7ba1ad1f04e",
+  "displayName": "Pipelines Health",
+  "displayOption": "ActualSize",
+  "height": 2200,
+  "width": 1280,
+  "filterConfig": {
+    "filterSortOrder": "Custom"
+  },
+  "visualInteractions": [
+    {
+      "source": "c723c90a6ca0da19cee5",
+      "target": "61832d6f7de088b278ac",
+      "type": "DataFilter"
+    },
+    {
+      "source": "61832d6f7de088b278ac",
+      "target": "c723c90a6ca0da19cee5",
+      "type": "DataFilter"
+    },
+    {
+      "source": "d5adfa8a2d9795c2871a",
+      "target": "c723c90a6ca0da19cee5",
+      "type": "DataFilter"
+    },
+    {
+      "source": "d5adfa8a2d9795c2871a",
+      "target": "61832d6f7de088b278ac",
+      "type": "DataFilter"
+    },
+    {
+      "source": "2dd29271eb171eae0f8a",
+      "target": "c723c90a6ca0da19cee5",
+      "type": "DataFilter"
+    },
+    {
+      "source": "2dd29271eb171eae0f8a",
+      "target": "61832d6f7de088b278ac",
+      "type": "DataFilter"
+    }
+  ]
+}

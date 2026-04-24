@@ -1,0 +1,148 @@
+table talent
+	lineageTag: 16890528-728a-45fa-979d-afd53f5555be
+
+	column talent_id
+		dataType: string
+		lineageTag: c6482c92-2575-40d2-b5c6-acc7dc1b1114
+		summarizeBy: none
+		sourceColumn: talent_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_created
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: b47f3b9e-b874-4a09-93d5-b890b9e60c12
+		summarizeBy: none
+		sourceColumn: date_created
+
+		changedProperty = FormatString
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column full_name
+		dataType: string
+		lineageTag: 70977e75-c50d-4217-bd0a-a7f964991707
+		summarizeBy: none
+		sourceColumn: full_name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column current_company
+		dataType: string
+		lineageTag: 752841c6-be65-4740-a353-0faf8f97216f
+		summarizeBy: none
+		sourceColumn: current_company
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column current_title
+		dataType: string
+		lineageTag: 1428dad0-2302-4a13-89c1-c8147626253d
+		summarizeBy: none
+		sourceColumn: current_title
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column main_email
+		dataType: string
+		lineageTag: af518c3a-9778-413b-80ed-718939ef919c
+		summarizeBy: none
+		sourceColumn: main_email
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column linkedin_link
+		dataType: string
+		lineageTag: 0643d72b-a6d2-49cb-91ab-03616341479c
+		dataCategory: WebUrl
+		summarizeBy: none
+		sourceColumn: linkedin_link
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_talent_duplicated
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: b4eab40c-b409-4f24-836d-51349b86c810
+		summarizeBy: none
+		sourceColumn: is_talent_duplicated
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column duplicates
+		dataType: string
+		lineageTag: 7f74b752-24a6-4dea-bb36-b2797d6942b6
+		summarizeBy: none
+		sourceColumn: duplicates
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column location
+		dataType: string
+		lineageTag: 522d3b93-04c3-4615-bf86-941945fe62c1
+		summarizeBy: none
+		sourceColumn: location
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column location_country
+		dataType: string
+		lineageTag: 09e68a34-b43d-4dd1-98da-e5bc94e3aedd
+		summarizeBy: none
+		sourceColumn: location_country
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column location_city
+		dataType: string
+		lineageTag: 3327bf21-0a84-4d90-9dc0-fa2f9c1b701b
+		summarizeBy: none
+		sourceColumn: location_city
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition talent-046412ae-6312-4272-9625-a65ae7dd2fd3 = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases("je92638.eu-central-1.snowflakecomputing.com","READER_WH_129",[Implementation="2.0"]),
+				    KEBOOLA_855_942138244_Database = Source{[Name="KEBOOLA_855_942138244",Kind="Database"]}[Data],
+				    READER_SCHEMA_855_942138244_Schema = KEBOOLA_855_942138244_Database{[Name="READER_SCHEMA_855_942138244",Kind="Schema"]}[Data],
+				    v2_talent_Table = READER_SCHEMA_855_942138244_Schema{[Name="v2_talent",Kind="Table"]}[Data],
+				    #"Filtered Rows" = Table.SelectRows(v2_talent_Table, each [date_created] >= #"Start Date")
+				in
+				    #"Filtered Rows"
+
+	annotation PBI_ResultType = Exception
+
+	annotation PBI_NavigationStepName = Navigation
+

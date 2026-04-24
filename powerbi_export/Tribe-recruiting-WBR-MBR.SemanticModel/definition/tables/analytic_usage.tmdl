@@ -1,0 +1,102 @@
+table analytic_usage
+	lineageTag: 5178bc04-baa6-4403-b2e0-bc1f55958f83
+
+	measure '7 days moving avg' =
+			VAR CurrDate = MAX(analytic_usage[created_date])
+			VAR Days =
+			    CALCULATETABLE (
+			        VALUES(analytic_usage[created_date]),
+			        analytic_usage[created_date] <= CurrDate,
+			        analytic_usage[created_date] > CurrDate - 7
+			    )
+			RETURN
+			    AVERAGEX(Days, CALCULATE( DISTINCTCOUNT(analytic_usage[user])))
+		formatString: 0
+		lineageTag: 82161ef4-b144-4963-9785-ea7cfcadcba9
+
+	measure '7 days moving avg limited' =
+			VAR CurrDate = MAX(analytic_usage[created_date])
+			VAR Days =
+			    CALCULATETABLE (
+			        VALUES(analytic_usage[created_date]),
+			        analytic_usage[created_date] <= CurrDate,
+			        analytic_usage[created_date] > CurrDate - 7
+			    )
+			RETURN
+			    AVERAGEX(Days, CALCULATE(DISTINCTCOUNT(analytic_usage[user]), analytic_usage[page] in {"Board_view"}))
+		lineageTag: 245f331a-1e14-4e8f-aa84-b6d2b8aa2173
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column page
+		dataType: string
+		lineageTag: 85b3037e-8a77-498b-b2cd-0f3d17454210
+		summarizeBy: none
+		sourceColumn: page
+
+		annotation SummarizationSetBy = Automatic
+
+	column user
+		dataType: string
+		lineageTag: 9d527c00-6b6f-4431-ba7a-c860c6aa8f92
+		summarizeBy: none
+		sourceColumn: user
+
+		annotation SummarizationSetBy = Automatic
+
+	column created_date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 1bcc2915-ab9e-4aba-98bf-6d32e0787fe5
+		summarizeBy: none
+		sourceColumn: created_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column count
+		dataType: double
+		formatString: #,0
+		lineageTag: bdb42107-e3c3-444c-852b-8292903dc146
+		summarizeBy: sum
+		sourceColumn: count
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'User Name' = LOOKUPVALUE(User[user_name], User[user_id], analytic_usage[user])
+		lineageTag: 878e1a55-7be3-498f-8537-0eaac1c60191
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Week = WEEKNUM(analytic_usage[created_date], 21)
+		formatString: 0
+		lineageTag: 7135ee39-4a89-4820-b61c-56f179712e29
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year/Month = FORMAT(analytic_usage[created_date], "YYYY/MM")
+		lineageTag: d73dce77-32f1-4ec5-94c3-83fa04a5cb69
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition analytic_usage = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases("je92638.eu-central-1.snowflakecomputing.com","READER_WH_129",[Implementation="2.0"]),
+				    KEBOOLA_855_942138244_Database = Source{[Name="KEBOOLA_855_942138244",Kind="Database"]}[Data],
+				    READER_SCHEMA_855_942138244_Schema = KEBOOLA_855_942138244_Database{[Name="READER_SCHEMA_855_942138244",Kind="Schema"]}[Data],
+				    v2_analytic_Table = READER_SCHEMA_855_942138244_Schema{[Name="v2_analytic",Kind="Table"]}[Data]
+				in
+				    v2_analytic_Table
+
+	annotation PBI_ResultType = Exception
+
+	annotation PBI_NavigationStepName = Navigation
+

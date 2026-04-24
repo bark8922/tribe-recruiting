@@ -1,0 +1,97 @@
+table 'WBR TS Comment'
+	lineageTag: a0a3d333-281a-46b8-bdd0-68f2c7e3ab25
+
+	column TS
+		dataType: string
+		lineageTag: 7c96d3c1-f0d7-47e1-be6b-6a6046e29a13
+		summarizeBy: none
+		sourceColumn: TS
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: fb988336-16d0-4278-88d2-c6fc731f9cc8
+		summarizeBy: sum
+		sourceColumn: Year
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Week
+		dataType: string
+		lineageTag: 018b2d35-c4b3-4aeb-b295-cfbfccaed84f
+		summarizeBy: none
+		sourceColumn: Week
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Comment
+		dataType: string
+		lineageTag: 73ed195b-f7f6-4609-a346-28a1b207bf94
+		summarizeBy: none
+		sourceColumn: Comment
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Concat
+		dataType: string
+		lineageTag: 75b16a51-9191-4a2a-801c-ef47d16dd13f
+		summarizeBy: none
+		sourceColumn: Concat
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Contacted Target'
+		dataType: int64
+		formatString: 0
+		lineageTag: 7a47965b-85a8-4596-bd68-92992f80c56d
+		summarizeBy: sum
+		sourceColumn: Contacted Target
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Data Cleanliness/Hygiene'
+		dataType: string
+		lineageTag: d41576fc-a9d0-43cf-92c2-236236594d9a
+		summarizeBy: none
+		sourceColumn: Data Cleanliness/Hygiene
+
+		annotation SummarizationSetBy = Automatic
+
+	column Reasoning
+		dataType: string
+		lineageTag: bacc3685-652b-4ec2-8b97-90ec0c638e93
+		summarizeBy: none
+		sourceColumn: Reasoning
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'WBR TS Comment-d23da5f4-dd34-47e6-aa0d-2f1bc57331ff' = m
+		mode: import
+		source =
+				let
+				    Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/1Hyb5M244bkh9ygxnssq_wppWxrT0KtGeVFEYvHVoouc/edit#gid=1802525365"),
+				    #"TS Weekly Note (not used)_Table" = Source{[name="TS Weekly Note",ItemKind="Table"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(#"TS Weekly Note (not used)_Table", [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"TS", type text}, {"Year", Int64.Type}, {"Week", type text}, {"Comment", type text}, {"Contacted Target", Int64.Type}}),
+				    #"Added Custom" = Table.AddColumn(#"Changed Type", "Concat", each [Week]&[TS]),
+				    #"Filtered Rows" = Table.SelectRows(#"Added Custom", each [TS] <> null and [TS] <> ""),
+				    #"Trimmed Text" = Table.TransformColumns(#"Filtered Rows",{{"TS", Text.Trim, type text}})
+				in
+				    #"Trimmed Text"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

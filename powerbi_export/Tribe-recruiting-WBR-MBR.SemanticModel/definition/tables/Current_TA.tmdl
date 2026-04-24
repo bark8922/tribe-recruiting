@@ -1,0 +1,43 @@
+table Current_TA
+	lineageTag: 8c120173-26f1-4b51-a07f-b1af7d2cc289
+
+	column TA
+		dataType: string
+		lineageTag: c761eea1-a936-49ea-b1f5-1b9315741d24
+		summarizeBy: none
+		sourceColumn: TA
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearMonth
+		dataType: string
+		lineageTag: 6eddbe55-386e-41b2-baba-6d4c115aff69
+		summarizeBy: none
+		sourceColumn: YearMonth
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Current_TA-be739da6-d150-4e1b-8894-55e0a14a02d6 = m
+		mode: import
+		source =
+				let
+				    Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/1Hyb5M244bkh9ygxnssq_wppWxrT0KtGeVFEYvHVoouc/edit#gid=1802525365"),
+				    #"TA Target_Table" = Source{[name="TA Target",ItemKind="Table"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(#"TA Target_Table", [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Client", type text}, {"TA", type text}, {"Year", Int64.Type}, {"Month", Int64.Type}, {"Contacted", type number}, {"Actual Screens", type number}, {"Moved to ATS", type number}}),
+				    #"Filtered Rows1" = Table.SelectRows(#"Changed Type", each [Year] <> 2023 and [Year] <> 2024),
+				    #"Filtered Rows" = Table.SelectRows(#"Filtered Rows1", each ([TA] <> "")),
+				    #"Added Custom" = Table.AddColumn(#"Filtered Rows", "YearMonth", each [Year]*100 + [Month]),
+				    #"Added Custom1" = Table.AddColumn(#"Added Custom", "Max Month", each List.Max(#"Added Custom"[YearMonth])),
+				    #"Added Conditional Column" = Table.AddColumn(#"Added Custom1", "Keep", each if [YearMonth] = [Max Month] then 1 else 0),
+				    #"Filtered Rows2" = Table.SelectRows(#"Added Conditional Column", each ([Keep] = 1) and ([Actual Screens] <> null and [Actual Screens] <> 0)),
+				    #"Trimmed Text" = Table.TransformColumns(#"Filtered Rows2",{{"TA", Text.Trim, type text}}),
+				    #"Grouped Rows" = Table.Group(#"Trimmed Text", {"TA", "YearMonth"}, {{"Count", each Table.RowCount(_), Int64.Type}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Grouped Rows",{"Count"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Exception
+
+	annotation PBI_NavigationStepName = Navigation
+

@@ -1,0 +1,94 @@
+table 'OKR TA'
+	lineageTag: 02a20a13-baf9-4ed3-b7fc-6940726721e7
+
+	measure 'Average OKR' = DIVIDE(SUM('OKR TA'[Contacted OKR])+SUM('OKR TA'[Actual Screen])+SUM('OKR TA'[ATS OKR]), SUM('OKR TA'[Count]))
+		formatString: 0.0
+		lineageTag: 46777e7a-1049-42d9-a160-325faa92571e
+
+	column TA
+		lineageTag: 82fe16e7-6846-491a-8c22-680a0418e9f9
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [TA]
+
+		annotation SummarizationSetBy = Automatic
+
+	column WeekInt
+		formatString: 0
+		lineageTag: 99b14518-5407-4ebc-9b68-6a98fa0c19dd
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [WeekInt]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Week start end'
+		lineageTag: b06df190-17f3-4bae-8bbd-e166baf79a29
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Week start end]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Contacted OKR'
+		formatString: 0
+		lineageTag: f014ea02-1a13-4c6d-a5e2-1bf9d2e29bfa
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Contacted OKR]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Actual Screen'
+		formatString: 0
+		lineageTag: 92ab7d7f-35ac-40c7-8015-9476f157cf16
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Actual Screen]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'ATS OKR'
+		formatString: 0
+		lineageTag: 6718c700-5fcd-4eb4-b7ba-d96b02c73b09
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [ATS OKR]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Count =
+			var contact = IF('OKR TA'[Contacted OKR]<>BLANK(), 1, 0)
+			var screens = IF('OKR TA'[Actual Screen]<>BLANK(), 1, 0)
+			var ats = IF('OKR TA'[ATS OKR]<>BLANK(), 1, 0)
+			RETURN contact+screens+ats
+		formatString: 0
+		lineageTag: acf92d61-7130-4e2f-b6d2-3212467cdaa0
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Q'
+		lineageTag: c68fe91f-a54a-44aa-814a-b8c5bb3e0c7d
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Year Q]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'OKR TA' = calculated
+		mode: import
+		source = ```
+				CALCULATETABLE(SELECTCOLUMNS('WBR TA Actual',    
+				    "TA", 'WBR TA Actual'[who_event_created_for],
+				    "WeekInt", 'WBR TA Actual'[WeekInt],
+				    "Week start end", 'WBR TA Actual'[Week start end],
+				    "Year Q", 'WBR TA Actual'[Year]& 'WBR TA Actual'[Q],
+				    "Contacted OKR", [Contacted OKR number],
+				    "Actual Screen", [Screens OKR number],
+				    "ATS OKR", [Moved to ATS OKR number]),
+				    'WBR TA Actual'[Client]<>BLANK(), 'WBR TA Actual'[WeekInt]>=202341, 'WBR TA Actual'[WeekInt]<>202352,'WBR TA Actual'[WeekInt]<>202353, 'WBR TA Actual'[WeekInt]<>202401, 'WBR TA Actual'[WeekInt]<>202402, 'WBR TA Comment'[Exclude OKR]<>"Yes")
+				```
+
+	annotation PBI_Id = 252f6f158ce74fdaa3db47ee499e368a
+

@@ -1,0 +1,421 @@
+table candidate_stage
+	lineageTag: d1f551c1-0a79-4403-9430-f9ea6a656d37
+
+	measure '# Candidate Hired (time to hire)' = CALCULATE(COUNT(candidate_stage[candidate_id]), candidate_stage[date_hired]<>BLANK())
+		formatString: 0
+		lineageTag: 58a0c06b-7b3c-4386-b0f6-fea07c89cfc1
+
+		changedProperty = IsHidden
+
+	column candidate_id
+		dataType: string
+		lineageTag: 73353ff5-c32f-4a31-9a22-a8f24a7e3131
+		summarizeBy: none
+		sourceColumn: candidate_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_created
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 56358fdc-b8c3-4d41-ace3-a2ebb60501d1
+		summarizeBy: none
+		sourceColumn: date_created
+
+		changedProperty = FormatString
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column date_lnkdin_viewed
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: f4ce803c-daf2-412b-b19c-b7caec27821a
+		summarizeBy: none
+		sourceColumn: date_lnkdin_viewed
+
+		changedProperty = FormatString
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column date_contacted
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: a0e38821-fa6e-4674-8db7-c8e67769c501
+		summarizeBy: none
+		sourceColumn: date_contacted
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column date_screen
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 121c7ef1-73e5-43cb-9544-999337694fca
+		summarizeBy: none
+		sourceColumn: date_screen
+
+		changedProperty = FormatString
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column date_screen_actual
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 32cf1e93-7135-4aa1-8eb2-3bf4f3a02099
+		summarizeBy: none
+		sourceColumn: date_screen_actual
+
+		changedProperty = FormatString
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column date_interview
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: e688be5f-ddf2-4679-9f51-88b3debf1bd9
+		summarizeBy: none
+		sourceColumn: date_interview
+
+		changedProperty = FormatString
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column date_offer
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: c9ecaec4-1313-46d0-a2eb-bf782bf93833
+		summarizeBy: none
+		sourceColumn: date_offer
+
+		changedProperty = FormatString
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column date_hired
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 2a17b8c4-ab01-4716-b54d-93d648e491a7
+		summarizeBy: none
+		sourceColumn: date_hired
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column stage_current_type
+		dataType: string
+		lineageTag: 790c842e-d08b-4068-8fbc-0b3b43f87137
+		summarizeBy: none
+		sourceColumn: stage_current_type
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column stage_current
+		dataType: string
+		lineageTag: af41bbaf-b0df-4907-85ab-a0242add8b2c
+		summarizeBy: none
+		sourceColumn: stage_current
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Diff Contacted - Hired' =
+			var d = DATEDIFF(candidate_stage[date_contacted], candidate_stage[date_hired], DAY)
+			RETURN IF(d<0, BLANK(), d)
+		formatString: 0
+		lineageTag: cd56894e-6666-445c-a69b-534551253318
+		summarizeBy: sum
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column automation_emails
+		dataType: double
+		lineageTag: dce10340-a932-4e63-a240-a3c4ae307026
+		summarizeBy: sum
+		sourceColumn: automation_emails
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column automation_connections
+		dataType: double
+		lineageTag: 07f524f9-1fad-4bd5-9358-7fd67b4af153
+		summarizeBy: sum
+		sourceColumn: automation_connections
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column automation_inmails
+		dataType: double
+		lineageTag: c2e13cab-9b5e-48d7-8247-3d1f6e7e50e9
+		summarizeBy: sum
+		sourceColumn: automation_inmails
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column automation_messages
+		dataType: double
+		lineageTag: dc0255f9-5a6e-415f-84a3-1082811b1643
+		summarizeBy: sum
+		sourceColumn: automation_messages
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column automation_steps = ```
+			IF(ISBLANK(candidate_stage[automation_connections]), 
+			                        "0",
+			                        IF((candidate_stage[automation_connections]+candidate_stage[automation_emails]+candidate_stage[automation_inmails]+candidate_stage[automation_messages])<=5,
+			                            CONVERT(candidate_stage[automation_connections]+candidate_stage[automation_emails]+candidate_stage[automation_inmails]+candidate_stage[automation_messages], STRING),
+			                            "6+"))
+			
+			
+			```
+		lineageTag: 6787311e-b6a8-4840-9d43-f1dd46dda05d
+		summarizeBy: none
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_automation = ```
+			IF(candidate_stage[automation_steps] = "0", "No automation", "With automation")
+			
+			
+			```
+		lineageTag: be0f01a0-fa5e-490d-978e-763e7150dd00
+		summarizeBy: none
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Diff Concated - Job created' =
+			var d = DATEDIFF(RELATED(job[date_created]), candidate_stage[date_contacted], DAY)
+			RETURN IF(d<0, BLANK(), d)
+		formatString: 0
+		lineageTag: 5b832ab5-f4b8-42de-b976-e109804a272f
+		summarizeBy: sum
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Diff Hired - Job created' =
+			var d = DATEDIFF(RELATED(job[date_created]), candidate_stage[date_hired], DAY)
+			RETURN IF(d<0, BLANK(), d)
+		formatString: 0
+		lineageTag: f2013551-9cd6-4a7c-a550-54d5b65f652a
+		summarizeBy: sum
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column hired_order
+		dataType: double
+		formatString: 0
+		lineageTag: 446f657b-424b-43e0-9cf8-2c86fc44b3e6
+		summarizeBy: none
+		sourceColumn: hired_order
+
+		changedProperty = FormatString
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = User
+
+	column hired_views
+		dataType: double
+		formatString: 0
+		lineageTag: dd35fff7-a58a-42ce-84b9-54f7147efdd8
+		summarizeBy: average
+		sourceColumn: hired_views
+
+		changedProperty = FormatString
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = User
+
+	column hired_contacts
+		dataType: double
+		formatString: 0
+		lineageTag: 3a8435b6-d3f4-4275-a98c-34b905c0a6bf
+		summarizeBy: average
+		sourceColumn: hired_contacts
+
+		changedProperty = FormatString
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = User
+
+	column hired_screens
+		dataType: double
+		formatString: 0
+		lineageTag: 554da472-e592-420f-b849-4e74391db3e2
+		summarizeBy: average
+		sourceColumn: hired_screens
+
+		changedProperty = FormatString
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = User
+
+	column 'Contacted created diff' = IF(candidate_stage[date_contacted]=candidate_stage[date_created], TRUE(), FALSE())
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 0d77a899-3300-4ce4-8718-ca6fb0abda64
+		summarizeBy: none
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Last update' = MAX(MAX(MAX(MAX(MAX(MAX(MAX(candidate_stage[date_created], candidate_stage[date_lnkdin_viewed]), candidate_stage[date_contacted]), candidate_stage[date_screen]), candidate_stage[date_screen_actual]), candidate_stage[date_interview]), candidate_stage[date_offer]), candidate_stage[date_hired])
+		formatString: yyyy-mm-dd
+		lineageTag: 7bb18176-3fb8-4da0-8ad4-aac456b1615e
+		summarizeBy: none
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column 'Is First Hired?' =
+			SWITCH(TRUE(),
+			candidate_stage[hired_order]=1, "Yes",
+			candidate_stage[hired_order]<>1 && MOD(candidate_stage[hired_order],10)=1, CONVERT(candidate_stage[hired_order],STRING)&"st",
+			candidate_stage[hired_order]<>1 && MOD(candidate_stage[hired_order],10)=2, CONVERT(candidate_stage[hired_order],STRING)&"nd",
+			candidate_stage[hired_order]<>1 && MOD(candidate_stage[hired_order],10)=3, CONVERT(candidate_stage[hired_order],STRING)&"rd",
+			CONVERT(candidate_stage[hired_order],STRING)&"th")
+		lineageTag: 950fe1b7-1c9f-465d-bdd8-66382ca2d5be
+		summarizeBy: none
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Prospects = RELATED(candidate[Prospects])
+		formatString: 0
+		lineageTag: 15f098c4-8b9b-4502-8e81-fa17958690d8
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Current Stage'
+		dataType: string
+		lineageTag: 835b364e-8935-425d-9ee4-ea7d340ce2bc
+		summarizeBy: none
+		sourceColumn: Current Stage
+		sortByColumn: 'Current Stage Num'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Current Stage Num'
+		dataType: int64
+		formatString: 0
+		lineageTag: b2ff82b6-c51e-4c97-b687-6626dc9ecf80
+		summarizeBy: sum
+		sourceColumn: Current Stage Num
+
+		annotation SummarizationSetBy = Automatic
+
+	partition candidate_stage-96328dd3-e6f9-4c9b-b651-d378ca9c941c = m
+		mode: import
+		source = ```
+				let
+				    Source = Snowflake.Databases("je92638.eu-central-1.snowflakecomputing.com","READER_WH_129",[Implementation="2.0"]),
+				    KEBOOLA_855_942138244_Database = Source{[Name="KEBOOLA_855_942138244",Kind="Database"]}[Data],
+				    READER_SCHEMA_855_942138244_Schema = KEBOOLA_855_942138244_Database{[Name="READER_SCHEMA_855_942138244",Kind="Schema"]}[Data],
+				    v2_candidate_stage_Table = READER_SCHEMA_855_942138244_Schema{[Name="v2_candidate_stage",Kind="Table"]}[Data],
+				    #"Filtered Rows" = Table.SelectRows(v2_candidate_stage_Table, each [date_created] >= #"Start Date"),
+				    #"Added Conditional Column" = Table.AddColumn(#"Filtered Rows", "Current Stage", each if [stage_current_type] = "Contacted" then "Contacted"
+				
+				else if [stage_current_type] = "Recruiter Screen" and [date_screen_actual] is null then "Recruiter Screen"
+				
+				else if [stage_current_type] = "Recruiter Screen" and [date_screen_actual] <> null then "Actual Screen"
+				
+				else if [stage_current_type] = "Offsite" then "Move to ATS" 
+				else if [stage_current] = "Onsite" then "Onsite" 
+				else [stage_current_type]),
+				    #"Added Conditional Column1" = Table.AddColumn(#"Added Conditional Column", "Current Stage Num", each if [Current Stage] = "Contacted" then 1 else if [Current Stage] = "Recruiter Screen" then 2 else if [Current Stage] = "Actual Screen" then 3 else if [Current Stage] = "Move to ATS" then 4 else if [Current Stage] = "Onsite" then 5 else if [Current Stage] = "Offer" then 6 else if [Current Stage] = "Hired" then 7 else 10),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Added Conditional Column1",{{"Current Stage Num", Int64.Type}})
+				in
+				    #"Changed Type"
+				```
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

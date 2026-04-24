@@ -1,0 +1,138 @@
+table 'WBR TA Target'
+	lineageTag: f0f0afb2-b1a7-407d-a5ec-d3b618062139
+
+	column Client
+		dataType: string
+		lineageTag: 72da0d9d-4b80-45cf-aa42-78a81ea1b9ba
+		summarizeBy: none
+		sourceColumn: Client
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column TA
+		dataType: string
+		lineageTag: 536ae5da-510d-492f-a497-1597c983fc78
+		summarizeBy: none
+		sourceColumn: TA
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: e6785d87-57a2-4c00-81d3-c7e364a4a1ec
+		summarizeBy: sum
+		sourceColumn: Year
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Contacted
+		dataType: double
+		lineageTag: 00ecc300-e41f-4707-adbb-9c422a883668
+		summarizeBy: sum
+		sourceColumn: Contacted
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Actual Screens'
+		dataType: double
+		lineageTag: 5b282729-5033-48c2-977b-c8c0023dbf47
+		summarizeBy: sum
+		sourceColumn: Actual Screens
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Moved to ATS'
+		dataType: double
+		lineageTag: e6bb0073-99ae-4345-b192-494432b10d73
+		summarizeBy: sum
+		sourceColumn: Moved to ATS
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'TA Client Key' =
+			IF(LEFT('WBR TA Target'[Client], 4)="Wolt", "Wolt"&'WBR TA Target'[TA]&'WBR TA Target'[Year]&'WBR TA Target'[Month],
+			    'WBR TA Target'[Client]&'WBR TA Target'[TA]&'WBR TA Target'[Year]&'WBR TA Target'[Month])
+		lineageTag: 446444b3-4d78-45dd-8847-dfc9084be76a
+		summarizeBy: none
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: int64
+		formatString: 0
+		lineageTag: 08421a43-b18b-421b-aaaf-144c35476ba3
+		summarizeBy: sum
+		sourceColumn: Month
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Month' = ```
+			'WBR TA Target'[Year]*100 + 'WBR TA Target'[Month]
+			
+			```
+		formatString: 0
+		lineageTag: 44337664-de32-4998-9486-9d43690fffd2
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Latest month' = IF('WBR TA Target'[Year Month]=MAX('WBR TA Target'[Year Month]), 1, 0)
+		formatString: 0
+		lineageTag: 0049d915-7250-414c-bc0b-50050310bbe0
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Hires
+		dataType: double
+		lineageTag: 67b66847-8b6c-4a86-adc4-773e7d66cbe5
+		summarizeBy: sum
+		sourceColumn: Hires
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'WBR TA Target-63e5b0f9-2c59-4106-8064-51cb10418e31' = m
+		mode: import
+		source =
+				let
+				    Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/1Hyb5M244bkh9ygxnssq_wppWxrT0KtGeVFEYvHVoouc/edit#gid=1802525365"),
+				    #"TA Target_Table" = Source{[name="TA Target",ItemKind="Table"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(#"TA Target_Table", [PromoteAllScalars=true]),
+				    #"Removed Other Columns" = Table.SelectColumns(#"Promoted Headers",{"Client", "TA", "Year", "Month", "Contacted", "Actual Screens", "Moved to ATS", "Hires"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Removed Other Columns",{{"Client", type text}, {"TA", type text}, {"Year", Int64.Type}, {"Month", Int64.Type}, {"Contacted", type number}, {"Actual Screens", type number}, {"Moved to ATS", type number}, {"Hires", type number}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each ([TA] <> "")),
+				    #"Trimmed Text" = Table.TransformColumns(#"Filtered Rows",{{"Client", Text.Trim, type text}, {"TA", Text.Trim, type text}}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Trimmed Text","DoorDash","Wolt HQ",Replacer.ReplaceText,{"Client"}),
+				    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value","SevenRooms","Wolt HQ",Replacer.ReplaceText,{"Client"})
+				in
+				    #"Replaced Value1"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

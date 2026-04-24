@@ -1,0 +1,227 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "7cb85b9da749805e5d6c",
+  "displayName": "Weekly Progress",
+  "displayOption": "ActualSize",
+  "height": 1000,
+  "width": 1280,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "Filterb294273fc118e0d65c7c",
+        "ordinal": 0,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "client"
+              }
+            },
+            "Property": "client_name"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "c",
+              "Entity": "client",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "And": {
+                  "Left": {
+                    "Not": {
+                      "Expression": {
+                        "Contains": {
+                          "Left": {
+                            "Column": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Source": "c"
+                                }
+                              },
+                              "Property": "client_name"
+                            }
+                          },
+                          "Right": {
+                            "Literal": {
+                              "Value": "'test'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "Right": {
+                    "Not": {
+                      "Expression": {
+                        "Contains": {
+                          "Left": {
+                            "Column": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Source": "c"
+                                }
+                              },
+                              "Property": "client_name"
+                            }
+                          },
+                          "Right": {
+                            "Literal": {
+                              "Value": "'fake'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User",
+        "objects": {
+          "general": [
+            {
+              "properties": {}
+            }
+          ]
+        }
+      },
+      {
+        "name": "Filterc79244dc3884500d2a9d",
+        "ordinal": 1,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "job"
+              }
+            },
+            "Property": "job_title"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "j",
+              "Entity": "job",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "In": {
+                      "Expressions": [
+                        {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Source": "j"
+                              }
+                            },
+                            "Property": "job_title"
+                          }
+                        }
+                      ],
+                      "Values": [
+                        [
+                          {
+                            "Literal": {
+                              "Value": "null"
+                            }
+                          }
+                        ]
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User",
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "isInvertedSelectionMode": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "filterSortOrder": "Custom"
+  },
+  "visibility": "HiddenInViewMode",
+  "visualInteractions": [
+    {
+      "source": "79850b604670426b0438",
+      "target": "2eacc857771ab6a072e4",
+      "type": "NoFilter"
+    },
+    {
+      "source": "79850b604670426b0438",
+      "target": "785db9aa74d34ecd5e8e",
+      "type": "NoFilter"
+    },
+    {
+      "source": "79850b604670426b0438",
+      "target": "f01fd04fe04cbe8bd849",
+      "type": "DataFilter"
+    },
+    {
+      "source": "46fe9a40505a0c3d5170",
+      "target": "2eacc857771ab6a072e4",
+      "type": "DataFilter"
+    },
+    {
+      "source": "46fe9a40505a0c3d5170",
+      "target": "785db9aa74d34ecd5e8e",
+      "type": "DataFilter"
+    },
+    {
+      "source": "46fe9a40505a0c3d5170",
+      "target": "f01fd04fe04cbe8bd849",
+      "type": "DataFilter"
+    },
+    {
+      "source": "e071df6021cca1726ec5",
+      "target": "81dcae7099ea7dca7754",
+      "type": "DataFilter"
+    },
+    {
+      "source": "e071df6021cca1726ec5",
+      "target": "b90a8b70801e918d3ed5",
+      "type": "DataFilter"
+    },
+    {
+      "source": "0f91d92ac83682c3e1aa",
+      "target": "81dcae7099ea7dca7754",
+      "type": "DataFilter"
+    },
+    {
+      "source": "0f91d92ac83682c3e1aa",
+      "target": "b90a8b70801e918d3ed5",
+      "type": "DataFilter"
+    }
+  ]
+}

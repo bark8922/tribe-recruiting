@@ -1,0 +1,510 @@
+table job
+	lineageTag: a7dfb17c-1f9f-4cba-8a22-e0689eca880b
+
+	measure '# Job (time to hire)' = CALCULATE(COUNT(job[job_id]), job[date_first_hired]<>BLANK(), job[Diff Hired - Job created]>=0)
+		formatString: 0
+		lineageTag: 70c31bb6-c0e8-41d6-aed1-8f11d4e708fa
+
+		changedProperty = IsHidden
+
+	measure 'Job Creation between' = ```
+			"From " & FORMAT(MIN(job[date_created]), "YYYY-MM-DD") & " until " & FORMAT(MAX(job[date_created]), "YYYY-MM-DD") 
+			```
+		lineageTag: c2dee24c-6852-4c37-ae62-a5cde24640ca
+
+		changedProperty = IsHidden
+
+	measure '0-30 days' = CALCULATE(COUNT(job[job_id]), job[Job Days Opened]<=30)
+		formatString: 0
+		lineageTag: e5251161-df35-4fd2-ada8-22cdc997606c
+
+	measure '30-60 days' = CALCULATE(COUNT(job[job_id]), job[Job Days Opened]>30 && job[Job Days Opened]<=60)
+		formatString: 0
+		lineageTag: b289ad8e-c262-4459-b5ef-33cc05a3e27c
+
+	measure '> 60 days' = CALCULATE(COUNT(job[job_id]), job[Job Days Opened]>60)
+		formatString: 0
+		lineageTag: 62935d5d-a95e-4f3d-83dc-bac41e0d4de1
+
+	measure 'Total Active Pipelines' = CALCULATE(DISTINCTCOUNT(job[job_id]), REMOVEFILTERS(job[Problem jobs]))
+		formatString: 0
+		lineageTag: 7dd90914-0691-40ee-94e0-4883d7a0cace
+
+	measure 'Problem Pipelines %' =
+			DIVIDE(
+			    CALCULATE(DISTINCTCOUNT(job[job_id]), job[Problem jobs]=1),
+			    [Total Active Pipelines])
+		formatString: 0%;-0%;0%
+		lineageTag: 214da02c-f645-4d01-8507-198e3359fd24
+
+	measure '# Problem jobs' = CALCULATE(COUNT(job[job_id]), job[Problem jobs]=1)
+		formatString: 0
+		lineageTag: c6d0329b-3899-43a5-ace2-d43e0d23f8e1
+
+	measure '# Total Jobs for calculaing problem jobs' = CALCULATE(COUNT(job[job_id]), job[# ATS]>2)
+		formatString: 0
+		lineageTag: 4588f39d-8ceb-4001-a319-de9e6f72e296
+
+	measure '% Problem Jobs' = DIVIDE([# Problem jobs], [# Total Jobs for calculaing problem jobs])
+		formatString: 0%;-0%;0%
+		lineageTag: 2cb20172-184f-4cf2-90dd-1bb92aea9214
+
+	measure '60-90 days' = CALCULATE(COUNT(job[job_id]), job[Job Days Opened]>60 && job[Job Days Opened]<=90)
+		formatString: 0
+		lineageTag: 5f3d385f-eae5-444e-b468-fd2f21b7d7fe
+
+	measure '>90 days' = CALCULATE(COUNT(job[job_id]), job[Job Days Opened]>90)
+		formatString: 0
+		lineageTag: dd39af9d-9bd4-4345-b435-363e0d54dbc9
+
+	column job_id
+		dataType: string
+		lineageTag: b288218f-bb76-4607-bc0e-1d4a9acf3865
+		summarizeBy: none
+		sourceColumn: job_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column client_id
+		dataType: string
+		lineageTag: 45a390a6-4e34-4c92-a53f-a44aa4663c51
+		summarizeBy: none
+		sourceColumn: client_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_created
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: d934498d-0334-47f5-a58f-63f78b56f5a5
+		summarizeBy: none
+		sourceColumn: date_created
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column job_title
+		dataType: string
+		lineageTag: 08be7f72-cdee-4ce7-a40c-933a765531fe
+		summarizeBy: none
+		sourceColumn: job_title
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column job_category
+		dataType: string
+		lineageTag: 61b7dcef-ffd9-4587-aef3-4639fdaa45e1
+		summarizeBy: none
+		sourceColumn: job_category
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column job_subcategory
+		dataType: string
+		lineageTag: 36441172-e3e3-4bfd-9f14-1955a32f7592
+		summarizeBy: none
+		sourceColumn: job_subcategory
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column user_hiring_manager
+		dataType: string
+		lineageTag: 408004ba-75d3-4db5-9115-9fd7325f68a4
+		summarizeBy: none
+		sourceColumn: user_hiring_manager
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_job_archived
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 8d00d819-9a84-4796-82ec-367dabc4a549
+		summarizeBy: none
+		sourceColumn: is_job_archived
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column job_recruiter
+		dataType: string
+		lineageTag: f91d7123-f451-432a-9ea8-82fe97d0aaf9
+		summarizeBy: none
+		sourceColumn: job_recruiter
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column job_sourcer
+		dataType: string
+		lineageTag: 8c70ce3a-9dc7-44c1-8724-e8748c31b499
+		summarizeBy: none
+		sourceColumn: job_sourcer
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_first_hired
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 0d413b75-c0e6-438c-a2eb-ca71838fbb2c
+		summarizeBy: none
+		sourceColumn: date_first_hired
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column date_first_hired_contacted
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 4a31d7ab-e274-42e7-8d91-bc6bc61b70d6
+		summarizeBy: none
+		sourceColumn: date_first_hired_contacted
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column 'Diff Contacted - Job created' =
+			var d= DATEDIFF(job[date_created], job[date_first_hired_contacted],DAY)
+			RETURN IF(d<0, BLANK(), d)
+		formatString: 0
+		lineageTag: f117d7a3-a066-4740-a6c9-2953a99ab66d
+		summarizeBy: sum
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Diff Hired - Job created' =
+			var d = DATEDIFF(job[date_created], job[date_first_hired],DAY)
+			RETURN IF(d<0, BLANK(), d)
+		formatString: 0
+		lineageTag: c4351648-aea7-4460-b0d0-fbea5bbf3f06
+		summarizeBy: sum
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column job_location
+		dataType: string
+		lineageTag: 7916b75e-ca62-427f-a750-29f3559b132d
+		summarizeBy: none
+		sourceColumn: job_location
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Tech Role' =
+			IF(job[job_category]="Data Analytics" ||
+			            job[job_category]="DevOps" ||
+			            job[job_category]="Software Engineering" ||
+			            job[job_category]="Software"||
+			            job[job_category]="Design" ||
+			            job[job_category]="Product Manager" ||
+			            job[job_category]="Information Technology" ||
+			            job[job_category]="Quality Assurance (QA) " ||
+			            job[job_category]="Engineering Management" ||
+			            job[job_category]="Data Analytics" ||
+			            (job[job_category]="Project Manager" && job[job_subcategory] in {"IT Project Manager", "Technical Program Manager"}),
+			            "Yes", "No")
+		lineageTag: d0a37374-e8d4-40d3-a23c-f9ed5e130cc0
+		summarizeBy: none
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Job Days Opened' = DATEDIFF(job[date_created], TODAY(), DAY)
+		formatString: 0
+		lineageTag: f6336271-69a4-415f-8461-7d06c3ce51b4
+		summarizeBy: sum
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_external_recruiter
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 07663562-8017-4256-b6ff-6910d24eb7fc
+		summarizeBy: none
+		sourceColumn: is_external_recruiter
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Diff Contacted - Hired' =
+			var d= DATEDIFF(job[date_first_hired_contacted], job[date_first_hired],DAY)
+			RETURN IF(d<0, BLANK(), d)
+		formatString: 0
+		lineageTag: b51dfa61-a232-408d-b080-dee9820a05f2
+		summarizeBy: sum
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Job Creation Year' = FORMAT(job[date_created], "YYYY")
+		lineageTag: b8843255-c7f6-40a2-8f0a-3e748c1a3fd6
+		summarizeBy: none
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'External Recruiter?' = IF(job[is_external_recruiter]=TRUE(), "Yes", "No")
+		lineageTag: ce427fee-ac7f-4330-93b0-bdfbb7120f42
+		summarizeBy: none
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Job Country Grouping' =
+			SWITCH(TRUE(),
+			job[Job Country]="Germany", "Central Europe",
+			job[Job Country]="Austria", "Central Europe",
+			job[Job Country]="Czech Republic", "Central Europe",
+			job[Job Country]="Czechia", "Central Europe",
+			job[Job Country]="Hungary", "Central Europe",
+			job[Job Country]="Slovakia", "Central Europe",
+			job[Job Country]="Slovenia", "Central Europe",
+			job[Job Country]="Poland", "Central Europe",
+			job[Job Country]="France", "Western Europe",
+			job[Job Country]="Belgium", "Western Europe",
+			job[Job Country]="Netherlands", "Western Europe",
+			job[Job Country]="Luxembourg", "Western Europe",
+			job[Job Country]="Finland", "Northern Europe",
+			job[Job Country]="Sweden", "Northern Europe",
+			job[Job Country]="Norway", "Northern Europe",
+			job[Job Country]="Denmark", "Northern Europe",
+			job[Job Country]="Iceland", "Northern Europe",
+			job[Job Country]="Romania", "Eastern Europe",
+			job[Job Country]="Belarus", "Eastern Europe",
+			job[Job Country]="Russia", "Eastern Europe",
+			job[Job Country]="Ukraine", "Eastern Europe",
+			job[Job Country]="Moldova", "Eastern Europe",
+			job[Job Country]="Estonia", "Eastern Europe (Baltic States)",
+			job[Job Country]="Latvia", "Eastern Europe (Baltic States)",
+			job[Job Country]="Lithuania", "Eastern Europe (Baltic States)",
+			job[Job Country]="Baltic States", "Eastern Europe (Baltic States)",
+			job[Job Country]="Albania", "Southeast Europe",
+			job[Job Country]="Bosnia and Herzegovina", "Southeast Europe",
+			job[Job Country]="Bulgaria", "Southeast Europe",
+			job[Job Country]="Croatia", "Southeast Europe",
+			job[Job Country]="Montenegro", "Southeast Europe",
+			job[Job Country]="North Macedonia", "Southeast Europe",
+			job[Job Country]="Serbia", "Southeast Europe",
+			job[Job Country]="Italy", "Southern Europe",
+			job[Job Country]="Greece", "Southern Europe",
+			job[Job Country]="Spain", "Southern Europe",
+			job[Job Country]="Portugal", "Southern Europe",
+			job[Job Country]="Cyprus", "Southern Europe",
+			job[Job Country]="Malta", "Southern Europe",
+			"Other")
+		lineageTag: 9a697076-8556-4f3a-8e98-acc42e24ad7a
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Job Country'
+		dataType: string
+		lineageTag: c1c0c175-8170-4e20-ac13-15ad36d2bfa3
+		summarizeBy: none
+		sourceColumn: Job Country
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Tech Role (text)' = IF(job[Tech Role]="Yes", "Tech Role", "Non-Tech Role")
+		lineageTag: 0fb60087-6984-4131-b989-ed98b9c0d44d
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Job Creation Month' = FORMAT(job[date_created], "mmmm")
+		lineageTag: 38e417d5-1a0d-4401-a8b7-ed8cfb9e7d0b
+		summarizeBy: none
+		sortByColumn: 'Job Creation Date Month Text'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Job Creation Date Month Text' = FORMAT(job[date_created], "MM")
+		lineageTag: c7e2158b-d95a-4464-acb1-cef703ce0fa1
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column email_hiring_manager
+		dataType: string
+		lineageTag: 2a3bd81f-7dee-4457-b989-3d8d0ac55e48
+		summarizeBy: none
+		sourceColumn: email_hiring_manager
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Job Creation Week' = WEEKNUM(job[date_created], 21)
+		formatString: 0
+		lineageTag: 1c3a997f-3a25-4501-b95f-9a678bd632b6
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Temp hide from WBR TS' = RELATED(Temp_Inactive_Jobs_Sourcers_WBR[No longer working with the job])
+		lineageTag: 15d5a007-d2b7-4d0a-8102-3a6e0fed037c
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Problem jobs' = ```
+			IF(
+			    ([# candidates - actual screen (actual screen date)]>=25 && job[date_first_hired]=BLANK() && [# candidates - hired (hired date)]=BLANK()) ||
+			    ([# candidates - actual screen (actual screen date)]/[# candidates - hired (hired date)]>=32 && job[date_first_hired]<>BLANK() && [# candidates - hired (hired date)]<>BLANK())
+			    , 
+			    1, 0)
+			```
+		formatString: 0
+		lineageTag: 64a0ebfd-d1cd-4c91-9478-e3c4b7d5cb7b
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Job Days Opened w/o hires' = IF(job[date_first_hired]=BLANK(), DATEDIFF(job[date_created], TODAY(), DAY), BLANK())
+		formatString: 0
+		lineageTag: 71aa73c2-5d7c-437d-b23b-6c54eb40aad1
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column '# ATS' = CALCULATE(COUNT(candidate_stage[candidate_id]), candidate_stage[date_interview]<>BLANK())
+		formatString: 0
+		lineageTag: 1005661d-5125-49d3-81af-01293dcbc5fb
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Early warning' =
+			var ats = IF(job[Job Days Opened]>=28 && job[# ATS]=BLANK(), 1, 0)
+			var offer = IF(job[# Actual Screens]>=25 && job[# Offers]=BLANK(), 1, 0)
+			var hire = IF(job[Job Days Opened]>=60 && job[date_first_hired]=BLANK(), 1, 0)
+			RETURN IF(ats=1 || offer=1 || hire=1, 1, 0)
+		formatString: 0
+		lineageTag: dee230bf-8e95-4396-b659-d78f4fc9ced5
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column '# Offers' = CALCULATE(COUNT(candidate_stage[candidate_id]), candidate_stage[date_offer]<>BLANK())
+		formatString: 0
+		lineageTag: 4292befa-49bf-4205-b35a-7f66f3f70c87
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column '# Actual Screens' = CALCULATE(COUNT(candidate_stage[candidate_id]), candidate_stage[date_screen_actual]<>BLANK())
+		formatString: 0
+		lineageTag: 5118a6dd-6897-465d-9b5c-505721bff069
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column test
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 73b4fb5f-2da6-4eaa-9e6f-ba19df498e40
+		summarizeBy: none
+		sourceColumn: test
+
+		annotation SummarizationSetBy = Automatic
+
+	column executive_search
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: b854ac3d-2ec6-4757-834c-11e7e4e16957
+		summarizeBy: none
+		sourceColumn: executive_search
+
+		annotation SummarizationSetBy = Automatic
+
+	column '# Hires' = CALCULATE(COUNT(candidate_stage[candidate_id]), candidate_stage[date_hired]<>BLANK())
+		formatString: 0
+		lineageTag: 05477cac-ef89-4423-8aaf-afab9d7682ca
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column '# Actual Screens with notes' = [# candidates - actual screen (since job open)]
+		formatString: 0
+		lineageTag: c810108f-ced8-468b-be86-221f9adebfb8
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Jobs Opened' = IF(job[date_first_hired]<>BLANK(), job[Diff Hired - Job created], job[Job Days Opened w/o hires])
+		formatString: 0
+		lineageTag: 69fb5667-b5e6-47df-85d7-d9134f30bccb
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Owned by sourcing team (active TS)' =
+			var ts = LOOKUPVALUE(Current_TS[TS], Current_TS[TS], job[job_sourcer])
+			RETURN
+			IF(ts=BLANK(), "No", "Yes")
+		lineageTag: 707e8f70-04da-46f8-b7b1-555e7b31a84b
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition job-0bcef19c-032d-4d0a-a043-25d16df8dc6a = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases("je92638.eu-central-1.snowflakecomputing.com","READER_WH_129",[Implementation="2.0"]),
+				    KEBOOLA_855_942138244_Database = Source{[Name="KEBOOLA_855_942138244",Kind="Database"]}[Data],
+				    READER_SCHEMA_855_942138244_Schema = KEBOOLA_855_942138244_Database{[Name="READER_SCHEMA_855_942138244",Kind="Schema"]}[Data],
+				    v2_job_Table = READER_SCHEMA_855_942138244_Schema{[Name="v2_job",Kind="Table"]}[Data],
+				    #"Replaced Value" = Table.ReplaceValue(v2_job_Table,null,false,Replacer.ReplaceValue,{"is_external_recruiter"}),
+				    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value","Ukrainka, Kyiv Oblast, Ukraine, 08720","Ukrainka, Kyiv Oblast, Ukraine",Replacer.ReplaceText,{"job_location"}),
+				    #"Replaced Value2" = Table.ReplaceValue(#"Replaced Value1","United Kingdom","UK",Replacer.ReplaceText,{"job_location"}),
+				    #"Inserted Text After Delimiter" = Table.AddColumn(#"Replaced Value2", "Job Country", each Text.AfterDelimiter([job_location], ", ", {0, RelativePosition.FromEnd}), type text)
+				in
+				    #"Inserted Text After Delimiter"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

@@ -1,0 +1,918 @@
+table Metrics
+	lineageTag: dfec7543-44b0-4c28-b710-6ec4093ad37a
+
+	measure '# candidates (contacted date) NOT USED' = CALCULATE(COUNT(candidate_stage[candidate_id]), USERELATIONSHIP('Calendar'[Date],candidate_stage[date_contacted]))
+		formatString: #,0
+		lineageTag: 43acb115-95b6-4141-a0b8-d32b8fb0d292
+
+		changedProperty = IsHidden
+
+	measure '# candidates - screen (contacted date)' = CALCULATE([# candidates - contacted (contacted date)], candidate_stage[date_screen]<>BLANK())
+		formatString: #,0
+		lineageTag: 5c93a97a-672b-474c-96a0-9246f3b7f48b
+
+		changedProperty = IsHidden
+
+	measure '# candidates - actual screen (contacted date)' = CALCULATE([# candidates - contacted (contacted date)], not isblank(candidate_stage[date_screen_actual]))
+		formatString: #,0
+		lineageTag: f62e8434-bdd4-4377-9c1e-4935699df092
+
+		changedProperty = IsHidden
+
+	measure '# candidates - moved to ATS (contacted date)' = CALCULATE([# candidates - contacted (contacted date)], not isblank(candidate_stage[date_interview]))
+		formatString: #,0
+		lineageTag: 4fd4acb6-83e6-430a-b2a2-e3397c05e2a2
+
+		changedProperty = IsHidden
+
+	measure '# candidates - offer (contacted date)' = CALCULATE([# candidates - contacted (contacted date)], not isblank(candidate_stage[date_offer]))
+		formatString: #,0
+		lineageTag: 5daa1b47-7895-4598-9b4a-0053fdecc4a8
+
+		changedProperty = IsHidden
+
+	measure '# candidates - hired (contacted date)' = CALCULATE([# candidates - contacted (contacted date)], not isblank(candidate_stage[date_hired]))
+		formatString: #,0
+		lineageTag: 828378bc-1a13-44e9-8dbc-8e5d4ade5823
+
+		changedProperty = IsHidden
+
+	measure '# events (date created)' = CALCULATE(COUNT(event[event_id]), USERELATIONSHIP('Calendar'[Date], event[date_created]))
+		formatString: #,0
+		lineageTag: 004ec462-c517-45af-a612-baefea085bf3
+
+		changedProperty = IsHidden
+
+	measure '# events - LinkedIn visited (date created)' =
+			CALCULATE(DISTINCTCOUNT(event[talent_id + job_id]),event[event_type]="Linkedin Visited Profile",
+			USERELATIONSHIP(job[job_id], event[job_id]), USERELATIONSHIP('Calendar'[Date], event[date_created]))
+		formatString: #,0
+		lineageTag: 452178bf-f6e9-4732-a3f2-560df0094ef3
+
+		changedProperty = IsHidden
+
+	measure '# events - unique candidates (date created)' = CALCULATE(DISTINCTCOUNT(event[candidate_id]), USERELATIONSHIP('Calendar'[Date], event[date_created]))
+		formatString: #,0
+		lineageTag: 3c8e63df-0ed7-40dc-8891-75e8e30abb6c
+
+		changedProperty = IsHidden
+
+	measure '% Viewed to Contacted' =
+			VAR perc = DIVIDE([# candidates - contacted (contacted date)], [# events - LinkedIn visited (date created)],0)
+			RETURN IF(perc>1, 1, perc)
+		formatString: 0\ %;-0\ %;0\ %
+		lineageTag: 7245e146-b38f-4396-bb5d-6f74f46ec92f
+
+		changedProperty = IsHidden
+
+	measure '# events - unique candidates - offer (date created)' = CALCULATE([# events - unique candidates (date created)],event[moved_to_stageType]="Offer", USERELATIONSHIP(job[job_id], event[job_id]))
+		formatString: #,0
+		lineageTag: 8485052e-94ad-4372-9367-37769f9b9072
+
+		changedProperty = IsHidden
+
+	measure '# events - unique candidates - hired (date created)' = CALCULATE([# events - unique candidates (date created)],event[moved_to_stage]="Hired", USERELATIONSHIP(job[job_id], event[job_id]))
+		formatString: #,0
+		lineageTag: 582f1da0-454f-40c1-b480-994e2524d1e9
+
+		changedProperty = IsHidden
+
+	measure '# events - unique candidates - Moved to ATS (date created)' = CALCULATE([# events - unique candidates (date created)],event[moved_to_stage]="Moved to ATS", USERELATIONSHIP(job[job_id], event[job_id]))
+		formatString: #,0
+		lineageTag: 27dc154a-5703-46c0-a4b1-1e7b552949f4
+
+		changedProperty = IsHidden
+
+	measure '# events - contacted (date created)' = CALCULATE(DISTINCTCOUNT(candidate[candidate_id]), event[event_type]="Moved to stage" && event[moved_to_stage]="Contacted")
+		formatString: #,0
+		lineageTag: a66ddd12-ea50-492f-a5e7-5c7b90802e07
+
+		changedProperty = IsHidden
+
+	measure '# events - unique candidates - phone screens (date created)' =
+			
+			
+			CALCULATE([# events - unique candidates (date created)],
+			    event[event_type]="Evaluation" || AND(left(event[event_id],9)="recruitee", event[moved_to_stageType]="evaluation"))
+		formatString: #,0
+		lineageTag: d0b86461-0cdb-43f7-a928-8a1592592e44
+
+		changedProperty = IsHidden
+
+	measure '% LinkedIn visited / Contacted (unique)' = DIVIDE([# events - LinkedIn visited (date created)],[# events - contacted (date created)],0)
+		formatString: 0\ %;-0\ %;0\ %
+		lineageTag: 76c3f048-9665-48fa-b454-3da053a468c4
+
+		changedProperty = IsHidden
+
+	measure '# events - automation_linkedin_inmail_sent' = CALCULATE([# events - unique talents (date created)], event[event_type] = "Linkedin inMail sent")
+		formatString: #,0
+		lineageTag: be35fc64-8cc3-42e9-993f-6e47a5e17055
+
+		changedProperty = IsHidden
+
+	measure '# events - automation_linkedin_inmail_received' = CALCULATE([# events - unique talents (date created)], event[event_type] = "Linkedin inMail received")
+		formatString: #,0
+		lineageTag: 5ed78cb7-b790-451c-8893-1f5f262de068
+
+		changedProperty = IsHidden
+
+	measure '# events - LinkeIn inMail  Rate' = DIVIDE([# events - automation_linkedin_inmail_received],[# events - automation_linkedin_inmail_sent],0)
+		formatString: 0\ %;-0\ %;0\ %
+		lineageTag: e5f049f4-5b29-47f8-b036-07377084ff92
+
+		changedProperty = IsHidden
+
+	measure '# events - unique talents (date created)' = CALCULATE(DISTINCTCOUNT(event[talent_id]),USERELATIONSHIP('Calendar'[Date],event[date_created]))
+		formatString: #,0
+		lineageTag: 818b9eb6-39bf-4a42-bee1-7b79c600e8a6
+
+		changedProperty = IsHidden
+
+	measure '# candidates - move to ATS (moved date)' =
+			var moveto = CALCULATE(COUNT(candidate_stage[candidate_id]), USERELATIONSHIP('Calendar'[Date],candidate_stage[date_interview]), event[moved_to_stage]="Moved to ATS")
+			RETURN CALCULATE(moveto, candidate_stage[date_interview]<>BLANK())
+		formatString: #,0
+		lineageTag: bea5a957-fff2-47b7-9ea3-15a1fdf42750
+
+		changedProperty = IsHidden
+
+	measure '# candidates (date created)' = CALCULATE(COUNT(candidate_stage[candidate_id]), USERELATIONSHIP('Calendar'[Date],candidate_stage[date_created]))
+		formatString: 0
+		lineageTag: c7e4884e-d87e-4dea-9bfd-c4c160bf1b2b
+
+		changedProperty = IsHidden
+
+	measure '# candidates - actual screen (actual screen date)' =
+			var acutalscreened = CALCULATE(COUNT(candidate_stage[candidate_id]), USERELATIONSHIP('Calendar'[Date],candidate_stage[date_screen_actual]),event[event_type]="Evaluation")
+			RETURN CALCULATE(acutalscreened, candidate_stage[date_screen_actual]<>BLANK())
+		formatString: #,0
+		lineageTag: 3e12fb18-fad7-4d96-85fa-60185cd04b1d
+
+		changedProperty = IsHidden
+
+	measure '% Move to client / Screen actual (date created)' = DIVIDE(Metrics[# candidates - move to ATS (moved date)],Metrics[# candidates - actual screen (actual screen date)],0)
+		formatString: 0\ %;-0\ %;0\ %
+		lineageTag: e98f9b8e-9f11-4763-8f4f-181ae4ce487f
+
+		changedProperty = IsHidden
+
+	measure '# candidates - offer (offered date)' =
+			var offer = CALCULATE(COUNT(candidate_stage[candidate_id]), USERELATIONSHIP('Calendar'[Date],candidate_stage[date_offer]), event[moved_to_stageType]="Offer")
+			RETURN CALCULATE(offer, candidate_stage[date_offer]<>BLANK())
+		formatString: #,0
+		lineageTag: 829be7a1-b259-407e-bb62-ffd966383404
+
+		changedProperty = IsHidden
+
+	measure '# candidates - hired (hired date)' =
+			var hire = CALCULATE(COUNT(candidate_stage[candidate_id]), USERELATIONSHIP('Calendar'[Date],candidate_stage[date_hired]),event[moved_to_stage]="Hired")
+			RETURN CALCULATE(hire, candidate_stage[date_hired]<>BLANK())
+		formatString: #,0
+		lineageTag: 7f794666-b190-4064-9e74-b429ea93bb0b
+
+		changedProperty = IsHidden
+
+	measure '% Offer / Screen actual' = DIVIDE([# candidates - offer (offered date)],Metrics[# candidates - actual screen (actual screen date)],0)
+		formatString: 0\ %;-0\ %;0\ %
+		lineageTag: 2c592db9-5790-404e-86cb-73cfcf49d7bc
+
+		changedProperty = IsHidden
+
+	measure '% Offer to Hire' =
+			var perc = DIVIDE([# candidates - hired (hired date)],[# candidates - offer (offered date)],0)
+			RETURN IF(perc>1, 1, perc)
+		formatString: 0\ %;-0\ %;0\ %
+		lineageTag: f181ca5e-639e-434f-b89f-84ab56c67072
+
+		changedProperty = IsHidden
+
+	measure '# candidates - contacted (contacted date)' =
+			var contact = CALCULATE(COUNT(candidate_stage[candidate_id]), USERELATIONSHIP('Calendar'[Date],candidate_stage[date_contacted]))
+			RETURN CALCULATE(contact, candidate_stage[date_contacted]<>BLANK())
+		formatString: #,0
+		lineageTag: edebbae0-f317-4bbf-8019-7847fc74e423
+
+		changedProperty = IsHidden
+
+	measure '% Contacted to Reacted' =
+			var perc = DIVIDE(Metrics[# candidates - reacted (contacted date)],Metrics[# candidates - contacted (contacted date)],0)
+			RETURN IF(perc>1, 1, perc)
+		formatString: 0\ %;-0\ %;0\ %
+		lineageTag: cedde19d-80e5-4f7c-af3e-d53a5e13422e
+
+		changedProperty = IsHidden
+
+	measure '% Reacted to Actual Screen' =
+			var perc = DIVIDE(Metrics[# candidates - actual screen (actual screen date)],Metrics[# candidates - reacted (contacted date)],0)
+			RETURN IF(perc>1, 1, perc)
+		formatString: 0\ %;-0\ %;0\ %
+		lineageTag: 2be0f904-7af6-4dcb-81c8-589e9b305874
+
+		changedProperty = IsHidden
+
+	measure '% Moved to ATS / phone screens (date created)' = DIVIDE(Metrics[# events - unique candidates - Moved to ATS (date created)],[# events - unique candidates - phone screens (date created)],0)
+		formatString: 0\ %;-0\ %;0\ %
+		lineageTag: 3b12e7c3-5884-4baf-9d8f-366ac40f4d07
+
+		changedProperty = IsHidden
+
+	measure '# candidates - screen (screened date)' =
+			var screened = CALCULATE(COUNT(candidate_stage[candidate_id]), USERELATIONSHIP('Calendar'[Date],candidate_stage[date_screen]), event[moved_to_stage]="Recruiter Screen")
+			RETURN CALCULATE(screened, candidate_stage[date_screen]<>BLANK())
+		formatString: #,0
+		lineageTag: 747bce69-e95c-4642-a4c6-55233c21bc6b
+
+		changedProperty = IsHidden
+
+	measure '% Screen to ATS' =
+			var perc = DIVIDE([# candidates - move to ATS (moved date)],[# candidates - screen (contacted date)],0)
+			RETURN IF(perc>1, 1, perc)
+		formatString: 0\ %;-0\ %;0\ %
+		lineageTag: e8c9ff9e-4f26-45b9-84a9-1d8589fa829d
+
+		changedProperty = IsHidden
+
+	measure 'Candidate - Avg time to hire (date contacted)' = CALCULATE(AVERAGE(candidate_stage[Diff Contacted - Hired]),USERELATIONSHIP('Calendar'[Date],candidate_stage[date_contacted]))
+		formatString: 0
+		lineageTag: 84f132de-0231-487e-a7a8-52a6c84cdb14
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Job - Time to Find a Hire' = CALCULATE(AVERAGE(job[Diff Contacted - Job created]), candidate_stage[Diff Concated - Job created]>0)
+		formatString: 0
+		lineageTag: 4244e808-b2d2-4e94-baa8-eac8ad0d2814
+
+		changedProperty = IsHidden
+
+	measure 'Job - Time to Fill' = CALCULATE(AVERAGE(job[Diff Hired - Job created]), candidate_stage[Diff Hired - Job created]>0)
+		formatString: 0
+		lineageTag: 702abf99-56ea-40b4-ae17-39d2eb5bb5f1
+
+		changedProperty = IsHidden
+
+	measure '# events - automation_step_email_open' = CALCULATE(Metrics[# events -  automation_step_sent_email],event[automation_is_message_read]=TRUE())
+		formatString: 0
+		lineageTag: 210e5ab2-05cb-45b0-962d-e2bd44be5f7d
+
+		changedProperty = IsHidden
+
+	measure '# events - automation_step_replied' = CALCULATE(Metrics[# events (date created)],event[automation_is_message_replied]=TRUE())
+		formatString: 0
+		lineageTag: 32dc7256-bfc8-4577-8932-3ca50280a8f2
+
+		changedProperty = IsHidden
+
+	measure '% events - automation_step_email_open_rate' = DIVIDE(Metrics[# events - automation_step_email_open], Metrics[# events -  automation_step_sent_email],0)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: 1ae3ce59-338a-4bb6-a602-266140bd5603
+
+		changedProperty = IsHidden
+
+	measure '% events - automation_step_reply_rate' = DIVIDE(Metrics[# events - automation_step_replied], Metrics[# events (date created)],0)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: a578327b-3d6f-4eb4-8f91-d1e619b1689d
+
+		changedProperty = IsHidden
+
+	measure '# events - automation_step_connection_accepted' = CALCULATE(Metrics[# events -  automation_step_sent_connection],event[automation_is_message_read]=TRUE())
+		formatString: 0
+		lineageTag: d8226196-fe03-429f-89d7-2fcd60517684
+
+		changedProperty = IsHidden
+
+	measure '% events - automation_step_accepted_rate' = DIVIDE(Metrics[# events - automation_step_connection_accepted], [# events -  automation_step_sent_connection],0)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: fcac691c-6ece-41fc-8637-457248a0bdf6
+
+		changedProperty = IsHidden
+
+	measure '# events -  automation_step_sent_connection' = ```
+			CALCULATE(Metrics[# events (date created)], event[event_type]="Linkedin Sent Contact") 
+			```
+		formatString: 0
+		lineageTag: a526629a-60c5-41f2-b70d-f07a6278cb74
+
+		changedProperty = IsHidden
+
+	measure '# events -  automation_step_sent_email' = CALCULATE(Metrics[# events (date created)], event[event_type] ="Email Sent")
+		formatString: 0
+		lineageTag: 86807ff2-d5ec-4924-a72b-3043dc0ee030
+
+		changedProperty = IsHidden
+
+	measure '# events - automation_step_email_replied' = CALCULATE(Metrics[# events -  automation_step_sent_email],event[automation_is_message_replied]=TRUE())
+		formatString: 0
+		lineageTag: 006a296b-a816-4b79-8bdb-4f34c368dca4
+
+		changedProperty = IsHidden
+
+	measure '% events - automation_step_email_reply_rate' = DIVIDE(Metrics[# events - automation_step_email_replied], Metrics[# events -  automation_step_sent_email],0)
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: cd1f12f1-0f91-47a8-99e3-7424107435e8
+
+		changedProperty = IsHidden
+
+	measure '# candidates - reacted (contacted date)' = CALCULATE([# candidates - contacted (contacted date)],candidate[is_candidate_reacted]=TRUE())
+		formatString: #,0
+		lineageTag: 5d4cb88f-8fe6-41b7-9a62-ee93823913f6
+
+		changedProperty = IsHidden
+
+	measure 'Candidate - Avg time to hire (date hired)' = CALCULATE(AVERAGE(candidate_stage[Diff Contacted - Hired]),USERELATIONSHIP('Calendar'[Date],candidate_stage[date_hired]))
+		lineageTag: 989310a5-f6e4-4d49-9014-8d15b91e35e2
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Candidate - Time to Find a Hire' = CALCULATE(AVERAGE(candidate_stage[Diff Concated - Job created]), candidate_stage[date_hired]<>BLANK())
+		formatString: 0
+		lineageTag: e2a5467b-d82e-46f5-ae39-f18548fcf569
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Candidate - Time to Fill' = CALCULATE(AVERAGE(candidate_stage[Diff Hired - Job created]), candidate_stage[date_hired]<>BLANK())
+		formatString: 0
+		lineageTag: 00dce13e-ff41-4017-9107-d392b997866f
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '# talents (date created)' = CALCULATE(COUNT(talent[talent_id]),USERELATIONSHIP('Calendar'[Date], talent[date_created]))
+		lineageTag: 21d8bf59-5fac-42c5-aa5d-c3372744eee1
+
+		changedProperty = IsHidden
+
+	measure 'revenue €' = CALCULATE(sum(client_cost[cost]), USERELATIONSHIP('Calendar'[Date], client_cost[month]))
+		formatString: "€"\ #,0;-"€"\ #,0;"€"\ #,0
+		lineageTag: 58b7c3a4-6be6-4b64-8bc3-c4602541ca11
+
+		changedProperty = FormatString
+
+		changedProperty = IsHidden
+
+	measure 'revenue - hired count' = CALCULATE(sum(client_cost[hired_count]), USERELATIONSHIP('Calendar'[Date], client_cost[month]))
+		formatString: 0
+		lineageTag: e6faaff6-96c7-488f-bfbd-005f688adf20
+
+		changedProperty = FormatString
+
+		changedProperty = IsHidden
+
+	measure 'revenue - salary €' = CALCULATE(sum(client_cost[hired_salary_sum]), USERELATIONSHIP('Calendar'[Date], client_cost[month]))
+		formatString: "€"\ #,0;-"€"\ #,0;"€"\ #,0
+		lineageTag: 5dd9d414-c549-4691-a906-fcabc9d7236e
+
+		changedProperty = FormatString
+
+		changedProperty = IsHidden
+
+	measure 'revenue - cost_to_salary' = DIVIDE([revenue €], [revenue - salary €],BLANK())
+		formatString: 0.00\ %;-0.00\ %;0.00\ %
+		lineageTag: 79be65b8-acda-4c5e-9fa8-b2d39ed361d5
+
+		changedProperty = FormatString
+
+		changedProperty = IsHidden
+
+	measure 'revenue - cost_per_hire' = DIVIDE([revenue €],[revenue - hired count],BLANK())
+		formatString: "€"\ #,0;-"€"\ #,0;"€"\ #,0
+		lineageTag: c96581f3-c86c-4101-8633-9c185cbf8651
+
+		changedProperty = FormatString
+
+		changedProperty = IsHidden
+
+	measure '# Tech Roles Hired' = ```
+			CALCULATE(
+			    [# events - unique candidates - hired (date created)], 
+			            job[job_category]="Data Analytics" ||
+			            job[job_category]="DevOps" ||
+			            job[job_category]="Software Engineering" ||
+			            job[job_category]="Software"||
+			            job[job_category]="Design")+0
+			```
+		formatString: 0
+		lineageTag: a1be4f64-b312-411d-834e-8733074e1a80
+
+		changedProperty = IsHidden
+
+	measure '% Vistied to Screen' = DIVIDE([# candidates - actual screen (actual screen date)], Metrics[# events - LinkedIn visited (date created)],0)
+		formatString: 0%;-0%;0%
+		lineageTag: a0774536-b4e5-48d8-86d4-10c51897cfab
+
+		changedProperty = IsHidden
+
+	measure '% Screens Actual to ATS' =
+			var perc = DIVIDE([# candidates - move to ATS (moved date)],[# candidates - actual screen (actual screen date)])
+			RETURN IF(perc>1, 1, perc)
+		formatString: 0%;-0%;0%
+		lineageTag: 22fb3a82-79fb-4b82-9018-502ba10dadc5
+
+		changedProperty = IsHidden
+
+	measure 'TA linkedin candidate screening time' =
+			var linkedin = [# events - LinkedIn visited (date created)]/60
+			var screentime = [# candidates - actual screen (actual screen date)]/2
+			RETURN IF(linkedin + screentime=0, BLANK(), linkedin + screentime)
+		formatString: #,0
+		lineageTag: e9c0ae9b-a9f2-4935-9c7f-96e85e89ef8c
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Conv rate Offers to Hires' =
+			IF([# candidates - hired (contacted date)]=BLANK(), BLANK(),
+			    [# candidates - offer (contacted date)]/[# candidates - hired (contacted date)])
+		formatString: 0.0
+		lineageTag: eee22b32-407e-44d8-bca0-6ace47520588
+
+		changedProperty = IsHidden
+
+	measure 'Conv rate Moved to ATS to Hires' =
+			IF([# candidates - hired (contacted date)]=BLANK(), BLANK(),
+			    [# candidates - moved to ATS (contacted date)]/[# candidates - hired (contacted date)])
+		formatString: #,0
+		lineageTag: 2c3db558-cdcd-4cca-bbdd-978f61b7024b
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Conv rate Actual screens to Hires' =
+			IF([# candidates - hired (contacted date)]=BLANK(), BLANK(),
+			   [# candidates - actual screen (contacted date)]/[# candidates - hired (contacted date)])
+		formatString: #,0
+		lineageTag: 12527132-5623-474e-bbb7-e50da81738d1
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Conv rate Screens to Hires' =
+			IF([# candidates - hired (contacted date)]=BLANK(), BLANK(),
+			    [# candidates - screen (contacted date)]/[# candidates - hired (contacted date)])
+		formatString: #,0
+		lineageTag: 6276a45c-4ed2-437c-9bba-ba5f6715282d
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Conv rate Contacted to Hires' =
+			IF([# candidates - hired (contacted date)]=BLANK(), BLANK(),
+			    [# candidates - contacted (contacted date)]/[# candidates - hired (contacted date)])
+		formatString: #,0
+		lineageTag: 99bb86a9-3f9f-4370-8b8e-c2b92ce3a434
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Conv rate Visited to Hires' =
+			IF([# candidates - hired (contacted date)]=BLANK(), BLANK(),
+			    [# events - LinkedIn visited (date created)]/[# candidates - hired (contacted date)])
+		formatString: #,0
+		lineageTag: 3e742750-5676-4642-9528-dca756b65c5c
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure Separator = blank()
+		formatString: 0
+		lineageTag: ec88ae5b-bc8f-4fac-b47b-b7807113bf9b
+
+		changedProperty = IsHidden
+
+	measure '# Jobs Sequence' = CALCULATE(DISTINCTCOUNT(event[job_id]), event[automation_flow_name]<>BLANK())
+		formatString: #,0
+		lineageTag: 9699ff1d-aba5-415d-9a27-30670d36f99f
+
+		changedProperty = IsHidden
+
+	measure '% Job Sequence' = [# Jobs Sequence]/DISTINCTCOUNT(event[job_id])
+		formatString: 0%;-0%;0%
+		lineageTag: 9496f6b3-b06b-4a9a-ba61-b1d8689c1a81
+
+		changedProperty = IsHidden
+
+	measure '# Job Auto-Respond' = CALCULATE(DISTINCTCOUNT(event[job_id]), event[event_type] in {"Linkedin Sent Contact", "Message sent", "Linkedin inMail sent"})
+		formatString: 0
+		lineageTag: 481b3f05-5bc1-4699-a55d-a57191b1bd0a
+
+		changedProperty = IsHidden
+
+	measure '% Job Auto-Respond' = [# Job Auto-Respond]/DISTINCTCOUNT(event[job_id])
+		formatString: 0%;-0%;0%
+		lineageTag: 091eecca-4aba-4a7a-b064-dcc2550f7a81
+
+		changedProperty = IsHidden
+
+	measure '# Users Auto-Read' = CALCULATE(DISTINCTCOUNT(event[who_created_event]), event[event_type]="Linkedin Responded")
+		formatString: 0
+		lineageTag: ca34ab71-8a66-469c-bc7a-03766023bdde
+
+		changedProperty = IsHidden
+
+	measure '% User Auro-Read' = [# Users Auto-Read]/DISTINCTCOUNT(event[who_created_event])
+		formatString: 0%;-0%;0%
+		lineageTag: 9feaf4d2-318e-42f8-9dd9-4b6c0f7a21a4
+
+		changedProperty = IsHidden
+
+	measure 'Candidate Sequence reach out' = CALCULATE(DISTINCTCOUNT(event[candidate_id]), event[event_type]="Candidate created" && event[automation_flow_name]<>BLANK())
+		formatString: 0
+		lineageTag: b0358119-16e9-4daa-86b8-6e96312c0b10
+
+		changedProperty = IsHidden
+
+	measure 'Read Message + categorization (candidate)' = CALCULATE(DISTINCTCOUNT(event[candidate_id]), event[event_type] in {"Linkedin Responded", "Message Categorized", "Message Read"})
+		formatString: #,0
+		lineageTag: ae99cab1-4771-41f0-baac-4cd9b8386174
+
+		changedProperty = IsHidden
+
+	measure 'Seletced peroid' = "You are selecting date from " & FORMAT(MIN('Calendar'[Date]),"YYYY-MM-DD") & " to " & FORMAT(MIN(MAX('Calendar'[Date]), TODAY()), "YYYY-MM-DD")
+		lineageTag: 85b10014-dc70-4c51-947e-8d9b7ab4c15e
+
+		changedProperty = IsHidden
+
+	measure 'Read Message + categorization (event)' = CALCULATE(COUNT(event[event_id]), event[is_event_duplicated]=FALSE(), event[event_type] in {"Linkedin Responded", "Message Categorized", "Message Read"})
+		formatString: #,0
+		lineageTag: 5e275f20-51c6-4d88-ac15-9c19567a94ce
+
+		changedProperty = IsHidden
+
+	measure 'Reach Out %' = [Candidate Sequence reach out]/[# events - contacted (date created)]
+		formatString: 0%;-0%;0%
+		lineageTag: 9d9a9543-7e14-4674-9000-ab137a1744c4
+
+		changedProperty = IsHidden
+
+	measure 'Break line' = IF(SUM('WBR TA Actual'[Contacted])<>BLANK(), "  ", BLANK())
+		lineageTag: 53f8c8f5-b48b-4c69-b65b-6b14a7c25696
+
+		changedProperty = IsHidden
+
+	measure '% ATS to Offers' =
+			var perc = DIVIDE([# candidates - offer (offered date)],[# candidates - move to ATS (moved date)],0)
+			RETURN IF(perc>1, 1, perc)
+		formatString: 0%;-0%;0%
+		lineageTag: 9f119d99-1063-49d7-b1e0-4409aa33b2df
+
+		changedProperty = IsHidden
+
+	measure 'Cumulative view to contact %' =
+			VAR view = CALCULATE([# events - LinkedIn visited (date created)], FILTER(ALLSELECTED('Calendar'),'Calendar'[Date]<=MAX('Calendar'[Date])))
+			VAR end_date = CALCULATE(MAX(candidate_stage[date_contacted]), ALL('Calendar'[Date]))
+			VAR contact = CALCULATE([# candidates - contacted (contacted date)], FILTER(ALLSELECTED('Calendar'),'Calendar'[Date]<=MAX('Calendar'[Date])))
+			RETURN
+			IF(end_date < MIN('Calendar'[Date]) || contact=0 || view=0, BLANK(),
+			    contact / view)
+		formatString: 0%;-0%;0%
+		lineageTag: c43b6a83-3578-4db8-8cd5-8ff5dd5a7696
+
+		changedProperty = IsHidden
+
+	measure 'Cumulative viewed contacted trend line' = ```
+			
+			// Static line color - use %23 instead of # for Firefox compatibility (Measure Derived from Eldersveld Modified by Kolosko)
+			VAR LineColour = "%23118DFF"
+			VAR PointColour = "White"
+			VAR Defs = "<defs>
+			    <linearGradient id='grad' x1='0' y1='25' x2='0' y2='50' gradientUnits='userSpaceOnUse'>
+			        <stop stop-color='#118DFF' offset='0' />
+			        <stop stop-color='#118DFF' offset='0.3' />
+			        <stop stop-color='white' offset='1' />
+			    </linearGradient>
+			</defs>"
+			// "Date" field used in this example along the X axis
+			VAR XMinDate = MIN('Calendar'[WeekInt])
+			VAR XMaxDate = MAX('Calendar'[WeekInt])
+			
+			// Obtain overall min and overall max measure values when evaluated for each date
+			VAR YMinValue = MINX(Values('Calendar'[WeekInt]),CALCULATE([Cumulative view to contact %]))
+			VAR YMaxValue = MAXX(Values('Calendar'[WeekInt]),CALCULATE([Cumulative view to contact %]))
+			
+			// Build table of X & Y coordinates and fit to 50 x 150 viewbox
+			VAR SparklineTable = ADDCOLUMNS(
+			    SUMMARIZE('Calendar','Calendar'[WeekInt]),
+			        "X",INT(150 * DIVIDE('Calendar'[WeekInt] - XMinDate, XMaxDate - XMinDate)),
+			        "Y",INT(50 * DIVIDE([Cumulative view to contact %] - YMinValue,YMaxValue - YMinValue)))
+			
+			// Concatenate X & Y coordinates to build the sparkline
+			VAR Lines = CONCATENATEX(SparklineTable,[X] & "," & 50-[Y]," ", 'Calendar'[WeekInt])
+			
+			// Last data points on the line
+			VAR LastSparkYValue = MAXX( FILTER(SparklineTable, 'Calendar'[WeekInt] = XMaxDate), [Y])
+			VAR LastSparkXValue = MAXX( FILTER(SparklineTable, 'Calendar'[WeekInt] = XMaxDate), [X])
+			
+			// Add to SVG, and verify Data Category is set to Image URL for this measure
+			VAR SVGImageURL =
+			    "data:image/svg+xml;utf8," &
+			    --- gradient---
+			    "<svg xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='-7 -7 164 64'>" & Defs &
+			     "<polyline fill='url(#grad)' fill-opacity='0.3' stroke='transparent'
+			      stroke-width='0' points=' 0 50 " & Lines &
+			      " 150 150 Z '/>" &
+			    --- Lines---
+			    "<polyline
+			        fill='transparent' stroke='" & LineColour & "'
+			        stroke-linecap='round' stroke-linejoin='round'
+			        stroke-width='3' points=' " & Lines &
+			      " '/>" &
+			    --- Last Point---
+			        "<circle cx='"& LastSparkXValue & "' cy='" & 50 - LastSparkYValue & "' r='4' stroke='" & LineColour & "' stroke-width='3' fill='" & PointColour & "' />" &
+			        "</svg>"
+			RETURN SVGImageURL
+			
+			```
+		lineageTag: 803a6666-a086-4a13-97d5-a105c21952ba
+		dataCategory: ImageUrl
+
+		changedProperty = IsHidden
+
+	measure 'Candidate Response' =
+			COUNTROWS (
+			    FILTER (
+			        candidate,
+			            candidate[Response count] > 0
+			            ||
+			            (
+			                NOT ISBLANK ( candidate[reason_not_interested] )
+			                && candidate[reason_not_interested] <> "Unresponsive"
+			            )
+			            ||
+			            candidate[is_candidate_reacted] = TRUE ()
+			            ||
+			            NOT (
+			                candidate[Current Stage] IN {
+			                    "Contacted",
+			                    "Applied",
+			                    "Prospects",
+			                    BLANK ()
+			                }
+			            )
+			    )
+			)
+		formatString: 0
+		lineageTag: 8d1546bb-5185-4fd5-b5cf-4cd506df6ab0
+
+		changedProperty = IsHidden
+
+	measure '% Response Rate' = DIVIDE([Candidate Response], [# candidates - contacted (contacted date)])
+		formatString: 0%;-0%;0%
+		lineageTag: cd0c1958-0f41-47eb-93cf-53efbdf3e017
+
+		changedProperty = IsHidden
+
+	measure '% Linkedin connect accepted' =
+			var accept = CALCULATE(DISTINCTCOUNT(candidate[candidate_id]), event[event_type]="Linkedin Connected")
+			var sent = CALCULATE(DISTINCTCOUNT(candidate[candidate_id]), event[event_type]="Linkedin Sent Contact")
+			var link = DIVIDE(accept, sent)
+			RETURN IF(link<>BLANK() && link>1, 1, link)
+		formatString: 0%;-0%;0%
+		lineageTag: 41a54815-865e-4db4-8ddc-5e86a82dfa74
+
+		changedProperty = IsHidden
+
+	measure '% Positive Response Rate' = DIVIDE([# candidates - screen (contacted date)] , [# candidates - contacted (contacted date)])
+		formatString: 0%;-0%;0%
+		lineageTag: 10eadc76-55bb-44aa-8ea5-5e049365c3ac
+
+		changedProperty = IsHidden
+
+	measure 'Job - Time to Hire' = CALCULATE(AVERAGE(job[Diff Contacted - Hired]), job[Diff Contacted - Hired]>0)
+		formatString: 0
+		lineageTag: f89597e4-bb9e-44fa-9b63-56c56596babd
+
+		changedProperty = IsHidden
+
+	measure 'Candidate - Time to Hire' = CALCULATE(AVERAGE(candidate_stage[Diff Contacted - Hired]), candidate_stage[date_hired]<>BLANK())
+		formatString: 0
+		lineageTag: c59131f7-1d78-4b76-8263-fd0bce1b3276
+
+		changedProperty = IsHidden
+
+	measure 'Estimate find a time' = "This role typically requires " & FORMAT([Job - Time to Hire],"0") & " days to find a hire. If you start to contact candidates today, you will have the 1st hire on " & FORMAT(TODAY()+[Job - Time to Hire], "YYYY-MM-DD")
+		lineageTag: 1486edaf-4a4c-4bb0-b54b-542429e8d13d
+
+		changedProperty = IsHidden
+
+	measure 'Estimate conversation' = "You will need to have " & FORMAT([Conv rate Visited to Hires],"0") & " Linkedin profile viewed, " & FORMAT([Conv rate Contacted to Hires],"0") & " candidates contacted and " & FORMAT([Conv rate Actual screens to Hires], "0") & " actual screens to get 1 hire"
+		lineageTag: 5e3a6554-ee85-4c26-a578-2906fc15a5b7
+
+		changedProperty = IsHidden
+
+	measure '% Reacted to Screen' =
+			var perc = DIVIDE([# candidates - screen (screened date)],Metrics[# candidates - reacted (contacted date)],0)
+			RETURN IF(perc>1, 1, perc)
+		formatString: 0%;-0%;0%
+		lineageTag: f1fd4a3b-7629-4e10-9723-c1b445514865
+
+		changedProperty = IsHidden
+
+	measure 'Job - Time to Find a Hire (Hired date)' = CALCULATE(AVERAGE(job[Diff Contacted - Job created]), USERELATIONSHIP('Calendar'[Date], candidate_stage[date_hired]))
+		formatString: 0
+		lineageTag: 650ddc9d-5cf7-420a-8fd5-1f7f2714c65d
+
+		changedProperty = IsHidden
+
+	measure 'Job - Time to Hire (WBR)' = CALCULATE(AVERAGE(job[Diff Contacted - Hired]), ALL(job[date_first_hired]), job[Job Days Opened], ALL('Calendar'))
+		lineageTag: 6a417b35-108a-4f86-a0cb-f2f46e455587
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Candidate - Time to Fill (Hired date)' = CALCULATE(AVERAGE(candidate_stage[Diff Hired - Job created]), candidate_stage[date_hired]<>BLANK(), USERELATIONSHIP('Calendar'[Date], candidate_stage[date_hired]))
+		formatString: #,0
+		lineageTag: 91d41661-f3b6-40dc-9e03-5e85c42cf354
+
+		changedProperty = IsHidden
+
+	measure 'Candidate - Time to Find a Hire (Hired date)' = CALCULATE(AVERAGE(candidate_stage[Diff Concated - Job created]), candidate_stage[date_hired]<>BLANK(), USERELATIONSHIP('Calendar'[Date], candidate_stage[date_hired]))
+		formatString: 0
+		lineageTag: 06916105-003e-4e68-8674-df8edc062aa6
+
+		changedProperty = IsHidden
+
+	measure 'Candidate - Time to Hire (Hired date)' = CALCULATE(AVERAGE(candidate_stage[Diff Contacted - Hired]), candidate_stage[date_hired]<>BLANK(), USERELATIONSHIP('Calendar'[Date], candidate_stage[date_hired]))
+		formatString: 0
+		lineageTag: f6d9ff00-ffdd-43d1-8b83-caaca6cced7a
+
+		changedProperty = IsHidden
+
+	measure '# candidates - contacted (since job created)' = ```
+			var contact = CALCULATE(COUNT(candidate_stage[candidate_id]), ALL('Calendar'))
+			RETURN CALCULATE(contact, candidate_stage[date_contacted]<>BLANK())
+			
+			```
+		formatString: 0
+		lineageTag: 2e940d19-9da5-4dd5-89c2-c7cf784a1afa
+
+		changedProperty = IsHidden
+
+	measure '# candidates - actual screen (since job open)' =
+			var acutalscreened = CALCULATE(COUNT(candidate_stage[candidate_id]), event[event_type]="Evaluation", ALL('Calendar'))
+			RETURN CALCULATE(acutalscreened, candidate_stage[date_screen_actual]<>BLANK())
+		formatString: 0
+		lineageTag: 0104a4d2-307a-4532-9bb8-1c6ce8beea3c
+
+		changedProperty = IsHidden
+
+	measure '# candidates - move to ATS (since job created)' =
+			var moveto = CALCULATE(COUNT(candidate_stage[candidate_id]), event[moved_to_stage]="Moved to ATS", ALL('Calendar'))
+			RETURN CALCULATE(moveto, candidate_stage[date_interview]<>BLANK())
+		formatString: 0
+		lineageTag: b1efe511-6385-4af5-b3dd-49149979adb6
+
+		changedProperty = IsHidden
+
+	measure '# candidates - offer (since job created)' =
+			var offer = CALCULATE(COUNT(candidate_stage[candidate_id]), event[moved_to_stageType]="Offer", ALL('Calendar'))
+			RETURN CALCULATE(offer, candidate_stage[date_offer]<>BLANK())
+		formatString: 0
+		lineageTag: 25fd1f6b-714f-4d4f-adae-b743f49214a4
+
+		changedProperty = IsHidden
+
+	measure '# candidates - screen (since job created)' =
+			var screened = CALCULATE(COUNT(candidate_stage[candidate_id]), event[moved_to_stage]="Recruiter Screen", ALL('Calendar'))
+			RETURN CALCULATE(screened, candidate_stage[date_screen]<>BLANK())
+		formatString: 0
+		lineageTag: ab6aed46-4b2a-4e48-b53c-f11bc6fc52b2
+
+		changedProperty = IsHidden
+
+	measure 'TS Client-facing roles' = CALCULATE(DISTINCTCOUNT(event[job_id]), job[client_id]<>"1644871631616x132418487146250240", USERELATIONSHIP(event[job_id], job[job_id]))
+		formatString: 0
+		lineageTag: 9f8ae524-b6cf-4c71-82d0-18419b7ed283
+
+	measure 'TS Client-facing %' = IF([TS Client-facing roles]=BLANK() && DISTINCTCOUNT(event[job_id])<>0, 0, DIVIDE([TS Client-facing roles], DISTINCTCOUNT(event[job_id])))
+		formatString: 0%;-0%;0%
+		lineageTag: 5a0811a4-ebc5-493d-839a-5740ee86c1e0
+
+	measure '# events - sourced (sourced date)' = CALCULATE(DISTINCTCOUNT(event[candidate_id]), USERELATIONSHIP('Calendar'[Date], event[date_created]), (event[event_type]="Candidate created" && event[moved_to_stageType]="Prospects"))
+		formatString: 0
+		lineageTag: 3086b9eb-8e78-46a8-ae4d-8b5dcc1902ac
+
+	measure 'Linkedin Viewed per day' = ```
+			CALCULATE(
+			    DISTINCTCOUNT(event[talent_id + job_id]), event[event_type] = "Linkedin Visited Profile", USERELATIONSHIP(job[job_id], event[job_id]), USERELATIONSHIP('Calendar'[Date], event[date_created]), 
+			    ALLEXCEPT(event, event[date_created], event[who_created_event_first]),
+			    FILTER(ALL('Calendar'[Date]), 'Calendar'[Date]=MAX(event[date_created])
+			))
+			```
+		formatString: 0
+		lineageTag: 335a709a-5529-4dad-a11a-da696a036536
+
+	measure 'Sales - hired (hired date)' =
+			var hire = CALCULATE(COUNT(candidate_stage[candidate_id]), USERELATIONSHIP('Calendar'[Date],candidate_stage[date_hired]),event[moved_to_stage]="Hired", job[job_category]="Sales", job[job_subcategory]<>"Account Manager")
+			RETURN CALCULATE(hire, candidate_stage[date_hired]<>BLANK())
+		formatString: 0
+		lineageTag: 586cf347-8a43-4659-a80f-37034863302a
+
+	measure '# candidates - contacted (contacted date) from Prospects stage' =
+			var contact = CALCULATE(COUNT(candidate_stage[candidate_id]), candidate_stage[Prospects]<>BLANK() && candidate_stage[date_contacted]<>BLANK())
+			RETURN CALCULATE(contact, USERELATIONSHIP('Calendar'[Date],candidate_stage[date_contacted]))
+		formatString: 0
+		lineageTag: 367550a6-e22f-475e-a7a1-0ac092885906
+
+	measure '# candidates - Prospects stage no contacted yet' =
+			var prospects = CALCULATE(COUNT(candidate_stage[candidate_id]), candidate_stage[stage_current]="Prospects", ALLSELECTED('Calendar'[Date]))
+			RETURN CALCULATE(prospects, USERELATIONSHIP('Calendar'[Date],candidate_stage[date_created]))
+		formatString: 0
+		lineageTag: 5dd49ade-81c8-473d-8ecb-860cc2aa5f2b
+
+	measure '% Sourced to Contacted' = DIVIDE([# candidates - contacted (contacted date) from Prospects stage], [# events - sourced (sourced date)])
+		formatString: 0%;-0%;0%
+		lineageTag: efaddf8f-f45b-45d3-be1e-fc499d4648a9
+
+	measure '1st Client Interview' = CALCULATE(DISTINCTCOUNT(event[candidate_id]), event[moved_to_stageType]="Final Interview", LEFT(event[moved_to_stage],1)="1", USERELATIONSHIP(event[date_created], 'Calendar'[Date]))
+		formatString: 0
+		lineageTag: 518694c7-b3b5-472b-b109-8a9426250ffd
+
+	measure '2nd Client Interview' = CALCULATE(DISTINCTCOUNT(event[candidate_id]), event[moved_to_stageType]="Final Interview", LEFT(event[moved_to_stage],1)="2", USERELATIONSHIP(event[date_created], 'Calendar'[Date]))
+		formatString: 0
+		lineageTag: 217f5adf-3070-430e-9d17-32b1c1be345b
+
+	measure '3rd Client Interview' = CALCULATE(DISTINCTCOUNT(event[candidate_id]), event[moved_to_stageType]="Final Interview", LEFT(event[moved_to_stage],1)="3", USERELATIONSHIP(event[date_created], 'Calendar'[Date]))
+		formatString: 0
+		lineageTag: 51a6cdb6-0206-4dff-aa7c-4f9399eee4ca
+
+	measure '# candidates - positive response' = CALCULATE(DISTINCTCOUNT(event[candidate_id]), event[moved_to_stageType]="Positive Response", event[date_created]>=DATE(2025,4,14), USERELATIONSHIP(event[date_created], 'Calendar'[Date]))
+		formatString: #,0
+		lineageTag: f654b7cd-a425-48b8-834d-619126d76142
+
+	measure '% Screens to Actual Screen' =
+			var perc = DIVIDE(Metrics[# candidates - actual screen (actual screen date)], [# candidates - screen (screened date)],0)
+			RETURN IF(perc>1, 1, perc)
+		formatString: 0%;-0%;0%
+		lineageTag: 2065740d-072a-4a1a-8ee1-6c5b246565f1
+
+	measure '% Contacted to Positive Response' =
+			var con = CALCULATE([# candidates - contacted (contacted date)], candidate_stage[date_contacted]>=DATE(2025,4,14))
+			var perc = DIVIDE([# candidates - positive response], con, 0)
+			RETURN IF(perc>1, 1, perc)
+		formatString: 0%;-0%;0%
+		lineageTag: 2aa41a73-89c2-429c-9f04-92ffc3c105ba
+
+	measure 'Finance sourcer allocation per client' = DIVIDE([# candidates - contacted (contacted date)], CALCULATE([# candidates - contacted (contacted date)], REMOVEFILTERS(client[client_name])))
+		formatString: 0%;-0%;0%
+		lineageTag: 9321e8dd-ffdd-48dd-8763-efa1d75ef97a
+
+	measure '% Positive Response to Screen' =
+			var perc = DIVIDE([# candidates - screen (screened date)], [# candidates - positive response],0)
+			RETURN IF(perc>1, 1, perc)
+		formatString: 0%;-0%;0%
+		lineageTag: 8c4ea350-eddb-48bf-9069-76011f7ca523
+
+	measure 'Sourced Hired' = CALCULATE([# candidates - hired (hired date)],  candidate[source]="Sourced")
+		formatString: 0
+		lineageTag: 7da017c6-88ea-4344-a036-eb3568b6e69c
+
+	measure 'Applicant Hired' = CALCULATE([# candidates - hired (hired date)], candidate[source]="Applicant")
+		formatString: 0
+		lineageTag: cac8372a-b126-414c-bcf1-9990882f9015
+
+	measure Onsite = CALCULATE(DISTINCTCOUNT(event[candidate_id]), event[moved_to_stageType]="Final Interview", event[moved_to_stage]="Onsite", USERELATIONSHIP(event[date_created], 'Calendar'[Date]))
+		formatString: 0
+		lineageTag: 3d601f61-64e9-4f04-9e87-624c653b6b76
+
+	measure 'Culture Interview' = CALCULATE(DISTINCTCOUNT(event[candidate_id]), event[moved_to_stageType]="Final Interview", event[moved_to_stage]="Culture Interview", USERELATIONSHIP(event[date_created], 'Calendar'[Date]))
+		formatString: 0
+		lineageTag: 73ede845-367a-4e55-8bbb-349ce6943155
+
+	measure '# candidates - rejected (rejected date)' =
+			var rejected = CALCULATE(DISTINCTCOUNT(event[candidate_id]), event[event_type]="Disqualified", USERELATIONSHIP(event[date_created], 'Calendar'[Date]))
+			RETURN CALCULATE(rejected, candidate[is_candidate_disqualified]<>BLANK())
+		formatString: 0
+		lineageTag: 3ae7c515-194f-44ba-8bc4-f357bf4bfe4f
+
+	measure 'Call with Client Interview' = CALCULATE(DISTINCTCOUNT(event[candidate_id]), event[moved_to_stageType]="Final Interview", event[moved_to_stage]="Call with Client", USERELATIONSHIP(event[date_created], 'Calendar'[Date]))
+		formatString: 0
+		lineageTag: 0b494540-6cf8-4f05-a063-3eef7d644856
+
+	partition Metrics-51b43135-18b8-4142-801e-0c468816bb99 = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WMlCKjQUA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", Int64.Type}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column1"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

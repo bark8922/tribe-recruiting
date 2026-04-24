@@ -1,0 +1,229 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "ac7627f3802012dee488",
+  "displayName": "WBR",
+  "displayOption": "ActualSize",
+  "height": 3500,
+  "width": 1280,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "Filter95c17ef7c9eba7050913",
+        "ordinal": 0,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "WBR TA Actual"
+              }
+            },
+            "Property": "Client"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "w",
+              "Entity": "WBR TA Actual",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "In": {
+                      "Expressions": [
+                        {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Source": "w"
+                              }
+                            },
+                            "Property": "Client"
+                          }
+                        }
+                      ],
+                      "Values": [
+                        [
+                          {
+                            "Literal": {
+                              "Value": "null"
+                            }
+                          }
+                        ]
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User",
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "isInvertedSelectionMode": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Filter1005110cc3971ef065c4",
+        "ordinal": 1,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Calendar"
+              }
+            },
+            "Property": "is_current_week"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User"
+      }
+    ],
+    "filterSortOrder": "Custom"
+  },
+  "objects": {
+    "background": [
+      {
+        "properties": {
+          "color": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#D1E9FC'"
+                  }
+                }
+              }
+            }
+          },
+          "transparency": {
+            "expr": {
+              "Literal": {
+                "Value": "45D"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "outspace": [
+      {
+        "properties": {
+          "color": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "ThemeDataColor": {
+                    "ColorId": 0,
+                    "Percent": -0.2
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "visualInteractions": [
+    {
+      "source": "f400e23629599c01d777",
+      "target": "8bc427d644d46a015d20",
+      "type": "NoFilter"
+    },
+    {
+      "source": "650cbbc2161a06d5b202",
+      "target": "b456c5874320980a652c",
+      "type": "NoFilter"
+    },
+    {
+      "source": "49496c00d21b9eee7d10",
+      "target": "b3ea8f0652055433be86",
+      "type": "NoFilter"
+    },
+    {
+      "source": "49496c00d21b9eee7d10",
+      "target": "b456c5874320980a652c",
+      "type": "NoFilter"
+    },
+    {
+      "source": "49496c00d21b9eee7d10",
+      "target": "e1d4dd9b8dd6b5107c2c",
+      "type": "NoFilter"
+    },
+    {
+      "source": "b3ea8f0652055433be86",
+      "target": "b456c5874320980a652c",
+      "type": "NoFilter"
+    },
+    {
+      "source": "b3ea8f0652055433be86",
+      "target": "e1d4dd9b8dd6b5107c2c",
+      "type": "NoFilter"
+    },
+    {
+      "source": "b3ea8f0652055433be86",
+      "target": "49496c00d21b9eee7d10",
+      "type": "NoFilter"
+    },
+    {
+      "source": "f400e23629599c01d777",
+      "target": "e1d4dd9b8dd6b5107c2c",
+      "type": "DataFilter"
+    },
+    {
+      "source": "f400e23629599c01d777",
+      "target": "28d9427046664268d040",
+      "type": "NoFilter"
+    },
+    {
+      "source": "b456c5874320980a652c",
+      "target": "28d9427046664268d040",
+      "type": "NoFilter"
+    },
+    {
+      "source": "e1d4dd9b8dd6b5107c2c",
+      "target": "28d9427046664268d040",
+      "type": "NoFilter"
+    },
+    {
+      "source": "c02cf8660ba7789c0312",
+      "target": "28d9427046664268d040",
+      "type": "NoFilter"
+    },
+    {
+      "source": "64be0d8e3209c67c89c1",
+      "target": "28d9427046664268d040",
+      "type": "NoFilter"
+    },
+    {
+      "source": "e1ba38d047cd4c73b020",
+      "target": "28d9427046664268d040",
+      "type": "NoFilter"
+    },
+    {
+      "source": "650cbbc2161a06d5b202",
+      "target": "28d9427046664268d040",
+      "type": "NoFilter"
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+table 'WBR TA Comment'
+	lineageTag: aa0b726d-a60e-4ff3-992c-7b005c9d640e
+
+	measure 'Comment week' = SELECTEDVALUE('WBR TA Comment'[Comment])
+		lineageTag: 6c010c27-bed8-4409-8680-a3ebb6392e65
+
+		changedProperty = IsHidden
+
+	column Client
+		dataType: string
+		lineageTag: db1fd98d-6701-45bc-9970-5060b1402c9c
+		summarizeBy: none
+		sourceColumn: Client
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 2620c44d-34b5-4b60-9023-c8b222a7a555
+		summarizeBy: none
+		sourceColumn: Year
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Week
+		dataType: string
+		lineageTag: da74479d-af7c-436a-9809-4c1a2368bc7f
+		summarizeBy: none
+		sourceColumn: Week
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Comment
+		dataType: string
+		lineageTag: 57864d6e-a96d-4858-9840-e0cc5a43c6f2
+		summarizeBy: none
+		sourceColumn: Comment
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Concat
+		dataType: string
+		lineageTag: d8bd810f-73af-484f-9d23-e250d870e9c5
+		summarizeBy: none
+		sourceColumn: Concat
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column TA
+		dataType: string
+		lineageTag: ba3227f6-5ae9-4012-b7a1-150ad16a6870
+		summarizeBy: none
+		sourceColumn: TA
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Exclude OKR'
+		dataType: string
+		lineageTag: 18d47e06-6e1c-4695-bbe5-8ecd3208147f
+		summarizeBy: none
+		sourceColumn: Exclude OKR
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Data Cleanliness/Hygiene'
+		dataType: string
+		lineageTag: a34126c8-7c8d-415d-90b8-0397e5d2ae34
+		summarizeBy: none
+		sourceColumn: Data Cleanliness/Hygiene
+
+		annotation SummarizationSetBy = Automatic
+
+	column Reasoning
+		dataType: string
+		lineageTag: 8cbc8cc1-5bf8-4ed2-b23f-f4e5d6d8d073
+		summarizeBy: none
+		sourceColumn: Reasoning
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'WBR TA Comment-a33e4f11-e098-468b-bc94-056354e7a251' = m
+		mode: import
+		source =
+				let
+				    Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/1Hyb5M244bkh9ygxnssq_wppWxrT0KtGeVFEYvHVoouc/edit#gid=1802525365"),
+				    #"TS Weekly Note (not used)_Table" = Source{[name="TA Weekly Note",ItemKind="Table"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(#"TS Weekly Note (not used)_Table", [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Client", type text}, {"TA", type text}, {"Year", Int64.Type}, {"Week", type text}, {"Comment", type text}}),
+				    #"Added Custom" = Table.AddColumn(#"Changed Type", "Concat", each [Week]&[TA]&[Client]),
+				    #"Trimmed Text" = Table.TransformColumns(#"Added Custom",{{"Client", Text.Trim, type text}, {"TA", Text.Trim, type text}, {"Week", Text.Trim, type text}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Trimmed Text", each [Client] <> null and [Client] <> ""),
+				    #"Replaced Value" = Table.ReplaceValue(#"Filtered Rows","No",null,Replacer.ReplaceValue,{"Exclude OKR"}),
+				    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value","SevenRooms","Wolt HQ",Replacer.ReplaceText,{"Client"}),
+				    #"Replaced Value2" = Table.ReplaceValue(#"Replaced Value1","Doordash","Wolt HQ",Replacer.ReplaceText,{"Client"})
+				in
+				    #"Replaced Value2"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

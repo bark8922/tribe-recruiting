@@ -1,0 +1,46 @@
+table 'WBR Job open 60d'
+	lineageTag: 0be6157a-0c95-4865-8878-86d803ef67ba
+
+	column job_recruiter
+		lineageTag: b27eb95c-a6cc-4ea6-827a-24fa2e5500b7
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: job[job_recruiter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column '# Jobs 60d'
+		formatString: 0
+		lineageTag: 5befa972-6e9a-4ed8-84a9-0d84fe67b1bf
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [# Jobs 60d]
+
+		annotation SummarizationSetBy = Automatic
+
+	column client_name
+		lineageTag: f6a942c3-f1e5-4cf3-ae66-aadcc908651f
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: client[client_name]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Contacy = 'WBR Job open 60d'[job_recruiter]&'WBR Job open 60d'[client_name]
+		lineageTag: d75002f5-4b94-4a3a-92f1-f2b2b431c781
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'WBR Job open 60d-4da128fa-51d1-40fe-9678-4ac623188505' = calculated
+		mode: import
+		source =
+				CALCULATETABLE(SUMMARIZECOLUMNS(
+				    client[client_name],
+				    job[job_recruiter],
+				    "# Jobs 60d", DISTINCTCOUNT(job[job_id])
+				    ),
+				    client[client_name]<>"Tribe.xyz", client[client_name]<>BLANK(), job[is_job_archived]<>TRUE(), job[date_first_hired]=BLANK(), job[Job Days Opened]>=60, candidate[is_candidate_archived]=FALSE())
+
+	annotation PBI_Id = ed37a7d0c9c648449efb4bc76fea533c
+

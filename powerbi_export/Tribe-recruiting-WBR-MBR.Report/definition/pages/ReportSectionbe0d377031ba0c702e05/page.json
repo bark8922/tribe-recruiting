@@ -1,0 +1,843 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "ReportSectionbe0d377031ba0c702e05",
+  "displayName": "Overview",
+  "displayOption": "ActualSize",
+  "height": 2100,
+  "width": 1280,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "Filtercc3ad9d06a09c0a6a7e4",
+        "ordinal": 0,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "client"
+              }
+            },
+            "Property": "client_name"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "c",
+              "Entity": "client",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "In": {
+                      "Expressions": [
+                        {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Source": "c"
+                              }
+                            },
+                            "Property": "client_name"
+                          }
+                        }
+                      ],
+                      "Values": [
+                        [
+                          {
+                            "Literal": {
+                              "Value": "null"
+                            }
+                          }
+                        ]
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User",
+        "isHiddenInViewMode": true,
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "isInvertedSelectionMode": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Filter33f883d428a78088c356",
+        "ordinal": 1,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "job"
+              }
+            },
+            "Property": "job_title"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "j",
+              "Entity": "job",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "In": {
+                      "Expressions": [
+                        {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Source": "j"
+                              }
+                            },
+                            "Property": "job_title"
+                          }
+                        }
+                      ],
+                      "Values": [
+                        [
+                          {
+                            "Literal": {
+                              "Value": "null"
+                            }
+                          }
+                        ]
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User",
+        "isHiddenInViewMode": true,
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "isInvertedSelectionMode": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Filter25e6a6e07accea220829",
+        "ordinal": 2,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Calendar"
+              }
+            },
+            "Property": "Year"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "c",
+              "Entity": "Calendar",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "In": {
+                      "Expressions": [
+                        {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Source": "c"
+                              }
+                            },
+                            "Property": "Year"
+                          }
+                        }
+                      ],
+                      "Values": [
+                        [
+                          {
+                            "Literal": {
+                              "Value": "2019L"
+                            }
+                          }
+                        ],
+                        [
+                          {
+                            "Literal": {
+                              "Value": "2020L"
+                            }
+                          }
+                        ],
+                        [
+                          {
+                            "Literal": {
+                              "Value": "2021L"
+                            }
+                          }
+                        ]
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User",
+        "isHiddenInViewMode": true,
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "isInvertedSelectionMode": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Filterf1cd39dd2c8b9b0cddb0",
+        "ordinal": 3,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "client"
+              }
+            },
+            "Property": "client_name"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "c",
+              "Entity": "client",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "In": {
+                      "Expressions": [
+                        {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Source": "c"
+                              }
+                            },
+                            "Property": "client_name"
+                          }
+                        }
+                      ],
+                      "Values": [
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'A Testing Company'"
+                            }
+                          }
+                        ],
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'Bubble test'"
+                            }
+                          }
+                        ],
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'fakecompany'"
+                            }
+                          }
+                        ],
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'Kamila AI - TEST'"
+                            }
+                          }
+                        ],
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'Lilit - Test Partner Sales'"
+                            }
+                          }
+                        ],
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'Lilit Test - Technical content creator'"
+                            }
+                          }
+                        ],
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'Test - Chene'"
+                            }
+                          }
+                        ],
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'Test - Lilit HR admin'"
+                            }
+                          }
+                        ],
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'Test - Natalia'"
+                            }
+                          }
+                        ],
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'Test by Nare'"
+                            }
+                          }
+                        ],
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'Test Client Alex'"
+                            }
+                          }
+                        ],
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'Test Company'"
+                            }
+                          }
+                        ],
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'Test company by Iryna'"
+                            }
+                          }
+                        ],
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'Test Company name'"
+                            }
+                          }
+                        ],
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'Test Iryna'"
+                            }
+                          }
+                        ],
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'Test Marko New Client'"
+                            }
+                          }
+                        ],
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'Test Sourcing Company'"
+                            }
+                          }
+                        ],
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'Test_Lilit'"
+                            }
+                          }
+                        ],
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'testclient'"
+                            }
+                          }
+                        ],
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'TestClientMelani'"
+                            }
+                          }
+                        ],
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'testtt company marko m'"
+                            }
+                          }
+                        ]
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User",
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "isInvertedSelectionMode": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Filter8a13945dd34470292102",
+        "ordinal": 4,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "event"
+              }
+            },
+            "Property": "who_created_event_first"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "e",
+              "Entity": "event",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "In": {
+                      "Expressions": [
+                        {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Source": "e"
+                              }
+                            },
+                            "Property": "who_created_event_first"
+                          }
+                        }
+                      ],
+                      "Values": [
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'Mikhail Kuzmin'"
+                            }
+                          }
+                        ]
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User",
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "isInvertedSelectionMode": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "filterSortOrder": "Custom"
+  },
+  "visibility": "HiddenInViewMode",
+  "visualInteractions": [
+    {
+      "source": "0d9788f66604380e0a0d",
+      "target": "461bb58cc70d57567eee",
+      "type": "DataFilter"
+    },
+    {
+      "source": "461bb58cc70d57567eee",
+      "target": "0d9788f66604380e0a0d",
+      "type": "DataFilter"
+    },
+    {
+      "source": "461bb58cc70d57567eee",
+      "target": "6f34c2e9a5a8c8ae0966",
+      "type": "DataFilter"
+    },
+    {
+      "source": "461bb58cc70d57567eee",
+      "target": "11a24d2a56bff8ffb538",
+      "type": "DataFilter"
+    },
+    {
+      "source": "461bb58cc70d57567eee",
+      "target": "a73fd5e03eb521074d72",
+      "type": "DataFilter"
+    },
+    {
+      "source": "461bb58cc70d57567eee",
+      "target": "206fd766a209b1769359",
+      "type": "DataFilter"
+    },
+    {
+      "source": "0d9788f66604380e0a0d",
+      "target": "a73fd5e03eb521074d72",
+      "type": "DataFilter"
+    },
+    {
+      "source": "0d9788f66604380e0a0d",
+      "target": "206fd766a209b1769359",
+      "type": "DataFilter"
+    },
+    {
+      "source": "0d9788f66604380e0a0d",
+      "target": "11a24d2a56bff8ffb538",
+      "type": "DataFilter"
+    },
+    {
+      "source": "0d9788f66604380e0a0d",
+      "target": "6f34c2e9a5a8c8ae0966",
+      "type": "DataFilter"
+    },
+    {
+      "source": "206fd766a209b1769359",
+      "target": "a73fd5e03eb521074d72",
+      "type": "DataFilter"
+    },
+    {
+      "source": "206fd766a209b1769359",
+      "target": "11a24d2a56bff8ffb538",
+      "type": "DataFilter"
+    },
+    {
+      "source": "206fd766a209b1769359",
+      "target": "461bb58cc70d57567eee",
+      "type": "NoFilter"
+    },
+    {
+      "source": "206fd766a209b1769359",
+      "target": "0d9788f66604380e0a0d",
+      "type": "NoFilter"
+    },
+    {
+      "source": "206fd766a209b1769359",
+      "target": "6f34c2e9a5a8c8ae0966",
+      "type": "DataFilter"
+    },
+    {
+      "source": "a73fd5e03eb521074d72",
+      "target": "206fd766a209b1769359",
+      "type": "DataFilter"
+    },
+    {
+      "source": "a73fd5e03eb521074d72",
+      "target": "11a24d2a56bff8ffb538",
+      "type": "DataFilter"
+    },
+    {
+      "source": "a73fd5e03eb521074d72",
+      "target": "6f34c2e9a5a8c8ae0966",
+      "type": "DataFilter"
+    },
+    {
+      "source": "a73fd5e03eb521074d72",
+      "target": "0d9788f66604380e0a0d",
+      "type": "NoFilter"
+    },
+    {
+      "source": "a73fd5e03eb521074d72",
+      "target": "461bb58cc70d57567eee",
+      "type": "NoFilter"
+    },
+    {
+      "source": "11a24d2a56bff8ffb538",
+      "target": "a73fd5e03eb521074d72",
+      "type": "DataFilter"
+    },
+    {
+      "source": "11a24d2a56bff8ffb538",
+      "target": "206fd766a209b1769359",
+      "type": "DataFilter"
+    },
+    {
+      "source": "11a24d2a56bff8ffb538",
+      "target": "6f34c2e9a5a8c8ae0966",
+      "type": "DataFilter"
+    },
+    {
+      "source": "11a24d2a56bff8ffb538",
+      "target": "0d9788f66604380e0a0d",
+      "type": "NoFilter"
+    },
+    {
+      "source": "11a24d2a56bff8ffb538",
+      "target": "461bb58cc70d57567eee",
+      "type": "NoFilter"
+    },
+    {
+      "source": "6f34c2e9a5a8c8ae0966",
+      "target": "11a24d2a56bff8ffb538",
+      "type": "DataFilter"
+    },
+    {
+      "source": "6f34c2e9a5a8c8ae0966",
+      "target": "a73fd5e03eb521074d72",
+      "type": "DataFilter"
+    },
+    {
+      "source": "6f34c2e9a5a8c8ae0966",
+      "target": "206fd766a209b1769359",
+      "type": "DataFilter"
+    },
+    {
+      "source": "6f34c2e9a5a8c8ae0966",
+      "target": "0d9788f66604380e0a0d",
+      "type": "NoFilter"
+    },
+    {
+      "source": "6f34c2e9a5a8c8ae0966",
+      "target": "461bb58cc70d57567eee",
+      "type": "NoFilter"
+    },
+    {
+      "source": "d8268620edc82f9dae67",
+      "target": "206fd766a209b1769359",
+      "type": "HighlightFilter"
+    },
+    {
+      "source": "206fd766a209b1769359",
+      "target": "d8268620edc82f9dae67",
+      "type": "NoFilter"
+    },
+    {
+      "source": "a73fd5e03eb521074d72",
+      "target": "d8268620edc82f9dae67",
+      "type": "NoFilter"
+    },
+    {
+      "source": "11a24d2a56bff8ffb538",
+      "target": "d8268620edc82f9dae67",
+      "type": "NoFilter"
+    },
+    {
+      "source": "6f34c2e9a5a8c8ae0966",
+      "target": "d8268620edc82f9dae67",
+      "type": "NoFilter"
+    },
+    {
+      "source": "e51112e50c50e090ae34",
+      "target": "8f52569f6d7e1b405b42",
+      "type": "DataFilter"
+    },
+    {
+      "source": "ea18d444e266821bde0d",
+      "target": "206fd766a209b1769359",
+      "type": "DataFilter"
+    },
+    {
+      "source": "ea18d444e266821bde0d",
+      "target": "a73fd5e03eb521074d72",
+      "type": "DataFilter"
+    },
+    {
+      "source": "ea18d444e266821bde0d",
+      "target": "11a24d2a56bff8ffb538",
+      "type": "DataFilter"
+    },
+    {
+      "source": "ea18d444e266821bde0d",
+      "target": "6f34c2e9a5a8c8ae0966",
+      "type": "DataFilter"
+    },
+    {
+      "source": "ea18d444e266821bde0d",
+      "target": "0d9788f66604380e0a0d",
+      "type": "DataFilter"
+    },
+    {
+      "source": "ea18d444e266821bde0d",
+      "target": "461bb58cc70d57567eee",
+      "type": "DataFilter"
+    },
+    {
+      "source": "4f95a4d5f8ed48cadf06",
+      "target": "959aed730bd02130b3cb",
+      "type": "NoFilter"
+    },
+    {
+      "source": "4f95a4d5f8ed48cadf06",
+      "target": "461bb58cc70d57567eee",
+      "type": "NoFilter"
+    },
+    {
+      "source": "4f95a4d5f8ed48cadf06",
+      "target": "0d9788f66604380e0a0d",
+      "type": "NoFilter"
+    },
+    {
+      "source": "4f95a4d5f8ed48cadf06",
+      "target": "206fd766a209b1769359",
+      "type": "NoFilter"
+    },
+    {
+      "source": "4f95a4d5f8ed48cadf06",
+      "target": "a73fd5e03eb521074d72",
+      "type": "NoFilter"
+    },
+    {
+      "source": "4f95a4d5f8ed48cadf06",
+      "target": "11a24d2a56bff8ffb538",
+      "type": "NoFilter"
+    },
+    {
+      "source": "4f95a4d5f8ed48cadf06",
+      "target": "6f34c2e9a5a8c8ae0966",
+      "type": "NoFilter"
+    },
+    {
+      "source": "4f95a4d5f8ed48cadf06",
+      "target": "cf61cea6a197141050c9",
+      "type": "NoFilter"
+    },
+    {
+      "source": "e51112e50c50e090ae34",
+      "target": "8ba908608a353d80a407",
+      "type": "NoFilter"
+    },
+    {
+      "source": "e51112e50c50e090ae34",
+      "target": "15e4f7c4aa700fa991c4",
+      "type": "NoFilter"
+    },
+    {
+      "source": "e51112e50c50e090ae34",
+      "target": "45eef231043674b0484e",
+      "type": "NoFilter"
+    },
+    {
+      "source": "8f52569f6d7e1b405b42",
+      "target": "8ba908608a353d80a407",
+      "type": "NoFilter"
+    },
+    {
+      "source": "8f52569f6d7e1b405b42",
+      "target": "15e4f7c4aa700fa991c4",
+      "type": "NoFilter"
+    },
+    {
+      "source": "8f52569f6d7e1b405b42",
+      "target": "45eef231043674b0484e",
+      "type": "NoFilter"
+    },
+    {
+      "source": "8ba908608a353d80a407",
+      "target": "45eef231043674b0484e",
+      "type": "NoFilter"
+    },
+    {
+      "source": "e51112e50c50e090ae34",
+      "target": "f227e6a6773a69ffb3c0",
+      "type": "DataFilter"
+    },
+    {
+      "source": "8ca218c007d19352b975",
+      "target": "b231a289ab755a2526c4",
+      "type": "DataFilter"
+    },
+    {
+      "source": "ea18d444e266821bde0d",
+      "target": "b231a289ab755a2526c4",
+      "type": "DataFilter"
+    }
+  ]
+}

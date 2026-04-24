@@ -1,0 +1,51 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: cs-CZ
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["candidate","candidate_stage","client","event","job","screen","screen_lang","screen_techstack","talent","talent_email","talent_employer","talent_position","Calendar","Metrics","Current_TS","User","LastRefreshedDate","Current_TA","WBR TA Target","Start Date","WBR TA Comment","WBR TS Comment","Org_WBR","Org","Org_manager","analytic_usage","Temp_Inactive_Jobs_Sourcers_WBR","Historical Manager Structure WBR","Sourcing Team List","IR Comment"]
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table candidate
+ref table candidate_stage
+ref table client
+ref table event
+ref table job
+ref table screen
+ref table talent
+ref table talent_email
+ref table talent_employer
+ref table Calendar
+ref table Metrics
+ref table Current_TS
+ref table User
+ref table LastRefreshedDate
+ref table 'WBR TA Actual'
+ref table Current_TA
+ref table 'WBR TA Target'
+ref table 'WBR Client History'
+ref table 'WBR TS Actual'
+ref table 'WBR TA Comment'
+ref table 'WBR TS Comment'
+ref table Org
+ref table 'WBR Job open 60d'
+ref table 'OKR TA'
+ref table 'Calendar WBR'
+ref table analytic_usage
+ref table 'Sourcing Stats'
+ref table Org_WBR
+ref table Temp_Inactive_Jobs_Sourcers_WBR
+ref table 'Historical Manager Structure WBR'
+ref table 'Sourcing Team List'
+ref table 'WBR Job from Aug 2025'
+ref table 'WBR TA Job'
+ref table 'IR Comment'
+
+ref cultureInfo en-US
+

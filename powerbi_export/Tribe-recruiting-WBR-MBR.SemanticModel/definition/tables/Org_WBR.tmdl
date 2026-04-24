@@ -1,0 +1,56 @@
+table Org_WBR
+	lineageTag: 33268a87-c3cf-4657-a881-d57555d6b20d
+
+	column 'Employee #'
+		dataType: string
+		lineageTag: c34652ff-a522-4f52-ad45-3557d9acf438
+		summarizeBy: none
+		sourceColumn: Employee #
+
+		annotation SummarizationSetBy = Automatic
+
+	column Name
+		dataType: string
+		lineageTag: ffeb21a8-80ef-467e-ae8e-0b168d195b24
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Manager
+		dataType: string
+		lineageTag: 22808ba8-42d6-4d19-8e34-6e02fa84ad8c
+		summarizeBy: none
+		sourceColumn: Manager
+
+		annotation SummarizationSetBy = Automatic
+
+	column Location
+		dataType: string
+		lineageTag: aa575883-5201-4c19-8a39-44756198dd10
+		summarizeBy: none
+		sourceColumn: Location
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Employment Status'
+		dataType: string
+		lineageTag: e009e487-6679-41bc-b838-436265847b08
+		summarizeBy: none
+		sourceColumn: Employment Status
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Org_WBR = m
+		mode: import
+		source =
+				let
+				    Source = Org,
+				    #"Appended Query" = Table.Combine({Source, Org_manager})
+				in
+				    #"Appended Query"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

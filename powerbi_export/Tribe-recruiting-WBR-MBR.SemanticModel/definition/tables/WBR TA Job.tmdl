@@ -1,0 +1,200 @@
+table 'WBR TA Job'
+	lineageTag: dbef0171-2658-42ca-8f7e-bd7092b402bb
+
+	measure 'Actual screen to ATS %' = DIVIDE(SUM('WBR TA Job'[Moved to ATS]), SUM('WBR TA Job'[Actual screens]))
+		formatString: 0%;-0%;0%
+		lineageTag: e7b0ac50-3133-412a-a92e-8bf30b584c90
+
+	column Year
+		formatString: 0
+		lineageTag: 9e32200f-8db9-4ea7-9559-86a13714fc03
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Calendar[Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Week sort'
+		formatString: 0
+		lineageTag: 2a98995d-c5fe-4290-90bb-0d66ac4b2d27
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Calendar[Week sort]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Week start end'
+		lineageTag: 8cf8d826-2fc0-4b00-91e7-ed2ff0bdd78c
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[Week start end]
+
+		annotation SummarizationSetBy = Automatic
+
+	column WeekInt
+		formatString: 0
+		lineageTag: fba11d23-6f38-48ef-9de8-4070bf934dfd
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Calendar[WeekInt]
+		sortByColumn: 'Week sort'
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_last_12_weeks
+		lineageTag: 92ee0104-17b8-4131-8d77-06328695c137
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[is_last_12_weeks]
+
+		annotation SummarizationSetBy = Automatic
+
+	column client_name
+		lineageTag: d1a5fb1f-e1ea-4662-a845-9b62cc6729dc
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: client[client_name]
+
+		annotation SummarizationSetBy = Automatic
+
+	column client_id
+		lineageTag: 991095ad-8d75-4aa0-8a2e-1e5dfadac476
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: client[client_id]
+
+		annotation SummarizationSetBy = Automatic
+
+	column who_event_created_for
+		lineageTag: d50a7ee1-2935-4bfc-8842-4745920afebe
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: event[who_event_created_for]
+
+		annotation SummarizationSetBy = Automatic
+
+	column job_title
+		lineageTag: 9f88c004-6582-44fd-be04-32e8b88ac2c7
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: job[job_title]
+
+		annotation SummarizationSetBy = Automatic
+
+	column '# Jobs'
+		formatString: 0
+		lineageTag: e96b2f4d-eddd-40bd-8636-7a637ab19ff3
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [# Jobs]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Time to Fill'
+		lineageTag: d14aff5e-a596-4a63-8470-93fdf96e3af2
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Time to Fill]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Contacted
+		formatString: 0
+		lineageTag: c291596e-1819-4564-8cd2-3a9f11268a70
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Contacted]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Actual screens'
+		formatString: 0
+		lineageTag: 63e48020-36c6-4cce-8263-859b4b1b5c24
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Actual screens]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Moved to ATS'
+		formatString: 0
+		lineageTag: ec49affa-8dcd-4f16-a8c7-0903e5a64915
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Moved to ATS]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Offers
+		formatString: 0
+		lineageTag: d6766964-b8a0-442c-89fb-753423e572ca
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Offers]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Hires
+		formatString: 0
+		lineageTag: 6e2ef682-cfbd-4edc-aa86-e2795b8a269d
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Hires]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Key Job concat' = 'WBR TA Job'[Week start end] & " " & 'WBR TA Job'[client_id] & " " & 'WBR TA Job'[who_event_created_for]
+		lineageTag: 3ff546e5-ed9e-4505-8255-41087be8269b
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Current week' = LOOKUPVALUE('Calendar WBR'[is_current_week], 'Calendar WBR'[Week start end], 'WBR TA Job'[Week start end])
+		lineageTag: d3eeb258-640c-43dd-92eb-b005deca11a8
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'TA Client' = RELATED('WBR TA Actual'[Client])
+		lineageTag: 065393a9-120f-4569-b2dd-2d8232465e05
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Screens
+		formatString: 0
+		lineageTag: ce0f9abc-69c6-48b3-b761-1d4a9764442f
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Screens]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'WBR TA Job' = calculated
+		mode: import
+		source = ```
+				CALCULATETABLE(SUMMARIZECOLUMNS(
+				    'Calendar'[Year], 
+				    'Calendar'[Week sort],
+				    'Calendar'[Week start end],
+				    'Calendar'[WeekInt],
+				    'Calendar'[is_last_12_weeks],
+				    client[client_name],
+				    client[client_id],
+				    event[who_event_created_for],
+				    job[job_title],
+				    "# Jobs", CALCULATE(DISTINCTCOUNT(event[job_id]), USERELATIONSHIP('Calendar'[Date], event[date_created])),
+				    "Time to Fill", [Candidate - Time to Fill (Hired date)],
+				    "Contacted", [# events - contacted (date created)],
+				    "Screens", [# candidates - screen (screened date)],
+				    "Actual screens", [# candidates - actual screen (actual screen date)], 
+				    "Moved to ATS", [# candidates - move to ATS (moved date)],
+				    "Offers", [# candidates - offer (offered date)],
+				    "Hires", [# candidates - hired (hired date)]),
+				    job[job_title]<>BLANK(), candidate[is_candidate_archived]=FALSE(), client[client_name]<>BLANK(), NOT(client[client_name] IN {"Tribe.xyz", "Kamila AI - TEST"}), event[who_event_created_for]<>BLANK(), 'Calendar'[Year]>=2023)
+				```
+
+	annotation PBI_Id = 6ebfdc2c566f4a2ca58ba47d10fdfac8
+

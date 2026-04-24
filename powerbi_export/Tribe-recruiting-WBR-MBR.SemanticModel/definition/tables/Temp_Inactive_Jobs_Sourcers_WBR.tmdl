@@ -1,0 +1,71 @@
+table Temp_Inactive_Jobs_Sourcers_WBR
+	lineageTag: f0147031-c346-44b5-866e-3654bd3e641c
+
+	column Sourcer
+		dataType: string
+		lineageTag: 2c7d375b-2096-41c7-9b37-32912558ee7c
+		summarizeBy: none
+		sourceColumn: Sourcer
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Job Title'
+		dataType: string
+		lineageTag: 114a94a1-7e60-4377-b21e-02234c053d62
+		summarizeBy: none
+		sourceColumn: Job Title
+
+		annotation SummarizationSetBy = Automatic
+
+	column job_id
+		dataType: string
+		lineageTag: 40acbc1f-5f37-4820-8407-818f47eaa9e4
+		summarizeBy: none
+		sourceColumn: job_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Official Sourcer'
+		dataType: string
+		lineageTag: 79cfd085-cddf-48df-8b87-48acdc9c95fb
+		summarizeBy: none
+		sourceColumn: Official Sourcer
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'No longer working with the job'
+		dataType: string
+		lineageTag: 5cafa4d9-8d23-4352-8914-b5eed32c275b
+		summarizeBy: none
+		sourceColumn: No longer working with the job
+
+		annotation SummarizationSetBy = Automatic
+
+	column Note
+		dataType: string
+		lineageTag: 317dbab8-130d-4994-8979-3fef2add13f6
+		summarizeBy: none
+		sourceColumn: Note
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Temp_Inactive_Jobs_Sourcers_WBR = m
+		mode: import
+		source =
+				let
+				    Source = GoogleSheets.Contents("https://docs.google.com/spreadsheets/d/1WApKTTxsXuwMgK5UBuEyTqzCgiXajLIX54RN3FHsNcA/edit?gid=0#gid=0"),
+				    Sheet1_Table = Source{[name="Sheet1",ItemKind="Table"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Table, [PromoteAllScalars=true]),
+				    #"Added Conditional Column" = Table.AddColumn(#"Promoted Headers", "Filter", each if [Sourcer] = [Official Sourcer] then 1 else 0),
+				    #"Filtered Rows2" = Table.SelectRows(#"Added Conditional Column", each ([Filter] = 1)),
+				    #"Removed Columns" = Table.RemoveColumns(#"Filtered Rows2",{"Filter"}),
+				    #"Filtered Rows" = Table.SelectRows(#"Removed Columns", each ([No longer working with the job] = "No longer working")),
+				    #"Removed Duplicates" = Table.Distinct(#"Filtered Rows", {"job_id"}),
+				    #"Filtered Rows1" = Table.SelectRows(#"Removed Duplicates", each [job_id] <> null and [job_id] <> "")
+				in
+				    #"Filtered Rows1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,337 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "ReportSectionc13689f7305ae17cbb0e",
+  "displayName": "Recruiting Trends & Conversion Rate",
+  "displayOption": "ActualSize",
+  "height": 1800,
+  "width": 1280,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "Filterb294273fc118e0d65c7c",
+        "ordinal": 0,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "client"
+              }
+            },
+            "Property": "client_name"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "c",
+              "Entity": "client",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "And": {
+                  "Left": {
+                    "Not": {
+                      "Expression": {
+                        "Contains": {
+                          "Left": {
+                            "Column": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Source": "c"
+                                }
+                              },
+                              "Property": "client_name"
+                            }
+                          },
+                          "Right": {
+                            "Literal": {
+                              "Value": "'test'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "Right": {
+                    "Not": {
+                      "Expression": {
+                        "Contains": {
+                          "Left": {
+                            "Column": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Source": "c"
+                                }
+                              },
+                              "Property": "client_name"
+                            }
+                          },
+                          "Right": {
+                            "Literal": {
+                              "Value": "'fake'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User",
+        "objects": {
+          "general": [
+            {
+              "properties": {}
+            }
+          ]
+        }
+      },
+      {
+        "name": "Filterc79244dc3884500d2a9d",
+        "ordinal": 1,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "job"
+              }
+            },
+            "Property": "job_title"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "j",
+              "Entity": "job",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "In": {
+                      "Expressions": [
+                        {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Source": "j"
+                              }
+                            },
+                            "Property": "job_title"
+                          }
+                        }
+                      ],
+                      "Values": [
+                        [
+                          {
+                            "Literal": {
+                              "Value": "null"
+                            }
+                          }
+                        ]
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User",
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "isInvertedSelectionMode": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "filterSortOrder": "Custom"
+  },
+  "visibility": "HiddenInViewMode",
+  "visualInteractions": [
+    {
+      "source": "1103a46e080c23d1cda0",
+      "target": "790507ffc705cab5595e",
+      "type": "DataFilter"
+    },
+    {
+      "source": "1103a46e080c23d1cda0",
+      "target": "e52a301fb1612c000070",
+      "type": "DataFilter"
+    },
+    {
+      "source": "4a4a79991e6cc7c140b5",
+      "target": "e52a301fb1612c000070",
+      "type": "DataFilter"
+    },
+    {
+      "source": "4a4a79991e6cc7c140b5",
+      "target": "790507ffc705cab5595e",
+      "type": "DataFilter"
+    },
+    {
+      "source": "dc0253e5760602ea4038",
+      "target": "1de32e33ba0025dee423",
+      "type": "NoFilter"
+    },
+    {
+      "source": "dc0253e5760602ea4038",
+      "target": "f82ce15cec9c9167862c",
+      "type": "NoFilter"
+    },
+    {
+      "source": "dc0253e5760602ea4038",
+      "target": "9b81c5ed751e60cae60a",
+      "type": "NoFilter"
+    },
+    {
+      "source": "dc0253e5760602ea4038",
+      "target": "10776afa1ad02d2e2f58",
+      "type": "NoFilter"
+    },
+    {
+      "source": "dc0253e5760602ea4038",
+      "target": "6ea55ff1650492ab43aa",
+      "type": "NoFilter"
+    },
+    {
+      "source": "6c03829ee82cd4c66b4b",
+      "target": "1de32e33ba0025dee423",
+      "type": "NoFilter"
+    },
+    {
+      "source": "6c03829ee82cd4c66b4b",
+      "target": "f82ce15cec9c9167862c",
+      "type": "NoFilter"
+    },
+    {
+      "source": "6c03829ee82cd4c66b4b",
+      "target": "9b81c5ed751e60cae60a",
+      "type": "NoFilter"
+    },
+    {
+      "source": "6c03829ee82cd4c66b4b",
+      "target": "10776afa1ad02d2e2f58",
+      "type": "NoFilter"
+    },
+    {
+      "source": "6c03829ee82cd4c66b4b",
+      "target": "6ea55ff1650492ab43aa",
+      "type": "NoFilter"
+    },
+    {
+      "source": "dc0253e5760602ea4038",
+      "target": "ae916b716d26f3faf0fc",
+      "type": "DataFilter"
+    },
+    {
+      "source": "6c03829ee82cd4c66b4b",
+      "target": "ae916b716d26f3faf0fc",
+      "type": "DataFilter"
+    },
+    {
+      "source": "1103a46e080c23d1cda0",
+      "target": "ae916b716d26f3faf0fc",
+      "type": "NoFilter"
+    },
+    {
+      "source": "790507ffc705cab5595e",
+      "target": "ae916b716d26f3faf0fc",
+      "type": "NoFilter"
+    },
+    {
+      "source": "4a4a79991e6cc7c140b5",
+      "target": "ae916b716d26f3faf0fc",
+      "type": "NoFilter"
+    },
+    {
+      "source": "dc0253e5760602ea4038",
+      "target": "cbfa781c3674309c0dcd",
+      "type": "NoFilter"
+    },
+    {
+      "source": "6c03829ee82cd4c66b4b",
+      "target": "cbfa781c3674309c0dcd",
+      "type": "NoFilter"
+    },
+    {
+      "source": "cbfa781c3674309c0dcd",
+      "target": "6ea55ff1650492ab43aa",
+      "type": "NoFilter"
+    },
+    {
+      "source": "cbfa781c3674309c0dcd",
+      "target": "10776afa1ad02d2e2f58",
+      "type": "NoFilter"
+    },
+    {
+      "source": "cbfa781c3674309c0dcd",
+      "target": "9b81c5ed751e60cae60a",
+      "type": "NoFilter"
+    },
+    {
+      "source": "cbfa781c3674309c0dcd",
+      "target": "11d74d85b3954d50191a",
+      "type": "NoFilter"
+    },
+    {
+      "source": "cbfa781c3674309c0dcd",
+      "target": "f82ce15cec9c9167862c",
+      "type": "NoFilter"
+    },
+    {
+      "source": "cbfa781c3674309c0dcd",
+      "target": "1de32e33ba0025dee423",
+      "type": "NoFilter"
+    },
+    {
+      "source": "cbfa781c3674309c0dcd",
+      "target": "790507ffc705cab5595e",
+      "type": "NoFilter"
+    },
+    {
+      "source": "cbfa781c3674309c0dcd",
+      "target": "4a4a79991e6cc7c140b5",
+      "type": "NoFilter"
+    },
+    {
+      "source": "cbfa781c3674309c0dcd",
+      "target": "ae916b716d26f3faf0fc",
+      "type": "NoFilter"
+    },
+    {
+      "source": "cbfa781c3674309c0dcd",
+      "target": "e52a301fb1612c000070",
+      "type": "DataFilter"
+    },
+    {
+      "source": "cbfa781c3674309c0dcd",
+      "target": "26d18d879e2b60891660",
+      "type": "DataFilter"
+    }
+  ]
+}

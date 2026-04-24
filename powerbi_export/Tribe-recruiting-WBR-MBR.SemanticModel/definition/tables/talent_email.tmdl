@@ -1,0 +1,75 @@
+table talent_email
+	lineageTag: 5a2b6624-3d1c-4c40-92f4-dd771ebd2857
+
+	column email_id
+		dataType: string
+		lineageTag: a1d195a0-d9c2-4637-a9f3-573224db28e0
+		summarizeBy: none
+		sourceColumn: email_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column talent_id
+		dataType: string
+		lineageTag: 19a2cf8e-497d-41bc-a5fa-7a69e5b89afd
+		summarizeBy: none
+		sourceColumn: talent_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_created
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 5bc04567-e147-4c40-82cf-b4e2784e6d8a
+		summarizeBy: none
+		sourceColumn: date_created
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column email
+		dataType: string
+		lineageTag: 0623215f-3566-4d25-9725-86b1ea33b831
+		summarizeBy: none
+		sourceColumn: email
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_email_duplicated
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 1941c44e-7daf-4543-9f9a-5b3682e422bf
+		summarizeBy: none
+		sourceColumn: is_email_duplicated
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition talent_email-428d97b2-d638-4fb7-b10b-39a8da3c739f = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases("je92638.eu-central-1.snowflakecomputing.com","READER_WH_129",[Implementation="2.0"]),
+				    KEBOOLA_855_942138244_Database = Source{[Name="KEBOOLA_855_942138244",Kind="Database"]}[Data],
+				    READER_SCHEMA_855_942138244_Schema = KEBOOLA_855_942138244_Database{[Name="READER_SCHEMA_855_942138244",Kind="Schema"]}[Data],
+				    v2_talent_email_Table = READER_SCHEMA_855_942138244_Schema{[Name="v2_talent_email",Kind="Table"]}[Data],
+				    #"Filtered Rows" = Table.SelectRows(v2_talent_email_Table, each [date_created] >= #"Start Date")
+				in
+				    #"Filtered Rows"
+
+	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Exception
+
+	annotation PBI_NavigationStepName = Navigation
+

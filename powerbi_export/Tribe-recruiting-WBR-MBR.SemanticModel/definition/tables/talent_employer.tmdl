@@ -1,0 +1,41 @@
+table talent_employer
+	lineageTag: e693c787-64c5-449e-a173-a8fd08b098d0
+
+	column employer_id
+		dataType: string
+		lineageTag: 28b4b119-34c5-435e-aff8-35ec239d8f39
+		summarizeBy: none
+		sourceColumn: employer_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column employer_name
+		dataType: string
+		lineageTag: 26d8e2e6-f352-4658-9192-0a779667ba74
+		summarizeBy: none
+		sourceColumn: employer_name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition talent_employer-d3683076-0f99-443c-b4ff-3b64bd849854 = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases("je92638.eu-central-1.snowflakecomputing.com","READER_WH_129",[Implementation="2.0"]),
+				    KEBOOLA_855_942138244_Database = Source{[Name="KEBOOLA_855_942138244",Kind="Database"]}[Data],
+				    READER_SCHEMA_855_942138244_Schema = KEBOOLA_855_942138244_Database{[Name="READER_SCHEMA_855_942138244",Kind="Schema"]}[Data],
+				    v2_talent_employer_Table = READER_SCHEMA_855_942138244_Schema{[Name="v2_talent_employer",Kind="Table"]}[Data],
+				    #"Removed Other Columns" = Table.SelectColumns(v2_talent_employer_Table,{"employer_id", "employer_name"})
+				in
+				    #"Removed Other Columns"
+
+	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

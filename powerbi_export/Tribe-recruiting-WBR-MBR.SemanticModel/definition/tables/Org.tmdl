@@ -1,0 +1,116 @@
+table Org
+	lineageTag: d67aa9b3-b466-4c8b-8694-3f85110a7e7f
+
+	measure 'B2B : FTE' = ```
+			
+			VAR b2b = CALCULATE(COUNT(Org[Employee #]), Org[FTE/B2B] = "B2B", ALL('WBR TA Actual'), ALL(Org), ALL('Calendar WBR'), ALL(candidate))
+			VAR fte = CALCULATE(COUNT(Org[Employee #]), Org[FTE/B2B] = "FTE", ALL('WBR TA Actual'), ALL(Org), ALL('Calendar WBR'), ALL(candidate))
+			VAR total = b2b + fte
+			
+			VAR b2bPct = ROUND(DIVIDE(b2b, total, 0) * 100, 0)
+			VAR ftePct = 100 - b2bPct
+			
+			RETURN 
+			b2bPct & "% : " & ftePct & "%"
+			
+			--& "  (" & b2b & ":" & fte & ")"
+			```
+		lineageTag: f1281ddb-608e-4f3c-ac13-12350bd6d361
+
+	measure 'B2B : FTE Number' = ```
+			
+			VAR b2b = CALCULATE(COUNT(Org[Employee #]), Org[FTE/B2B] = "B2B", ALL('WBR TA Actual'), ALL(Org), ALL('Calendar WBR'), ALL(candidate))
+			VAR fte = CALCULATE(COUNT(Org[Employee #]), Org[FTE/B2B] = "FTE", ALL('WBR TA Actual'), ALL(Org), ALL('Calendar WBR'), ALL(candidate))
+			
+			RETURN 
+			
+			"Number " & b2b & ":" & fte 
+			```
+		lineageTag: 068e0d7f-9e0e-41ac-99ef-d9caaa10955c
+
+	column 'Employee #'
+		dataType: string
+		lineageTag: 34d3b7be-e858-4d05-ad71-b07161a409ab
+		summarizeBy: none
+		sourceColumn: Employee #
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Name
+		dataType: string
+		lineageTag: 54f5b8ec-376b-4cd7-a32e-4cfe02c42333
+		summarizeBy: none
+		sourceColumn: Name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Manager
+		dataType: string
+		lineageTag: d364ec8d-5988-41ae-b506-0ef705337d7c
+		summarizeBy: none
+		sourceColumn: Manager
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Business Unit current' =
+			var manager = PATH(Org[Name], Org[Manager])
+			RETURN
+			SWITCH(TRUE(),
+			SEARCH("Tijana Lazovic", manager,,0)>0, "Ponies and Unicorns",
+			SEARCH("Kristjana Thorarinsdottir", manager,,0)>0, "Wolt",
+			"Internal")
+		lineageTag: f721c465-ee32-4505-b51f-6b639ec1ae5d
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Location
+		dataType: string
+		lineageTag: 9bb7b67b-142a-48cd-8278-e350b23229f2
+		summarizeBy: none
+		sourceColumn: Location
+
+		annotation SummarizationSetBy = Automatic
+
+	column FTE/B2B = IF(Org[Location]="Remote", "B2B", "FTE")
+		lineageTag: 25cfd7da-bbaa-4083-a460-6daa2d2f6383
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Employment Status'
+		dataType: string
+		lineageTag: 232b3a8c-c1e9-4435-9027-d4ce9213ef67
+		summarizeBy: none
+		sourceColumn: Employment Status
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Org-52868160-5fe6-4ea2-9639-5e5ba55447c0 = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(Web.Contents("https://api.bamboohr.com/api/gateway.php/tribexyz/v1/reports/127?format=csv"),[Delimiter=",", Columns=10, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}, {"Column2", type text}, {"Column3", type text}, {"Column4", type text}, {"Column5", type text}}),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Changed Type", [PromoteAllScalars=true]),
+				    #"Split Column by Delimiter" = Table.SplitColumn(#"Promoted Headers", "Supervisor name", Splitter.SplitTextByDelimiter(", ", QuoteStyle.Csv), {"Supervisor name.1", "Supervisor name.2"}),
+				    #"Added Custom" = Table.AddColumn(#"Split Column by Delimiter", "Name", each [First Name] & " " & [Last Name]),
+				    #"Added Custom1" = Table.AddColumn(#"Added Custom", "Supervisor", each [Supervisor name.2] & " " & [Supervisor name.1]),
+				    #"Renamed Columns" = Table.RenameColumns(#"Added Custom1",{{"Work Email", "Email"}}),
+				    #"Filtered Rows1" = Table.SelectRows(#"Renamed Columns", each ([Employment Status] <> "Terminated")),
+				    #"Added Conditional Column" = Table.AddColumn(#"Filtered Rows1", "Manager", each if [#"Employee #"] = "1" then "Martin Bernard" else [Supervisor]),
+				    #"Removed Other Columns" = Table.SelectColumns(#"Added Conditional Column",{"Location", "Employee #", "Employment Status", "Name", "Manager"}),
+				    #"Filtered Rows" = Table.SelectRows(#"Removed Other Columns", each [Manager] <> null and [Manager] <> "")
+				in
+				    #"Filtered Rows"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

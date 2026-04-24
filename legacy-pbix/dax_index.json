@@ -1,0 +1,2838 @@
+{
+  "measures": {
+    "Last refreshed date": {
+      "name": "Last refreshed date",
+      "dax": "\"Last Updated: \" & FORMAT(MAX(LastRefreshedDate[LastRefreshedDate]), \"YYYY-MM-DD HH:MM\") & \" (CET)\"",
+      "table": "LastRefreshedDate"
+    },
+    "# candidates (contacted date) NOT USED": {
+      "name": "# candidates (contacted date) NOT USED",
+      "dax": "CALCULATE(COUNT(candidate_stage[candidate_id]), USERELATIONSHIP('Calendar'[Date],candidate_stage[date_contacted]))",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "# candidates - screen (contacted date)": {
+      "name": "# candidates - screen (contacted date)",
+      "dax": "CALCULATE([# candidates - contacted (contacted date)], candidate_stage[date_screen]<>BLANK())",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "# candidates - actual screen (contacted date)": {
+      "name": "# candidates - actual screen (contacted date)",
+      "dax": "CALCULATE([# candidates - contacted (contacted date)], not isblank(candidate_stage[date_screen_actual]))",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "# candidates - moved to ATS (contacted date)": {
+      "name": "# candidates - moved to ATS (contacted date)",
+      "dax": "CALCULATE([# candidates - contacted (contacted date)], not isblank(candidate_stage[date_interview]))",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "# candidates - offer (contacted date)": {
+      "name": "# candidates - offer (contacted date)",
+      "dax": "CALCULATE([# candidates - contacted (contacted date)], not isblank(candidate_stage[date_offer]))",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "# candidates - hired (contacted date)": {
+      "name": "# candidates - hired (contacted date)",
+      "dax": "CALCULATE([# candidates - contacted (contacted date)], not isblank(candidate_stage[date_hired]))",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "# events (date created)": {
+      "name": "# events (date created)",
+      "dax": "CALCULATE(COUNT(event[event_id]), USERELATIONSHIP('Calendar'[Date], event[date_created]))",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "# events - LinkedIn visited (date created)": {
+      "name": "# events - LinkedIn visited (date created)",
+      "dax": "CALCULATE(DISTINCTCOUNT(event[talent_id + job_id]),event[event_type]=\"Linkedin Visited Profile\",\n\t\t\tUSERELATIONSHIP(job[job_id], event[job_id]), USERELATIONSHIP('Calendar'[Date], event[date_created]))",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "# events - unique candidates (date created)": {
+      "name": "# events - unique candidates (date created)",
+      "dax": "CALCULATE(DISTINCTCOUNT(event[candidate_id]), USERELATIONSHIP('Calendar'[Date], event[date_created]))",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "% Viewed to Contacted": {
+      "name": "% Viewed to Contacted",
+      "dax": "VAR perc = DIVIDE([# candidates - contacted (contacted date)], [# events - LinkedIn visited (date created)],0)\n\t\t\tRETURN IF(perc>1, 1, perc)",
+      "format": "formatString: 0\\ %;-0\\ %;0\\ %",
+      "table": "Metrics"
+    },
+    "# events - unique candidates - offer (date created)": {
+      "name": "# events - unique candidates - offer (date created)",
+      "dax": "CALCULATE([# events - unique candidates (date created)],event[moved_to_stageType]=\"Offer\", USERELATIONSHIP(job[job_id], event[job_id]))",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "# events - unique candidates - hired (date created)": {
+      "name": "# events - unique candidates - hired (date created)",
+      "dax": "CALCULATE([# events - unique candidates (date created)],event[moved_to_stage]=\"Hired\", USERELATIONSHIP(job[job_id], event[job_id]))",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "# events - unique candidates - Moved to ATS (date created)": {
+      "name": "# events - unique candidates - Moved to ATS (date created)",
+      "dax": "CALCULATE([# events - unique candidates (date created)],event[moved_to_stage]=\"Moved to ATS\", USERELATIONSHIP(job[job_id], event[job_id]))",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "# events - contacted (date created)": {
+      "name": "# events - contacted (date created)",
+      "dax": "CALCULATE(DISTINCTCOUNT(candidate[candidate_id]), event[event_type]=\"Moved to stage\" && event[moved_to_stage]=\"Contacted\")",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "# events - unique candidates - phone screens (date created)": {
+      "name": "# events - unique candidates - phone screens (date created)",
+      "dax": "CALCULATE([# events - unique candidates (date created)],\n\t\t\t    event[event_type]=\"Evaluation\" || AND(left(event[event_id],9)=\"recruitee\", event[moved_to_stageType]=\"evaluation\"))",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "% LinkedIn visited / Contacted (unique)": {
+      "name": "% LinkedIn visited / Contacted (unique)",
+      "dax": "DIVIDE([# events - LinkedIn visited (date created)],[# events - contacted (date created)],0)",
+      "format": "formatString: 0\\ %;-0\\ %;0\\ %",
+      "table": "Metrics"
+    },
+    "# events - automation_linkedin_inmail_sent": {
+      "name": "# events - automation_linkedin_inmail_sent",
+      "dax": "CALCULATE([# events - unique talents (date created)], event[event_type] = \"Linkedin inMail sent\")",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "# events - automation_linkedin_inmail_received": {
+      "name": "# events - automation_linkedin_inmail_received",
+      "dax": "CALCULATE([# events - unique talents (date created)], event[event_type] = \"Linkedin inMail received\")",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "# events - LinkeIn inMail  Rate": {
+      "name": "# events - LinkeIn inMail  Rate",
+      "dax": "DIVIDE([# events - automation_linkedin_inmail_received],[# events - automation_linkedin_inmail_sent],0)",
+      "format": "formatString: 0\\ %;-0\\ %;0\\ %",
+      "table": "Metrics"
+    },
+    "# events - unique talents (date created)": {
+      "name": "# events - unique talents (date created)",
+      "dax": "CALCULATE(DISTINCTCOUNT(event[talent_id]),USERELATIONSHIP('Calendar'[Date],event[date_created]))",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "# candidates - move to ATS (moved date)": {
+      "name": "# candidates - move to ATS (moved date)",
+      "dax": "var moveto = CALCULATE(COUNT(candidate_stage[candidate_id]), USERELATIONSHIP('Calendar'[Date],candidate_stage[date_interview]), event[moved_to_stage]=\"Moved to ATS\")\n\t\t\tRETURN CALCULATE(moveto, candidate_stage[date_interview]<>BLANK())",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "# candidates (date created)": {
+      "name": "# candidates (date created)",
+      "dax": "CALCULATE(COUNT(candidate_stage[candidate_id]), USERELATIONSHIP('Calendar'[Date],candidate_stage[date_created]))",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "# candidates - actual screen (actual screen date)": {
+      "name": "# candidates - actual screen (actual screen date)",
+      "dax": "var acutalscreened = CALCULATE(COUNT(candidate_stage[candidate_id]), USERELATIONSHIP('Calendar'[Date],candidate_stage[date_screen_actual]),event[event_type]=\"Evaluation\")\n\t\t\tRETURN CALCULATE(acutalscreened, candidate_stage[date_screen_actual]<>BLANK())",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "% Move to client / Screen actual (date created)": {
+      "name": "% Move to client / Screen actual (date created)",
+      "dax": "DIVIDE(Metrics[# candidates - move to ATS (moved date)],Metrics[# candidates - actual screen (actual screen date)],0)",
+      "format": "formatString: 0\\ %;-0\\ %;0\\ %",
+      "table": "Metrics"
+    },
+    "# candidates - offer (offered date)": {
+      "name": "# candidates - offer (offered date)",
+      "dax": "var offer = CALCULATE(COUNT(candidate_stage[candidate_id]), USERELATIONSHIP('Calendar'[Date],candidate_stage[date_offer]), event[moved_to_stageType]=\"Offer\")\n\t\t\tRETURN CALCULATE(offer, candidate_stage[date_offer]<>BLANK())",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "# candidates - hired (hired date)": {
+      "name": "# candidates - hired (hired date)",
+      "dax": "var hire = CALCULATE(COUNT(candidate_stage[candidate_id]), USERELATIONSHIP('Calendar'[Date],candidate_stage[date_hired]),event[moved_to_stage]=\"Hired\")\n\t\t\tRETURN CALCULATE(hire, candidate_stage[date_hired]<>BLANK())",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "% Offer / Screen actual": {
+      "name": "% Offer / Screen actual",
+      "dax": "DIVIDE([# candidates - offer (offered date)],Metrics[# candidates - actual screen (actual screen date)],0)",
+      "format": "formatString: 0\\ %;-0\\ %;0\\ %",
+      "table": "Metrics"
+    },
+    "% Offer to Hire": {
+      "name": "% Offer to Hire",
+      "dax": "var perc = DIVIDE([# candidates - hired (hired date)],[# candidates - offer (offered date)],0)\n\t\t\tRETURN IF(perc>1, 1, perc)",
+      "format": "formatString: 0\\ %;-0\\ %;0\\ %",
+      "table": "Metrics"
+    },
+    "# candidates - contacted (contacted date)": {
+      "name": "# candidates - contacted (contacted date)",
+      "dax": "var contact = CALCULATE(COUNT(candidate_stage[candidate_id]), USERELATIONSHIP('Calendar'[Date],candidate_stage[date_contacted]))\n\t\t\tRETURN CALCULATE(contact, candidate_stage[date_contacted]<>BLANK())",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "% Contacted to Reacted": {
+      "name": "% Contacted to Reacted",
+      "dax": "var perc = DIVIDE(Metrics[# candidates - reacted (contacted date)],Metrics[# candidates - contacted (contacted date)],0)\n\t\t\tRETURN IF(perc>1, 1, perc)",
+      "format": "formatString: 0\\ %;-0\\ %;0\\ %",
+      "table": "Metrics"
+    },
+    "% Reacted to Actual Screen": {
+      "name": "% Reacted to Actual Screen",
+      "dax": "var perc = DIVIDE(Metrics[# candidates - actual screen (actual screen date)],Metrics[# candidates - reacted (contacted date)],0)\n\t\t\tRETURN IF(perc>1, 1, perc)",
+      "format": "formatString: 0\\ %;-0\\ %;0\\ %",
+      "table": "Metrics"
+    },
+    "% Moved to ATS / phone screens (date created)": {
+      "name": "% Moved to ATS / phone screens (date created)",
+      "dax": "DIVIDE(Metrics[# events - unique candidates - Moved to ATS (date created)],[# events - unique candidates - phone screens (date created)],0)",
+      "format": "formatString: 0\\ %;-0\\ %;0\\ %",
+      "table": "Metrics"
+    },
+    "# candidates - screen (screened date)": {
+      "name": "# candidates - screen (screened date)",
+      "dax": "var screened = CALCULATE(COUNT(candidate_stage[candidate_id]), USERELATIONSHIP('Calendar'[Date],candidate_stage[date_screen]), event[moved_to_stage]=\"Recruiter Screen\")\n\t\t\tRETURN CALCULATE(screened, candidate_stage[date_screen]<>BLANK())",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "% Screen to ATS": {
+      "name": "% Screen to ATS",
+      "dax": "var perc = DIVIDE([# candidates - move to ATS (moved date)],[# candidates - screen (contacted date)],0)\n\t\t\tRETURN IF(perc>1, 1, perc)",
+      "format": "formatString: 0\\ %;-0\\ %;0\\ %",
+      "table": "Metrics"
+    },
+    "Candidate - Avg time to hire (date contacted)": {
+      "name": "Candidate - Avg time to hire (date contacted)",
+      "dax": "CALCULATE(AVERAGE(candidate_stage[Diff Contacted - Hired]),USERELATIONSHIP('Calendar'[Date],candidate_stage[date_contacted]))",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "Job - Time to Find a Hire": {
+      "name": "Job - Time to Find a Hire",
+      "dax": "CALCULATE(AVERAGE(job[Diff Contacted - Job created]), candidate_stage[Diff Concated - Job created]>0)",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "Job - Time to Fill": {
+      "name": "Job - Time to Fill",
+      "dax": "CALCULATE(AVERAGE(job[Diff Hired - Job created]), candidate_stage[Diff Hired - Job created]>0)",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "# events - automation_step_email_open": {
+      "name": "# events - automation_step_email_open",
+      "dax": "CALCULATE(Metrics[# events -  automation_step_sent_email],event[automation_is_message_read]=TRUE())",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "# events - automation_step_replied": {
+      "name": "# events - automation_step_replied",
+      "dax": "CALCULATE(Metrics[# events (date created)],event[automation_is_message_replied]=TRUE())",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "% events - automation_step_email_open_rate": {
+      "name": "% events - automation_step_email_open_rate",
+      "dax": "DIVIDE(Metrics[# events - automation_step_email_open], Metrics[# events -  automation_step_sent_email],0)",
+      "format": "formatString: 0.00\\ %;-0.00\\ %;0.00\\ %",
+      "table": "Metrics"
+    },
+    "% events - automation_step_reply_rate": {
+      "name": "% events - automation_step_reply_rate",
+      "dax": "DIVIDE(Metrics[# events - automation_step_replied], Metrics[# events (date created)],0)",
+      "format": "formatString: 0.00\\ %;-0.00\\ %;0.00\\ %",
+      "table": "Metrics"
+    },
+    "# events - automation_step_connection_accepted": {
+      "name": "# events - automation_step_connection_accepted",
+      "dax": "CALCULATE(Metrics[# events -  automation_step_sent_connection],event[automation_is_message_read]=TRUE())",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "% events - automation_step_accepted_rate": {
+      "name": "% events - automation_step_accepted_rate",
+      "dax": "DIVIDE(Metrics[# events - automation_step_connection_accepted], [# events -  automation_step_sent_connection],0)",
+      "format": "formatString: 0.00\\ %;-0.00\\ %;0.00\\ %",
+      "table": "Metrics"
+    },
+    "# events -  automation_step_sent_connection": {
+      "name": "# events -  automation_step_sent_connection",
+      "dax": "```\n\t\t\tCALCULATE(Metrics[# events (date created)], event[event_type]=\"Linkedin Sent Contact\") \n\t\t\t```",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "# events -  automation_step_sent_email": {
+      "name": "# events -  automation_step_sent_email",
+      "dax": "CALCULATE(Metrics[# events (date created)], event[event_type] =\"Email Sent\")",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "# events - automation_step_email_replied": {
+      "name": "# events - automation_step_email_replied",
+      "dax": "CALCULATE(Metrics[# events -  automation_step_sent_email],event[automation_is_message_replied]=TRUE())",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "% events - automation_step_email_reply_rate": {
+      "name": "% events - automation_step_email_reply_rate",
+      "dax": "DIVIDE(Metrics[# events - automation_step_email_replied], Metrics[# events -  automation_step_sent_email],0)",
+      "format": "formatString: 0.00\\ %;-0.00\\ %;0.00\\ %",
+      "table": "Metrics"
+    },
+    "# candidates - reacted (contacted date)": {
+      "name": "# candidates - reacted (contacted date)",
+      "dax": "CALCULATE([# candidates - contacted (contacted date)],candidate[is_candidate_reacted]=TRUE())",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "Candidate - Avg time to hire (date hired)": {
+      "name": "Candidate - Avg time to hire (date hired)",
+      "dax": "CALCULATE(AVERAGE(candidate_stage[Diff Contacted - Hired]),USERELATIONSHIP('Calendar'[Date],candidate_stage[date_hired]))",
+      "table": "Metrics"
+    },
+    "Candidate - Time to Find a Hire": {
+      "name": "Candidate - Time to Find a Hire",
+      "dax": "CALCULATE(AVERAGE(candidate_stage[Diff Concated - Job created]), candidate_stage[date_hired]<>BLANK())",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "Candidate - Time to Fill": {
+      "name": "Candidate - Time to Fill",
+      "dax": "CALCULATE(AVERAGE(candidate_stage[Diff Hired - Job created]), candidate_stage[date_hired]<>BLANK())",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "# talents (date created)": {
+      "name": "# talents (date created)",
+      "dax": "CALCULATE(COUNT(talent[talent_id]),USERELATIONSHIP('Calendar'[Date], talent[date_created]))",
+      "table": "Metrics"
+    },
+    "revenue \u20ac": {
+      "name": "revenue \u20ac",
+      "dax": "CALCULATE(sum(client_cost[cost]), USERELATIONSHIP('Calendar'[Date], client_cost[month]))",
+      "format": "formatString: \"\u20ac\"\\ #,0;-\"\u20ac\"\\ #,0;\"\u20ac\"\\ #,0",
+      "table": "Metrics"
+    },
+    "revenue - hired count": {
+      "name": "revenue - hired count",
+      "dax": "CALCULATE(sum(client_cost[hired_count]), USERELATIONSHIP('Calendar'[Date], client_cost[month]))",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "revenue - salary \u20ac": {
+      "name": "revenue - salary \u20ac",
+      "dax": "CALCULATE(sum(client_cost[hired_salary_sum]), USERELATIONSHIP('Calendar'[Date], client_cost[month]))",
+      "format": "formatString: \"\u20ac\"\\ #,0;-\"\u20ac\"\\ #,0;\"\u20ac\"\\ #,0",
+      "table": "Metrics"
+    },
+    "revenue - cost_to_salary": {
+      "name": "revenue - cost_to_salary",
+      "dax": "DIVIDE([revenue \u20ac], [revenue - salary \u20ac],BLANK())",
+      "format": "formatString: 0.00\\ %;-0.00\\ %;0.00\\ %",
+      "table": "Metrics"
+    },
+    "revenue - cost_per_hire": {
+      "name": "revenue - cost_per_hire",
+      "dax": "DIVIDE([revenue \u20ac],[revenue - hired count],BLANK())",
+      "format": "formatString: \"\u20ac\"\\ #,0;-\"\u20ac\"\\ #,0;\"\u20ac\"\\ #,0",
+      "table": "Metrics"
+    },
+    "# Tech Roles Hired": {
+      "name": "# Tech Roles Hired",
+      "dax": "```\n\t\t\tCALCULATE(\n\t\t\t    [# events - unique candidates - hired (date created)], \n\t\t\t            job[job_category]=\"Data Analytics\" ||\n\t\t\t            job[job_category]=\"DevOps\" ||\n\t\t\t            job[job_category]=\"Software Engineering\" ||\n\t\t\t            job[job_category]=\"Software\"||\n\t\t\t            job[job_category]=\"Design\")+0\n\t\t\t```",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "% Vistied to Screen": {
+      "name": "% Vistied to Screen",
+      "dax": "DIVIDE([# candidates - actual screen (actual screen date)], Metrics[# events - LinkedIn visited (date created)],0)",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "Metrics"
+    },
+    "% Screens Actual to ATS": {
+      "name": "% Screens Actual to ATS",
+      "dax": "var perc = DIVIDE([# candidates - move to ATS (moved date)],[# candidates - actual screen (actual screen date)])\n\t\t\tRETURN IF(perc>1, 1, perc)",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "Metrics"
+    },
+    "TA linkedin candidate screening time": {
+      "name": "TA linkedin candidate screening time",
+      "dax": "var linkedin = [# events - LinkedIn visited (date created)]/60\n\t\t\tvar screentime = [# candidates - actual screen (actual screen date)]/2\n\t\t\tRETURN IF(linkedin + screentime=0, BLANK(), linkedin + screentime)",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "Conv rate Offers to Hires": {
+      "name": "Conv rate Offers to Hires",
+      "dax": "IF([# candidates - hired (contacted date)]=BLANK(), BLANK(),\n\t\t\t    [# candidates - offer (contacted date)]/[# candidates - hired (contacted date)])",
+      "format": "formatString: 0.0",
+      "table": "Metrics"
+    },
+    "Conv rate Moved to ATS to Hires": {
+      "name": "Conv rate Moved to ATS to Hires",
+      "dax": "IF([# candidates - hired (contacted date)]=BLANK(), BLANK(),\n\t\t\t    [# candidates - moved to ATS (contacted date)]/[# candidates - hired (contacted date)])",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "Conv rate Actual screens to Hires": {
+      "name": "Conv rate Actual screens to Hires",
+      "dax": "IF([# candidates - hired (contacted date)]=BLANK(), BLANK(),\n\t\t\t   [# candidates - actual screen (contacted date)]/[# candidates - hired (contacted date)])",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "Conv rate Screens to Hires": {
+      "name": "Conv rate Screens to Hires",
+      "dax": "IF([# candidates - hired (contacted date)]=BLANK(), BLANK(),\n\t\t\t    [# candidates - screen (contacted date)]/[# candidates - hired (contacted date)])",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "Conv rate Contacted to Hires": {
+      "name": "Conv rate Contacted to Hires",
+      "dax": "IF([# candidates - hired (contacted date)]=BLANK(), BLANK(),\n\t\t\t    [# candidates - contacted (contacted date)]/[# candidates - hired (contacted date)])",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "Conv rate Visited to Hires": {
+      "name": "Conv rate Visited to Hires",
+      "dax": "IF([# candidates - hired (contacted date)]=BLANK(), BLANK(),\n\t\t\t    [# events - LinkedIn visited (date created)]/[# candidates - hired (contacted date)])",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "Separator": {
+      "name": "Separator",
+      "dax": "blank()",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "# Jobs Sequence": {
+      "name": "# Jobs Sequence",
+      "dax": "CALCULATE(DISTINCTCOUNT(event[job_id]), event[automation_flow_name]<>BLANK())",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "% Job Sequence": {
+      "name": "% Job Sequence",
+      "dax": "[# Jobs Sequence]/DISTINCTCOUNT(event[job_id])",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "Metrics"
+    },
+    "# Job Auto-Respond": {
+      "name": "# Job Auto-Respond",
+      "dax": "CALCULATE(DISTINCTCOUNT(event[job_id]), event[event_type] in {\"Linkedin Sent Contact\", \"Message sent\", \"Linkedin inMail sent\"})",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "% Job Auto-Respond": {
+      "name": "% Job Auto-Respond",
+      "dax": "[# Job Auto-Respond]/DISTINCTCOUNT(event[job_id])",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "Metrics"
+    },
+    "# Users Auto-Read": {
+      "name": "# Users Auto-Read",
+      "dax": "CALCULATE(DISTINCTCOUNT(event[who_created_event]), event[event_type]=\"Linkedin Responded\")",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "% User Auro-Read": {
+      "name": "% User Auro-Read",
+      "dax": "[# Users Auto-Read]/DISTINCTCOUNT(event[who_created_event])",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "Metrics"
+    },
+    "Candidate Sequence reach out": {
+      "name": "Candidate Sequence reach out",
+      "dax": "CALCULATE(DISTINCTCOUNT(event[candidate_id]), event[event_type]=\"Candidate created\" && event[automation_flow_name]<>BLANK())",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "Read Message + categorization (candidate)": {
+      "name": "Read Message + categorization (candidate)",
+      "dax": "CALCULATE(DISTINCTCOUNT(event[candidate_id]), event[event_type] in {\"Linkedin Responded\", \"Message Categorized\", \"Message Read\"})",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "Seletced peroid": {
+      "name": "Seletced peroid",
+      "dax": "\"You are selecting date from \" & FORMAT(MIN('Calendar'[Date]),\"YYYY-MM-DD\") & \" to \" & FORMAT(MIN(MAX('Calendar'[Date]), TODAY()), \"YYYY-MM-DD\")",
+      "table": "Metrics"
+    },
+    "Read Message + categorization (event)": {
+      "name": "Read Message + categorization (event)",
+      "dax": "CALCULATE(COUNT(event[event_id]), event[is_event_duplicated]=FALSE(), event[event_type] in {\"Linkedin Responded\", \"Message Categorized\", \"Message Read\"})",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "Reach Out %": {
+      "name": "Reach Out %",
+      "dax": "[Candidate Sequence reach out]/[# events - contacted (date created)]",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "Metrics"
+    },
+    "Break line": {
+      "name": "Break line",
+      "dax": "IF(SUM('WBR TA Actual'[Contacted])<>BLANK(), \"  \", BLANK())",
+      "table": "Metrics"
+    },
+    "% ATS to Offers": {
+      "name": "% ATS to Offers",
+      "dax": "var perc = DIVIDE([# candidates - offer (offered date)],[# candidates - move to ATS (moved date)],0)\n\t\t\tRETURN IF(perc>1, 1, perc)",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "Metrics"
+    },
+    "Cumulative view to contact %": {
+      "name": "Cumulative view to contact %",
+      "dax": "VAR view = CALCULATE([# events - LinkedIn visited (date created)], FILTER(ALLSELECTED('Calendar'),'Calendar'[Date]<=MAX('Calendar'[Date])))\n\t\t\tVAR end_date = CALCULATE(MAX(candidate_stage[date_contacted]), ALL('Calendar'[Date]))\n\t\t\tVAR contact = CALCULATE([# candidates - contacted (contacted date)], FILTER(ALLSELECTED('Calendar'),'Calendar'[Date]<=MAX('Calendar'[Date])))\n\t\t\tRETURN\n\t\t\tIF(end_date < MIN('Calendar'[Date]) || contact=0 || view=0, BLANK(),\n\t\t\t    contact / view)",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "Metrics"
+    },
+    "Cumulative viewed contacted trend line": {
+      "name": "Cumulative viewed contacted trend line",
+      "dax": "```\n\n\t\t\t// Static line color - use %23 instead of # for Firefox compatibility (Measure Derived from Eldersveld Modified by Kolosko)\n\t\t\tVAR LineColour = \"%23118DFF\"\n\t\t\tVAR PointColour = \"White\"\n\t\t\tVAR Defs = \"<defs>\n\t\t\t    <linearGradient id='grad' x1='0' y1='25' x2='0' y2='50' gradientUnits='userSpaceOnUse'>\n\t\t\t        <stop stop-color='#118DFF' offset='0' />\n\t\t\t        <stop stop-color='#118DFF' offset='0.3' />\n\t\t\t        <stop stop-color='white' offset='1' />\n\t\t\t    </linearGradient>\n\t\t\t</defs>\"\n\t\t\t// \"Date\" field used in this example along the X axis\n\t\t\tVAR XMinDate = MIN('Calendar'[WeekInt])\n\t\t\tVAR XMaxDate = MAX('Calendar'[WeekInt])\n\n\t\t\t// Obtain overall min and overall max measure values when evaluated for each date\n\t\t\tVAR YMinValue = MINX(Values('Calendar'[WeekInt]),CALCULATE([Cumulative view to contact %]))\n\t\t\tVAR YMaxValue = MAXX(Values('Calendar'[WeekInt]),CALCULATE([Cumulative view to contact %]))\n\n\t\t\t// Build table of X & Y coordinates and fit to 50 x 150 viewbox\n\t\t\tVAR SparklineTable = ADDCOLUMNS(\n\t\t\t    SUMMARIZE('Calendar','Calendar'[WeekInt]),\n\t\t\t        \"X\",INT(150 * DIVIDE('Calendar'[WeekInt] - XMinDate, XMaxDate - XMinDate)),\n\t\t\t        \"Y\",INT(50 * DIVIDE([Cumulative view to contact %] - YMinValue,YMaxValue - YMinValue)))\n\n\t\t\t// Concatenate X & Y coordinates to build the sparkline\n\t\t\tVAR Lines = CONCATENATEX(SparklineTable,[X] & \",\" & 50-[Y],\" \", 'Calendar'[WeekInt])\n\n\t\t\t// Last data points on the line\n\t\t\tVAR LastSparkYValue = MAXX( FILTER(SparklineTable, 'Calendar'[WeekInt] = XMaxDate), [Y])\n\t\t\tVAR LastSparkXValue = MAXX( FILTER(SparklineTable, 'Calendar'[WeekInt] = XMaxDate), [X])\n\n\t\t\t// Add to SVG, and verify Data Category is set to Image URL for this measure\n\t\t\tVAR SVGImageURL =\n\t\t\t    \"data:image/svg+xml;utf8,\" &\n\t\t\t    --- gradient---\n\t\t\t    \"<svg xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' viewBox='-7 -7 164 64'>\" & Defs &\n\t\t\t     \"<polyline fill='url(#grad)' fill-opacity='0.3' stroke='transparent'\n\t\t\t      stroke-width='0' points=' 0 50 \" & Lines &\n\t\t\t      \" 150 150 Z '/>\" &\n\t\t\t    --- Lines---\n\t\t\t    \"<polyline\n\t\t\t        fill='transparent' stroke='\" & LineColour & \"'\n\t\t\t        stroke-linecap='round' stroke-linejoin='round'\n\t\t\t        stroke-width='3' points=' \" & Lines &\n\t\t\t      \" '/>\" &\n\t\t\t    --- Last Point---\n\t\t\t        \"<circle cx='\"& LastSparkXValue & \"' cy='\" & 50 - LastSparkYValue & \"' r='4' stroke='\" & LineColour & \"' stroke-width='3' fill='\" & PointColour & \"' />\" &\n\t\t\t        \"</svg>\"\n\t\t\tRETURN SVGImageURL\n\n\t\t\t```\n\t\tdataCategory: ImageUrl",
+      "table": "Metrics"
+    },
+    "Candidate Response": {
+      "name": "Candidate Response",
+      "dax": "COUNTROWS (\n\t\t\t    FILTER (\n\t\t\t        candidate,\n\t\t\t            candidate[Response count] > 0\n\t\t\t            ||\n\t\t\t            (\n\t\t\t                NOT ISBLANK ( candidate[reason_not_interested] )\n\t\t\t                && candidate[reason_not_interested] <> \"Unresponsive\"\n\t\t\t            )\n\t\t\t            ||\n\t\t\t            candidate[is_candidate_reacted] = TRUE ()\n\t\t\t            ||\n\t\t\t            NOT (\n\t\t\t                candidate[Current Stage] IN {\n\t\t\t                    \"Contacted\",\n\t\t\t                    \"Applied\",\n\t\t\t                    \"Prospects\",\n\t\t\t                    BLANK ()\n\t\t\t                }\n\t\t\t            )\n\t\t\t    )\n\t\t\t)",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "% Response Rate": {
+      "name": "% Response Rate",
+      "dax": "DIVIDE([Candidate Response], [# candidates - contacted (contacted date)])",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "Metrics"
+    },
+    "% Linkedin connect accepted": {
+      "name": "% Linkedin connect accepted",
+      "dax": "var accept = CALCULATE(DISTINCTCOUNT(candidate[candidate_id]), event[event_type]=\"Linkedin Connected\")\n\t\t\tvar sent = CALCULATE(DISTINCTCOUNT(candidate[candidate_id]), event[event_type]=\"Linkedin Sent Contact\")\n\t\t\tvar link = DIVIDE(accept, sent)\n\t\t\tRETURN IF(link<>BLANK() && link>1, 1, link)",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "Metrics"
+    },
+    "% Positive Response Rate": {
+      "name": "% Positive Response Rate",
+      "dax": "DIVIDE([# candidates - screen (contacted date)] , [# candidates - contacted (contacted date)])",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "Metrics"
+    },
+    "Job - Time to Hire": {
+      "name": "Job - Time to Hire",
+      "dax": "CALCULATE(AVERAGE(job[Diff Contacted - Hired]), job[Diff Contacted - Hired]>0)",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "Candidate - Time to Hire": {
+      "name": "Candidate - Time to Hire",
+      "dax": "CALCULATE(AVERAGE(candidate_stage[Diff Contacted - Hired]), candidate_stage[date_hired]<>BLANK())",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "Estimate find a time": {
+      "name": "Estimate find a time",
+      "dax": "\"This role typically requires \" & FORMAT([Job - Time to Hire],\"0\") & \" days to find a hire. If you start to contact candidates today, you will have the 1st hire on \" & FORMAT(TODAY()+[Job - Time to Hire], \"YYYY-MM-DD\")",
+      "table": "Metrics"
+    },
+    "Estimate conversation": {
+      "name": "Estimate conversation",
+      "dax": "\"You will need to have \" & FORMAT([Conv rate Visited to Hires],\"0\") & \" Linkedin profile viewed, \" & FORMAT([Conv rate Contacted to Hires],\"0\") & \" candidates contacted and \" & FORMAT([Conv rate Actual screens to Hires], \"0\") & \" actual screens to get 1 hire\"",
+      "table": "Metrics"
+    },
+    "% Reacted to Screen": {
+      "name": "% Reacted to Screen",
+      "dax": "var perc = DIVIDE([# candidates - screen (screened date)],Metrics[# candidates - reacted (contacted date)],0)\n\t\t\tRETURN IF(perc>1, 1, perc)",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "Metrics"
+    },
+    "Job - Time to Find a Hire (Hired date)": {
+      "name": "Job - Time to Find a Hire (Hired date)",
+      "dax": "CALCULATE(AVERAGE(job[Diff Contacted - Job created]), USERELATIONSHIP('Calendar'[Date], candidate_stage[date_hired]))",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "Job - Time to Hire (WBR)": {
+      "name": "Job - Time to Hire (WBR)",
+      "dax": "CALCULATE(AVERAGE(job[Diff Contacted - Hired]), ALL(job[date_first_hired]), job[Job Days Opened], ALL('Calendar'))",
+      "table": "Metrics"
+    },
+    "Candidate - Time to Fill (Hired date)": {
+      "name": "Candidate - Time to Fill (Hired date)",
+      "dax": "CALCULATE(AVERAGE(candidate_stage[Diff Hired - Job created]), candidate_stage[date_hired]<>BLANK(), USERELATIONSHIP('Calendar'[Date], candidate_stage[date_hired]))",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "Candidate - Time to Find a Hire (Hired date)": {
+      "name": "Candidate - Time to Find a Hire (Hired date)",
+      "dax": "CALCULATE(AVERAGE(candidate_stage[Diff Concated - Job created]), candidate_stage[date_hired]<>BLANK(), USERELATIONSHIP('Calendar'[Date], candidate_stage[date_hired]))",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "Candidate - Time to Hire (Hired date)": {
+      "name": "Candidate - Time to Hire (Hired date)",
+      "dax": "CALCULATE(AVERAGE(candidate_stage[Diff Contacted - Hired]), candidate_stage[date_hired]<>BLANK(), USERELATIONSHIP('Calendar'[Date], candidate_stage[date_hired]))",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "# candidates - contacted (since job created)": {
+      "name": "# candidates - contacted (since job created)",
+      "dax": "```\n\t\t\tvar contact = CALCULATE(COUNT(candidate_stage[candidate_id]), ALL('Calendar'))\n\t\t\tRETURN CALCULATE(contact, candidate_stage[date_contacted]<>BLANK())\n\n\t\t\t```",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "# candidates - actual screen (since job open)": {
+      "name": "# candidates - actual screen (since job open)",
+      "dax": "var acutalscreened = CALCULATE(COUNT(candidate_stage[candidate_id]), event[event_type]=\"Evaluation\", ALL('Calendar'))\n\t\t\tRETURN CALCULATE(acutalscreened, candidate_stage[date_screen_actual]<>BLANK())",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "# candidates - move to ATS (since job created)": {
+      "name": "# candidates - move to ATS (since job created)",
+      "dax": "var moveto = CALCULATE(COUNT(candidate_stage[candidate_id]), event[moved_to_stage]=\"Moved to ATS\", ALL('Calendar'))\n\t\t\tRETURN CALCULATE(moveto, candidate_stage[date_interview]<>BLANK())",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "# candidates - offer (since job created)": {
+      "name": "# candidates - offer (since job created)",
+      "dax": "var offer = CALCULATE(COUNT(candidate_stage[candidate_id]), event[moved_to_stageType]=\"Offer\", ALL('Calendar'))\n\t\t\tRETURN CALCULATE(offer, candidate_stage[date_offer]<>BLANK())",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "# candidates - screen (since job created)": {
+      "name": "# candidates - screen (since job created)",
+      "dax": "var screened = CALCULATE(COUNT(candidate_stage[candidate_id]), event[moved_to_stage]=\"Recruiter Screen\", ALL('Calendar'))\n\t\t\tRETURN CALCULATE(screened, candidate_stage[date_screen]<>BLANK())",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "TS Client-facing roles": {
+      "name": "TS Client-facing roles",
+      "dax": "CALCULATE(DISTINCTCOUNT(event[job_id]), job[client_id]<>\"1644871631616x132418487146250240\", USERELATIONSHIP(event[job_id], job[job_id]))",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "TS Client-facing %": {
+      "name": "TS Client-facing %",
+      "dax": "IF([TS Client-facing roles]=BLANK() && DISTINCTCOUNT(event[job_id])<>0, 0, DIVIDE([TS Client-facing roles], DISTINCTCOUNT(event[job_id])))",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "Metrics"
+    },
+    "# events - sourced (sourced date)": {
+      "name": "# events - sourced (sourced date)",
+      "dax": "CALCULATE(DISTINCTCOUNT(event[candidate_id]), USERELATIONSHIP('Calendar'[Date], event[date_created]), (event[event_type]=\"Candidate created\" && event[moved_to_stageType]=\"Prospects\"))",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "Linkedin Viewed per day": {
+      "name": "Linkedin Viewed per day",
+      "dax": "```\n\t\t\tCALCULATE(\n\t\t\t    DISTINCTCOUNT(event[talent_id + job_id]), event[event_type] = \"Linkedin Visited Profile\", USERELATIONSHIP(job[job_id], event[job_id]), USERELATIONSHIP('Calendar'[Date], event[date_created]), \n\t\t\t    ALLEXCEPT(event, event[date_created], event[who_created_event_first]),\n\t\t\t    FILTER(ALL('Calendar'[Date]), 'Calendar'[Date]=MAX(event[date_created])\n\t\t\t))\n\t\t\t```",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "Sales - hired (hired date)": {
+      "name": "Sales - hired (hired date)",
+      "dax": "var hire = CALCULATE(COUNT(candidate_stage[candidate_id]), USERELATIONSHIP('Calendar'[Date],candidate_stage[date_hired]),event[moved_to_stage]=\"Hired\", job[job_category]=\"Sales\", job[job_subcategory]<>\"Account Manager\")\n\t\t\tRETURN CALCULATE(hire, candidate_stage[date_hired]<>BLANK())",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "# candidates - contacted (contacted date) from Prospects stage": {
+      "name": "# candidates - contacted (contacted date) from Prospects stage",
+      "dax": "var contact = CALCULATE(COUNT(candidate_stage[candidate_id]), candidate_stage[Prospects]<>BLANK() && candidate_stage[date_contacted]<>BLANK())\n\t\t\tRETURN CALCULATE(contact, USERELATIONSHIP('Calendar'[Date],candidate_stage[date_contacted]))",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "# candidates - Prospects stage no contacted yet": {
+      "name": "# candidates - Prospects stage no contacted yet",
+      "dax": "var prospects = CALCULATE(COUNT(candidate_stage[candidate_id]), candidate_stage[stage_current]=\"Prospects\", ALLSELECTED('Calendar'[Date]))\n\t\t\tRETURN CALCULATE(prospects, USERELATIONSHIP('Calendar'[Date],candidate_stage[date_created]))",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "% Sourced to Contacted": {
+      "name": "% Sourced to Contacted",
+      "dax": "DIVIDE([# candidates - contacted (contacted date) from Prospects stage], [# events - sourced (sourced date)])",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "Metrics"
+    },
+    "1st Client Interview": {
+      "name": "1st Client Interview",
+      "dax": "CALCULATE(DISTINCTCOUNT(event[candidate_id]), event[moved_to_stageType]=\"Final Interview\", LEFT(event[moved_to_stage],1)=\"1\", USERELATIONSHIP(event[date_created], 'Calendar'[Date]))",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "2nd Client Interview": {
+      "name": "2nd Client Interview",
+      "dax": "CALCULATE(DISTINCTCOUNT(event[candidate_id]), event[moved_to_stageType]=\"Final Interview\", LEFT(event[moved_to_stage],1)=\"2\", USERELATIONSHIP(event[date_created], 'Calendar'[Date]))",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "3rd Client Interview": {
+      "name": "3rd Client Interview",
+      "dax": "CALCULATE(DISTINCTCOUNT(event[candidate_id]), event[moved_to_stageType]=\"Final Interview\", LEFT(event[moved_to_stage],1)=\"3\", USERELATIONSHIP(event[date_created], 'Calendar'[Date]))",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "# candidates - positive response": {
+      "name": "# candidates - positive response",
+      "dax": "CALCULATE(DISTINCTCOUNT(event[candidate_id]), event[moved_to_stageType]=\"Positive Response\", event[date_created]>=DATE(2025,4,14), USERELATIONSHIP(event[date_created], 'Calendar'[Date]))",
+      "format": "formatString: #,0",
+      "table": "Metrics"
+    },
+    "% Screens to Actual Screen": {
+      "name": "% Screens to Actual Screen",
+      "dax": "var perc = DIVIDE(Metrics[# candidates - actual screen (actual screen date)], [# candidates - screen (screened date)],0)\n\t\t\tRETURN IF(perc>1, 1, perc)",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "Metrics"
+    },
+    "% Contacted to Positive Response": {
+      "name": "% Contacted to Positive Response",
+      "dax": "var con = CALCULATE([# candidates - contacted (contacted date)], candidate_stage[date_contacted]>=DATE(2025,4,14))\n\t\t\tvar perc = DIVIDE([# candidates - positive response], con, 0)\n\t\t\tRETURN IF(perc>1, 1, perc)",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "Metrics"
+    },
+    "Finance sourcer allocation per client": {
+      "name": "Finance sourcer allocation per client",
+      "dax": "DIVIDE([# candidates - contacted (contacted date)], CALCULATE([# candidates - contacted (contacted date)], REMOVEFILTERS(client[client_name])))",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "Metrics"
+    },
+    "% Positive Response to Screen": {
+      "name": "% Positive Response to Screen",
+      "dax": "var perc = DIVIDE([# candidates - screen (screened date)], [# candidates - positive response],0)\n\t\t\tRETURN IF(perc>1, 1, perc)",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "Metrics"
+    },
+    "Sourced Hired": {
+      "name": "Sourced Hired",
+      "dax": "CALCULATE([# candidates - hired (hired date)],  candidate[source]=\"Sourced\")",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "Applicant Hired": {
+      "name": "Applicant Hired",
+      "dax": "CALCULATE([# candidates - hired (hired date)], candidate[source]=\"Applicant\")",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "Onsite": {
+      "name": "Onsite",
+      "dax": "CALCULATE(DISTINCTCOUNT(event[candidate_id]), event[moved_to_stageType]=\"Final Interview\", event[moved_to_stage]=\"Onsite\", USERELATIONSHIP(event[date_created], 'Calendar'[Date]))",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "Culture Interview": {
+      "name": "Culture Interview",
+      "dax": "CALCULATE(DISTINCTCOUNT(event[candidate_id]), event[moved_to_stageType]=\"Final Interview\", event[moved_to_stage]=\"Culture Interview\", USERELATIONSHIP(event[date_created], 'Calendar'[Date]))",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "# candidates - rejected (rejected date)": {
+      "name": "# candidates - rejected (rejected date)",
+      "dax": "var rejected = CALCULATE(DISTINCTCOUNT(event[candidate_id]), event[event_type]=\"Disqualified\", USERELATIONSHIP(event[date_created], 'Calendar'[Date]))\n\t\t\tRETURN CALCULATE(rejected, candidate[is_candidate_disqualified]<>BLANK())",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "Call with Client Interview": {
+      "name": "Call with Client Interview",
+      "dax": "CALCULATE(DISTINCTCOUNT(event[candidate_id]), event[moved_to_stageType]=\"Final Interview\", event[moved_to_stage]=\"Call with Client\", USERELATIONSHIP(event[date_created], 'Calendar'[Date]))",
+      "format": "formatString: 0",
+      "table": "Metrics"
+    },
+    "Average OKR": {
+      "name": "Average OKR",
+      "dax": "DIVIDE(SUM('OKR TA'[Contacted OKR])+SUM('OKR TA'[Actual Screen])+SUM('OKR TA'[ATS OKR]), SUM('OKR TA'[Count]))",
+      "format": "formatString: 0.0",
+      "table": "OKR TA"
+    },
+    "B2B : FTE": {
+      "name": "B2B : FTE",
+      "dax": "```\n\n\t\t\tVAR b2b = CALCULATE(COUNT(Org[Employee #]), Org[FTE/B2B] = \"B2B\", ALL('WBR TA Actual'), ALL(Org), ALL('Calendar WBR'), ALL(candidate))\n\t\t\tVAR fte = CALCULATE(COUNT(Org[Employee #]), Org[FTE/B2B] = \"FTE\", ALL('WBR TA Actual'), ALL(Org), ALL('Calendar WBR'), ALL(candidate))\n\t\t\tVAR total = b2b + fte\n\n\t\t\tVAR b2bPct = ROUND(DIVIDE(b2b, total, 0) * 100, 0)\n\t\t\tVAR ftePct = 100 - b2bPct\n\n\t\t\tRETURN \n\t\t\tb2bPct & \"% : \" & ftePct & \"%\"\n\n\t\t\t--& \"  (\" & b2b & \":\" & fte & \")\"\n\t\t\t```",
+      "table": "Org"
+    },
+    "B2B : FTE Number": {
+      "name": "B2B : FTE Number",
+      "dax": "```\n\n\t\t\tVAR b2b = CALCULATE(COUNT(Org[Employee #]), Org[FTE/B2B] = \"B2B\", ALL('WBR TA Actual'), ALL(Org), ALL('Calendar WBR'), ALL(candidate))\n\t\t\tVAR fte = CALCULATE(COUNT(Org[Employee #]), Org[FTE/B2B] = \"FTE\", ALL('WBR TA Actual'), ALL(Org), ALL('Calendar WBR'), ALL(candidate))\n\n\t\t\tRETURN \n\n\t\t\t\"Number \" & b2b & \":\" & fte \n\t\t\t```",
+      "table": "Org"
+    },
+    "Contacted Target Reached %": {
+      "name": "Contacted Target Reached %",
+      "dax": "```\n\t\t\tvar con = CALCULATE(COUNT('WBR Client History'[Week start end]), 'WBR Client History'[Contacted Reached]=\"Reached\")+0\n\t\t\tvar wee = DISTINCTCOUNT('WBR Client History'[Week start end]) \n\t\t\tRETURN\n\t\t\tcon/wee\n\t\t\t```",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "WBR Client History"
+    },
+    "Screens Target Reached %": {
+      "name": "Screens Target Reached %",
+      "dax": "```\n\t\t\tvar scr = CALCULATE(COUNT('WBR Client History'[Week start end]), 'WBR Client History'[Screens Reached]=\"Reached\")+0\n\t\t\tvar wee = DISTINCTCOUNT('WBR Client History'[Week start end]) \n\t\t\tRETURN\n\t\t\tscr/wee\n\t\t\t```",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "WBR Client History"
+    },
+    "Screens color": {
+      "name": "Screens color",
+      "dax": "IF(SELECTEDVALUE('WBR TA Actual'[TA Reasoning]) IN {\"Internal-related: Out of Office\", \"Client-related: Client Delay\"}, -1,\n\t\t\tIF([% Actual Screens Target]>=1.2 && MAX('WBR TA Actual'[Screens Target])<>0, 120, //>120%\n\t\t\tIF([% Actual Screens Target]>=1 && [% Actual Screens Target]<1.2 && MAX('WBR TA Actual'[Screens Target])<>0, 100, //100-150%\n\t\t\tIF([% Actual Screens Target]>=0.75 && [% Actual Screens Target]<1 && MAX('WBR TA Actual'[Screens Target])<>0, 75,\n\t\t\tIF([% Actual Screens Target]>=0.5 && [% Actual Screens Target]<0.75 && MAX('WBR TA Actual'[Screens Target])<>0, 50,\n\t\t\tIF([% Actual Screens Target]>0 && [% Actual Screens Target]<0.5 && MAX('WBR TA Actual'[Screens Target])<>0, 0, //<50%\n\t\t\tIF(MAX('WBR TA Actual'[Actual screens])=0, -2)))))))",
+      "table": "WBR TA Actual"
+    },
+    "Contacted color": {
+      "name": "Contacted color",
+      "dax": "IF(SELECTEDVALUE('WBR TA Actual'[TA Reasoning]) IN {\"Internal-related: Out of Office\", \"Client-related: Client Delay\"}, -1,\n\t\t\tIF([% Contacted Target]>=1.2 && MAX('WBR TA Actual'[Contacted Target])<>0, 120, //>120%\n\t\t\tIF([% Contacted Target]>=1 && [% Contacted Target]<1.2 && MAX('WBR TA Actual'[Contacted Target])<>0, 100, //100-150%\n\t\t\tIF([% Contacted Target]>=0.75 && [% Contacted Target]<1 && MAX('WBR TA Actual'[Contacted Target])<>0, 75,\n\t\t\tIF([% Contacted Target]>=0.5 && [% Contacted Target]<0.75 && MAX('WBR TA Actual'[Contacted Target])<>0, 50,\n\t\t\tIF([% Contacted Target]>0 && [% Contacted Target]<0.5 && MAX('WBR TA Actual'[Contacted Target])<>0, 0, //<50%\n\t\t\tIF(MAX('WBR TA Actual'[Contacted])=0, -2)))))))",
+      "format": "formatString: 0",
+      "table": "WBR TA Actual"
+    },
+    "Moved to ATS color": {
+      "name": "Moved to ATS color",
+      "dax": "IF(SELECTEDVALUE('WBR TA Actual'[TA Reasoning]) IN {\"Internal-related: Out of Office\", \"Client-related: Client Delay\"}, -1,\n\t\t\tIF([% Moved to ATS Target]>=1.2 && MAX('WBR TA Actual'[Moved to ATS Target])<>0, 120, //>120%\n\t\t\tIF([% Moved to ATS Target]>=1 && [% Moved to ATS Target]<1.2 && MAX('WBR TA Actual'[Moved to ATS Target])<>0, 100, //100-120%\n\t\t\tIF([% Moved to ATS Target]>=0.75 && [% Moved to ATS Target]<1 && MAX('WBR TA Actual'[Moved to ATS Target])<>0, 75,\n\t\t\tIF([% Moved to ATS Target]>=0.5 && [% Moved to ATS Target]<0.75 && MAX('WBR TA Actual'[Moved to ATS Target])<>0, 50,\n\t\t\tIF([% Moved to ATS Target]>0 && [% Moved to ATS Target]<0.5 && MAX('WBR TA Actual'[Moved to ATS Target])<>0, 0, //<50%\n\t\t\tIF(MAX('WBR TA Actual'[Moved to ATS])=0, -2)))))))",
+      "format": "formatString: 0",
+      "table": "WBR TA Actual"
+    },
+    "Contacted percentage": {
+      "name": "Contacted percentage",
+      "dax": "var perc = SUM('WBR TA Actual'[Contacted]) / MIN('WBR TA Actual'[Contacted Target])\n\t\t\tRETURN\n\t\t\tIF(perc>1, 1.1, perc)",
+      "table": "WBR TA Actual"
+    },
+    "Last 12w Hires": {
+      "name": "Last 12w Hires",
+      "dax": "IF(SUM('WBR TA Actual'[Contacted])+SUM('WBR TA Actual'[Actual screens])+SUM('WBR TA Actual'[Moved to ATS])+SUM('WBR TA Actual'[Hires])<>0,\n\t\t\t    CALCULATE(SUM('WBR TA Actual'[Hires]), 'WBR TA Actual'[is_last_12_weeks]=\"Yes\", ALL('Calendar WBR')))",
+      "format": "formatString: 0",
+      "table": "WBR TA Actual"
+    },
+    "Last 12w Wolt number": {
+      "name": "Last 12w Wolt number",
+      "dax": "//IF(SUM('WBR TA Actual'[Contacted])+SUM('WBR TA Actual'[Actual screens])+SUM('WBR TA Actual'[Moved to ATS])<>0 && (SELECTEDVALUE('WBR TA Actual'[Client])IN {\"Wolt Expansion\", \"Wolt Market\", \"Wolt North, Baltics & Benelux\", \"Wolt Central & South\", \"Wolt HQ\", \"Wolt Germany\"} ||\n\t\t\t IF(SELECTEDVALUE('WBR TA Actual'[Client])=\"Wolt Volume\",\n\t\t\t    CALCULATE(SUM('WBR TA Actual'[Hires]), 'WBR TA Actual'[is_last_12_weeks]=\"Yes\", ALL('Calendar WBR')))",
+      "format": "formatString: 0",
+      "table": "WBR TA Actual"
+    },
+    "Wolt last 12w TAs": {
+      "name": "Wolt last 12w TAs",
+      "dax": "// var woltB =  CALCULATE(COUNTROWS('WBR TA Actual'), 'WBR TA Actual'[Client] IN {\"Wolt Expansion\", \"Wolt Market\", \"Wolt North, Baltics & Benelux\", \"Wolt Central & South\", \"Wolt HQ\", \"Wolt Germany\"} && 'WBR TA Actual'[Client]<>\"Wolt Volume\", 'WBR TA Actual'[is_last_12_weeks]=\"Yes\", ALL('Calendar WBR'))*1.25\n\t\t\tvar woltV =  CALCULATE(COUNTROWS('WBR TA Actual'), 'WBR TA Actual'[Client]=\"Wolt Volume\", 'WBR TA Actual'[is_last_12_weeks]=\"Yes\", ALL('Calendar WBR'))*1.75\n\t\t\t// var toge = IF(SELECTEDVALUE('WBR TA Actual'[Client]) IN {\"Wolt Expansion\", \"Wolt Market\", \"Wolt North, Baltics & Benelux\", \"Wolt Central & South\", \"Wolt HQ\", \"Wolt Germany\"}, woltB, IF(SELECTEDVALUE('WBR TA Actual'[Client])=\"Wolt Volume\", woltV))\n\t\t\t//var target = DIVIDE([Last 12w Wolt number], toge)\n\t\t\tRETURN SWITCH(TRUE(),\n\t\t\t[Last 12w Wolt number]=0, -1,\n\t\t\twoltV>=1.2, 1.2,\n\t\t\twoltV<1.2 && woltV>=1, 1,\n\t\t\twoltV<1 && woltV>-0.75, 0.75,\n\t\t\twoltV<0.75 && woltV>=0.5, 0.5,\n\t\t\twoltV<0.5, 0, -1)\n\n\t\t\t//target>=1.5, 1.5,\n\t\t\t//target<1.5 && target>=1, 1,\n\t\t\t//target<1 && target>-0.75, 0.75,\n\t\t\t//target<0.75 && target>=0.5, 0.5,\n\t\t\t//target<0.5, 0, -1)",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "WBR TA Actual"
+    },
+    "% Moved to ATS Target": {
+      "name": "% Moved to ATS Target",
+      "dax": "var target = SUM('WBR TA Actual'[Moved to ATS])/SUM('WBR TA Actual'[Moved to ATS Target])\n\t\t\tRETURN IF(SUM('WBR TA Actual'[Moved to ATS])=0 || SUM('WBR TA Actual'[Moved to ATS Target])=0, BLANK(), target)",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "WBR TA Actual"
+    },
+    "% Contacted Target": {
+      "name": "% Contacted Target",
+      "dax": "var target = SUM('WBR TA Actual'[Contacted])/SUM('WBR TA Actual'[Contacted Target])\n\t\t\tRETURN IF(SUM('WBR TA Actual'[Contacted])=0 || SUM('WBR TA Actual'[Contacted Target])=0, BLANK(), target)",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "WBR TA Actual"
+    },
+    "% Actual Screens Target": {
+      "name": "% Actual Screens Target",
+      "dax": "var target = SUM('WBR TA Actual'[Actual screens])/SUM('WBR TA Actual'[Screens Target])\n\t\t\tRETURN IF(SUM('WBR TA Actual'[Actual screens])=0 || SUM('WBR TA Actual'[Screens Target])=0, BLANK(), target)",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "WBR TA Actual"
+    },
+    "Last 12w Time to Fill": {
+      "name": "Last 12w Time to Fill",
+      "dax": "```\n\t\t\tIF([Last 12w Hires]<>0, \n\t\t\tCALCULATE(AVERAGE('WBR TA Actual'[Time to Fill]), 'WBR TA Actual'[is_last_12_weeks]=\"Yes\", ALL('Calendar WBR')))\n\t\t\t```",
+      "format": "formatString: 0",
+      "table": "WBR TA Actual"
+    },
+    "Contacted OKR number": {
+      "name": "Contacted OKR number",
+      "dax": "SWITCH(TRUE(),\n\t\t\t[% Contacted Target]>=1.5 && MAX('WBR TA Actual'[Contacted Target])<>0, 5, //>150%\n\t\t\t[% Contacted Target]>=1 && [% Contacted Target]<1.5 && MAX('WBR TA Actual'[Contacted Target])<>0, 4, //100-150%\n\t\t\t[% Contacted Target]>=0.75 && [% Contacted Target]<1 && MAX('WBR TA Actual'[Contacted Target])<>0, 3,\n\t\t\t[% Contacted Target]>=0.5 && [% Contacted Target]<0.75 && MAX('WBR TA Actual'[Contacted Target])<>0, 2,\n\t\t\t[% Contacted Target]>0 && [% Contacted Target]<0.5 && MAX('WBR TA Actual'[Contacted Target])<>0, 1, //<50%\n\t\t\tMAX('WBR TA Actual'[Contacted])=0, BLANK())",
+      "format": "formatString: 0",
+      "table": "WBR TA Actual"
+    },
+    "Screens OKR number": {
+      "name": "Screens OKR number",
+      "dax": "SWITCH(TRUE(),\n\t\t\t[% Actual Screens Target]>=1.5 && MAX('WBR TA Actual'[Screens Target])<>0, 5, //>150%\n\t\t\t[% Actual Screens Target]>=1 && [% Actual Screens Target]<1.5 && MAX('WBR TA Actual'[Screens Target])<>0, 4, //100-150%\n\t\t\t[% Actual Screens Target]>=0.75 && [% Actual Screens Target]<1 && MAX('WBR TA Actual'[Screens Target])<>0, 3,\n\t\t\t[% Actual Screens Target]>=0.5 && [% Actual Screens Target]<0.75 && MAX('WBR TA Actual'[Screens Target])<>0, 2,\n\t\t\t[% Actual Screens Target]>0 && [% Actual Screens Target]<0.5 && MAX('WBR TA Actual'[Screens Target])<>0, 1, //<50%\n\t\t\tMAX('WBR TA Actual'[Actual screens])=0, BLANK())",
+      "format": "formatString: 0",
+      "table": "WBR TA Actual"
+    },
+    "Moved to ATS OKR number": {
+      "name": "Moved to ATS OKR number",
+      "dax": "SWITCH(TRUE(),\n\t\t\t[% Moved to ATS Target]>=1.5 && MAX('WBR TA Actual'[Moved to ATS Target])<>0, 5, //>150%\n\t\t\t[% Moved to ATS Target]>=1 && [% Moved to ATS Target]<1.5 && MAX('WBR TA Actual'[Moved to ATS Target])<>0, 4, //100-150%\n\t\t\t[% Moved to ATS Target]>=0.75 && [% Moved to ATS Target]<1 && MAX('WBR TA Actual'[Moved to ATS Target])<>0, 3,\n\t\t\t[% Moved to ATS Target]>=0.5 && [% Moved to ATS Target]<0.75 && MAX('WBR TA Actual'[Moved to ATS Target])<>0, 2,\n\t\t\t[% Moved to ATS Target]>0 && [% Moved to ATS Target]<0.5 && MAX('WBR TA Actual'[Moved to ATS Target])<>0, 1, //<50%\n\t\t\tMAX('WBR TA Actual'[Moved to ATS])=0, BLANK())",
+      "format": "formatString: 0",
+      "table": "WBR TA Actual"
+    },
+    "OKR average": {
+      "name": "OKR average",
+      "dax": "([Contacted OKR number]+[Moved to ATS OKR number]+[Screens OKR number])/3",
+      "format": "formatString: 0",
+      "table": "WBR TA Actual"
+    },
+    "Last 12w Wolt %": {
+      "name": "Last 12w Wolt %",
+      "dax": "```\n\t\t\tSWITCH(TRUE(),\n\t\t\tSUM('WBR TA Actual'[Contacted])+SUM('WBR TA Actual'[Actual screens])+SUM('WBR TA Actual'[Moved to ATS])+SUM('WBR TA Actual'[Hires])<>0 && SELECTEDVALUE('WBR TA Actual'[Client]) IN {\"Wolt Expansion\", \"Wolt Market\", \"Wolt North, Baltics & Benelux\", \"Wolt Central & South\", \"Wolt Germany\"}, \n\t\t\t    [Last 12w Hires]/15,\n\n\t\t\tSUM('WBR TA Actual'[Contacted])+SUM('WBR TA Actual'[Actual screens])+SUM('WBR TA Actual'[Moved to ATS])+SUM('WBR TA Actual'[Hires])<>0 && SELECTEDVALUE('WBR TA Actual'[Client])=\"Wolt HQ\", \n\t\t\t    [Last 12w Hires]/12,\n\n\t\t\tSUM('WBR TA Actual'[Contacted])+SUM('WBR TA Actual'[Actual screens])+SUM('WBR TA Actual'[Moved to ATS])+SUM('WBR TA Actual'[Hires])<>0 && SELECTEDVALUE('WBR TA Actual'[Client])=\"Wolt Tech\",\n\t\t\t    [Last 12w Hires]/7,    \n\n\t\t\tSUM('WBR TA Actual'[Contacted])+SUM('WBR TA Actual'[Actual screens])+SUM('WBR TA Actual'[Moved to ATS])+SUM('WBR TA Actual'[Hires])<>0 && SELECTEDVALUE('WBR TA Actual'[Client])=\"Wolt Volume\",\n\t\t\t     [Last 12w Hires]/42\n\t\t\t)\n\t\t\t```",
+      "table": "WBR TA Actual"
+    },
+    "Total Missing comment": {
+      "name": "Total Missing comment",
+      "dax": "SUM('WBR TA Actual'[Missing comment]) + SUM('WBR TS Actual'[Missing comment])",
+      "format": "formatString: 0",
+      "table": "WBR TA Actual"
+    },
+    "Last 12w ATS": {
+      "name": "Last 12w ATS",
+      "dax": "IF(SUM('WBR TA Actual'[Contacted])+SUM('WBR TA Actual'[Actual screens])+SUM('WBR TA Actual'[Moved to ATS])+SUM('WBR TA Actual'[Hires])<>0,\n\t\t\t    CALCULATE(SUM('WBR TA Actual'[Moved to ATS]), 'WBR TA Actual'[is_last_12_weeks]=\"Yes\", ALL('Calendar WBR')))",
+      "format": "formatString: 0",
+      "table": "WBR TA Actual"
+    },
+    "Last 12w Actual Screens": {
+      "name": "Last 12w Actual Screens",
+      "dax": "IF(SUM('WBR TA Actual'[Contacted])+SUM('WBR TA Actual'[Actual screens])+SUM('WBR TA Actual'[Moved to ATS])+SUM('WBR TA Actual'[Hires])<>0,\n\t\t\t    CALCULATE(SUM('WBR TA Actual'[Actual screens]), 'WBR TA Actual'[is_last_12_weeks]=\"Yes\", ALL('Calendar WBR')))",
+      "format": "formatString: 0",
+      "table": "WBR TA Actual"
+    },
+    "Total TA - OKR comment": {
+      "name": "Total TA - OKR comment",
+      "dax": "CALCULATE(COUNTROWS('WBR TA Actual'), FILTER('WBR TA Actual', 'WBR TA Actual'[Client]<>BLANK()))",
+      "format": "formatString: 0",
+      "table": "WBR TA Actual"
+    },
+    "Total TA + TS - OKR comment": {
+      "name": "Total TA + TS - OKR comment",
+      "dax": "[Total TA - OKR comment]+[Total TS - OKR comment]",
+      "format": "formatString: 0",
+      "table": "WBR TA Actual"
+    },
+    "% Missing comment": {
+      "name": "% Missing comment",
+      "dax": "1 - DIVIDE([Total Missing comment], [Total TA + TS - OKR comment])",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "WBR TA Actual"
+    },
+    "Latest comment MBR": {
+      "name": "Latest comment MBR",
+      "dax": "VAR TA = SELECTEDVALUE('WBR TA Actual'[who_event_created_for])\n\t\t\tVAR LatestWeek =\n\t\t\t    CALCULATE(\n\t\t\t        MAX('WBR TA Actual'[WeekInt]),\n\t\t\t        FILTER(\n\t\t\t            'WBR TA Actual',\n\t\t\t            'WBR TA Actual'[who_event_created_for] = TA &&\n\t\t\t            (NOT(ISBLANK('WBR TA Actual'[Comment]) || 'WBR TA Actual'[Comment]=\"\"))\n\t\t\t        )\n\t\t\t    )\n\t\t\tRETURN\n\t\t\t    CALCULATE(\n\t\t\t        MAX('WBR TA Actual'[Comment]),\n\t\t\t        FILTER(\n\t\t\t            'WBR TA Actual',\n\t\t\t            'WBR TA Actual'[who_event_created_for] = TA &&\n\t\t\t            'WBR TA Actual'[WeekInt] = LatestWeek\n\t\t\t        )\n\t\t\t    )",
+      "table": "WBR TA Actual"
+    },
+    "Last 12w ATS Target": {
+      "name": "Last 12w ATS Target",
+      "dax": "IF(SUM('WBR TA Actual'[Contacted])+SUM('WBR TA Actual'[Actual screens])+SUM('WBR TA Actual'[Moved to ATS])+SUM('WBR TA Actual'[Hires])<>0,\n\t\t\t    CALCULATE(SUM('WBR TA Actual'[Moved to ATS Target]), 'WBR TA Actual'[is_last_12_weeks]=\"Yes\", ALL('Calendar WBR')))",
+      "table": "WBR TA Actual"
+    },
+    "Last 12w ATS % target": {
+      "name": "Last 12w ATS % target",
+      "dax": "DIVIDE([Last 12w ATS], [Last 12w ATS Target], 0)",
+      "table": "WBR TA Actual"
+    },
+    "Last 12w Actual Screens Target": {
+      "name": "Last 12w Actual Screens Target",
+      "dax": "IF(SUM('WBR TA Actual'[Contacted])+SUM('WBR TA Actual'[Actual screens])+SUM('WBR TA Actual'[Moved to ATS])+SUM('WBR TA Actual'[Hires])<>0,\n\t\t\t    CALCULATE(SUM('WBR TA Actual'[Screens Target]), 'WBR TA Actual'[is_last_12_weeks]=\"Yes\", ALL('Calendar WBR')))",
+      "table": "WBR TA Actual"
+    },
+    "Last 12w Actual Screens % Target": {
+      "name": "Last 12w Actual Screens % Target",
+      "dax": "DIVIDE([Last 12w Actual Screens], [Last 12w Actual Screens Target], 0)",
+      "table": "WBR TA Actual"
+    },
+    "# Data Cleanliness/Hygiene": {
+      "name": "# Data Cleanliness/Hygiene",
+      "dax": "CALCULATE(COUNT('WBR TA Actual'[who_event_created_for]), FILTER('WBR TA Actual', 'WBR TA Actual'[Data Cleanliness/Hygiene]=\"No\"))",
+      "format": "formatString: 0",
+      "table": "WBR TA Actual"
+    },
+    "Last 12w % Actual Screens to Hires": {
+      "name": "Last 12w % Actual Screens to Hires",
+      "dax": "DIVIDE([Last 12w Hires], [Last 12w Actual Screens], 0)",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "WBR TA Actual"
+    },
+    "% Actual Screens to ATS": {
+      "name": "% Actual Screens to ATS",
+      "dax": "IF(SUM('WBR TA Actual'[Actual screens])=0, BLANK(),\n\t\t\t    SUM('WBR TA Actual'[Moved to ATS]) /SUM('WBR TA Actual'[Actual screens]))",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "WBR TA Actual"
+    },
+    "% TA Reach Actual Screen Target": {
+      "name": "% TA Reach Actual Screen Target",
+      "dax": "DIVIDE(SUM('WBR TA Actual'[Reach Actual Screen Target]), SUM('WBR TA Actual'[Valid TA for reach actual screens]))",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "WBR TA Actual"
+    },
+    "% Actual Screens to Hired": {
+      "name": "% Actual Screens to Hired",
+      "dax": "IF(SUM('WBR TA Actual'[Actual screens])=0, BLANK(),\n\t\t\t    SUM('WBR TA Actual'[Hires]) /SUM('WBR TA Actual'[Actual screens]))",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "WBR TA Actual"
+    },
+    "% Data Cleanliness/Hygiene": {
+      "name": "% Data Cleanliness/Hygiene",
+      "dax": "DIVIDE([# Data Cleanliness/Hygiene], CALCULATE(COUNT('WBR TA Actual'[who_event_created_for]), 'WBR TA Actual'[WeekInt]>=11))",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "WBR TA Actual"
+    },
+    "Comment week": {
+      "name": "Comment week",
+      "dax": "SELECTEDVALUE('WBR TA Comment'[Comment])",
+      "table": "WBR TA Comment"
+    },
+    "Actual screen to ATS %": {
+      "name": "Actual screen to ATS %",
+      "dax": "DIVIDE(SUM('WBR TA Job'[Moved to ATS]), SUM('WBR TA Job'[Actual screens]))",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "WBR TA Job"
+    },
+    "Last 12w Hires TS": {
+      "name": "Last 12w Hires TS",
+      "dax": "IF(SUM('WBR TS Actual'[Contacted])+SUM('WBR TS Actual'[Viewed])<>0,\n\t\t\t    CALCULATE(SUM('WBR TS Actual'[Hires]), 'WBR TS Actual'[is_last_12_weeks]=\"Yes\", ALL('Calendar WBR')))",
+      "format": "formatString: 0",
+      "table": "WBR TS Actual"
+    },
+    "% Contacted Target TS": {
+      "name": "% Contacted Target TS",
+      "dax": "```\n\t\t\tvar target = SUM('WBR TS Actual'[Contacted])/SUM('WBR TS Actual'[Target])\n\t\t\tRETURN IF(SELECTEDVALUE('WBR TS Actual'[TS Reasoning]) IN {\"Internal-related: Out of Office\", \"Client-related: Client Delay\"}, -1,\n\t\t\tIF(SUM('WBR TS Actual'[Contacted])=0, BLANK(), \n\t\t\ttarget))\n\t\t\t```",
+      "table": "WBR TS Actual"
+    },
+    "Last 12w % Contacted to Screens": {
+      "name": "Last 12w % Contacted to Screens",
+      "dax": "IF(SUM('WBR TS Actual'[Contacted])+SUM('WBR TS Actual'[Viewed])<>0, CALCULATE(SUM('WBR TS Actual'[Screens])/SUM('WBR TS Actual'[Contacted]), 'WBR TS Actual'[is_last_12_weeks]=\"Yes\", ALL('Calendar WBR')))",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "WBR TS Actual"
+    },
+    "Last 12w % Actual Screens to ATS": {
+      "name": "Last 12w % Actual Screens to ATS",
+      "dax": "IF(SUM('WBR TS Actual'[Actual Screens])=0, BLANK(),\n\t\t\t    CALCULATE(SUM('WBR TS Actual'[ATS])/SUM('WBR TS Actual'[Actual Screens]), 'WBR TS Actual'[is_last_12_weeks]=\"Yes\", ALL('Calendar WBR')))",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "WBR TS Actual"
+    },
+    "Total TS - OKR comment": {
+      "name": "Total TS - OKR comment",
+      "dax": "CALCULATE(COUNTROWS('WBR TS Actual'), FILTER('WBR TS Comment', 'WBR TS Comment'[Concat]<>BLANK()))",
+      "format": "formatString: 0",
+      "table": "WBR TS Actual"
+    },
+    "Rolling 12 weeks Actual Screens": {
+      "name": "Rolling 12 weeks Actual Screens",
+      "dax": "```\n\n\t\t\tVAR ThisWeek = YEAR(TODAY()) * 100 + WEEKNUM(TODAY(), 2) -- Get current week YYYYWW\n\t\t\tVAR CurrentWeek = MAX('WBR TS Actual'[weekint]) -- Get the week being evaluated in the row\n\t\t\tVAR CurrentUser = SELECTEDVALUE('WBR TS Actual'[who_created_event_first]) -- Get the current user in the row\n\t\t\tVAR Last12Weeks = \n\t\t\t    FILTER(\n\t\t\t        ALL('WBR TS Actual'), \n\t\t\t        'WBR TS Actual'[weekint] <= CurrentWeek && -- Only past and current weeks\n\t\t\t        'WBR TS Actual'[weekint] >= CurrentWeek - 3 && -- Last 3 weeks from the row's week\n\t\t\t        'WBR TS Actual'[who_created_event_first] = CurrentUser -- Ensure it's for the same user\n\t\t\t    )\n\t\t\tRETURN \n\t\t\t    IF(\n\t\t\t        CurrentWeek > ThisWeek, \n\t\t\t        BLANK(), -- Ignore future weeks\n\t\t\t        SUMX(Last12Weeks, 'WBR TS Actual'[Actual Screens])\n\t\t\t    )\n\n\t\t\t```",
+      "format": "formatString: 0",
+      "table": "WBR TS Actual"
+    },
+    "Last 12w % Sreens to Actual Screens": {
+      "name": "Last 12w % Sreens to Actual Screens",
+      "dax": "IF(SUM('WBR TS Actual'[Screens])=0, BLANK(),\n\t\t\t    CALCULATE(SUM('WBR TS Actual'[Actual Screens])/SUM('WBR TS Actual'[Screens]), 'WBR TS Actual'[is_last_12_weeks]=\"Yes\", ALL('Calendar WBR')))",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "WBR TS Actual"
+    },
+    "% Positive Response / Contacted": {
+      "name": "% Positive Response / Contacted",
+      "dax": "IF(SUM('WBR TS Actual'[Positive Response])=0, BLANK(),\n\t\t\t    DIVIDE(SUM('WBR TS Actual'[Positive Response]), SUM('WBR TS Actual'[Contacted])))",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "WBR TS Actual"
+    },
+    "Last 4w % Actual Screens to ATS": {
+      "name": "Last 4w % Actual Screens to ATS",
+      "dax": "IF(SUM('WBR TS Actual'[Actual Screens])=0, BLANK(),\n\t\t\t    CALCULATE(SUM('WBR TS Actual'[ATS])/SUM('WBR TS Actual'[Actual Screens]), 'WBR TS Actual'[is_last_4_weeks]=\"Yes\", ALL('Calendar WBR')))",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "WBR TS Actual"
+    },
+    "Last 4w % Sreens to Actual Screens": {
+      "name": "Last 4w % Sreens to Actual Screens",
+      "dax": "IF(SUM('WBR TS Actual'[Screens])=0, BLANK(),\n\t\t\t    CALCULATE(SUM('WBR TS Actual'[Actual Screens])/SUM('WBR TS Actual'[Screens]), 'WBR TS Actual'[is_last_4_weeks]=\"Yes\", ALL('Calendar WBR')))",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "WBR TS Actual"
+    },
+    "Screens target %": {
+      "name": "Screens target %",
+      "dax": "var avge = DIVIDE(SUM('WBR TS Actual'[Screens]), DISTINCTCOUNT('WBR TS Actual'[Week start end]))\n\t\t\tRETURN avge / 10\n\t\t\t-- weekly screens target is 10",
+      "table": "WBR TS Actual"
+    },
+    "ATS target %": {
+      "name": "ATS target %",
+      "dax": "var avge = DIVIDE(SUM('WBR TS Actual'[ATS]), DISTINCTCOUNT('WBR TS Actual'[Week start end]))\n\t\t\tRETURN IF(SELECTEDVALUE('WBR TS Actual'[TS Reasoning]) IN {\"Internal-related: Out of Office\", \"Client-related: Client Delay\"}, -1,\n\t\t\tavge / 4)\n\t\t\t-- weekly ATS target is 4",
+      "table": "WBR TS Actual"
+    },
+    "Latest comment MBR TS": {
+      "name": "Latest comment MBR TS",
+      "dax": "VAR TS = SELECTEDVALUE('WBR TS Actual'[who_created_event_first])\n\t\t\tVAR LatestWeek =\n\t\t\t    CALCULATE(\n\t\t\t        MAX('WBR TS Actual'[WeekInt]),\n\t\t\t        FILTER(\n\t\t\t            'WBR TS Actual',\n\t\t\t            'WBR TS Actual'[who_created_event_first] = TS &&\n\t\t\t            (NOT(ISBLANK('WBR TS Actual'[Comment]) || 'WBR TS Actual'[Comment]=\"\"))\n\t\t\t        )\n\t\t\t    )\n\t\t\tRETURN\n\t\t\t    CALCULATE(\n\t\t\t        MAX('WBR TS Actual'[Comment]),\n\t\t\t        FILTER(\n\t\t\t            'WBR TS Actual',\n\t\t\t            'WBR TS Actual'[who_created_event_first] = TS &&\n\t\t\t            'WBR TS Actual'[WeekInt] = LatestWeek\n\t\t\t        )\n\t\t\t    )",
+      "table": "WBR TS Actual"
+    },
+    "Actual Sreens target %": {
+      "name": "Actual Sreens target %",
+      "dax": "var avge = DIVIDE(SUM('WBR TS Actual'[Actual Screens]), DISTINCTCOUNT('WBR TS Actual'[Week start end]))\n\t\t\tRETURN IF(SELECTEDVALUE('WBR TS Actual'[TS Reasoning]) IN {\"Internal-related: Out of Office\", \"Client-related: Client Delay\"}, -1,\n\t\t\tavge / 7)\n\t\t\t-- weekly Actual Sreens target is 7",
+      "table": "WBR TS Actual"
+    },
+    "Recruiter Screens %": {
+      "name": "Recruiter Screens %",
+      "dax": "var avge = DIVIDE(SUM('WBR TS Actual'[Screens]), DISTINCTCOUNT('WBR TS Actual'[Week start end]))\n\t\t\tRETURN IF(SELECTEDVALUE('WBR TS Actual'[TS Reasoning]) IN {\"Internal-related: Out of Office\", \"Client-related: Client Delay\"}, -1,\n\t\t\tavge / 10)\n\t\t\t-- weeklyRecuiter Screen target is 10",
+      "table": "WBR TS Actual"
+    },
+    "7 days moving avg": {
+      "name": "7 days moving avg",
+      "dax": "VAR CurrDate = MAX(analytic_usage[created_date])\n\t\t\tVAR Days =\n\t\t\t    CALCULATETABLE (\n\t\t\t        VALUES(analytic_usage[created_date]),\n\t\t\t        analytic_usage[created_date] <= CurrDate,\n\t\t\t        analytic_usage[created_date] > CurrDate - 7\n\t\t\t    )\n\t\t\tRETURN\n\t\t\t    AVERAGEX(Days, CALCULATE( DISTINCTCOUNT(analytic_usage[user])))",
+      "format": "formatString: 0",
+      "table": "analytic_usage"
+    },
+    "7 days moving avg limited": {
+      "name": "7 days moving avg limited",
+      "dax": "VAR CurrDate = MAX(analytic_usage[created_date])\n\t\t\tVAR Days =\n\t\t\t    CALCULATETABLE (\n\t\t\t        VALUES(analytic_usage[created_date]),\n\t\t\t        analytic_usage[created_date] <= CurrDate,\n\t\t\t        analytic_usage[created_date] > CurrDate - 7\n\t\t\t    )\n\t\t\tRETURN\n\t\t\t    AVERAGEX(Days, CALCULATE(DISTINCTCOUNT(analytic_usage[user]), analytic_usage[page] in {\"Board_view\"}))",
+      "table": "analytic_usage"
+    },
+    "# Candidate Hired (time to hire)": {
+      "name": "# Candidate Hired (time to hire)",
+      "dax": "CALCULATE(COUNT(candidate_stage[candidate_id]), candidate_stage[date_hired]<>BLANK())",
+      "format": "formatString: 0",
+      "table": "candidate_stage"
+    },
+    "Created date peroid": {
+      "name": "Created date peroid",
+      "dax": "\"You are viewing events created from \" & FORMAT(MIN(event[date_created]),\"YYYY-MM-DD\") & \" to \" & FORMAT(MAX(event[date_created]),\"YYYY-MM-DD\")",
+      "table": "event"
+    },
+    "# User overwrite to not fit": {
+      "name": "# User overwrite to not fit",
+      "dax": "CALCULATE(COUNT(event[event_id]), event[event_type]=\"User overwrite to not fit\", USERELATIONSHIP('Calendar'[Date], event[date_created]))",
+      "format": "formatString: 0",
+      "table": "event"
+    },
+    "# User overwrite to fit": {
+      "name": "# User overwrite to fit",
+      "dax": "CALCULATE(COUNT(event[event_id]), event[event_type]=\"User overwrite to fit\", USERELATIONSHIP('Calendar'[Date], event[date_created]))",
+      "format": "formatString: 0",
+      "table": "event"
+    },
+    "# Session cookie expired": {
+      "name": "# Session cookie expired",
+      "dax": "CALCULATE(COUNT(event[event_id]), event[event_type]=\"Session cookie expired\")",
+      "format": "formatString: 0",
+      "table": "event"
+    },
+    "# Profile was scraped": {
+      "name": "# Profile was scraped",
+      "dax": "CALCULATE(COUNT(event[event_id]), event[event_type]=\"Profile was scraped\")",
+      "format": "formatString: 0",
+      "table": "event"
+    },
+    "# Job (time to hire)": {
+      "name": "# Job (time to hire)",
+      "dax": "CALCULATE(COUNT(job[job_id]), job[date_first_hired]<>BLANK(), job[Diff Hired - Job created]>=0)",
+      "format": "formatString: 0",
+      "table": "job"
+    },
+    "Job Creation between": {
+      "name": "Job Creation between",
+      "dax": "```\n\t\t\t\"From \" & FORMAT(MIN(job[date_created]), \"YYYY-MM-DD\") & \" until \" & FORMAT(MAX(job[date_created]), \"YYYY-MM-DD\") \n\t\t\t```",
+      "table": "job"
+    },
+    "0-30 days": {
+      "name": "0-30 days",
+      "dax": "CALCULATE(COUNT(job[job_id]), job[Job Days Opened]<=30)",
+      "format": "formatString: 0",
+      "table": "job"
+    },
+    "30-60 days": {
+      "name": "30-60 days",
+      "dax": "CALCULATE(COUNT(job[job_id]), job[Job Days Opened]>30 && job[Job Days Opened]<=60)",
+      "format": "formatString: 0",
+      "table": "job"
+    },
+    "> 60 days": {
+      "name": "> 60 days",
+      "dax": "CALCULATE(COUNT(job[job_id]), job[Job Days Opened]>60)",
+      "format": "formatString: 0",
+      "table": "job"
+    },
+    "Total Active Pipelines": {
+      "name": "Total Active Pipelines",
+      "dax": "CALCULATE(DISTINCTCOUNT(job[job_id]), REMOVEFILTERS(job[Problem jobs]))",
+      "format": "formatString: 0",
+      "table": "job"
+    },
+    "Problem Pipelines %": {
+      "name": "Problem Pipelines %",
+      "dax": "DIVIDE(\n\t\t\t    CALCULATE(DISTINCTCOUNT(job[job_id]), job[Problem jobs]=1),\n\t\t\t    [Total Active Pipelines])",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "job"
+    },
+    "# Problem jobs": {
+      "name": "# Problem jobs",
+      "dax": "CALCULATE(COUNT(job[job_id]), job[Problem jobs]=1)",
+      "format": "formatString: 0",
+      "table": "job"
+    },
+    "# Total Jobs for calculaing problem jobs": {
+      "name": "# Total Jobs for calculaing problem jobs",
+      "dax": "CALCULATE(COUNT(job[job_id]), job[# ATS]>2)",
+      "format": "formatString: 0",
+      "table": "job"
+    },
+    "% Problem Jobs": {
+      "name": "% Problem Jobs",
+      "dax": "DIVIDE([# Problem jobs], [# Total Jobs for calculaing problem jobs])",
+      "format": "formatString: 0%;-0%;0%",
+      "table": "job"
+    },
+    "60-90 days": {
+      "name": "60-90 days",
+      "dax": "CALCULATE(COUNT(job[job_id]), job[Job Days Opened]>60 && job[Job Days Opened]<=90)",
+      "format": "formatString: 0",
+      "table": "job"
+    },
+    ">90 days": {
+      "name": ">90 days",
+      "dax": "CALCULATE(COUNT(job[job_id]), job[Job Days Opened]>90)",
+      "format": "formatString: 0",
+      "table": "job"
+    }
+  },
+  "columns": {
+    "Week start end": {
+      "name": "Week start end",
+      "calculated": false,
+      "table": "WBR TS Actual"
+    },
+    "WeekInt": {
+      "name": "WeekInt",
+      "calculated": false,
+      "table": "WBR TS Actual"
+    },
+    "is_current_week": {
+      "name": "is_current_week",
+      "dax": "if('Calendar'[WeekEnding Current] = 'Calendar'[WeekEnding], \"Yes\", \"No\")",
+      "calculated": true,
+      "table": "Calendar"
+    },
+    "is_last_12_weeks": {
+      "name": "is_last_12_weeks",
+      "calculated": false,
+      "table": "WBR TS Actual"
+    },
+    "is_last_4_weeks": {
+      "name": "is_last_4_weeks",
+      "calculated": false,
+      "table": "WBR TS Actual"
+    },
+    "Date": {
+      "name": "Date",
+      "calculated": false,
+      "table": "Sourcing Stats"
+    },
+    "Year": {
+      "name": "Year",
+      "calculated": false,
+      "table": "WBR TS Comment"
+    },
+    "QuarterOfYear": {
+      "name": "QuarterOfYear",
+      "calculated": false,
+      "table": "Calendar"
+    },
+    "MonthOfYear": {
+      "name": "MonthOfYear",
+      "calculated": false,
+      "table": "Calendar"
+    },
+    "DayOfMonth": {
+      "name": "DayOfMonth",
+      "calculated": false,
+      "table": "Calendar"
+    },
+    "DateInt": {
+      "name": "DateInt",
+      "calculated": false,
+      "table": "Calendar"
+    },
+    "MonthName": {
+      "name": "MonthName",
+      "calculated": false,
+      "table": "Calendar"
+    },
+    "MonthInt": {
+      "name": "MonthInt",
+      "calculated": false,
+      "table": "Calendar"
+    },
+    "QuarterInCalendar": {
+      "name": "QuarterInCalendar",
+      "calculated": false,
+      "table": "Calendar"
+    },
+    "DayInWeek": {
+      "name": "DayInWeek",
+      "calculated": false,
+      "table": "Calendar"
+    },
+    "DayOfWeekName": {
+      "name": "DayOfWeekName",
+      "calculated": false,
+      "table": "Calendar"
+    },
+    "WeekEnding": {
+      "name": "WeekEnding",
+      "calculated": false,
+      "table": "Calendar"
+    },
+    "WeekOfYear": {
+      "name": "WeekOfYear",
+      "calculated": false,
+      "table": "Calendar"
+    },
+    "WeekEnding Current": {
+      "name": "WeekEnding Current",
+      "calculated": false,
+      "table": "Calendar"
+    },
+    "MON-YYYY": {
+      "name": "MON-YYYY",
+      "dax": "\n\t\t\tCONCATENATE(LEFT('CALENDAR'[MonthName],3),\n\t\t\t            CONCATENATE(\" \",'CALENDAR'[Year]))",
+      "calculated": true,
+      "table": "Calendar"
+    },
+    "is_last_6_weeks": {
+      "name": "is_last_6_weeks",
+      "dax": "if('CALENDAR'[WeekEnding]>='CALENDAR'[WeekEnding -6w] && 'CALENDAR'[WeekEnding]<='CALENDAR'[WeekEnding Current], \"Yes\", \"No\")",
+      "calculated": true,
+      "table": "Calendar"
+    },
+    "MonthEnding Current": {
+      "name": "MonthEnding Current",
+      "calculated": false,
+      "table": "Calendar"
+    },
+    "MonthEnding -6m": {
+      "name": "MonthEnding -6m",
+      "calculated": false,
+      "table": "Calendar"
+    },
+    "MonthEnding": {
+      "name": "MonthEnding",
+      "calculated": false,
+      "table": "Calendar"
+    },
+    "is_last_6_months": {
+      "name": "is_last_6_months",
+      "dax": "if('Calendar'[MonthEnding]>'Calendar'[MonthEnding -6m] && 'Calendar'[MonthEnding]<='CALENDAR'[MonthEnding Current], TRUE(), FALSE())",
+      "calculated": true,
+      "table": "Calendar"
+    },
+    "Q number": {
+      "name": "Q number",
+      "calculated": false,
+      "table": "Calendar"
+    },
+    "MonthNumber": {
+      "name": "MonthNumber",
+      "calculated": false,
+      "table": "Calendar"
+    },
+    "Week sort": {
+      "name": "Week sort",
+      "calculated": false,
+      "table": "WBR TS Actual"
+    },
+    "Fiscal Year": {
+      "name": "Fiscal Year",
+      "calculated": false,
+      "table": "Calendar"
+    },
+    "is_previous_week": {
+      "name": "is_previous_week",
+      "dax": "if('Calendar'[WeekEnding Current] = 'Calendar'[WeekEnding]+7, TRUE(), FALSE())",
+      "calculated": true,
+      "table": "Calendar"
+    },
+    "WeekEnding -12w": {
+      "name": "WeekEnding -12w",
+      "calculated": false,
+      "table": "Calendar"
+    },
+    "Year/Month": {
+      "name": "Year/Month",
+      "dax": "FORMAT(analytic_usage[created_date], \"YYYY/MM\")",
+      "calculated": true,
+      "table": "analytic_usage"
+    },
+    "Week": {
+      "name": "Week",
+      "dax": "WEEKNUM(analytic_usage[created_date], 21)",
+      "calculated": true,
+      "table": "analytic_usage"
+    },
+    "Before today": {
+      "name": "Before today",
+      "dax": "IF(DATEDIFF('Calendar'[Date], TODAY(),DAY)>=0, TRUE(), FALSE())",
+      "calculated": true,
+      "table": "Calendar"
+    },
+    "Week Z-A": {
+      "name": "Week Z-A",
+      "dax": "'Calendar'[WeekInt]",
+      "calculated": true,
+      "table": "Calendar"
+    },
+    "WeekEnding -6w": {
+      "name": "WeekEnding -6w",
+      "calculated": false,
+      "table": "Calendar"
+    },
+    "WeekEnding -4w": {
+      "name": "WeekEnding -4w",
+      "calculated": false,
+      "table": "Calendar"
+    },
+    "TA": {
+      "name": "TA",
+      "calculated": false,
+      "table": "WBR TS Actual"
+    },
+    "YearMonth": {
+      "name": "YearMonth",
+      "calculated": false,
+      "table": "Current_TA"
+    },
+    "TS": {
+      "name": "TS",
+      "calculated": false,
+      "table": "WBR TS Comment"
+    },
+    "Employee Number": {
+      "name": "Employee Number",
+      "calculated": false,
+      "table": "Sourcing Team List"
+    },
+    "Tribster Name": {
+      "name": "Tribster Name",
+      "calculated": false,
+      "table": "Historical Manager Structure WBR"
+    },
+    "Report_To": {
+      "name": "Report_To",
+      "calculated": false,
+      "table": "Historical Manager Structure WBR"
+    },
+    "Manager Key": {
+      "name": "Manager Key",
+      "calculated": false,
+      "table": "Historical Manager Structure WBR"
+    },
+    "Report_To_Next_L2": {
+      "name": "Report_To_Next_L2",
+      "calculated": false,
+      "table": "Historical Manager Structure WBR"
+    },
+    "Business Unit": {
+      "name": "Business Unit",
+      "dax": "```\n\t\t\tSWITCH(TRUE(), \n\t\t\t'Historical Manager Structure WBR'[Report_To_Next_L2]=\"Tijana Lazovic\", \"Ponies and Unicorns\",\n\t\t\t'Historical Manager Structure WBR'[Report_To_Next_L2]=\"Kristjana Thorarinsdottir\", \"Dolphins and Whales\",\n\t\t\t\"Other (Internal & Old Org Structure\")\n\t\t\t```",
+      "calculated": true,
+      "table": "Historical Manager Structure WBR"
+    },
+    "Role": {
+      "name": "Role",
+      "calculated": false,
+      "table": "IR Comment"
+    },
+    "Client": {
+      "name": "Client",
+      "calculated": false,
+      "table": "WBR TA Target"
+    },
+    "Headcount": {
+      "name": "Headcount",
+      "calculated": false,
+      "table": "IR Comment"
+    },
+    "Status": {
+      "name": "Status",
+      "calculated": false,
+      "table": "IR Comment"
+    },
+    "Outcome": {
+      "name": "Outcome",
+      "calculated": false,
+      "table": "IR Comment"
+    },
+    "Job_ID": {
+      "name": "Job_ID",
+      "calculated": false,
+      "table": "IR Comment"
+    },
+    "Column1": {
+      "name": "Column1",
+      "calculated": false,
+      "table": "IR Comment"
+    },
+    "LastRefreshedDate": {
+      "name": "LastRefreshedDate",
+      "calculated": false,
+      "table": "LastRefreshedDate"
+    },
+    "Contacted OKR": {
+      "name": "Contacted OKR",
+      "calculated": false,
+      "table": "OKR TA"
+    },
+    "Actual Screen": {
+      "name": "Actual Screen",
+      "calculated": false,
+      "table": "OKR TA"
+    },
+    "ATS OKR": {
+      "name": "ATS OKR",
+      "calculated": false,
+      "table": "OKR TA"
+    },
+    "Count": {
+      "name": "Count",
+      "dax": "\n\t\t\tvar contact = IF('OKR TA'[Contacted OKR]<>BLANK(), 1, 0)\n\t\t\tvar screens = IF('OKR TA'[Actual Screen]<>BLANK(), 1, 0)\n\t\t\tvar ats = IF('OKR TA'[ATS OKR]<>BLANK(), 1, 0)\n\t\t\tRETURN contact+screens+ats",
+      "calculated": true,
+      "table": "OKR TA"
+    },
+    "Year Q": {
+      "name": "Year Q",
+      "calculated": false,
+      "table": "OKR TA"
+    },
+    "Employee #": {
+      "name": "Employee #",
+      "calculated": false,
+      "table": "Org_WBR"
+    },
+    "Name": {
+      "name": "Name",
+      "calculated": false,
+      "table": "Sourcing Team List"
+    },
+    "Manager": {
+      "name": "Manager",
+      "dax": "RELATED('Historical Manager Structure WBR'[Report_To])",
+      "calculated": true,
+      "table": "WBR TS Actual"
+    },
+    "Business Unit current": {
+      "name": "Business Unit current",
+      "dax": "\n\t\t\tvar manager = PATH(Org[Name], Org[Manager])\n\t\t\tRETURN\n\t\t\tSWITCH(TRUE(),\n\t\t\tSEARCH(\"Tijana Lazovic\", manager,,0)>0, \"Ponies and Unicorns\",\n\t\t\tSEARCH(\"Kristjana Thorarinsdottir\", manager,,0)>0, \"Wolt\",\n\t\t\t\"Internal\")",
+      "calculated": true,
+      "table": "Org"
+    },
+    "Location": {
+      "name": "Location",
+      "calculated": false,
+      "table": "Org_WBR"
+    },
+    "FTE/B2B": {
+      "name": "FTE/B2B",
+      "dax": "IF(Org[Location]=\"Remote\", \"B2B\", \"FTE\")",
+      "calculated": true,
+      "table": "Org"
+    },
+    "Employment Status": {
+      "name": "Employment Status",
+      "calculated": false,
+      "table": "Org_WBR"
+    },
+    "who_created_event_first": {
+      "name": "who_created_event_first",
+      "calculated": false,
+      "table": "event"
+    },
+    "Viewed": {
+      "name": "Viewed",
+      "calculated": false,
+      "table": "WBR TS Actual"
+    },
+    "More than 200": {
+      "name": "More than 200",
+      "dax": "IF('Sourcing Stats'[Viewed]>=200, 1, BLANK())",
+      "calculated": true,
+      "table": "Sourcing Stats"
+    },
+    "100- 200": {
+      "name": "100- 200",
+      "dax": "IF('Sourcing Stats'[Viewed]<200 && 'Sourcing Stats'[Viewed]>=100, 1, BLANK())",
+      "calculated": true,
+      "table": "Sourcing Stats"
+    },
+    "Less than 50": {
+      "name": "Less than 50",
+      "dax": "IF('Sourcing Stats'[Viewed]<50, 1, BLANK())",
+      "calculated": true,
+      "table": "Sourcing Stats"
+    },
+    "50-100": {
+      "name": "50-100",
+      "dax": "IF('Sourcing Stats'[Viewed]>=50 && 'Sourcing Stats'[Viewed]<100, 1, BLANK())",
+      "calculated": true,
+      "table": "Sourcing Stats"
+    },
+    "Moved to TA Position Date": {
+      "name": "Moved to TA Position Date",
+      "calculated": false,
+      "table": "Sourcing Team List"
+    },
+    "Sourcer": {
+      "name": "Sourcer",
+      "calculated": false,
+      "table": "WBR TA Actual"
+    },
+    "Job Title": {
+      "name": "Job Title",
+      "calculated": false,
+      "table": "Temp_Inactive_Jobs_Sourcers_WBR"
+    },
+    "job_id": {
+      "name": "job_id",
+      "calculated": false,
+      "table": "job"
+    },
+    "Official Sourcer": {
+      "name": "Official Sourcer",
+      "calculated": false,
+      "table": "Temp_Inactive_Jobs_Sourcers_WBR"
+    },
+    "No longer working with the job": {
+      "name": "No longer working with the job",
+      "calculated": false,
+      "table": "Temp_Inactive_Jobs_Sourcers_WBR"
+    },
+    "Note": {
+      "name": "Note",
+      "calculated": false,
+      "table": "Temp_Inactive_Jobs_Sourcers_WBR"
+    },
+    "user_id": {
+      "name": "user_id",
+      "calculated": false,
+      "table": "User"
+    },
+    "user_name": {
+      "name": "user_name",
+      "calculated": false,
+      "table": "User"
+    },
+    "role_current": {
+      "name": "role_current",
+      "calculated": false,
+      "table": "User"
+    },
+    "sub_role_current": {
+      "name": "sub_role_current",
+      "calculated": false,
+      "table": "User"
+    },
+    "employee_number": {
+      "name": "employee_number",
+      "calculated": false,
+      "table": "User"
+    },
+    "user_email": {
+      "name": "user_email",
+      "calculated": false,
+      "table": "User"
+    },
+    "Contacted": {
+      "name": "Contacted",
+      "calculated": false,
+      "table": "WBR TS Actual"
+    },
+    "Moved to ATS": {
+      "name": "Moved to ATS",
+      "calculated": false,
+      "table": "WBR TA Target"
+    },
+    "Contacted Target": {
+      "name": "Contacted Target",
+      "calculated": false,
+      "table": "WBR TS Comment"
+    },
+    "Moved to ATS Target": {
+      "name": "Moved to ATS Target",
+      "dax": "RELATED('WBR TA Target'[Moved to ATS])",
+      "calculated": true,
+      "table": "WBR TA Actual"
+    },
+    "Contacted Reached": {
+      "name": "Contacted Reached",
+      "dax": "```\n\t\t\tIF('WBR Client History'[Contacted]>='WBR Client History'[Contacted Target], \"Reached\", \"No\")\n\n\t\t\t```",
+      "calculated": true,
+      "table": "WBR Client History"
+    },
+    "Screens": {
+      "name": "Screens",
+      "calculated": false,
+      "table": "WBR TS Actual"
+    },
+    "Screens Target": {
+      "name": "Screens Target",
+      "dax": "```\n\t\t\tRELATED('WBR TA Target'[Actual Screens]) \n\t\t\t```",
+      "calculated": true,
+      "table": "WBR TA Actual"
+    },
+    "Screens Reached": {
+      "name": "Screens Reached",
+      "dax": "```\n\t\t\tIF('WBR Client History'[Screens]>='WBR Client History'[Screens Target], \"Reached\", BLANK())\n\n\t\t\t```",
+      "calculated": true,
+      "table": "WBR Client History"
+    },
+    "client_name": {
+      "name": "client_name",
+      "calculated": false,
+      "table": "client"
+    },
+    "# Jobs": {
+      "name": "# Jobs",
+      "calculated": false,
+      "table": "WBR TS Actual"
+    },
+    "Contact": {
+      "name": "Contact",
+      "dax": "'WBR Job from Aug 2025'[who_event_created_for] & 'WBR Job from Aug 2025'[client_name]",
+      "calculated": true,
+      "table": "WBR Job from Aug 2025"
+    },
+    "who_event_created_for": {
+      "name": "who_event_created_for",
+      "calculated": false,
+      "table": "event"
+    },
+    "job_recruiter": {
+      "name": "job_recruiter",
+      "calculated": false,
+      "table": "job"
+    },
+    "# Jobs 60d": {
+      "name": "# Jobs 60d",
+      "calculated": false,
+      "table": "WBR Job open 60d"
+    },
+    "Contacy": {
+      "name": "Contacy",
+      "dax": "'WBR Job open 60d'[job_recruiter]&'WBR Job open 60d'[client_name]",
+      "calculated": true,
+      "table": "WBR Job open 60d"
+    },
+    "Actual screens": {
+      "name": "Actual screens",
+      "calculated": false,
+      "table": "WBR TA Job"
+    },
+    "TA Client Key": {
+      "name": "TA Client Key",
+      "dax": "\n\t\t\tIF(LEFT('WBR TA Target'[Client], 4)=\"Wolt\", \"Wolt\"&'WBR TA Target'[TA]&'WBR TA Target'[Year]&'WBR TA Target'[Month],\n\t\t\t    'WBR TA Target'[Client]&'WBR TA Target'[TA]&'WBR TA Target'[Year]&'WBR TA Target'[Month])",
+      "calculated": true,
+      "table": "WBR TA Target"
+    },
+    "Offers": {
+      "name": "Offers",
+      "calculated": false,
+      "table": "WBR TA Job"
+    },
+    "Hires": {
+      "name": "Hires",
+      "calculated": false,
+      "table": "WBR TS Actual"
+    },
+    "Concat_comment": {
+      "name": "Concat_comment",
+      "dax": "'WBR TS Actual'[Week start end]&'WBR TS Actual'[who_created_event_first]",
+      "calculated": true,
+      "table": "WBR TS Actual"
+    },
+    "Comment": {
+      "name": "Comment",
+      "calculated": false,
+      "table": "WBR TS Comment"
+    },
+    "Month": {
+      "name": "Month",
+      "calculated": false,
+      "table": "WBR TA Target"
+    },
+    "Q": {
+      "name": "Q",
+      "dax": "\n\t\t\tSWITCH(TRUE(),\n\t\t\t'WBR TA Actual'[Month] IN {\"1\",\"2\",\"3\"}, \"Q1\",\n\t\t\t'WBR TA Actual'[Month] IN {\"4\",\"5\",\"6\"}, \"Q2\",\n\t\t\t'WBR TA Actual'[Month] IN {\"7\",\"8\",\"9\"}, \"Q3\",\n\t\t\t'WBR TA Actual'[Month] IN {\"10\",\"11\",\"12\"}, \"Q4\")",
+      "calculated": true,
+      "table": "WBR TA Actual"
+    },
+    "Week rank": {
+      "name": "Week rank",
+      "dax": "```\n\t\t\tvar weekrank = RANKX('WBR TA Actual', 'WBR TA Actual'[Week sort],,ASC,Dense)\n\t\t\tRETURN\n\t\t\tSWITCH(TRUE(),\n\t\t\tweekrank>=1 && weekrank<12, \"12w\",\n\t\t\tweekrank>=12 && weekrank<24, \"24w\",\n\t\t\tweekrank>=24 && weekrank<36, \"36w\",\n\t\t\tweekrank>=36 && weekrank<48, \"48w\", \n\t\t\tBLANK())\n\t\t\t```",
+      "calculated": true,
+      "table": "WBR TA Actual"
+    },
+    "Test": {
+      "name": "Test",
+      "dax": "RANKX('WBR TA Actual', 'WBR TA Actual'[Week sort],,ASC,Dense)",
+      "calculated": true,
+      "table": "WBR TA Actual"
+    },
+    "# Sourcer": {
+      "name": "# Sourcer",
+      "dax": "```\n\t\t\tSWITCH(TRUE(),\n\t\t\t'WBR TA Actual'[Sourcer]=BLANK(), 0, \n\t\t\tLEN(SUBSTITUTE('WBR TA Actual'[Sourcer],\" \",\"\"))-LEN(SUBSTITUTE(SUBSTITUTE('WBR TA Actual'[Sourcer],\" \",\"\"), \",\",\"\"))+1)\n\t\t\t```",
+      "calculated": true,
+      "table": "WBR TA Actual"
+    },
+    "Time to Fill": {
+      "name": "Time to Fill",
+      "calculated": false,
+      "table": "WBR TA Job"
+    },
+    "Job 60 days": {
+      "name": "Job 60 days",
+      "dax": "RELATED('WBR Job open 60d'[# Jobs 60d])",
+      "calculated": true,
+      "table": "WBR TA Actual"
+    },
+    "Missing comment": {
+      "name": "Missing comment",
+      "dax": "\n\t\t\tSWITCH(TRUE(),\n\t\t\t[% Contacted Target TS]<1 && 'WBR TS Actual'[Comment]=BLANK() && RELATED('WBR TS Comment'[Concat])<>BLANK() && 'WBR TS Actual'[WeekInt]<=202515, 1,\n\t\t\t[% Contacted Target TS]<1 && 'WBR TS Actual'[Screens]<10 && 'WBR TS Actual'[Comment]=BLANK() && RELATED('WBR TS Comment'[Concat])<>BLANK() && 'WBR TS Actual'[WeekInt]>=202516, 1,\n\t\t\t0)",
+      "calculated": true,
+      "table": "WBR TS Actual"
+    },
+    "TA& Cient jobs 60d": {
+      "name": "TA& Cient jobs 60d",
+      "dax": "'WBR TA Actual'[who_event_created_for]&'WBR TA Actual'[client_name]",
+      "calculated": true,
+      "table": "WBR TA Actual"
+    },
+    "Client Wrap tooltip": {
+      "name": "Client Wrap tooltip",
+      "dax": "LEFT('WBR TA Actual'[Client], 13)",
+      "calculated": true,
+      "table": "WBR TA Actual"
+    },
+    "Exclude OKR": {
+      "name": "Exclude OKR",
+      "calculated": false,
+      "table": "WBR TA Comment"
+    },
+    "Data Cleanliness/Hygiene": {
+      "name": "Data Cleanliness/Hygiene",
+      "calculated": false,
+      "table": "WBR TS Comment"
+    },
+    "Employee number": {
+      "name": "Employee number",
+      "dax": "RELATED(User[employee_number])",
+      "calculated": true,
+      "table": "WBR TA Actual"
+    },
+    "Historical Manager Key": {
+      "name": "Historical Manager Key",
+      "dax": "'WBR TA Actual'[Employee number] & \"-\" & 'WBR TA Actual'[WeekInt]",
+      "calculated": true,
+      "table": "WBR TA Actual"
+    },
+    "Reach Actual Screen Target": {
+      "name": "Reach Actual Screen Target",
+      "dax": "IF('WBR TA Actual'[Screens Target]<>BLANK() && 'WBR TA Actual'[Screens Target]<>0 && 'WBR TA Actual'[Actual screens]>='WBR TA Actual'[Screens Target] && 'WBR TA Actual'[Actual screens]<>BLANK(), 1, 0)",
+      "calculated": true,
+      "table": "WBR TA Actual"
+    },
+    "Valid TA for reach actual screens": {
+      "name": "Valid TA for reach actual screens",
+      "dax": "\n\t\t\tIF('WBR TA Actual'[Screens Target]<>BLANK() && 'WBR TA Actual'[Screens Target]<>0 && 'WBR TA Actual'[Actual screens]<>BLANK() &&\n\t\t\t('WBR TA Actual'[Exclude OKR]<>\"Yes\" || 'WBR TA Actual'[Actual screens]>='WBR TA Actual'[Screens Target]), 1, 0)",
+      "calculated": true,
+      "table": "WBR TA Actual"
+    },
+    "client_id": {
+      "name": "client_id",
+      "calculated": false,
+      "table": "job"
+    },
+    "Key Job concat": {
+      "name": "Key Job concat",
+      "dax": "'WBR TA Job'[Week start end] & \" \" & 'WBR TA Job'[client_id] & \" \" & 'WBR TA Job'[who_event_created_for]",
+      "calculated": true,
+      "table": "WBR TA Job"
+    },
+    "Early warning": {
+      "name": "Early warning",
+      "dax": "\n\t\t\tvar ats = IF(job[Job Days Opened]>=28 && job[# ATS]=BLANK(), 1, 0)\n\t\t\tvar offer = IF(job[# Actual Screens]>=25 && job[# Offers]=BLANK(), 1, 0)\n\t\t\tvar hire = IF(job[Job Days Opened]>=60 && job[date_first_hired]=BLANK(), 1, 0)\n\t\t\tRETURN IF(ats=1 || offer=1 || hire=1, 1, 0)",
+      "calculated": true,
+      "table": "job"
+    },
+    "TA Reasoning": {
+      "name": "TA Reasoning",
+      "dax": "RELATED('WBR TA Comment'[Reasoning])",
+      "calculated": true,
+      "table": "WBR TA Actual"
+    },
+    "Not TA": {
+      "name": "Not TA",
+      "dax": "IF('WBR TA Actual'[Screens Target]=BLANK() && 'WBR TA Actual'[Moved to ATS Target]=BLANK(), \"Not TA\")",
+      "calculated": true,
+      "table": "WBR TA Actual"
+    },
+    "Hires Target": {
+      "name": "Hires Target",
+      "dax": "RELATED('WBR TA Target'[Hires])",
+      "calculated": true,
+      "table": "WBR TA Actual"
+    },
+    "client_wolt_group": {
+      "name": "client_wolt_group",
+      "dax": "\n\n\t\t\tIF (\n\t\t\t    client[client_name] IN { \"SevenRooms\", \"Doordash\" },\n\t\t\t    \"Wolt\",\n\t\t\t    client[client_name]\n\t\t\t)",
+      "calculated": true,
+      "table": "client"
+    },
+    "Concat": {
+      "name": "Concat",
+      "calculated": false,
+      "table": "WBR TS Comment"
+    },
+    "Reasoning": {
+      "name": "Reasoning",
+      "calculated": false,
+      "table": "WBR TS Comment"
+    },
+    "job_title": {
+      "name": "job_title",
+      "calculated": false,
+      "table": "job"
+    },
+    "Current week": {
+      "name": "Current week",
+      "dax": "LOOKUPVALUE('Calendar WBR'[is_current_week], 'Calendar WBR'[Week start end], 'WBR TA Job'[Week start end])",
+      "calculated": true,
+      "table": "WBR TA Job"
+    },
+    "TA Client": {
+      "name": "TA Client",
+      "dax": "RELATED('WBR TA Actual'[Client])",
+      "calculated": true,
+      "table": "WBR TA Job"
+    },
+    "Actual Screens": {
+      "name": "Actual Screens",
+      "calculated": false,
+      "table": "WBR TS Actual"
+    },
+    "Year Month": {
+      "name": "Year Month",
+      "dax": "```\n\t\t\t'WBR TA Target'[Year]*100 + 'WBR TA Target'[Month]\n\n\t\t\t```",
+      "calculated": true,
+      "table": "WBR TA Target"
+    },
+    "Latest month": {
+      "name": "Latest month",
+      "dax": "IF('WBR TA Target'[Year Month]=MAX('WBR TA Target'[Year Month]), 1, 0)",
+      "calculated": true,
+      "table": "WBR TA Target"
+    },
+    "# TA": {
+      "name": "# TA",
+      "dax": "```\n\t\t\tSWITCH(TRUE(),\n\t\t\t'WBR TS Actual'[TA]=BLANK(), 0, \n\t\t\tLEN(SUBSTITUTE('WBR TS Actual'[TA],\" \",\"\"))-LEN(SUBSTITUTE(SUBSTITUTE('WBR TS Actual'[TA], \",\",\"\"),\" \", \"\"))+1)\n\t\t\t```",
+      "calculated": true,
+      "table": "WBR TS Actual"
+    },
+    "Sourced": {
+      "name": "Sourced",
+      "calculated": false,
+      "table": "WBR TS Actual"
+    },
+    "Target": {
+      "name": "Target",
+      "dax": "\n\t\t\tvar target = RELATED('WBR TS Comment'[Contacted Target])\n\t\t\tRETURN IF(target=BLANK(), 200, target)",
+      "calculated": true,
+      "table": "WBR TS Actual"
+    },
+    "ATS": {
+      "name": "ATS",
+      "calculated": false,
+      "table": "WBR TS Actual"
+    },
+    "Positive Response": {
+      "name": "Positive Response",
+      "calculated": false,
+      "table": "WBR TS Actual"
+    },
+    "Historical Manager Key TS": {
+      "name": "Historical Manager Key TS",
+      "dax": "RELATED(User[employee_number]) & \"-\" & 'WBR TS Actual'[WeekInt]",
+      "calculated": true,
+      "table": "WBR TS Actual"
+    },
+    "TS Reasoning": {
+      "name": "TS Reasoning",
+      "dax": "RELATED('WBR TS Comment'[Reasoning])",
+      "calculated": true,
+      "table": "WBR TS Actual"
+    },
+    "Not TS": {
+      "name": "Not TS",
+      "dax": "IF(RELATED('WBR TS Comment'[TS])=BLANK(), \"Not TS\")",
+      "calculated": true,
+      "table": "WBR TS Actual"
+    },
+    "page": {
+      "name": "page",
+      "calculated": false,
+      "table": "analytic_usage"
+    },
+    "user": {
+      "name": "user",
+      "calculated": false,
+      "table": "analytic_usage"
+    },
+    "created_date": {
+      "name": "created_date",
+      "calculated": false,
+      "table": "analytic_usage"
+    },
+    "count": {
+      "name": "count",
+      "calculated": false,
+      "table": "analytic_usage"
+    },
+    "User Name": {
+      "name": "User Name",
+      "dax": "LOOKUPVALUE(User[user_name], User[user_id], analytic_usage[user])",
+      "calculated": true,
+      "table": "analytic_usage"
+    },
+    "candidate_id": {
+      "name": "candidate_id",
+      "calculated": false,
+      "table": "screen"
+    },
+    "talent_id": {
+      "name": "talent_id",
+      "calculated": false,
+      "table": "talent_email"
+    },
+    "reason_not_interested": {
+      "name": "reason_not_interested",
+      "calculated": false,
+      "table": "candidate"
+    },
+    "is_candidate_duplicated": {
+      "name": "is_candidate_duplicated",
+      "calculated": false,
+      "table": "candidate"
+    },
+    "is_candidate_disqualified": {
+      "name": "is_candidate_disqualified",
+      "calculated": false,
+      "table": "candidate"
+    },
+    "source": {
+      "name": "source",
+      "calculated": false,
+      "table": "candidate"
+    },
+    "is_candidate_reacted": {
+      "name": "is_candidate_reacted",
+      "calculated": false,
+      "table": "candidate"
+    },
+    "candidate_sourcer": {
+      "name": "candidate_sourcer",
+      "calculated": false,
+      "table": "candidate"
+    },
+    "hired_salary": {
+      "name": "hired_salary",
+      "calculated": false,
+      "table": "candidate"
+    },
+    "is_candidate_archived": {
+      "name": "is_candidate_archived",
+      "calculated": false,
+      "table": "candidate"
+    },
+    "hired_salary_eur": {
+      "name": "hired_salary_eur",
+      "calculated": false,
+      "table": "candidate"
+    },
+    "is_candidate_createdby_ai": {
+      "name": "is_candidate_createdby_ai",
+      "calculated": false,
+      "table": "candidate"
+    },
+    "Response count": {
+      "name": "Response count",
+      "dax": "CALCULATE(COUNTROWS(RELATEDTABLE(event)), event[event_type] IN {\"Linkedin Responded\", \"Linkedin inMail received\", \"Email Replied\", \"Disqualified\"})",
+      "calculated": true,
+      "table": "candidate"
+    },
+    "Candidate Responded?": {
+      "name": "Candidate Responded?",
+      "dax": "IF(candidate[Response count]>0, TRUE, FALSE)",
+      "calculated": true,
+      "table": "candidate"
+    },
+    "Linkedin connect sent": {
+      "name": "Linkedin connect sent",
+      "dax": "\n\t\t\tvar num = CALCULATE(COUNTROWS(RELATEDTABLE(event)), event[event_type]=\"Linkedin Sent Contact\")\n\t\t\tRETURN IF(num>0, TRUE, FALSE)",
+      "calculated": true,
+      "table": "candidate"
+    },
+    "Linkedin Connected": {
+      "name": "Linkedin Connected",
+      "dax": "\n\t\t\tvar num = CALCULATE(COUNTROWS(RELATEDTABLE(event)), event[event_type]=\"Linkedin Connected\")\n\t\t\tRETURN IF(num>0, TRUE, FALSE)",
+      "calculated": true,
+      "table": "candidate"
+    },
+    "hired_salary_currency": {
+      "name": "hired_salary_currency",
+      "calculated": false,
+      "table": "candidate"
+    },
+    "Hired Salary cal": {
+      "name": "Hired Salary cal",
+      "dax": "candidate[hired_salary] * candidate[Exchange rate]",
+      "calculated": true,
+      "table": "candidate"
+    },
+    "Exchange rate": {
+      "name": "Exchange rate",
+      "dax": "```\n\t\t\tSWITCH(TRUE(),\n\t\t\tcandidate[hired_salary_currency]=\"Croatian kuna\", 0.13,\n\t\t\tcandidate[hired_salary_currency]=\"Czech koruna\", 0.04,\n\t\t\tcandidate[hired_salary_currency]=\"Danish krone\", 0.13,\n\t\t\tcandidate[hired_salary_currency]=\"Dollar\", 0.93,\n\t\t\tcandidate[hired_salary_currency]=\"Hungarian forint\", 0.0026,\n\t\t\tcandidate[hired_salary_currency]=\"Norwegian Krone\", 0.09,\n\t\t\tcandidate[hired_salary_currency]=\"Polish z\u0142oty\", 0.22,\n\t\t\tcandidate[hired_salary_currency]=\"Pound\", 1.16, \n\t\t\tcandidate[hired_salary_currency]=\"Rupee\", 0.011,\n\t\t\tcandidate[hired_salary_currency]=\"Swedish krona\", 0.09,\n\t\t\tcandidate[hired_salary_currency]=\"Euro\", 1\n\t\t\t)\n\t\t\t```",
+      "calculated": true,
+      "table": "candidate"
+    },
+    "Prospects": {
+      "name": "Prospects",
+      "dax": "RELATED(candidate[Prospects])",
+      "calculated": true,
+      "table": "candidate_stage"
+    },
+    "Current Stage": {
+      "name": "Current Stage",
+      "calculated": false,
+      "table": "candidate_stage"
+    },
+    "date_created": {
+      "name": "date_created",
+      "calculated": false,
+      "table": "talent_email"
+    },
+    "date_lnkdin_viewed": {
+      "name": "date_lnkdin_viewed",
+      "calculated": false,
+      "table": "candidate_stage"
+    },
+    "date_contacted": {
+      "name": "date_contacted",
+      "calculated": false,
+      "table": "candidate_stage"
+    },
+    "date_screen": {
+      "name": "date_screen",
+      "calculated": false,
+      "table": "candidate_stage"
+    },
+    "date_screen_actual": {
+      "name": "date_screen_actual",
+      "calculated": false,
+      "table": "candidate_stage"
+    },
+    "date_interview": {
+      "name": "date_interview",
+      "calculated": false,
+      "table": "candidate_stage"
+    },
+    "date_offer": {
+      "name": "date_offer",
+      "calculated": false,
+      "table": "candidate_stage"
+    },
+    "date_hired": {
+      "name": "date_hired",
+      "calculated": false,
+      "table": "candidate_stage"
+    },
+    "stage_current_type": {
+      "name": "stage_current_type",
+      "calculated": false,
+      "table": "candidate_stage"
+    },
+    "stage_current": {
+      "name": "stage_current",
+      "calculated": false,
+      "table": "candidate_stage"
+    },
+    "Diff Contacted - Hired": {
+      "name": "Diff Contacted - Hired",
+      "dax": "\n\t\t\tvar d= DATEDIFF(job[date_first_hired_contacted], job[date_first_hired],DAY)\n\t\t\tRETURN IF(d<0, BLANK(), d)",
+      "calculated": true,
+      "table": "job"
+    },
+    "automation_emails": {
+      "name": "automation_emails",
+      "calculated": false,
+      "table": "candidate_stage"
+    },
+    "automation_connections": {
+      "name": "automation_connections",
+      "calculated": false,
+      "table": "candidate_stage"
+    },
+    "automation_inmails": {
+      "name": "automation_inmails",
+      "calculated": false,
+      "table": "candidate_stage"
+    },
+    "automation_messages": {
+      "name": "automation_messages",
+      "calculated": false,
+      "table": "candidate_stage"
+    },
+    "automation_steps": {
+      "name": "automation_steps",
+      "dax": "```\n\t\t\tIF(ISBLANK(candidate_stage[automation_connections]), \n\t\t\t                        \"0\",\n\t\t\t                        IF((candidate_stage[automation_connections]+candidate_stage[automation_emails]+candidate_stage[automation_inmails]+candidate_stage[automation_messages])<=5,\n\t\t\t                            CONVERT(candidate_stage[automation_connections]+candidate_stage[automation_emails]+candidate_stage[automation_inmails]+candidate_stage[automation_messages], STRING),\n\t\t\t                            \"6+\"))\n\n\n\t\t\t```",
+      "calculated": true,
+      "table": "candidate_stage"
+    },
+    "is_automation": {
+      "name": "is_automation",
+      "dax": "```\n\t\t\tIF(candidate_stage[automation_steps] = \"0\", \"No automation\", \"With automation\")\n\n\n\t\t\t```",
+      "calculated": true,
+      "table": "candidate_stage"
+    },
+    "Diff Concated - Job created": {
+      "name": "Diff Concated - Job created",
+      "dax": "\n\t\t\tvar d = DATEDIFF(RELATED(job[date_created]), candidate_stage[date_contacted], DAY)\n\t\t\tRETURN IF(d<0, BLANK(), d)",
+      "calculated": true,
+      "table": "candidate_stage"
+    },
+    "Diff Hired - Job created": {
+      "name": "Diff Hired - Job created",
+      "dax": "\n\t\t\tvar d = DATEDIFF(job[date_created], job[date_first_hired],DAY)\n\t\t\tRETURN IF(d<0, BLANK(), d)",
+      "calculated": true,
+      "table": "job"
+    },
+    "hired_order": {
+      "name": "hired_order",
+      "calculated": false,
+      "table": "candidate_stage"
+    },
+    "hired_views": {
+      "name": "hired_views",
+      "calculated": false,
+      "table": "candidate_stage"
+    },
+    "hired_contacts": {
+      "name": "hired_contacts",
+      "calculated": false,
+      "table": "candidate_stage"
+    },
+    "hired_screens": {
+      "name": "hired_screens",
+      "calculated": false,
+      "table": "candidate_stage"
+    },
+    "Contacted created diff": {
+      "name": "Contacted created diff",
+      "dax": "IF(candidate_stage[date_contacted]=candidate_stage[date_created], TRUE(), FALSE())",
+      "calculated": true,
+      "table": "candidate_stage"
+    },
+    "Last update": {
+      "name": "Last update",
+      "dax": "MAX(MAX(MAX(MAX(MAX(MAX(MAX(candidate_stage[date_created], candidate_stage[date_lnkdin_viewed]), candidate_stage[date_contacted]), candidate_stage[date_screen]), candidate_stage[date_screen_actual]), candidate_stage[date_interview]), candidate_stage[date_offer]), candidate_stage[date_hired])",
+      "calculated": true,
+      "table": "candidate_stage"
+    },
+    "Is First Hired?": {
+      "name": "Is First Hired?",
+      "dax": "\n\t\t\tSWITCH(TRUE(),\n\t\t\tcandidate_stage[hired_order]=1, \"Yes\",\n\t\t\tcandidate_stage[hired_order]<>1 && MOD(candidate_stage[hired_order],10)=1, CONVERT(candidate_stage[hired_order],STRING)&\"st\",\n\t\t\tcandidate_stage[hired_order]<>1 && MOD(candidate_stage[hired_order],10)=2, CONVERT(candidate_stage[hired_order],STRING)&\"nd\",\n\t\t\tcandidate_stage[hired_order]<>1 && MOD(candidate_stage[hired_order],10)=3, CONVERT(candidate_stage[hired_order],STRING)&\"rd\",\n\t\t\tCONVERT(candidate_stage[hired_order],STRING)&\"th\")",
+      "calculated": true,
+      "table": "candidate_stage"
+    },
+    "Current Stage Num": {
+      "name": "Current Stage Num",
+      "calculated": false,
+      "table": "candidate_stage"
+    },
+    "is_client_archived": {
+      "name": "is_client_archived",
+      "calculated": false,
+      "table": "client"
+    },
+    "test": {
+      "name": "test",
+      "calculated": false,
+      "table": "job"
+    },
+    "event_id": {
+      "name": "event_id",
+      "calculated": false,
+      "table": "event"
+    },
+    "is_event_duplicated": {
+      "name": "is_event_duplicated",
+      "calculated": false,
+      "table": "event"
+    },
+    "event_type": {
+      "name": "event_type",
+      "calculated": false,
+      "table": "event"
+    },
+    "moved_to_stage": {
+      "name": "moved_to_stage",
+      "calculated": false,
+      "table": "event"
+    },
+    "moved_to_stageType": {
+      "name": "moved_to_stageType",
+      "calculated": false,
+      "table": "event"
+    },
+    "who_created_event": {
+      "name": "who_created_event",
+      "calculated": false,
+      "table": "event"
+    },
+    "automation_flow_name": {
+      "name": "automation_flow_name",
+      "calculated": false,
+      "table": "event"
+    },
+    "automation_step_type": {
+      "name": "automation_step_type",
+      "calculated": false,
+      "table": "event"
+    },
+    "automation_step_order": {
+      "name": "automation_step_order",
+      "calculated": false,
+      "table": "event"
+    },
+    "automation_is_message_read": {
+      "name": "automation_is_message_read",
+      "calculated": false,
+      "table": "event"
+    },
+    "automation_is_message_replied": {
+      "name": "automation_is_message_replied",
+      "calculated": false,
+      "table": "event"
+    },
+    "automation_message_version_id": {
+      "name": "automation_message_version_id",
+      "calculated": false,
+      "table": "event"
+    },
+    "dayhour": {
+      "name": "dayhour",
+      "calculated": false,
+      "table": "event"
+    },
+    "is_automation_step_sent": {
+      "name": "is_automation_step_sent",
+      "dax": "```\n\t\t\tIF(  (event[event_type]=\"Email Sent\" && event[automation_step_type]=\"Email\") \n\t\t\t                               || (event[event_type]=\"Linkedin Sent Contact\" && event[automation_step_type]=\"Connection\")\n\t\t\t                               || (event[event_type]=\"Message sent\" && event[automation_step_type]=\"LN message\")\n\t\t\t                               || (event[event_type]=\"Linkedin inMail sent\" && event[automation_step_type]=\"Inmail\")\n\t\t\t                               , TRUE(), FALSE())\n\t\t\t```",
+      "calculated": true,
+      "table": "event"
+    },
+    "automation_step_name": {
+      "name": "automation_step_name",
+      "calculated": false,
+      "table": "event"
+    },
+    "automation_step_subcon": {
+      "name": "automation_step_subcon",
+      "calculated": false,
+      "table": "event"
+    },
+    "automation_step_con": {
+      "name": "automation_step_con",
+      "calculated": false,
+      "table": "event"
+    },
+    "automation_step_consubcon": {
+      "name": "automation_step_consubcon",
+      "dax": "CONCATENATE(CONCATENATE(event[automation_step_subcon], \" - \"), event[automation_step_con])",
+      "calculated": true,
+      "table": "event"
+    },
+    "who_event_created_for_id": {
+      "name": "who_event_created_for_id",
+      "calculated": false,
+      "table": "event"
+    },
+    "Candidate Job ID": {
+      "name": "Candidate Job ID",
+      "dax": "IF(event[moved_to_stageType]=\"Contacted\" && event[event_type]=\"Moved to stage\" && event[job_id]<>BLANK() && event[candidate_id]<>BLANK(), CONCATENATE(event[candidate_id], event[job_id]), BLANK())",
+      "calculated": true,
+      "table": "event"
+    },
+    "Earliest contacted": {
+      "name": "Earliest contacted",
+      "dax": "\n\t\t\tVAR  earliest_contacted = CALCULATE(MIN(event[date_created]), FILTER(event, event[Candidate Job ID]=EARLIER(event[Candidate Job ID])), event[Candidate Job ID]<>BLANK())\n\t\t\tRETURN\n\t\t\tIF(event[date_created]=earliest_contacted, event[who_created_event], BLANK())",
+      "calculated": true,
+      "table": "event"
+    },
+    "Sourcer credit contacted": {
+      "name": "Sourcer credit contacted",
+      "dax": "\n\t\t\tVAR Sourcer = CONCATENATEX(\n\t\t\t    FILTER(\n\t\t\t        SUMMARIZE(event, event[Candidate Job ID], event[Earliest contacted]),\n\t\t\t        event[Candidate Job ID]=EARLIER(event[Candidate Job ID]) &&\n\t\t\t        event[Earliest contacted]<>BLANK()\n\t\t\t    ),\n\t\t\t    event[Earliest contacted], \", \", event[Earliest contacted])\n\t\t\tRETURN IF(event[Earliest contacted]<>BLANK(), Sourcer, BLANK())",
+      "calculated": true,
+      "table": "event"
+    },
+    "talent_id + job_id": {
+      "name": "talent_id + job_id",
+      "dax": "```\n\t\t\tCONCATENATE(event[talent_id], event[job_id]) \n\t\t\t```",
+      "calculated": true,
+      "table": "event"
+    },
+    "is_event_createdby_ai": {
+      "name": "is_event_createdby_ai",
+      "calculated": false,
+      "table": "event"
+    },
+    "is_external_recruiter": {
+      "name": "is_external_recruiter",
+      "calculated": false,
+      "table": "job"
+    },
+    "Tribe": {
+      "name": "Tribe",
+      "dax": "IF(event[who_created_event]=event[who_event_created_for], 1, 0)",
+      "calculated": true,
+      "table": "event"
+    },
+    "ai_rearch_id": {
+      "name": "ai_rearch_id",
+      "calculated": false,
+      "table": "event"
+    },
+    "not_fit": {
+      "name": "not_fit",
+      "calculated": false,
+      "table": "event"
+    },
+    "not_fit_reason": {
+      "name": "not_fit_reason",
+      "calculated": false,
+      "table": "event"
+    },
+    "Linkedin Viewed by AI": {
+      "name": "Linkedin Viewed by AI",
+      "dax": "```\n\t\t\tSWITCH(TRUE(),\n\t\t\tevent[event_type]=\"Linkedin Visited Profile\" && event[is_event_createdby_ai]=TRUE(), \"Yes\", \n\t\t\tevent[event_type]=\"Linkedin Visited Profile\" && event[is_event_createdby_ai]=BLANK(), \"No\",\n\t\t\t\"No\")\n\t\t\t```",
+      "calculated": true,
+      "table": "event"
+    },
+    "Not Official Sourcer WBR": {
+      "name": "Not Official Sourcer WBR",
+      "dax": "IF(event[who_created_event_first]=RELATED(job[job_sourcer]), \"Same\", \"Not\")",
+      "calculated": true,
+      "table": "event"
+    },
+    "Sourcer Employee Number": {
+      "name": "Sourcer Employee Number",
+      "dax": "RELATED(User[employee_number])",
+      "calculated": true,
+      "table": "event"
+    },
+    "Sourcing Team?": {
+      "name": "Sourcing Team?",
+      "dax": "\n\t\t\tSWITCH(TRUE(),\n\t\t\tRELATED('Sourcing Team List'[Moved to TA Position Date])=BLANK() && RELATED('Sourcing Team List'[Name])<>BLANK(), \"Yes\",\n\t\t\tRELATED('Sourcing Team List'[Moved to TA Position Date])<>BLANK() && event[date_created]<RELATED('Sourcing Team List'[Moved to TA Position Date]) && RELATED('Sourcing Team List'[Name])<>BLANK(), \"Yes\",\n\t\t\t\"No\")",
+      "calculated": true,
+      "table": "event"
+    },
+    "job_category": {
+      "name": "job_category",
+      "calculated": false,
+      "table": "job"
+    },
+    "job_subcategory": {
+      "name": "job_subcategory",
+      "calculated": false,
+      "table": "job"
+    },
+    "user_hiring_manager": {
+      "name": "user_hiring_manager",
+      "calculated": false,
+      "table": "job"
+    },
+    "is_job_archived": {
+      "name": "is_job_archived",
+      "calculated": false,
+      "table": "job"
+    },
+    "job_sourcer": {
+      "name": "job_sourcer",
+      "calculated": false,
+      "table": "job"
+    },
+    "date_first_hired": {
+      "name": "date_first_hired",
+      "calculated": false,
+      "table": "job"
+    },
+    "date_first_hired_contacted": {
+      "name": "date_first_hired_contacted",
+      "calculated": false,
+      "table": "job"
+    },
+    "Diff Contacted - Job created": {
+      "name": "Diff Contacted - Job created",
+      "dax": "\n\t\t\tvar d= DATEDIFF(job[date_created], job[date_first_hired_contacted],DAY)\n\t\t\tRETURN IF(d<0, BLANK(), d)",
+      "calculated": true,
+      "table": "job"
+    },
+    "job_location": {
+      "name": "job_location",
+      "calculated": false,
+      "table": "job"
+    },
+    "Tech Role": {
+      "name": "Tech Role",
+      "dax": "\n\t\t\tIF(job[job_category]=\"Data Analytics\" ||\n\t\t\t            job[job_category]=\"DevOps\" ||\n\t\t\t            job[job_category]=\"Software Engineering\" ||\n\t\t\t            job[job_category]=\"Software\"||\n\t\t\t            job[job_category]=\"Design\" ||\n\t\t\t            job[job_category]=\"Product Manager\" ||\n\t\t\t            job[job_category]=\"Information Technology\" ||\n\t\t\t            job[job_category]=\"Quality Assurance (QA)\u00a0\" ||\n\t\t\t            job[job_category]=\"Engineering Management\" ||\n\t\t\t            job[job_category]=\"Data Analytics\" ||\n\t\t\t            (job[job_category]=\"Project Manager\" && job[job_subcategory] in {\"IT Project Manager\", \"Technical Program Manager\"}),\n\t\t\t            \"Yes\", \"No\")",
+      "calculated": true,
+      "table": "job"
+    },
+    "Job Days Opened": {
+      "name": "Job Days Opened",
+      "dax": "DATEDIFF(job[date_created], TODAY(), DAY)",
+      "calculated": true,
+      "table": "job"
+    },
+    "Job Creation Year": {
+      "name": "Job Creation Year",
+      "dax": "FORMAT(job[date_created], \"YYYY\")",
+      "calculated": true,
+      "table": "job"
+    },
+    "External Recruiter?": {
+      "name": "External Recruiter?",
+      "dax": "IF(job[is_external_recruiter]=TRUE(), \"Yes\", \"No\")",
+      "calculated": true,
+      "table": "job"
+    },
+    "Job Country Grouping": {
+      "name": "Job Country Grouping",
+      "dax": "\n\t\t\tSWITCH(TRUE(),\n\t\t\tjob[Job Country]=\"Germany\", \"Central Europe\",\n\t\t\tjob[Job Country]=\"Austria\", \"Central Europe\",\n\t\t\tjob[Job Country]=\"Czech Republic\", \"Central Europe\",\n\t\t\tjob[Job Country]=\"Czechia\", \"Central Europe\",\n\t\t\tjob[Job Country]=\"Hungary\", \"Central Europe\",\n\t\t\tjob[Job Country]=\"Slovakia\", \"Central Europe\",\n\t\t\tjob[Job Country]=\"Slovenia\", \"Central Europe\",\n\t\t\tjob[Job Country]=\"Poland\", \"Central Europe\",\n\t\t\tjob[Job Country]=\"France\", \"Western Europe\",\n\t\t\tjob[Job Country]=\"Belgium\", \"Western Europe\",\n\t\t\tjob[Job Country]=\"Netherlands\", \"Western Europe\",\n\t\t\tjob[Job Country]=\"Luxembourg\", \"Western Europe\",\n\t\t\tjob[Job Country]=\"Finland\", \"Northern Europe\",\n\t\t\tjob[Job Country]=\"Sweden\", \"Northern Europe\",\n\t\t\tjob[Job Country]=\"Norway\", \"Northern Europe\",\n\t\t\tjob[Job Country]=\"Denmark\", \"Northern Europe\",\n\t\t\tjob[Job Country]=\"Iceland\", \"Northern Europe\",\n\t\t\tjob[Job Country]=\"Romania\", \"Eastern Europe\",\n\t\t\tjob[Job Country]=\"Belarus\", \"Eastern Europe\",\n\t\t\tjob[Job Country]=\"Russia\", \"Eastern Europe\",\n\t\t\tjob[Job Country]=\"Ukraine\", \"Eastern Europe\",\n\t\t\tjob[Job Country]=\"Moldova\", \"Eastern Europe\",\n\t\t\tjob[Job Country]=\"Estonia\", \"Eastern Europe (Baltic States)\",\n\t\t\tjob[Job Country]=\"Latvia\", \"Eastern Europe (Baltic States)\",\n\t\t\tjob[Job Country]=\"Lithuania\", \"Eastern Europe (Baltic States)\",\n\t\t\tjob[Job Country]=\"Baltic States\", \"Eastern Europe (Baltic States)\",\n\t\t\tjob[Job Country]=\"Albania\", \"Southeast Europe\",\n\t\t\tjob[Job Country]=\"Bosnia and Herzegovina\", \"Southeast Europe\",\n\t\t\tjob[Job Country]=\"Bulgaria\", \"Southeast Europe\",\n\t\t\tjob[Job Country]=\"Croatia\", \"Southeast Europe\",\n\t\t\tjob[Job Country]=\"Montenegro\", \"Southeast Europe\",\n\t\t\tjob[Job Country]=\"North Macedonia\", \"Southeast Europe\",\n\t\t\tjob[Job Country]=\"Serbia\", \"Southeast Europe\",\n\t\t\tjob[Job Country]=\"Italy\", \"Southern Europe\",\n\t\t\tjob[Job Country]=\"Greece\", \"Southern Europe\",\n\t\t\tjob[Job Country]=\"Spain\", \"Southern Europe\",\n\t\t\tjob[Job Country]=\"Portugal\", \"Southern Europe\",\n\t\t\tjob[Job Country]=\"Cyprus\", \"Southern Europe\",\n\t\t\tjob[Job Country]=\"Malta\", \"Southern Europe\",\n\t\t\t\"Other\")",
+      "calculated": true,
+      "table": "job"
+    },
+    "Job Country": {
+      "name": "Job Country",
+      "calculated": false,
+      "table": "job"
+    },
+    "Tech Role (text)": {
+      "name": "Tech Role (text)",
+      "dax": "IF(job[Tech Role]=\"Yes\", \"Tech Role\", \"Non-Tech Role\")",
+      "calculated": true,
+      "table": "job"
+    },
+    "Job Creation Month": {
+      "name": "Job Creation Month",
+      "dax": "FORMAT(job[date_created], \"mmmm\")",
+      "calculated": true,
+      "table": "job"
+    },
+    "Job Creation Date Month Text": {
+      "name": "Job Creation Date Month Text",
+      "dax": "FORMAT(job[date_created], \"MM\")",
+      "calculated": true,
+      "table": "job"
+    },
+    "email_hiring_manager": {
+      "name": "email_hiring_manager",
+      "calculated": false,
+      "table": "job"
+    },
+    "Job Creation Week": {
+      "name": "Job Creation Week",
+      "dax": "WEEKNUM(job[date_created], 21)",
+      "calculated": true,
+      "table": "job"
+    },
+    "Temp hide from WBR TS": {
+      "name": "Temp hide from WBR TS",
+      "dax": "RELATED(Temp_Inactive_Jobs_Sourcers_WBR[No longer working with the job])",
+      "calculated": true,
+      "table": "job"
+    },
+    "Problem jobs": {
+      "name": "Problem jobs",
+      "dax": "```\n\t\t\tIF(\n\t\t\t    ([# candidates - actual screen (actual screen date)]>=25 && job[date_first_hired]=BLANK() && [# candidates - hired (hired date)]=BLANK()) ||\n\t\t\t    ([# candidates - actual screen (actual screen date)]/[# candidates - hired (hired date)]>=32 && job[date_first_hired]<>BLANK() && [# candidates - hired (hired date)]<>BLANK())\n\t\t\t    , \n\t\t\t    1, 0)\n\t\t\t```",
+      "calculated": true,
+      "table": "job"
+    },
+    "Job Days Opened w/o hires": {
+      "name": "Job Days Opened w/o hires",
+      "dax": "IF(job[date_first_hired]=BLANK(), DATEDIFF(job[date_created], TODAY(), DAY), BLANK())",
+      "calculated": true,
+      "table": "job"
+    },
+    "# ATS": {
+      "name": "# ATS",
+      "dax": "CALCULATE(COUNT(candidate_stage[candidate_id]), candidate_stage[date_interview]<>BLANK())",
+      "calculated": true,
+      "table": "job"
+    },
+    "# Offers": {
+      "name": "# Offers",
+      "dax": "CALCULATE(COUNT(candidate_stage[candidate_id]), candidate_stage[date_offer]<>BLANK())",
+      "calculated": true,
+      "table": "job"
+    },
+    "# Actual Screens": {
+      "name": "# Actual Screens",
+      "dax": "CALCULATE(COUNT(candidate_stage[candidate_id]), candidate_stage[date_screen_actual]<>BLANK())",
+      "calculated": true,
+      "table": "job"
+    },
+    "executive_search": {
+      "name": "executive_search",
+      "calculated": false,
+      "table": "job"
+    },
+    "# Hires": {
+      "name": "# Hires",
+      "dax": "CALCULATE(COUNT(candidate_stage[candidate_id]), candidate_stage[date_hired]<>BLANK())",
+      "calculated": true,
+      "table": "job"
+    },
+    "# Actual Screens with notes": {
+      "name": "# Actual Screens with notes",
+      "dax": "[# candidates - actual screen (since job open)]",
+      "calculated": true,
+      "table": "job"
+    },
+    "Jobs Opened": {
+      "name": "Jobs Opened",
+      "dax": "IF(job[date_first_hired]<>BLANK(), job[Diff Hired - Job created], job[Job Days Opened w/o hires])",
+      "calculated": true,
+      "table": "job"
+    },
+    "Owned by sourcing team (active TS)": {
+      "name": "Owned by sourcing team (active TS)",
+      "dax": "\n\t\t\tvar ts = LOOKUPVALUE(Current_TS[TS], Current_TS[TS], job[job_sourcer])\n\t\t\tRETURN\n\t\t\tIF(ts=BLANK(), \"No\", \"Yes\")",
+      "calculated": true,
+      "table": "job"
+    },
+    "screen_id": {
+      "name": "screen_id",
+      "calculated": false,
+      "table": "screen"
+    },
+    "current_salary": {
+      "name": "current_salary",
+      "calculated": false,
+      "table": "screen"
+    },
+    "current_salary_currency": {
+      "name": "current_salary_currency",
+      "calculated": false,
+      "table": "screen"
+    },
+    "desired_salary": {
+      "name": "desired_salary",
+      "calculated": false,
+      "table": "screen"
+    },
+    "desired_salary_currency": {
+      "name": "desired_salary_currency",
+      "calculated": false,
+      "table": "screen"
+    },
+    "location": {
+      "name": "location",
+      "calculated": false,
+      "table": "talent"
+    },
+    "rating": {
+      "name": "rating",
+      "calculated": false,
+      "table": "screen"
+    },
+    "user_recruiter": {
+      "name": "user_recruiter",
+      "calculated": false,
+      "table": "screen"
+    },
+    "relocation": {
+      "name": "relocation",
+      "calculated": false,
+      "table": "screen"
+    },
+    "salary_type": {
+      "name": "salary_type",
+      "calculated": false,
+      "table": "screen"
+    },
+    "start_date": {
+      "name": "start_date",
+      "calculated": false,
+      "table": "screen"
+    },
+    "visa": {
+      "name": "visa",
+      "calculated": false,
+      "table": "screen"
+    },
+    "full_name": {
+      "name": "full_name",
+      "calculated": false,
+      "table": "talent"
+    },
+    "current_company": {
+      "name": "current_company",
+      "calculated": false,
+      "table": "talent"
+    },
+    "current_title": {
+      "name": "current_title",
+      "calculated": false,
+      "table": "talent"
+    },
+    "main_email": {
+      "name": "main_email",
+      "calculated": false,
+      "table": "talent"
+    },
+    "linkedin_link": {
+      "name": "linkedin_link",
+      "calculated": false,
+      "table": "talent"
+    },
+    "is_talent_duplicated": {
+      "name": "is_talent_duplicated",
+      "calculated": false,
+      "table": "talent"
+    },
+    "duplicates": {
+      "name": "duplicates",
+      "calculated": false,
+      "table": "talent"
+    },
+    "location_country": {
+      "name": "location_country",
+      "calculated": false,
+      "table": "talent"
+    },
+    "location_city": {
+      "name": "location_city",
+      "calculated": false,
+      "table": "talent"
+    },
+    "email_id": {
+      "name": "email_id",
+      "calculated": false,
+      "table": "talent_email"
+    },
+    "email": {
+      "name": "email",
+      "calculated": false,
+      "table": "talent_email"
+    },
+    "is_email_duplicated": {
+      "name": "is_email_duplicated",
+      "calculated": false,
+      "table": "talent_email"
+    },
+    "employer_id": {
+      "name": "employer_id",
+      "calculated": false,
+      "table": "talent_employer"
+    },
+    "employer_name": {
+      "name": "employer_name",
+      "calculated": false,
+      "table": "talent_employer"
+    }
+  },
+  "table_sources": {
+    "Calendar WBR": [
+      "CALCULATETABLE(SUMMARIZECOLUMNS('Calendar'[Week start end], 'Calendar'[WeekInt], 'Calendar'[is_current_week], 'Calendar'[is_last_12_weeks], 'Calendar'[is_last_4_weeks]), 'Calendar'[Week start end]<>BLANK(), 'Calendar'[Date]<=TODAY())\n\n\tannotation PBI_Id = db2875612ff045108a3f00a347318c96"
+    ],
+    "Calendar": [
+      "```\n\t\t\t\tlet CreateDateTable = (StartDate as date, EndDate as date, optional Culture as nullable text) as table =>\n\t\t\t\t  let\n\t\t\t\t\t\n\t\t\t\t    DayCount = Duration.Days(Duration.From(EndDate - StartDate))+1,\n\t\t\t\t    Source = List.Dates(StartDate,DayCount,#duration(1,0,0,0)),\n\t\t\t\t    TableFromList = Table.FromList(Source, Splitter.SplitByNothing()),    \n\t\t\t\t    ChangedType = Table.TransformColumnTypes(TableFromList,{{\"Column1\", type date}}),\n\t\t\t\t    RenamedColumns = Table.RenameColumns(ChangedType,{{\"Column1\", \"Date\"}}),\n\t\t\t\t    InsertYear = Table.AddColumn(RenamedColumns, \"Year\", each Date.Year([Date])),\n\t\t\t\t    InsertQuarter = Table.AddColumn(InsertYear, \"QuarterOfYear\", each Date.QuarterOfYear([Date])),\n\t\t\t\t    InsertMonth = Table.AddColumn(InsertQuarter, \"MonthOfYear\", each Date.Month([Date])),\n\t\t\t\t    InsertDay = Table.AddColumn(InsertMonth, \"DayOfMonth\", each Date.Day([Date])),\t\n\t\t\t\t    InsertDayInt = Table.AddColumn(InsertDay, \"DateInt\", each [Year] * 10000 + [MonthOfYear] * 100 + [DayOfMonth]),\n\t\t\t\t    InsertMonthName = Table.AddColumn(InsertDayInt, \"MonthName\", each Date.ToText([Date], \"MMMM\", Culture), type text),\n\t\t\t\t    InsertCalendarMonth = Table.AddColumn(InsertMonthName, \"MonthInt\", each [Year] * 100 + [MonthOfYear]),\n\t\t\t\t    InsertCalendarQtr = Table.AddColumn(InsertCalendarMonth, \"QuarterInCalendar\", each Number.ToText([Year]) & \" \" & \"Q\" & Number.ToText([QuarterOfYear]) ),\n\t\t\t\t    InsertDayWeek = Table.AddColumn(InsertCalendarQtr, \"DayInWeek\", each (Date.DayOfWeek([Date],Day.Monday)+1)),\n\t\t\t\t    InsertDayName = Table.AddColumn(InsertDayWeek, \"DayOfWeekName\", each Date.ToText([Date], \"dddd\", Culture), type text),\n\t\t\t\t    InsertWeekEnding = Table.AddColumn(InsertDayName, \"WeekEnding\", each Date.EndOfWeek([Date], Day.Monday), type date),\n\t\t\t\t    InsertWeekNum = Table.AddColumn(InsertWeekEnding, \"WeekOfYear\", each Date.WeekOfYear([Date])),\n\t\t\t\t    InsertWeekInt = Table.AddColumn(InsertWeekNum, \"WeekInt\", each [Year] * 100 + [WeekOfYear])\n\t\t\t\t  in\n\t\t\t\t    InsertWeekInt,\n\t\t\t\t    #\"Invoked FunctionCreateDateTable\" = CreateDateTable(#date(2021,1,1),#date(2026,6,30),\"en\"),\n\t\t\t\t    #\"Filtered Rows\" = Table.SelectRows(#\"Invoked FunctionCreateDateTable\", each true),\n\t\t\t\t    #\"Change Type\" = Table.TransformColumnTypes(#\"Filtered Rows\",{{\"Year\", Int64.Type}, {\"QuarterOfYear\", Int64.Type}, {\"MonthOfYear\", Int64.Type}, {\"DayOfMonth\", Int64.Type}, {\"DateInt\", Int64.Type}, {\"DayInWeek\", Int64.Type}, {\"WeekOfYear\", Int64.Type}, {\"WeekInt\", Int64.Type}}),\n\t\t\t\t    #\"Fiscal Year\" = Table.AddColumn(#\"Change Type\", \"Fiscal Year\", each if [MonthOfYear]<4 then [Year]-1 else [Year]),\n\t\t\t\t    #\"current eow\" = Table.AddColumn(#\"Fiscal Year\", \"WeekEnding Current\", each Date.EndOfWeek(DateTime.Date(DateTime.LocalNow()),Day.Monday)),\n\t\t\t\t    #\"Changed Type\" = Table.TransformColumnTypes(#\"current eow\",{{\"WeekEnding Current\", type date}}),\n\t\t\t\t    #\"Current Week -6w\" = Table.AddColumn(#\"Changed Type\", \"WeekEnding -6w\", each Date.AddDays([WeekEnding Current],-42)),\n\t\t\t\t"
+    ],
+    "Current_TA": [
+      "let\n\t\t\t\t    Source = GoogleSheets.Contents(\"https://docs.google.com/spreadsheets/d/1Hyb5M244bkh9ygxnssq_wppWxrT0KtGeVFEYvHVoouc/edit#gid=1802525365\"),\n\t\t\t\t    #\"TA Target_Table\" = Source{[name=\"TA Target\",ItemKind=\"Table\"]}[Data],\n\t\t\t\t    #\"Promoted Headers\" = Table.PromoteHeaders(#\"TA Target_Table\", [PromoteAllScalars=true]),\n\t\t\t\t    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\",{{\"Client\", type text}, {\"TA\", type text}, {\"Year\", Int64.Type}, {\"Month\", Int64.Type}, {\"Contacted\", type number}, {\"Actual Screens\", type number}, {\"Moved to ATS\", type number}}),\n\t\t\t\t    #\"Filtered Rows1\" = Table.SelectRows(#\"Changed Type\", each [Year] <> 2023 and [Year] <> 2024),\n\t\t\t\t    #\"Filtered Rows\" = Table.SelectRows(#\"Filtered Rows1\", each ([TA] <> \"\")),\n\t\t\t\t    #\"Added Custom\" = Table.AddColumn(#\"Filtered Rows\", \"YearMonth\", each [Year]*100 + [Month]),\n\t\t\t\t    #\"Added Custom1\" = Table.AddColumn(#\"Added Custom\", \"Max Month\", each List.Max(#\"Added Custom\"[YearMonth])),\n\t\t\t\t    #\"Added Conditional Column\" = Table.AddColumn(#\"Added Custom1\", \"Keep\", each if [YearMonth] = [Max Month] then 1 else 0),\n\t\t\t\t    #\"Filtered Rows2\" = Table.SelectRows(#\"Added Conditional Column\", each ([Keep] = 1) and ([Actual Screens] <> null and [Actual Screens] <> 0)),\n\t\t\t\t    #\"Trimmed Text\" = Table.TransformColumns(#\"Filtered Rows2\",{{\"TA\", Text.Trim, type text}}),\n\t\t\t\t    #\"Grouped Rows\" = Table.Group(#\"Trimmed Text\", {\"TA\", \"YearMonth\"}, {{\"Count\", each Table.RowCount(_), Int64.Type}}),\n\t\t\t\t    #\"Removed Columns\" = Table.RemoveColumns(#\"Grouped Rows\",{\"Count\"})\n\t\t\t\tin\n\t\t\t\t    #\"Removed Columns\"\n\n\tannotation PBI_ResultType = Exception\n\n\tannotation PBI_NavigationStepName = Navigation"
+    ],
+    "Current_TS": [
+      "let\n\t\t\t\t    Source = GoogleSheets.Contents(\"https://docs.google.com/spreadsheets/d/1Hyb5M244bkh9ygxnssq_wppWxrT0KtGeVFEYvHVoouc/edit#gid=1802525365\"),\n\t\t\t\t    #\"TS Weekly Note (not used)_Table\" = Source{[name=\"TS Weekly Note\",ItemKind=\"Table\"]}[Data],\n\t\t\t\t    #\"Promoted Headers\" = Table.PromoteHeaders(#\"TS Weekly Note (not used)_Table\", [PromoteAllScalars=true]),\n\t\t\t\t    #\"Filtered Rows2\" = Table.SelectRows(#\"Promoted Headers\", each [Year] <> 2023 and [Year] <> 2024),\n\t\t\t\t    #\"Inserted Text Before Delimiter\" = Table.AddColumn(#\"Filtered Rows2\", \"Text Before Delimiter\", each Text.BeforeDelimiter([#\"Week\"], \" \"), type text),\n\t\t\t\t    #\"Extracted Text After Delimiter\" = Table.TransformColumns(#\"Inserted Text Before Delimiter\", {{\"Text Before Delimiter\", each Text.AfterDelimiter(_, \"W\"), type text}}),\n\t\t\t\t    #\"Changed Type\" = Table.TransformColumnTypes(#\"Extracted Text After Delimiter\",{{\"Text Before Delimiter\", Int64.Type}}),\n\t\t\t\t    #\"Added Custom1\" = Table.AddColumn(#\"Changed Type\", \"YearWeek\", each [Year]*100 + [Text Before Delimiter]),\n\t\t\t\t    #\"Added Custom\" = Table.AddColumn(#\"Added Custom1\", \"Max\", each List.Max(#\"Added Custom1\"[YearWeek])),\n\t\t\t\t    #\"Added Conditional Column\" = Table.AddColumn(#\"Added Custom\", \"Keep\", each if [YearWeek] = [Max] then 1 else 0),\n\t\t\t\t    #\"Filtered Rows1\" = Table.SelectRows(#\"Added Conditional Column\", each [Keep] = 1),\n\t\t\t\t    #\"Filtered Rows\" = Table.SelectRows(#\"Filtered Rows1\", each [TS] <> null and [TS] <> \"\"),\n\t\t\t\t    #\"Trimmed Text\" = Table.TransformColumns(#\"Filtered Rows\",{{\"TS\", Text.Trim, type text}}),\n\t\t\t\t    #\"Removed Other Columns\" = Table.SelectColumns(#\"Trimmed Text\",{\"TS\", \"Week\"})\n\t\t\t\tin\n\t\t\t\t    #\"Removed Other Columns\"\n\n\tchangedProperty = IsHidden\n\n\tannotation PBI_ResultType = Table\n\n\tannotation PBI_NavigationStepName = Navigation"
+    ],
+    "Historical Manager Structure WBR": [
+      "let\n\t\t\t\t    Source = GoogleSheets.Contents(\"https://docs.google.com/spreadsheets/d/1IQMe6ryE_L_BryONqeiCKfvlvc0hpyIPrkayl1gI4bI/edit?gid=0#gid=0\"),\n\t\t\t\t    Sheet1_Table = Source{[name=\"Sheet1\",ItemKind=\"Table\"]}[Data],\n\t\t\t\t    #\"Promoted Headers\" = Table.PromoteHeaders(Sheet1_Table, [PromoteAllScalars=true]),\n\t\t\t\t    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\",{{\"Employee Number\", type text}, {\"Tribster Name\", type text}, {\"Report_To\", type text}, {\"WeekInt\", Int64.Type}, {\"Manager Key\",  type text}})\n\t\t\t\tin\n\t\t\t\t    #\"Changed Type\"\n\n\tannotation PBI_NavigationStepName = Navigation\n\n\tannotation PBI_ResultType = Table"
+    ],
+    "IR Comment": [
+      "let\n\t\t\t\t    Source = GoogleSheets.Contents(\"https://docs.google.com/spreadsheets/d/1Hyb5M244bkh9ygxnssq_wppWxrT0KtGeVFEYvHVoouc/edit?gid=1898344035#gid=1898344035\"),\n\t\t\t\t    IR_Table = Source{[name=\"IR\",ItemKind=\"Table\"]}[Data],\n\t\t\t\t    #\"Promoted Headers\" = Table.PromoteHeaders(IR_Table, [PromoteAllScalars=true]),\n\t\t\t\t    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\",{{\"Role\", type text}, {\"Year\", Int64.Type}, {\"Week\", type text}, {\"Client\", type text}, {\"Headcount\", Int64.Type}, {\"Status\", type text}, {\"Outcome\", type text}}),\n\t\t\t\t    #\"Filtered Rows\" = Table.SelectRows(#\"Changed Type\", each [Job_ID] <> null and [Job_ID] <> \"\"),\n\t\t\t\t    #\"Filtered Rows1\" = Table.SelectRows(#\"Filtered Rows\", each [Week] <> null and [Week] <> \"\")\n\t\t\t\tin\n\t\t\t\t    #\"Filtered Rows1\"\n\n\tannotation PBI_NavigationStepName = Navigation\n\n\tannotation PBI_ResultType = Table"
+    ],
+    "LastRefreshedDate": [
+      "let\n\t\t\t\t  UTC_DateTimeZone = DateTimeZone.UtcNow(),\n\t\t\t\t  UTC_Date         = Date.From(UTC_DateTimeZone),\n\t\t\t\t  StartSummerTime  = Date.StartOfWeek(#date(Date.Year(UTC_Date), 3, 31), Day.Sunday),\n\t\t\t\t  StartWinterTime  = Date.StartOfWeek(#date(Date.Year(UTC_Date), 10, 31), Day.Sunday),\n\t\t\t\t  UTC_Offset       = if UTC_Date >= StartSummerTime and UTC_Date < StartWinterTime then 2 else 1,\n\t\t\t\t  CET_Timezone     = DateTimeZone.SwitchZone(UTC_DateTimeZone, UTC_Offset)\n\t\t\t\tin\n\t\t\t\t  CET_Timezone\n\n\tannotation PBI_ResultType = DateTimeZone"
+    ],
+    "Metrics": [
+      "let\n\t\t\t\t    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText(\"i45WMlCKjQUA\", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),\n\t\t\t\t    #\"Changed Type\" = Table.TransformColumnTypes(Source,{{\"Column1\", Int64.Type}}),\n\t\t\t\t    #\"Removed Columns\" = Table.RemoveColumns(#\"Changed Type\",{\"Column1\"})\n\t\t\t\tin\n\t\t\t\t    #\"Removed Columns\"\n\n\tannotation PBI_ResultType = Table\n\n\tannotation PBI_NavigationStepName = Navigation"
+    ],
+    "OKR TA": [
+      "```\n\t\t\t\tCALCULATETABLE(SELECTCOLUMNS('WBR TA Actual',    \n\t\t\t\t    \"TA\", 'WBR TA Actual'[who_event_created_for],\n\t\t\t\t    \"WeekInt\", 'WBR TA Actual'[WeekInt],\n\t\t\t\t    \"Week start end\", 'WBR TA Actual'[Week start end],\n\t\t\t\t    \"Year Q\", 'WBR TA Actual'[Year]& 'WBR TA Actual'[Q],\n\t\t\t\t    \"Contacted OKR\", [Contacted OKR number],\n\t\t\t\t    \"Actual Screen\", [Screens OKR number],\n\t\t\t\t    \"ATS OKR\", [Moved to ATS OKR number]),\n\t\t\t\t    'WBR TA Actual'[Client]<>BLANK(), 'WBR TA Actual'[WeekInt]>=202341, 'WBR TA Actual'[WeekInt]<>202352,'WBR TA Actual'[WeekInt]<>202353, 'WBR TA Actual'[WeekInt]<>202401, 'WBR TA Actual'[WeekInt]<>202402, 'WBR TA Comment'[Exclude OKR]<>\"Yes\")\n\t\t\t\t```\n\n\tannotation PBI_Id = 252f6f158ce74fdaa3db47ee499e368a"
+    ],
+    "Org": [
+      "let\n\t\t\t\t    Source = Csv.Document(Web.Contents(\"https://api.bamboohr.com/api/gateway.php/tribexyz/v1/reports/127?format=csv\"),[Delimiter=\",\", Columns=10, Encoding=65001, QuoteStyle=QuoteStyle.None]),\n\t\t\t\t    #\"Changed Type\" = Table.TransformColumnTypes(Source,{{\"Column1\", type text}, {\"Column2\", type text}, {\"Column3\", type text}, {\"Column4\", type text}, {\"Column5\", type text}}),\n\t\t\t\t    #\"Promoted Headers\" = Table.PromoteHeaders(#\"Changed Type\", [PromoteAllScalars=true]),\n\t\t\t\t    #\"Split Column by Delimiter\" = Table.SplitColumn(#\"Promoted Headers\", \"Supervisor name\", Splitter.SplitTextByDelimiter(\", \", QuoteStyle.Csv), {\"Supervisor name.1\", \"Supervisor name.2\"}),\n\t\t\t\t    #\"Added Custom\" = Table.AddColumn(#\"Split Column by Delimiter\", \"Name\", each [First Name] & \" \" & [Last Name]),\n\t\t\t\t    #\"Added Custom1\" = Table.AddColumn(#\"Added Custom\", \"Supervisor\", each [Supervisor name.2] & \" \" & [Supervisor name.1]),\n\t\t\t\t    #\"Renamed Columns\" = Table.RenameColumns(#\"Added Custom1\",{{\"Work Email\", \"Email\"}}),\n\t\t\t\t    #\"Filtered Rows1\" = Table.SelectRows(#\"Renamed Columns\", each ([Employment Status] <> \"Terminated\")),\n\t\t\t\t    #\"Added Conditional Column\" = Table.AddColumn(#\"Filtered Rows1\", \"Manager\", each if [#\"Employee #\"] = \"1\" then \"Martin Bernard\" else [Supervisor]),\n\t\t\t\t    #\"Removed Other Columns\" = Table.SelectColumns(#\"Added Conditional Column\",{\"Location\", \"Employee #\", \"Employment Status\", \"Name\", \"Manager\"}),\n\t\t\t\t    #\"Filtered Rows\" = Table.SelectRows(#\"Removed Other Columns\", each [Manager] <> null and [Manager] <> \"\")\n\t\t\t\tin\n\t\t\t\t    #\"Filtered Rows\"\n\n\tannotation PBI_ResultType = Table\n\n\tannotation PBI_NavigationStepName = Navigation"
+    ],
+    "Org_WBR": [
+      "let\n\t\t\t\t    Source = Org,\n\t\t\t\t    #\"Appended Query\" = Table.Combine({Source, Org_manager})\n\t\t\t\tin\n\t\t\t\t    #\"Appended Query\"\n\n\tannotation PBI_ResultType = Table\n\n\tannotation PBI_NavigationStepName = Navigation"
+    ],
+    "Sourcing Stats": [
+      "```\n\t\t\t\tCALCULATETABLE(SUMMARIZECOLUMNS(\n\t\t\t\t    event[who_created_event_first],\n\t\t\t\t    'Calendar'[Date],\n\t\t\t\t    \"Viewed\", [# events - LinkedIn visited (date created)]),\n\t\t\t\t    'Calendar'[is_last_6_weeks]=\"Yes\",    \n\t\t\t\t    job[job_title]<>BLANK(), client[client_name]<>BLANK(), SEARCH(\"Test\", client[client_name],1, BLANK())=BLANK(),\n\t\t\t\t    'Calendar'[DayOfWeekName]<>\"Saturday\", 'Calendar'[DayOfWeekName]<>\"Sunday\")\n\t\t\t\t```\n\n\tannotation PBI_Id = 0eff1784e57b4309928bb60d96ae555f"
+    ],
+    "Sourcing Team List": [
+      "let\n\t\t\t\t    Source = GoogleSheets.Contents(\"https://docs.google.com/spreadsheets/d/1jhLTNYC4EoSq9Wd7kXWF13qCnLKObnS1Gf9ZfY46Jh8/edit?gid=1774878141#gid=1774878141\"),\n\t\t\t\t    #\"Sheet 1_Table\" = Source{[name=\"Sheet 1\",ItemKind=\"Table\"]}[Data],\n\t\t\t\t    #\"Promoted Headers\" = Table.PromoteHeaders(#\"Sheet 1_Table\", [PromoteAllScalars=true]),\n\t\t\t\t    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\",{{\"Name\", type text}, {\"Employee Number\", type text}, {\"Moved to TA Position Date\", type date}}),\n\t\t\t\t    #\"Filtered Rows\" = Table.SelectRows(#\"Changed Type\", each [Employee Number] <> null and [Employee Number] <> \"\")\n\t\t\t\tin\n\t\t\t\t    #\"Filtered Rows\"\n\n\tannotation PBI_NavigationStepName = Navigation\n\n\tannotation PBI_ResultType = Table"
+    ],
+    "Temp_Inactive_Jobs_Sourcers_WBR": [
+      "let\n\t\t\t\t    Source = GoogleSheets.Contents(\"https://docs.google.com/spreadsheets/d/1WApKTTxsXuwMgK5UBuEyTqzCgiXajLIX54RN3FHsNcA/edit?gid=0#gid=0\"),\n\t\t\t\t    Sheet1_Table = Source{[name=\"Sheet1\",ItemKind=\"Table\"]}[Data],\n\t\t\t\t    #\"Promoted Headers\" = Table.PromoteHeaders(Sheet1_Table, [PromoteAllScalars=true]),\n\t\t\t\t    #\"Added Conditional Column\" = Table.AddColumn(#\"Promoted Headers\", \"Filter\", each if [Sourcer] = [Official Sourcer] then 1 else 0),\n\t\t\t\t    #\"Filtered Rows2\" = Table.SelectRows(#\"Added Conditional Column\", each ([Filter] = 1)),\n\t\t\t\t    #\"Removed Columns\" = Table.RemoveColumns(#\"Filtered Rows2\",{\"Filter\"}),\n\t\t\t\t    #\"Filtered Rows\" = Table.SelectRows(#\"Removed Columns\", each ([No longer working with the job] = \"No longer working\")),\n\t\t\t\t    #\"Removed Duplicates\" = Table.Distinct(#\"Filtered Rows\", {\"job_id\"}),\n\t\t\t\t    #\"Filtered Rows1\" = Table.SelectRows(#\"Removed Duplicates\", each [job_id] <> null and [job_id] <> \"\")\n\t\t\t\tin\n\t\t\t\t    #\"Filtered Rows1\"\n\n\tannotation PBI_NavigationStepName = Navigation\n\n\tannotation PBI_ResultType = Table"
+    ],
+    "User": [
+      "let\n\t\t\t\t    Source = Snowflake.Databases(\"je92638.eu-central-1.snowflakecomputing.com\",\"READER_WH_129\",[Implementation=\"2.0\"]),\n\t\t\t\t    KEBOOLA_855_942138244_Database = Source{[Name=\"KEBOOLA_855_942138244\",Kind=\"Database\"]}[Data],\n\t\t\t\t    READER_SCHEMA_855_942138244_Schema = KEBOOLA_855_942138244_Database{[Name=\"READER_SCHEMA_855_942138244\",Kind=\"Schema\"]}[Data],\n\t\t\t\t    v2_user_Table = READER_SCHEMA_855_942138244_Schema{[Name=\"v2_user\",Kind=\"Table\"]}[Data],\n\t\t\t\t    #\"Filtered Rows\" = Table.SelectRows(v2_user_Table, each ([employee_number] <> null)),\n\t\t\t\t    #\"Replaced Value\" = Table.ReplaceValue(#\"Filtered Rows\",\"Jelena  Lacmanovic\",\"Jelena Lacmanovic\",Replacer.ReplaceText,{\"user_name\"}),\n\t\t\t\t    #\"Replaced Value1\" = Table.ReplaceValue(#\"Replaced Value\",\"Simon  Siew\",\"Simon Siew\",Replacer.ReplaceText,{\"user_name\"})\n\t\t\t\tin\n\t\t\t\t    #\"Replaced Value1\"\n\n\tannotation PBI_ResultType = Exception\n\n\tannotation PBI_NavigationStepName = Navigation"
+    ],
+    "WBR Client History": [
+      "CALCULATETABLE(SUMMARIZECOLUMNS(\n\t\t\t\t    'WBR TA Target'[Client],\n\t\t\t\t    'WBR TA Actual'[Week start end],\n\t\t\t\t    \"Contacted\", SUM('WBR TA Actual'[Contacted]),\n\t\t\t\t    \"Screens\", SUM('WBR TA Actual'[Actual screens]),\n\t\t\t\t    \"Moved to ATS\", SUM('WBR TA Actual'[Moved to ATS]),\n\t\t\t\t    \"Contacted Target\", SUM('WBR TA Actual'[Contacted Target]),\n\t\t\t\t    \"Screens Target\", SUM('WBR TA Actual'[Moved to ATS Target]),\n\t\t\t\t    \"Moved to ATS Target\", SUM('WBR TA Actual'[Moved to ATS Target])),\n\t\t\t\t    'WBR TA Actual'[Client]<>BLANK(), 'WBR TA Actual'[is_last_12_weeks]=\"Yes\")\n\n\tannotation PBI_Id = b57e949f7c9a4d2c9d66bce37093712a"
+    ],
+    "WBR Job from Aug 2025": [
+      "CALCULATETABLE(SUMMARIZECOLUMNS(\n\t\t\t\t    client[client_name],\n\t\t\t\t    event[who_event_created_for],\n\t\t\t\t    \"# Jobs\", DISTINCTCOUNT(job[job_id])\n\t\t\t\t    ),\n\t\t\t\t    client[client_name]<>\"Tribe.xyz\", client[client_name]<>BLANK(), event[date_created]>=DATE(2025,7,28), candidate[is_candidate_archived]=FALSE())\n\n\tannotation PBI_Id = c35d3b4c85b64272b9675e670528ef31"
+    ],
+    "WBR Job open 60d": [
+      "CALCULATETABLE(SUMMARIZECOLUMNS(\n\t\t\t\t    client[client_name],\n\t\t\t\t    job[job_recruiter],\n\t\t\t\t    \"# Jobs 60d\", DISTINCTCOUNT(job[job_id])\n\t\t\t\t    ),\n\t\t\t\t    client[client_name]<>\"Tribe.xyz\", client[client_name]<>BLANK(), job[is_job_archived]<>TRUE(), job[date_first_hired]=BLANK(), job[Job Days Opened]>=60, candidate[is_candidate_archived]=FALSE())\n\n\tannotation PBI_Id = ed37a7d0c9c648449efb4bc76fea533c"
+    ],
+    "WBR TA Actual": [
+      "```\n\t\t\t\tCALCULATETABLE(SUMMARIZECOLUMNS(\n\t\t\t\t    'Calendar'[Year], \n\t\t\t\t    'Calendar'[Week sort],\n\t\t\t\t    'Calendar'[Week start end],\n\t\t\t\t    'Calendar'[WeekInt],\n\t\t\t\t    'Calendar'[is_last_12_weeks],\n\t\t\t\t    client[client_wolt_group],\n\t\t\t\t    client[client_id],\n\t\t\t\t    event[who_event_created_for],\n\t\t\t\t    \"Sourcer\", CONCATENATEX(\n\t\t\t\t        FILTER(\n\t\t\t\t            SUMMARIZE(event, event[who_event_created_for], event[who_created_event]),\n\t\t\t\t            event[who_event_created_for]<>event[who_created_event] && event[who_created_event]<>BLANK()),\n\t\t\t\t        event[who_created_event], \", \", event[who_created_event]\n\t\t\t\t        ),\n\t\t\t\t    \"# Jobs\", CALCULATE(DISTINCTCOUNT(event[job_id]), USERELATIONSHIP('Calendar'[Date], event[date_created])),\n\t\t\t\t    \"Early warning\", SUM(job[Early warning]),\n\t\t\t\t    \"Time to Fill\", [Candidate - Time to Fill (Hired date)],\n\t\t\t\t    \"Contacted\", [# events - contacted (date created)],\n\t\t\t\t    \"Actual screens\", [# candidates - actual screen (actual screen date)], \n\t\t\t\t    \"Moved to ATS\", [# candidates - move to ATS (moved date)],\n\t\t\t\t    \"Offers\", [# candidates - offer (offered date)],\n\t\t\t\t    \"Hires\", [# candidates - hired (hired date)]),\n\t\t\t\t    job[job_title]<>BLANK(), candidate[is_candidate_archived]=FALSE(), client[client_name]<>BLANK(), NOT(client[client_name] IN {\"Tribe.xyz\", \"Kamila AI - TEST\"}), job[test]<>TRUE(), event[who_event_created_for]<>BLANK(), 'Calendar'[Year]>=2024)\n\t\t\t\t```\n\n\tannotation PBI_Id = 377713785b5044e4aa9870ca3394d660"
+    ],
+    "WBR TA Comment": [
+      "let\n\t\t\t\t    Source = GoogleSheets.Contents(\"https://docs.google.com/spreadsheets/d/1Hyb5M244bkh9ygxnssq_wppWxrT0KtGeVFEYvHVoouc/edit#gid=1802525365\"),\n\t\t\t\t    #\"TS Weekly Note (not used)_Table\" = Source{[name=\"TA Weekly Note\",ItemKind=\"Table\"]}[Data],\n\t\t\t\t    #\"Promoted Headers\" = Table.PromoteHeaders(#\"TS Weekly Note (not used)_Table\", [PromoteAllScalars=true]),\n\t\t\t\t    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\",{{\"Client\", type text}, {\"TA\", type text}, {\"Year\", Int64.Type}, {\"Week\", type text}, {\"Comment\", type text}}),\n\t\t\t\t    #\"Added Custom\" = Table.AddColumn(#\"Changed Type\", \"Concat\", each [Week]&[TA]&[Client]),\n\t\t\t\t    #\"Trimmed Text\" = Table.TransformColumns(#\"Added Custom\",{{\"Client\", Text.Trim, type text}, {\"TA\", Text.Trim, type text}, {\"Week\", Text.Trim, type text}}),\n\t\t\t\t    #\"Filtered Rows\" = Table.SelectRows(#\"Trimmed Text\", each [Client] <> null and [Client] <> \"\"),\n\t\t\t\t    #\"Replaced Value\" = Table.ReplaceValue(#\"Filtered Rows\",\"No\",null,Replacer.ReplaceValue,{\"Exclude OKR\"}),\n\t\t\t\t    #\"Replaced Value1\" = Table.ReplaceValue(#\"Replaced Value\",\"SevenRooms\",\"Wolt HQ\",Replacer.ReplaceText,{\"Client\"}),\n\t\t\t\t    #\"Replaced Value2\" = Table.ReplaceValue(#\"Replaced Value1\",\"Doordash\",\"Wolt HQ\",Replacer.ReplaceText,{\"Client\"})\n\t\t\t\tin\n\t\t\t\t    #\"Replaced Value2\"\n\n\tannotation PBI_ResultType = Table\n\n\tannotation PBI_NavigationStepName = Navigation"
+    ],
+    "WBR TA Job": [
+      "```\n\t\t\t\tCALCULATETABLE(SUMMARIZECOLUMNS(\n\t\t\t\t    'Calendar'[Year], \n\t\t\t\t    'Calendar'[Week sort],\n\t\t\t\t    'Calendar'[Week start end],\n\t\t\t\t    'Calendar'[WeekInt],\n\t\t\t\t    'Calendar'[is_last_12_weeks],\n\t\t\t\t    client[client_name],\n\t\t\t\t    client[client_id],\n\t\t\t\t    event[who_event_created_for],\n\t\t\t\t    job[job_title],\n\t\t\t\t    \"# Jobs\", CALCULATE(DISTINCTCOUNT(event[job_id]), USERELATIONSHIP('Calendar'[Date], event[date_created])),\n\t\t\t\t    \"Time to Fill\", [Candidate - Time to Fill (Hired date)],\n\t\t\t\t    \"Contacted\", [# events - contacted (date created)],\n\t\t\t\t    \"Screens\", [# candidates - screen (screened date)],\n\t\t\t\t    \"Actual screens\", [# candidates - actual screen (actual screen date)], \n\t\t\t\t    \"Moved to ATS\", [# candidates - move to ATS (moved date)],\n\t\t\t\t    \"Offers\", [# candidates - offer (offered date)],\n\t\t\t\t    \"Hires\", [# candidates - hired (hired date)]),\n\t\t\t\t    job[job_title]<>BLANK(), candidate[is_candidate_archived]=FALSE(), client[client_name]<>BLANK(), NOT(client[client_name] IN {\"Tribe.xyz\", \"Kamila AI - TEST\"}), event[who_event_created_for]<>BLANK(), 'Calendar'[Year]>=2023)\n\t\t\t\t```\n\n\tannotation PBI_Id = 6ebfdc2c566f4a2ca58ba47d10fdfac8"
+    ],
+    "WBR TA Target": [
+      "let\n\t\t\t\t    Source = GoogleSheets.Contents(\"https://docs.google.com/spreadsheets/d/1Hyb5M244bkh9ygxnssq_wppWxrT0KtGeVFEYvHVoouc/edit#gid=1802525365\"),\n\t\t\t\t    #\"TA Target_Table\" = Source{[name=\"TA Target\",ItemKind=\"Table\"]}[Data],\n\t\t\t\t    #\"Promoted Headers\" = Table.PromoteHeaders(#\"TA Target_Table\", [PromoteAllScalars=true]),\n\t\t\t\t    #\"Removed Other Columns\" = Table.SelectColumns(#\"Promoted Headers\",{\"Client\", \"TA\", \"Year\", \"Month\", \"Contacted\", \"Actual Screens\", \"Moved to ATS\", \"Hires\"}),\n\t\t\t\t    #\"Changed Type\" = Table.TransformColumnTypes(#\"Removed Other Columns\",{{\"Client\", type text}, {\"TA\", type text}, {\"Year\", Int64.Type}, {\"Month\", Int64.Type}, {\"Contacted\", type number}, {\"Actual Screens\", type number}, {\"Moved to ATS\", type number}, {\"Hires\", type number}}),\n\t\t\t\t    #\"Filtered Rows\" = Table.SelectRows(#\"Changed Type\", each ([TA] <> \"\")),\n\t\t\t\t    #\"Trimmed Text\" = Table.TransformColumns(#\"Filtered Rows\",{{\"Client\", Text.Trim, type text}, {\"TA\", Text.Trim, type text}}),\n\t\t\t\t    #\"Replaced Value\" = Table.ReplaceValue(#\"Trimmed Text\",\"DoorDash\",\"Wolt HQ\",Replacer.ReplaceText,{\"Client\"}),\n\t\t\t\t    #\"Replaced Value1\" = Table.ReplaceValue(#\"Replaced Value\",\"SevenRooms\",\"Wolt HQ\",Replacer.ReplaceText,{\"Client\"})\n\t\t\t\tin\n\t\t\t\t    #\"Replaced Value1\"\n\n\tannotation PBI_ResultType = Table\n\n\tannotation PBI_NavigationStepName = Navigation"
+    ],
+    "WBR TS Actual": [
+      "```\n\t\t\t\tCALCULATETABLE(SUMMARIZECOLUMNS(\n\t\t\t\t    'Calendar'[Year],    \n\t\t\t\t    'Calendar'[Week sort],\n\t\t\t\t    'Calendar'[Week start end],\n\t\t\t\t    'Calendar'[WeekInt],\n\t\t\t\t    'Calendar'[is_last_12_weeks],\n\t\t\t\t    'Calendar'[is_last_4_weeks],\n\t\t\t\t    event[who_created_event_first],\n\t\t\t\t    \"TA\",\n\t\t\t\t        CONCATENATEX(\n\t\t\t\t        FILTER(\n\t\t\t\t            VALUES(event[who_event_created_for]),\n\t\t\t\t            event[who_event_created_for] <> SELECTEDVALUE(event[who_created_event_first]) &&\n\t\t\t\t            NOT ISBLANK(event[who_event_created_for])\n\t\t\t\t        ),\n\t\t\t\t        event[who_event_created_for],\n\t\t\t\t        \", \",\n\t\t\t\t        event[who_event_created_for],\n\t\t\t\t        ASC\n\t\t\t\t    ),\n\t\t\t\t    \"# Jobs\", DISTINCTCOUNT(event[job_id]),\n\t\t\t\t    \"Viewed\", [# events - LinkedIn visited (date created)],\n\t\t\t\t    --\"AI Viewed\", [Kamila Talent]+0,\n\t\t\t\t    --\"Non-AI Viewed\", CALCULATE([# events - LinkedIn visited (date created)], event[is_event_createdby_ai]=FALSE())+0,\n\t\t\t\t    \"Sourced\", [# events - sourced (sourced date)],\n\t\t\t\t    \"Contacted\", [# candidates - contacted (contacted date)],\n\t\t\t\t    \"Positive Response\", [# candidates - positive response],\n\t\t\t\t    \"Screens\", [# candidates - screen (screened date)],\n\t\t\t\t    \"Actual Screens\", [# candidates - actual screen (actual screen date)],\n\t\t\t\t    \"ATS\", [# candidates - move to ATS (moved date)],\n\t\t\t\t    \"Hires\", [# candidates - hired (hired date)]),\n\t\t\t\t    job[job_title]<>BLANK(), event[who_created_event_first]<>BLANK(), candidate[is_candidate_archived]=FALSE(), job[test]<>TRUE(), 'Calendar'[Year]>=2024)\n\t\t\t\t```\n\n\tannotation PBI_Id = 59ce56154e234937a936bda73744c3ae"
+    ],
+    "WBR TS Comment": [
+      "let\n\t\t\t\t    Source = GoogleSheets.Contents(\"https://docs.google.com/spreadsheets/d/1Hyb5M244bkh9ygxnssq_wppWxrT0KtGeVFEYvHVoouc/edit#gid=1802525365\"),\n\t\t\t\t    #\"TS Weekly Note (not used)_Table\" = Source{[name=\"TS Weekly Note\",ItemKind=\"Table\"]}[Data],\n\t\t\t\t    #\"Promoted Headers\" = Table.PromoteHeaders(#\"TS Weekly Note (not used)_Table\", [PromoteAllScalars=true]),\n\t\t\t\t    #\"Changed Type\" = Table.TransformColumnTypes(#\"Promoted Headers\",{{\"TS\", type text}, {\"Year\", Int64.Type}, {\"Week\", type text}, {\"Comment\", type text}, {\"Contacted Target\", Int64.Type}}),\n\t\t\t\t    #\"Added Custom\" = Table.AddColumn(#\"Changed Type\", \"Concat\", each [Week]&[TS]),\n\t\t\t\t    #\"Filtered Rows\" = Table.SelectRows(#\"Added Custom\", each [TS] <> null and [TS] <> \"\"),\n\t\t\t\t    #\"Trimmed Text\" = Table.TransformColumns(#\"Filtered Rows\",{{\"TS\", Text.Trim, type text}})\n\t\t\t\tin\n\t\t\t\t    #\"Trimmed Text\"\n\n\tannotation PBI_ResultType = Table\n\n\tannotation PBI_NavigationStepName = Navigation"
+    ],
+    "analytic_usage": [
+      "let\n\t\t\t\t    Source = Snowflake.Databases(\"je92638.eu-central-1.snowflakecomputing.com\",\"READER_WH_129\",[Implementation=\"2.0\"]),\n\t\t\t\t    KEBOOLA_855_942138244_Database = Source{[Name=\"KEBOOLA_855_942138244\",Kind=\"Database\"]}[Data],\n\t\t\t\t    READER_SCHEMA_855_942138244_Schema = KEBOOLA_855_942138244_Database{[Name=\"READER_SCHEMA_855_942138244\",Kind=\"Schema\"]}[Data],\n\t\t\t\t    v2_analytic_Table = READER_SCHEMA_855_942138244_Schema{[Name=\"v2_analytic\",Kind=\"Table\"]}[Data]\n\t\t\t\tin\n\t\t\t\t    v2_analytic_Table\n\n\tannotation PBI_ResultType = Exception\n\n\tannotation PBI_NavigationStepName = Navigation"
+    ],
+    "candidate": [
+      "let\n\t\t\t\t    Source = Snowflake.Databases(\"je92638.eu-central-1.snowflakecomputing.com\",\"READER_WH_129\",[Implementation=\"2.0\"]),\n\t\t\t\t    KEBOOLA_855_942138244_Database = Source{[Name=\"KEBOOLA_855_942138244\",Kind=\"Database\"]}[Data],\n\t\t\t\t    READER_SCHEMA_855_942138244_Schema = KEBOOLA_855_942138244_Database{[Name=\"READER_SCHEMA_855_942138244\",Kind=\"Schema\"]}[Data],\n\t\t\t\t    v2_candidate_Table = READER_SCHEMA_855_942138244_Schema{[Name=\"v2_candidate\",Kind=\"Table\"]}[Data]\n\t\t\t\tin\n\t\t\t\t    v2_candidate_Table\n\n\tannotation PBI_ResultType = Exception\n\n\tannotation PBI_NavigationStepName = Navigation"
+    ],
+    "candidate_stage": [
+      "```\n\t\t\t\tlet\n\t\t\t\t    Source = Snowflake.Databases(\"je92638.eu-central-1.snowflakecomputing.com\",\"READER_WH_129\",[Implementation=\"2.0\"]),\n\t\t\t\t    KEBOOLA_855_942138244_Database = Source{[Name=\"KEBOOLA_855_942138244\",Kind=\"Database\"]}[Data],\n\t\t\t\t    READER_SCHEMA_855_942138244_Schema = KEBOOLA_855_942138244_Database{[Name=\"READER_SCHEMA_855_942138244\",Kind=\"Schema\"]}[Data],\n\t\t\t\t    v2_candidate_stage_Table = READER_SCHEMA_855_942138244_Schema{[Name=\"v2_candidate_stage\",Kind=\"Table\"]}[Data],\n\t\t\t\t    #\"Filtered Rows\" = Table.SelectRows(v2_candidate_stage_Table, each [date_created] >= #\"Start Date\"),\n\t\t\t\t    #\"Added Conditional Column\" = Table.AddColumn(#\"Filtered Rows\", \"Current Stage\", each if [stage_current_type] = \"Contacted\" then \"Contacted\"\n\t\t\t\t\n\t\t\t\telse if [stage_current_type] = \"Recruiter Screen\" and [date_screen_actual] is null then \"Recruiter Screen\"\n\t\t\t\t\n\t\t\t\telse if [stage_current_type] = \"Recruiter Screen\" and [date_screen_actual] <> null then \"Actual Screen\"\n\t\t\t\t\n\t\t\t\telse if [stage_current_type] = \"Offsite\" then \"Move to ATS\" \n\t\t\t\telse if [stage_current] = \"Onsite\" then \"Onsite\" \n\t\t\t\telse [stage_current_type]),\n\t\t\t\t    #\"Added Conditional Column1\" = Table.AddColumn(#\"Added Conditional Column\", \"Current Stage Num\", each if [Current Stage] = \"Contacted\" then 1 else if [Current Stage] = \"Recruiter Screen\" then 2 else if [Current Stage] = \"Actual Screen\" then 3 else if [Current Stage] = \"Move to ATS\" then 4 else if [Current Stage] = \"Onsite\" then 5 else if [Current Stage] = \"Offer\" then 6 else if [Current Stage] = \"Hired\" then 7 else 10),\n\t\t\t\t    #\"Changed Type\" = Table.TransformColumnTypes(#\"Added Conditional Column1\",{{\"Current Stage Num\", Int64.Type}})\n\t\t\t\tin\n\t\t\t\t    #\"Changed Type\"\n\t\t\t\t```\n\n\tannotation PBI_ResultType = Table\n\n\tannotation PBI_NavigationStepName = Navigation"
+    ],
+    "client": [
+      "let\n\t\t\t\t    Source = Snowflake.Databases(\"je92638.eu-central-1.snowflakecomputing.com\",\"READER_WH_129\",[Implementation=\"2.0\"]),\n\t\t\t\t    KEBOOLA_855_942138244_Database = Source{[Name=\"KEBOOLA_855_942138244\",Kind=\"Database\"]}[Data],\n\t\t\t\t    READER_SCHEMA_855_942138244_Schema = KEBOOLA_855_942138244_Database{[Name=\"READER_SCHEMA_855_942138244\",Kind=\"Schema\"]}[Data],\n\t\t\t\t    v2_client_Table = READER_SCHEMA_855_942138244_Schema{[Name=\"v2_client\",Kind=\"Table\"]}[Data]\n\t\t\t\tin\n\t\t\t\t    v2_client_Table\n\n\tannotation PBI_ResultType = Table\n\n\tannotation PBI_NavigationStepName = Navigation"
+    ],
+    "event": [
+      "```\n\t\t\t\tlet\n\t\t\t\t    Source = Snowflake.Databases(\"je92638.eu-central-1.snowflakecomputing.com\",\"READER_WH_129\",[Implementation=\"2.0\"]),\n\t\t\t\t    KEBOOLA_855_942138244_Database = Source{[Name=\"KEBOOLA_855_942138244\",Kind=\"Database\"]}[Data],\n\t\t\t\t    READER_SCHEMA_855_942138244_Schema = KEBOOLA_855_942138244_Database{[Name=\"READER_SCHEMA_855_942138244\",Kind=\"Schema\"]}[Data],\n\t\t\t\t    v2_event_Table = READER_SCHEMA_855_942138244_Schema{[Name=\"v2_event\",Kind=\"Table\"]}[Data],\n\t\t\t\t    #\"Extracted Time\" = Table.TransformColumns(v2_event_Table,{{\"datetime_created\", DateTime.Time, type time}}),\n\t\t\t\t    #\"Extracted Hour\" = Table.TransformColumns(#\"Extracted Time\",{{\"datetime_created\", Time.Hour, Int64.Type}}),\n\t\t\t\t    #\"Renamed Columns\" = Table.RenameColumns(#\"Extracted Hour\",{{\"datetime_created\", \"dayhour\"}}),\n\t\t\t\t    #\"Added Custom\" = Table.AddColumn(#\"Renamed Columns\", \"Correct\", each if [event_type]=\"Linkedin Visited Profile\" and [job_id] <> null then [who_created_event] \n\t\t\t\telse\n\t\t\t\tif [event_type]=\"Moved to stage\" and [moved_to_stage]=\"Contacted\" and [job_id] <> null then [who_created_event] else\n\t\t\t\tif [event_type]=\"Moved to stage\" and [moved_to_stage]=\"Prospects\" and [job_id] <> null then [who_created_event]\n\t\t\t\telse\n\t\t\t\tif [event_type]=\"Moved to stage\" and [moved_to_stageType]=\"Positive Response\" and [job_id] <> null then [who_created_event]\n\t\t\t\telse\n\t\t\t\tif [event_type] = \"Disqualified\" and [job_id] <> null then [who_created_event]\n\t\t\t\telse\n\t\t\t\tif [event_type]=\"Candidate created\" and [moved_to_stage]=\"Contacted\" and [job_id] <> null then [who_created_event] else\n\t\t\t\tif [event_type]=\"Candidate created\" and [moved_to_stage]=\"Prospects\" and [job_id] <> null then [who_created_event] else\n\t\t\t\tif [event_type]=\"Candidate created\" and [moved_to_stageType]=\"Prospects\" and [job_id] <> null then [who_created_event] else\n\t\t\t\tif [event_type]=\"Moved to stage\" and [moved_to_stage]=\"Recruiter Screen\" and [job_id] <> null then [who_created_event_first] else\n\t\t\t\tif ([event_type]=\"Evaluation\" or (Text.Start([event_id], 9)=\"recruitee\" and [moved_to_stageType]=\"evaluation\")) and [job_id] <> null then [who_created_event_first] else \n\t\t\t\tif [moved_to_stage]=\"Moved to ATS\" then [who_created_event_first] else\n\t\t\t\tif [moved_to_stageType]=\"Offer\" then [who_created_event_first] else\n\t\t\t\tif [moved_to_stage]=\"Hired\" then [who_created_event_first] else null),\n\t\t\t\t    #\"Removed Columns\" = Table.RemoveColumns(#\"Added Custom\",{\"who_created_event_first\"}),\n\t\t\t\t    #\"Renamed Columns1\" = Table.RenameColumns(#\"Removed Columns\",{{\"Correct\", \"who_created_event_first\"}}),\n\t\t\t\t    #\"Filtered Rows1\" = Table.SelectRows(#\"Renamed Columns1\", each [date_created] >= #\"Start Date\")\n\t\t\t\tin\n\t\t\t\t    #\"Filtered Rows1\"\n\t\t\t\t```\n\n\tannotation PBI_ResultType = Exception\n\n\tannotation PBI_NavigationStepName = Navigation"
+    ],
+    "job": [
+      "let\n\t\t\t\t    Source = Snowflake.Databases(\"je92638.eu-central-1.snowflakecomputing.com\",\"READER_WH_129\",[Implementation=\"2.0\"]),\n\t\t\t\t    KEBOOLA_855_942138244_Database = Source{[Name=\"KEBOOLA_855_942138244\",Kind=\"Database\"]}[Data],\n\t\t\t\t    READER_SCHEMA_855_942138244_Schema = KEBOOLA_855_942138244_Database{[Name=\"READER_SCHEMA_855_942138244\",Kind=\"Schema\"]}[Data],\n\t\t\t\t    v2_job_Table = READER_SCHEMA_855_942138244_Schema{[Name=\"v2_job\",Kind=\"Table\"]}[Data],\n\t\t\t\t    #\"Replaced Value\" = Table.ReplaceValue(v2_job_Table,null,false,Replacer.ReplaceValue,{\"is_external_recruiter\"}),\n\t\t\t\t    #\"Replaced Value1\" = Table.ReplaceValue(#\"Replaced Value\",\"Ukrainka, Kyiv Oblast, Ukraine, 08720\",\"Ukrainka, Kyiv Oblast, Ukraine\",Replacer.ReplaceText,{\"job_location\"}),\n\t\t\t\t    #\"Replaced Value2\" = Table.ReplaceValue(#\"Replaced Value1\",\"United Kingdom\",\"UK\",Replacer.ReplaceText,{\"job_location\"}),\n\t\t\t\t    #\"Inserted Text After Delimiter\" = Table.AddColumn(#\"Replaced Value2\", \"Job Country\", each Text.AfterDelimiter([job_location], \", \", {0, RelativePosition.FromEnd}), type text)\n\t\t\t\tin\n\t\t\t\t    #\"Inserted Text After Delimiter\"\n\n\tannotation PBI_ResultType = Table\n\n\tannotation PBI_NavigationStepName = Navigation"
+    ],
+    "screen": [
+      "let\n\t\t\t\t    Source = Snowflake.Databases(\"je92638.eu-central-1.snowflakecomputing.com\",\"READER_WH_129\",[Implementation=\"2.0\"]),\n\t\t\t\t    KEBOOLA_855_942138244_Database = Source{[Name=\"KEBOOLA_855_942138244\",Kind=\"Database\"]}[Data],\n\t\t\t\t    READER_SCHEMA_855_942138244_Schema = KEBOOLA_855_942138244_Database{[Name=\"READER_SCHEMA_855_942138244\",Kind=\"Schema\"]}[Data],\n\t\t\t\t    v2_screen_Table = READER_SCHEMA_855_942138244_Schema{[Name=\"v2_screen\",Kind=\"Table\"]}[Data],\n\t\t\t\t    #\"Filtered Rows\" = Table.SelectRows(v2_screen_Table, each [date_created] >= #\"Start Date\")\n\t\t\t\tin\n\t\t\t\t    #\"Filtered Rows\"\n\n\tannotation PBI_ResultType = Table\n\n\tannotation PBI_NavigationStepName = Navigation"
+    ],
+    "talent": [
+      "let\n\t\t\t\t    Source = Snowflake.Databases(\"je92638.eu-central-1.snowflakecomputing.com\",\"READER_WH_129\",[Implementation=\"2.0\"]),\n\t\t\t\t    KEBOOLA_855_942138244_Database = Source{[Name=\"KEBOOLA_855_942138244\",Kind=\"Database\"]}[Data],\n\t\t\t\t    READER_SCHEMA_855_942138244_Schema = KEBOOLA_855_942138244_Database{[Name=\"READER_SCHEMA_855_942138244\",Kind=\"Schema\"]}[Data],\n\t\t\t\t    v2_talent_Table = READER_SCHEMA_855_942138244_Schema{[Name=\"v2_talent\",Kind=\"Table\"]}[Data],\n\t\t\t\t    #\"Filtered Rows\" = Table.SelectRows(v2_talent_Table, each [date_created] >= #\"Start Date\")\n\t\t\t\tin\n\t\t\t\t    #\"Filtered Rows\"\n\n\tannotation PBI_ResultType = Exception\n\n\tannotation PBI_NavigationStepName = Navigation"
+    ],
+    "talent_email": [
+      "let\n\t\t\t\t    Source = Snowflake.Databases(\"je92638.eu-central-1.snowflakecomputing.com\",\"READER_WH_129\",[Implementation=\"2.0\"]),\n\t\t\t\t    KEBOOLA_855_942138244_Database = Source{[Name=\"KEBOOLA_855_942138244\",Kind=\"Database\"]}[Data],\n\t\t\t\t    READER_SCHEMA_855_942138244_Schema = KEBOOLA_855_942138244_Database{[Name=\"READER_SCHEMA_855_942138244\",Kind=\"Schema\"]}[Data],\n\t\t\t\t    v2_talent_email_Table = READER_SCHEMA_855_942138244_Schema{[Name=\"v2_talent_email\",Kind=\"Table\"]}[Data],\n\t\t\t\t    #\"Filtered Rows\" = Table.SelectRows(v2_talent_email_Table, each [date_created] >= #\"Start Date\")\n\t\t\t\tin\n\t\t\t\t    #\"Filtered Rows\"\n\n\tchangedProperty = IsHidden\n\n\tannotation PBI_ResultType = Exception\n\n\tannotation PBI_NavigationStepName = Navigation"
+    ],
+    "talent_employer": [
+      "let\n\t\t\t\t    Source = Snowflake.Databases(\"je92638.eu-central-1.snowflakecomputing.com\",\"READER_WH_129\",[Implementation=\"2.0\"]),\n\t\t\t\t    KEBOOLA_855_942138244_Database = Source{[Name=\"KEBOOLA_855_942138244\",Kind=\"Database\"]}[Data],\n\t\t\t\t    READER_SCHEMA_855_942138244_Schema = KEBOOLA_855_942138244_Database{[Name=\"READER_SCHEMA_855_942138244\",Kind=\"Schema\"]}[Data],\n\t\t\t\t    v2_talent_employer_Table = READER_SCHEMA_855_942138244_Schema{[Name=\"v2_talent_employer\",Kind=\"Table\"]}[Data],\n\t\t\t\t    #\"Removed Other Columns\" = Table.SelectColumns(v2_talent_employer_Table,{\"employer_id\", \"employer_name\"})\n\t\t\t\tin\n\t\t\t\t    #\"Removed Other Columns\"\n\n\tchangedProperty = IsHidden\n\n\tannotation PBI_ResultType = Table\n\n\tannotation PBI_NavigationStepName = Navigation"
+    ]
+  },
+  "expressions": {
+    "Start Date": "#date(2024, 1, 1) meta [IsParameterQuery = true, IsParameterQueryRequired = true, Type = \"Date\"]\n\tlineageTag: 462c97ed-9bba-4b23-9be7-5b8d8d2cae5a\n\n\tannotation PBI_ResultType = Date\n\n\tannotation PBI_NavigationStepName = Navigation",
+    "screen_lang": "let\n\t\t    Source = Snowflake.Databases(\"je92638.eu-central-1.snowflakecomputing.com\",\"READER_WH_129\",[Implementation=\"2.0\"]),\n\t\t    KEBOOLA_855_942138244_Database = Source{[Name=\"KEBOOLA_855_942138244\",Kind=\"Database\"]}[Data],\n\t\t    READER_SCHEMA_855_942138244_Schema = KEBOOLA_855_942138244_Database{[Name=\"READER_SCHEMA_855_942138244\",Kind=\"Schema\"]}[Data],\n\t\t    v2_screen_lang_Table = READER_SCHEMA_855_942138244_Schema{[Name=\"v2_screen_lang\",Kind=\"Table\"]}[Data]\n\t\tin\n\t\t    v2_screen_lang_Table\n\tlineageTag: 4ef15910-0ae8-47cb-82ff-5b4e5ba36e39\n\n\tannotation PBI_NavigationStepName = Navigation\n\n\tannotation PBI_ResultType = Table",
+    "screen_techstack": "let\n\t\t    Source = Snowflake.Databases(\"je92638.eu-central-1.snowflakecomputing.com\",\"READER_WH_129\",[Implementation=\"2.0\"]),\n\t\t    KEBOOLA_855_942138244_Database = Source{[Name=\"KEBOOLA_855_942138244\",Kind=\"Database\"]}[Data],\n\t\t    READER_SCHEMA_855_942138244_Schema = KEBOOLA_855_942138244_Database{[Name=\"READER_SCHEMA_855_942138244\",Kind=\"Schema\"]}[Data],\n\t\t    v2_screen_techstack_Table = READER_SCHEMA_855_942138244_Schema{[Name=\"v2_screen_techstack\",Kind=\"Table\"]}[Data]\n\t\tin\n\t\t    v2_screen_techstack_Table\n\tlineageTag: c11cee81-3697-48f6-844f-d8ba6d15e3f5\n\n\tannotation PBI_ResultType = Table\n\n\tannotation PBI_NavigationStepName = Navigation",
+    "talent_position": "let\n\t\t    Source = Snowflake.Databases(\"je92638.eu-central-1.snowflakecomputing.com\",\"READER_WH_129\",[Implementation=\"2.0\"]),\n\t\t    KEBOOLA_855_942138244_Database = Source{[Name=\"KEBOOLA_855_942138244\",Kind=\"Database\"]}[Data],\n\t\t    READER_SCHEMA_855_942138244_Schema = KEBOOLA_855_942138244_Database{[Name=\"READER_SCHEMA_855_942138244\",Kind=\"Schema\"]}[Data],\n\t\t    v2_talent_position_Table = READER_SCHEMA_855_942138244_Schema{[Name=\"v2_talent_position\",Kind=\"Table\"]}[Data]\n\t\tin\n\t\t    v2_talent_position_Table\n\tlineageTag: 2f578cf8-b848-45a3-9b7d-c4bb311692a6\n\n\tannotation PBI_NavigationStepName = Navigation\n\n\tannotation PBI_ResultType = Exception",
+    "Org_manager": "let\n\t\t    Source = Csv.Document(Web.Contents(\"https://api.bamboohr.com/api/gateway.php/tribexyz/v1/reports/127?format=csv\"),[Delimiter=\",\", Columns=10, Encoding=65001, QuoteStyle=QuoteStyle.None]),\n\t\t    #\"Changed Type\" = Table.TransformColumnTypes(Source,{{\"Column1\", type text}, {\"Column2\", type text}, {\"Column3\", type text}, {\"Column4\", type text}, {\"Column5\", type text}}),\n\t\t    #\"Promoted Headers\" = Table.PromoteHeaders(#\"Changed Type\", [PromoteAllScalars=true]),\n\t\t    #\"Split Column by Delimiter\" = Table.SplitColumn(#\"Promoted Headers\", \"Supervisor name\", Splitter.SplitTextByDelimiter(\", \", QuoteStyle.Csv), {\"Supervisor name.1\", \"Supervisor name.2\"}),\n\t\t    #\"Added Custom\" = Table.AddColumn(#\"Split Column by Delimiter\", \"Name\", each [First Name] & \" \" & [Last Name]),\n\t\t    #\"Added Custom1\" = Table.AddColumn(#\"Added Custom\", \"Manager\", each [Supervisor name.2] & \" \" & [Supervisor name.1]),\n\t\t    #\"Renamed Columns\" = Table.RenameColumns(#\"Added Custom1\",{{\"Work Email\", \"Email\"}}),\n\t\t    #\"Filtered Rows1\" = Table.SelectRows(#\"Renamed Columns\", each ([Employment Status] <> \"Terminated\")),\n\t\t    #\"Removed Other Columns\" = Table.SelectColumns(#\"Filtered Rows1\",{\"Location\", \"Employee #\", \"Employment Status\", \"Name\", \"Manager\"}),\n\t\t    #\"Filtered Rows\" = Table.SelectRows(#\"Removed Other Columns\", each [Manager] <> null and [Manager] <> \"\"),\n\t\t    #\"Merged Queries\" = Table.NestedJoin(#\"Filtered Rows\", {\"Name\"}, #\"Filtered Rows\", {\"Manager\"}, \"Filtered Rows\", JoinKind.LeftOuter),\n\t\t    #\"Expanded Filtered Rows\" = Table.ExpandTableColumn(#\"Merged Queries\", \"Filtered Rows\", {\"Manager\"}, {\"Filtered Rows.Manager\"}),\n\t\t    #\"Filtered Rows2\" = Table.SelectRows(#\"Expanded Filtered Rows\", each [Filtered Rows.Manager] <> null and [Filtered Rows.Manager] <> \"\"),\n\t\t    #\"Removed Duplicates\" = Table.Distinct(#\"Filtered Rows2\", {\"Employee #\"}),\n\t\t    #\"Removed Columns\" = Table.RemoveColumns(#\"Removed Duplicates\",{\"Manager\"}),\n\t\t    #\"Renamed Columns1\" = Table.RenameColumns(#\"Removed Columns\",{{\"Filtered Rows.Manager\", \"Manager\"}})\n\t\tin\n\t\t    #\"Renamed Columns1\"\n\tlineageTag: 536ded47-6142-479c-9739-1684e019d7a1\n\n\tannotation PBI_NavigationStepName = Navigation\n\n\tannotation PBI_ResultType = Table"
+  }
+}

@@ -1,0 +1,79 @@
+table User
+	lineageTag: 1485e575-7427-4962-b2e5-3ac545668f77
+
+	column user_id
+		dataType: string
+		lineageTag: 305c911f-bb27-41cd-ab9f-e7812e2a11c1
+		summarizeBy: none
+		sourceColumn: user_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column user_name
+		dataType: string
+		lineageTag: c59d366a-827a-46a9-a325-78fffd84d9fa
+		summarizeBy: none
+		sourceColumn: user_name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column role_current
+		dataType: string
+		lineageTag: 3574f6e8-4cd1-4040-ac00-e1061354b2e3
+		summarizeBy: none
+		sourceColumn: role_current
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column sub_role_current
+		dataType: string
+		lineageTag: 0c4851c3-17a5-4943-88cb-c0c2ec53eff9
+		summarizeBy: none
+		sourceColumn: sub_role_current
+
+		changedProperty = SortByColumn
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column employee_number
+		dataType: string
+		lineageTag: c58f70f9-ef39-4760-af4a-7ce221fed4ec
+		summarizeBy: none
+		sourceColumn: employee_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column user_email
+		dataType: string
+		lineageTag: db13ddda-ea7d-4197-9c5c-95207b25a5e9
+		summarizeBy: none
+		sourceColumn: user_email
+
+		annotation SummarizationSetBy = Automatic
+
+	partition User-61e1b097-06ad-4610-b6ce-219170a3f9df = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases("je92638.eu-central-1.snowflakecomputing.com","READER_WH_129",[Implementation="2.0"]),
+				    KEBOOLA_855_942138244_Database = Source{[Name="KEBOOLA_855_942138244",Kind="Database"]}[Data],
+				    READER_SCHEMA_855_942138244_Schema = KEBOOLA_855_942138244_Database{[Name="READER_SCHEMA_855_942138244",Kind="Schema"]}[Data],
+				    v2_user_Table = READER_SCHEMA_855_942138244_Schema{[Name="v2_user",Kind="Table"]}[Data],
+				    #"Filtered Rows" = Table.SelectRows(v2_user_Table, each ([employee_number] <> null)),
+				    #"Replaced Value" = Table.ReplaceValue(#"Filtered Rows","Jelena  Lacmanovic","Jelena Lacmanovic",Replacer.ReplaceText,{"user_name"}),
+				    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value","Simon  Siew","Simon Siew",Replacer.ReplaceText,{"user_name"})
+				in
+				    #"Replaced Value1"
+
+	annotation PBI_ResultType = Exception
+
+	annotation PBI_NavigationStepName = Navigation
+

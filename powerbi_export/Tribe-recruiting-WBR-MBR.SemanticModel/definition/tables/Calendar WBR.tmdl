@@ -1,0 +1,51 @@
+table 'Calendar WBR'
+	lineageTag: d76f3745-ae93-450b-9994-15a6afce1028
+
+	column 'Week start end'
+		lineageTag: b79c5a80-732b-42dd-9f5b-6719c884a893
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[Week start end]
+		sortByColumn: WeekInt
+
+		annotation SummarizationSetBy = Automatic
+
+	column WeekInt
+		formatString: 0
+		lineageTag: 901c4be9-4f35-4ee0-b935-ad0dedbc637d
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: Calendar[WeekInt]
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_current_week
+		lineageTag: f5938de1-05ae-48ef-a10b-6713928c534f
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[is_current_week]
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_last_12_weeks
+		lineageTag: 8f35a61b-4242-42bd-83ad-69f7c8fec1ac
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[is_last_12_weeks]
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_last_4_weeks
+		lineageTag: a574acc9-f02b-47e2-beab-4d85da7973d4
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Calendar[is_last_4_weeks]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Calendar WBR' = calculated
+		mode: import
+		source = CALCULATETABLE(SUMMARIZECOLUMNS('Calendar'[Week start end], 'Calendar'[WeekInt], 'Calendar'[is_current_week], 'Calendar'[is_last_12_weeks], 'Calendar'[is_last_4_weeks]), 'Calendar'[Week start end]<>BLANK(), 'Calendar'[Date]<=TODAY())
+
+	annotation PBI_Id = db2875612ff045108a3f00a347318c96
+

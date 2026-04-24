@@ -1,0 +1,460 @@
+table event
+	lineageTag: 231a5651-a331-49cd-ba05-e24f1ee23633
+
+	measure 'Created date peroid' = "You are viewing events created from " & FORMAT(MIN(event[date_created]),"YYYY-MM-DD") & " to " & FORMAT(MAX(event[date_created]),"YYYY-MM-DD")
+		lineageTag: 3314f1a8-8cc9-4f66-b5f0-74f21c5c03ed
+
+		changedProperty = IsHidden
+
+	measure '# User overwrite to not fit' = CALCULATE(COUNT(event[event_id]), event[event_type]="User overwrite to not fit", USERELATIONSHIP('Calendar'[Date], event[date_created]))
+		formatString: 0
+		lineageTag: 7ac6362a-01a4-4b78-b417-0dec50fd2774
+
+	measure '# User overwrite to fit' = CALCULATE(COUNT(event[event_id]), event[event_type]="User overwrite to fit", USERELATIONSHIP('Calendar'[Date], event[date_created]))
+		formatString: 0
+		lineageTag: f6960172-1fbb-46be-ae77-080c709179f4
+
+	measure '# Session cookie expired' = CALCULATE(COUNT(event[event_id]), event[event_type]="Session cookie expired")
+		formatString: 0
+		lineageTag: 1555ba73-aa69-4b33-b82c-d4b5f019bdf8
+
+	measure '# Profile was scraped' = CALCULATE(COUNT(event[event_id]), event[event_type]="Profile was scraped")
+		formatString: 0
+		lineageTag: 5e168bb0-d7eb-4bf3-bdef-13bfef4b9271
+
+	column event_id
+		dataType: string
+		lineageTag: 7f759fdf-1ce4-4fd0-995b-f2d2c3be2c74
+		summarizeBy: none
+		sourceColumn: event_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column candidate_id
+		dataType: string
+		lineageTag: 4774e9e1-499d-4fff-9962-d78532d2f8a5
+		summarizeBy: none
+		sourceColumn: candidate_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column talent_id
+		dataType: string
+		lineageTag: af5bf088-ac30-482a-9653-76e13289b09f
+		summarizeBy: none
+		sourceColumn: talent_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_created
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 8004c28a-4786-4214-8517-d9fd6fb5eab5
+		summarizeBy: none
+		sourceColumn: date_created
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column is_event_duplicated
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 1f031bcb-b6f7-4b8f-b0c3-289e77d4b4da
+		summarizeBy: none
+		sourceColumn: is_event_duplicated
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_type
+		dataType: string
+		lineageTag: 2b193603-6229-4f6d-ab6f-01e376384988
+		summarizeBy: none
+		sourceColumn: event_type
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column moved_to_stage
+		dataType: string
+		lineageTag: 7b60b79c-3281-425b-8bdd-8956b77aa705
+		summarizeBy: none
+		sourceColumn: moved_to_stage
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column moved_to_stageType
+		dataType: string
+		lineageTag: 8c9cb7b1-0bef-45c2-b9b8-365125b14935
+		summarizeBy: none
+		sourceColumn: moved_to_stageType
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column who_created_event
+		dataType: string
+		lineageTag: 5b1e985a-fe5b-4e41-ad10-77d010c752be
+		summarizeBy: none
+		sourceColumn: who_created_event
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column who_event_created_for
+		dataType: string
+		lineageTag: 8229212e-bf07-4a81-b59c-3f7446e59163
+		summarizeBy: none
+		sourceColumn: who_event_created_for
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column automation_flow_name
+		dataType: string
+		lineageTag: ff5ff693-b477-4ac7-a984-c4b1df434ae5
+		summarizeBy: none
+		sourceColumn: automation_flow_name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column automation_step_type
+		dataType: string
+		lineageTag: 5f4ec9f6-50fc-4a80-bbfc-376a235baba2
+		summarizeBy: none
+		sourceColumn: automation_step_type
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column automation_step_order
+		dataType: string
+		lineageTag: b61f4480-e56b-4a69-9d04-0a73f78e39cf
+		summarizeBy: none
+		sourceColumn: automation_step_order
+
+		changedProperty = DataType
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column automation_is_message_read
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 376c312d-2b4f-4217-a60e-e016a4a94efd
+		summarizeBy: none
+		sourceColumn: automation_is_message_read
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column automation_is_message_replied
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: babcd016-d41d-4a60-b47c-1422f1223981
+		summarizeBy: none
+		sourceColumn: automation_is_message_replied
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column automation_message_version_id
+		dataType: string
+		lineageTag: c88c5d70-c1d0-4f89-a57f-6c265626d438
+		summarizeBy: none
+		sourceColumn: automation_message_version_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column job_id
+		dataType: string
+		lineageTag: ba37b779-184e-48c4-bc04-67660757fccd
+		summarizeBy: none
+		sourceColumn: job_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column dayhour
+		dataType: int64
+		formatString: 0
+		lineageTag: 34edde81-bd91-4da7-8a20-fd09a981a4be
+		summarizeBy: none
+		sourceColumn: dayhour
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = User
+
+	column is_automation_step_sent = ```
+			IF(  (event[event_type]="Email Sent" && event[automation_step_type]="Email") 
+			                               || (event[event_type]="Linkedin Sent Contact" && event[automation_step_type]="Connection")
+			                               || (event[event_type]="Message sent" && event[automation_step_type]="LN message")
+			                               || (event[event_type]="Linkedin inMail sent" && event[automation_step_type]="Inmail")
+			                               , TRUE(), FALSE())
+			```
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: ac574b4c-33f5-479d-ab58-1cf74a7d746d
+		summarizeBy: none
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column automation_step_name
+		dataType: string
+		lineageTag: 3ae75028-734b-4af7-b30f-8f98214f431d
+		summarizeBy: none
+		sourceColumn: automation_step_name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column automation_step_subcon
+		dataType: string
+		lineageTag: 3cf041e5-24ce-4823-8914-cbe4d5be77bc
+		summarizeBy: none
+		sourceColumn: automation_step_subcon
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column automation_step_con
+		dataType: string
+		lineageTag: 0a7626fc-1509-4d5c-a10a-cdeff50ae7cb
+		summarizeBy: none
+		sourceColumn: automation_step_con
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column automation_step_consubcon = CONCATENATE(CONCATENATE(event[automation_step_subcon], " - "), event[automation_step_con])
+		lineageTag: 025a372e-83e4-4c4d-8205-532d6fb2cb3f
+		summarizeBy: none
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column who_event_created_for_id
+		dataType: string
+		lineageTag: fb61472f-37fd-4e52-96b5-26efdd5c71f1
+		summarizeBy: none
+		sourceColumn: who_event_created_for_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Candidate Job ID' = IF(event[moved_to_stageType]="Contacted" && event[event_type]="Moved to stage" && event[job_id]<>BLANK() && event[candidate_id]<>BLANK(), CONCATENATE(event[candidate_id], event[job_id]), BLANK())
+		lineageTag: f4d11a5e-635c-4c45-a8e4-6b40618a8942
+		summarizeBy: none
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Earliest contacted' =
+			VAR  earliest_contacted = CALCULATE(MIN(event[date_created]), FILTER(event, event[Candidate Job ID]=EARLIER(event[Candidate Job ID])), event[Candidate Job ID]<>BLANK())
+			RETURN
+			IF(event[date_created]=earliest_contacted, event[who_created_event], BLANK())
+		lineageTag: 848aa021-efe9-43db-a0f0-e277f3ba5b2a
+		summarizeBy: none
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sourcer credit contacted' =
+			VAR Sourcer = CONCATENATEX(
+			    FILTER(
+			        SUMMARIZE(event, event[Candidate Job ID], event[Earliest contacted]),
+			        event[Candidate Job ID]=EARLIER(event[Candidate Job ID]) &&
+			        event[Earliest contacted]<>BLANK()
+			    ),
+			    event[Earliest contacted], ", ", event[Earliest contacted])
+			RETURN IF(event[Earliest contacted]<>BLANK(), Sourcer, BLANK())
+		lineageTag: fd403dc9-5b03-47f0-90f3-7c3f0953f6db
+		summarizeBy: none
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column who_created_event_first
+		dataType: string
+		lineageTag: c9e61f94-1edf-4bf2-958d-6526e57b5c80
+		summarizeBy: none
+		sourceColumn: who_created_event_first
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'talent_id + job_id' = ```
+			CONCATENATE(event[talent_id], event[job_id]) 
+			```
+		lineageTag: b7f8fbc8-c43b-4e33-9e2d-a51ef89666b9
+		summarizeBy: none
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_event_createdby_ai
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 571d4e00-c9d3-4fae-99a3-e9ef1a83802b
+		summarizeBy: none
+		sourceColumn: is_event_createdby_ai
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_external_recruiter
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 0755de39-f7ef-4552-b746-e3df60a60644
+		summarizeBy: none
+		sourceColumn: is_external_recruiter
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Tribe = IF(event[who_created_event]=event[who_event_created_for], 1, 0)
+		formatString: 0
+		lineageTag: cfc382e9-35f2-4694-a101-ca386d69a2d9
+		summarizeBy: sum
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ai_rearch_id
+		dataType: string
+		lineageTag: 2fddce60-67c9-47bb-b910-b94e8d17ba06
+		summarizeBy: none
+		sourceColumn: ai_rearch_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column not_fit
+		dataType: string
+		lineageTag: d71f4535-d8f9-4ad4-9802-e8608489adb3
+		summarizeBy: none
+		sourceColumn: not_fit
+
+		annotation SummarizationSetBy = Automatic
+
+	column not_fit_reason
+		dataType: string
+		lineageTag: 44d35e2a-5cd8-46dd-8a34-e32d7f7ca39e
+		summarizeBy: none
+		sourceColumn: not_fit_reason
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Linkedin Viewed by AI' = ```
+			SWITCH(TRUE(),
+			event[event_type]="Linkedin Visited Profile" && event[is_event_createdby_ai]=TRUE(), "Yes", 
+			event[event_type]="Linkedin Visited Profile" && event[is_event_createdby_ai]=BLANK(), "No",
+			"No")
+			```
+		lineageTag: f4445771-a727-40ca-b6b3-655cef5ac43a
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Not Official Sourcer WBR' = IF(event[who_created_event_first]=RELATED(job[job_sourcer]), "Same", "Not")
+		lineageTag: b4bd80dd-8cac-4903-b13b-07c3c2e0ee83
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sourcer Employee Number' = RELATED(User[employee_number])
+		lineageTag: 3ad31b36-9c3c-4832-9a64-8af577e6108a
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sourcing Team?' =
+			SWITCH(TRUE(),
+			RELATED('Sourcing Team List'[Moved to TA Position Date])=BLANK() && RELATED('Sourcing Team List'[Name])<>BLANK(), "Yes",
+			RELATED('Sourcing Team List'[Moved to TA Position Date])<>BLANK() && event[date_created]<RELATED('Sourcing Team List'[Moved to TA Position Date]) && RELATED('Sourcing Team List'[Name])<>BLANK(), "Yes",
+			"No")
+		lineageTag: 6c9aa91f-f7f0-4cfe-9cf2-f16f73f455d0
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition event-6d7bbd0f-ddec-4f88-adcb-a5510188d48c = m
+		mode: import
+		source = ```
+				let
+				    Source = Snowflake.Databases("je92638.eu-central-1.snowflakecomputing.com","READER_WH_129",[Implementation="2.0"]),
+				    KEBOOLA_855_942138244_Database = Source{[Name="KEBOOLA_855_942138244",Kind="Database"]}[Data],
+				    READER_SCHEMA_855_942138244_Schema = KEBOOLA_855_942138244_Database{[Name="READER_SCHEMA_855_942138244",Kind="Schema"]}[Data],
+				    v2_event_Table = READER_SCHEMA_855_942138244_Schema{[Name="v2_event",Kind="Table"]}[Data],
+				    #"Extracted Time" = Table.TransformColumns(v2_event_Table,{{"datetime_created", DateTime.Time, type time}}),
+				    #"Extracted Hour" = Table.TransformColumns(#"Extracted Time",{{"datetime_created", Time.Hour, Int64.Type}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Extracted Hour",{{"datetime_created", "dayhour"}}),
+				    #"Added Custom" = Table.AddColumn(#"Renamed Columns", "Correct", each if [event_type]="Linkedin Visited Profile" and [job_id] <> null then [who_created_event] 
+				else
+				if [event_type]="Moved to stage" and [moved_to_stage]="Contacted" and [job_id] <> null then [who_created_event] else
+				if [event_type]="Moved to stage" and [moved_to_stage]="Prospects" and [job_id] <> null then [who_created_event]
+				else
+				if [event_type]="Moved to stage" and [moved_to_stageType]="Positive Response" and [job_id] <> null then [who_created_event]
+				else
+				if [event_type] = "Disqualified" and [job_id] <> null then [who_created_event]
+				else
+				if [event_type]="Candidate created" and [moved_to_stage]="Contacted" and [job_id] <> null then [who_created_event] else
+				if [event_type]="Candidate created" and [moved_to_stage]="Prospects" and [job_id] <> null then [who_created_event] else
+				if [event_type]="Candidate created" and [moved_to_stageType]="Prospects" and [job_id] <> null then [who_created_event] else
+				if [event_type]="Moved to stage" and [moved_to_stage]="Recruiter Screen" and [job_id] <> null then [who_created_event_first] else
+				if ([event_type]="Evaluation" or (Text.Start([event_id], 9)="recruitee" and [moved_to_stageType]="evaluation")) and [job_id] <> null then [who_created_event_first] else 
+				if [moved_to_stage]="Moved to ATS" then [who_created_event_first] else
+				if [moved_to_stageType]="Offer" then [who_created_event_first] else
+				if [moved_to_stage]="Hired" then [who_created_event_first] else null),
+				    #"Removed Columns" = Table.RemoveColumns(#"Added Custom",{"who_created_event_first"}),
+				    #"Renamed Columns1" = Table.RenameColumns(#"Removed Columns",{{"Correct", "who_created_event_first"}}),
+				    #"Filtered Rows1" = Table.SelectRows(#"Renamed Columns1", each [date_created] >= #"Start Date")
+				in
+				    #"Filtered Rows1"
+				```
+
+	annotation PBI_ResultType = Exception
+
+	annotation PBI_NavigationStepName = Navigation
+

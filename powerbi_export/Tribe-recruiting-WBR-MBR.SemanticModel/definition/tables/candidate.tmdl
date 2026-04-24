@@ -1,0 +1,240 @@
+table candidate
+	lineageTag: 50130d7c-a657-4492-8f4b-72b55ca79a4c
+
+	column candidate_id
+		dataType: string
+		lineageTag: dfa5497a-44b6-4ebb-8a6c-c0ac41d4f2c5
+		summarizeBy: none
+		sourceColumn: candidate_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column job_id
+		dataType: string
+		lineageTag: a9c9182f-693b-4b30-8ffc-e2f5371b590c
+		summarizeBy: none
+		sourceColumn: job_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column talent_id
+		dataType: string
+		lineageTag: 85d111a2-6e29-4764-8ae8-14feca440248
+		summarizeBy: none
+		sourceColumn: talent_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column reason_not_interested
+		dataType: string
+		lineageTag: c8454e5c-b455-4f63-9760-088e7972decd
+		summarizeBy: none
+		sourceColumn: reason_not_interested
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_candidate_duplicated
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: d4f4c3ad-ce7b-43ed-822c-a50dcde7b1f6
+		summarizeBy: none
+		sourceColumn: is_candidate_duplicated
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_candidate_disqualified
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: a7bec9fc-a020-4e0e-85e7-e8d1b0dd5535
+		summarizeBy: none
+		sourceColumn: is_candidate_disqualified
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column source
+		dataType: string
+		lineageTag: 11e3ad84-4dec-4f78-8917-63e6af06877d
+		summarizeBy: none
+		sourceColumn: source
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_candidate_reacted
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 3b5ef19b-6731-4d3c-8bd7-b0d2dd9edbce
+		summarizeBy: none
+		sourceColumn: is_candidate_reacted
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column candidate_sourcer
+		dataType: string
+		lineageTag: 9a46014a-841f-4c04-8817-18130165a504
+		summarizeBy: none
+		sourceColumn: candidate_sourcer
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column hired_salary
+		dataType: string
+		lineageTag: c97cbd15-a976-4d78-bb1d-a29e9e7455d1
+		summarizeBy: none
+		sourceColumn: hired_salary
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_candidate_archived
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 50192cae-bcd2-43f9-ab7c-c4ad7465b52f
+		summarizeBy: none
+		sourceColumn: is_candidate_archived
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column hired_salary_eur
+		dataType: double
+		formatString: "€"\ #,0.00;-"€"\ #,0.00;"€"\ #,0.00
+		lineageTag: 78eeac17-6f16-44ad-8943-f405082bcf42
+		summarizeBy: sum
+		sourceColumn: hired_salary_eur
+
+		changedProperty = FormatString
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_candidate_createdby_ai
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 34ec8345-6474-4b1b-adf7-726bdc3321ab
+		summarizeBy: none
+		sourceColumn: is_candidate_createdby_ai
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Response count' = CALCULATE(COUNTROWS(RELATEDTABLE(event)), event[event_type] IN {"Linkedin Responded", "Linkedin inMail received", "Email Replied", "Disqualified"})
+		formatString: 0
+		lineageTag: f93eae7a-4798-4a17-af14-887f36264dc1
+		summarizeBy: sum
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Candidate Responded?' = IF(candidate[Response count]>0, TRUE, FALSE)
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 010ed687-37e3-4f1b-9cfb-2d42064a1764
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Linkedin connect sent' =
+			var num = CALCULATE(COUNTROWS(RELATEDTABLE(event)), event[event_type]="Linkedin Sent Contact")
+			RETURN IF(num>0, TRUE, FALSE)
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: bdc384dc-0abe-4736-ae64-48da4881f1b9
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Linkedin Connected' =
+			var num = CALCULATE(COUNTROWS(RELATEDTABLE(event)), event[event_type]="Linkedin Connected")
+			RETURN IF(num>0, TRUE, FALSE)
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: d509a3d7-b93c-452b-82e8-ede841801740
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column hired_salary_currency
+		dataType: string
+		lineageTag: 6e7d8a26-18b3-4e3a-9007-86472c4e6020
+		summarizeBy: none
+		sourceColumn: hired_salary_currency
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Hired Salary cal' = candidate[hired_salary] * candidate[Exchange rate]
+		formatString: #,0
+		lineageTag: 2bfd7ff6-2951-47ce-ae20-be6865f3cfc9
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Exchange rate' = ```
+			SWITCH(TRUE(),
+			candidate[hired_salary_currency]="Croatian kuna", 0.13,
+			candidate[hired_salary_currency]="Czech koruna", 0.04,
+			candidate[hired_salary_currency]="Danish krone", 0.13,
+			candidate[hired_salary_currency]="Dollar", 0.93,
+			candidate[hired_salary_currency]="Hungarian forint", 0.0026,
+			candidate[hired_salary_currency]="Norwegian Krone", 0.09,
+			candidate[hired_salary_currency]="Polish złoty", 0.22,
+			candidate[hired_salary_currency]="Pound", 1.16, 
+			candidate[hired_salary_currency]="Rupee", 0.011,
+			candidate[hired_salary_currency]="Swedish krona", 0.09,
+			candidate[hired_salary_currency]="Euro", 1
+			)
+			```
+		lineageTag: e6c22315-b32b-4ac4-9419-cca4f571d251
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Prospects = CALCULATE(COUNTROWS(RELATEDTABLE(event)), event[event_type]="Candidate created" && event[moved_to_stage]="Prospects")
+		formatString: 0
+		lineageTag: 959457fc-aa41-4ed0-a3cf-deffcca34dec
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Current Stage' = RELATED(candidate_stage[Current Stage])
+		lineageTag: 53a32837-3112-4490-b061-db649abbdbec
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition candidate-e27997fb-46ff-4d83-97ab-f2f690f273bb = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases("je92638.eu-central-1.snowflakecomputing.com","READER_WH_129",[Implementation="2.0"]),
+				    KEBOOLA_855_942138244_Database = Source{[Name="KEBOOLA_855_942138244",Kind="Database"]}[Data],
+				    READER_SCHEMA_855_942138244_Schema = KEBOOLA_855_942138244_Database{[Name="READER_SCHEMA_855_942138244",Kind="Schema"]}[Data],
+				    v2_candidate_Table = READER_SCHEMA_855_942138244_Schema{[Name="v2_candidate",Kind="Table"]}[Data]
+				in
+				    v2_candidate_Table
+
+	annotation PBI_ResultType = Exception
+
+	annotation PBI_NavigationStepName = Navigation
+

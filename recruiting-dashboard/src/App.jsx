@@ -2679,8 +2679,13 @@ const TSSummaryTab = ({ data }) => {
     return true;
   }), [rows, year, quarter, month, client, sourcer, techRoleFilter, includeExternal, techRoleByJob, categoryByJob]);
 
-  // Apply filters to hires
+  // Apply filters to hires.
+  // Hard-cap to TS_SUMMARY_ROSTER (12 names) so the KPI cards count hires by
+  // the Current_TS team only. Without this filter, project_dashboard_hires
+  // returns all-company hires (~1,320 in 2026) instead of just sourcing team
+  // hires (~6) — making the Hires KPI card meaningless on a TS-only page.
   const filteredHires = useMemo(() => hires.filter(h => {
+    if (!h.ts || !TS_SUMMARY_ROSTER.has(h.ts)) return false;
     if (!hireMatchesPeriod(h)) return false;
     if (client !== 'All' && h.client !== client) return false;
     if (sourcer !== 'All' && h.ts !== sourcer) return false;
@@ -3026,11 +3031,15 @@ const TSSummaryTab = ({ data }) => {
                     <span className="font-medium">{f.stage}</span>
                     <span><span className="text-white font-semibold">{f.count.toLocaleString()}</span> <span className="text-gray-500">({convPct})</span></span>
                   </div>
-                  <div className="flex justify-center">
-                    <div className="rounded h-6 transition-all flex items-center justify-center text-white text-xs font-medium"
-                         style={{ backgroundColor: '#3b82f6', width: `${widthPct}%`, minWidth: '8px' }}>
-                      {widthPct > 15 ? f.count.toLocaleString() : ''}
-                    </div>
+                  <div className="rounded h-6 transition-all flex items-center justify-center text-white text-xs font-medium"
+                       style={{
+                         backgroundColor: '#3b82f6',
+                         width: `${widthPct}%`,
+                         minWidth: '8px',
+                         marginLeft: 'auto',
+                         marginRight: 'auto',
+                       }}>
+                    {widthPct > 15 ? f.count.toLocaleString() : ''}
                   </div>
                 </div>
               );

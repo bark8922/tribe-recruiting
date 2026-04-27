@@ -2540,6 +2540,15 @@ const TECH_ROLE_CATEGORIES = new Set([
   'Data Analytics', 'DevOps', 'Software Engineering', 'Software', 'Design',
   'Product Manager', 'Information Technology', 'Quality Assurance (QA) ', 'Engineering Management',
 ]);
+
+// Current TS roster — matches the hardcoded list in Keboola block b0.c6 (ts_summary_per_sourcer SQL).
+// Used to filter the fallback path (project_dashboard.rows aggregation) so we don't show TAs
+// when the dedicated ts_summary table hasn't been populated yet by Flow.
+const TS_SUMMARY_ROSTER = new Set([
+  'Andrea Akovic', 'Elena Petrovska', 'Gustavo Loureiro Castro', 'Jovana Drakula',
+  'Marina Lazarevic', 'Mia Gjorgievska', 'Milica Veselinovic', 'Naledi Ngwenya',
+  'Nare Avetisyan', 'Rodrigo Gomes', 'Valeriia Yurykova', 'Zelimir Stajcic',
+]);
 const isTechRole = (jobCategory) => TECH_ROLE_CATEGORIES.has(jobCategory) ? 'Yes' : 'No';
 
 // ISO week → first day of that week (Monday). Used to bucket weekly rows into months.
@@ -2574,8 +2583,10 @@ const TSSummaryTab = ({ data }) => {
   const jobs = data.jobs || [];
   const tthJobs = data.tth_jobs || [];
 
-  // Filters
-  const [year, setYear] = useState('2026');
+  // Filters — default to 'All' so the user sees full history (Jan 2024-present)
+  // rather than current year only. PBI's page-level filter excludes 2019-2021
+  // and null but keeps everything else; we mirror that intent.
+  const [year, setYear] = useState('All');
   const [quarter, setQuarter] = useState('All');
   const [month, setMonth] = useState('All');
   const [client, setClient] = useState('All');
@@ -2730,9 +2741,11 @@ const TSSummaryTab = ({ data }) => {
         a.jobs += r.jobs;
       });
     } else {
-      // Fallback (pre-Flow-refresh): job-level TS attribution from PD rows
+      // Fallback (pre-Flow-refresh): job-level TS attribution from PD rows.
+      // Hard-cap to the Current_TS roster so we don't accidentally include TAs
+      // who happen to be listed as job_sourcer on some jobs.
       filteredRows.forEach(r => {
-        if (!r.ts) return;
+        if (!r.ts || !TS_SUMMARY_ROSTER.has(r.ts)) return;
         const a = ensure(r.ts);
         a.viewed += r.viewed || 0;
         a.contacted += r.contacted || 0;
@@ -2743,7 +2756,7 @@ const TSSummaryTab = ({ data }) => {
         a.offered += r.offered || 0;
       });
       filteredHires.forEach(h => {
-        if (!h.ts) return;
+        if (!h.ts || !TS_SUMMARY_ROSTER.has(h.ts)) return;
         ensure(h.ts).hires += 1;
       });
     }
@@ -2759,23 +2772,57 @@ const TSSummaryTab = ({ data }) => {
       .sort((a, b) => b.contacted - a.contacted);
   }, [tsSummary, useTsSummary, filteredRows, filteredHires, year, quarter, month, sourcer]);
 
-  // Funnel — global totals across the filter context
+  // Funnel — Viewed → Contacted → Positive Response → Actual Screens → Move to ATS → Offers → Hired.
+  // PBI's funnel skips Recruiter Screens (it's an intermediate stage, not in the funnel chain).
+  // Each row shows count + % conversion FROM the previous stage. Bars taper to create a funnel shape.
+  // "Viewed" comes from PD rows (LinkedIn Visited events) since ts_summary doesn't carry it yet.
   const funnel = useMemo(() => {
-    const t = { viewed: 0, contacted: 0, positive_response: 0, screens: 0, actual_screens: 0, ats: 0, offered: 0 };
-    filteredRows.forEach(r => {
-      Object.keys(t).forEach(k => { t[k] += r[k] || 0; });
-    });
-    return [
-      { stage: 'LinkedIn Visited', count: t.viewed, fill: '#1e40af' },
-      { stage: 'Contacted', count: t.contacted, fill: '#1d4ed8' },
-      { stage: 'Positive Response', count: t.positive_response, fill: '#2563eb' },
-      { stage: 'Screens', count: t.screens, fill: '#3b82f6' },
-      { stage: 'Actual Screens', count: t.actual_screens, fill: '#60a5fa' },
-      { stage: 'Move to ATS', count: t.ats, fill: '#93c5fd' },
-      { stage: 'Offers', count: t.offered, fill: '#a78bfa' },
-      { stage: 'Hired', count: filteredHires.length, fill: '#22c55e' },
+    // Sum viewed/contacted/etc. — from ts_summary if available (matches per-sourcer scope),
+    // else from filteredRows. PD rows is 2026-only so historical Viewed is 0 in fallback.
+    const t = { viewed: 0, contacted: 0, positive_response: 0, actual_screens: 0, ats: 0, offered: 0, hires: 0 };
+    if (useTsSummary) {
+      tsSummary.forEach(r => {
+        if (year !== 'All' && r.iso_year !== Number(year)) return;
+        if (sourcer !== 'All' && r.ts !== sourcer) return;
+        if (month !== 'All' && isoWeekToMonth(r.iso_year, r.iso_week) !== month) return;
+        if (quarter !== 'All' && isoWeekToQuarter(r.iso_year, r.iso_week) !== quarter) return;
+        t.contacted += r.contacted;
+        t.positive_response += r.positive_response;
+        t.actual_screens += r.actual_screens;
+        t.ats += r.ats;
+        t.offered += r.offers;
+        t.hires += r.hires;
+      });
+      // Pull viewed from PD rows for now (TS summary doesn't carry LinkedIn Visited yet)
+      filteredRows.forEach(r => { if (TS_SUMMARY_ROSTER.has(r.ts)) t.viewed += r.viewed || 0; });
+    } else {
+      filteredRows.forEach(r => {
+        if (!TS_SUMMARY_ROSTER.has(r.ts)) return;
+        t.viewed += r.viewed || 0;
+        t.contacted += r.contacted || 0;
+        t.positive_response += r.positive_response || 0;
+        t.actual_screens += r.actual_screens || 0;
+        t.ats += r.ats || 0;
+        t.offered += r.offered || 0;
+      });
+      t.hires = filteredHires.filter(h => TS_SUMMARY_ROSTER.has(h.ts)).length;
+    }
+    const stages = [
+      { stage: 'Viewed',            count: t.viewed },
+      { stage: 'Contacted',         count: t.contacted },
+      { stage: 'Positive Response', count: t.positive_response },
+      { stage: 'Actual Screens',    count: t.actual_screens },
+      { stage: 'Move to ATS',       count: t.ats },
+      { stage: 'Offers',            count: t.offered },
+      { stage: 'Hired',             count: t.hires },
     ];
-  }, [filteredRows, filteredHires]);
+    // Compute conversion % from previous step (null for first row)
+    return stages.map((s, i) => {
+      const prev = i > 0 ? stages[i - 1].count : null;
+      const conv = (prev != null && prev > 0) ? s.count / prev : null;
+      return { ...s, conv };
+    });
+  }, [useTsSummary, tsSummary, filteredRows, filteredHires, year, quarter, month, sourcer]);
 
   // Monthly trends — three ratios over time (year ignored if 'All').
   // Uses ts_summary when available (PBI-aligned), else PD rows.
@@ -2852,14 +2899,22 @@ const TSSummaryTab = ({ data }) => {
     return Object.values(agg).sort((a, b) => b.jobs - a.jobs);
   }, [pipelinesNoHire]);
 
-  // Helpers for percent formatting
-  const fmtPct = (v) => v == null ? '-' : `${(v * 100).toFixed(1)}%`;
-  const pctClass = (v) => {
-    if (v == null) return 'text-gray-500';
-    if (v < 0.20) return 'text-red-300 bg-red-900/30';
-    if (v < 0.40) return 'text-orange-300 bg-orange-900/20';
-    if (v < 0.60) return 'text-yellow-300 bg-yellow-900/20';
-    return 'text-green-300 bg-green-900/20';
+  // Helpers for percent formatting.
+  // Using Tailwind v2-compatible bg + bg-opacity classes (memory:
+  // reference_dashboard_tailwind_v2.md — `bg-red-900/30` v3+ syntax silently
+  // renders as no-op in v2). Per-metric thresholds match PBI heatmap intent.
+  const fmtPct = (v) => v == null ? '—' : `${Math.round(v * 100)}%`;
+  // metric-specific thresholds: pctContPR (0-30%), pctScrActual (40-80%), pctActualATS (40-70%)
+  const cellStyle = (v, metric) => {
+    if (v == null) return {};
+    const thresholds = {
+      pctContPR:    [0.10, 0.20],   // <10% red, 10-20% mid, >20% green
+      pctScrActual: [0.50, 0.75],
+      pctActualATS: [0.50, 0.65],
+    }[metric] || [0.30, 0.60];
+    if (v < thresholds[0]) return { backgroundColor: '#dc2626', color: '#fee2e2' };  // red-600
+    if (v < thresholds[1]) return { backgroundColor: '#fbbf24', color: '#451a03' };  // amber-400
+    return { backgroundColor: '#16a34a', color: '#dcfce7' };                          // green-600
   };
 
   const Kpi = ({ label, value, sub }) => (
@@ -2952,30 +3007,26 @@ const TSSummaryTab = ({ data }) => {
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
         <div className="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden xl:col-span-1">
           <div className="px-4 py-3 bg-gray-700 text-sm font-semibold text-white">Funnel</div>
-          <div className="p-4 space-y-1">
+          <div className="p-4 space-y-2">
             {funnel.map((f, i) => {
               const max = funnel[0].count || 1;
-              const widthPct = max > 0 ? Math.max(8, Math.round(100 * f.count / max)) : 0;
-              const drop = i > 0 && funnel[i - 1].count > 0
-                ? Math.round(100 * (funnel[i - 1].count - f.count) / funnel[i - 1].count) : null;
+              const widthPct = max > 0 ? Math.max(4, Math.round(100 * f.count / max)) : 0;
+              const convPct = f.conv != null ? `${(f.conv * 100).toFixed(1)}%` : '100%';
               return (
-                <div key={f.stage} className="flex items-center gap-2 text-xs">
-                  <div className="w-32 text-gray-300 text-right">{f.stage}</div>
-                  <div className="flex-1 bg-gray-900 rounded relative h-7">
-                    <div className="h-full rounded transition-all" style={{ backgroundColor: f.fill, width: `${widthPct}%` }} />
-                    <div className="absolute inset-0 flex items-center px-2 text-white font-medium">
-                      {f.count.toLocaleString()}
-                    </div>
+                <div key={f.stage} className="text-xs">
+                  <div className="flex justify-between mb-0.5 text-gray-300">
+                    <span className="font-medium">{f.stage}</span>
+                    <span><span className="text-white font-semibold">{f.count.toLocaleString()}</span> <span className="text-gray-500">({convPct})</span></span>
                   </div>
-                  <div className="w-12 text-right text-gray-500">
-                    {drop != null ? `-${drop}%` : ''}
+                  <div className="relative h-5 flex items-center justify-center">
+                    <div className="h-full rounded transition-all" style={{ backgroundColor: '#3b82f6', width: `${widthPct}%`, minWidth: '4px' }} />
                   </div>
                 </div>
               );
             })}
           </div>
-          <div className="px-4 py-2 text-xs text-gray-500 border-t border-gray-700">
-            Hired sourced from <code>project_dashboard_hires</code> (PBI snapshot lag: ~3 days). Reacted node omitted &mdash; <code>is_candidate_reacted</code> not in pipeline.
+          <div className="px-4 py-2 text-xs text-gray-500 border-t border-gray-700 leading-relaxed">
+            Conversion % shown is from the previous stage. Recruiter Screens omitted (PBI funnel skips it). Reacted omitted (no <code>is_candidate_reacted</code> in pipeline).
           </div>
         </div>
 
@@ -3005,11 +3056,11 @@ const TSSummaryTab = ({ data }) => {
               </thead>
               <tbody>
                 {perSourcer.map(r => (
-                  <tr key={r.sourcer} className="border-t border-gray-700 hover:bg-gray-700/50">
-                    <td className="px-3 py-1.5 text-white sticky left-0 bg-gray-800 hover:bg-gray-700/50">{r.sourcer}</td>
-                    <td className={`px-2 py-1.5 text-right ${pctClass(r.pctContPR)}`}>{fmtPct(r.pctContPR)}</td>
-                    <td className={`px-2 py-1.5 text-right ${pctClass(r.pctScrActual)}`}>{fmtPct(r.pctScrActual)}</td>
-                    <td className={`px-2 py-1.5 text-right ${pctClass(r.pctActualATS)}`}>{fmtPct(r.pctActualATS)}</td>
+                  <tr key={r.sourcer} className="border-t border-gray-700 hover:bg-gray-700">
+                    <td className="px-3 py-1.5 text-white sticky left-0 bg-gray-800">{r.sourcer}</td>
+                    <td className="px-2 py-1.5 text-right font-semibold" style={cellStyle(r.pctContPR, 'pctContPR')}>{fmtPct(r.pctContPR)}</td>
+                    <td className="px-2 py-1.5 text-right font-semibold" style={cellStyle(r.pctScrActual, 'pctScrActual')}>{fmtPct(r.pctScrActual)}</td>
+                    <td className="px-2 py-1.5 text-right font-semibold" style={cellStyle(r.pctActualATS, 'pctActualATS')}>{fmtPct(r.pctActualATS)}</td>
                     <td className="px-2 py-1.5 text-right text-gray-300">{r.contacted.toLocaleString()}</td>
                     <td className="px-2 py-1.5 text-right text-gray-300">{r.positive_response.toLocaleString()}</td>
                     <td className="px-2 py-1.5 text-right text-gray-300">{r.screens.toLocaleString()}</td>

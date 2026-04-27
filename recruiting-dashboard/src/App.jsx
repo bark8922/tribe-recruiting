@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
-  LineChart, Line, CartesianGrid, Legend
+  LineChart, Line, AreaChart, Area, FunnelChart, Funnel, LabelList,
+  CartesianGrid, Legend
 } from 'recharts';
 import { Search } from 'lucide-react';
 import dashboardDataPbi from './dashboard_data.json';
@@ -2521,6 +2522,591 @@ const TTHTab = ({ data }) => {
   );
 };
 
+// ============================================================
+// KPI - TS Summary Tab
+// Full port of Andy's legacy Power BI "KPI - TS Summary" page (Bucket A in legacy-pbix/PAGE_INVENTORY.md).
+// Sourcer-only — visual 6's job_recruiter field in the homework reference is vestigial config; PBI exports
+// (data (2).xlsx, Pipelines without Hires by Official Sourcers.xlsx) are all sourcer-keyed.
+// All aggregates computed client-side from project_dashboard.rows + project_dashboard_hires + tth_jobs + jobs.
+// DAX semantics preserved: ratios capped at 1.0, USERELATIONSHIP-equivalent date attribution honored,
+// Tech Role flag from job_category (subset of calc-col logic — Jacopo owns the full list).
+// ============================================================
+
+// Tech Role classifier — matches DAX `# Tech Roles Hired` filter (job_category subset).
+// The full `Tech Role` calc column also includes Product Manager, IT, QA, Engineering Management,
+// and IT/Tech Project Manager subcategories — but PD rows don't carry job_subcategory, so we use
+// the simpler hires-side filter. Per memory reference_metric_ownership.md, Jacopo owns this list.
+const TECH_ROLE_CATEGORIES = new Set([
+  'Data Analytics', 'DevOps', 'Software Engineering', 'Software', 'Design',
+  'Product Manager', 'Information Technology', 'Quality Assurance (QA) ', 'Engineering Management',
+]);
+const isTechRole = (jobCategory) => TECH_ROLE_CATEGORIES.has(jobCategory) ? 'Yes' : 'No';
+
+// ISO week → first day of that week (Monday). Used to bucket weekly rows into months.
+const isoWeekToDate = (year, week) => {
+  // ISO week 1 = the week containing Jan 4. Day 1 of week 1 is Monday.
+  const jan4 = new Date(Date.UTC(year, 0, 4));
+  const jan4Day = (jan4.getUTCDay() + 6) % 7; // Mon=0
+  const week1Start = new Date(jan4.getTime() - jan4Day * 86400000);
+  return new Date(week1Start.getTime() + (week - 1) * 7 * 86400000);
+};
+const isoWeekToMonth = (year, week) => {
+  const d = isoWeekToDate(year, week);
+  return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`;
+};
+const isoWeekToQuarter = (year, week) => {
+  const d = isoWeekToDate(year, week);
+  return `Q${Math.floor(d.getUTCMonth() / 3) + 1}`;
+};
+
+const TSSummaryTab = ({ data }) => {
+  // Prefer the dedicated ts_summary aggregate (PBI-aligned attribution: event.who_created_event_first
+  // + is_job_archived=False + test=False + Current_TS roster + test-client exclusions).
+  // Validated 2026-04-27: 11/11 PBI sourcers within 10% drift vs snapshot data (2).xlsx.
+  // Falls back to PD-rows-based aggregation if ts_summary is empty (e.g., Flow hasn't run yet
+  // since the new SQL block was added). The fallback uses job-level TS (job.job_sourcer) which
+  // mismatches PBI on Marina/Elena/Milica/Rodrigo/Valeriia by 50-370% — see
+  // legacy-pbix/snapshots-2026-04-24/INDEX.md and project_kpi_ts_summary_tab_20260427.md memory.
+  const tsSummary = data.ts_summary || [];
+  const useTsSummary = tsSummary.length > 0;
+  const rows = (data.project_dashboard && data.project_dashboard.rows) || [];
+  const hires = data.project_dashboard_hires || [];
+  const jobs = data.jobs || [];
+  const tthJobs = data.tth_jobs || [];
+
+  // Filters
+  const [year, setYear] = useState('2026');
+  const [quarter, setQuarter] = useState('All');
+  const [month, setMonth] = useState('All');
+  const [client, setClient] = useState('All');
+  const [sourcer, setSourcer] = useState('All');
+  const [techRoleFilter, setTechRoleFilter] = useState('All');
+  const [includeExternal, setIncludeExternal] = useState(false);
+
+  // Map job_id → tech_role flag (from tth_jobs which has the canonical calc column)
+  const techRoleByJob = useMemo(() => {
+    const m = {};
+    tthJobs.forEach(j => { if (j.job_id) m[j.job_id] = j.tech_role; });
+    return m;
+  }, [tthJobs]);
+
+  // Map job_id → job_category (used to fall back when tth_jobs lacks the job)
+  const categoryByJob = useMemo(() => {
+    const m = {};
+    rows.forEach(r => { if (r.job_id && !m[r.job_id]) m[r.job_id] = r.job_category; });
+    tthJobs.forEach(j => { if (j.job_id && !m[j.job_id]) m[j.job_id] = j.job_category; });
+    return m;
+  }, [rows, tthJobs]);
+
+  const techRoleFor = (jobId) => techRoleByJob[jobId] || isTechRole(categoryByJob[jobId]);
+
+  // Filter option sets
+  const years = useMemo(() => {
+    const ys = new Set();
+    rows.forEach(r => { if (r.iso_year >= 2024 && r.iso_year <= 2030) ys.add(r.iso_year); });
+    hires.forEach(h => { if (h.date_hired) ys.add(Number(h.date_hired.slice(0, 4))); });
+    return ['All', ...Array.from(ys).filter(y => y >= 2024 && y <= 2030).sort().reverse().map(String)];
+  }, [rows, hires]);
+
+  const months = useMemo(() => {
+    if (year === 'All') return ['All'];
+    const ms = new Set();
+    rows.forEach(r => {
+      if (r.iso_year !== Number(year)) return;
+      ms.add(isoWeekToMonth(r.iso_year, r.iso_week));
+    });
+    hires.forEach(h => {
+      if (!h.date_hired || h.date_hired.slice(0, 4) !== year) return;
+      ms.add(h.date_hired.slice(0, 7));
+    });
+    return ['All', ...Array.from(ms).sort()];
+  }, [rows, hires, year]);
+
+  const clients = useMemo(() => {
+    const cs = new Set();
+    rows.forEach(r => { if (r.client) cs.add(r.client); });
+    return ['All', ...Array.from(cs).sort()];
+  }, [rows]);
+
+  const sourcers = useMemo(() => {
+    const ss = new Set();
+    rows.forEach(r => { if (r.ts) ss.add(r.ts); });
+    return ['All', ...Array.from(ss).sort()];
+  }, [rows]);
+
+  // Period match — used to filter both rows (iso_year+week) and hires (date_hired)
+  const rowMatchesPeriod = (r) => {
+    if (r.iso_year < 2024 || r.iso_year > 2030) return false; // skip bad iso years (e.g. 2202)
+    if (year === 'All') return true;
+    if (r.iso_year !== Number(year)) return false;
+    if (month !== 'All') return isoWeekToMonth(r.iso_year, r.iso_week) === month;
+    if (quarter !== 'All') return isoWeekToQuarter(r.iso_year, r.iso_week) === quarter;
+    return true;
+  };
+  const hireMatchesPeriod = (h) => {
+    if (!h.date_hired) return false;
+    const hy = h.date_hired.slice(0, 4);
+    if (year !== 'All' && hy !== year) return false;
+    if (month !== 'All' && h.date_hired.slice(0, 7) !== month) return false;
+    if (quarter !== 'All') {
+      const m = Number(h.date_hired.slice(5, 7));
+      const qNum = Number(quarter.replace('Q', ''));
+      if (Math.floor((m - 1) / 3) + 1 !== qNum) return false;
+    }
+    return true;
+  };
+
+  // Apply all filters to PD rows
+  const filteredRows = useMemo(() => rows.filter(r => {
+    if (!rowMatchesPeriod(r)) return false;
+    if (client !== 'All' && r.client !== client) return false;
+    if (sourcer !== 'All' && r.ts !== sourcer) return false;
+    if (techRoleFilter !== 'All' && techRoleFor(r.job_id) !== techRoleFilter) return false;
+    if (!includeExternal && r.is_external_recruiter) return false;
+    return true;
+  }), [rows, year, quarter, month, client, sourcer, techRoleFilter, includeExternal, techRoleByJob, categoryByJob]);
+
+  // Apply filters to hires
+  const filteredHires = useMemo(() => hires.filter(h => {
+    if (!hireMatchesPeriod(h)) return false;
+    if (client !== 'All' && h.client !== client) return false;
+    if (sourcer !== 'All' && h.ts !== sourcer) return false;
+    if (techRoleFilter !== 'All' && techRoleFor(h.job_id) !== techRoleFilter) return false;
+    if (!includeExternal && h.is_external_recruiter) return false;
+    return true;
+  }), [hires, year, quarter, month, client, sourcer, techRoleFilter, includeExternal, techRoleByJob, categoryByJob]);
+
+  // KPI cards
+  const kpis = useMemo(() => {
+    const totalHires = filteredHires.length;
+    const techHires = filteredHires.filter(h => techRoleFor(h.job_id) === 'Yes').length;
+    // Candidate Time to Find a Hire: avg days from job created → first-hire contacted date.
+    // PBI DAX: AVERAGE(candidate_stage[Diff Concated - Job created]) for hired candidates.
+    // Approximation: avg days between job_created and date_contacted across all filtered hires.
+    const jobCreatedById = {};
+    jobs.forEach(j => { if (j.job_id) jobCreatedById[j.job_id] = j.date_created; });
+    tthJobs.forEach(j => { if (j.job_id && !jobCreatedById[j.job_id]) jobCreatedById[j.job_id] = j.date_created; });
+    const diffs = [];
+    filteredHires.forEach(h => {
+      const created = jobCreatedById[h.job_id];
+      if (!created || !h.date_contacted) return;
+      const d1 = new Date(created), d2 = new Date(h.date_contacted);
+      const diff = Math.round((d2 - d1) / 86400000);
+      if (diff > 0) diffs.push(diff);
+    });
+    const avgDiff = diffs.length ? Math.round(diffs.reduce((a, b) => a + b, 0) / diffs.length) : null;
+    return { totalHires, techHires, candidateTimeToFind: avgDiff };
+  }, [filteredHires, jobs, tthJobs, techRoleByJob, categoryByJob]);
+
+  // Per-Sourcer ratio table — matches PBI `data (2).xlsx`.
+  // Primary path: ts_summary aggregate (PBI-aligned attribution).
+  // Fallback path: project_dashboard.rows + project_dashboard_hires (job-level TS — wrong
+  // attribution; only used until Flow refreshes after the new SQL block deploy).
+  const perSourcer = useMemo(() => {
+    const agg = {};
+    const ensure = (ts) => {
+      if (!agg[ts]) agg[ts] = {
+        sourcer: ts, viewed: 0, contacted: 0, positive_response: 0, screens: 0,
+        actual_screens: 0, ats: 0, offered: 0, hires: 0, jobs: 0,
+      };
+      return agg[ts];
+    };
+
+    if (useTsSummary) {
+      // ts_summary path: filter rows by year/quarter/month, sum per-TS
+      tsSummary.forEach(r => {
+        if (year !== 'All' && r.iso_year !== Number(year)) return;
+        if (month !== 'All' && isoWeekToMonth(r.iso_year, r.iso_week) !== month) return;
+        if (quarter !== 'All' && isoWeekToQuarter(r.iso_year, r.iso_week) !== quarter) return;
+        if (sourcer !== 'All' && r.ts !== sourcer) return;
+        const a = ensure(r.ts);
+        a.contacted += r.contacted;
+        a.positive_response += r.positive_response;
+        a.screens += r.screens;
+        a.actual_screens += r.actual_screens;
+        a.ats += r.ats;
+        a.offered += r.offers;
+        a.hires += r.hires;
+        a.jobs += r.jobs;
+      });
+    } else {
+      // Fallback (pre-Flow-refresh): job-level TS attribution from PD rows
+      filteredRows.forEach(r => {
+        if (!r.ts) return;
+        const a = ensure(r.ts);
+        a.viewed += r.viewed || 0;
+        a.contacted += r.contacted || 0;
+        a.positive_response += r.positive_response || 0;
+        a.screens += r.screens || 0;
+        a.actual_screens += r.actual_screens || 0;
+        a.ats += r.ats || 0;
+        a.offered += r.offered || 0;
+      });
+      filteredHires.forEach(h => {
+        if (!h.ts) return;
+        ensure(h.ts).hires += 1;
+      });
+    }
+
+    return Object.values(agg)
+      .map(a => ({
+        ...a,
+        pctContPR: a.contacted ? Math.min(1, a.positive_response / a.contacted) : null,
+        pctScrActual: a.screens ? Math.min(1, a.actual_screens / a.screens) : null,
+        pctActualATS: a.actual_screens ? Math.min(1, a.ats / a.actual_screens) : null,
+      }))
+      .filter(x => x.contacted + x.actual_screens + x.hires > 0)
+      .sort((a, b) => b.contacted - a.contacted);
+  }, [tsSummary, useTsSummary, filteredRows, filteredHires, year, quarter, month, sourcer]);
+
+  // Funnel — global totals across the filter context
+  const funnel = useMemo(() => {
+    const t = { viewed: 0, contacted: 0, positive_response: 0, screens: 0, actual_screens: 0, ats: 0, offered: 0 };
+    filteredRows.forEach(r => {
+      Object.keys(t).forEach(k => { t[k] += r[k] || 0; });
+    });
+    return [
+      { stage: 'LinkedIn Visited', count: t.viewed, fill: '#1e40af' },
+      { stage: 'Contacted', count: t.contacted, fill: '#1d4ed8' },
+      { stage: 'Positive Response', count: t.positive_response, fill: '#2563eb' },
+      { stage: 'Screens', count: t.screens, fill: '#3b82f6' },
+      { stage: 'Actual Screens', count: t.actual_screens, fill: '#60a5fa' },
+      { stage: 'Move to ATS', count: t.ats, fill: '#93c5fd' },
+      { stage: 'Offers', count: t.offered, fill: '#a78bfa' },
+      { stage: 'Hired', count: filteredHires.length, fill: '#22c55e' },
+    ];
+  }, [filteredRows, filteredHires]);
+
+  // Monthly trends — three ratios over time (year ignored if 'All').
+  // Uses ts_summary when available (PBI-aligned), else PD rows.
+  const trend = useMemo(() => {
+    const groups = {};
+    const src = useTsSummary
+      ? tsSummary.filter(r => {
+          if (year !== 'All' && r.iso_year !== Number(year)) return false;
+          if (sourcer !== 'All' && r.ts !== sourcer) return false;
+          return true;
+        })
+      : filteredRows;
+    src.forEach(r => {
+      const key = isoWeekToMonth(r.iso_year, r.iso_week);
+      if (!groups[key]) groups[key] = { contacted: 0, positive_response: 0, screens: 0, actual_screens: 0, ats: 0 };
+      groups[key].contacted += r.contacted || 0;
+      groups[key].positive_response += r.positive_response || 0;
+      groups[key].screens += r.screens || 0;
+      groups[key].actual_screens += r.actual_screens || 0;
+      groups[key].ats += r.ats || 0;
+    });
+    return Object.entries(groups).map(([m, t]) => {
+      const monthLabel = new Date(m + '-01').toLocaleString('en-US', { month: 'short', year: '2-digit' });
+      return {
+        month: m,
+        monthLabel,
+        pctContPR: t.contacted ? Math.min(100, Math.round(100 * t.positive_response / t.contacted)) : null,
+        pctScrActual: t.screens ? Math.min(100, Math.round(100 * t.actual_screens / t.screens)) : null,
+        pctActualATS: t.actual_screens ? Math.min(100, Math.round(100 * t.ats / t.actual_screens)) : null,
+      };
+    }).sort((a, b) => a.month.localeCompare(b.month));
+  }, [tsSummary, useTsSummary, filteredRows, year, sourcer]);
+
+  // Pipelines without hires — active jobs that have never had a hire (not in tth_jobs)
+  const pipelinesNoHire = useMemo(() => {
+    const hiredJobIds = new Set(tthJobs.map(j => j.job_id));
+    const today = new Date();
+    const dayDiff = (dStr) => {
+      if (!dStr) return null;
+      const d = new Date(dStr);
+      return Math.floor((today - d) / 86400000);
+    };
+    const result = jobs
+      .filter(j => String(j.is_job_archived || '').toLowerCase() !== 'true')
+      .filter(j => !hiredJobIds.has(j.job_id))
+      .filter(j => sourcer === 'All' || j.job_sourcer === sourcer)
+      .filter(j => client === 'All' || j.client_name === client)
+      .filter(j => includeExternal || String(j.is_external_recruiter || '').toLowerCase() !== 'true')
+      .filter(j => techRoleFilter === 'All' || techRoleFor(j.job_id) === techRoleFilter)
+      .map(j => ({
+        job_id: j.job_id,
+        job_title: j.job_title,
+        client: j.client_name,
+        sourcer: j.job_sourcer || '(not assigned)',
+        days: dayDiff(j.date_created),
+      }))
+      .filter(j => j.days != null);
+    return result;
+  }, [jobs, tthJobs, sourcer, client, includeExternal, techRoleFilter, techRoleByJob, categoryByJob]);
+
+  // Per-sourcer age buckets
+  const noHireBySourcer = useMemo(() => {
+    const agg = {};
+    pipelinesNoHire.forEach(j => {
+      const s = j.sourcer || '(not assigned)';
+      if (!agg[s]) agg[s] = { sourcer: s, jobs: 0, '0-30': 0, '30-60': 0, '60-90': 0, '>90': 0 };
+      agg[s].jobs += 1;
+      const d = j.days;
+      if (d <= 30) agg[s]['0-30'] += 1;
+      else if (d <= 60) agg[s]['30-60'] += 1;
+      else if (d <= 90) agg[s]['60-90'] += 1;
+      else agg[s]['>90'] += 1;
+    });
+    return Object.values(agg).sort((a, b) => b.jobs - a.jobs);
+  }, [pipelinesNoHire]);
+
+  // Helpers for percent formatting
+  const fmtPct = (v) => v == null ? '-' : `${(v * 100).toFixed(1)}%`;
+  const pctClass = (v) => {
+    if (v == null) return 'text-gray-500';
+    if (v < 0.20) return 'text-red-300 bg-red-900/30';
+    if (v < 0.40) return 'text-orange-300 bg-orange-900/20';
+    if (v < 0.60) return 'text-yellow-300 bg-yellow-900/20';
+    return 'text-green-300 bg-green-900/20';
+  };
+
+  const Kpi = ({ label, value, sub }) => (
+    <div className="bg-gradient-to-br from-blue-900 to-blue-800 text-white rounded-lg px-4 py-3 min-w-[120px] flex-1 border border-blue-700">
+      <div className="text-3xl font-bold">{value == null ? '-' : value}</div>
+      <div className="text-xs text-blue-200 mt-1">{label}</div>
+      {sub && <div className="text-xs text-blue-300/70 mt-1">{sub}</div>}
+    </div>
+  );
+
+  const Select = ({ label, value, onChange, options }) => (
+    <div>
+      <div className="text-xs text-gray-400 mb-1">{label}</div>
+      <select value={value} onChange={e => onChange(e.target.value)}
+        className="w-full bg-gray-800 border border-gray-700 text-white text-sm rounded px-2 py-1">
+        {options.map(o => <option key={o} value={o}>{o}</option>)}
+      </select>
+    </div>
+  );
+
+  // Table component reused for the trend area-charts
+  const TrendChart = ({ title, dataKey, color }) => (
+    <div className="bg-gray-800 border border-gray-700 rounded-lg p-3">
+      <div className="text-xs font-semibold text-gray-200 mb-2">{title}</div>
+      <ResponsiveContainer width="100%" height={160}>
+        <AreaChart data={trend} margin={{ top: 5, right: 10, bottom: 0, left: -25 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+          <XAxis dataKey="monthLabel" stroke="#9CA3AF" fontSize={10} />
+          <YAxis stroke="#9CA3AF" fontSize={10} domain={[0, 100]} tickFormatter={v => `${v}%`} />
+          <Tooltip contentStyle={{ backgroundColor: '#1F2937', border: '1px solid #374151', borderRadius: '6px', fontSize: 12 }}
+            labelStyle={{ color: '#F3F4F6' }} formatter={v => `${v}%`} />
+          <Area type="monotone" dataKey={dataKey} stroke={color} fill={color} fillOpacity={0.4} strokeWidth={2} />
+        </AreaChart>
+      </ResponsiveContainer>
+    </div>
+  );
+
+  return (
+    <div className="space-y-5">
+      <div className="flex items-start justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-white">KPI &mdash; TS Summary</h2>
+          <div className="text-sm text-gray-400 mt-1 max-w-3xl leading-relaxed">
+            Sourcer-level performance: contacted &rarr; positive response &rarr; screens &rarr; actual screens &rarr; ATS &rarr; offers &rarr; hires.
+            Port of Andy's legacy Power BI page (sourcer-only; the PBI page does not show TAs).
+          </div>
+        </div>
+        <div className="text-xs text-right">
+          {useTsSummary ? (
+            <span className="text-green-400">ts_summary aggregate &middot; PBI-aligned</span>
+          ) : (
+            <span className="text-yellow-400">PD-rows fallback &middot; awaiting Flow refresh</span>
+          )}<br />
+          <span className="text-gray-500">
+            {useTsSummary ? `${tsSummary.length.toLocaleString()} (sourcer, week) rows` : `${filteredRows.length.toLocaleString()} PD rows`} &middot; {filteredHires.length.toLocaleString()} hires
+          </span>
+        </div>
+      </div>
+
+      <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
+        <Select label="Year" value={year} onChange={v => { setYear(v); setQuarter('All'); setMonth('All'); }} options={years} />
+        <Select label="Quarter" value={quarter} onChange={v => { setQuarter(v); setMonth('All'); }} options={year === 'All' ? ['All'] : ['All', 'Q1', 'Q2', 'Q3', 'Q4']} />
+        <Select label="Month" value={month} onChange={setMonth} options={months} />
+        <Select label="Client" value={client} onChange={setClient} options={clients} />
+        <Select label="Sourcer" value={sourcer} onChange={setSourcer} options={sourcers} />
+        <Select label="Tech Role" value={techRoleFilter} onChange={setTechRoleFilter} options={['All', 'Yes', 'No']} />
+        <div className="flex items-end">
+          <label className="flex items-center gap-2 text-xs text-gray-300 pb-1.5 cursor-pointer">
+            <input type="checkbox" checked={includeExternal} onChange={e => setIncludeExternal(e.target.checked)}
+              className="rounded" />
+            Include external recruiter
+          </label>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <Kpi label="# Hires" value={kpis.totalHires.toLocaleString()} />
+        <Kpi label="# Tech Roles Hired" value={kpis.techHires.toLocaleString()} sub="Engineering, Design, Data, DevOps, PM, IT, QA, Eng Mgmt" />
+        <Kpi label="Candidate &mdash; Time to Find a Hire" value={kpis.candidateTimeToFind == null ? '-' : `${kpis.candidateTimeToFind}d`}
+          sub="Avg days job-created &rarr; first-hire contacted" />
+        <Kpi label="# Pipelines without Hires" value={pipelinesNoHire.length.toLocaleString()} sub="Active jobs, never hired" />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <TrendChart title="% Contacted &rarr; Positive Response" dataKey="pctContPR" color="#3b82f6" />
+        <TrendChart title="% Screens &rarr; Actual Screen" dataKey="pctScrActual" color="#22c55e" />
+        <TrendChart title="% Actual Screens &rarr; ATS" dataKey="pctActualATS" color="#f59e0b" />
+      </div>
+
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
+        <div className="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden xl:col-span-1">
+          <div className="px-4 py-3 bg-gray-700 text-sm font-semibold text-white">Funnel</div>
+          <div className="p-4 space-y-1">
+            {funnel.map((f, i) => {
+              const max = funnel[0].count || 1;
+              const widthPct = max > 0 ? Math.max(8, Math.round(100 * f.count / max)) : 0;
+              const drop = i > 0 && funnel[i - 1].count > 0
+                ? Math.round(100 * (funnel[i - 1].count - f.count) / funnel[i - 1].count) : null;
+              return (
+                <div key={f.stage} className="flex items-center gap-2 text-xs">
+                  <div className="w-32 text-gray-300 text-right">{f.stage}</div>
+                  <div className="flex-1 bg-gray-900 rounded relative h-7">
+                    <div className="h-full rounded transition-all" style={{ backgroundColor: f.fill, width: `${widthPct}%` }} />
+                    <div className="absolute inset-0 flex items-center px-2 text-white font-medium">
+                      {f.count.toLocaleString()}
+                    </div>
+                  </div>
+                  <div className="w-12 text-right text-gray-500">
+                    {drop != null ? `-${drop}%` : ''}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <div className="px-4 py-2 text-xs text-gray-500 border-t border-gray-700">
+            Hired sourced from <code>project_dashboard_hires</code> (PBI snapshot lag: ~3 days). Reacted node omitted &mdash; <code>is_candidate_reacted</code> not in pipeline.
+          </div>
+        </div>
+
+        {/* Per-Sourcer table — main workhorse, matches PBI data (2).xlsx */}
+        <div className="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden xl:col-span-2">
+          <div className="px-4 py-3 bg-gray-700 text-sm font-semibold text-white flex justify-between">
+            <span>Per Sourcer</span>
+            <span className="text-xs text-gray-400 font-normal">{perSourcer.length} sourcers</span>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="min-w-full text-xs">
+              <thead className="bg-gray-900 text-gray-300">
+                <tr>
+                  <th className="text-left px-3 py-2 font-medium sticky left-0 bg-gray-900">Sourcer</th>
+                  <th className="text-right px-2 py-2 font-medium">% Cont&rarr;PR</th>
+                  <th className="text-right px-2 py-2 font-medium">% Scr&rarr;Actual</th>
+                  <th className="text-right px-2 py-2 font-medium">% Actual&rarr;ATS</th>
+                  <th className="text-right px-2 py-2 font-medium">Cont</th>
+                  <th className="text-right px-2 py-2 font-medium">PR</th>
+                  <th className="text-right px-2 py-2 font-medium">Scr</th>
+                  <th className="text-right px-2 py-2 font-medium">Actual</th>
+                  <th className="text-right px-2 py-2 font-medium">ATS</th>
+                  <th className="text-right px-2 py-2 font-medium">Off</th>
+                  <th className="text-right px-2 py-2 font-medium">Hires</th>
+                  <th className="text-right px-2 py-2 font-medium">Jobs</th>
+                </tr>
+              </thead>
+              <tbody>
+                {perSourcer.map(r => (
+                  <tr key={r.sourcer} className="border-t border-gray-700 hover:bg-gray-700/50">
+                    <td className="px-3 py-1.5 text-white sticky left-0 bg-gray-800 hover:bg-gray-700/50">{r.sourcer}</td>
+                    <td className={`px-2 py-1.5 text-right ${pctClass(r.pctContPR)}`}>{fmtPct(r.pctContPR)}</td>
+                    <td className={`px-2 py-1.5 text-right ${pctClass(r.pctScrActual)}`}>{fmtPct(r.pctScrActual)}</td>
+                    <td className={`px-2 py-1.5 text-right ${pctClass(r.pctActualATS)}`}>{fmtPct(r.pctActualATS)}</td>
+                    <td className="px-2 py-1.5 text-right text-gray-300">{r.contacted.toLocaleString()}</td>
+                    <td className="px-2 py-1.5 text-right text-gray-300">{r.positive_response.toLocaleString()}</td>
+                    <td className="px-2 py-1.5 text-right text-gray-300">{r.screens.toLocaleString()}</td>
+                    <td className="px-2 py-1.5 text-right text-gray-300">{r.actual_screens.toLocaleString()}</td>
+                    <td className="px-2 py-1.5 text-right text-gray-300">{r.ats.toLocaleString()}</td>
+                    <td className="px-2 py-1.5 text-right text-gray-300">{r.offered.toLocaleString()}</td>
+                    <td className="px-2 py-1.5 text-right text-green-300 font-semibold">{r.hires.toLocaleString()}</td>
+                    <td className="px-2 py-1.5 text-right text-gray-400">{r.jobs}</td>
+                  </tr>
+                ))}
+                {perSourcer.length === 0 && (
+                  <tr><td colSpan={12} className="px-3 py-6 text-center text-gray-500">No sourcer activity in current filter.</td></tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+        <div className="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden">
+          <div className="px-4 py-3 bg-gray-700 text-sm font-semibold text-white flex justify-between">
+            <span>Pipelines without Hires &mdash; by Sourcer</span>
+            <span className="text-xs text-gray-400 font-normal">{noHireBySourcer.length} sourcers</span>
+          </div>
+          <div className="overflow-x-auto max-h-[500px]">
+            <table className="min-w-full text-xs">
+              <thead className="bg-gray-900 text-gray-300 sticky top-0">
+                <tr>
+                  <th className="text-left px-3 py-2 font-medium">Sourcer</th>
+                  <th className="text-right px-3 py-2 font-medium">Jobs</th>
+                  <th className="text-right px-3 py-2 font-medium">0-30 d</th>
+                  <th className="text-right px-3 py-2 font-medium">30-60 d</th>
+                  <th className="text-right px-3 py-2 font-medium">60-90 d</th>
+                  <th className="text-right px-3 py-2 font-medium">&gt;90 d</th>
+                </tr>
+              </thead>
+              <tbody>
+                {noHireBySourcer.map(r => (
+                  <tr key={r.sourcer} className="border-t border-gray-700 hover:bg-gray-700/50">
+                    <td className="px-3 py-1.5 text-white">{r.sourcer}</td>
+                    <td className="px-3 py-1.5 text-right text-gray-300 font-semibold">{r.jobs}</td>
+                    <td className="px-3 py-1.5 text-right text-green-300">{r['0-30'] || ''}</td>
+                    <td className="px-3 py-1.5 text-right text-yellow-300">{r['30-60'] || ''}</td>
+                    <td className="px-3 py-1.5 text-right text-orange-300">{r['60-90'] || ''}</td>
+                    <td className="px-3 py-1.5 text-right text-red-300">{r['>90'] || ''}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div className="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden">
+          <div className="px-4 py-3 bg-gray-700 text-sm font-semibold text-white flex justify-between">
+            <span>Pipelines without Hires &mdash; Job Detail</span>
+            <span className="text-xs text-gray-400 font-normal">{pipelinesNoHire.length} jobs</span>
+          </div>
+          <div className="overflow-x-auto max-h-[500px]">
+            <table className="min-w-full text-xs">
+              <thead className="bg-gray-900 text-gray-300 sticky top-0">
+                <tr>
+                  <th className="text-left px-3 py-2 font-medium">Job Title</th>
+                  <th className="text-left px-3 py-2 font-medium">Client</th>
+                  <th className="text-left px-3 py-2 font-medium">Sourcer</th>
+                  <th className="text-right px-3 py-2 font-medium">Days Open</th>
+                </tr>
+              </thead>
+              <tbody>
+                {pipelinesNoHire.sort((a, b) => b.days - a.days).map(j => {
+                  const dColor = j.days > 90 ? 'text-red-300' : j.days > 60 ? 'text-orange-300' : j.days > 30 ? 'text-yellow-300' : 'text-green-300';
+                  return (
+                    <tr key={j.job_id} className="border-t border-gray-700 hover:bg-gray-700/50">
+                      <td className="px-3 py-1.5 text-gray-200 max-w-[260px] truncate" title={j.job_title}>{j.job_title}</td>
+                      <td className="px-3 py-1.5 text-gray-300">{j.client}</td>
+                      <td className="px-3 py-1.5 text-gray-300">{j.sourcer}</td>
+                      <td className={`px-3 py-1.5 text-right font-semibold ${dColor}`}>{j.days}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div className="text-xs text-gray-500 leading-relaxed">
+        Per-Sourcer table + trends: {useTsSummary
+          ? 'sourced from data.ts_summary (Keboola block b0.c6, attribution event.who_created_event_first; filters is_job_archived=False, test=False, Current_TS roster, test-client exclusions). Validated 2026-04-27: 11/11 PBI sourcers within 10% drift vs data (2).xlsx.'
+          : 'fallback: project_dashboard.rows (job-level TS attribution mismatches PBI by 50-370% on Marina, Elena, Milica, Rodrigo, Valeriia). Will switch to data.ts_summary on next Flow refresh.'}
+        <br />
+        Pipelines, hires, KPIs from project_dashboard_hires, tth_jobs, jobs. Tech Role from tth_jobs.tech_role with job_category fallback. Disqualification matrix deferred.
+      </div>
+    </div>
+  );
+};
+
 // Main Dashboard
 const RecruitingDashboard = () => {
   const [activeTab, setActiveTab] = useState('wbr');
@@ -2546,10 +3132,10 @@ const RecruitingDashboard = () => {
       </div>
       <div className="bg-gray-800 border-b border-gray-700 px-6">
         <div className="flex gap-8">
-          {['wbr', 'mbr', 'project', 'tth'].map((tab) => (
+          {['wbr', 'mbr', 'project', 'tth', 'ts_summary'].map((tab) => (
             <button key={tab} onClick={() => setActiveTab(tab)}
               className={`py-4 px-2 font-medium border-b-2 transition-colors ${activeTab === tab ? 'text-white border-white' : 'text-gray-400 border-transparent hover:text-gray-300'}`}>
-              {tab === 'wbr' ? 'WBR' : tab === 'mbr' ? 'MBR' : tab === 'project' ? 'Project Dashboard' : 'Time to Hire'}
+              {tab === 'wbr' ? 'WBR' : tab === 'mbr' ? 'MBR' : tab === 'project' ? 'Project Dashboard' : tab === 'tth' ? 'Time to Hire' : 'KPI - TS Summary'}
             </button>
           ))}
         </div>
@@ -2559,6 +3145,7 @@ const RecruitingDashboard = () => {
         {activeTab === 'mbr' && <MBRTab data={dashboardData} />}
         {activeTab === 'project' && <ProjectDashboardTab data={dashboardData} />}
         {activeTab === 'tth' && <TTHTab data={dashboardData} />}
+        {activeTab === 'ts_summary' && <TSSummaryTab data={dashboardData} />}
       </div>
     </div>
   );

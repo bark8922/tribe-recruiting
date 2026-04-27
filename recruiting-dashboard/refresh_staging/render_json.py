@@ -80,6 +80,7 @@ SNOW_TS = HERE / "snowflake_ts.csv"
 SNOW_TS_CONV = HERE / "snowflake_ts_conversion.csv"
 SNOW_TS_JOBS = HERE / "snowflake_ts_jobs.csv"
 SNOW_AUX = HERE / "snowflake_aux_12w.csv"
+SNOW_TS_SUMMARY = HERE / "snowflake_ts_summary.csv"  # per-sourcer x per-week (KPI-TS Summary tab)
 SNOW_PROJECT_DASHBOARD = HERE / "snowflake_project_dashboard.csv"
 SNOW_PROJECT_HIRES = HERE / "snowflake_project_dashboard_hires.csv"
 SNOW_MBR_CONTACTED_EV = HERE / "snowflake_mbr_contacted_ev.csv"
@@ -843,6 +844,38 @@ def load_aux():
     return out
 
 
+def load_ts_summary():
+    """Return [{ts, iso_year, iso_week, contacted, positive_response, screens,
+    actual_screens, ats, offers, hires, jobs}] from snowflake_ts_summary.csv.
+
+    KPI-TS Summary tab data source. Replicates Andy's PBI page filters:
+    is_job_archived=False, test=False, who_created_event_first IN Current_TS,
+    client_name NOT IN test_clients. Validated 2026-04-27: 11/11 PBI sourcers
+    within 10% drift vs snapshot data (2).xlsx.
+
+    Returns [] if CSV missing (Flow may not have run yet for the new transform).
+    """
+    if not SNOW_TS_SUMMARY.exists():
+        return []
+    rows = []
+    with SNOW_TS_SUMMARY.open() as f:
+        for row in csv.DictReader(f):
+            rows.append({
+                "ts": _ci(row, "ts"),
+                "iso_year": int(_ci(row, "iso_year")),
+                "iso_week": int(_ci(row, "iso_week")),
+                "contacted": int(float(_ci(row, "contacted") or 0)),
+                "positive_response": int(float(_ci(row, "positive_response") or 0)),
+                "screens": int(float(_ci(row, "screens") or 0)),
+                "actual_screens": int(float(_ci(row, "actual_screens") or 0)),
+                "ats": int(float(_ci(row, "ats") or 0)),
+                "offers": int(float(_ci(row, "offers") or 0)),
+                "hires": int(float(_ci(row, "hires") or 0)),
+                "jobs": int(float(_ci(row, "jobs") or 0)),
+            })
+    return rows
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Computed surfaces
 # ─────────────────────────────────────────────────────────────────────────────
@@ -1462,6 +1495,12 @@ def main():
     # detail tables to only show entries active in the selected week.
     out["wbr_ta_weekly_roster"] = ta_weekly_roster
     out["wbr_ts_weekly_roster"] = ts_weekly_roster
+
+    # ts_summary - KPI-TS Summary tab, per-sourcer x per-week (2026-04-27).
+    # Loads gracefully if CSV missing (Flow may not have run yet).
+    out["ts_summary"] = load_ts_summary()
+    if out["ts_summary"]:
+        print(f"  ts_summary: {len(out['ts_summary'])} (sourcer, year, week) rows")
 
     with OUT_JSON.open("w") as f:
         json.dump(out, f, indent=2, ensure_ascii=False, sort_keys=False)

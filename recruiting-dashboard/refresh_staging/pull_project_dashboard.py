@@ -96,6 +96,13 @@ TABLES = [
      HERE / "snowflake_ts_conversion.csv"),
     ("out.c-WBRMBR-weekly-aggregations.aux_12w",
      HERE / "snowflake_aux_12w.csv"),
+    # ts_summary_per_sourcer: KPI - TS Summary tab data source (added 2026-04-27, b0.c6).
+    # Per-sourcer x per-week aggregate replicating Andy's PBI "KPI - TS Summary" page
+    # filters (year, is_job_archived=False, test=False, who_created_event_first IN
+    # Current_TS, client_name NOT IN test_clients). Validated 2026-04-27: 11/11
+    # PBI sourcers within 10% drift vs snapshot data (2).xlsx.
+    ("out.c-WBRMBR-weekly-aggregations.ts_summary_per_sourcer",
+     HERE / "snowflake_ts_summary.csv"),
     # Note: the Google Drive extractor (config 01kpr3tek8ezs48pg02e60jdpe) also
     # writes 5 sheet tabs to in.c-wbr-sheet.wbr_{ta_target,ta_weekly_note,
     # ts_weekly,ir,reasoning_guidance}. We intentionally do NOT pull those
@@ -178,4 +185,29 @@ def _export_one(table_id: str, out_path: Path, token: str) -> None:
         parts.append(data)
 
     out_path.write_bytes(b"".join(parts))
-    lines = sum(1 for _ in out_path.op
+    lines = sum(1 for _ in out_path.open())
+    log.info("  wrote %s: %d lines (%d KB)",
+             out_path.name, lines, out_path.stat().st_size // 1024)
+
+
+def main() -> int:
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s [%(levelname)s] %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+    )
+    try:
+        token = _get_token()
+    except RuntimeError as e:
+        log.error("%s", e)
+        return 1
+
+    t0 = time.time()
+    for table_id, out_path in TABLES:
+        _export_one(table_id, out_path, token)
+    log.info("Pull complete in %.1fs", time.time() - t0)
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

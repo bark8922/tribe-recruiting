@@ -2873,11 +2873,14 @@ const TSSummaryTab = ({ data }) => {
   // (always shows full 2024-present history) so the user sees historical context
   // even when KPI cards are scoped to current year. Still respects sourcer +
   // client + tech-role filters.
+  // NOTE: when iso_week=0 (year-aggregate sentinel from baked YTD totals),
+  // skip — the trend chart needs real weekly data which only the Flow can produce.
   const trend = useMemo(() => {
     const groups = {};
     const src = useTsSummary
       ? tsSummary.filter(r => {
           if (r.iso_year < 2024) return false;
+          if (r.iso_week === 0) return false; // year-aggregate sentinel
           if (sourcer !== 'All' && r.ts !== sourcer) return false;
           return true;
         })

@@ -845,33 +845,48 @@ def load_aux():
 
 
 def load_ts_summary():
-    """Return [{ts, iso_year, iso_week, contacted, positive_response, screens,
-    actual_screens, ats, offers, hires, jobs}] from snowflake_ts_summary.csv.
+    """Return [{ts, iso_year, iso_week, viewed, contacted, reacted,
+    positive_response, screens, actual_screens, ats, offers, hires,
+    hires_tech, jobs}] from snowflake_ts_summary.csv.
 
     KPI-TS Summary tab data source. Replicates Andy's PBI page filters:
     is_job_archived=False, test=False, who_created_event_first IN Current_TS,
     client_name NOT IN test_clients. Validated 2026-04-27: 11/11 PBI sourcers
     within 10% drift vs snapshot data (2).xlsx.
 
+    Columns viewed, reacted, hires_tech were added 2026-04-27 to support the
+    funnel + KPI cards. Older CSVs without these columns get 0 (.get default).
+
     Returns [] if CSV missing (Flow may not have run yet for the new transform).
     """
     if not SNOW_TS_SUMMARY.exists():
         return []
     rows = []
+    def _g(row, key):  # forgiving int reader
+        v = _ci(row, key)
+        if v is None or v == "":
+            return 0
+        try:
+            return int(float(v))
+        except (TypeError, ValueError):
+            return 0
     with SNOW_TS_SUMMARY.open() as f:
         for row in csv.DictReader(f):
             rows.append({
                 "ts": _ci(row, "ts"),
                 "iso_year": int(_ci(row, "iso_year")),
                 "iso_week": int(_ci(row, "iso_week")),
-                "contacted": int(float(_ci(row, "contacted") or 0)),
-                "positive_response": int(float(_ci(row, "positive_response") or 0)),
-                "screens": int(float(_ci(row, "screens") or 0)),
-                "actual_screens": int(float(_ci(row, "actual_screens") or 0)),
-                "ats": int(float(_ci(row, "ats") or 0)),
-                "offers": int(float(_ci(row, "offers") or 0)),
-                "hires": int(float(_ci(row, "hires") or 0)),
-                "jobs": int(float(_ci(row, "jobs") or 0)),
+                "viewed": _g(row, "viewed"),
+                "contacted": _g(row, "contacted"),
+                "reacted": _g(row, "reacted"),
+                "positive_response": _g(row, "positive_response"),
+                "screens": _g(row, "screens"),
+                "actual_screens": _g(row, "actual_screens"),
+                "ats": _g(row, "ats"),
+                "offers": _g(row, "offers"),
+                "hires": _g(row, "hires"),
+                "hires_tech": _g(row, "hires_tech"),
+                "jobs": _g(row, "jobs"),
             })
     return rows
 

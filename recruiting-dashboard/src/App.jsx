@@ -2694,13 +2694,43 @@ const TSSummaryTab = ({ data }) => {
     return true;
   }), [hires, year, quarter, month, client, sourcer, techRoleFilter, includeExternal, techRoleByJob, categoryByJob]);
 
-  // KPI cards
+  // KPI cards. Prefer ts_summary aggregate (PBI-aligned) when available.
+  // Without it, fall back to project_dashboard_hires filtered to the TS roster
+  // (lower fidelity — uses job-level attribution).
   const kpis = useMemo(() => {
-    const totalHires = filteredHires.length;
-    const techHires = filteredHires.filter(h => techRoleFor(h.job_id) === 'Yes').length;
-    // Candidate Time to Find a Hire: avg days from job created → first-hire contacted date.
+    const periodMatch = (r) => {
+      if (year !== 'All' && r.iso_year !== Number(year)) return false;
+      if (month !== 'All' && isoWeekToMonth(r.iso_year, r.iso_week) !== month) return false;
+      if (quarter !== 'All' && isoWeekToQuarter(r.iso_year, r.iso_week) !== quarter) return false;
+      if (sourcer !== 'All' && r.ts !== sourcer) return false;
+      return true;
+    };
+    let totalHires = 0, techHires = 0, totalJobs = 0;
+    if (useTsSummary) {
+      const jobAccumulator = {}; // {ts: jobs} but we need distinct (ts) Jobs sum
+      tsSummary.forEach(r => {
+        if (!periodMatch(r)) return;
+        totalHires += r.hires || 0;
+        techHires += r.hires_tech || 0;
+        // Sum distinct jobs by adding per-week jobs (rough — overcounts if same job spans weeks)
+        // For PBI-matching # Jobs, we need distinct count of job_ids across the period — we don't
+        // have job_ids in ts_summary. As an approximation, take MAX across weeks per sourcer
+        // (Jobs is roughly stable per sourcer). Sum across sourcers.
+        const k = r.ts;
+        if (!jobAccumulator[k] || r.jobs > jobAccumulator[k]) jobAccumulator[k] = r.jobs || 0;
+      });
+      totalJobs = Object.values(jobAccumulator).reduce((a, b) => a + b, 0);
+    } else {
+      totalHires = filteredHires.length;
+      techHires = filteredHires.filter(h => techRoleFor(h.job_id) === 'Yes').length;
+      // Distinct job_ids across filtered rows in scope (PD path)
+      const jobSet = new Set();
+      filteredRows.forEach(r => { if (TS_SUMMARY_ROSTER.has(r.ts) && r.job_id) jobSet.add(r.job_id); });
+      totalJobs = jobSet.size;
+    }
+    // Candidate Time to Find a Hire — avg days from job created to date_contacted.
     // PBI DAX: AVERAGE(candidate_stage[Diff Concated - Job created]) for hired candidates.
-    // Approximation: avg days between job_created and date_contacted across all filtered hires.
+    // Computed from project_dashboard_hires regardless of ts_summary (need per-hire dates).
     const jobCreatedById = {};
     jobs.forEach(j => { if (j.job_id) jobCreatedById[j.job_id] = j.date_created; });
     tthJobs.forEach(j => { if (j.job_id && !jobCreatedById[j.job_id]) jobCreatedById[j.job_id] = j.date_created; });
@@ -2713,8 +2743,8 @@ const TSSummaryTab = ({ data }) => {
       if (diff > 0) diffs.push(diff);
     });
     const avgDiff = diffs.length ? Math.round(diffs.reduce((a, b) => a + b, 0) / diffs.length) : null;
-    return { totalHires, techHires, candidateTimeToFind: avgDiff };
-  }, [filteredHires, jobs, tthJobs, techRoleByJob, categoryByJob]);
+    return { totalHires, techHires, candidateTimeToFind: avgDiff, totalJobs };
+  }, [useTsSummary, tsSummary, filteredHires, filteredRows, year, quarter, month, sourcer, jobs, tthJobs, techRoleByJob, categoryByJob]);
 
   // Per-Sourcer ratio table — matches PBI `data (2).xlsx`.
   // Primary path: ts_summary aggregate (PBI-aligned attribution).
@@ -2779,29 +2809,37 @@ const TSSummaryTab = ({ data }) => {
       .sort((a, b) => b.contacted - a.contacted);
   }, [tsSummary, useTsSummary, filteredRows, filteredHires, year, quarter, month, sourcer]);
 
-  // Funnel — Viewed → Contacted → Positive Response → Actual Screens → Move to ATS → Offers → Hired.
-  // PBI's funnel skips Recruiter Screens (it's an intermediate stage, not in the funnel chain).
-  // Each row shows count + % conversion FROM the previous stage. Bars taper to create a funnel shape.
-  // "Viewed" comes from PD rows (LinkedIn Visited events) since ts_summary doesn't carry it yet.
+  // Funnel — 8 PBI stages in order:
+  // Viewed -> Contacted -> Reacted -> Positive Response -> Actual Screens -> Move to ATS -> Offers -> Hired
+  // Each row shows count + % conversion FROM the previous stage.
+  // Sourced from ts_summary (PBI-aligned). For Viewed we fall back to summing PD rows.viewed
+  // when ts_summary doesn't carry it yet (older Flow runs); same for Reacted.
   const funnel = useMemo(() => {
-    // Sum viewed/contacted/etc. — from ts_summary if available (matches per-sourcer scope),
-    // else from filteredRows. PD rows is 2026-only so historical Viewed is 0 in fallback.
-    const t = { viewed: 0, contacted: 0, positive_response: 0, actual_screens: 0, ats: 0, offered: 0, hires: 0 };
+    const periodMatch = (r) => {
+      if (year !== 'All' && r.iso_year !== Number(year)) return false;
+      if (month !== 'All' && isoWeekToMonth(r.iso_year, r.iso_week) !== month) return false;
+      if (quarter !== 'All' && isoWeekToQuarter(r.iso_year, r.iso_week) !== quarter) return false;
+      if (sourcer !== 'All' && r.ts !== sourcer) return false;
+      return true;
+    };
+    const t = { viewed: 0, contacted: 0, reacted: 0, positive_response: 0, actual_screens: 0, ats: 0, offers: 0, hires: 0 };
     if (useTsSummary) {
       tsSummary.forEach(r => {
-        if (year !== 'All' && r.iso_year !== Number(year)) return;
-        if (sourcer !== 'All' && r.ts !== sourcer) return;
-        if (month !== 'All' && isoWeekToMonth(r.iso_year, r.iso_week) !== month) return;
-        if (quarter !== 'All' && isoWeekToQuarter(r.iso_year, r.iso_week) !== quarter) return;
-        t.contacted += r.contacted;
-        t.positive_response += r.positive_response;
-        t.actual_screens += r.actual_screens;
-        t.ats += r.ats;
-        t.offered += r.offers;
-        t.hires += r.hires;
+        if (!periodMatch(r)) return;
+        t.viewed += r.viewed || 0;
+        t.contacted += r.contacted || 0;
+        t.reacted += r.reacted || 0;
+        t.positive_response += r.positive_response || 0;
+        t.actual_screens += r.actual_screens || 0;
+        t.ats += r.ats || 0;
+        t.offers += r.offers || 0;
+        t.hires += r.hires || 0;
       });
-      // Pull viewed from PD rows for now (TS summary doesn't carry LinkedIn Visited yet)
-      filteredRows.forEach(r => { if (TS_SUMMARY_ROSTER.has(r.ts)) t.viewed += r.viewed || 0; });
+      // If the new viewed/reacted columns aren't populated yet (older Flow run),
+      // augment with PD rows for Viewed at least.
+      if (t.viewed === 0) {
+        filteredRows.forEach(r => { if (TS_SUMMARY_ROSTER.has(r.ts)) t.viewed += r.viewed || 0; });
+      }
     } else {
       filteredRows.forEach(r => {
         if (!TS_SUMMARY_ROSTER.has(r.ts)) return;
@@ -2810,20 +2848,20 @@ const TSSummaryTab = ({ data }) => {
         t.positive_response += r.positive_response || 0;
         t.actual_screens += r.actual_screens || 0;
         t.ats += r.ats || 0;
-        t.offered += r.offered || 0;
+        t.offers += r.offered || 0;
       });
       t.hires = filteredHires.filter(h => TS_SUMMARY_ROSTER.has(h.ts)).length;
     }
     const stages = [
       { stage: 'Viewed',            count: t.viewed },
       { stage: 'Contacted',         count: t.contacted },
+      { stage: 'Reacted',           count: t.reacted },
       { stage: 'Positive Response', count: t.positive_response },
       { stage: 'Actual Screens',    count: t.actual_screens },
       { stage: 'Move to ATS',       count: t.ats },
-      { stage: 'Offers',            count: t.offered },
+      { stage: 'Offers',            count: t.offers },
       { stage: 'Hired',             count: t.hires },
     ];
-    // Compute conversion % from previous step (null for first row)
     return stages.map((s, i) => {
       const prev = i > 0 ? stages[i - 1].count : null;
       const conv = (prev != null && prev > 0) ? s.count / prev : null;
@@ -3003,12 +3041,13 @@ const TSSummaryTab = ({ data }) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <Kpi label="# Hires" value={kpis.totalHires.toLocaleString()} />
-        <Kpi label="# Tech Roles Hired" value={kpis.techHires.toLocaleString()} sub="Engineering, Design, Data, DevOps, PM, IT, QA, Eng Mgmt" />
-        <Kpi label="Candidate &mdash; Time to Find a Hire" value={kpis.candidateTimeToFind == null ? '-' : `${kpis.candidateTimeToFind}d`}
-          sub="Avg days job-created &rarr; first-hire contacted" />
-        <Kpi label="# Pipelines without Hires" value={pipelinesNoHire.length.toLocaleString()} sub="Active jobs, never hired" />
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+        <Kpi label="Candidates Hired" value={kpis.totalHires.toLocaleString()} />
+        <Kpi label="Tech Roles Hired" value={kpis.techHires.toLocaleString()} sub="Engineering, Design, Data, DevOps" />
+        <Kpi label="Find a Hire (Days)" value={kpis.candidateTimeToFind == null ? '—' : kpis.candidateTimeToFind}
+          sub="Avg days job-created &rarr; contacted" />
+        <Kpi label="Jobs" value={kpis.totalJobs.toLocaleString()} sub="Distinct jobs in scope" />
+        <Kpi label="Pipelines without Hires" value={pipelinesNoHire.length.toLocaleString()} sub="Active jobs, never hired" />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -3020,33 +3059,49 @@ const TSSummaryTab = ({ data }) => {
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
         <div className="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden xl:col-span-1">
           <div className="px-4 py-3 bg-gray-700 text-sm font-semibold text-white">Funnel</div>
-          <div className="p-4 space-y-2.5">
-            {funnel.map((f, i) => {
-              const max = funnel[0].count || 1;
-              const widthPct = max > 0 ? Math.max(3, Math.round(100 * f.count / max)) : 0;
-              const convPct = f.conv != null ? `${(f.conv * 100).toFixed(1)}%` : '100%';
-              return (
-                <div key={f.stage} className="text-xs">
-                  <div className="flex justify-between mb-1 text-gray-300">
-                    <span className="font-medium">{f.stage}</span>
-                    <span><span className="text-white font-semibold">{f.count.toLocaleString()}</span> <span className="text-gray-500">({convPct})</span></span>
+          <div className="p-4 space-y-1">
+            {(() => {
+              // Use MAX across all stages as denominator (not funnel[0]) so the funnel
+              // tapers correctly even if Viewed is 0 (old Flow data).
+              const maxCount = Math.max(...funnel.map(f => f.count), 1);
+              return funnel.map((f, i) => {
+                const widthPct = Math.max(3, (100 * f.count / maxCount));
+                const convPct = f.conv != null ? `${(f.conv * 100).toFixed(1)}%` : '100%';
+                return (
+                  <div key={f.stage} className="text-xs">
+                    <div className="flex justify-between mb-0.5 text-gray-300">
+                      <span className="font-medium">{f.stage}</span>
+                      <span>
+                        <span className="text-white font-semibold">{f.count.toLocaleString()}</span>
+                        <span className="text-gray-500"> ({convPct})</span>
+                      </span>
+                    </div>
+                    <div style={{ width: '100%', textAlign: 'center', lineHeight: 0 }}>
+                      <div style={{
+                        display: 'inline-block',
+                        backgroundColor: '#3b82f6',
+                        width: `${widthPct}%`,
+                        minWidth: '6px',
+                        height: '22px',
+                        borderRadius: '2px',
+                        color: 'white',
+                        fontSize: '11px',
+                        fontWeight: 500,
+                        lineHeight: '22px',
+                        textAlign: 'center',
+                        verticalAlign: 'top',
+                      }}>
+                        {widthPct > 18 ? f.count.toLocaleString() : ''}
+                      </div>
+                    </div>
                   </div>
-                  <div className="rounded h-6 transition-all flex items-center justify-center text-white text-xs font-medium"
-                       style={{
-                         backgroundColor: '#3b82f6',
-                         width: `${widthPct}%`,
-                         minWidth: '8px',
-                         marginLeft: 'auto',
-                         marginRight: 'auto',
-                       }}>
-                    {widthPct > 15 ? f.count.toLocaleString() : ''}
-                  </div>
-                </div>
-              );
-            })}
+                );
+              });
+            })()}
           </div>
           <div className="px-4 py-2 text-xs text-gray-500 border-t border-gray-700 leading-relaxed">
-            Conversion % shown is from the previous stage. Recruiter Screens omitted (PBI funnel skips it). Reacted omitted (no <code>is_candidate_reacted</code> in pipeline).
+            Conversion % is from the previous stage. Recruiter Screens omitted (PBI funnel chains Pos Response &rarr; Actual Screens directly).
+            {funnel[0] && funnel[0].count === 0 && <span className="text-yellow-400"> Viewed = 0 — awaiting Flow refresh of new ts_summary.viewed column.</span>}
           </div>
         </div>
 

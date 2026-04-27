@@ -2583,10 +2583,12 @@ const TSSummaryTab = ({ data }) => {
   const jobs = data.jobs || [];
   const tthJobs = data.tth_jobs || [];
 
-  // Filters — default to 'All' so the user sees full history (Jan 2024-present)
-  // rather than current year only. PBI's page-level filter excludes 2019-2021
-  // and null but keeps everything else; we mirror that intent.
-  const [year, setYear] = useState('All');
+  // Filters — default Year='2026' so KPI cards + per-sourcer table show YTD
+  // numbers that match PBI (e.g. 6 hires, 4 tech roles, 108 jobs). Trend area
+  // charts further down ALWAYS show full history regardless of this filter
+  // so users still see Jan 2025-present context. Set Year='All' to apply
+  // history to KPIs too.
+  const [year, setYear] = useState('2026');
   const [quarter, setQuarter] = useState('All');
   const [month, setMonth] = useState('All');
   const [client, setClient] = useState('All');
@@ -2824,13 +2826,15 @@ const TSSummaryTab = ({ data }) => {
     });
   }, [useTsSummary, tsSummary, filteredRows, filteredHires, year, quarter, month, sourcer]);
 
-  // Monthly trends — three ratios over time (year ignored if 'All').
-  // Uses ts_summary when available (PBI-aligned), else PD rows.
+  // Monthly trends — three ratios over time. Ignores year/quarter/month filters
+  // (always shows full 2024-present history) so the user sees historical context
+  // even when KPI cards are scoped to current year. Still respects sourcer +
+  // client + tech-role filters.
   const trend = useMemo(() => {
     const groups = {};
     const src = useTsSummary
       ? tsSummary.filter(r => {
-          if (year !== 'All' && r.iso_year !== Number(year)) return false;
+          if (r.iso_year < 2024) return false;
           if (sourcer !== 'All' && r.ts !== sourcer) return false;
           return true;
         })
@@ -2868,6 +2872,10 @@ const TSSummaryTab = ({ data }) => {
     const result = jobs
       .filter(j => String(j.is_job_archived || '').toLowerCase() !== 'true')
       .filter(j => !hiredJobIds.has(j.job_id))
+      // Restrict to the 12 Current_TS roster (matches Keboola block b0.c6).
+      // jobs.job_sourcer can be a TA on jobs where TS team members aren't assigned;
+      // without this filter the table shows TAs (Adelya, Jelena, Tina, etc.).
+      .filter(j => TS_SUMMARY_ROSTER.has(j.job_sourcer))
       .filter(j => sourcer === 'All' || j.job_sourcer === sourcer)
       .filter(j => client === 'All' || j.client_name === client)
       .filter(j => includeExternal || String(j.is_external_recruiter || '').toLowerCase() !== 'true')
@@ -3007,19 +3015,22 @@ const TSSummaryTab = ({ data }) => {
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
         <div className="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden xl:col-span-1">
           <div className="px-4 py-3 bg-gray-700 text-sm font-semibold text-white">Funnel</div>
-          <div className="p-4 space-y-2">
+          <div className="p-4 space-y-2.5">
             {funnel.map((f, i) => {
               const max = funnel[0].count || 1;
-              const widthPct = max > 0 ? Math.max(4, Math.round(100 * f.count / max)) : 0;
+              const widthPct = max > 0 ? Math.max(3, Math.round(100 * f.count / max)) : 0;
               const convPct = f.conv != null ? `${(f.conv * 100).toFixed(1)}%` : '100%';
               return (
                 <div key={f.stage} className="text-xs">
-                  <div className="flex justify-between mb-0.5 text-gray-300">
+                  <div className="flex justify-between mb-1 text-gray-300">
                     <span className="font-medium">{f.stage}</span>
                     <span><span className="text-white font-semibold">{f.count.toLocaleString()}</span> <span className="text-gray-500">({convPct})</span></span>
                   </div>
-                  <div className="relative h-5 flex items-center justify-center">
-                    <div className="h-full rounded transition-all" style={{ backgroundColor: '#3b82f6', width: `${widthPct}%`, minWidth: '4px' }} />
+                  <div className="flex justify-center">
+                    <div className="rounded h-6 transition-all flex items-center justify-center text-white text-xs font-medium"
+                         style={{ backgroundColor: '#3b82f6', width: `${widthPct}%`, minWidth: '8px' }}>
+                      {widthPct > 15 ? f.count.toLocaleString() : ''}
+                    </div>
                   </div>
                 </div>
               );

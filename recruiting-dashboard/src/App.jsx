@@ -2906,21 +2906,31 @@ const TSSummaryTab = ({ data }) => {
     }).sort((a, b) => a.month.localeCompare(b.month));
   }, [tsSummary, useTsSummary, filteredRows, year, sourcer]);
 
-  // Pipelines without hires — active jobs that have never had a hire (not in tth_jobs)
+  // Pipelines without hires — prefer the baked data.ts_summary_pipelines list
+  // (canonical from Snowflake — includes Andrea's 5 jobs which data.jobs misses
+  // because that table is filtered to a 423-job recent slice).
+  // Falls back to data.jobs if the baked list isn't present.
   const pipelinesNoHire = useMemo(() => {
+    const baked = data.ts_summary_pipelines;
+    if (Array.isArray(baked) && baked.length > 0) {
+      return baked
+        .filter(j => sourcer === 'All' || j.sourcer === sourcer)
+        .filter(j => client === 'All' || j.client === client)
+        .map(j => ({
+          job_id: j.job_id,
+          job_title: j.job_title,
+          client: j.client,
+          sourcer: j.sourcer,
+          days: j.days,
+        }));
+    }
+    // Fallback (data.jobs) — narrower set
     const hiredJobIds = new Set(tthJobs.map(j => j.job_id));
     const today = new Date();
-    const dayDiff = (dStr) => {
-      if (!dStr) return null;
-      const d = new Date(dStr);
-      return Math.floor((today - d) / 86400000);
-    };
-    const result = jobs
+    const dayDiff = (dStr) => dStr ? Math.floor((today - new Date(dStr)) / 86400000) : null;
+    return jobs
       .filter(j => String(j.is_job_archived || '').toLowerCase() !== 'true')
       .filter(j => !hiredJobIds.has(j.job_id))
-      // Restrict to the 12 Current_TS roster (matches Keboola block b0.c6).
-      // jobs.job_sourcer can be a TA on jobs where TS team members aren't assigned;
-      // without this filter the table shows TAs (Adelya, Jelena, Tina, etc.).
       .filter(j => TS_SUMMARY_ROSTER.has(j.job_sourcer))
       .filter(j => sourcer === 'All' || j.job_sourcer === sourcer)
       .filter(j => client === 'All' || j.client_name === client)
@@ -2934,8 +2944,7 @@ const TSSummaryTab = ({ data }) => {
         days: dayDiff(j.date_created),
       }))
       .filter(j => j.days != null);
-    return result;
-  }, [jobs, tthJobs, sourcer, client, includeExternal, techRoleFilter, techRoleByJob, categoryByJob]);
+  }, [data, jobs, tthJobs, sourcer, client, includeExternal, techRoleFilter, techRoleByJob, categoryByJob]);
 
   // Per-sourcer age buckets
   const noHireBySourcer = useMemo(() => {
@@ -3053,11 +3062,8 @@ const TSSummaryTab = ({ data }) => {
         <Kpi label="Pipelines without Hires" value={pipelinesNoHire.length.toLocaleString()} sub="Active jobs, never hired" />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-        <TrendChart title="% Contacted &rarr; Positive Response" dataKey="pctContPR" color="#3b82f6" />
-        <TrendChart title="% Screens &rarr; Actual Screen" dataKey="pctScrActual" color="#22c55e" />
-        <TrendChart title="% Actual Screens &rarr; ATS" dataKey="pctActualATS" color="#f59e0b" />
-      </div>
+      {/* Trend area charts removed — required per-week data which the baked YTD aggregates
+          don't have. They'll re-appear once Flow refreshes with proper weekly ts_summary. */}
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
         <div className="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden xl:col-span-1">

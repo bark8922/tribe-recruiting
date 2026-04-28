@@ -2918,20 +2918,18 @@ const TSSummaryTab = ({ data }) => {
     }).sort((a, b) => a.month.localeCompare(b.month));
   }, [tsSummary, useTsSummary, filteredRows, year, sourcer]);
 
-  // Pipelines without hires — prefer the baked data.ts_summary_pipelines list
-  // (canonical from Snowflake — includes Andrea's 5 jobs which data.jobs misses
-  // because that table is filtered to a 423-job recent slice).
-  // Falls back to data.jobs if the baked list isn't present.
-  // Filters applied: sourcer, client, year_created, tech_role, includeExternal.
-  // (Pipelines is a CURRENT snapshot of unhired jobs — quarter/month don't apply,
-  // matches PBI's behavior on this section.)
+  // Pipelines without hires — CURRENT snapshot of active jobs not yet hired.
+  // Intentionally ignores Year/Quarter/Month filters because pipelines is a
+  // point-in-time view, not a time-window aggregation. A job created in 2025
+  // but still open today is "currently a pipeline" regardless of whether the
+  // user filters to Q1 2025. Matches PBI's behavior on this section.
+  // Filters that DO apply: sourcer, client, tech_role, includeExternal.
   const pipelinesNoHire = useMemo(() => {
     const baked = data.ts_summary_pipelines;
     if (Array.isArray(baked) && baked.length > 0) {
       return baked
         .filter(j => sourcer === 'All' || j.sourcer === sourcer)
         .filter(j => client === 'All' || j.client === client)
-        .filter(j => year === 'All' || String(j.year_created) === year)
         .filter(j => techRoleFilter === 'All' || j.tech_role === techRoleFilter)
         .filter(j => includeExternal || j.is_external !== 'true')
         .map(j => ({
@@ -2962,7 +2960,7 @@ const TSSummaryTab = ({ data }) => {
         days: dayDiff(j.date_created),
       }))
       .filter(j => j.days != null);
-  }, [data, jobs, tthJobs, year, sourcer, client, includeExternal, techRoleFilter, techRoleByJob, categoryByJob]);
+  }, [data, jobs, tthJobs, sourcer, client, includeExternal, techRoleFilter, techRoleByJob, categoryByJob]);
 
   // Per-sourcer age buckets
   const noHireBySourcer = useMemo(() => {
@@ -3188,8 +3186,11 @@ const TSSummaryTab = ({ data }) => {
 
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
         <div className="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden">
-          <div className="px-4 py-3 bg-gray-700 text-sm font-semibold text-white flex justify-between">
-            <span>Pipelines without Hires &mdash; by Sourcer</span>
+          <div className="px-4 py-3 bg-gray-700 text-sm font-semibold text-white flex justify-between items-center">
+            <div>
+              <span>Pipelines without Hires &mdash; by Sourcer</span>
+              <span className="ml-2 text-xs text-gray-400 font-normal">(current snapshot — Year/Q/Month don't apply)</span>
+            </div>
             <span className="text-xs text-gray-400 font-normal">{noHireBySourcer.length} sourcers</span>
           </div>
           <div className="overflow-x-auto max-h-[500px]">

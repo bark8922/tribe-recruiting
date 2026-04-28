@@ -44853,658 +44853,940 @@
       "job_title": "(Mia) Senior PM - Public Sector",
       "client": "Aleph Alpha",
       "sourcer": "Mia Gjorgievska",
-      "days": 558
+      "days": 558,
+      "year_created": 2024,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1770139209386x555631174975488000",
       "job_title": "AE Existing Business. FTAPI",
       "client": "FTAPI",
       "sourcer": "Naledi Ngwenya",
-      "days": 84
+      "days": 84,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "false"
     },
     {
       "job_id": "1770139142089x221069374299308030",
       "job_title": "AE New Business FTAPI",
       "client": "FTAPI",
       "sourcer": "Naledi Ngwenya",
-      "days": 84
+      "days": 84,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "false"
     },
     {
       "job_id": "1768565645819x881097725584867300",
       "job_title": "Account Manager - Kosovo",
       "client": "Wolt",
       "sourcer": "Valeriia Yurykova",
-      "days": 102
+      "days": 102,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "false"
     },
     {
       "job_id": "1769778867474x624124315136163800",
       "job_title": "Account Manager, Retail - Denmark",
       "client": "Wolt",
       "sourcer": "Milica Veselinovic",
-      "days": 88
+      "days": 88,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "true"
     },
     {
       "job_id": "1773325018606x283473979082276860",
       "job_title": "Analytics Manager (AVIV)",
       "client": "AVIV ",
       "sourcer": "Jovana Drakula",
-      "days": 47
+      "days": 47,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "true"
     },
     {
       "job_id": "1771694040457x585000151426269200",
       "job_title": "Android Engineer",
       "client": "Wolt",
       "sourcer": "Zelimir Stajcic",
-      "days": 66
+      "days": 66,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "true"
     },
     {
       "job_id": "1776767694969x733318081986691100",
       "job_title": "Android Engineer Berlin",
       "client": "AVIV ",
       "sourcer": "Nare Avetisyan",
-      "days": 7
+      "days": 7,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1772789772126x268332918007398400",
       "job_title": "Android Engineering",
       "client": "Wolt",
       "sourcer": "Zelimir Stajcic",
-      "days": 53
+      "days": 53,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1764942720597x528213867915378700",
       "job_title": "B2B Event Marketing Manager, Wolt Ads",
       "client": "Wolt",
       "sourcer": "Mia Gjorgievska",
-      "days": 144
+      "days": 144,
+      "year_created": 2025,
+      "tech_role": "No",
+      "is_external": "true"
     },
     {
       "job_id": "1772187627387x288515927427776500",
       "job_title": "Backend Engineer II (Chene)",
       "client": "Glovo",
       "sourcer": "Andrea Akovic",
-      "days": 60
+      "days": 60,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1776762292358x428858720491929600",
       "job_title": "Backend Engineer Python",
       "client": "AVIV ",
       "sourcer": "Nare Avetisyan",
-      "days": 7
+      "days": 7,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1776168163670x998794808628084700",
       "job_title": "Brand Marketing Insights & Research Lead",
       "client": "Wolt",
       "sourcer": "Elena Petrovska",
-      "days": 14
+      "days": 14,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "true"
     },
     {
       "job_id": "1776193244015x580844261861752800",
       "job_title": "Brand Tech & Creative Operations Lead ",
       "client": "Wolt",
       "sourcer": "Elena Petrovska",
-      "days": 14
+      "days": 14,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "true"
     },
     {
       "job_id": "1762177426022x910581964420153300",
       "job_title": "CPG Partnerships Manager - Wolt Ads, Norway",
       "client": "Wolt",
       "sourcer": "Milica Veselinovic",
-      "days": 176
+      "days": 176,
+      "year_created": 2025,
+      "tech_role": "No",
+      "is_external": "true"
     },
     {
       "job_id": "1776765364193x497107282998591500",
       "job_title": "Category Manager (WM), Croatia",
       "client": "Wolt",
       "sourcer": "Valeriia Yurykova",
-      "days": 7
+      "days": 7,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "false"
     },
     {
       "job_id": "1776765224256x762752769425670100",
       "job_title": "Category Manager (WM), Slovenia",
       "client": "Wolt",
       "sourcer": "Valeriia Yurykova",
-      "days": 7
+      "days": 7,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "false"
     },
     {
       "job_id": "1767091199251x530598755717087200",
       "job_title": "Category Manager, Slovakia, Q1 '26",
       "client": "Wolt",
       "sourcer": "Valeriia Yurykova",
-      "days": 119
+      "days": 119,
+      "year_created": 2025,
+      "tech_role": "No",
+      "is_external": "false"
     },
     {
       "job_id": "1776157198763x704644042368745500",
       "job_title": "Creative Producer Lead",
       "client": "Wolt",
       "sourcer": "Elena Petrovska",
-      "days": 14
+      "days": 14,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "true"
     },
     {
       "job_id": "1770203448872x658836829082222600",
       "job_title": "Customer Growth Manager FTAPI",
       "client": "FTAPI",
       "sourcer": "Naledi Ngwenya",
-      "days": 83
+      "days": 83,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "false"
     },
     {
       "job_id": "1774874246704x565737126027591700",
       "job_title": "Customer Success Specialist/Manager - UK SevenRooms",
       "client": "SevenRooms",
       "sourcer": "Milica Veselinovic",
-      "days": 29
+      "days": 29,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "true"
     },
     {
       "job_id": "1771932376467x893326035004424200",
       "job_title": "Deployment Strategists - EU",
       "client": "Parloa",
       "sourcer": "Gustavo Loureiro Castro",
-      "days": 63
+      "days": 63,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "true"
     },
     {
       "job_id": "1773417102109x961853386905354200",
       "job_title": "Director of Security",
       "client": "Parloa",
       "sourcer": "Gustavo Loureiro Castro",
-      "days": 46
+      "days": 46,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "true"
     },
     {
       "job_id": "1770041527875x399041424523788300",
       "job_title": "Engineering Director - Aviv",
       "client": "AVIV ",
       "sourcer": "Jovana Drakula",
-      "days": 85
+      "days": 85,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "true"
     },
     {
       "job_id": "1776332739979x794531231558008800",
       "job_title": "Engineering Director, Platforms",
       "client": "AVIV ",
       "sourcer": "Jovana Drakula",
-      "days": 12
+      "days": 12,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "true"
     },
     {
       "job_id": "1770041613631x191050717398040580",
       "job_title": "Engineering Manager - Aviv",
       "client": "AVIV ",
       "sourcer": "Jovana Drakula",
-      "days": 85
+      "days": 85,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1776343351205x571330529930772500",
       "job_title": "Enterprise Account Manager Luxembourg",
       "client": "Wolt",
       "sourcer": "Valeriia Yurykova",
-      "days": 12
+      "days": 12,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "false"
     },
     {
       "job_id": "1776428160109x695610928528359400",
       "job_title": "Enterprise Sales Manager WfW - Luxembourg",
       "client": "Wolt",
       "sourcer": "Valeriia Yurykova",
-      "days": 11
+      "days": 11,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "false"
     },
     {
       "job_id": "1773315884062x358827383602020350",
       "job_title": "Follow-Up",
       "client": "FTAPI",
       "sourcer": "Naledi Ngwenya",
-      "days": 47
+      "days": 47,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "true"
     },
     {
       "job_id": "1776951183014x527594951702741000",
       "job_title": "Front End Engineer Paris",
       "client": "AVIV ",
       "sourcer": "Nare Avetisyan",
-      "days": 5
+      "days": 5,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1775818632462x259508634570194940",
       "job_title": "Fullstack Developer Backend Focused",
       "client": "AVIV ",
       "sourcer": "Nare Avetisyan",
-      "days": 18
+      "days": 18,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1775825397450x961662720101843000",
       "job_title": "Fullstack Developer Frontend Focused",
       "client": "AVIV ",
       "sourcer": "Nare Avetisyan",
-      "days": 18
+      "days": 18,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1768488713844x202118387316031500",
       "job_title": "Fullstack Engineer - recontacting InMail",
       "client": "Enam",
       "sourcer": "Marina Lazarevic",
-      "days": 103
+      "days": 103,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1773913077486x516838073586417660",
       "job_title": "Global Integrated B2B Marketing Manager, Wolt for Work ",
       "client": "Wolt",
       "sourcer": "Elena Petrovska",
-      "days": 40
+      "days": 40,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "false"
     },
     {
       "job_id": "1770301164201x665132522148724700",
       "job_title": "Head of Design",
       "client": "AVIV ",
       "sourcer": "Jovana Drakula",
-      "days": 82
+      "days": 82,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1768997195566x933422101775515600",
       "job_title": "Head of Marketing Innovation",
       "client": "Wolt",
       "sourcer": "Elena Petrovska",
-      "days": 97
+      "days": 97,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "true"
     },
     {
       "job_id": "1777284652877x748905681153425400",
       "job_title": "Head of Partnerships",
       "client": "Wolt",
       "sourcer": "Elena Petrovska",
-      "days": 1
+      "days": 1,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "true"
     },
     {
       "job_id": "1770301110861x457136257222049800",
       "job_title": "Head of Product",
       "client": "AVIV ",
       "sourcer": "Jovana Drakula",
-      "days": 82
+      "days": 82,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1775474382081x644127110362300400",
       "job_title": "Inside Sales Manager, Berlin&Munich",
       "client": "Wolt",
       "sourcer": "Milica Veselinovic",
-      "days": 22
+      "days": 22,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "true"
     },
     {
       "job_id": "1769853317715x196394676335673340",
       "job_title": "Junior Software Engineer - Backend",
       "client": "SevenRooms",
       "sourcer": "Zelimir Stajcic",
-      "days": 87
+      "days": 87,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1770288057597x194624818849513470",
       "job_title": "Lead Recruiter ",
       "client": "AVIV ",
       "sourcer": "Jovana Drakula",
-      "days": 82
+      "days": 82,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "false"
     },
     {
       "job_id": "1766484364452x686009847116464100",
       "job_title": "Machine Learning Engineer",
       "client": "Enam",
       "sourcer": "Rodrigo Gomes",
-      "days": 126
+      "days": 126,
+      "year_created": 2025,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1775842278115x877537953046855700",
       "job_title": "Manager, Technical Writing",
       "client": "Aiven",
       "sourcer": "Rodrigo Gomes",
-      "days": 18
+      "days": 18,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1776935952908x871402512143876100",
       "job_title": "Marketing Manager - Norway",
       "client": "Wolt",
       "sourcer": "Elena Petrovska",
-      "days": 5
+      "days": 5,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "true"
     },
     {
       "job_id": "1775474457958x248015888347562000",
       "job_title": "Mass Account Manager, Stuttgart",
       "client": "Wolt",
       "sourcer": "Milica Veselinovic",
-      "days": 22
+      "days": 22,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "true"
     },
     {
       "job_id": "1775474870724x173181627439513600",
       "job_title": "Merchant Account Development Manager, Germany",
       "client": "Wolt",
       "sourcer": "Milica Veselinovic",
-      "days": 22
+      "days": 22,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "true"
     },
     {
       "job_id": "1770288011653x776801530456047600",
       "job_title": "Office Manager ",
       "client": "AVIV ",
       "sourcer": "Jovana Drakula",
-      "days": 82
+      "days": 82,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "false"
     },
     {
       "job_id": "1763736300156x330068186415759360",
       "job_title": "Operations Associate, CA",
       "client": "Eucalyptus",
       "sourcer": "Marina Lazarevic",
-      "days": 158
+      "days": 158,
+      "year_created": 2025,
+      "tech_role": "No",
+      "is_external": "false"
     },
     {
       "job_id": "1773325164810x791834858028793900",
       "job_title": "Policy and Operations Manager (AVIV)",
       "client": "AVIV ",
       "sourcer": "Jovana Drakula",
-      "days": 47
+      "days": 47,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "true"
     },
     {
       "job_id": "1770115575994x938717513032663000",
       "job_title": "Principal Applied Scientist - AI Agents & Generative AI",
       "client": "Parloa",
       "sourcer": "Gustavo Loureiro Castro",
-      "days": 84
+      "days": 84,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1775211650509x258412021772451840",
       "job_title": "Principal Quality engineer",
       "client": "AVIV ",
       "sourcer": "Marina Lazarevic",
-      "days": 25
+      "days": 25,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "false"
     },
     {
       "job_id": "1769519256333x710806005516599300",
       "job_title": "Product Manager ",
       "client": "AVIV ",
       "sourcer": "Marina Lazarevic",
-      "days": 91
+      "days": 91,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1775206191653x934212136994340900",
       "job_title": "Product Manager Demand (AVIV)",
       "client": "AVIV ",
       "sourcer": "Jovana Drakula",
-      "days": 25
+      "days": 25,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "true"
     },
     {
       "job_id": "1770646095592x179349051231961100",
       "job_title": "QA Engineer",
       "client": "AVIV ",
       "sourcer": "Nare Avetisyan",
-      "days": 78
+      "days": 78,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "false"
     },
     {
       "job_id": "1775125735494x364560877536935940",
       "job_title": "Regional Manager, Consumer (Cx) - (Poland)",
       "client": "Wolt",
       "sourcer": "Elena Petrovska",
-      "days": 26
+      "days": 26,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "true"
     },
     {
       "job_id": "1768312172451x449498678538534900",
       "job_title": "Regional Manager, S&O",
       "client": "Wolt",
       "sourcer": "Elena Petrovska",
-      "days": 105
+      "days": 105,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "true"
     },
     {
       "job_id": "1768294693197x217131731561742340",
       "job_title": "Regional Restaurant Marketing Manager - West",
       "client": "Wolt",
       "sourcer": "Elena Petrovska",
-      "days": 105
+      "days": 105,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "true"
     },
     {
       "job_id": "1775464773107x914795601237639200",
       "job_title": "Revenue Data Manager",
       "client": "Wolt",
       "sourcer": "Elena Petrovska",
-      "days": 22
+      "days": 22,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "true"
     },
     {
       "job_id": "1776774072451x591251363900948500",
       "job_title": "Revenue Strategy and Operations  Manager - Commerce Platform",
       "client": "Wolt",
       "sourcer": "Elena Petrovska",
-      "days": 7
+      "days": 7,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "true"
     },
     {
       "job_id": "1770626291136x268324985440829440",
       "job_title": "SDR FTAPI",
       "client": "FTAPI",
       "sourcer": "Naledi Ngwenya",
-      "days": 78
+      "days": 78,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "false"
     },
     {
       "job_id": "1776083892639x927991304632401900",
       "job_title": "Sales Manager (Hunter)",
       "client": "Nexi ",
       "sourcer": "Nare Avetisyan",
-      "days": 15
+      "days": 15,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "false"
     },
     {
       "job_id": "1766139080865x930653980317188100",
       "job_title": "Sales Manager Luxembourg",
       "client": "Wolt",
       "sourcer": "Valeriia Yurykova",
-      "days": 130
+      "days": 130,
+      "year_created": 2025,
+      "tech_role": "No",
+      "is_external": "false"
     },
     {
       "job_id": "1776159959982x562214386156437500",
       "job_title": "Sales Manager Value Added Services",
       "client": "Nexi ",
       "sourcer": "Nare Avetisyan",
-      "days": 14
+      "days": 14,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "false"
     },
     {
       "job_id": "1770882047922x655070271851987000",
       "job_title": "Security & Compliance Engineer ",
       "client": "Enam",
       "sourcer": "Rodrigo Gomes",
-      "days": 75
+      "days": 75,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1756892204584x933800962397831200",
       "job_title": "Senior Accountant",
       "client": "Parloa",
       "sourcer": "Mia Gjorgievska",
-      "days": 237
+      "days": 237,
+      "year_created": 2025,
+      "tech_role": "No",
+      "is_external": "false"
     },
     {
       "job_id": "1773915328724x606290305845559300",
       "job_title": "Senior Android Engineer Paris",
       "client": "AVIV ",
       "sourcer": "Nare Avetisyan",
-      "days": 40
+      "days": 40,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1742388552690x369441583026667500",
       "job_title": "Senior Backend Engineer",
       "client": "Parloa",
       "sourcer": "Mia Gjorgievska",
-      "days": 405
+      "days": 405,
+      "year_created": 2025,
+      "tech_role": "Yes",
+      "is_external": "true"
     },
     {
       "job_id": "1769519436296x715120499920732200",
       "job_title": "Senior Backend Engineer (node.js/Typescript)",
       "client": "AVIV ",
       "sourcer": "Nare Avetisyan",
-      "days": 91
+      "days": 91,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1775124928738x792744654411137000",
       "job_title": "Senior Backend Engineer Trust & Safety - Kristina - Berlin",
       "client": "AVIV ",
       "sourcer": "Marina Lazarevic",
-      "days": 26
+      "days": 26,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1775138003344x487773161371467800",
       "job_title": "Senior Backend Engineer Trust & Safety - Wlad - Berlin",
       "client": "AVIV ",
       "sourcer": "Marina Lazarevic",
-      "days": 26
+      "days": 26,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1770112774632x569106074075398140",
       "job_title": "Senior C# Developer",
       "client": "AVIV ",
       "sourcer": "Nare Avetisyan",
-      "days": 84
+      "days": 84,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1769523917399x812043252328824800",
       "job_title": "Senior Forward Deployed Engineer - EMEA (f/m/d)",
       "client": "Parloa",
       "sourcer": "Gustavo Loureiro Castro",
-      "days": 91
+      "days": 91,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "true"
     },
     {
       "job_id": "1775651749069x453454844985606140",
       "job_title": "Senior Full Stack Engineer (Israel)",
       "client": "Aiven",
       "sourcer": "Rodrigo Gomes",
-      "days": 20
+      "days": 20,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1775651825154x949444861303455700",
       "job_title": "Senior Full Stack Software Engineer (Finland)",
       "client": "Aiven",
       "sourcer": "Rodrigo Gomes",
-      "days": 20
+      "days": 20,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1773915221899x731095116844892200",
       "job_title": "Senior IOS Engineer Paris",
       "client": "AVIV ",
       "sourcer": "Nare Avetisyan",
-      "days": 40
+      "days": 40,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1771837111001x981037535721685000",
       "job_title": "Senior Product Manager",
       "client": "AVIV ",
       "sourcer": "Jovana Drakula",
-      "days": 64
+      "days": 64,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "true"
     },
     {
       "job_id": "1775134606089x181269612030066700",
       "job_title": "Senior Restaurant Partnership Manager, Krakow",
       "client": "Wolt",
       "sourcer": "Milica Veselinovic",
-      "days": 26
+      "days": 26,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "true"
     },
     {
       "job_id": "1773223189106x174455449761349630",
       "job_title": "Senior Software Engineer",
       "client": "Parloa",
       "sourcer": "Gustavo Loureiro Castro",
-      "days": 48
+      "days": 48,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "true"
     },
     {
       "job_id": "1758532711301x469741739847450600",
       "job_title": "Senior Software Engineer - Frontend ",
       "client": "SevenRooms",
       "sourcer": "Zelimir Stajcic",
-      "days": 218
+      "days": 218,
+      "year_created": 2025,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1772529529764x555967558600359940",
       "job_title": "SevenRooms Senior Associate, Strategy & Operations",
       "client": "SevenRooms",
       "sourcer": "Milica Veselinovic",
-      "days": 56
+      "days": 56,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "true"
     },
     {
       "job_id": "1774964105505x578217168939515900",
       "job_title": "Sr Manager, Courier Marketing",
       "client": "Wolt",
       "sourcer": "Elena Petrovska",
-      "days": 28
+      "days": 28,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "true"
     },
     {
       "job_id": "1775125002560x755091190743302100",
       "job_title": "Staff Backend Engineer Trust & Safety - Kristina - Berlin",
       "client": "AVIV ",
       "sourcer": "Marina Lazarevic",
-      "days": 26
+      "days": 26,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1775137953484x447343876051304450",
       "job_title": "Staff Backend Engineer Trust & Safety - Wlad - Berlin",
       "client": "AVIV ",
       "sourcer": "Marina Lazarevic",
-      "days": 26
+      "days": 26,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1776161479950x832763580951560200",
       "job_title": "Staff Product Designer",
       "client": "Parloa",
       "sourcer": "Gustavo Loureiro Castro",
-      "days": 14
+      "days": 14,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "true"
     },
     {
       "job_id": "1775746005997x884574833229168600",
       "job_title": "Store Manager (WM), Budapest, Q2 2026",
       "client": "Wolt",
       "sourcer": "Valeriia Yurykova",
-      "days": 19
+      "days": 19,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "false"
     },
     {
       "job_id": "1776430744626x648206653244833800",
       "job_title": "Supply Chain Manager Cyprus",
       "client": "Wolt",
       "sourcer": "Andrea Akovic",
-      "days": 11
+      "days": 11,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "false"
     },
     {
       "job_id": "1774390389805x966005494540402700",
       "job_title": "Support Team Lead (Italian speaker)-Romania",
       "client": "Wolt",
       "sourcer": "Elena Petrovska",
-      "days": 35
+      "days": 35,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "true"
     },
     {
       "job_id": "1773325101895x585280399134687200",
       "job_title": "Technical Product Manager",
       "client": "AVIV ",
       "sourcer": "Jovana Drakula",
-      "days": 47
+      "days": 47,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "true"
     },
     {
       "job_id": "1776233524214x161582576756064260",
       "job_title": "VP of Product",
       "client": "AVIV ",
       "sourcer": "Jovana Drakula",
-      "days": 13
+      "days": 13,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "true"
     },
     {
       "job_id": "1772023691714x708413751018913800",
       "job_title": "Workplace Experience & People Engagement Manager",
       "client": "Taxfix",
       "sourcer": "Valeriia Yurykova",
-      "days": 62
+      "days": 62,
+      "year_created": 2026,
+      "tech_role": "No",
+      "is_external": "false"
     },
     {
       "job_id": "1772614005813x477540619595546600",
       "job_title": "iOS Engineer - IC3 (Sam)",
       "client": "Glovo",
       "sourcer": "Andrea Akovic",
-      "days": 55
+      "days": 55,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1776767826716x982121841327341600",
       "job_title": "iOS Engineer Berlin",
       "client": "AVIV ",
       "sourcer": "Nare Avetisyan",
-      "days": 7
+      "days": 7,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1776155229443x398373782847750140",
       "job_title": "iOS Engineer IC2 (Chene)",
       "client": "Glovo",
       "sourcer": "Andrea Akovic",
-      "days": 14
+      "days": 14,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "false"
     },
     {
       "job_id": "1776155280233x867244093444980700",
       "job_title": "iOS Engineer IC3 (Chene)",
       "client": "Glovo",
       "sourcer": "Andrea Akovic",
-      "days": 14
+      "days": 14,
+      "year_created": 2026,
+      "tech_role": "Yes",
+      "is_external": "false"
     }
   ]
 }

@@ -2922,12 +2922,18 @@ const TSSummaryTab = ({ data }) => {
   // (canonical from Snowflake — includes Andrea's 5 jobs which data.jobs misses
   // because that table is filtered to a 423-job recent slice).
   // Falls back to data.jobs if the baked list isn't present.
+  // Filters applied: sourcer, client, year_created, tech_role, includeExternal.
+  // (Pipelines is a CURRENT snapshot of unhired jobs — quarter/month don't apply,
+  // matches PBI's behavior on this section.)
   const pipelinesNoHire = useMemo(() => {
     const baked = data.ts_summary_pipelines;
     if (Array.isArray(baked) && baked.length > 0) {
       return baked
         .filter(j => sourcer === 'All' || j.sourcer === sourcer)
         .filter(j => client === 'All' || j.client === client)
+        .filter(j => year === 'All' || String(j.year_created) === year)
+        .filter(j => techRoleFilter === 'All' || j.tech_role === techRoleFilter)
+        .filter(j => includeExternal || j.is_external !== 'true')
         .map(j => ({
           job_id: j.job_id,
           job_title: j.job_title,
@@ -2956,7 +2962,7 @@ const TSSummaryTab = ({ data }) => {
         days: dayDiff(j.date_created),
       }))
       .filter(j => j.days != null);
-  }, [data, jobs, tthJobs, sourcer, client, includeExternal, techRoleFilter, techRoleByJob, categoryByJob]);
+  }, [data, jobs, tthJobs, year, sourcer, client, includeExternal, techRoleFilter, techRoleByJob, categoryByJob]);
 
   // Per-sourcer age buckets
   const noHireBySourcer = useMemo(() => {

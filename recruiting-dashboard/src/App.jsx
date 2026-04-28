@@ -2296,7 +2296,7 @@ const TTHTab = ({ data }) => {
     t2fill: avgByMonths(filtered, 't2fill', 't2fi_months', periodMonths, t2fiFlag),
   }), [filtered, t2fFlag, t2fiFlag]);
 
-  // Per-client aggregation
+  // Per-client aggregation (alphabetical by client; drill-down job titles also alphabetical)
   const byClient = useMemo(() => {
     const groups = {};
     filtered.forEach(j => { (groups[j.client] = groups[j.client] || []).push(j); });
@@ -2306,11 +2306,11 @@ const TTHTab = ({ data }) => {
       tth: avgPositive(js, 'tth'),
       t2find: avgByMonths(js, 't2find', 't2f_months', periodMonths, t2fFlag),
       t2fill: avgByMonths(js, 't2fill', 't2fi_months', periodMonths, t2fiFlag),
-      items: js,
-    })).sort((a, b) => b.jobs - a.jobs);
+      items: [...js].sort((a, b) => (a.job_title || '').localeCompare(b.job_title || '', undefined, { sensitivity: 'base' })),
+    })).sort((a, b) => (a.client || '').localeCompare(b.client || '', undefined, { sensitivity: 'base' }));
   }, [filtered, periodMonths, t2fFlag, t2fiFlag]);
 
-  // Per-category aggregation (with subcategory drill-down)
+  // Per-category aggregation (alphabetical by category; subcategory drill-down also alphabetical)
   const byCategory = useMemo(() => {
     const groups = {};
     filtered.forEach(j => { (groups[j.job_category] = groups[j.job_category] || []).push(j); });
@@ -2322,7 +2322,7 @@ const TTHTab = ({ data }) => {
         tth: avgPositive(ss, 'tth'),
         t2find: avgByMonths(ss, 't2find', 't2f_months', periodMonths, t2fFlag),
         t2fill: avgByMonths(ss, 't2fill', 't2fi_months', periodMonths, t2fiFlag),
-      })).sort((a, b) => b.jobs - a.jobs);
+      })).sort((a, b) => (a.subcategory || '').localeCompare(b.subcategory || '', undefined, { sensitivity: 'base' }));
       return {
         category: cat, jobs: js.length,
         tth: avgPositive(js, 'tth'),
@@ -2330,7 +2330,7 @@ const TTHTab = ({ data }) => {
         t2fill: avgByMonths(js, 't2fill', 't2fi_months', periodMonths, t2fiFlag),
         subs,
       };
-    }).sort((a, b) => b.jobs - a.jobs);
+    }).sort((a, b) => (a.category || '').localeCompare(b.category || '', undefined, { sensitivity: 'base' }));
   }, [filtered, periodMonths, t2fFlag, t2fiFlag]);
 
   // Monthly trend — iterate each job's hire_months and bucket (each job counts once per month with a hire).

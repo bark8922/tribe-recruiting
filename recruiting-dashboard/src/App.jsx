@@ -2806,7 +2806,7 @@ const TSSummaryTab = ({ data }) => {
         pctActualATS: a.actual_screens ? Math.min(1, a.ats / a.actual_screens) : null,
       }))
       .filter(x => x.contacted + x.actual_screens + x.hires > 0)
-      .sort((a, b) => b.contacted - a.contacted);
+      .sort((a, b) => a.sourcer.localeCompare(b.sourcer));
   }, [tsSummary, useTsSummary, filteredRows, filteredHires, year, quarter, month, sourcer]);
 
   // Funnel — 8 PBI stages in order:
@@ -2950,7 +2950,7 @@ const TSSummaryTab = ({ data }) => {
       else if (d <= 90) agg[s]['60-90'] += 1;
       else agg[s]['>90'] += 1;
     });
-    return Object.values(agg).sort((a, b) => b.jobs - a.jobs);
+    return Object.values(agg).sort((a, b) => a.sourcer.localeCompare(b.sourcer));
   }, [pipelinesNoHire]);
 
   // Helpers for percent formatting.
@@ -3068,33 +3068,31 @@ const TSSummaryTab = ({ data }) => {
               // tapers correctly even if Viewed is 0 (old Flow data).
               const maxCount = Math.max(...funnel.map(f => f.count), 1);
               return funnel.map((f, i) => {
-                const widthPct = Math.max(3, (100 * f.count / maxCount));
+                const widthPct = Math.max(8, (100 * f.count / maxCount));
                 const convPct = f.conv != null ? `${(f.conv * 100).toFixed(1)}%` : '100%';
+                const label = `${f.count.toLocaleString()} (${convPct})`;
                 return (
                   <div key={f.stage} className="text-xs">
-                    <div className="flex justify-between mb-0.5 text-gray-300">
-                      <span className="font-medium">{f.stage}</span>
-                      <span>
-                        <span className="text-white font-semibold">{f.count.toLocaleString()}</span>
-                        <span className="text-gray-500"> ({convPct})</span>
-                      </span>
-                    </div>
+                    <div className="text-gray-200 font-medium mb-1">{f.stage}</div>
                     <div style={{ width: '100%', textAlign: 'center', lineHeight: 0 }}>
                       <div style={{
                         display: 'inline-block',
                         backgroundColor: '#3b82f6',
                         width: `${widthPct}%`,
-                        minWidth: '6px',
-                        height: '22px',
-                        borderRadius: '2px',
+                        minWidth: '120px',
+                        height: '32px',
+                        borderRadius: '3px',
                         color: 'white',
-                        fontSize: '11px',
-                        fontWeight: 500,
-                        lineHeight: '22px',
+                        fontSize: '13px',
+                        fontWeight: 600,
+                        lineHeight: '32px',
                         textAlign: 'center',
                         verticalAlign: 'top',
+                        whiteSpace: 'nowrap',
+                        padding: '0 8px',
+                        boxSizing: 'border-box',
                       }}>
-                        {widthPct > 18 ? f.count.toLocaleString() : ''}
+                        {label}
                       </div>
                     </div>
                   </div>
@@ -3208,7 +3206,7 @@ const TSSummaryTab = ({ data }) => {
                 </tr>
               </thead>
               <tbody>
-                {pipelinesNoHire.sort((a, b) => b.days - a.days).map(j => {
+                {pipelinesNoHire.slice().sort((a, b) => (a.job_title || '').localeCompare(b.job_title || '')).map(j => {
                   const dColor = j.days > 90 ? 'text-red-300' : j.days > 60 ? 'text-orange-300' : j.days > 30 ? 'text-yellow-300' : 'text-green-300';
                   return (
                     <tr key={j.job_id} className="border-t border-gray-700 hover:bg-gray-700/50">

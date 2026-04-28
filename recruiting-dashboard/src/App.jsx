@@ -2700,8 +2700,14 @@ const TSSummaryTab = ({ data }) => {
   const kpis = useMemo(() => {
     const periodMatch = (r) => {
       if (year !== 'All' && r.iso_year !== Number(year)) return false;
-      if (month !== 'All' && isoWeekToMonth(r.iso_year, r.iso_week) !== month) return false;
-      if (quarter !== 'All' && isoWeekToQuarter(r.iso_year, r.iso_week) !== quarter) return false;
+      // iso_week=0 is the year-aggregate sentinel from the baked YTD totals.
+      // Treat it as matching ANY quarter/month (since we don't have weekly
+      // breakdowns yet). Once Flow populates real weekly data, iso_week>0 rows
+      // will use the proper quarter/month checks below.
+      if (r.iso_week !== 0) {
+        if (month !== 'All' && isoWeekToMonth(r.iso_year, r.iso_week) !== month) return false;
+        if (quarter !== 'All' && isoWeekToQuarter(r.iso_year, r.iso_week) !== quarter) return false;
+      }
       if (sourcer !== 'All' && r.ts !== sourcer) return false;
       return true;
     };
@@ -2817,8 +2823,14 @@ const TSSummaryTab = ({ data }) => {
   const funnel = useMemo(() => {
     const periodMatch = (r) => {
       if (year !== 'All' && r.iso_year !== Number(year)) return false;
-      if (month !== 'All' && isoWeekToMonth(r.iso_year, r.iso_week) !== month) return false;
-      if (quarter !== 'All' && isoWeekToQuarter(r.iso_year, r.iso_week) !== quarter) return false;
+      // iso_week=0 is the year-aggregate sentinel from the baked YTD totals.
+      // Treat it as matching ANY quarter/month (since we don't have weekly
+      // breakdowns yet). Once Flow populates real weekly data, iso_week>0 rows
+      // will use the proper quarter/month checks below.
+      if (r.iso_week !== 0) {
+        if (month !== 'All' && isoWeekToMonth(r.iso_year, r.iso_week) !== month) return false;
+        if (quarter !== 'All' && isoWeekToQuarter(r.iso_year, r.iso_week) !== quarter) return false;
+      }
       if (sourcer !== 'All' && r.ts !== sourcer) return false;
       return true;
     };
@@ -3036,6 +3048,12 @@ const TSSummaryTab = ({ data }) => {
           </span>
         </div>
       </div>
+
+      {(quarter !== 'All' || month !== 'All') && useTsSummary && tsSummary.every(r => r.iso_week === 0) && (
+        <div className="bg-yellow-900/40 border border-yellow-700 rounded-lg px-4 py-2 text-xs text-yellow-200">
+          ⚠ Quarter/Month filters are showing YEAR totals — weekly data hasn't been refreshed by the Flow yet. Numbers don't reflect the {quarter !== 'All' ? quarter : month} cut. Will resolve on next Flow run.
+        </div>
+      )}
 
       <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
         <Select label="Year" value={year} onChange={v => { setYear(v); setQuarter('All'); setMonth('All'); }} options={years} />

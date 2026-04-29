@@ -216,6 +216,35 @@ const WBRTab = ({ data }) => {
     return Number(rec?.contacted_target) || 100;
   };
 
+  // Past comments per week for the drill-down popup.
+  // TA: pull from data.ta_weekly_notes (joined across clients for the same TA+week).
+  const drillTaComments = (taName) => {
+    const norm = normalizeTa(taName);
+    const acc = {};
+    (data.ta_weekly_notes || []).forEach((n) => {
+      if (normalizeTa(n.ta) !== norm) return;
+      const wk = `w${n.week}`;
+      const txt = (n.comment || n.reasoning || '').trim();
+      if (!txt) return;
+      if (!acc[wk]) acc[wk] = [];
+      if (!acc[wk].includes(txt)) acc[wk].push(txt);
+    });
+    const out = {};
+    Object.entries(acc).forEach(([wk, parts]) => { out[wk] = parts.join(' · '); });
+    return out;
+  };
+  // TS: pull from data.ts_weekly (one row per TS+week).
+  const drillTsComments = (tsName) => {
+    const out = {};
+    (data.ts_weekly || []).forEach((t) => {
+      if (t.ts !== tsName) return;
+      const wk = `w${t.week}`;
+      const txt = (t.comment || t.reasoning || '').trim();
+      if (txt) out[wk] = txt;
+    });
+    return out;
+  };
+
   // Build client summary for selected week
   const clientSummary = useMemo(() => {
     const weekKey = `w${selectedWeek}`;
@@ -729,6 +758,32 @@ const WBRTab = ({ data }) => {
                 </tr>
               </tbody>
             </table>
+            {(drillDown.kind === 'ta' || drillDown.kind === 'ts') && (() => {
+              const commentsByWeek = drillDown.kind === 'ta'
+                ? drillTaComments(drillDown.taName)
+                : drillTsComments(drillDown.tsName);
+              const anyHasComment = drillWeeks.some((wk) => commentsByWeek[wk]);
+              return (
+                <div className="mt-6">
+                  <h4 className="text-sm font-semibold text-gray-200 mb-2">Past comments</h4>
+                  {anyHasComment ? (
+                    <ul className="space-y-2">
+                      {drillWeeks.slice().reverse().map((wk) => {
+                        const c = commentsByWeek[wk];
+                        return (
+                          <li key={wk} className="text-sm flex gap-3 items-start">
+                            <span className="text-gray-500 font-mono shrink-0 w-10 pt-0.5">{wk}</span>
+                            <span className={c ? 'text-gray-200 leading-relaxed' : 'text-gray-600'} style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>{c || '—'}</span>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  ) : (
+                    <p className="text-sm text-gray-500">No comments recorded in the last 6 weeks.</p>
+                  )}
+                </div>
+              );
+            })()}
             <p className="text-xs text-gray-500 mt-4">Click outside this panel or press ✕ to close.</p>
           </div>
         </div>
@@ -818,24 +873,24 @@ const WBRTab = ({ data }) => {
       {/* TA Detail */}
       <div className="bg-gray-800 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-white mb-4">TA Weekly Detail — Week {selectedWeek}</h3>
-        <div className="overflow-x-auto">
-          <table className="text-sm" style={{ width: '1500px', maxWidth: '100%', margin: '0 auto', tableLayout: 'fixed', borderCollapse: 'separate', borderSpacing: 0 }}>
+        <div>
+          <table className="text-sm" style={{ width: '100%', tableLayout: 'fixed', borderCollapse: 'separate', borderSpacing: 0 }}>
             <colgroup>
-              <col style={{ width: '100px' }} />
-              <col style={{ width: '140px' }} />
-              <col style={{ width: '60px' }} />
-              <col style={{ width: '70px' }} />
-              <col style={{ width: '70px' }} />
-              <col style={{ width: '75px' }} />
-              <col style={{ width: '70px' }} />
-              <col style={{ width: '65px' }} />
-              <col style={{ width: '65px' }} />
-              <col style={{ width: '65px' }} />
-              <col style={{ width: '60px' }} />
-              <col style={{ width: '65px' }} />
-              <col style={{ width: '65px' }} />
-              <col style={{ width: '60px' }} />
-              <col style={{ minWidth: '380px' }} />
+              <col style={{ width: '92px' }} />
+              <col style={{ width: '116px' }} />
+              <col style={{ width: '46px' }} />
+              <col style={{ width: '54px' }} />
+              <col style={{ width: '54px' }} />
+              <col style={{ width: '58px' }} />
+              <col style={{ width: '52px' }} />
+              <col style={{ width: '50px' }} />
+              <col style={{ width: '50px' }} />
+              <col style={{ width: '50px' }} />
+              <col style={{ width: '46px' }} />
+              <col style={{ width: '52px' }} />
+              <col style={{ width: '50px' }} />
+              <col style={{ width: '46px' }} />
+              <col />
             </colgroup>
             <thead className="sticky top-0 z-20">
               <tr className="text-gray-300 bg-gray-800">
@@ -975,34 +1030,34 @@ const WBRTab = ({ data }) => {
       {/* TS Weekly — compact with wide comment + TA Names columns */}
       <div className="bg-gray-800 rounded-lg p-4">
           <h3 className="text-lg font-semibold text-white mb-4">TS (Sourcer) Weekly — Week {selectedWeek}</h3>
-          <div style={{ overflowX: 'auto' }}>
-            <table className="text-sm" style={{ width: '1500px', maxWidth: '100%', margin: '0 auto', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
+          <div>
+            <table className="text-sm" style={{ width: '100%', tableLayout: 'fixed', borderCollapse: 'separate', borderSpacing: 0 }}>
               <colgroup>
-                <col style={{ width: '150px' }} />
-                <col style={{ width: '65px' }} />
-                <col style={{ width: '90px' }} />
-                <col style={{ width: '60px' }} />
-                <col style={{ width: '80px' }} />
-                <col style={{ width: '80px' }} />
-                <col style={{ width: '65px' }} />
-                <col style={{ width: '65px' }} />
-                <col style={{ width: '55px' }} />
-                <col style={{ width: '240px' }} />
-                <col style={{ width: '390px' }} />
+                <col style={{ width: '128px' }} />
+                <col style={{ width: '50px' }} />
+                <col style={{ width: '74px' }} />
+                <col style={{ width: '50px' }} />
+                <col style={{ width: '64px' }} />
+                <col style={{ width: '64px' }} />
+                <col style={{ width: '52px' }} />
+                <col style={{ width: '52px' }} />
+                <col style={{ width: '44px' }} />
+                <col style={{ width: '200px' }} />
+                <col />
               </colgroup>
-              <thead>
-                <tr className="text-gray-300 border-b border-gray-600">
-                  <th className="text-left px-3 py-2">Sourcer</th>
-                  <th className="text-center px-2 py-2" title="Last 12w Hires">12w H</th>
-                  <th className="text-center px-2 py-2">Contacted</th>
-                  <th className="text-center px-2 py-2">Tgt</th>
-                  <th className="text-center px-2 py-2">Rec Scrn</th>
-                  <th className="text-center px-2 py-2">Act Scrn</th>
-                  <th className="text-center px-2 py-2">ATS</th>
-                  <th className="text-center px-2 py-2"># Jobs</th>
-                  <th className="text-center px-2 py-2"># TA</th>
-                  <th className="text-left px-3 py-2">TA Names</th>
-                  <th className="text-left px-3 py-2">Comment</th>
+              <thead className="sticky top-0 z-20">
+                <tr className="text-gray-300 bg-gray-800">
+                  <th className="text-left px-3 py-2 bg-gray-800 border-b border-gray-600">Sourcer</th>
+                  <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Last 12w Hires">12w H</th>
+                  <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600">Contacted</th>
+                  <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600">Tgt</th>
+                  <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600">Rec Scrn</th>
+                  <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600">Act Scrn</th>
+                  <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600">ATS</th>
+                  <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600"># Jobs</th>
+                  <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600"># TA</th>
+                  <th className="text-left px-3 py-2 bg-gray-800 border-b border-gray-600">TA Names</th>
+                  <th className="text-left px-3 py-2 bg-gray-800 border-b border-gray-600">Comment</th>
                 </tr>
               </thead>
               <tbody>

@@ -81,6 +81,23 @@ const getCellStyle = (actual, weeklyTarget) => {
   return { backgroundColor: '#991b1b', color: '#fecaca' };                   // red
 };
 
+// True when every tracked weekly target on the row is met (actual >= target).
+// Cells with no target (null / 0) are skipped — they aren't being measured.
+// Returns false if no targets are set at all (so we don't accidentally flag a
+// row with no targets as "all green"). Used to suppress the
+// "Missing comment" warning when a TA / TS is fully green for the week —
+// per Blake 2026-04-29: comments are only required when something is below
+// target.
+const allTargetsMet = (pairs) => {
+  let hasAnyTarget = false;
+  for (const [actual, target] of pairs) {
+    if (!target || target === 0) continue;
+    hasAnyTarget = true;
+    if ((actual || 0) < target) return false;
+  }
+  return hasAnyTarget;
+};
+
 // WBR Tab
 const WBRTab = ({ data }) => {
   // Derive week list from the weekly roster (keys like "w15", "w16"). This
@@ -904,7 +921,11 @@ const WBRTab = ({ data }) => {
                           <td className="text-center px-2 py-2 text-gray-300">{row.roles || ''}</td>
                           <td className="text-center px-2 py-2 text-gray-300">{row.jobs_60d || ''}</td>
                           <td className="text-left px-3 py-3 text-gray-300 align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: '1.55' }}>
-                            {row.comment ? row.comment : <span className="inline-block px-2 py-0.5 rounded text-xs font-semibold" style={{ backgroundColor: '#991b1b', color: '#fecaca' }}>⚠ Missing comment</span>}
+                            {row.comment
+                              ? row.comment
+                              : (allTargetsMet([[row.contacted, row.contacted_target], [row.screened, row.screened_target], [row.ats, row.ats_target]])
+                                  ? <span className="inline-block px-2 py-0.5 rounded text-xs font-semibold" style={{ backgroundColor: '#166534', color: '#bbf7d0' }}>✓ All targets met</span>
+                                  : <span className="inline-block px-2 py-0.5 rounded text-xs font-semibold" style={{ backgroundColor: '#991b1b', color: '#fecaca' }}>⚠ Missing comment</span>)}
                           </td>
                         </tr>
                       );
@@ -1010,7 +1031,7 @@ const WBRTab = ({ data }) => {
                     <td className="text-center px-2 py-2 text-gray-300 align-top">{row.num_jobs}</td>
                     <td className="text-center px-2 py-2 text-gray-300 align-top">{row.num_tas}</td>
                     <td className="text-left px-3 py-3 text-gray-300 align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: '1.55' }}>{row.ta_names || '—'}</td>
-                    <td className="text-left px-3 py-3 text-gray-300 align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: '1.55' }}>{row.comment ? row.comment : <span className="inline-block px-2 py-0.5 rounded text-xs font-semibold" style={{ backgroundColor: '#991b1b', color: '#fecaca' }}>⚠ Missing comment</span>}</td>
+                    <td className="text-left px-3 py-3 text-gray-300 align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: '1.55' }}>{row.comment ? row.comment : (allTargetsMet([[row.contacted, row._contacted_color_target], [row.recruiter_screens, row.recruiter_screens_target], [row.actual_screens, row.actual_screens_target], [row.ats, row.ats_target]]) ? <span className="inline-block px-2 py-0.5 rounded text-xs font-semibold" style={{ backgroundColor: '#166534', color: '#bbf7d0' }}>✓ All targets met</span> : <span className="inline-block px-2 py-0.5 rounded text-xs font-semibold" style={{ backgroundColor: '#991b1b', color: '#fecaca' }}>⚠ Missing comment</span>)}</td>
                   </tr>
                 ))}
                 <tr className="bg-gray-750 border-t border-gray-600 font-bold text-base">

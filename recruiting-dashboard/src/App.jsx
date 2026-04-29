@@ -594,10 +594,12 @@ const WBRTab = ({ data }) => {
       const hires12w = data.ts_hires_12w?.[tsName] || 0;
 
       // Derived targets: the WBR TS Weekly Note sheet only has a `Contacted Target`
-      // column. PBI shows colors on Recruiter Screens / Actual Screens / ATS
-      // too — derived from the same per-TS target via typical funnel ratios.
-      // TSes without an explicit contacted target get a 100 default so cells
-      // still receive a color (matches PBI's behaviour of colouring every cell).
+      // column. Recruiter Screens / Actual Screens / Moved-to-ATS use FLAT
+      // weekly targets per Blake (2026-04-29): 10 / 7 / 4 for every sourcer,
+      // independent of contacted_target. (Previous funnel-ratio derivation
+      // produced too-many red cells against PBI.)
+      // TSes without an explicit contacted target get a 100 default so the
+      // contacted cell still receives a color.
       const contactedTarget = Number(t.contacted_target) || 100;
       return {
         ...t,
@@ -612,9 +614,9 @@ const WBRTab = ({ data }) => {
         ta_names: jobs.ta_names || '',
         hires_12w: hires12w,
         contacted_target: t.contacted_target, // keep raw for display (blank if null)
-        recruiter_screens_target: Math.round(contactedTarget * 0.15),
-        actual_screens_target:    Math.round(contactedTarget * 0.10),
-        ats_target:               Math.round(contactedTarget * 0.05),
+        recruiter_screens_target: 10,
+        actual_screens_target:    7,
+        ats_target:               4,
         _contacted_color_target:  contactedTarget, // always non-null for getCellStyle
       };
     }).filter((r) => {
@@ -677,12 +679,19 @@ const WBRTab = ({ data }) => {
           onClick={(e) => { if (e.target === e.currentTarget) setDrillDown(null); }}
           style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.75)', zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}
         >
-          <div className="bg-gray-800 rounded-lg" style={{ maxWidth: '900px', width: '100%', maxHeight: '90vh', overflowY: 'auto', padding: '1.5rem' }}>
+          <div className="bg-gray-800 rounded-lg" style={{ maxWidth: '1300px', width: '100%', maxHeight: '90vh', overflowY: 'auto', padding: '1.5rem' }}>
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-lg font-semibold text-white">{drillDown.title}</h3>
               <button onClick={() => setDrillDown(null)} className="text-gray-400 hover:text-white px-2 py-1">✕</button>
             </div>
             <p className="text-xs text-gray-500 mb-4">Last 6 weeks ending at the currently selected week ({drillWeeks[0]} → {drillWeeks[drillWeeks.length-1]}). Colors use this person's weekly target from Andy's sheet.</p>
+            {(() => {
+              const showComment = (drillDown.kind === 'ta' || drillDown.kind === 'ts');
+              const commentsByWeek = drillDown.kind === 'ta'
+                ? drillTaComments(drillDown.taName)
+                : drillDown.kind === 'ts' ? drillTsComments(drillDown.tsName)
+                : {};
+              return (
             <table className="text-sm" style={{ width: '100%', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
               <colgroup>
                 <col style={{ width: '70px' }} />
@@ -692,6 +701,7 @@ const WBRTab = ({ data }) => {
                 <col style={{ width: '80px' }} />
                 <col style={{ width: '80px' }} />
                 <col style={{ width: '80px' }} />
+                {showComment && <col />}
               </colgroup>
               <thead>
                 <tr className="text-gray-300 border-b border-gray-600">
@@ -702,6 +712,7 @@ const WBRTab = ({ data }) => {
                   <th className="text-center px-2 py-2">ATS</th>
                   <th className="text-center px-2 py-2">Offers</th>
                   <th className="text-center px-2 py-2">Hires</th>
+                  {showComment && <th className="text-left px-3 py-2">Comment</th>}
                 </tr>
               </thead>
               <tbody>
@@ -716,25 +727,31 @@ const WBRTab = ({ data }) => {
                     contactedTgt = t.contacted; asTgt = t.actual_screens; atsTgt = t.moved_to_ats; hiresTgt = t.hires;
                   } else if (drillDown.kind === 'ts') {
                     contactedTgt = drillTsContactedTarget(drillDown.tsName, wk);
-                    rsTgt = Math.round(contactedTgt * 0.15);
-                    asTgt = Math.round(contactedTgt * 0.10);
-                    atsTgt = Math.round(contactedTgt * 0.05);
+                    rsTgt = 10;   // flat weekly target (Blake 2026-04-29)
+                    asTgt = 7;
+                    atsTgt = 4;
                     hiresTgt = 0;
                   } else {
                     const t = drillClientTargets(drillDown.displayClient);
                     contactedTgt = t.contacted; asTgt = t.actual_screens; atsTgt = t.moved_to_ats; hiresTgt = t.hires;
                   }
+                  const c = showComment ? commentsByWeek[wk] : null;
                   return (
                     <tr key={wk} className={idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'}>
-                      <td className="text-left px-3 py-2 text-white font-medium">{wk}</td>
-                      <td className="text-center px-2 py-2" style={getCellStyle(v.contacted || 0, contactedTgt)}>{v.contacted || 0}</td>
+                      <td className="text-left px-3 py-2 text-white font-medium align-top">{wk}</td>
+                      <td className="text-center px-2 py-2 align-top" style={getCellStyle(v.contacted || 0, contactedTgt)}>{v.contacted || 0}</td>
                       {drillDown.kind === 'ts' && (
-                        <td className="text-center px-2 py-2" style={getCellStyle(v.recruiter_screens || v.screened || 0, rsTgt)}>{v.recruiter_screens || v.screened || 0}</td>
+                        <td className="text-center px-2 py-2 align-top" style={getCellStyle(v.recruiter_screens || v.screened || 0, rsTgt)}>{v.recruiter_screens || v.screened || 0}</td>
                       )}
-                      <td className="text-center px-2 py-2" style={getCellStyle(v.actual_screens || 0, asTgt)}>{v.actual_screens || 0}</td>
-                      <td className="text-center px-2 py-2" style={getCellStyle(v.ats || 0, atsTgt)}>{v.ats || 0}</td>
-                      <td className="text-center px-2 py-2 text-gray-300">{v.offers || 0}</td>
-                      <td className="text-center px-2 py-2" style={hiresTgt > 0 ? getCellStyle(v.hires || 0, hiresTgt) : undefined}>{v.hires || 0}</td>
+                      <td className="text-center px-2 py-2 align-top" style={getCellStyle(v.actual_screens || 0, asTgt)}>{v.actual_screens || 0}</td>
+                      <td className="text-center px-2 py-2 align-top" style={getCellStyle(v.ats || 0, atsTgt)}>{v.ats || 0}</td>
+                      <td className="text-center px-2 py-2 text-gray-300 align-top">{v.offers || 0}</td>
+                      <td className="text-center px-2 py-2 align-top" style={hiresTgt > 0 ? getCellStyle(v.hires || 0, hiresTgt) : undefined}>{v.hires || 0}</td>
+                      {showComment && (
+                        <td className="text-left px-3 py-2 align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: '1.5' }}>
+                          {c ? <span className="text-gray-200">{c}</span> : <span className="text-gray-600">—</span>}
+                        </td>
+                      )}
                     </tr>
                   );
                 })}
@@ -755,33 +772,10 @@ const WBRTab = ({ data }) => {
                     ];
                     return cells.map((v, i) => <td key={i} className="text-center px-2 py-2 text-white">{v}</td>);
                   })()}
+                  {showComment && <td className="text-left px-3 py-2 text-gray-400">—</td>}
                 </tr>
               </tbody>
             </table>
-            {(drillDown.kind === 'ta' || drillDown.kind === 'ts') && (() => {
-              const commentsByWeek = drillDown.kind === 'ta'
-                ? drillTaComments(drillDown.taName)
-                : drillTsComments(drillDown.tsName);
-              const anyHasComment = drillWeeks.some((wk) => commentsByWeek[wk]);
-              return (
-                <div className="mt-6">
-                  <h4 className="text-sm font-semibold text-gray-200 mb-2">Past comments</h4>
-                  {anyHasComment ? (
-                    <ul className="space-y-2">
-                      {drillWeeks.slice().reverse().map((wk) => {
-                        const c = commentsByWeek[wk];
-                        return (
-                          <li key={wk} className="text-sm flex gap-3 items-start">
-                            <span className="text-gray-500 font-mono shrink-0 w-10 pt-0.5">{wk}</span>
-                            <span className={c ? 'text-gray-200 leading-relaxed' : 'text-gray-600'} style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>{c || '—'}</span>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  ) : (
-                    <p className="text-sm text-gray-500">No comments recorded in the last 6 weeks.</p>
-                  )}
-                </div>
               );
             })()}
             <p className="text-xs text-gray-500 mt-4">Click outside this panel or press ✕ to close.</p>
@@ -876,38 +870,38 @@ const WBRTab = ({ data }) => {
         <div>
           <table className="text-sm" style={{ width: '100%', tableLayout: 'fixed', borderCollapse: 'separate', borderSpacing: 0 }}>
             <colgroup>
-              <col style={{ width: '92px' }} />
-              <col style={{ width: '116px' }} />
-              <col style={{ width: '46px' }} />
-              <col style={{ width: '54px' }} />
-              <col style={{ width: '54px' }} />
+              <col style={{ width: '120px' }} />
+              <col style={{ width: '136px' }} />
+              <col style={{ width: '64px' }} />
+              <col style={{ width: '64px' }} />
+              <col style={{ width: '70px' }} />
+              <col style={{ width: '64px' }} />
+              <col style={{ width: '60px' }} />
               <col style={{ width: '58px' }} />
-              <col style={{ width: '52px' }} />
-              <col style={{ width: '50px' }} />
-              <col style={{ width: '50px' }} />
-              <col style={{ width: '50px' }} />
-              <col style={{ width: '46px' }} />
-              <col style={{ width: '52px' }} />
-              <col style={{ width: '50px' }} />
-              <col style={{ width: '46px' }} />
+              <col style={{ width: '78px' }} />
+              <col style={{ width: '70px' }} />
+              <col style={{ width: '54px' }} />
+              <col style={{ width: '60px' }} />
+              <col style={{ width: '60px' }} />
+              <col style={{ width: '54px' }} />
               <col />
             </colgroup>
             <thead className="sticky top-0 z-20">
               <tr className="text-gray-300 bg-gray-800">
                 <th className="text-left px-3 py-2 sticky left-0 bg-gray-800 z-30 border-b border-gray-600">Client</th>
                 <th className="text-left px-3 py-2 bg-gray-800 border-b border-gray-600">TA</th>
-                <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Last 12 Weeks Hires">12w H</th>
+                <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Last 12 Weeks Hires">12w Hires</th>
                 <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Last 12 Weeks ATS">12w ATS</th>
-                <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Last 12 Weeks Screens">12w Scr</th>
-                <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Last 12w % Actual Screens to Hires">12w %S→H</th>
+                <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Last 12 Weeks Screens">12w Scrns</th>
+                <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Last 12w % Actual Screens to Hires">12w S→H</th>
                 <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Last 12w Time to Fill (days)">12w TTF</th>
                 <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Weekly Hires">Hires</th>
-                <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Weekly Contacted">Cntd</th>
-                <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Weekly Actual Screens">Scrn</th>
+                <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Weekly Contacted">Contacted</th>
+                <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Weekly Actual Screens">Screens</th>
                 <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Weekly ATS">ATS</th>
-                <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="% Actual Screens to ATS">%S→A</th>
+                <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="% Actual Screens to ATS">% S→A</th>
                 <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="# Active Roles"># Jobs</th>
-                <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Jobs Opened > 60 days">{'>'}60d</th>
+                <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Jobs Opened > 60 days">60d+</th>
                 <th className="text-left px-3 py-2 bg-gray-800 border-b border-gray-600">Comment</th>
               </tr>
             </thead>
@@ -922,18 +916,18 @@ const WBRTab = ({ data }) => {
                   <tr className="text-gray-300 bg-gray-800 border-t border-gray-600">
                     <th className="text-left px-3 py-2 sticky left-0 bg-gray-800">Client</th>
                     <th className="text-left px-3 py-2">TA</th>
-                    <th className="text-center px-2 py-2" title="Last 12 Weeks Hires">12w H</th>
+                    <th className="text-center px-2 py-2" title="Last 12 Weeks Hires">12w Hires</th>
                     <th className="text-center px-2 py-2" title="Last 12 Weeks ATS">12w ATS</th>
-                    <th className="text-center px-2 py-2" title="Last 12 Weeks Screens">12w Scr</th>
-                    <th className="text-center px-2 py-2" title="Last 12w % Actual Screens to Hires">12w %S→H</th>
+                    <th className="text-center px-2 py-2" title="Last 12 Weeks Screens">12w Scrns</th>
+                    <th className="text-center px-2 py-2" title="Last 12w % Actual Screens to Hires">12w S→H</th>
                     <th className="text-center px-2 py-2" title="Last 12w Time to Fill (days)">12w TTF</th>
                     <th className="text-center px-2 py-2" title="Weekly Hires">Hires</th>
-                    <th className="text-center px-2 py-2" title="Weekly Contacted">Cntd</th>
-                    <th className="text-center px-2 py-2" title="Weekly Actual Screens">Scrn</th>
+                    <th className="text-center px-2 py-2" title="Weekly Contacted">Contacted</th>
+                    <th className="text-center px-2 py-2" title="Weekly Actual Screens">Screens</th>
                     <th className="text-center px-2 py-2" title="Weekly ATS">ATS</th>
-                    <th className="text-center px-2 py-2" title="% Actual Screens to ATS">%S→A</th>
+                    <th className="text-center px-2 py-2" title="% Actual Screens to ATS">% S→A</th>
                     <th className="text-center px-2 py-2" title="# Active Roles"># Jobs</th>
-                    <th className="text-center px-2 py-2" title="Jobs Opened > 60 days">{'>'}60d</th>
+                    <th className="text-center px-2 py-2" title="Jobs Opened > 60 days">60d+</th>
                     <th className="text-left px-3 py-2">Comment</th>
                   </tr>
                 ) : null;
@@ -1033,29 +1027,29 @@ const WBRTab = ({ data }) => {
           <div>
             <table className="text-sm" style={{ width: '100%', tableLayout: 'fixed', borderCollapse: 'separate', borderSpacing: 0 }}>
               <colgroup>
-                <col style={{ width: '128px' }} />
-                <col style={{ width: '50px' }} />
-                <col style={{ width: '74px' }} />
-                <col style={{ width: '50px' }} />
+                <col style={{ width: '150px' }} />
                 <col style={{ width: '64px' }} />
+                <col style={{ width: '88px' }} />
                 <col style={{ width: '64px' }} />
-                <col style={{ width: '52px' }} />
-                <col style={{ width: '52px' }} />
-                <col style={{ width: '44px' }} />
-                <col style={{ width: '200px' }} />
+                <col style={{ width: '76px' }} />
+                <col style={{ width: '76px' }} />
+                <col style={{ width: '54px' }} />
+                <col style={{ width: '60px' }} />
+                <col style={{ width: '54px' }} />
+                <col style={{ width: '210px' }} />
                 <col />
               </colgroup>
               <thead className="sticky top-0 z-20">
                 <tr className="text-gray-300 bg-gray-800">
                   <th className="text-left px-3 py-2 bg-gray-800 border-b border-gray-600">Sourcer</th>
-                  <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Last 12w Hires">12w H</th>
-                  <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600">Contacted</th>
-                  <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600">Tgt</th>
-                  <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600">Rec Scrn</th>
-                  <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600">Act Scrn</th>
-                  <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600">ATS</th>
-                  <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600"># Jobs</th>
-                  <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600"># TA</th>
+                  <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Last 12 Weeks Hires">12w Hires</th>
+                  <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Weekly Contacted">Contacted</th>
+                  <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Weekly Contacted Target">Target</th>
+                  <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Recruiter Screens">Rec Scrns</th>
+                  <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Actual Screens">Act Scrns</th>
+                  <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Moved to ATS">ATS</th>
+                  <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="# Active Jobs"># Jobs</th>
+                  <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="# TAs supported"># TAs</th>
                   <th className="text-left px-3 py-2 bg-gray-800 border-b border-gray-600">TA Names</th>
                   <th className="text-left px-3 py-2 bg-gray-800 border-b border-gray-600">Comment</th>
                 </tr>

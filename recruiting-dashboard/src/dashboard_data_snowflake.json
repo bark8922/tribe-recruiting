@@ -275657,5 +275657,518 @@
       "date_offer": "2026-02-19",
       "date_hired": "2026-02-19"
     }
+  ],
+  "ir_funnel_weekly": [
+    {
+      "iso_year": 2026,
+      "iso_week": 5,
+      "contacted": 2,
+      "pos_response": 2,
+      "rec_screens": 2,
+      "actual_screens": 2,
+      "ats": 1,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "iso_year": 2026,
+      "iso_week": 6,
+      "contacted": 2,
+      "pos_response": 1,
+      "rec_screens": 2,
+      "actual_screens": 2,
+      "ats": 0,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "iso_year": 2026,
+      "iso_week": 7,
+      "contacted": 155,
+      "pos_response": 18,
+      "rec_screens": 11,
+      "actual_screens": 10,
+      "ats": 0,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "iso_year": 2026,
+      "iso_week": 8,
+      "contacted": 161,
+      "pos_response": 14,
+      "rec_screens": 10,
+      "actual_screens": 8,
+      "ats": 2,
+      "onsite": 2,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "iso_year": 2026,
+      "iso_week": 9,
+      "contacted": 162,
+      "pos_response": 12,
+      "rec_screens": 9,
+      "actual_screens": 0,
+      "ats": 0,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "iso_year": 2026,
+      "iso_week": 10,
+      "contacted": 34,
+      "pos_response": 26,
+      "rec_screens": 16,
+      "actual_screens": 3,
+      "ats": 5,
+      "onsite": 3,
+      "culture": 3,
+      "call_w_client": 2,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "iso_year": 2026,
+      "iso_week": 11,
+      "contacted": 31,
+      "pos_response": 1,
+      "rec_screens": 1,
+      "actual_screens": 0,
+      "ats": 0,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "iso_year": 2026,
+      "iso_week": 13,
+      "contacted": 78,
+      "pos_response": 8,
+      "rec_screens": 7,
+      "actual_screens": 5,
+      "ats": 0,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "iso_year": 2026,
+      "iso_week": 14,
+      "contacted": 118,
+      "pos_response": 46,
+      "rec_screens": 28,
+      "actual_screens": 3,
+      "ats": 1,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "iso_year": 2026,
+      "iso_week": 15,
+      "contacted": 0,
+      "pos_response": 6,
+      "rec_screens": 4,
+      "actual_screens": 0,
+      "ats": 0,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "iso_year": 2026,
+      "iso_week": 16,
+      "contacted": 196,
+      "pos_response": 53,
+      "rec_screens": 20,
+      "actual_screens": 5,
+      "ats": 1,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "iso_year": 2026,
+      "iso_week": 17,
+      "contacted": 180,
+      "pos_response": 79,
+      "rec_screens": 54,
+      "actual_screens": 20,
+      "ats": 5,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "iso_year": 2026,
+      "iso_week": 18,
+      "contacted": 77,
+      "pos_response": 10,
+      "rec_screens": 8,
+      "actual_screens": 8,
+      "ats": 2,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    }
+  ],
+  "ir_sourced_by": [
+    {
+      "sourcer": "Iryna Dyda",
+      "contacted": 308,
+      "pos_response": 19,
+      "hired": 0
+    },
+    {
+      "sourcer": "Valeriia Yurykova",
+      "contacted": 246,
+      "pos_response": 76,
+      "hired": 0
+    },
+    {
+      "sourcer": "Gustavo Loureiro Castro",
+      "contacted": 213,
+      "pos_response": 35,
+      "hired": 0
+    },
+    {
+      "sourcer": "Elena Petrovska",
+      "contacted": 147,
+      "pos_response": 32,
+      "hired": 0
+    },
+    {
+      "sourcer": "Chené Elliot",
+      "contacted": 67,
+      "pos_response": 19,
+      "hired": 0
+    },
+    {
+      "sourcer": "Andrea Akovic",
+      "contacted": 54,
+      "pos_response": 23,
+      "hired": 0
+    },
+    {
+      "sourcer": "Mariam Chkhikvadze",
+      "contacted": 45,
+      "pos_response": 35,
+      "hired": 0
+    },
+    {
+      "sourcer": "Samantha Nel",
+      "contacted": 35,
+      "pos_response": 6,
+      "hired": 0
+    },
+    {
+      "sourcer": "Chantal Bozkurt",
+      "contacted": 31,
+      "pos_response": 8,
+      "hired": 0
+    },
+    {
+      "sourcer": "Eduardo Moral",
+      "contacted": 22,
+      "pos_response": 12,
+      "hired": 0
+    },
+    {
+      "sourcer": "Dolores Palotas",
+      "contacted": 10,
+      "pos_response": 0,
+      "hired": 0
+    },
+    {
+      "sourcer": "Rodrigo Gomes",
+      "contacted": 6,
+      "pos_response": 0,
+      "hired": 0
+    },
+    {
+      "sourcer": "Sanja Pavlovikj",
+      "contacted": 6,
+      "pos_response": 6,
+      "hired": 0
+    },
+    {
+      "sourcer": "Jovana Drakula",
+      "contacted": 4,
+      "pos_response": 3,
+      "hired": 0
+    },
+    {
+      "sourcer": "Jelena Lacmanovic",
+      "contacted": 2,
+      "pos_response": 2,
+      "hired": 0
+    }
+  ],
+  "ir_interviewed_by": [
+    {
+      "ta": "(unattributed)",
+      "actual_screens": 25
+    },
+    {
+      "ta": "Chené Elliot",
+      "actual_screens": 13
+    },
+    {
+      "ta": "Mariam Chkhikvadze",
+      "actual_screens": 10
+    },
+    {
+      "ta": "Anna Tyulpanova",
+      "actual_screens": 5
+    },
+    {
+      "ta": "Jovana Drakula",
+      "actual_screens": 4
+    },
+    {
+      "ta": "Jelena Lacmanovic",
+      "actual_screens": 3
+    },
+    {
+      "ta": "Samantha Nel",
+      "actual_screens": 3
+    },
+    {
+      "ta": "Iryna Dyda",
+      "actual_screens": 2
+    },
+    {
+      "ta": "Sanja Pavlovikj",
+      "actual_screens": 1
+    }
+  ],
+  "ir_dq_by_stage": [
+    {
+      "job_title": "DH - Executive Search Talent Partner (APAC focus)",
+      "job_id": "1770631916672x291420469021638660",
+      "stage_contacted": 113,
+      "stage_rec_screen": 3,
+      "stage_actual_screen": 14,
+      "stage_move_to_ats": 0,
+      "stage_onsite": 0,
+      "stage_offer": 0,
+      "total": 143
+    },
+    {
+      "job_title": "Tech Talent Sourcer",
+      "job_id": "1776243815411x739667639709990900",
+      "stage_contacted": 36,
+      "stage_rec_screen": 2,
+      "stage_actual_screen": 22,
+      "stage_move_to_ats": 1,
+      "stage_onsite": 0,
+      "stage_offer": 0,
+      "total": 77
+    },
+    {
+      "job_title": "Talent Sourcer (German speaker) - Feb '26",
+      "job_id": "1771257786943x368258027107123200",
+      "stage_contacted": 58,
+      "stage_rec_screen": 2,
+      "stage_actual_screen": 0,
+      "stage_move_to_ats": 0,
+      "stage_onsite": 0,
+      "stage_offer": 0,
+      "total": 60
+    },
+    {
+      "job_title": "Tech Talent Acquisition Partner (APAC)",
+      "job_id": "1774613979789x325982928044294140",
+      "stage_contacted": 18,
+      "stage_rec_screen": 3,
+      "stage_actual_screen": 2,
+      "stage_move_to_ats": 0,
+      "stage_onsite": 0,
+      "stage_offer": 0,
+      "total": 33
+    },
+    {
+      "job_title": "Talent Acquisition Partner (Internal Recruitment)",
+      "job_id": "1769763000086x563212577333575700",
+      "stage_contacted": 27,
+      "stage_rec_screen": 1,
+      "stage_actual_screen": 1,
+      "stage_move_to_ats": 1,
+      "stage_onsite": 1,
+      "stage_offer": 0,
+      "total": 33
+    },
+    {
+      "job_title": "Talent Acquisition Partner (UK)",
+      "job_id": "1777294001849x171347644691513340",
+      "stage_contacted": 1,
+      "stage_rec_screen": 0,
+      "stage_actual_screen": 0,
+      "stage_move_to_ats": 0,
+      "stage_onsite": 0,
+      "stage_offer": 0,
+      "total": 1
+    }
+  ],
+  "ir_jobs_active": [
+    {
+      "job_id": "1769763000086x563212577333575700",
+      "job_title": "Talent Acquisition Partner (Internal Recruitment)",
+      "date_created": "2026-01-30",
+      "job_recruiter": "Ella Darie",
+      "job_sourcer": "Iryna Dyda",
+      "days_open": 91,
+      "hires_total": 0
+    },
+    {
+      "job_id": "1770631916672x291420469021638660",
+      "job_title": "DH - Executive Search Talent Partner (APAC focus)",
+      "date_created": "2026-02-09",
+      "job_recruiter": "Ella Darie",
+      "job_sourcer": "Iryna Dyda",
+      "days_open": 81,
+      "hires_total": 0
+    },
+    {
+      "job_id": "1771257786943x368258027107123200",
+      "job_title": "Talent Sourcer (German speaker) - Feb '26",
+      "date_created": "2026-02-16",
+      "job_recruiter": "Ella Darie",
+      "job_sourcer": "Iryna Dyda",
+      "days_open": 74,
+      "hires_total": 0
+    },
+    {
+      "job_id": "1774438224107x261502970568376320",
+      "job_title": "(Generalist) Talent Acquisition Partner - Immediate Start",
+      "date_created": "2026-03-25",
+      "job_recruiter": "Ella Darie",
+      "job_sourcer": "Elena Petrovska",
+      "days_open": 37,
+      "hires_total": 0
+    },
+    {
+      "job_id": "1774613979789x325982928044294140",
+      "job_title": "Tech Talent Acquisition Partner (APAC)",
+      "date_created": "2026-03-27",
+      "job_recruiter": "Ella Darie",
+      "job_sourcer": "Eduardo Moral",
+      "days_open": 35,
+      "hires_total": 0
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "job_title": "Tech Talent Sourcer",
+      "date_created": "2026-04-15",
+      "job_recruiter": "Ella Darie",
+      "job_sourcer": "Eduardo Moral",
+      "days_open": 16,
+      "hires_total": 0
+    },
+    {
+      "job_id": "1777294001849x171347644691513340",
+      "job_title": "Talent Acquisition Partner (UK)",
+      "date_created": "2026-04-27",
+      "job_recruiter": "Ella Darie",
+      "job_sourcer": "Iryna Dyda",
+      "days_open": 4,
+      "hires_total": 0
+    }
+  ],
+  "ir_dq_reasons": [
+    {
+      "reason": "Timing",
+      "count": 101
+    },
+    {
+      "reason": "Job Requirements Changed",
+      "count": 97
+    },
+    {
+      "reason": "Type of contract",
+      "count": 41
+    },
+    {
+      "reason": "Skills",
+      "count": 36
+    },
+    {
+      "reason": "Position closed",
+      "count": 21
+    },
+    {
+      "reason": "Other",
+      "count": 17
+    },
+    {
+      "reason": "Position",
+      "count": 9
+    },
+    {
+      "reason": "Language",
+      "count": 6
+    },
+    {
+      "reason": "Salary",
+      "count": 6
+    },
+    {
+      "reason": "Seniority",
+      "count": 4
+    },
+    {
+      "reason": "Culture Fit",
+      "count": 3
+    },
+    {
+      "reason": "Parental leave",
+      "count": 2
+    },
+    {
+      "reason": "Location",
+      "count": 1
+    },
+    {
+      "reason": "Unresponsive",
+      "count": 1
+    },
+    {
+      "reason": "Visa",
+      "count": 1
+    },
+    {
+      "reason": "Requalified",
+      "count": 1
+    }
   ]
 }

@@ -61,6 +61,13 @@ REQUIRED_CSVS = [
 OPTIONAL_CSVS = [
     "snowflake_project_dashboard.csv",
     "snowflake_project_dashboard_hires.csv",
+    # Internal Recruiting tab CSVs (Phase 2a, 2026-05-01) — opt-in.
+    "snowflake_ir_funnel_weekly.csv",
+    "snowflake_ir_sourced_by.csv",
+    "snowflake_ir_interviewed_by.csv",
+    "snowflake_ir_dq_by_stage.csv",
+    "snowflake_ir_jobs_active.csv",
+    "snowflake_ir_dq_reasons.csv",
 ]
 
 log = logging.getLogger("refresh_daily")

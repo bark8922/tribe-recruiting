@@ -84,6 +84,15 @@ SNOW_TS_SUMMARY = HERE / "snowflake_ts_summary.csv"  # per-sourcer x per-week (K
 SNOW_PROJECT_DASHBOARD = HERE / "snowflake_project_dashboard.csv"
 SNOW_PROJECT_HIRES = HERE / "snowflake_project_dashboard_hires.csv"
 SNOW_MBR_CONTACTED_EV = HERE / "snowflake_mbr_contacted_ev.csv"
+
+# Internal Recruiting tab (Tribe.xyz (IR) only) — Phase 2a Bubble-only port
+# of Andy's Internal Recruitment PBI page. Phase 2b will add Ashby data.
+SNOW_IR_FUNNEL_WEEKLY  = HERE / "snowflake_ir_funnel_weekly.csv"
+SNOW_IR_SOURCED_BY     = HERE / "snowflake_ir_sourced_by.csv"
+SNOW_IR_INTERVIEWED_BY = HERE / "snowflake_ir_interviewed_by.csv"
+SNOW_IR_DQ_BY_STAGE    = HERE / "snowflake_ir_dq_by_stage.csv"
+SNOW_IR_JOBS_ACTIVE    = HERE / "snowflake_ir_jobs_active.csv"
+SNOW_IR_DQ_REASONS     = HERE / "snowflake_ir_dq_reasons.csv"
 SNOW_TTH_JOBS = HERE / "snowflake_tth_jobs.csv"
 
 # WBR target sheet CSVs — synced by n8n workflow j5QsaTUpk4Nk1xhn.
@@ -844,6 +853,117 @@ def load_aux():
     return out
 
 
+def load_ir_funnel_weekly():
+    """Per-(ISO year, ISO week) funnel for Tribe.xyz (IR) jobs.
+    Output: list of {iso_year, iso_week, contacted, pos_response, rec_screens,
+    actual_screens, ats, onsite, culture, call_w_client, offered, hired}."""
+    if not SNOW_IR_FUNNEL_WEEKLY.exists():
+        return []
+    rows = []
+    with SNOW_IR_FUNNEL_WEEKLY.open() as f:
+        for row in csv.DictReader(f):
+            rows.append({
+                "iso_year":       int(row.get("ISO_YEAR") or 0),
+                "iso_week":       int(row.get("ISO_WEEK") or 0),
+                "contacted":      int(row.get("CONTACTED") or 0),
+                "pos_response":   int(row.get("POS_RESPONSE") or 0),
+                "rec_screens":    int(row.get("REC_SCREENS") or 0),
+                "actual_screens": int(row.get("ACTUAL_SCREENS") or 0),
+                "ats":            int(row.get("ATS") or 0),
+                "onsite":         int(row.get("ONSITE") or 0),
+                "culture":        int(row.get("CULTURE") or 0),
+                "call_w_client":  int(row.get("CALL_W_CLIENT") or 0),
+                "offered":        int(row.get("OFFERED") or 0),
+                "hired":          int(row.get("HIRED") or 0),
+            })
+    return rows
+
+
+def load_ir_sourced_by():
+    """Per-sourcer Contacted/Pos Response/Hired for Tribe.xyz (IR).
+    Sourcer attribution = event.who_created_event_first."""
+    if not SNOW_IR_SOURCED_BY.exists():
+        return []
+    rows = []
+    with SNOW_IR_SOURCED_BY.open() as f:
+        for row in csv.DictReader(f):
+            rows.append({
+                "sourcer":      (row.get("SOURCER") or "").strip(),
+                "contacted":    int(row.get("CONTACTED") or 0),
+                "pos_response": int(row.get("POS_RESPONSE") or 0),
+                "hired":        int(row.get("HIRED") or 0),
+            })
+    return rows
+
+
+def load_ir_interviewed_by():
+    """Per-TA Actual Screens conducted for Tribe.xyz (IR)."""
+    if not SNOW_IR_INTERVIEWED_BY.exists():
+        return []
+    rows = []
+    with SNOW_IR_INTERVIEWED_BY.open() as f:
+        for row in csv.DictReader(f):
+            rows.append({
+                "ta":             (row.get("TA") or "").strip(),
+                "actual_screens": int(row.get("ACTUAL_SCREENS") or 0),
+            })
+    return rows
+
+
+def load_ir_dq_by_stage():
+    """Per-job DQ counts at each stage for Tribe.xyz (IR)."""
+    if not SNOW_IR_DQ_BY_STAGE.exists():
+        return []
+    rows = []
+    with SNOW_IR_DQ_BY_STAGE.open() as f:
+        for row in csv.DictReader(f):
+            rows.append({
+                "job_title":           (row.get("JOB_TITLE") or "").strip(),
+                "job_id":              (row.get("JOB_ID") or "").strip(),
+                "stage_contacted":     int(row.get("STAGE_CONTACTED") or 0),
+                "stage_rec_screen":    int(row.get("STAGE_REC_SCREEN") or 0),
+                "stage_actual_screen": int(row.get("STAGE_ACTUAL_SCREEN") or 0),
+                "stage_move_to_ats":   int(row.get("STAGE_MOVE_TO_ATS") or 0),
+                "stage_onsite":        int(row.get("STAGE_ONSITE") or 0),
+                "stage_offer":         int(row.get("STAGE_OFFER") or 0),
+                "total":               int(row.get("TOTAL") or 0),
+            })
+    return rows
+
+
+def load_ir_jobs_active():
+    """Active IR jobs with days open + hires count."""
+    if not SNOW_IR_JOBS_ACTIVE.exists():
+        return []
+    rows = []
+    with SNOW_IR_JOBS_ACTIVE.open() as f:
+        for row in csv.DictReader(f):
+            rows.append({
+                "job_id":        (row.get("JOB_ID") or "").strip(),
+                "job_title":     (row.get("JOB_TITLE") or "").strip(),
+                "date_created":  (row.get("DATE_CREATED") or "").strip(),
+                "job_recruiter": (row.get("JOB_RECRUITER") or "").strip(),
+                "job_sourcer":   (row.get("JOB_SOURCER") or "").strip(),
+                "days_open":     int(row.get("DAYS_OPEN") or 0),
+                "hires_total":   int(row.get("HIRES_TOTAL") or 0),
+            })
+    return rows
+
+
+def load_ir_dq_reasons():
+    """DQ reason breakdown for Tribe.xyz (IR). [{reason, count}]."""
+    if not SNOW_IR_DQ_REASONS.exists():
+        return []
+    rows = []
+    with SNOW_IR_DQ_REASONS.open() as f:
+        for row in csv.DictReader(f):
+            rows.append({
+                "reason": (row.get("REASON") or "").strip(),
+                "count":  int(row.get("COUNT") or 0),
+            })
+    return rows
+
+
 def load_ts_summary():
     """Return [{ts, iso_year, iso_week, viewed, contacted, reacted,
     positive_response, screens, actual_screens, ats, offers, hires,
@@ -1516,6 +1636,22 @@ def main():
     out["ts_summary"] = load_ts_summary()
     if out["ts_summary"]:
         print(f"  ts_summary: {len(out['ts_summary'])} (sourcer, year, week) rows")
+
+    # Internal Recruiting tab (Phase 2a, 2026-05-01) — Bubble-only port of
+    # Andy's PBI Internal Recruitment page. Tribe.xyz (IR) jobs only.
+    # Phase 2b will overlay Ashby for the right side of the funnel.
+    out["ir_funnel_weekly"]  = load_ir_funnel_weekly()
+    out["ir_sourced_by"]     = load_ir_sourced_by()
+    out["ir_interviewed_by"] = load_ir_interviewed_by()
+    out["ir_dq_by_stage"]    = load_ir_dq_by_stage()
+    out["ir_jobs_active"]    = load_ir_jobs_active()
+    out["ir_dq_reasons"]     = load_ir_dq_reasons()
+    if out["ir_funnel_weekly"]:
+        print(f"  ir_funnel_weekly: {len(out['ir_funnel_weekly'])} weeks  "
+              f"sourced_by: {len(out['ir_sourced_by'])}  "
+              f"interviewed_by: {len(out['ir_interviewed_by'])}  "
+              f"dq_by_stage: {len(out['ir_dq_by_stage'])}  "
+              f"jobs_active: {len(out['ir_jobs_active'])}")
 
     with OUT_JSON.open("w") as f:
         json.dump(out, f, indent=2, ensure_ascii=False, sort_keys=False)

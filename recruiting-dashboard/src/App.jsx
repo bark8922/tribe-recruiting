@@ -3377,6 +3377,253 @@ const PasswordGate = ({ tabLabel, onUnlock }) => {
   );
 };
 
+const IRTab = ({ data }) => {
+  const funnelWeekly = data.ir_funnel_weekly || [];
+  const sourcedBy    = data.ir_sourced_by || [];
+  const interviewed  = data.ir_interviewed_by || [];
+  const dqByStage    = data.ir_dq_by_stage || [];
+  const jobsActive   = data.ir_jobs_active || [];
+  const dqReasons    = data.ir_dq_reasons || [];
+
+  // Funnel totals (sum across all weeks)
+  const totals = funnelWeekly.reduce((a, r) => ({
+    contacted: a.contacted + (r.contacted || 0),
+    pos_response: a.pos_response + (r.pos_response || 0),
+    rec_screens: a.rec_screens + (r.rec_screens || 0),
+    actual_screens: a.actual_screens + (r.actual_screens || 0),
+    ats: a.ats + (r.ats || 0),
+    onsite: a.onsite + (r.onsite || 0),
+    culture: a.culture + (r.culture || 0),
+    call_w_client: a.call_w_client + (r.call_w_client || 0),
+    offered: a.offered + (r.offered || 0),
+    hired: a.hired + (r.hired || 0),
+  }), {contacted:0,pos_response:0,rec_screens:0,actual_screens:0,ats:0,onsite:0,culture:0,call_w_client:0,offered:0,hired:0});
+
+  const sourcedHired = sourcedBy.reduce((s, r) => s + (r.hired || 0), 0);
+
+  const funnelStages = [
+    { label: 'Contacted',          n: totals.contacted,      color: 'bg-blue-300', source: 'bubble' },
+    { label: 'Positive response',  n: totals.pos_response,   color: 'bg-blue-400', source: 'bubble' },
+    { label: 'Recruiter screens',  n: totals.rec_screens,    color: 'bg-blue-500', source: 'bubble' },
+    { label: 'Actual screens',     n: totals.actual_screens, color: 'bg-blue-600', source: 'bubble' },
+    { label: 'Moved to ATS',       n: totals.ats,            color: 'bg-blue-700', source: 'bubble' },
+    { label: 'Onsite',             n: totals.onsite,         color: 'bg-teal-500', source: 'ashby' },
+    { label: 'Culture interview',  n: totals.culture,        color: 'bg-teal-600', source: 'ashby' },
+    { label: 'Call with client',   n: totals.call_w_client,  color: 'bg-teal-700', source: 'ashby' },
+    { label: 'Offered',            n: totals.offered,        color: 'bg-gray-700', source: 'ashby' },
+    { label: 'Hired',              n: totals.hired,          color: 'bg-gray-700', source: 'ashby' },
+  ];
+  const maxN = Math.max(1, totals.contacted);
+
+  const dqTotal = dqReasons.reduce((s, r) => s + r.count, 0);
+  const dqMax = Math.max(1, ...dqReasons.map(r => r.count));
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-start justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-white">Internal Recruiting</h2>
+          <p className="text-sm text-gray-400 mt-1">Tribe.xyz (IR) jobs &middot; sourcing &rarr; hire funnel &middot; left side from Bubble, right side from Ashby (v2)</p>
+        </div>
+        <div className="flex gap-2">
+          <span className="px-3 py-1 text-xs rounded-md bg-gray-800 text-gray-300 border border-gray-700">All weeks (2026)</span>
+          <span className="px-3 py-1 text-xs rounded-md bg-gray-800 text-gray-300 border border-gray-700">Active only</span>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-5 gap-3">
+        {[
+          ['Active jobs', jobsActive.length],
+          ['Sourced hired', sourcedHired],
+          ['Time to hire', '—'],
+          ['Time to fill', '—'],
+          ['Time to find', '—'],
+        ].map(([k, v], i) => (
+          <div key={i} className="bg-gray-800 rounded-lg px-4 py-3 border border-gray-700">
+            <div className="text-xs text-gray-400">{k}</div>
+            <div className="text-2xl font-semibold text-white mt-1">{v}</div>
+          </div>
+        ))}
+      </div>
+
+      <div className="grid gap-3" style={{gridTemplateColumns: '1.6fr 1fr'}}>
+        <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
+          <div className="text-sm font-medium text-white mb-3">Total progress funnel</div>
+          <div className="space-y-1">
+            {funnelStages.map((s, i) => {
+              const pct = maxN > 0 ? Math.max(0.04, s.n / maxN) : 0.04;
+              const pctOfTop = totals.contacted > 0 ? (s.n / totals.contacted * 100) : 0;
+              return (
+                <div key={i} className="grid items-center gap-2" style={{gridTemplateColumns: '110px 1fr 50px'}}>
+                  <span className="text-xs text-gray-400 text-right">{s.label}</span>
+                  <div className="flex justify-center">
+                    <div className={`${s.n === 0 ? 'bg-gray-700' : s.color} rounded`}
+                         style={{height: '20px', width: `${(pct * 100).toFixed(1)}%`, minWidth: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                      <span className={`text-xs font-medium ${s.n === 0 ? 'text-gray-500' : 'text-white'}`}>{s.n.toLocaleString()}</span>
+                    </div>
+                  </div>
+                  <span className="text-xs text-gray-500">{pctOfTop < 1 ? pctOfTop.toFixed(1) : pctOfTop.toFixed(0)}%</span>
+                </div>
+              );
+            })}
+          </div>
+          <div className="text-xs text-gray-500 mt-3">Blue = Bubble (sourcing) &middot; teal = stages where Bubble is sparse, Ashby will enrich (v2)</div>
+        </div>
+
+        <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
+          <div className="text-sm font-medium text-white mb-3">Active jobs ({jobsActive.length})</div>
+          <table className="w-full text-xs">
+            <thead><tr className="text-gray-400 text-left">
+              <th className="pb-2 font-normal">Job</th>
+              <th className="pb-2 font-normal text-right">Days</th>
+              <th className="pb-2 font-normal text-right">Hired</th>
+            </tr></thead>
+            <tbody>
+              {jobsActive.map((j, i) => (
+                <tr key={i} className="border-t border-gray-700">
+                  <td className="py-1.5 text-gray-200 truncate" title={j.job_title}>{j.job_title}</td>
+                  <td className="py-1.5 text-right text-gray-300">{j.days_open}</td>
+                  <td className="py-1.5 text-right text-gray-500">{j.hires_total}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
+        <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
+          <div className="text-sm font-medium text-white mb-3">Sourced by ({sourcedBy.length} sourcers)</div>
+          <table className="w-full text-xs">
+            <thead><tr className="text-gray-400">
+              <th className="pb-2 font-normal text-left">Sourcer</th>
+              <th className="pb-2 font-normal text-right">Contacted</th>
+              <th className="pb-2 font-normal text-right">+Resp</th>
+              <th className="pb-2 font-normal text-right">Hired</th>
+            </tr></thead>
+            <tbody>
+              {sourcedBy.map((r, i) => (
+                <tr key={i} className="border-t border-gray-700">
+                  <td className="py-1.5 text-gray-200">{r.sourcer}</td>
+                  <td className="py-1.5 text-right text-gray-300">{r.contacted.toLocaleString()}</td>
+                  <td className="py-1.5 text-right text-gray-300">{r.pos_response.toLocaleString()}</td>
+                  <td className="py-1.5 text-right text-gray-500">{r.hired}</td>
+                </tr>
+              ))}
+              <tr className="border-t-2 border-gray-600">
+                <td className="py-1.5 font-medium text-white">Total</td>
+                <td className="py-1.5 text-right font-medium text-white">{totals.contacted.toLocaleString()}</td>
+                <td className="py-1.5 text-right font-medium text-white">{totals.pos_response.toLocaleString()}</td>
+                <td className="py-1.5 text-right font-medium text-white">{sourcedHired}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div className="text-xs text-gray-500 mt-2 italic">Attribution from event.who_created_event_first. Deactivated sourcers may show reduced historicals (e.g. Sanja).</div>
+        </div>
+
+        <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
+          <div className="text-sm font-medium text-white mb-3">Interviewed by (TA) &middot; Actual Screens</div>
+          <table className="w-full text-xs">
+            <thead><tr className="text-gray-400">
+              <th className="pb-2 font-normal text-left">TA</th>
+              <th className="pb-2 font-normal text-right">Actual Screens</th>
+            </tr></thead>
+            <tbody>
+              {interviewed.map((r, i) => (
+                <tr key={i} className="border-t border-gray-700">
+                  <td className={`py-1.5 ${r.ta === '(unattributed)' ? 'text-gray-500 italic' : 'text-gray-200'}`}>{r.ta}</td>
+                  <td className={`py-1.5 text-right ${r.ta === '(unattributed)' ? 'text-gray-500' : 'text-gray-300'}`}>{r.actual_screens}</td>
+                </tr>
+              ))}
+              <tr className="border-t-2 border-gray-600">
+                <td className="py-1.5 font-medium text-white">Total</td>
+                <td className="py-1.5 text-right font-medium text-white">{interviewed.reduce((s,r) => s + r.actual_screens, 0)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
+        <div className="text-sm font-medium text-white mb-3">Weekly performance</div>
+        <table className="w-full text-xs">
+          <thead><tr className="text-gray-400">
+            <th className="pb-2 font-normal text-left">Week</th>
+            <th className="pb-2 font-normal text-right">Cont.</th>
+            <th className="pb-2 font-normal text-right">+Resp</th>
+            <th className="pb-2 font-normal text-right">RecScr</th>
+            <th className="pb-2 font-normal text-right">ActScr</th>
+            <th className="pb-2 font-normal text-right">ATS</th>
+            <th className="pb-2 font-normal text-right">Onsite</th>
+            <th className="pb-2 font-normal text-right">Cult</th>
+            <th className="pb-2 font-normal text-right">CwC</th>
+            <th className="pb-2 font-normal text-right">Off</th>
+            <th className="pb-2 font-normal text-right">Hired</th>
+          </tr></thead>
+          <tbody>
+            {[...funnelWeekly].sort((a,b) => b.iso_week - a.iso_week).map((w, i) => (
+              <tr key={i} className="border-t border-gray-700">
+                <td className="py-1.5 text-gray-300">W{w.iso_week}</td>
+                {['contacted','pos_response','rec_screens','actual_screens','ats','onsite','culture','call_w_client','offered','hired'].map(k => (
+                  <td key={k} className={`py-1.5 text-right ${w[k] === 0 ? 'text-gray-600' : 'text-gray-300'}`}>{w[k] === 0 ? '—' : w[k]}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
+        <div className="text-sm font-medium text-white mb-3">Disqualified by stage (per job) &middot; total {dqByStage.reduce((s,r) => s + r.total, 0)}</div>
+        <table className="w-full text-xs">
+          <thead><tr className="text-gray-400">
+            <th className="pb-2 font-normal text-left">Job</th>
+            <th className="pb-2 font-normal text-right">Cont</th>
+            <th className="pb-2 font-normal text-right">RecScr</th>
+            <th className="pb-2 font-normal text-right">ActScr</th>
+            <th className="pb-2 font-normal text-right">ATS</th>
+            <th className="pb-2 font-normal text-right">Onsite</th>
+            <th className="pb-2 font-normal text-right">Offer</th>
+            <th className="pb-2 font-normal text-right">Total</th>
+          </tr></thead>
+          <tbody>
+            {dqByStage.map((j, i) => (
+              <tr key={i} className="border-t border-gray-700">
+                <td className="py-1.5 text-gray-200 truncate" title={j.job_title}>{j.job_title}</td>
+                <td className="py-1.5 text-right text-gray-300">{j.stage_contacted || '—'}</td>
+                <td className="py-1.5 text-right text-gray-300">{j.stage_rec_screen || '—'}</td>
+                <td className="py-1.5 text-right text-gray-300">{j.stage_actual_screen || '—'}</td>
+                <td className="py-1.5 text-right text-gray-300">{j.stage_move_to_ats || '—'}</td>
+                <td className="py-1.5 text-right text-gray-300">{j.stage_onsite || '—'}</td>
+                <td className="py-1.5 text-right text-gray-300">{j.stage_offer || '—'}</td>
+                <td className="py-1.5 text-right font-medium text-white">{j.total}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
+        <div className="text-sm font-medium text-white mb-1">Disqualified reasons</div>
+        <div className="text-xs text-gray-500 italic mb-3">From candidate.reason_not_interested &middot; {dqTotal} total DQs &middot; v2 will use Ashby's structured taxonomy</div>
+        <div className="space-y-1.5">
+          {dqReasons.map((r, i) => {
+            const pct = (r.count / dqMax * 100).toFixed(1);
+            const pctOfTotal = (r.count / dqTotal * 100).toFixed(1);
+            return (
+              <div key={i} className="grid items-center gap-3" style={{gridTemplateColumns: '200px 1fr 80px'}}>
+                <span className="text-xs text-gray-200">{r.reason}</span>
+                <div className="bg-blue-400 rounded" style={{height: '14px', width: `${pct}%`, minWidth: '4px'}} />
+                <span className="text-xs text-gray-400 text-right">{r.count} &middot; {pctOfTotal}%</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Main Dashboard
 const RecruitingDashboard = () => {
   const [activeTab, setActiveTab] = useState('project');
@@ -3397,10 +3644,10 @@ const RecruitingDashboard = () => {
       </div>
       <div className="bg-gray-800 border-b border-gray-700 px-6">
         <div className="flex gap-8">
-          {['project', 'wbr', 'mbr', 'tth', 'ts_summary'].map((tab) => (
+          {['project', 'wbr', 'mbr', 'tth', 'ts_summary', 'ir'].map((tab) => (
             <button key={tab} onClick={() => setActiveTab(tab)}
               className={`py-4 px-2 font-medium border-b-2 transition-colors ${activeTab === tab ? 'text-white border-white' : 'text-gray-400 border-transparent hover:text-gray-300'}`}>
-              {tab === 'wbr' ? 'WBR' : tab === 'mbr' ? 'MBR' : tab === 'project' ? 'Project Dashboard' : tab === 'tth' ? 'Time to Hire' : 'KPI - TS Summary'}
+              {tab === 'wbr' ? 'WBR' : tab === 'mbr' ? 'MBR' : tab === 'project' ? 'Project Dashboard' : tab === 'tth' ? 'Time to Hire' : tab === 'ts_summary' ? 'KPI - TS Summary' : 'Internal Recruiting'}
             </button>
           ))}
         </div>
@@ -3415,6 +3662,7 @@ const RecruitingDashboard = () => {
             {activeTab === 'project' && <ProjectDashboardTab data={dashboardData} />}
             {activeTab === 'tth' && <TTHTab data={dashboardData} />}
             {activeTab === 'ts_summary' && <TSSummaryTab data={dashboardData} />}
+            {activeTab === 'ir' && <IRTab data={dashboardData} />}
           </>
         )}
       </div>

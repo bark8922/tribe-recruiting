@@ -87,12 +87,12 @@ SNOW_MBR_CONTACTED_EV = HERE / "snowflake_mbr_contacted_ev.csv"
 
 # Internal Recruiting tab (Tribe.xyz (IR) only) — Phase 2a Bubble-only port
 # of Andy's Internal Recruitment PBI page. Phase 2b will add Ashby data.
-SNOW_IR_FUNNEL_WEEKLY  = HERE / "snowflake_ir_funnel_weekly.csv"
-SNOW_IR_SOURCED_BY     = HERE / "snowflake_ir_sourced_by.csv"
-SNOW_IR_INTERVIEWED_BY = HERE / "snowflake_ir_interviewed_by.csv"
-SNOW_IR_DQ_BY_STAGE    = HERE / "snowflake_ir_dq_by_stage.csv"
-SNOW_IR_JOBS_ACTIVE    = HERE / "snowflake_ir_jobs_active.csv"
-SNOW_IR_DQ_REASONS     = HERE / "snowflake_ir_dq_reasons.csv"
+SNOW_IR_FUNNEL_JOBWEEK     = HERE / "snowflake_ir_funnel_jobweek.csv"
+SNOW_IR_SOURCED_JOBWEEK    = HERE / "snowflake_ir_sourced_jobweek.csv"
+SNOW_IR_INTERVIEWED_JOBWEEK= HERE / "snowflake_ir_interviewed_jobweek.csv"
+SNOW_IR_DQ_BY_STAGE        = HERE / "snowflake_ir_dq_by_stage.csv"
+SNOW_IR_JOBS_ACTIVE        = HERE / "snowflake_ir_jobs_active.csv"
+SNOW_IR_DQ_BYJOB_REASON    = HERE / "snowflake_ir_dq_byjob_reason.csv"
 SNOW_TTH_JOBS = HERE / "snowflake_tth_jobs.csv"
 
 # WBR target sheet CSVs — synced by n8n workflow j5QsaTUpk4Nk1xhn.
@@ -853,16 +853,16 @@ def load_aux():
     return out
 
 
-def load_ir_funnel_weekly():
-    """Per-(ISO year, ISO week) funnel for Tribe.xyz (IR) jobs.
-    Output: list of {iso_year, iso_week, contacted, pos_response, rec_screens,
-    actual_screens, ats, onsite, culture, call_w_client, offered, hired}."""
-    if not SNOW_IR_FUNNEL_WEEKLY.exists():
+def load_ir_funnel_jobweek():
+    """Per-(job_id, ISO year, ISO week) full funnel for Tribe.xyz (IR).
+    Frontend filters by job_id and aggregates across weeks."""
+    if not SNOW_IR_FUNNEL_JOBWEEK.exists():
         return []
     rows = []
-    with SNOW_IR_FUNNEL_WEEKLY.open() as f:
+    with SNOW_IR_FUNNEL_JOBWEEK.open() as f:
         for row in csv.DictReader(f):
             rows.append({
+                "job_id":         (row.get("JOB_ID") or "").strip(),
                 "iso_year":       int(row.get("ISO_YEAR") or 0),
                 "iso_week":       int(row.get("ISO_WEEK") or 0),
                 "contacted":      int(row.get("CONTACTED") or 0),
@@ -879,16 +879,18 @@ def load_ir_funnel_weekly():
     return rows
 
 
-def load_ir_sourced_by():
-    """Per-sourcer Contacted/Pos Response/Hired for Tribe.xyz (IR).
-    Sourcer attribution = event.who_created_event_first."""
-    if not SNOW_IR_SOURCED_BY.exists():
+def load_ir_sourced_jobweek():
+    """Per-(job_id, sourcer, ISO week) Contacted/Pos/Hired."""
+    if not SNOW_IR_SOURCED_JOBWEEK.exists():
         return []
     rows = []
-    with SNOW_IR_SOURCED_BY.open() as f:
+    with SNOW_IR_SOURCED_JOBWEEK.open() as f:
         for row in csv.DictReader(f):
             rows.append({
+                "job_id":       (row.get("JOB_ID") or "").strip(),
                 "sourcer":      (row.get("SOURCER") or "").strip(),
+                "iso_year":     int(row.get("ISO_YEAR") or 0),
+                "iso_week":     int(row.get("ISO_WEEK") or 0),
                 "contacted":    int(row.get("CONTACTED") or 0),
                 "pos_response": int(row.get("POS_RESPONSE") or 0),
                 "hired":        int(row.get("HIRED") or 0),
@@ -896,22 +898,25 @@ def load_ir_sourced_by():
     return rows
 
 
-def load_ir_interviewed_by():
-    """Per-TA Actual Screens conducted for Tribe.xyz (IR)."""
-    if not SNOW_IR_INTERVIEWED_BY.exists():
+def load_ir_interviewed_jobweek():
+    """Per-(job_id, TA, ISO week) Actual Screens."""
+    if not SNOW_IR_INTERVIEWED_JOBWEEK.exists():
         return []
     rows = []
-    with SNOW_IR_INTERVIEWED_BY.open() as f:
+    with SNOW_IR_INTERVIEWED_JOBWEEK.open() as f:
         for row in csv.DictReader(f):
             rows.append({
+                "job_id":         (row.get("JOB_ID") or "").strip(),
                 "ta":             (row.get("TA") or "").strip(),
+                "iso_year":       int(row.get("ISO_YEAR") or 0),
+                "iso_week":       int(row.get("ISO_WEEK") or 0),
                 "actual_screens": int(row.get("ACTUAL_SCREENS") or 0),
             })
     return rows
 
 
 def load_ir_dq_by_stage():
-    """Per-job DQ counts at each stage for Tribe.xyz (IR)."""
+    """Per-job DQ counts at each stage. (job-grain, no week)."""
     if not SNOW_IR_DQ_BY_STAGE.exists():
         return []
     rows = []
@@ -931,6 +936,21 @@ def load_ir_dq_by_stage():
     return rows
 
 
+def load_ir_dq_byjob_reason():
+    """Per-(job_id, reason) DQ counts. Frontend aggregates per job filter."""
+    if not SNOW_IR_DQ_BYJOB_REASON.exists():
+        return []
+    rows = []
+    with SNOW_IR_DQ_BYJOB_REASON.open() as f:
+        for row in csv.DictReader(f):
+            rows.append({
+                "job_id": (row.get("JOB_ID") or "").strip(),
+                "reason": (row.get("REASON") or "").strip(),
+                "count":  int(row.get("COUNT") or 0),
+            })
+    return rows
+
+
 def load_ir_jobs_active():
     """Active IR jobs with days open + hires count."""
     if not SNOW_IR_JOBS_ACTIVE.exists():
@@ -946,20 +966,6 @@ def load_ir_jobs_active():
                 "job_sourcer":   (row.get("JOB_SOURCER") or "").strip(),
                 "days_open":     int(row.get("DAYS_OPEN") or 0),
                 "hires_total":   int(row.get("HIRES_TOTAL") or 0),
-            })
-    return rows
-
-
-def load_ir_dq_reasons():
-    """DQ reason breakdown for Tribe.xyz (IR). [{reason, count}]."""
-    if not SNOW_IR_DQ_REASONS.exists():
-        return []
-    rows = []
-    with SNOW_IR_DQ_REASONS.open() as f:
-        for row in csv.DictReader(f):
-            rows.append({
-                "reason": (row.get("REASON") or "").strip(),
-                "count":  int(row.get("COUNT") or 0),
             })
     return rows
 
@@ -1640,18 +1646,19 @@ def main():
     # Internal Recruiting tab (Phase 2a, 2026-05-01) — Bubble-only port of
     # Andy's PBI Internal Recruitment page. Tribe.xyz (IR) jobs only.
     # Phase 2b will overlay Ashby for the right side of the funnel.
-    out["ir_funnel_weekly"]  = load_ir_funnel_weekly()
-    out["ir_sourced_by"]     = load_ir_sourced_by()
-    out["ir_interviewed_by"] = load_ir_interviewed_by()
-    out["ir_dq_by_stage"]    = load_ir_dq_by_stage()
-    out["ir_jobs_active"]    = load_ir_jobs_active()
-    out["ir_dq_reasons"]     = load_ir_dq_reasons()
-    if out["ir_funnel_weekly"]:
-        print(f"  ir_funnel_weekly: {len(out['ir_funnel_weekly'])} weeks  "
-              f"sourced_by: {len(out['ir_sourced_by'])}  "
-              f"interviewed_by: {len(out['ir_interviewed_by'])}  "
+    out["ir_funnel_jobweek"]      = load_ir_funnel_jobweek()
+    out["ir_sourced_jobweek"]     = load_ir_sourced_jobweek()
+    out["ir_interviewed_jobweek"] = load_ir_interviewed_jobweek()
+    out["ir_dq_by_stage"]         = load_ir_dq_by_stage()
+    out["ir_jobs_active"]         = load_ir_jobs_active()
+    out["ir_dq_byjob_reason"]     = load_ir_dq_byjob_reason()
+    if out["ir_funnel_jobweek"]:
+        print(f"  ir_funnel_jobweek: {len(out['ir_funnel_jobweek'])} (job,week) rows  "
+              f"sourced_jobweek: {len(out['ir_sourced_jobweek'])}  "
+              f"interviewed_jobweek: {len(out['ir_interviewed_jobweek'])}  "
               f"dq_by_stage: {len(out['ir_dq_by_stage'])}  "
-              f"jobs_active: {len(out['ir_jobs_active'])}")
+              f"jobs: {len(out['ir_jobs_active'])}  "
+              f"dq_byjob_reason: {len(out['ir_dq_byjob_reason'])}")
 
     with OUT_JSON.open("w") as f:
         json.dump(out, f, indent=2, ensure_ascii=False, sort_keys=False)

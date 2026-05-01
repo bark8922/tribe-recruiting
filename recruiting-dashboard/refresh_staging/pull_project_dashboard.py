@@ -103,23 +103,23 @@ TABLES = [
     # PBI sourcers within 10% drift vs snapshot data (2).xlsx.
     ("out.c-WBRMBR-weekly-aggregations.ts_summary_per_sourcer",
      HERE / "snowflake_ts_summary.csv"),
-    # Internal Recruiting tab — Phase 2a (2026-05-01). Bubble-only port of
-    # Andy's PBI Internal Recruitment page. 6 transformations on the
-    # WBRMBR-weekly-aggregations bucket; SQL in refresh_staging/ir_*.sql.
+    # Internal Recruiting tab — Phase 2a + 2a.1 (2026-05-01). Bubble-only port of
+    # Andy's PBI Internal Recruitment page with per-(job, week) granularity so
+    # the frontend can filter by Job and Date window. SQL in refresh_staging/ir_*.sql.
     # Filter: client_name = 'Tribe.xyz (IR)' (inverts WBR/MBR exclusion).
     # Phase 2b will add Ashby data via separate ashby_extract.py + Keboola.
-    ("out.c-WBRMBR-weekly-aggregations.ir_funnel_weekly",
-     HERE / "snowflake_ir_funnel_weekly.csv"),
-    ("out.c-WBRMBR-weekly-aggregations.ir_sourced_by",
-     HERE / "snowflake_ir_sourced_by.csv"),
-    ("out.c-WBRMBR-weekly-aggregations.ir_interviewed_by",
-     HERE / "snowflake_ir_interviewed_by.csv"),
+    ("out.c-WBRMBR-weekly-aggregations.ir_funnel_jobweek",
+     HERE / "snowflake_ir_funnel_jobweek.csv"),
+    ("out.c-WBRMBR-weekly-aggregations.ir_sourced_jobweek",
+     HERE / "snowflake_ir_sourced_jobweek.csv"),
+    ("out.c-WBRMBR-weekly-aggregations.ir_interviewed_jobweek",
+     HERE / "snowflake_ir_interviewed_jobweek.csv"),
     ("out.c-WBRMBR-weekly-aggregations.ir_dq_by_stage",
      HERE / "snowflake_ir_dq_by_stage.csv"),
     ("out.c-WBRMBR-weekly-aggregations.ir_jobs_active",
      HERE / "snowflake_ir_jobs_active.csv"),
-    ("out.c-WBRMBR-weekly-aggregations.ir_dq_reasons",
-     HERE / "snowflake_ir_dq_reasons.csv"),
+    ("out.c-WBRMBR-weekly-aggregations.ir_dq_byjob_reason",
+     HERE / "snowflake_ir_dq_byjob_reason.csv"),
     # Note: the Google Drive extractor (config 01kpr3tek8ezs48pg02e60jdpe) also
     # writes 5 sheet tabs to in.c-wbr-sheet.wbr_{ta_target,ta_weekly_note,
     # ts_weekly,ir,reasoning_guidance}. We intentionally do NOT pull those

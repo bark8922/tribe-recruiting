@@ -1646,12 +1646,26 @@ def main():
     # Internal Recruiting tab (Phase 2a, 2026-05-01) — Bubble-only port of
     # Andy's PBI Internal Recruitment page. Tribe.xyz (IR) jobs only.
     # Phase 2b will overlay Ashby for the right side of the funnel.
-    out["ir_funnel_jobweek"]      = load_ir_funnel_jobweek()
-    out["ir_sourced_jobweek"]     = load_ir_sourced_jobweek()
-    out["ir_interviewed_jobweek"] = load_ir_interviewed_jobweek()
-    out["ir_dq_by_stage"]         = load_ir_dq_by_stage()
-    out["ir_jobs_active"]         = load_ir_jobs_active()
-    out["ir_dq_byjob_reason"]     = load_ir_dq_byjob_reason()
+    # Internal Recruiting tab data — load CSVs, but PRESERVE existing live
+    # values if the CSV is missing/empty. Without this preservation, n8n's
+    # nightly refresh wipes the tab to all-empty whenever Keboola doesn't
+    # have the ir_* tables (the IR transformations were never wired up; see
+    # legacy-pbix/.../project_ir_phase2a_shipped.md). Fixed 2026-05-04.
+    def _ir_load(loader_fn, key):
+        loaded = loader_fn()
+        if loaded:
+            return loaded
+        existing = (live or {}).get(key) or []
+        if existing:
+            print(f"  WARN: {key} CSV missing/empty — preserving {len(existing)} entries from live JSON")
+        return existing
+
+    out["ir_funnel_jobweek"]      = _ir_load(load_ir_funnel_jobweek,      "ir_funnel_jobweek")
+    out["ir_sourced_jobweek"]     = _ir_load(load_ir_sourced_jobweek,     "ir_sourced_jobweek")
+    out["ir_interviewed_jobweek"] = _ir_load(load_ir_interviewed_jobweek, "ir_interviewed_jobweek")
+    out["ir_dq_by_stage"]         = _ir_load(load_ir_dq_by_stage,         "ir_dq_by_stage")
+    out["ir_jobs_active"]         = _ir_load(load_ir_jobs_active,         "ir_jobs_active")
+    out["ir_dq_byjob_reason"]     = _ir_load(load_ir_dq_byjob_reason,     "ir_dq_byjob_reason")
     if out["ir_funnel_jobweek"]:
         print(f"  ir_funnel_jobweek: {len(out['ir_funnel_jobweek'])} (job,week) rows  "
               f"sourced_jobweek: {len(out['ir_sourced_jobweek'])}  "

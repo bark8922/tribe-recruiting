@@ -3732,15 +3732,15 @@ const IRTab = ({ data }) => {
           <table className="w-full text-xs">
             <thead><tr className="text-gray-400">
               <th className="pb-2 font-normal text-left">Week</th>
-              <th className="pb-2 font-normal text-right">Cont.</th>
-              <th className="pb-2 font-normal text-right">+Resp</th>
-              <th className="pb-2 font-normal text-right">RecScr</th>
-              <th className="pb-2 font-normal text-right">ActScr</th>
-              <th className="pb-2 font-normal text-right">ATS</th>
+              <th className="pb-2 font-normal text-right">Contacted</th>
+              <th className="pb-2 font-normal text-right">Positive Response</th>
+              <th className="pb-2 font-normal text-right">Recruiter Screens</th>
+              <th className="pb-2 font-normal text-right">Actual Screens</th>
+              <th className="pb-2 font-normal text-right">Moved to ATS</th>
               <th className="pb-2 font-normal text-right">Onsite</th>
-              <th className="pb-2 font-normal text-right">Cult</th>
-              <th className="pb-2 font-normal text-right">CwC</th>
-              <th className="pb-2 font-normal text-right">Off</th>
+              <th className="pb-2 font-normal text-right">Culture Interview</th>
+              <th className="pb-2 font-normal text-right">Call with Client</th>
+              <th className="pb-2 font-normal text-right">Offered</th>
               <th className="pb-2 font-normal text-right">Hired</th>
             </tr></thead>
             <tbody>
@@ -3765,10 +3765,10 @@ const IRTab = ({ data }) => {
           <table className="w-full text-xs">
             <thead><tr className="text-gray-400">
               <th className="pb-2 font-normal text-left">Job</th>
-              <th className="pb-2 font-normal text-right">Cont</th>
-              <th className="pb-2 font-normal text-right">RecScr</th>
-              <th className="pb-2 font-normal text-right">ActScr</th>
-              <th className="pb-2 font-normal text-right">ATS</th>
+              <th className="pb-2 font-normal text-right">Contacted</th>
+              <th className="pb-2 font-normal text-right">Recruiter Screen</th>
+              <th className="pb-2 font-normal text-right">Actual Screen</th>
+              <th className="pb-2 font-normal text-right">Moved to ATS</th>
               <th className="pb-2 font-normal text-right">Onsite</th>
               <th className="pb-2 font-normal text-right">Offer</th>
               <th className="pb-2 font-normal text-right">Total</th>

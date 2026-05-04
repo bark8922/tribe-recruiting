@@ -276415,10 +276415,2525 @@
       "date_hired": "2025-03-07"
     }
   ],
-  "ir_funnel_jobweek": [],
-  "ir_sourced_jobweek": [],
-  "ir_interviewed_jobweek": [],
-  "ir_dq_by_stage": [],
-  "ir_jobs_active": [],
-  "ir_dq_byjob_reason": []
+  "ir_funnel_jobweek": [
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "iso_year": 2026,
+      "iso_week": 3,
+      "contacted": 90,
+      "pos_response": 49,
+      "rec_screens": 48,
+      "actual_screens": 20,
+      "ats": 9,
+      "onsite": 5,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "iso_year": 2026,
+      "iso_week": 4,
+      "contacted": 310,
+      "pos_response": 54,
+      "rec_screens": 47,
+      "actual_screens": 29,
+      "ats": 0,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "iso_year": 2026,
+      "iso_week": 5,
+      "contacted": 20,
+      "pos_response": 11,
+      "rec_screens": 5,
+      "actual_screens": 1,
+      "ats": 2,
+      "onsite": 1,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 1,
+      "hired": 1
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "iso_year": 2026,
+      "iso_week": 6,
+      "contacted": 54,
+      "pos_response": 12,
+      "rec_screens": 8,
+      "actual_screens": 2,
+      "ats": 0,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "iso_year": 2026,
+      "iso_week": 11,
+      "contacted": 0,
+      "pos_response": 2,
+      "rec_screens": 0,
+      "actual_screens": 0,
+      "ats": 0,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "iso_year": 2026,
+      "iso_week": 3,
+      "contacted": 59,
+      "pos_response": 27,
+      "rec_screens": 24,
+      "actual_screens": 17,
+      "ats": 4,
+      "onsite": 4,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "iso_year": 2026,
+      "iso_week": 4,
+      "contacted": 148,
+      "pos_response": 33,
+      "rec_screens": 29,
+      "actual_screens": 13,
+      "ats": 1,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "iso_year": 2026,
+      "iso_week": 5,
+      "contacted": 3,
+      "pos_response": 8,
+      "rec_screens": 2,
+      "actual_screens": 0,
+      "ats": 0,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "iso_year": 2026,
+      "iso_week": 6,
+      "contacted": 33,
+      "pos_response": 7,
+      "rec_screens": 2,
+      "actual_screens": 0,
+      "ats": 0,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1769763000086x563212577333575700",
+      "iso_year": 2026,
+      "iso_week": 5,
+      "contacted": 2,
+      "pos_response": 2,
+      "rec_screens": 2,
+      "actual_screens": 2,
+      "ats": 1,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1769763000086x563212577333575700",
+      "iso_year": 2026,
+      "iso_week": 6,
+      "contacted": 2,
+      "pos_response": 1,
+      "rec_screens": 2,
+      "actual_screens": 2,
+      "ats": 0,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1769763000086x563212577333575700",
+      "iso_year": 2026,
+      "iso_week": 7,
+      "contacted": 32,
+      "pos_response": 0,
+      "rec_screens": 0,
+      "actual_screens": 0,
+      "ats": 0,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1769763000086x563212577333575700",
+      "iso_year": 2026,
+      "iso_week": 8,
+      "contacted": 45,
+      "pos_response": 0,
+      "rec_screens": 0,
+      "actual_screens": 0,
+      "ats": 0,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1769763000086x563212577333575700",
+      "iso_year": 2026,
+      "iso_week": 9,
+      "contacted": 52,
+      "pos_response": 7,
+      "rec_screens": 6,
+      "actual_screens": 0,
+      "ats": 0,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1769763000086x563212577333575700",
+      "iso_year": 2026,
+      "iso_week": 10,
+      "contacted": 1,
+      "pos_response": 23,
+      "rec_screens": 16,
+      "actual_screens": 3,
+      "ats": 3,
+      "onsite": 3,
+      "culture": 1,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1770201984452x484427760080519200",
+      "iso_year": 2026,
+      "iso_week": 6,
+      "contacted": 102,
+      "pos_response": 5,
+      "rec_screens": 2,
+      "actual_screens": 0,
+      "ats": 0,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1770201984452x484427760080519200",
+      "iso_year": 2026,
+      "iso_week": 9,
+      "contacted": 0,
+      "pos_response": 1,
+      "rec_screens": 0,
+      "actual_screens": 0,
+      "ats": 0,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1770631916672x291420469021638660",
+      "iso_year": 2026,
+      "iso_week": 7,
+      "contacted": 123,
+      "pos_response": 18,
+      "rec_screens": 11,
+      "actual_screens": 10,
+      "ats": 0,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1770631916672x291420469021638660",
+      "iso_year": 2026,
+      "iso_week": 8,
+      "contacted": 22,
+      "pos_response": 11,
+      "rec_screens": 8,
+      "actual_screens": 6,
+      "ats": 0,
+      "onsite": 2,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1770631916672x291420469021638660",
+      "iso_year": 2026,
+      "iso_week": 9,
+      "contacted": 0,
+      "pos_response": 1,
+      "rec_screens": 0,
+      "actual_screens": 0,
+      "ats": 0,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1770631916672x291420469021638660",
+      "iso_year": 2026,
+      "iso_week": 10,
+      "contacted": 0,
+      "pos_response": 1,
+      "rec_screens": 0,
+      "actual_screens": 0,
+      "ats": 2,
+      "onsite": 0,
+      "culture": 2,
+      "call_w_client": 2,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1770728747086x464603093874769900",
+      "iso_year": 2026,
+      "iso_week": 7,
+      "contacted": 134,
+      "pos_response": 14,
+      "rec_screens": 10,
+      "actual_screens": 2,
+      "ats": 2,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1770728747086x464603093874769900",
+      "iso_year": 2026,
+      "iso_week": 8,
+      "contacted": 126,
+      "pos_response": 37,
+      "rec_screens": 28,
+      "actual_screens": 22,
+      "ats": 5,
+      "onsite": 3,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1770728747086x464603093874769900",
+      "iso_year": 2026,
+      "iso_week": 9,
+      "contacted": 3,
+      "pos_response": 7,
+      "rec_screens": 4,
+      "actual_screens": 7,
+      "ats": 3,
+      "onsite": 1,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1770728747086x464603093874769900",
+      "iso_year": 2026,
+      "iso_week": 10,
+      "contacted": 0,
+      "pos_response": 0,
+      "rec_screens": 0,
+      "actual_screens": 0,
+      "ats": 2,
+      "onsite": 0,
+      "culture": 2,
+      "call_w_client": 2,
+      "offered": 1,
+      "hired": 1
+    },
+    {
+      "job_id": "1771257786943x368258027107123200",
+      "iso_year": 2026,
+      "iso_week": 8,
+      "contacted": 94,
+      "pos_response": 3,
+      "rec_screens": 2,
+      "actual_screens": 2,
+      "ats": 2,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1771257786943x368258027107123200",
+      "iso_year": 2026,
+      "iso_week": 9,
+      "contacted": 110,
+      "pos_response": 4,
+      "rec_screens": 3,
+      "actual_screens": 0,
+      "ats": 0,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1771257786943x368258027107123200",
+      "iso_year": 2026,
+      "iso_week": 10,
+      "contacted": 33,
+      "pos_response": 2,
+      "rec_screens": 0,
+      "actual_screens": 0,
+      "ats": 0,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1771257786943x368258027107123200",
+      "iso_year": 2026,
+      "iso_week": 11,
+      "contacted": 31,
+      "pos_response": 1,
+      "rec_screens": 1,
+      "actual_screens": 0,
+      "ats": 0,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1771257786943x368258027107123200",
+      "iso_year": 2026,
+      "iso_week": 14,
+      "contacted": 0,
+      "pos_response": 2,
+      "rec_screens": 0,
+      "actual_screens": 0,
+      "ats": 0,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1771584578545x240061323429806080",
+      "iso_year": 2026,
+      "iso_week": 9,
+      "contacted": 3,
+      "pos_response": 2,
+      "rec_screens": 1,
+      "actual_screens": 1,
+      "ats": 1,
+      "onsite": 1,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 1,
+      "hired": 0
+    },
+    {
+      "job_id": "1771584578545x240061323429806080",
+      "iso_year": 2026,
+      "iso_week": 10,
+      "contacted": 0,
+      "pos_response": 0,
+      "rec_screens": 0,
+      "actual_screens": 0,
+      "ats": 0,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 1
+    },
+    {
+      "job_id": "1774438158210x293659973868847100",
+      "iso_year": 2026,
+      "iso_week": 13,
+      "contacted": 34,
+      "pos_response": 14,
+      "rec_screens": 12,
+      "actual_screens": 0,
+      "ats": 0,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1774438224107x261502970568376320",
+      "iso_year": 2026,
+      "iso_week": 13,
+      "contacted": 5,
+      "pos_response": 5,
+      "rec_screens": 5,
+      "actual_screens": 5,
+      "ats": 0,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1774613979789x325982928044294140",
+      "iso_year": 2026,
+      "iso_week": 13,
+      "contacted": 73,
+      "pos_response": 3,
+      "rec_screens": 2,
+      "actual_screens": 0,
+      "ats": 0,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1774613979789x325982928044294140",
+      "iso_year": 2026,
+      "iso_week": 14,
+      "contacted": 118,
+      "pos_response": 44,
+      "rec_screens": 28,
+      "actual_screens": 3,
+      "ats": 1,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1774613979789x325982928044294140",
+      "iso_year": 2026,
+      "iso_week": 15,
+      "contacted": 0,
+      "pos_response": 6,
+      "rec_screens": 4,
+      "actual_screens": 0,
+      "ats": 0,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1774613979789x325982928044294140",
+      "iso_year": 2026,
+      "iso_week": 17,
+      "contacted": 0,
+      "pos_response": 1,
+      "rec_screens": 0,
+      "actual_screens": 0,
+      "ats": 0,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "iso_year": 2026,
+      "iso_week": 16,
+      "contacted": 196,
+      "pos_response": 53,
+      "rec_screens": 20,
+      "actual_screens": 5,
+      "ats": 1,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "iso_year": 2026,
+      "iso_week": 17,
+      "contacted": 180,
+      "pos_response": 78,
+      "rec_screens": 54,
+      "actual_screens": 20,
+      "ats": 5,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "iso_year": 2026,
+      "iso_week": 18,
+      "contacted": 7,
+      "pos_response": 7,
+      "rec_screens": 7,
+      "actual_screens": 8,
+      "ats": 2,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1777294001849x171347644691513340",
+      "iso_year": 2026,
+      "iso_week": 18,
+      "contacted": 70,
+      "pos_response": 3,
+      "rec_screens": 1,
+      "actual_screens": 0,
+      "ats": 0,
+      "onsite": 0,
+      "culture": 0,
+      "call_w_client": 0,
+      "offered": 0,
+      "hired": 0
+    }
+  ],
+  "ir_sourced_jobweek": [
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "sourcer": "Adis Prepoljac",
+      "iso_year": 2026,
+      "iso_week": 6,
+      "contacted": 12,
+      "pos_response": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "sourcer": "Andrea Akovic",
+      "iso_year": 2026,
+      "iso_week": 6,
+      "contacted": 1,
+      "pos_response": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "sourcer": "Anna Tyulpanova",
+      "iso_year": 2026,
+      "iso_week": 4,
+      "contacted": 22,
+      "pos_response": 6,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "sourcer": "Anna Tyulpanova",
+      "iso_year": 2026,
+      "iso_week": 5,
+      "contacted": 0,
+      "pos_response": 1,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "sourcer": "Elena Gjorgieva",
+      "iso_year": 2026,
+      "iso_week": 4,
+      "contacted": 127,
+      "pos_response": 17,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "sourcer": "Elena Gjorgieva",
+      "iso_year": 2026,
+      "iso_week": 6,
+      "contacted": 0,
+      "pos_response": 5,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "sourcer": "Hana Mutka",
+      "iso_year": 2026,
+      "iso_week": 3,
+      "contacted": 16,
+      "pos_response": 10,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "sourcer": "Hana Mutka",
+      "iso_year": 2026,
+      "iso_week": 4,
+      "contacted": 0,
+      "pos_response": 2,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "sourcer": "Hana Mutka",
+      "iso_year": 2026,
+      "iso_week": 5,
+      "contacted": 20,
+      "pos_response": 7,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "sourcer": "Hana Mutka",
+      "iso_year": 2026,
+      "iso_week": 6,
+      "contacted": 11,
+      "pos_response": 3,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "sourcer": "Iryna Dyda",
+      "iso_year": 2026,
+      "iso_week": 3,
+      "contacted": 13,
+      "pos_response": 1,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "sourcer": "Iryna Dyda",
+      "iso_year": 2026,
+      "iso_week": 6,
+      "contacted": 8,
+      "pos_response": 2,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "sourcer": "Joanna Bober",
+      "iso_year": 2026,
+      "iso_week": 3,
+      "contacted": 24,
+      "pos_response": 1,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "sourcer": "Kristina Colovic",
+      "iso_year": 2026,
+      "iso_week": 3,
+      "contacted": 1,
+      "pos_response": 1,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "sourcer": "Kristina Colovic",
+      "iso_year": 2026,
+      "iso_week": 4,
+      "contacted": 65,
+      "pos_response": 8,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "sourcer": "Kristina Colovic",
+      "iso_year": 2026,
+      "iso_week": 5,
+      "contacted": 0,
+      "pos_response": 1,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "sourcer": "Sanja Pavlovikj",
+      "iso_year": 2026,
+      "iso_week": 3,
+      "contacted": 36,
+      "pos_response": 36,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "sourcer": "Sanja Pavlovikj",
+      "iso_year": 2026,
+      "iso_week": 4,
+      "contacted": 2,
+      "pos_response": 2,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "sourcer": "Valeriia Yurykova",
+      "iso_year": 2026,
+      "iso_week": 6,
+      "contacted": 22,
+      "pos_response": 1,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "sourcer": "Valeriia Yurykova",
+      "iso_year": 2026,
+      "iso_week": 11,
+      "contacted": 0,
+      "pos_response": 1,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "sourcer": "Wladyslaw Gadomski",
+      "iso_year": 2026,
+      "iso_week": 4,
+      "contacted": 94,
+      "pos_response": 19,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "sourcer": "Wladyslaw Gadomski",
+      "iso_year": 2026,
+      "iso_week": 5,
+      "contacted": 0,
+      "pos_response": 2,
+      "hired": 1
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "sourcer": "Wladyslaw Gadomski",
+      "iso_year": 2026,
+      "iso_week": 6,
+      "contacted": 0,
+      "pos_response": 1,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "sourcer": "Wladyslaw Gadomski",
+      "iso_year": 2026,
+      "iso_week": 11,
+      "contacted": 0,
+      "pos_response": 1,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "sourcer": "Anna Tyulpanova",
+      "iso_year": 2026,
+      "iso_week": 4,
+      "contacted": 24,
+      "pos_response": 5,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "sourcer": "Dolores Palotas",
+      "iso_year": 2026,
+      "iso_week": 6,
+      "contacted": 31,
+      "pos_response": 4,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "sourcer": "Elena Gjorgieva",
+      "iso_year": 2026,
+      "iso_week": 4,
+      "contacted": 4,
+      "pos_response": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "sourcer": "Hana Mutka",
+      "iso_year": 2026,
+      "iso_week": 3,
+      "contacted": 12,
+      "pos_response": 5,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "sourcer": "Hana Mutka",
+      "iso_year": 2026,
+      "iso_week": 4,
+      "contacted": 65,
+      "pos_response": 19,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "sourcer": "Hana Mutka",
+      "iso_year": 2026,
+      "iso_week": 5,
+      "contacted": 2,
+      "pos_response": 4,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "sourcer": "Hana Mutka",
+      "iso_year": 2026,
+      "iso_week": 6,
+      "contacted": 0,
+      "pos_response": 1,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "sourcer": "Iryna Dyda",
+      "iso_year": 2026,
+      "iso_week": 3,
+      "contacted": 24,
+      "pos_response": 6,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "sourcer": "Iryna Dyda",
+      "iso_year": 2026,
+      "iso_week": 4,
+      "contacted": 49,
+      "pos_response": 4,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "sourcer": "Iryna Dyda",
+      "iso_year": 2026,
+      "iso_week": 5,
+      "contacted": 1,
+      "pos_response": 4,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "sourcer": "Iryna Dyda",
+      "iso_year": 2026,
+      "iso_week": 6,
+      "contacted": 2,
+      "pos_response": 2,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "sourcer": "Joanna Bober",
+      "iso_year": 2026,
+      "iso_week": 3,
+      "contacted": 7,
+      "pos_response": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "sourcer": "Sanja Pavlovikj",
+      "iso_year": 2026,
+      "iso_week": 3,
+      "contacted": 15,
+      "pos_response": 15,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "sourcer": "Sanja Pavlovikj",
+      "iso_year": 2026,
+      "iso_week": 4,
+      "contacted": 6,
+      "pos_response": 5,
+      "hired": 0
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "sourcer": "Wladyslaw Gadomski",
+      "iso_year": 2026,
+      "iso_week": 3,
+      "contacted": 1,
+      "pos_response": 1,
+      "hired": 0
+    },
+    {
+      "job_id": "1769763000086x563212577333575700",
+      "sourcer": "Elena Petrovska",
+      "iso_year": 2026,
+      "iso_week": 9,
+      "contacted": 26,
+      "pos_response": 3,
+      "hired": 0
+    },
+    {
+      "job_id": "1769763000086x563212577333575700",
+      "sourcer": "Elena Petrovska",
+      "iso_year": 2026,
+      "iso_week": 10,
+      "contacted": 0,
+      "pos_response": 6,
+      "hired": 0
+    },
+    {
+      "job_id": "1769763000086x563212577333575700",
+      "sourcer": "Gustavo Loureiro Castro",
+      "iso_year": 2026,
+      "iso_week": 8,
+      "contacted": 45,
+      "pos_response": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1769763000086x563212577333575700",
+      "sourcer": "Gustavo Loureiro Castro",
+      "iso_year": 2026,
+      "iso_week": 9,
+      "contacted": 26,
+      "pos_response": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1769763000086x563212577333575700",
+      "sourcer": "Gustavo Loureiro Castro",
+      "iso_year": 2026,
+      "iso_week": 10,
+      "contacted": 0,
+      "pos_response": 10,
+      "hired": 0
+    },
+    {
+      "job_id": "1769763000086x563212577333575700",
+      "sourcer": "Jovana Drakula",
+      "iso_year": 2026,
+      "iso_week": 5,
+      "contacted": 2,
+      "pos_response": 2,
+      "hired": 0
+    },
+    {
+      "job_id": "1769763000086x563212577333575700",
+      "sourcer": "Jovana Drakula",
+      "iso_year": 2026,
+      "iso_week": 6,
+      "contacted": 2,
+      "pos_response": 1,
+      "hired": 0
+    },
+    {
+      "job_id": "1769763000086x563212577333575700",
+      "sourcer": "Sanja Pavlovikj",
+      "iso_year": 2026,
+      "iso_week": 10,
+      "contacted": 1,
+      "pos_response": 1,
+      "hired": 0
+    },
+    {
+      "job_id": "1769763000086x563212577333575700",
+      "sourcer": "Valeriia Yurykova",
+      "iso_year": 2026,
+      "iso_week": 7,
+      "contacted": 32,
+      "pos_response": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1769763000086x563212577333575700",
+      "sourcer": "Valeriia Yurykova",
+      "iso_year": 2026,
+      "iso_week": 9,
+      "contacted": 0,
+      "pos_response": 4,
+      "hired": 0
+    },
+    {
+      "job_id": "1769763000086x563212577333575700",
+      "sourcer": "Valeriia Yurykova",
+      "iso_year": 2026,
+      "iso_week": 10,
+      "contacted": 0,
+      "pos_response": 6,
+      "hired": 0
+    },
+    {
+      "job_id": "1770201984452x484427760080519200",
+      "sourcer": "Dolores Palotas",
+      "iso_year": 2026,
+      "iso_week": 6,
+      "contacted": 12,
+      "pos_response": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1770201984452x484427760080519200",
+      "sourcer": "Dolores Palotas",
+      "iso_year": 2026,
+      "iso_week": 9,
+      "contacted": 0,
+      "pos_response": 1,
+      "hired": 0
+    },
+    {
+      "job_id": "1770201984452x484427760080519200",
+      "sourcer": "Iryna Dyda",
+      "iso_year": 2026,
+      "iso_week": 6,
+      "contacted": 10,
+      "pos_response": 1,
+      "hired": 0
+    },
+    {
+      "job_id": "1770201984452x484427760080519200",
+      "sourcer": "Marina Lazarevic",
+      "iso_year": 2026,
+      "iso_week": 6,
+      "contacted": 4,
+      "pos_response": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1770201984452x484427760080519200",
+      "sourcer": "Sanja Pavlovikj",
+      "iso_year": 2026,
+      "iso_week": 6,
+      "contacted": 76,
+      "pos_response": 4,
+      "hired": 0
+    },
+    {
+      "job_id": "1770631916672x291420469021638660",
+      "sourcer": "Chené Elliot",
+      "iso_year": 2026,
+      "iso_week": 7,
+      "contacted": 46,
+      "pos_response": 13,
+      "hired": 0
+    },
+    {
+      "job_id": "1770631916672x291420469021638660",
+      "sourcer": "Chené Elliot",
+      "iso_year": 2026,
+      "iso_week": 8,
+      "contacted": 21,
+      "pos_response": 4,
+      "hired": 0
+    },
+    {
+      "job_id": "1770631916672x291420469021638660",
+      "sourcer": "Chené Elliot",
+      "iso_year": 2026,
+      "iso_week": 9,
+      "contacted": 0,
+      "pos_response": 1,
+      "hired": 0
+    },
+    {
+      "job_id": "1770631916672x291420469021638660",
+      "sourcer": "Chené Elliot",
+      "iso_year": 2026,
+      "iso_week": 10,
+      "contacted": 0,
+      "pos_response": 1,
+      "hired": 0
+    },
+    {
+      "job_id": "1770631916672x291420469021638660",
+      "sourcer": "Iryna Dyda",
+      "iso_year": 2026,
+      "iso_week": 7,
+      "contacted": 42,
+      "pos_response": 1,
+      "hired": 0
+    },
+    {
+      "job_id": "1770631916672x291420469021638660",
+      "sourcer": "Iryna Dyda",
+      "iso_year": 2026,
+      "iso_week": 8,
+      "contacted": 1,
+      "pos_response": 5,
+      "hired": 0
+    },
+    {
+      "job_id": "1770631916672x291420469021638660",
+      "sourcer": "Samantha Nel",
+      "iso_year": 2026,
+      "iso_week": 7,
+      "contacted": 35,
+      "pos_response": 4,
+      "hired": 0
+    },
+    {
+      "job_id": "1770631916672x291420469021638660",
+      "sourcer": "Samantha Nel",
+      "iso_year": 2026,
+      "iso_week": 8,
+      "contacted": 0,
+      "pos_response": 2,
+      "hired": 0
+    },
+    {
+      "job_id": "1770728747086x464603093874769900",
+      "sourcer": "Chené Elliot",
+      "iso_year": 2026,
+      "iso_week": 7,
+      "contacted": 24,
+      "pos_response": 4,
+      "hired": 0
+    },
+    {
+      "job_id": "1770728747086x464603093874769900",
+      "sourcer": "Chené Elliot",
+      "iso_year": 2026,
+      "iso_week": 8,
+      "contacted": 31,
+      "pos_response": 7,
+      "hired": 0
+    },
+    {
+      "job_id": "1770728747086x464603093874769900",
+      "sourcer": "Chené Elliot",
+      "iso_year": 2026,
+      "iso_week": 9,
+      "contacted": 0,
+      "pos_response": 1,
+      "hired": 0
+    },
+    {
+      "job_id": "1770728747086x464603093874769900",
+      "sourcer": "Iryna Dyda",
+      "iso_year": 2026,
+      "iso_week": 7,
+      "contacted": 68,
+      "pos_response": 4,
+      "hired": 0
+    },
+    {
+      "job_id": "1770728747086x464603093874769900",
+      "sourcer": "Iryna Dyda",
+      "iso_year": 2026,
+      "iso_week": 8,
+      "contacted": 28,
+      "pos_response": 8,
+      "hired": 0
+    },
+    {
+      "job_id": "1770728747086x464603093874769900",
+      "sourcer": "Iryna Dyda",
+      "iso_year": 2026,
+      "iso_week": 9,
+      "contacted": 0,
+      "pos_response": 3,
+      "hired": 0
+    },
+    {
+      "job_id": "1770728747086x464603093874769900",
+      "sourcer": "Iryna Dyda",
+      "iso_year": 2026,
+      "iso_week": 10,
+      "contacted": 0,
+      "pos_response": 0,
+      "hired": 1
+    },
+    {
+      "job_id": "1770728747086x464603093874769900",
+      "sourcer": "Samantha Nel",
+      "iso_year": 2026,
+      "iso_week": 7,
+      "contacted": 42,
+      "pos_response": 6,
+      "hired": 0
+    },
+    {
+      "job_id": "1770728747086x464603093874769900",
+      "sourcer": "Samantha Nel",
+      "iso_year": 2026,
+      "iso_week": 8,
+      "contacted": 67,
+      "pos_response": 22,
+      "hired": 0
+    },
+    {
+      "job_id": "1770728747086x464603093874769900",
+      "sourcer": "Samantha Nel",
+      "iso_year": 2026,
+      "iso_week": 9,
+      "contacted": 3,
+      "pos_response": 3,
+      "hired": 0
+    },
+    {
+      "job_id": "1771257786943x368258027107123200",
+      "sourcer": "Elena Petrovska",
+      "iso_year": 2026,
+      "iso_week": 9,
+      "contacted": 24,
+      "pos_response": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1771257786943x368258027107123200",
+      "sourcer": "Elena Petrovska",
+      "iso_year": 2026,
+      "iso_week": 10,
+      "contacted": 3,
+      "pos_response": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1771257786943x368258027107123200",
+      "sourcer": "Iryna Dyda",
+      "iso_year": 2026,
+      "iso_week": 8,
+      "contacted": 94,
+      "pos_response": 3,
+      "hired": 0
+    },
+    {
+      "job_id": "1771257786943x368258027107123200",
+      "sourcer": "Iryna Dyda",
+      "iso_year": 2026,
+      "iso_week": 9,
+      "contacted": 86,
+      "pos_response": 4,
+      "hired": 0
+    },
+    {
+      "job_id": "1771257786943x368258027107123200",
+      "sourcer": "Iryna Dyda",
+      "iso_year": 2026,
+      "iso_week": 10,
+      "contacted": 30,
+      "pos_response": 2,
+      "hired": 0
+    },
+    {
+      "job_id": "1771257786943x368258027107123200",
+      "sourcer": "Iryna Dyda",
+      "iso_year": 2026,
+      "iso_week": 11,
+      "contacted": 31,
+      "pos_response": 1,
+      "hired": 0
+    },
+    {
+      "job_id": "1771257786943x368258027107123200",
+      "sourcer": "Iryna Dyda",
+      "iso_year": 2026,
+      "iso_week": 14,
+      "contacted": 0,
+      "pos_response": 2,
+      "hired": 0
+    },
+    {
+      "job_id": "1771584578545x240061323429806080",
+      "sourcer": "Sanja Pavlovikj",
+      "iso_year": 2026,
+      "iso_week": 9,
+      "contacted": 3,
+      "pos_response": 2,
+      "hired": 0
+    },
+    {
+      "job_id": "1771584578545x240061323429806080",
+      "sourcer": "Sanja Pavlovikj",
+      "iso_year": 2026,
+      "iso_week": 10,
+      "contacted": 0,
+      "pos_response": 0,
+      "hired": 1
+    },
+    {
+      "job_id": "1774438158210x293659973868847100",
+      "sourcer": "Elena Petrovska",
+      "iso_year": 2026,
+      "iso_week": 13,
+      "contacted": 28,
+      "pos_response": 11,
+      "hired": 0
+    },
+    {
+      "job_id": "1774438158210x293659973868847100",
+      "sourcer": "Iryna Dyda",
+      "iso_year": 2026,
+      "iso_week": 13,
+      "contacted": 6,
+      "pos_response": 3,
+      "hired": 0
+    },
+    {
+      "job_id": "1774438224107x261502970568376320",
+      "sourcer": "Sanja Pavlovikj",
+      "iso_year": 2026,
+      "iso_week": 13,
+      "contacted": 5,
+      "pos_response": 5,
+      "hired": 0
+    },
+    {
+      "job_id": "1774613979789x325982928044294140",
+      "sourcer": "Chantal Bozkurt",
+      "iso_year": 2026,
+      "iso_week": 14,
+      "contacted": 17,
+      "pos_response": 5,
+      "hired": 0
+    },
+    {
+      "job_id": "1774613979789x325982928044294140",
+      "sourcer": "Elena Petrovska",
+      "iso_year": 2026,
+      "iso_week": 13,
+      "contacted": 43,
+      "pos_response": 1,
+      "hired": 0
+    },
+    {
+      "job_id": "1774613979789x325982928044294140",
+      "sourcer": "Elena Petrovska",
+      "iso_year": 2026,
+      "iso_week": 14,
+      "contacted": 51,
+      "pos_response": 22,
+      "hired": 0
+    },
+    {
+      "job_id": "1774613979789x325982928044294140",
+      "sourcer": "Jelena Lacmanovic",
+      "iso_year": 2026,
+      "iso_week": 14,
+      "contacted": 2,
+      "pos_response": 2,
+      "hired": 0
+    },
+    {
+      "job_id": "1774613979789x325982928044294140",
+      "sourcer": "Rodrigo Gomes",
+      "iso_year": 2026,
+      "iso_week": 14,
+      "contacted": 6,
+      "pos_response": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1774613979789x325982928044294140",
+      "sourcer": "Valeriia Yurykova",
+      "iso_year": 2026,
+      "iso_week": 13,
+      "contacted": 30,
+      "pos_response": 2,
+      "hired": 0
+    },
+    {
+      "job_id": "1774613979789x325982928044294140",
+      "sourcer": "Valeriia Yurykova",
+      "iso_year": 2026,
+      "iso_week": 14,
+      "contacted": 42,
+      "pos_response": 15,
+      "hired": 0
+    },
+    {
+      "job_id": "1774613979789x325982928044294140",
+      "sourcer": "Valeriia Yurykova",
+      "iso_year": 2026,
+      "iso_week": 15,
+      "contacted": 0,
+      "pos_response": 6,
+      "hired": 0
+    },
+    {
+      "job_id": "1774613979789x325982928044294140",
+      "sourcer": "Valeriia Yurykova",
+      "iso_year": 2026,
+      "iso_week": 17,
+      "contacted": 0,
+      "pos_response": 1,
+      "hired": 0
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "sourcer": "Andrea Akovic",
+      "iso_year": 2026,
+      "iso_week": 17,
+      "contacted": 54,
+      "pos_response": 22,
+      "hired": 0
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "sourcer": "Andrea Akovic",
+      "iso_year": 2026,
+      "iso_week": 18,
+      "contacted": 0,
+      "pos_response": 1,
+      "hired": 0
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "sourcer": "Chantal Bozkurt",
+      "iso_year": 2026,
+      "iso_week": 16,
+      "contacted": 12,
+      "pos_response": 3,
+      "hired": 0
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "sourcer": "Chantal Bozkurt",
+      "iso_year": 2026,
+      "iso_week": 17,
+      "contacted": 2,
+      "pos_response": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "sourcer": "Dolores Palotas",
+      "iso_year": 2026,
+      "iso_week": 16,
+      "contacted": 10,
+      "pos_response": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "sourcer": "Eduardo Moral",
+      "iso_year": 2026,
+      "iso_week": 16,
+      "contacted": 7,
+      "pos_response": 4,
+      "hired": 0
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "sourcer": "Eduardo Moral",
+      "iso_year": 2026,
+      "iso_week": 17,
+      "contacted": 13,
+      "pos_response": 6,
+      "hired": 0
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "sourcer": "Eduardo Moral",
+      "iso_year": 2026,
+      "iso_week": 18,
+      "contacted": 2,
+      "pos_response": 2,
+      "hired": 0
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "sourcer": "Gustavo Loureiro Castro",
+      "iso_year": 2026,
+      "iso_week": 16,
+      "contacted": 66,
+      "pos_response": 10,
+      "hired": 0
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "sourcer": "Gustavo Loureiro Castro",
+      "iso_year": 2026,
+      "iso_week": 17,
+      "contacted": 53,
+      "pos_response": 14,
+      "hired": 0
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "sourcer": "Gustavo Loureiro Castro",
+      "iso_year": 2026,
+      "iso_week": 18,
+      "contacted": 0,
+      "pos_response": 1,
+      "hired": 0
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "sourcer": "Mariam Chkhikvadze",
+      "iso_year": 2026,
+      "iso_week": 16,
+      "contacted": 27,
+      "pos_response": 17,
+      "hired": 0
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "sourcer": "Mariam Chkhikvadze",
+      "iso_year": 2026,
+      "iso_week": 17,
+      "contacted": 17,
+      "pos_response": 17,
+      "hired": 0
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "sourcer": "Mariam Chkhikvadze",
+      "iso_year": 2026,
+      "iso_week": 18,
+      "contacted": 1,
+      "pos_response": 1,
+      "hired": 0
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "sourcer": "Valeriia Yurykova",
+      "iso_year": 2026,
+      "iso_week": 16,
+      "contacted": 74,
+      "pos_response": 19,
+      "hired": 0
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "sourcer": "Valeriia Yurykova",
+      "iso_year": 2026,
+      "iso_week": 17,
+      "contacted": 41,
+      "pos_response": 19,
+      "hired": 0
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "sourcer": "Valeriia Yurykova",
+      "iso_year": 2026,
+      "iso_week": 18,
+      "contacted": 4,
+      "pos_response": 2,
+      "hired": 0
+    },
+    {
+      "job_id": "1777294001849x171347644691513340",
+      "sourcer": "Gustavo Loureiro Castro",
+      "iso_year": 2026,
+      "iso_week": 18,
+      "contacted": 23,
+      "pos_response": 0,
+      "hired": 0
+    },
+    {
+      "job_id": "1777294001849x171347644691513340",
+      "sourcer": "Iryna Dyda",
+      "iso_year": 2026,
+      "iso_week": 18,
+      "contacted": 24,
+      "pos_response": 1,
+      "hired": 0
+    },
+    {
+      "job_id": "1777294001849x171347644691513340",
+      "sourcer": "Valeriia Yurykova",
+      "iso_year": 2026,
+      "iso_week": 18,
+      "contacted": 23,
+      "pos_response": 2,
+      "hired": 0
+    }
+  ],
+  "ir_interviewed_jobweek": [
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "ta": "(unattributed)",
+      "iso_year": 2026,
+      "iso_week": 3,
+      "actual_screens": 1
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "ta": "Andrea Akovic",
+      "iso_year": 2026,
+      "iso_week": 6,
+      "actual_screens": 1
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "ta": "Anna Tyulpanova",
+      "iso_year": 2026,
+      "iso_week": 3,
+      "actual_screens": 5
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "ta": "Anna Tyulpanova",
+      "iso_year": 2026,
+      "iso_week": 4,
+      "actual_screens": 18
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "ta": "Iryna Dyda",
+      "iso_year": 2026,
+      "iso_week": 3,
+      "actual_screens": 9
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "ta": "Iryna Dyda",
+      "iso_year": 2026,
+      "iso_week": 6,
+      "actual_screens": 1
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "ta": "Jovana Drakula",
+      "iso_year": 2026,
+      "iso_week": 5,
+      "actual_screens": 1
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "ta": "Kristina Colovic",
+      "iso_year": 2026,
+      "iso_week": 3,
+      "actual_screens": 2
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "ta": "Kristina Colovic",
+      "iso_year": 2026,
+      "iso_week": 4,
+      "actual_screens": 2
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "ta": "Sanja Pavlovikj",
+      "iso_year": 2026,
+      "iso_week": 3,
+      "actual_screens": 2
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "ta": "Wladyslaw Gadomski",
+      "iso_year": 2026,
+      "iso_week": 3,
+      "actual_screens": 1
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "ta": "Wladyslaw Gadomski",
+      "iso_year": 2026,
+      "iso_week": 4,
+      "actual_screens": 9
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "ta": "Anna Tyulpanova",
+      "iso_year": 2026,
+      "iso_week": 3,
+      "actual_screens": 5
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "ta": "Anna Tyulpanova",
+      "iso_year": 2026,
+      "iso_week": 4,
+      "actual_screens": 8
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "ta": "Iryna Dyda",
+      "iso_year": 2026,
+      "iso_week": 3,
+      "actual_screens": 3
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "ta": "Kristina Colovic",
+      "iso_year": 2026,
+      "iso_week": 3,
+      "actual_screens": 4
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "ta": "Kristina Colovic",
+      "iso_year": 2026,
+      "iso_week": 4,
+      "actual_screens": 2
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "ta": "Sanja Pavlovikj",
+      "iso_year": 2026,
+      "iso_week": 3,
+      "actual_screens": 1
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "ta": "Wladyslaw Gadomski",
+      "iso_year": 2026,
+      "iso_week": 3,
+      "actual_screens": 4
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "ta": "Wladyslaw Gadomski",
+      "iso_year": 2026,
+      "iso_week": 4,
+      "actual_screens": 3
+    },
+    {
+      "job_id": "1769763000086x563212577333575700",
+      "ta": "(unattributed)",
+      "iso_year": 2026,
+      "iso_week": 10,
+      "actual_screens": 2
+    },
+    {
+      "job_id": "1769763000086x563212577333575700",
+      "ta": "Jovana Drakula",
+      "iso_year": 2026,
+      "iso_week": 5,
+      "actual_screens": 2
+    },
+    {
+      "job_id": "1769763000086x563212577333575700",
+      "ta": "Jovana Drakula",
+      "iso_year": 2026,
+      "iso_week": 6,
+      "actual_screens": 2
+    },
+    {
+      "job_id": "1769763000086x563212577333575700",
+      "ta": "Sanja Pavlovikj",
+      "iso_year": 2026,
+      "iso_week": 10,
+      "actual_screens": 1
+    },
+    {
+      "job_id": "1770631916672x291420469021638660",
+      "ta": "Chené Elliot",
+      "iso_year": 2026,
+      "iso_week": 7,
+      "actual_screens": 9
+    },
+    {
+      "job_id": "1770631916672x291420469021638660",
+      "ta": "Chené Elliot",
+      "iso_year": 2026,
+      "iso_week": 8,
+      "actual_screens": 4
+    },
+    {
+      "job_id": "1770631916672x291420469021638660",
+      "ta": "Samantha Nel",
+      "iso_year": 2026,
+      "iso_week": 7,
+      "actual_screens": 1
+    },
+    {
+      "job_id": "1770631916672x291420469021638660",
+      "ta": "Samantha Nel",
+      "iso_year": 2026,
+      "iso_week": 8,
+      "actual_screens": 2
+    },
+    {
+      "job_id": "1770728747086x464603093874769900",
+      "ta": "Chené Elliot",
+      "iso_year": 2026,
+      "iso_week": 7,
+      "actual_screens": 2
+    },
+    {
+      "job_id": "1770728747086x464603093874769900",
+      "ta": "Chené Elliot",
+      "iso_year": 2026,
+      "iso_week": 8,
+      "actual_screens": 5
+    },
+    {
+      "job_id": "1770728747086x464603093874769900",
+      "ta": "Chené Elliot",
+      "iso_year": 2026,
+      "iso_week": 9,
+      "actual_screens": 1
+    },
+    {
+      "job_id": "1770728747086x464603093874769900",
+      "ta": "Samantha Nel",
+      "iso_year": 2026,
+      "iso_week": 8,
+      "actual_screens": 17
+    },
+    {
+      "job_id": "1770728747086x464603093874769900",
+      "ta": "Samantha Nel",
+      "iso_year": 2026,
+      "iso_week": 9,
+      "actual_screens": 6
+    },
+    {
+      "job_id": "1771257786943x368258027107123200",
+      "ta": "Iryna Dyda",
+      "iso_year": 2026,
+      "iso_week": 8,
+      "actual_screens": 2
+    },
+    {
+      "job_id": "1771584578545x240061323429806080",
+      "ta": "(unattributed)",
+      "iso_year": 2026,
+      "iso_week": 9,
+      "actual_screens": 1
+    },
+    {
+      "job_id": "1774438224107x261502970568376320",
+      "ta": "Anna Tyulpanova",
+      "iso_year": 2026,
+      "iso_week": 13,
+      "actual_screens": 5
+    },
+    {
+      "job_id": "1774613979789x325982928044294140",
+      "ta": "Jelena Lacmanovic",
+      "iso_year": 2026,
+      "iso_week": 14,
+      "actual_screens": 3
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "ta": "(unattributed)",
+      "iso_year": 2026,
+      "iso_week": 16,
+      "actual_screens": 5
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "ta": "(unattributed)",
+      "iso_year": 2026,
+      "iso_week": 17,
+      "actual_screens": 14
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "ta": "(unattributed)",
+      "iso_year": 2026,
+      "iso_week": 18,
+      "actual_screens": 4
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "ta": "Mariam Chkhikvadze",
+      "iso_year": 2026,
+      "iso_week": 17,
+      "actual_screens": 6
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "ta": "Mariam Chkhikvadze",
+      "iso_year": 2026,
+      "iso_week": 18,
+      "actual_screens": 4
+    }
+  ],
+  "ir_dq_by_stage": [
+    {
+      "job_title": "DH - Executive Search Talent Partner (APAC focus)",
+      "job_id": "1770631916672x291420469021638660",
+      "stage_contacted": 113,
+      "stage_rec_screen": 3,
+      "stage_actual_screen": 14,
+      "stage_move_to_ats": 0,
+      "stage_onsite": 0,
+      "stage_offer": 0,
+      "total": 143
+    },
+    {
+      "job_title": "Tech Talent Sourcer",
+      "job_id": "1776243815411x739667639709990900",
+      "stage_contacted": 36,
+      "stage_rec_screen": 2,
+      "stage_actual_screen": 22,
+      "stage_move_to_ats": 1,
+      "stage_onsite": 0,
+      "stage_offer": 0,
+      "total": 77
+    },
+    {
+      "job_title": "Talent Sourcer (German speaker) - Feb '26",
+      "job_id": "1771257786943x368258027107123200",
+      "stage_contacted": 58,
+      "stage_rec_screen": 2,
+      "stage_actual_screen": 0,
+      "stage_move_to_ats": 0,
+      "stage_onsite": 0,
+      "stage_offer": 0,
+      "total": 60
+    },
+    {
+      "job_title": "Tech Talent Acquisition Partner (APAC)",
+      "job_id": "1774613979789x325982928044294140",
+      "stage_contacted": 18,
+      "stage_rec_screen": 3,
+      "stage_actual_screen": 2,
+      "stage_move_to_ats": 0,
+      "stage_onsite": 0,
+      "stage_offer": 0,
+      "total": 33
+    },
+    {
+      "job_title": "Talent Acquisition Partner (Internal Recruitment)",
+      "job_id": "1769763000086x563212577333575700",
+      "stage_contacted": 27,
+      "stage_rec_screen": 1,
+      "stage_actual_screen": 1,
+      "stage_move_to_ats": 1,
+      "stage_onsite": 1,
+      "stage_offer": 0,
+      "total": 33
+    },
+    {
+      "job_title": "Talent Acquisition Partner (UK)",
+      "job_id": "1777294001849x171347644691513340",
+      "stage_contacted": 1,
+      "stage_rec_screen": 0,
+      "stage_actual_screen": 0,
+      "stage_move_to_ats": 0,
+      "stage_onsite": 0,
+      "stage_offer": 0,
+      "total": 1
+    }
+  ],
+  "ir_jobs_active": [
+    {
+      "job_id": "1769763000086x563212577333575700",
+      "job_title": "Talent Acquisition Partner (Internal Recruitment)",
+      "date_created": "2026-01-30",
+      "job_recruiter": "Ella Darie",
+      "job_sourcer": "Iryna Dyda",
+      "days_open": 94,
+      "hires_total": 0
+    },
+    {
+      "job_id": "1770631916672x291420469021638660",
+      "job_title": "DH - Executive Search Talent Partner (APAC focus)",
+      "date_created": "2026-02-09",
+      "job_recruiter": "Ella Darie",
+      "job_sourcer": "Iryna Dyda",
+      "days_open": 84,
+      "hires_total": 0
+    },
+    {
+      "job_id": "1771257786943x368258027107123200",
+      "job_title": "Talent Sourcer (German speaker) - Feb '26",
+      "date_created": "2026-02-16",
+      "job_recruiter": "Ella Darie",
+      "job_sourcer": "Iryna Dyda",
+      "days_open": 77,
+      "hires_total": 0
+    },
+    {
+      "job_id": "1774438224107x261502970568376320",
+      "job_title": "(Generalist) Talent Acquisition Partner - Immediate Start",
+      "date_created": "2026-03-25",
+      "job_recruiter": "Ella Darie",
+      "job_sourcer": "Elena Petrovska",
+      "days_open": 40,
+      "hires_total": 0
+    },
+    {
+      "job_id": "1774613979789x325982928044294140",
+      "job_title": "Tech Talent Acquisition Partner (APAC)",
+      "date_created": "2026-03-27",
+      "job_recruiter": "Ella Darie",
+      "job_sourcer": "Eduardo Moral",
+      "days_open": 38,
+      "hires_total": 0
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "job_title": "Tech Talent Sourcer",
+      "date_created": "2026-04-15",
+      "job_recruiter": "Ella Darie",
+      "job_sourcer": "Eduardo Moral",
+      "days_open": 19,
+      "hires_total": 0
+    },
+    {
+      "job_id": "1777294001849x171347644691513340",
+      "job_title": "Talent Acquisition Partner (UK)",
+      "date_created": "2026-04-27",
+      "job_recruiter": "Ella Darie",
+      "job_sourcer": "Iryna Dyda",
+      "days_open": 7,
+      "hires_total": 0
+    }
+  ],
+  "ir_dq_byjob_reason": [
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "reason": "Timing",
+      "count": 35
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "reason": "Type of contract",
+      "count": 11
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "reason": "Position",
+      "count": 10
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "reason": "Skills",
+      "count": 8
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "reason": "Other",
+      "count": 8
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "reason": "Salary",
+      "count": 8
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "reason": "Language",
+      "count": 2
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "reason": "Culture Fit",
+      "count": 2
+    },
+    {
+      "job_id": "1768306565902x724842074782040000",
+      "reason": "Industry",
+      "count": 1
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "reason": "Other",
+      "count": 14
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "reason": "Timing",
+      "count": 11
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "reason": "Skills",
+      "count": 11
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "reason": "Position",
+      "count": 8
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "reason": "Type of contract",
+      "count": 7
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "reason": "Dropped out",
+      "count": 2
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "reason": "Visa",
+      "count": 1
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "reason": "Salary",
+      "count": 1
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "reason": "Industry",
+      "count": 1
+    },
+    {
+      "job_id": "1768306734822x675449727333433300",
+      "reason": "Position closed",
+      "count": 1
+    },
+    {
+      "job_id": "1769763000086x563212577333575700",
+      "reason": "Timing",
+      "count": 15
+    },
+    {
+      "job_id": "1769763000086x563212577333575700",
+      "reason": "Type of contract",
+      "count": 10
+    },
+    {
+      "job_id": "1769763000086x563212577333575700",
+      "reason": "Skills",
+      "count": 3
+    },
+    {
+      "job_id": "1769763000086x563212577333575700",
+      "reason": "Salary",
+      "count": 2
+    },
+    {
+      "job_id": "1769763000086x563212577333575700",
+      "reason": "Position",
+      "count": 2
+    },
+    {
+      "job_id": "1769763000086x563212577333575700",
+      "reason": "Seniority",
+      "count": 1
+    },
+    {
+      "job_id": "1770201984452x484427760080519200",
+      "reason": "Timing",
+      "count": 20
+    },
+    {
+      "job_id": "1770201984452x484427760080519200",
+      "reason": "Recruiter Rejected",
+      "count": 13
+    },
+    {
+      "job_id": "1770201984452x484427760080519200",
+      "reason": "Type of contract",
+      "count": 4
+    },
+    {
+      "job_id": "1770201984452x484427760080519200",
+      "reason": "Language",
+      "count": 3
+    },
+    {
+      "job_id": "1770201984452x484427760080519200",
+      "reason": "Do not contact again",
+      "count": 1
+    },
+    {
+      "job_id": "1770201984452x484427760080519200",
+      "reason": "Position",
+      "count": 1
+    },
+    {
+      "job_id": "1770201984452x484427760080519200",
+      "reason": "Parental leave",
+      "count": 1
+    },
+    {
+      "job_id": "1770201984452x484427760080519200",
+      "reason": "Salary",
+      "count": 1
+    },
+    {
+      "job_id": "1770201984452x484427760080519200",
+      "reason": "Other",
+      "count": 1
+    },
+    {
+      "job_id": "1770631916672x291420469021638660",
+      "reason": "Job Requirements Changed",
+      "count": 97
+    },
+    {
+      "job_id": "1770631916672x291420469021638660",
+      "reason": "Timing",
+      "count": 14
+    },
+    {
+      "job_id": "1770631916672x291420469021638660",
+      "reason": "Position closed",
+      "count": 13
+    },
+    {
+      "job_id": "1770631916672x291420469021638660",
+      "reason": "Skills",
+      "count": 5
+    },
+    {
+      "job_id": "1770631916672x291420469021638660",
+      "reason": "Seniority",
+      "count": 3
+    },
+    {
+      "job_id": "1770631916672x291420469021638660",
+      "reason": "Culture Fit",
+      "count": 3
+    },
+    {
+      "job_id": "1770631916672x291420469021638660",
+      "reason": "Language",
+      "count": 2
+    },
+    {
+      "job_id": "1770631916672x291420469021638660",
+      "reason": "Position",
+      "count": 2
+    },
+    {
+      "job_id": "1770631916672x291420469021638660",
+      "reason": "Type of contract",
+      "count": 1
+    },
+    {
+      "job_id": "1770631916672x291420469021638660",
+      "reason": "Salary",
+      "count": 1
+    },
+    {
+      "job_id": "1770631916672x291420469021638660",
+      "reason": "Parental leave",
+      "count": 1
+    },
+    {
+      "job_id": "1770631916672x291420469021638660",
+      "reason": "Location",
+      "count": 1
+    },
+    {
+      "job_id": "1770728747086x464603093874769900",
+      "reason": "Position closed",
+      "count": 182
+    },
+    {
+      "job_id": "1770728747086x464603093874769900",
+      "reason": "Timing",
+      "count": 19
+    },
+    {
+      "job_id": "1770728747086x464603093874769900",
+      "reason": "Salary",
+      "count": 19
+    },
+    {
+      "job_id": "1770728747086x464603093874769900",
+      "reason": "Skills",
+      "count": 11
+    },
+    {
+      "job_id": "1770728747086x464603093874769900",
+      "reason": "Culture Fit",
+      "count": 8
+    },
+    {
+      "job_id": "1770728747086x464603093874769900",
+      "reason": "Dropped out",
+      "count": 3
+    },
+    {
+      "job_id": "1770728747086x464603093874769900",
+      "reason": "Hiring Manager Rejected",
+      "count": 2
+    },
+    {
+      "job_id": "1770728747086x464603093874769900",
+      "reason": "Unresponsive",
+      "count": 2
+    },
+    {
+      "job_id": "1770728747086x464603093874769900",
+      "reason": "Type of contract",
+      "count": 2
+    },
+    {
+      "job_id": "1770728747086x464603093874769900",
+      "reason": "Other",
+      "count": 2
+    },
+    {
+      "job_id": "1770728747086x464603093874769900",
+      "reason": "Seniority",
+      "count": 1
+    },
+    {
+      "job_id": "1770728747086x464603093874769900",
+      "reason": "Requalified",
+      "count": 1
+    },
+    {
+      "job_id": "1771257786943x368258027107123200",
+      "reason": "Timing",
+      "count": 36
+    },
+    {
+      "job_id": "1771257786943x368258027107123200",
+      "reason": "Type of contract",
+      "count": 9
+    },
+    {
+      "job_id": "1771257786943x368258027107123200",
+      "reason": "Language",
+      "count": 4
+    },
+    {
+      "job_id": "1771257786943x368258027107123200",
+      "reason": "Salary",
+      "count": 3
+    },
+    {
+      "job_id": "1771257786943x368258027107123200",
+      "reason": "Position",
+      "count": 2
+    },
+    {
+      "job_id": "1771257786943x368258027107123200",
+      "reason": "Other",
+      "count": 2
+    },
+    {
+      "job_id": "1771257786943x368258027107123200",
+      "reason": "Visa",
+      "count": 1
+    },
+    {
+      "job_id": "1771257786943x368258027107123200",
+      "reason": "Skills",
+      "count": 1
+    },
+    {
+      "job_id": "1771257786943x368258027107123200",
+      "reason": "Unresponsive",
+      "count": 1
+    },
+    {
+      "job_id": "1771257786943x368258027107123200",
+      "reason": "Parental leave",
+      "count": 1
+    },
+    {
+      "job_id": "1771584578545x240061323429806080",
+      "reason": "Skills",
+      "count": 1
+    },
+    {
+      "job_id": "1771584578545x240061323429806080",
+      "reason": "Other",
+      "count": 1
+    },
+    {
+      "job_id": "1774438158210x293659973868847100",
+      "reason": "Type of contract",
+      "count": 2
+    },
+    {
+      "job_id": "1774438158210x293659973868847100",
+      "reason": "Timing",
+      "count": 1
+    },
+    {
+      "job_id": "1774438158210x293659973868847100",
+      "reason": "Position",
+      "count": 1
+    },
+    {
+      "job_id": "1774613979789x325982928044294140",
+      "reason": "Timing",
+      "count": 13
+    },
+    {
+      "job_id": "1774613979789x325982928044294140",
+      "reason": "Position closed",
+      "count": 8
+    },
+    {
+      "job_id": "1774613979789x325982928044294140",
+      "reason": "Other",
+      "count": 7
+    },
+    {
+      "job_id": "1774613979789x325982928044294140",
+      "reason": "Type of contract",
+      "count": 2
+    },
+    {
+      "job_id": "1774613979789x325982928044294140",
+      "reason": "Skills",
+      "count": 2
+    },
+    {
+      "job_id": "1774613979789x325982928044294140",
+      "reason": "Position",
+      "count": 1
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "reason": "Skills",
+      "count": 25
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "reason": "Timing",
+      "count": 22
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "reason": "Type of contract",
+      "count": 19
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "reason": "Other",
+      "count": 8
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "reason": "Position",
+      "count": 2
+    },
+    {
+      "job_id": "1776243815411x739667639709990900",
+      "reason": "Requalified",
+      "count": 1
+    },
+    {
+      "job_id": "1777294001849x171347644691513340",
+      "reason": "Timing",
+      "count": 1
+    }
+  ]
 }

@@ -3404,7 +3404,7 @@ const IRTab = ({ data }) => {
   const ashbyActive     = data.ir_ashby_active_pipeline || [];
   const ashbyDQReasons  = data.ir_ashby_dq_reasons      || [];
   const ashbyHires      = data.ir_ashby_hires           || [];
-  const ashbyJobsOpen   = data.ir_ashby_jobs_open       || [];
+  const ashbyJobsAll    = data.ir_ashby_jobs_all        || [];
   const hasAshby        = ashbyFunnel.length > 0 || ashbyHires.length > 0;
 
   const [jobFilter, setJobFilter]     = useState('all');
@@ -3445,26 +3445,73 @@ const IRTab = ({ data }) => {
     return true;
   };
 
+// ISO week -> {start, end} dates (Mon-Sun, UTC)
+  const isoWeekRange = (year, week) => {
+    const jan4 = new Date(Date.UTC(year, 0, 4));
+    const jan4Day = jan4.getUTCDay() || 7;
+    const week1Monday = new Date(jan4);
+    week1Monday.setUTCDate(jan4.getUTCDate() - (jan4Day - 1));
+    const start = new Date(week1Monday);
+    start.setUTCDate(week1Monday.getUTCDate() + (week - 1) * 7);
+    const end = new Date(start);
+    end.setUTCDate(start.getUTCDate() + 7); // exclusive end (next Monday)
+    return { start, end };
+  };
+
+  // Was this Ashby job active at any point during ISO week W of given year?
+  // Active if: openedAt < end_of_week AND (closedAt is empty OR closedAt > start_of_week)
+  const isJobActiveInWeek = (ashbyJob, year, week) => {
+    if (!ashbyJob) return false;
+    const opened = ashbyJob.openedAt ? new Date(ashbyJob.openedAt) : null;
+    const closed = ashbyJob.closedAt ? new Date(ashbyJob.closedAt) : null;
+    if (!opened) return false;
+    const { start, end } = isoWeekRange(year, week);
+    if (opened >= end) return false;       // opened after this week ended
+    if (closed && closed < start) return false;  // closed before this week started
+    return true;
+  };
+
+  // Set of Ashby job_ids active in the *currently selected* window
+  const ashbyActiveJobIds = useMemo(() => {
+    const weeksInWindow = [];
+    for (let w = 1; w <= 53; w++) if (inWindow(w)) weeksInWindow.push(w);
+    if (!weeksInWindow.length) return new Set();
+    const result = new Set();
+    for (const j of ashbyJobsAll) {
+      for (const w of weeksInWindow) {
+        if (isJobActiveInWeek(j, 2026, w)) {
+          result.add(j.ashby_job_id);
+          break;
+        }
+      }
+    }
+    return result;
+  }, [ashbyJobsAll, windowFilter, thisWeek]);
+
+
+
   const matchesJob = (jobId) => jobFilter === 'all' || jobId === jobFilter;
 
   // Filtered datasets
+  // Bubble job_ids whose Ashby counterpart is active in the window
+  const activeBubbleJobIds = useMemo(() => new Set(jobOptions.map(j => j.job_id)), [jobOptions]);
   const f_funnel = useMemo(() =>
-    funnelRows.filter(r => matchesJob(r.job_id) && inWindow(r.iso_week)),
-    [funnelRows, jobFilter, windowFilter, maxWeek]);
+    funnelRows.filter(r => matchesJob(r.job_id) && inWindow(r.iso_week) && activeBubbleJobIds.has(r.job_id)),
+    [funnelRows, jobFilter, windowFilter, thisWeek, activeBubbleJobIds]);
   const f_sourced = useMemo(() =>
-    sourcedRows.filter(r => matchesJob(r.job_id) && inWindow(r.iso_week)
+    sourcedRows.filter(r => matchesJob(r.job_id) && inWindow(r.iso_week) && activeBubbleJobIds.has(r.job_id)
       && (sourcerFilter === 'all' || r.sourcer === sourcerFilter)),
-    [sourcedRows, jobFilter, windowFilter, sourcerFilter, thisWeek]);
+    [sourcedRows, jobFilter, windowFilter, sourcerFilter, thisWeek, activeBubbleJobIds]);
   const f_interviewed = useMemo(() =>
-    interviewedRows.filter(r => matchesJob(r.job_id) && inWindow(r.iso_week)
+    interviewedRows.filter(r => matchesJob(r.job_id) && inWindow(r.iso_week) && activeBubbleJobIds.has(r.job_id)
       && (taFilter === 'all' || r.ta === taFilter)),
-    [interviewedRows, jobFilter, windowFilter, taFilter, thisWeek]);
+    [interviewedRows, jobFilter, windowFilter, taFilter, thisWeek, activeBubbleJobIds]);
   const f_dqReason = useMemo(() =>
     dqByJobReason.filter(r => matchesJob(r.job_id)),
     [dqByJobReason, jobFilter]);
   const f_dqByStage = useMemo(() =>
-    dqByStage.filter(r => matchesJob(r.job_id)),
-    [dqByStage, jobFilter]);
+    dqByStage.filter(r => matchesJob(r.job_id) && activeBubbleJobIds.has(r.job_id)),
+    [dqByStage, jobFilter, activeBubbleJobIds]);
 
   // Funnel totals (across filtered rows)
   const totals = useMemo(() => f_funnel.reduce((a, r) => ({
@@ -3542,38 +3589,44 @@ const IRTab = ({ data }) => {
     };
   }, [highlightTA, f_interviewed]);
 
-  // Job dropdown options — merge Bubble + Ashby active jobs.
-  // Bubble's ir_jobs_active misses jobs that aren't tagged 'Tribe.xyz (IR)'
-  // in Bubble (Beauty Industry, Country Mgr Berlin, etc.). Ashby is the
-  // authoritative source for "what's currently open for internal hiring".
+  // Job dropdown / Active Jobs panel — Ashby is source of truth for activity.
+  // A job is "active in the selected window" iff it was active in ANY ISO
+  // week that the inWindow() filter accepts. Bubble fields (TA, sourcer)
+  // are joined in by fuzzy title match when available.
   const jobOptions = useMemo(() => {
     const norm = (t) => (t || '').toLowerCase().replace(/[^a-z0-9]/g,'').slice(0, 40);
     const bubbleByKey = new Map();
     for (const j of jobsActive) bubbleByKey.set(norm(j.job_title), j);
 
-    const merged = [];
-    // Start with all Ashby-Open/Draft jobs
-    for (const aj of ashbyJobsOpen) {
+    const now = new Date();
+    const activeInWindow = ashbyJobsAll.filter(aj => ashbyActiveJobIds.has(aj.ashby_job_id));
+
+    return activeInWindow.map(aj => {
       const k = norm(aj.ashby_job_title);
       const bj = bubbleByKey.get(k);
-      merged.push({
+      const opened = aj.openedAt ? new Date(aj.openedAt) : null;
+      const closed = aj.closedAt ? new Date(aj.closedAt) : null;
+      const refDate = closed || now;
+      const days_open = opened ? Math.floor((refDate - opened) / 86400000) : 0;
+      return {
         job_id: bj?.job_id || aj.ashby_job_id,
+        ashby_job_id: aj.ashby_job_id,
         job_title: aj.ashby_job_title || bj?.job_title || '?',
-        days_open: aj.days_open ?? bj?.days_open ?? 0,
+        status: aj.status,
+        days_open,
         hires_total: bj?.hires_total ?? 0,
         job_recruiter: bj?.job_recruiter || '—',
         job_sourcer: bj?.job_sourcer || '—',
         in_bubble: !!bj,
         in_ashby: true,
-      });
-      if (bj) bubbleByKey.delete(k);
-    }
-    // Add any remaining Bubble jobs that didn't match Ashby
-    for (const [, bj] of bubbleByKey) {
-      merged.push({ ...bj, in_bubble: true, in_ashby: false });
-    }
-    return merged.sort((a, b) => (b.days_open || 0) - (a.days_open || 0));
-  }, [jobsActive, ashbyJobsOpen]);
+        is_currently_open: aj.status === 'Open' || aj.status === 'Draft',
+      };
+    }).sort((a, b) => {
+      // Currently-Open jobs first, then by days_open desc
+      if (a.is_currently_open !== b.is_currently_open) return a.is_currently_open ? -1 : 1;
+      return (b.days_open || 0) - (a.days_open || 0);
+    });
+  }, [jobsActive, ashbyJobsAll, ashbyActiveJobIds]);
   const selectedJob = jobsActive.find(j => j.job_id === jobFilter);
 
   // Sourced hired count for KPI
@@ -3698,7 +3751,7 @@ const IRTab = ({ data }) => {
 
       <div className="grid grid-cols-5 gap-3">
         {[
-          ['Active jobs', jobOptions.length],
+          ['Active jobs (in window)', jobOptions.length],
           ['Contacted', totals.contacted.toLocaleString()],
           ['Actual screens', totals.actual_screens],
           ['Sourced hired', sourcedHired],
@@ -3749,10 +3802,11 @@ const IRTab = ({ data }) => {
         </div>
 
         <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
-          <div className="text-sm font-medium text-white mb-3">Active jobs ({jobOptions.length})</div>
+          <div className="text-sm font-medium text-white mb-3">Active jobs in window ({jobOptions.length})</div>
           <table className="w-full text-xs">
             <thead><tr className="text-gray-400 text-left">
               <th className="pb-2 font-normal">Job</th>
+              <th className="pb-2 font-normal">Status</th>
               <th className="pb-2 font-normal text-right">Days</th>
               <th className="pb-2 font-normal text-right">Hired</th>
             </tr></thead>
@@ -3764,6 +3818,9 @@ const IRTab = ({ data }) => {
                   <td className="py-1 text-gray-200 truncate" title={j.in_ashby && !j.in_bubble ? `${j.job_title} (Ashby only — not tagged Tribe.xyz (IR) in Bubble)` : j.job_title}>
                     {j.job_title}
                     {j.in_ashby && !j.in_bubble && <span className="ml-1 text-xs text-amber-400" title="Ashby only — Bubble sourcing data unavailable">⚠</span>}
+                  </td>
+                  <td className="py-1">
+                    <span className={`px-1.5 py-0.5 text-xs rounded ${j.status === 'Open' ? 'bg-green-900 bg-opacity-50 text-green-300' : j.status === 'Draft' ? 'bg-blue-900 bg-opacity-50 text-blue-300' : j.status === 'Closed' ? 'bg-gray-700 text-gray-400' : 'bg-gray-700 text-gray-400'}`}>{j.status}</span>
                   </td>
                   <td className="py-1 text-right text-gray-300">{j.days_open}</td>
                   <td className="py-1 text-right text-gray-500">{j.hires_total}</td>

@@ -3493,11 +3493,9 @@ const IRTab = ({ data }) => {
   const matchesJob = (jobId) => jobFilter === 'all' || jobId === jobFilter;
 
   // Filtered datasets
-  // Bubble job_ids whose Ashby counterpart is active in the window
-  const activeBubbleJobIds = useMemo(() => new Set(jobOptions.map(j => j.job_id)), [jobOptions]);
   const f_funnel = useMemo(() =>
     funnelRows.filter(r => matchesJob(r.job_id) && inWindow(r.iso_week) && activeBubbleJobIds.has(r.job_id)),
-    [funnelRows, jobFilter, windowFilter, thisWeek, activeBubbleJobIds]);
+    [funnelRows, jobFilter, windowFilter, thisWeek]);
   const f_sourced = useMemo(() =>
     sourcedRows.filter(r => matchesJob(r.job_id) && inWindow(r.iso_week) && activeBubbleJobIds.has(r.job_id)
       && (sourcerFilter === 'all' || r.sourcer === sourcerFilter)),
@@ -3627,6 +3625,12 @@ const IRTab = ({ data }) => {
       return (b.days_open || 0) - (a.days_open || 0);
     });
   }, [jobsActive, ashbyJobsAll, ashbyActiveJobIds]);
+
+  // Set of Bubble job_ids whose Ashby counterpart is active in the window.
+  // Defined AFTER jobOptions because it depends on it (React hooks run
+  // top-to-bottom; const refs in the same component body are in temporal
+  // dead zone until their initializer runs).
+  const activeBubbleJobIds = useMemo(() => new Set(jobOptions.map(j => j.job_id)), [jobOptions]);
   const selectedJob = jobsActive.find(j => j.job_id === jobFilter);
 
   // Sourced hired count for KPI

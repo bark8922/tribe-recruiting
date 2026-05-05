@@ -1227,6 +1227,12 @@ const MBRTab = ({ data }) => {
   // Build TA-level rows (with targets and comments)
   const taRows = useMemo(() => {
     const targets = data.mbr_ta_targets || [];
+    // mbr_ta_targets rows hold *weekly* targets per (client, TA) — see
+    // WBR Target sheet "TA target" tab. The MBR view shows the last 4
+    // complete weeks of actuals, so per-TA targets must be scaled by
+    // weekCount (matches the client-level rollup above and the TS rollup
+    // which already sums 4 weekly targets).
+    const weekCount = MBR_WEEKS.length || 4;
     // Map of latest comment per normalized TA key (from ta_weekly_notes, picking latest week available)
     const latestNote = {};
     (data.ta_weekly_notes || []).forEach(n => {
@@ -1262,10 +1268,10 @@ const MBRTab = ({ data }) => {
         ats_12w: a.ats_12w || 0,
         screens_12w: a.screens_12w || 0,
         jobs_60d: a.jobs_60d || 0,
-        contacted_target: t.contacted || 0,
-        actual_screens_target: t.actual_screens || 0,
-        ats_target: t.moved_to_ats || 0,
-        hires_target: t.hires || 0,
+        contacted_target:      (Number(t.contacted)      || 0) * weekCount,
+        actual_screens_target: (Number(t.actual_screens) || 0) * weekCount,
+        ats_target:            (Number(t.moved_to_ats)   || 0) * weekCount,
+        hires_target:          (Number(t.hires)          || 0) * weekCount,
         pct_screens_to_hires: a.screens_12w > 0 ? Math.round((a.hires_12w || 0) / a.screens_12w * 100) : null,
         comment: note?.comment || note?.reasoning || '',
       });

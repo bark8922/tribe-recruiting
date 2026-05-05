@@ -3404,22 +3404,6 @@ const IRTab = ({ data }) => {
   const ashbyActive     = data.ir_ashby_active_pipeline || [];
   const ashbyDQReasons  = data.ir_ashby_dq_reasons      || [];
   const ashbyHires      = data.ir_ashby_hires           || [];
-  // Derive Ashby's currently-open jobs from ir_ashby_jobs_all (status Open or Draft).
-  // The pipeline used to emit ir_ashby_jobs_open but now emits ir_ashby_jobs_all
-  // (every job ever opened) so we filter client-side. days_open is computed from
-  // openedAt; closedAt is empty for live jobs.
-  const ashbyJobsOpen   = useMemo(() => {
-    const all = data.ir_ashby_jobs_all || [];
-    const now = Date.now();
-    return all
-      .filter(j => j.status === 'Open' || j.status === 'Draft')
-      .map(j => ({
-        ashby_job_id: j.ashby_job_id,
-        ashby_job_title: j.ashby_job_title,
-        status: j.status,
-        days_open: j.openedAt ? Math.floor((now - new Date(j.openedAt).getTime()) / 86400000) : 0,
-      }));
-  }, [data]);
   const hasAshby        = ashbyFunnel.length > 0 || ashbyHires.length > 0;
 
   const [jobFilter, setJobFilter]     = useState('all');
@@ -3557,38 +3541,50 @@ const IRTab = ({ data }) => {
     };
   }, [highlightTA, f_interviewed]);
 
-  // Job dropdown options — merge Bubble + Ashby active jobs.
-  // Bubble's ir_jobs_active misses jobs that aren't tagged 'Tribe.xyz (IR)'
-  // in Bubble (Beauty Industry, Country Mgr Berlin, etc.). Ashby is the
-  // authoritative source for "what's currently open for internal hiring".
+  // Job dropdown / Active Jobs panel — ACTIVITY-DRIVEN.
+  // A job is "active in the selected window" iff it has at least one row in
+  // funnelRows / sourcedRows / interviewedRows (within the window) where the
+  // contacted/screen/ats/etc. count is non-zero. This is the only honest
+  // definition: an Ashby req that's "Open" but nobody has touched is NOT
+  // active. Bubble's ir_jobs_active is a snapshot of "currently open" but
+  // includes stale reqs too — we don't trust that as the gate either.
   const jobOptions = useMemo(() => {
-    const norm = (t) => (t || '').toLowerCase().replace(/[^a-z0-9]/g,'').slice(0, 40);
-    const bubbleByKey = new Map();
-    for (const j of jobsActive) bubbleByKey.set(norm(j.job_title), j);
+    const FUNNEL_KEYS = ['contacted','pos_response','rec_screens','actual_screens','ats','onsite','culture','call_w_client','offered','hired'];
+    const activeIds = new Set();
+    const titleByJobId = new Map();
 
-    const merged = [];
-    // Start with all Ashby-Open/Draft jobs
-    for (const aj of ashbyJobsOpen) {
-      const k = norm(aj.ashby_job_title);
-      const bj = bubbleByKey.get(k);
-      merged.push({
-        job_id: bj?.job_id || aj.ashby_job_id,
-        job_title: aj.ashby_job_title || bj?.job_title || '?',
-        days_open: aj.days_open ?? bj?.days_open ?? 0,
+    for (const r of funnelRows) {
+      if (!inWindow(r.iso_week)) continue;
+      const has = FUNNEL_KEYS.some(k => (r[k] || 0) > 0);
+      if (has) activeIds.add(r.job_id);
+    }
+    for (const r of sourcedRows) {
+      if (!inWindow(r.iso_week)) continue;
+      if ((r.contacted || 0) > 0 || (r.pos_response || 0) > 0 || (r.hired || 0) > 0) activeIds.add(r.job_id);
+    }
+    for (const r of interviewedRows) {
+      if (!inWindow(r.iso_week)) continue;
+      if ((r.actual_screens || 0) > 0) activeIds.add(r.job_id);
+    }
+
+    // Resolve titles + Bubble metadata from ir_jobs_active when available
+    const bubbleById = new Map();
+    for (const j of jobsActive) bubbleById.set(j.job_id, j);
+
+    return [...activeIds].map(jid => {
+      const bj = bubbleById.get(jid);
+      return {
+        job_id: jid,
+        job_title: bj?.job_title || titleByJobId.get(jid) || '(historic Bubble job)',
+        days_open: bj?.days_open ?? 0,
         hires_total: bj?.hires_total ?? 0,
         job_recruiter: bj?.job_recruiter || '—',
         job_sourcer: bj?.job_sourcer || '—',
         in_bubble: !!bj,
-        in_ashby: true,
-      });
-      if (bj) bubbleByKey.delete(k);
-    }
-    // Add any remaining Bubble jobs that didn't match Ashby
-    for (const [, bj] of bubbleByKey) {
-      merged.push({ ...bj, in_bubble: true, in_ashby: false });
-    }
-    return merged.sort((a, b) => (b.days_open || 0) - (a.days_open || 0));
-  }, [jobsActive, ashbyJobsOpen]);
+        in_ashby: false,
+      };
+    }).sort((a, b) => (b.days_open || 0) - (a.days_open || 0));
+  }, [funnelRows, sourcedRows, interviewedRows, jobsActive, windowFilter, thisWeek]);
   const selectedJob = jobsActive.find(j => j.job_id === jobFilter);
 
   // Sourced hired count for KPI

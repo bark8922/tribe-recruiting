@@ -71,9 +71,11 @@ def run_ashby(flat, ashby_key):
     staging = flat / "refresh_staging"
     sys.path.insert(0, str(staging))
     try:
-        import asyncio
         import ashby_extract
-        counts = asyncio.run(ashby_extract.extract_all(ashby_key, staging, fetch_history=True))
+        # extract_all is a sync function (stdlib urllib + ThreadPoolExecutor),
+        # not a coroutine — call it directly. Earlier version mistakenly wrapped
+        # in asyncio.run(); fixed 2026-05-05 after first failed run.
+        counts = ashby_extract.extract_all(ashby_key, staging, fetch_history=True)
         print("[run_ashby] extracted: " + str(counts), flush=True)
     except Exception as e:
         print("[run_ashby] WARN failed: " + type(e).__name__ + ": " + str(e), flush=True)

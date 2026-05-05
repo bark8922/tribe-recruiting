@@ -1277,7 +1277,16 @@ const MBRTab = ({ data }) => {
       });
     });
     const groupOrder = { 'Dolphins/Whales': 0, 'Ponies/Unicorns': 1 };
-    return result.sort((a, b) => {
+    // Mia filter (matches TS rollup below): hide TA rows with no activity in
+    // the MBR window AND no 12w activity AND no open >60d jobs AND no comment.
+    // A target alone shouldn't keep a TA on the list — happens when someone
+    // (e.g. Grover/Rodrigo Gomez) is in the target sheet but has rolled off.
+    const filtered = result.filter((r) =>
+      (r.contacted > 0) || (r.actual_screens > 0) || (r.ats > 0) || (r.hires > 0) ||
+      (r.hires_12w > 0) || (r.screens_12w > 0) || (r.ats_12w > 0) ||
+      (r.jobs_60d > 0) || !!r.comment
+    );
+    return filtered.sort((a, b) => {
       const ga = groupOrder[a.team_group] ?? 2;
       const gb = groupOrder[b.team_group] ?? 2;
       if (ga !== gb) return ga - gb;

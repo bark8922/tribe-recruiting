@@ -5,7 +5,7 @@
 WITH ir_job AS (
   SELECT j."job_id" FROM "KEBOOLA_855"."out.c-reporting-v2"."job" j
   JOIN "KEBOOLA_855"."out.c-reporting-v2"."client" cl ON cl."client_id" = j."client_id"
-  WHERE cl."client_name" = 'Tribe.xyz (IR)'
+  WHERE cl."client_name" IN ('Tribe.xyz (IR)', 'Tribe.xyz')
     AND LOWER(NULLIF(j."test",'')) <> 'true'
     AND NULLIF(j."job_title",'') IS NOT NULL
 ),

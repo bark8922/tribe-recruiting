@@ -62,21 +62,47 @@ def stage_inputs(ci, flat):
 
 
 def run_ashby(flat, ashby_key):
-    """Fetch Ashby data into flat/refresh_staging/ashby_*.json. Best-effort:
-    if the key is missing or the fetch fails, log and skip. render_json.py
-    handles missing files gracefully."""
+    """Fetch Ashby data via incremental sync. Reads baseline JSONs from the
+    cloned repo and writes updated ones into the flat staging dir for
+    render_json.py to consume.
+
+    v2 design (2026-05-05): NEVER blocks the flow.
+    - Hard 180s deadline; partial results OK (incremental persists progress).
+    - Wraps everything in try/except — failures log WARN and skip Ashby
+      step entirely. render_json.py's _ir_load() falls back to live JSON.
+    - Uses /application.list only (NOT /application.info, which exploded the
+      previous v1 to 15+ min). Loses stage-entry timestamps but keeps current
+      stage, status, archive reason — enough for the IR tab v1.
+    - Reads ashby_*_baseline.json from the cloned repo as the seed; writes
+      ashby_jobs.json + ashby_applications.json + sync_tokens.json into
+      staging for downstream consumption.
+    """
     if not ashby_key:
-        print("[run_ashby] no #ashby_api_key set, skipping (Phase 2b not yet plumbed in)", flush=True)
+        print("[run_ashby] no #ashby_api_key, skipping", flush=True)
         return
     staging = flat / "refresh_staging"
     sys.path.insert(0, str(staging))
     try:
         import ashby_extract
-        # extract_all is a sync function (stdlib urllib + ThreadPoolExecutor),
-        # not a coroutine — call it directly. Earlier version mistakenly wrapped
-        # in asyncio.run(); fixed 2026-05-05 after first failed run.
-        counts = ashby_extract.extract_all(ashby_key, staging, fetch_history=True)
-        print("[run_ashby] extracted: " + str(counts), flush=True)
+        import shutil
+        # Seed staging with baseline files (the cloned repo has ashby_*_baseline.json)
+        for src_name, dst_name in [
+            ("ashby_jobs_baseline.json",        "ashby_jobs.json"),
+            ("ashby_applications_baseline.json","ashby_applications.json"),
+            ("ashby_sync_tokens_baseline.json", "sync_tokens.json"),
+        ]:
+            src_p = staging / src_name
+            if src_p.exists():
+                shutil.copy(src_p, staging / dst_name)
+        result = ashby_extract.extract_all(
+            api_key=ashby_key,
+            output_dir=staging,
+            mode="incremental",
+            baseline_dir=staging,
+            max_seconds=180,
+            max_workers=4,
+        )
+        print("[run_ashby] " + str(result), flush=True)
     except Exception as e:
         print("[run_ashby] WARN failed: " + type(e).__name__ + ": " + str(e), flush=True)
 
@@ -149,14 +175,7 @@ def main():
     flat.mkdir(parents=True)
 
     stage_inputs(ci, flat)
-    # Phase 2b Ashby fetch DISABLED 2026-05-05 — first prod run hit 15+ min
-    # because fetch_jobs() pulled all 79 jobs across all statuses x ~100 apps
-    # each x 1 /application.info call. Restoring prior 3-4 min flow baseline
-    # while we redesign the extractor with a proper time budget + only
-    # active jobs + only fetch history for advanced-stage apps. The Ashby
-    # MCP-side scoping fix (c1ba95d) is in but the flow stays decoupled
-    # until we load-test the leaner version end-to-end.
-    # run_ashby(flat, ashby_key)
+    run_ashby(flat, ashby_key)  # v2 lean+incremental, 180s deadline, best-effort
     out_path = run_render(flat)
     content = out_path.read_text(encoding="utf-8")
 

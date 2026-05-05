@@ -1,68 +1,40 @@
-"""ashby_extract.py — Ashby REST API extractor for the Internal Recruiting tab.
+"""ashby_extract.py — Ashby REST extractor for the IR tab. v2 lean+incremental.
 
-Phase 2b extractor that fetches the right side of the IR funnel from Ashby
-(stages where Bubble is sparse: Onsite, Culture Interview, Call with Client,
-Offer, Hired) plus structured archive reasons and active pipeline depth.
+Phase 2b v2 architecture (post-rollback redesign 2026-05-05):
+    Step 1 — ONE-TIME BASELINE (~2 min, slow):
+        Run with --mode=baseline once to fetch every Tribe app via
+        /job.list + /application.list across all 4 statuses. Output committed
+        to repo as ashby_jobs.json + ashby_applications.json + sync_tokens.json.
 
-Architecture:
-    Ashby REST API  →  ashby_extract.py (this file)  →  ashby_*.json files
-                                                              ↓
-                                          render_json.py reads + aggregates
-                                                              ↓
-                                           ir_ashby_* sections in output JSON
-                                                              ↓
-                                                  IR tab merges Bubble + Ashby
+    Step 2 — INCREMENTAL (default, ~10s every Keboola run):
+        Reads baseline + sync_tokens.json from --baseline-dir.
+        For each job whose syncToken is known, calls /application.list with
+        that token to get ONLY the apps that changed. Merges into the baseline
+        (replacing apps with the same id) and writes the updated files.
+        Saves the new sync_tokens.json so the next run picks up from there.
 
-Why direct REST instead of the Ashby MCP:
-    The MCP is for interactive AI use; it dropped 3x during scoping. n8n's
-    refresh job needs Python code it can call directly, on a 2-hour cycle.
-    Same pattern as Bubble→Snowflake (Keboola does the ETL there; here we
-    own it because Keboola has no native Ashby extractor).
+What we DELIBERATELY don't fetch:
+    /application.info (per-app full history). It's 1 call per app × ~15k apps
+    = 15-30 min. The previous "v1" version fetched this and broke the flow's
+    3-4 min baseline. Without it we lose stage-entry timestamps but keep:
+      - currentInterviewStage (where each app is now)
+      - status (Active/Archived/Hired/Lead)
+      - archiveReason (clean DQ taxonomy)
+      - createdAt / updatedAt / archivedAt timestamps
+      - candidate + job + creditedToUser metadata
+    That's enough for the IR tab v1 (right-side funnel current depth, hire
+    list, DQ pie, archive timing).
 
-Stdlib-only implementation:
-    Uses urllib + concurrent.futures.ThreadPoolExecutor. No third-party deps,
-    so it runs on the bare Keboola Custom Python runtime without needing
-    pip-installed packages. ~1500 calls × 100ms ≈ 30s with 8 worker threads.
+Auth: HTTP Basic, API key as username, empty password. Cloudflare WAF in
+front of api.ashbyhq.com requires a non-default User-Agent (verified
+2026-05-04: error 1010 on default urllib UA).
 
-Auth:
-    Ashby uses HTTP Basic with the API key as username, empty password.
-    Get a key from Ashby: Settings → Integrations → API Keys → New Key.
-    Required scopes: candidates:read, applications:read, jobs:read,
-    interviews:read, offers:read.
-    Pass via env var ASHBY_API_KEY or Keboola component parameter
-    `#ashby_api_key`.
+Scope filter: brand_id = 4380b3f0-8d17-4c9a-9a78-9d943c68a404 (Tribe.xyz).
 
-Cloudflare WAF:
-    api.ashbyhq.com is fronted by Cloudflare which 403s requests with the
-    default urllib User-Agent (error 1010). We always send a custom UA.
-
-Scope filter:
-    Tribe.xyz brand id = 4380b3f0-8d17-4c9a-9a78-9d943c68a404
-    All Tribe internal hiring is under this brand.
-
-Endpoints used (all POST with JSON body):
-    /job.list           — all jobs in the brand (Open, Draft, Closed, Archived)
-    /application.list   — applications per job (filter by jobId)
-    /application.info   — full application incl. embedded applicationHistory
-                          (no separate /applicationHistory.list endpoint exists)
-    /interviewPlan.list — interview plans
-    /interviewStage.list — stages per interview plan
-    /offer.list         — offer records
-
-Output files (written to OUTPUT_DIR):
-    ashby_jobs.json                   — flat list of jobs (Tribe brand only)
-    ashby_applications.json           — flat list of applications
-    ashby_application_history.json    — flat list of stage transitions
-                                        (one row per stage entered, with applicationId)
-    ashby_interview_stages.json       — stage_id → stage_name lookup
-    ashby_offers.json                 — offer records
-
-Pagination:
-    Ashby returns {results, moreDataAvailable, nextCursor, syncToken}.
-    Pass nextCursor on subsequent calls to paginate.
-
-Rate limit / retry:
-    8 worker threads, exponential backoff on 429/5xx, max 3 retries per call.
+Hard time budget: extract_all() respects max_seconds (default 60s) and
+returns partial results with status=timeout if it can't finish — never
+blocks the caller indefinitely. Critical for the Keboola flow which has
+its own runtime budget.
 """
 from __future__ import annotations
 
@@ -75,241 +47,314 @@ import sys
 import time
 import urllib.error
 import urllib.request
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Any
 
 ASHBY_API = "https://api.ashbyhq.com"
 TRIBE_BRAND_ID = "4380b3f0-8d17-4c9a-9a78-9d943c68a404"
-
 USER_AGENT = "tribe-recruiting-dashboard/1.0 (ashby_extract.py)"
+DEFAULT_MAX_SECONDS = 60
+DEFAULT_MAX_WORKERS = 4
 
-ENDPOINTS = {
-    "jobs":                 "/job.list",
-    "applications":         "/application.list",
-    "application_info":     "/application.info",
-    "interview_plans":      "/interviewPlan.list",
-    "interview_stages":     "/interviewStage.list",
-    "offers":               "/offer.list",
-}
+# Field whitelist for trimmed output (full /application.list rows are ~2KB
+# each; trimming to needed fields gets us to ~500B avg. 15k apps fit in 8MB
+# instead of 28MB, which matters for the git-cloned baseline.)
+def _trim_application(a: dict) -> dict:
+    return {
+        "id": a["id"],
+        "status": a.get("status"),
+        "createdAt": a.get("createdAt"),
+        "updatedAt": a.get("updatedAt"),
+        "archivedAt": a.get("archivedAt"),
+        "currentInterviewStage": (
+            {"title": (a.get("currentInterviewStage") or {}).get("title"),
+             "type":  (a.get("currentInterviewStage") or {}).get("type")}
+            if a.get("currentInterviewStage") else None
+        ),
+        "archiveReason": (
+            {"text": (a.get("archiveReason") or {}).get("text")}
+            if a.get("archiveReason") else None
+        ),
+        "job": (
+            {"id":    (a.get("job") or {}).get("id"),
+             "title": (a.get("job") or {}).get("title")}
+            if a.get("job") else None
+        ),
+        "candidate": (
+            {"id":   (a.get("candidate") or {}).get("id"),
+             "name": (a.get("candidate") or {}).get("name")}
+            if a.get("candidate") else None
+        ),
+        "creditedToUser": (
+            {"id":        (a.get("creditedToUser") or {}).get("id"),
+             "firstName": (a.get("creditedToUser") or {}).get("firstName"),
+             "lastName":  (a.get("creditedToUser") or {}).get("lastName")}
+            if a.get("creditedToUser") else None
+        ),
+    }
+
+
+def _trim_job(j: dict) -> dict:
+    return {
+        "id": j["id"],
+        "title": j.get("title"),
+        "status": j.get("status"),
+        "departmentId": j.get("departmentId"),
+        "locationId": j.get("locationId"),
+        "createdAt": j.get("createdAt"),
+        "updatedAt": j.get("updatedAt"),
+        "openedAt": j.get("openedAt"),
+        "closedAt": j.get("closedAt"),
+        "brandId": j.get("brandId"),
+        "hiringTeam": j.get("hiringTeam") or [],
+    }
+
 
 log = logging.getLogger("ashby_extract")
 
 
-def _auth_header(api_key: str) -> str:
-    raw = f"{api_key}:".encode("utf-8")
-    return "Basic " + base64.b64encode(raw).decode("ascii")
+def _auth(api_key: str) -> str:
+    return "Basic " + base64.b64encode(f"{api_key}:".encode()).decode()
 
 
 def _post(api_key: str, path: str, body: dict | None = None, max_retries: int = 3) -> dict:
-    """POST to Ashby with retries on 429/5xx. Returns parsed JSON dict."""
     body = body or {}
     headers = {
-        "Authorization": _auth_header(api_key),
+        "Authorization": _auth(api_key),
         "Content-Type": "application/json",
         "Accept": "application/json",
         "User-Agent": USER_AGENT,
     }
-    url = ASHBY_API + path
-    payload = json.dumps(body).encode("utf-8")
-    last_err: Exception | None = None
+    payload = json.dumps(body).encode()
     for attempt in range(max_retries + 1):
-        req = urllib.request.Request(url, data=payload, headers=headers, method="POST")
+        req = urllib.request.Request(ASHBY_API + path, data=payload,
+                                     headers=headers, method="POST")
         try:
-            with urllib.request.urlopen(req, timeout=60) as r:
+            with urllib.request.urlopen(req, timeout=30) as r:
                 data = json.loads(r.read())
                 if not data.get("success", True):
                     raise RuntimeError(f"Ashby API error on {path}: {data.get('errors')}")
                 return data
         except urllib.error.HTTPError as e:
-            last_err = e
             if e.code in (429, 500, 502, 503, 504) and attempt < max_retries:
-                wait = 2 ** attempt
-                log.warning("Ashby HTTP %d on %s, retry in %ds", e.code, path, wait)
-                time.sleep(wait)
+                time.sleep(1.0 + attempt)
                 continue
-            try:
-                body_text = e.read().decode()[:300]
-            except Exception:
-                body_text = "(unreadable body)"
-            raise RuntimeError(f"Ashby HTTP {e.code} on {path}: {body_text}") from e
+            raise RuntimeError(f"Ashby HTTP {e.code} on {path}: {e.read().decode()[:200]}") from e
         except urllib.error.URLError as e:
-            last_err = e
             if attempt < max_retries:
-                wait = 2 ** attempt
-                log.warning("Ashby network error on %s (%s), retry in %ds", path, e, wait)
-                time.sleep(wait)
+                time.sleep(1.0 + attempt)
                 continue
             raise
-    if last_err:
-        raise last_err
-    raise RuntimeError(f"Unexpected fall-through on {path}")
 
 
-def _paginate(api_key: str, path: str, base_body: dict, page_delay: float = 0.1) -> list[dict]:
-    """Paginate through an Ashby /list endpoint."""
-    results: list[dict] = []
+def _paginate(api_key: str, path: str, body: dict) -> tuple[list[dict], str | None]:
+    """Returns (results, last_sync_token)."""
+    out: list[dict] = []
     cursor: str | None = None
-    page = 0
+    sync_token: str | None = None
     while True:
-        body = dict(base_body)
+        b = dict(body)
         if cursor:
-            body["cursor"] = cursor
-        data = _post(api_key, path, body)
-        page += 1
-        results.extend(data.get("results", []) or [])
-        if not data.get("moreDataAvailable") or not data.get("nextCursor"):
+            b["cursor"] = cursor
+        d = _post(api_key, path, b)
+        out.extend(d.get("results", []) or [])
+        sync_token = d.get("syncToken") or sync_token
+        if not d.get("moreDataAvailable") or not d.get("nextCursor"):
             break
-        cursor = data["nextCursor"]
-        time.sleep(page_delay)
-        if page > 200:
-            log.warning("Pagination cap hit on %s after %d pages", path, page)
-            break
-    return results
+        cursor = d["nextCursor"]
+    return out, sync_token
 
 
-def fetch_jobs(api_key: str, statuses: tuple = ("Open", "Draft")) -> list[dict]:
-    """Tribe-brand jobs in the given statuses (default: Open + Draft only).
-
-    Restricting to active statuses keeps the downstream /application.info fetch
-    bounded — at ~50-300 apps per Closed/Archived job, fetching all statuses
-    blows up to 5,000-15,000 application.info calls and a 15+ min runtime.
-    For the IR tab we only need data from currently-active jobs anyway.
-    Pass statuses=("Open","Draft","Closed","Archived") for a full historical pull.
-    """
-    all_jobs = []
+def fetch_jobs(api_key: str, statuses: tuple = ("Open", "Draft", "Closed", "Archived")) -> list[dict]:
+    """Tribe-brand jobs in given statuses. Default = all statuses for baseline."""
+    out = []
     for status in statuses:
-        results = _paginate(api_key, ENDPOINTS["jobs"], {"status": [status]})
+        results, _ = _paginate(api_key, "/job.list", {"status": [status]})
         for j in results:
-            brand_id = j.get("brandId") or (j.get("brand") or {}).get("id")
-            if brand_id == TRIBE_BRAND_ID:
-                all_jobs.append(j)
-    log.info("Fetched %d Tribe-brand jobs (statuses=%s)", len(all_jobs), statuses)
-    return all_jobs
+            if (j.get("brandId") or (j.get("brand") or {}).get("id")) == TRIBE_BRAND_ID:
+                out.append(_trim_job(j))
+    log.info("Fetched %d Tribe-brand jobs (statuses=%s)", len(out), statuses)
+    return out
 
 
-def fetch_applications_for_job(api_key: str, job_id: str) -> list[dict]:
-    """All applications for a single job (Active + Archived + Hired + Lead)."""
-    return _paginate(api_key, ENDPOINTS["applications"], {"jobId": job_id})
+def fetch_applications_for_job(api_key: str, job_id: str,
+                                sync_token: str | None = None) -> tuple[list[dict], str | None]:
+    """Apps for a job. With sync_token, returns ONLY apps changed since."""
+    body = {"jobId": job_id}
+    if sync_token:
+        body["syncToken"] = sync_token
+    apps, new_token = _paginate(api_key, "/application.list", body)
+    return [_trim_application(a) for a in apps], new_token
 
 
-def fetch_application_info(api_key: str, application_id: str) -> dict:
-    """Full application info including embedded applicationHistory.
+def extract_all(
+    api_key: str,
+    output_dir: Path | str,
+    mode: str = "incremental",
+    baseline_dir: Path | str | None = None,
+    max_seconds: int = DEFAULT_MAX_SECONDS,
+    max_workers: int = DEFAULT_MAX_WORKERS,
+) -> dict[str, Any]:
+    """Run the extractor.
 
-    Ashby has no /applicationHistory.list endpoint (verified 404 on 2026-05-04).
-    The history is EMBEDDED in /application.info as `applicationHistory`,
-    where each entry is {id, stageId, title, stageNumber, enteredStageAt,
-    leftStageAt (omitted on current stage), actorId}.
-    """
-    data = _post(api_key, ENDPOINTS["application_info"], {"applicationId": application_id})
-    return data.get("results") or {}
+    mode='baseline'    — full pull across all statuses. Use ONCE to seed.
+                         Output: ashby_jobs.json + ashby_applications.json
+                                 + sync_tokens.json.
+    mode='incremental' — read baseline_dir, fetch only changes via syncTokens,
+                         merge, write to output_dir. Use this for every
+                         scheduled refresh.
 
-
-def fetch_interview_stages(api_key: str) -> list[dict]:
-    """All interview stages across all plans (for stage_id → name + plan title)."""
-    plans = _paginate(api_key, ENDPOINTS["interview_plans"], {})
-    all_stages = []
-    for plan in plans:
-        try:
-            stages = _paginate(api_key, ENDPOINTS["interview_stages"], {"interviewPlanId": plan["id"]})
-        except Exception as e:
-            log.warning("Stage fetch failed for plan %s: %s", plan["id"], e)
-            stages = []
-        for s in stages:
-            s["interviewPlanId"] = plan["id"]
-            s["interviewPlanTitle"] = plan.get("title")
-        all_stages.extend(stages)
-    return all_stages
-
-
-def fetch_offers(api_key: str) -> list[dict]:
-    """All offers (filter to Tribe brand applications client-side)."""
-    return _paginate(api_key, ENDPOINTS["offers"], {})
-
-
-def extract_all(api_key: str, output_dir: Path | str, fetch_history: bool = True,
-                max_workers: int = 12) -> dict[str, int]:
-    """Run the full extract. Writes 5 JSON files into output_dir.
-
-    Returns counts per file for logging.
+    Returns: {mode, jobs_count, apps_count, changed_count, elapsed_s, status}
+    where status = 'ok' | 'timeout' | 'no_baseline'.
     """
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
-    counts: dict[str, int] = {}
+    baseline_dir = Path(baseline_dir) if baseline_dir else output_dir
+    t0 = time.time()
+    deadline = t0 + max_seconds
 
+    if mode == "baseline":
+        return _run_baseline(api_key, output_dir, deadline, max_workers, t0)
+    elif mode == "incremental":
+        return _run_incremental(api_key, output_dir, baseline_dir, deadline, max_workers, t0)
+    else:
+        raise ValueError(f"Unknown mode: {mode!r} (expected 'baseline' or 'incremental')")
+
+
+def _run_baseline(api_key, output_dir, deadline, max_workers, t0):
+    log.info("=== BASELINE mode (one-time full pull) ===")
     jobs = fetch_jobs(api_key)
+    if time.time() > deadline:
+        return {"mode": "baseline", "jobs_count": len(jobs), "apps_count": 0,
+                "elapsed_s": time.time() - t0, "status": "timeout"}
     (output_dir / "ashby_jobs.json").write_text(json.dumps(jobs, indent=2, ensure_ascii=False))
-    counts["jobs"] = len(jobs)
 
-    # Applications per job — parallel
     all_apps: list[dict] = []
+    tokens: dict[str, str] = {}
+
+    def fetch_one(j):
+        if time.time() > deadline:
+            return j["id"], [], None, "timeout"
+        try:
+            apps, tok = fetch_applications_for_job(api_key, j["id"])
+            return j["id"], apps, tok, None
+        except Exception as e:
+            return j["id"], [], None, str(e)[:120]
+
+    errors = []
     with ThreadPoolExecutor(max_workers=max_workers) as ex:
-        for apps in ex.map(lambda j: fetch_applications_for_job(api_key, j["id"]), jobs):
-            all_apps.extend(apps)
+        for jid, apps, tok, err in ex.map(fetch_one, jobs):
+            if err:
+                errors.append({"job_id": jid, "error": err})
+            else:
+                all_apps.extend(apps)
+                if tok:
+                    tokens[jid] = tok
+
     (output_dir / "ashby_applications.json").write_text(json.dumps(all_apps, indent=2, ensure_ascii=False))
-    counts["applications"] = len(all_apps)
+    (output_dir / "sync_tokens.json").write_text(json.dumps(tokens, indent=2))
 
-    if fetch_history:
-        history_apps = [a for a in all_apps if a.get("status") != "Lead"]
-        log.info("Fetching application history for %d apps (skipping %d Leads)",
-                 len(history_apps), len(all_apps) - len(history_apps))
-        histories: list[dict] = []
-
-        def _hist_for(app):
-            try:
-                info = fetch_application_info(api_key, app["id"])
-                hist = info.get("applicationHistory") or []
-                for h in hist:
-                    h["applicationId"] = app["id"]
-                return hist
-            except Exception as e:
-                log.warning("History fetch failed for app %s: %s", app["id"], e)
-                return []
-
-        with ThreadPoolExecutor(max_workers=max_workers) as ex:
-            for hist in ex.map(_hist_for, history_apps):
-                histories.extend(hist)
-        (output_dir / "ashby_application_history.json").write_text(json.dumps(histories, indent=2, ensure_ascii=False))
-        counts["application_history"] = len(histories)
-
-    stages = fetch_interview_stages(api_key)
-    (output_dir / "ashby_interview_stages.json").write_text(json.dumps(stages, indent=2, ensure_ascii=False))
-    counts["interview_stages"] = len(stages)
-
-    offers = fetch_offers(api_key)
-    (output_dir / "ashby_offers.json").write_text(json.dumps(offers, indent=2, ensure_ascii=False))
-    counts["offers"] = len(offers)
-
-    return counts
+    elapsed = time.time() - t0
+    status = "timeout" if time.time() > deadline else "ok"
+    log.info("baseline complete: %d jobs, %d apps, %d tokens, %d errors, %.1fs",
+             len(jobs), len(all_apps), len(tokens), len(errors), elapsed)
+    return {"mode": "baseline", "jobs_count": len(jobs), "apps_count": len(all_apps),
+            "tokens_count": len(tokens), "errors": errors,
+            "elapsed_s": elapsed, "status": status}
 
 
-def main(argv: list[str] | None = None) -> int:
+def _run_incremental(api_key, output_dir, baseline_dir, deadline, max_workers, t0):
+    log.info("=== INCREMENTAL mode ===")
+    bjobs_p = baseline_dir / "ashby_jobs.json"
+    bapps_p = baseline_dir / "ashby_applications.json"
+    btoks_p = baseline_dir / "sync_tokens.json"
+    if not (bjobs_p.exists() and bapps_p.exists() and btoks_p.exists()):
+        log.error("Baseline files missing in %s — run --mode=baseline once first", baseline_dir)
+        return {"mode": "incremental", "elapsed_s": time.time() - t0, "status": "no_baseline"}
+
+    jobs = json.loads(bjobs_p.read_text())
+    apps_by_id: dict[str, dict] = {a["id"]: a for a in json.loads(bapps_p.read_text())}
+    tokens: dict[str, str] = json.loads(btoks_p.read_text())
+
+    # Refresh job list — only Open+Draft (the ones taking new apps). Closed/
+    # Archived jobs are already in the baseline and won't change. Cuts the
+    # incremental fetch from 79 jobs to ~12, keeping wall time under 30s.
+    fresh_jobs = fetch_jobs(api_key, statuses=("Open", "Draft"))
+    # Merge with baseline jobs so we don't lose closed/archived in the output
+    baseline_job_ids = {j["id"] for j in fresh_jobs}
+    for j in jobs:
+        if j["id"] not in baseline_job_ids:
+            fresh_jobs.append(j)
+    job_ids_now = {j["id"] for j in fresh_jobs}
+    # Detect new jobs (no token yet) so they get a full pull, not incremental
+    new_job_ids = job_ids_now - set(tokens.keys())
+    if new_job_ids:
+        log.info("Detected %d new jobs since baseline (no token, will full-pull)", len(new_job_ids))
+
+    def fetch_one(j):
+        if time.time() > deadline:
+            return j["id"], [], None, "timeout"
+        try:
+            tok = tokens.get(j["id"])  # None for new jobs → full pull
+            apps, new_tok = fetch_applications_for_job(api_key, j["id"], tok)
+            return j["id"], apps, new_tok, None
+        except Exception as e:
+            return j["id"], [], None, str(e)[:120]
+
+    changed_count = 0
+    errors = []
+    with ThreadPoolExecutor(max_workers=max_workers) as ex:
+        for jid, apps, new_tok, err in ex.map(fetch_one, fresh_jobs):
+            if err:
+                errors.append({"job_id": jid, "error": err})
+                continue
+            if new_tok:
+                tokens[jid] = new_tok
+            for a in apps:
+                apps_by_id[a["id"]] = a  # upsert
+                changed_count += 1
+            if time.time() > deadline:
+                log.warning("incremental sync hit time budget; partial results saved")
+                break
+
+    # Persist
+    (output_dir / "ashby_jobs.json").write_text(json.dumps(fresh_jobs, indent=2, ensure_ascii=False))
+    (output_dir / "ashby_applications.json").write_text(
+        json.dumps(list(apps_by_id.values()), indent=2, ensure_ascii=False))
+    (output_dir / "sync_tokens.json").write_text(json.dumps(tokens, indent=2))
+
+    elapsed = time.time() - t0
+    status = "timeout" if time.time() > deadline else "ok"
+    log.info("incremental complete: %d jobs, %d apps total (%d changed), %d errors, %.1fs",
+             len(fresh_jobs), len(apps_by_id), changed_count, len(errors), elapsed)
+    return {"mode": "incremental", "jobs_count": len(fresh_jobs),
+            "apps_count": len(apps_by_id), "changed_count": changed_count,
+            "errors": errors, "elapsed_s": elapsed, "status": status}
+
+
+def main(argv=None):
     parser = argparse.ArgumentParser(description="Extract Ashby data for the IR tab.")
-    parser.add_argument("--output-dir", required=True, type=Path,
-                        help="Directory to write ashby_*.json files into.")
-    parser.add_argument("--api-key", default=os.environ.get("ASHBY_API_KEY"),
-                        help="Ashby API key. Defaults to $ASHBY_API_KEY.")
-    parser.add_argument("--skip-history", action="store_true",
-                        help="Skip per-application history fetch (faster, but loses stage timestamps).")
-    parser.add_argument("--max-workers", type=int, default=8)
+    parser.add_argument("--mode", choices=("baseline", "incremental"), default="incremental")
+    parser.add_argument("--output-dir", required=True, type=Path)
+    parser.add_argument("--baseline-dir", type=Path)
+    parser.add_argument("--api-key", default=os.environ.get("ASHBY_API_KEY"))
+    parser.add_argument("--max-seconds", type=int, default=DEFAULT_MAX_SECONDS)
+    parser.add_argument("--max-workers", type=int, default=DEFAULT_MAX_WORKERS)
     parser.add_argument("--log-level", default="INFO")
     args = parser.parse_args(argv)
-
-    logging.basicConfig(
-        level=getattr(logging, args.log_level.upper()),
-        format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-        datefmt="%Y-%m-%d %H:%M:%S",
-    )
+    logging.basicConfig(level=getattr(logging, args.log_level.upper()),
+        format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
     if not args.api_key:
         log.error("ASHBY_API_KEY not set and --api-key not provided")
         return 2
-
-    counts = extract_all(args.api_key, args.output_dir,
-                         fetch_history=not args.skip_history,
+    result = extract_all(args.api_key, args.output_dir, mode=args.mode,
+                         baseline_dir=args.baseline_dir,
+                         max_seconds=args.max_seconds,
                          max_workers=args.max_workers)
-    log.info("Extract complete: %s", counts)
-    print(json.dumps({"status": "ok", "counts": counts, "output_dir": str(args.output_dir)}))
-    return 0
+    log.info("done: %s", result)
+    print(json.dumps(result))
+    return 0 if result.get("status") == "ok" else 1
 
 
 if __name__ == "__main__":

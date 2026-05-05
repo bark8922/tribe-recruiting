@@ -1,0 +1,1812 @@
+[
+  {
+    "id": "615be379-7e1f-4fc3-bf09-54c021e3c406",
+    "title": "Talent Acquisition Partner (German speaker)",
+    "status": "Open",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2025-04-21T13:14:49.361Z",
+    "updatedAt": "2026-02-17T12:34:30.987Z",
+    "openedAt": "2025-04-21T13:16:01.188Z",
+    "closedAt": null,
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "c46fddcd-5a87-4203-8ab3-975cb3a09851",
+        "firstName": "Jacopo",
+        "lastName": "Lupo Ferrari",
+        "email": "jacopo@tribe.xyz",
+        "role": "Hiring Manager"
+      },
+      {
+        "userId": "f4ce4f9c-4848-46e7-92cf-4e6263191381",
+        "firstName": "Lisa",
+        "lastName": "Gargulinska",
+        "email": "lisa@tribe.xyz",
+        "role": "Recruiter"
+      }
+    ]
+  },
+  {
+    "id": "1cf7d56a-d0bb-4d98-a44b-47311f351213",
+    "title": "(Senior) Talent Acquisition Partner - Remote",
+    "status": "Open",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2025-04-21T13:15:56.481Z",
+    "updatedAt": "2025-06-03T15:27:36.903Z",
+    "openedAt": "2025-04-21T13:16:22.180Z",
+    "closedAt": null,
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "c46fddcd-5a87-4203-8ab3-975cb3a09851",
+        "firstName": "Jacopo",
+        "lastName": "Lupo Ferrari",
+        "email": "jacopo@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "8548333e-881e-4f5b-8f88-04251b0a8dc5",
+    "title": "Talent Sourcer (German Speaker)",
+    "status": "Open",
+    "departmentId": "6da7fb3a-6b1f-4e84-b5eb-0579d15b3e93",
+    "locationId": "fce07755-76ef-40bc-b183-d1590b5c16a3",
+    "createdAt": "2025-07-28T13:15:20.952Z",
+    "updatedAt": "2025-11-20T13:47:44.179Z",
+    "openedAt": "2025-07-28T13:27:42.161Z",
+    "closedAt": null,
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "c46fddcd-5a87-4203-8ab3-975cb3a09851",
+        "firstName": "Jacopo",
+        "lastName": "Lupo Ferrari",
+        "email": "jacopo@tribe.xyz",
+        "role": "Hiring Manager"
+      },
+      {
+        "userId": "88a29d6a-5815-444c-8a19-91eb2697bab7",
+        "firstName": "Sanja",
+        "lastName": "Pavlovikj",
+        "email": "sanja.pavlovikj@tribe.xyz",
+        "role": "Recruiting Coordinator"
+      }
+    ]
+  },
+  {
+    "id": "398cc0bd-14cf-4637-9a97-143fbb30965e",
+    "title": "(Senior) Tech Talent Acquisition Partner",
+    "status": "Open",
+    "departmentId": "ea818567-ef91-48af-86c6-376953fcbbac",
+    "locationId": "fce07755-76ef-40bc-b183-d1590b5c16a3",
+    "createdAt": "2025-08-15T13:49:04.352Z",
+    "updatedAt": "2025-08-19T13:27:12.724Z",
+    "openedAt": "2025-08-15T13:58:04.898Z",
+    "closedAt": null,
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "88a29d6a-5815-444c-8a19-91eb2697bab7",
+        "firstName": "Sanja",
+        "lastName": "Pavlovikj",
+        "email": "sanja.pavlovikj@tribe.xyz",
+        "role": "Recruiting Coordinator"
+      },
+      {
+        "userId": "f4ce4f9c-4848-46e7-92cf-4e6263191381",
+        "firstName": "Lisa",
+        "lastName": "Gargulinska",
+        "email": "lisa@tribe.xyz",
+        "role": "Recruiter"
+      }
+    ]
+  },
+  {
+    "id": "039dca36-4bbe-4ad4-b0c4-a78104227a90",
+    "title": "Tech Talent Acquisition Partner (APAC)",
+    "status": "Open",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "ff4142e4-3af6-498b-9230-5ace51aa5a3e",
+    "createdAt": "2026-03-27T11:38:54.599Z",
+    "updatedAt": "2026-03-27T13:02:51.277Z",
+    "openedAt": "2026-03-27T11:48:33.805Z",
+    "closedAt": null,
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "01ebf2a1-cf11-4d46-8418-10e7200fd422",
+        "firstName": "Salem",
+        "lastName": "Mansuri",
+        "email": "salem@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "71defd22-cc1d-4854-a767-4fa584eb64ff",
+    "title": "Tech Talent Sourcer - Immediate Start",
+    "status": "Open",
+    "departmentId": "6da7fb3a-6b1f-4e84-b5eb-0579d15b3e93",
+    "locationId": "6d1f05c2-47a0-4052-ac7c-10d8ed6ddacc",
+    "createdAt": "2026-04-14T15:01:54.739Z",
+    "updatedAt": "2026-04-17T11:44:09.348Z",
+    "openedAt": "2026-04-14T15:02:16.576Z",
+    "closedAt": null,
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "659d631c-844e-4de8-a099-25cf14863179",
+        "firstName": "Kristjana",
+        "lastName": "Thorarinsdottir",
+        "email": "kristjana@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "97cfea87-5979-4767-a3de-1a9bf60117d1",
+    "title": "Senior Talent Acquisition Partner (Beauty Industry)",
+    "status": "Open",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "c6481e6c-b209-4743-ba2d-3cbbcaf32589",
+    "createdAt": "2026-04-28T14:15:08.325Z",
+    "updatedAt": "2026-04-28T14:15:55.504Z",
+    "openedAt": "2026-04-28T14:15:55.426Z",
+    "closedAt": null,
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe",
+        "firstName": "Martin",
+        "lastName": "Bernard",
+        "email": "martin@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "21c0c02d-f5f2-4be3-adfb-711c0161a460",
+    "title": "Recruitment Operations Specialist - Hebrew speaking",
+    "status": "Draft",
+    "departmentId": "ea818567-ef91-48af-86c6-376953fcbbac",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2025-04-18T15:53:01.398Z",
+    "updatedAt": "2025-04-18T16:15:53.216Z",
+    "openedAt": null,
+    "closedAt": null,
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "659d631c-844e-4de8-a099-25cf14863179",
+        "firstName": "Kristjana",
+        "lastName": "Thorarinsdottir",
+        "email": "kristjana@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "b4a5a169-2020-44dd-9fc8-4a4d71bf1b66",
+    "title": "Talent Acquisition Partner - (Greek speaker)",
+    "status": "Draft",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2025-04-21T13:18:17.563Z",
+    "updatedAt": "2026-01-28T13:42:55.390Z",
+    "openedAt": null,
+    "closedAt": null,
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": []
+  },
+  {
+    "id": "81df8256-dfdc-40d3-b000-6a8ca27950d7",
+    "title": "Senior Talent Sourcer (Remote)",
+    "status": "Draft",
+    "departmentId": "6da7fb3a-6b1f-4e84-b5eb-0579d15b3e93",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2025-04-21T13:18:38.862Z",
+    "updatedAt": "2025-08-12T15:02:29.718Z",
+    "openedAt": null,
+    "closedAt": null,
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": []
+  },
+  {
+    "id": "281350db-0046-479f-8a88-c9fe03293294",
+    "title": "Junior TA | Greek Speaker",
+    "status": "Draft",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2025-04-21T13:25:42.479Z",
+    "updatedAt": "2025-04-21T13:25:48.609Z",
+    "openedAt": null,
+    "closedAt": null,
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": []
+  },
+  {
+    "id": "111073dc-da2a-41e1-9fca-93a2532eeae5",
+    "title": "Copywriter",
+    "status": "Closed",
+    "departmentId": "a55c1fff-38a1-4072-9047-9d4611139476",
+    "locationId": "fce07755-76ef-40bc-b183-d1590b5c16a3",
+    "createdAt": "2025-03-14T11:58:42.976Z",
+    "updatedAt": "2025-03-21T15:24:06.464Z",
+    "openedAt": "2025-03-14T12:39:12.861Z",
+    "closedAt": "2025-03-19T14:03:55.162Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "d9f02ddf-0a88-4213-8f1a-2f0a0ccafd37",
+        "firstName": "Blake",
+        "lastName": "Barkley",
+        "email": "blake@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "21507d57-5350-4a5c-a1be-01e2b6df6ec9",
+    "title": "Talent Acquisition Partner - (Czech speaker)",
+    "status": "Closed",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2025-04-18T12:03:47.085Z",
+    "updatedAt": "2025-05-28T11:49:06.473Z",
+    "openedAt": "2025-04-21T13:14:00.844Z",
+    "closedAt": "2025-05-20T13:34:12.063Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe",
+        "firstName": "Martin",
+        "lastName": "Bernard",
+        "email": "martin@tribe.xyz",
+        "role": "Hiring Manager"
+      },
+      {
+        "userId": "f4ce4f9c-4848-46e7-92cf-4e6263191381",
+        "firstName": "Lisa",
+        "lastName": "Gargulinska",
+        "email": "lisa@tribe.xyz",
+        "role": "Recruiter"
+      }
+    ]
+  },
+  {
+    "id": "ddb6cbe1-2136-4adc-ac72-8ee8ebaaa4c1",
+    "title": "(Senior) Talent Acquisition Partner - Bulgaria",
+    "status": "Closed",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "a26b3f16-3ffa-401d-a1d4-62dc7cd6d1e4",
+    "createdAt": "2025-04-18T20:08:39.273Z",
+    "updatedAt": "2025-05-28T11:48:52.537Z",
+    "openedAt": "2025-04-18T20:09:48.140Z",
+    "closedAt": "2025-05-20T13:33:51.935Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "ed9b060f-6f59-43c0-8737-ba3a65d28c2c",
+        "firstName": "Tijana",
+        "lastName": "Lazovic",
+        "email": "tijana@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "3bdf4ba8-f162-4a02-902a-6e64bb0f9c2f",
+    "title": "(Senior) Tech Talent Acquisition Partner - Remote",
+    "status": "Closed",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2025-04-21T13:17:22.656Z",
+    "updatedAt": "2025-05-28T11:49:03.989Z",
+    "openedAt": "2025-04-22T18:05:05.987Z",
+    "closedAt": "2025-05-19T11:18:14.586Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": []
+  },
+  {
+    "id": "a277be91-da17-4fe4-8e76-42bc6ecc4372",
+    "title": "(Senior) Talent Acquisition Partner - Russian speaker",
+    "status": "Closed",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2025-04-21T13:19:39.162Z",
+    "updatedAt": "2025-05-28T11:49:05.327Z",
+    "openedAt": "2025-04-22T18:07:39.753Z",
+    "closedAt": "2025-05-20T13:34:06.728Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": []
+  },
+  {
+    "id": "d2250d98-1190-428d-9607-66205accf933",
+    "title": "Principal Marketing Expert",
+    "status": "Closed",
+    "departmentId": "f50c0351-6465-4f62-9f25-d85bbfa06685",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2025-04-23T13:37:05.066Z",
+    "updatedAt": "2025-08-12T10:10:04.900Z",
+    "openedAt": "2025-04-23T13:52:47.178Z",
+    "closedAt": "2025-08-12T10:10:04.876Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe",
+        "firstName": "Martin",
+        "lastName": "Bernard",
+        "email": "martin@tribe.xyz",
+        "role": "Hiring Manager"
+      },
+      {
+        "userId": "f4ce4f9c-4848-46e7-92cf-4e6263191381",
+        "firstName": "Lisa",
+        "lastName": "Gargulinska",
+        "email": "lisa@tribe.xyz",
+        "role": "Recruiter"
+      }
+    ]
+  },
+  {
+    "id": "3681ce5c-68e7-46f6-a535-499d41d3c839",
+    "title": "(Senior) Tech Talent Acquisition Partner - Remote",
+    "status": "Closed",
+    "departmentId": "ea818567-ef91-48af-86c6-376953fcbbac",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2025-05-09T17:17:19.964Z",
+    "updatedAt": "2025-08-25T13:26:29.495Z",
+    "openedAt": "2025-05-09T17:19:48.486Z",
+    "closedAt": "2025-08-25T13:26:29.485Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "659d631c-844e-4de8-a099-25cf14863179",
+        "firstName": "Kristjana",
+        "lastName": "Thorarinsdottir",
+        "email": "kristjana@tribe.xyz",
+        "role": "Hiring Manager"
+      },
+      {
+        "userId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe",
+        "firstName": "Martin",
+        "lastName": "Bernard",
+        "email": "martin@tribe.xyz",
+        "role": "Hiring Manager"
+      },
+      {
+        "userId": "88a29d6a-5815-444c-8a19-91eb2697bab7",
+        "firstName": "Sanja",
+        "lastName": "Pavlovikj",
+        "email": "sanja.pavlovikj@tribe.xyz",
+        "role": "Recruiter"
+      }
+    ]
+  },
+  {
+    "id": "1e413b83-299d-47d3-82a5-57698aca613a",
+    "title": "Talent Coordinator (Remote)",
+    "status": "Closed",
+    "departmentId": "e5bfe78e-ca3e-4914-b5a2-61b6086b4b83",
+    "locationId": "eba25651-d2fe-4ad6-887d-02537895cf6e",
+    "createdAt": "2025-05-26T04:26:28.597Z",
+    "updatedAt": "2025-06-30T17:33:51.516Z",
+    "openedAt": "2025-05-26T04:31:16.933Z",
+    "closedAt": "2025-06-03T14:43:07.985Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "f4ce4f9c-4848-46e7-92cf-4e6263191381",
+        "firstName": "Lisa",
+        "lastName": "Gargulinska",
+        "email": "lisa@tribe.xyz",
+        "role": "Recruiter"
+      },
+      {
+        "userId": "ed9b060f-6f59-43c0-8737-ba3a65d28c2c",
+        "firstName": "Tijana",
+        "lastName": "Lazovic",
+        "email": "tijana@tribe.xyz",
+        "role": "Hiring Manager"
+      },
+      {
+        "userId": "c46fddcd-5a87-4203-8ab3-975cb3a09851",
+        "firstName": "Jacopo",
+        "lastName": "Lupo Ferrari",
+        "email": "jacopo@tribe.xyz",
+        "role": "Recruiter"
+      }
+    ]
+  },
+  {
+    "id": "165c47f1-9b0f-4d9e-8d25-fce9a5861653",
+    "title": "Executive Assistant",
+    "status": "Closed",
+    "departmentId": "89cc713a-1be0-439f-bbb0-746db1f78b01",
+    "locationId": "fce07755-76ef-40bc-b183-d1590b5c16a3",
+    "createdAt": "2025-05-29T08:31:06.085Z",
+    "updatedAt": "2025-06-23T15:23:44.390Z",
+    "openedAt": "2025-05-29T08:37:39.453Z",
+    "closedAt": "2025-06-23T15:23:44.375Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "659d631c-844e-4de8-a099-25cf14863179",
+        "firstName": "Kristjana",
+        "lastName": "Thorarinsdottir",
+        "email": "kristjana@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "456f3c6a-37b5-411e-a40f-4bf7bd654f52",
+    "title": "Talent Acquisition Partner (Greek speaker)",
+    "status": "Closed",
+    "departmentId": "ea818567-ef91-48af-86c6-376953fcbbac",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2025-05-29T12:08:42.334Z",
+    "updatedAt": "2025-06-16T10:28:03.699Z",
+    "openedAt": "2025-05-29T12:54:38.199Z",
+    "closedAt": "2025-06-16T10:28:03.687Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe",
+        "firstName": "Martin",
+        "lastName": "Bernard",
+        "email": "martin@tribe.xyz",
+        "role": "Hiring Manager"
+      },
+      {
+        "userId": "659d631c-844e-4de8-a099-25cf14863179",
+        "firstName": "Kristjana",
+        "lastName": "Thorarinsdottir",
+        "email": "kristjana@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "438d319a-b1a5-427a-be46-d4a5ade5c7ac",
+    "title": "Talent Acquisition Partner - Hebrew Speaker",
+    "status": "Closed",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2025-06-16T11:46:47.486Z",
+    "updatedAt": "2025-07-03T11:47:57.612Z",
+    "openedAt": "2025-06-16T11:58:26.597Z",
+    "closedAt": "2025-07-03T11:47:57.603Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "659d631c-844e-4de8-a099-25cf14863179",
+        "firstName": "Kristjana",
+        "lastName": "Thorarinsdottir",
+        "email": "kristjana@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "9bb3e951-3c0a-4681-953b-8b49a5a55072",
+    "title": "Recruitment Coordinator - Hebrew Speaker",
+    "status": "Closed",
+    "departmentId": "e5bfe78e-ca3e-4914-b5a2-61b6086b4b83",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2025-06-16T11:58:53.088Z",
+    "updatedAt": "2025-07-01T14:44:25.236Z",
+    "openedAt": "2025-06-16T12:01:18.421Z",
+    "closedAt": "2025-07-01T14:44:25.224Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "659d631c-844e-4de8-a099-25cf14863179",
+        "firstName": "Kristjana",
+        "lastName": "Thorarinsdottir",
+        "email": "kristjana@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "cb433cda-c460-470b-87b0-3ea5ddc0c2d7",
+    "title": "Data Entry Specialist - Hebrew Speaker",
+    "status": "Closed",
+    "departmentId": "e5bfe78e-ca3e-4914-b5a2-61b6086b4b83",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2025-06-16T12:01:47.281Z",
+    "updatedAt": "2025-06-26T16:22:46.166Z",
+    "openedAt": "2025-06-16T12:04:11.842Z",
+    "closedAt": "2025-06-26T16:22:46.154Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "659d631c-844e-4de8-a099-25cf14863179",
+        "firstName": "Kristjana",
+        "lastName": "Thorarinsdottir",
+        "email": "kristjana@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "d2462fa0-5410-46c2-b2a8-ed2906ded6de",
+    "title": "Talent Acquisition Partner - French Speaker",
+    "status": "Closed",
+    "departmentId": "ea818567-ef91-48af-86c6-376953fcbbac",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2025-06-25T12:39:01.003Z",
+    "updatedAt": "2025-07-03T11:43:32.251Z",
+    "openedAt": "2025-06-25T12:49:26.372Z",
+    "closedAt": "2025-07-03T11:43:32.242Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "ed9b060f-6f59-43c0-8737-ba3a65d28c2c",
+        "firstName": "Tijana",
+        "lastName": "Lazovic",
+        "email": "tijana@tribe.xyz",
+        "role": "Hiring Manager"
+      },
+      {
+        "userId": "01ebf2a1-cf11-4d46-8418-10e7200fd422",
+        "firstName": "Salem",
+        "lastName": "Mansuri",
+        "email": "salem@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "e8479384-81c5-4b0a-b590-c49a79805566",
+    "title": "Gaming Talent Acquisition Partner (Art & Creative) - Russian speaker",
+    "status": "Closed",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "ce6ff524-a6fc-43f4-a5c9-28054cbacc8f",
+    "createdAt": "2025-07-07T16:27:33.730Z",
+    "updatedAt": "2025-12-05T17:33:10.757Z",
+    "openedAt": "2025-10-02T15:42:56.612Z",
+    "closedAt": "2025-12-05T17:33:10.747Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "c46fddcd-5a87-4203-8ab3-975cb3a09851",
+        "firstName": "Jacopo",
+        "lastName": "Lupo Ferrari",
+        "email": "jacopo@tribe.xyz",
+        "role": "Hiring Manager"
+      },
+      {
+        "userId": "ed9b060f-6f59-43c0-8737-ba3a65d28c2c",
+        "firstName": "Tijana",
+        "lastName": "Lazovic",
+        "email": "tijana@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "5683dfef-38d3-4ae1-add8-9cbad04f617e",
+    "title": "(Senior) Tech Talent Acquisition Partner - Design & Product",
+    "status": "Closed",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "fce07755-76ef-40bc-b183-d1590b5c16a3",
+    "createdAt": "2025-07-18T09:14:18.460Z",
+    "updatedAt": "2025-07-25T14:12:51.181Z",
+    "openedAt": "2025-07-18T09:15:44.998Z",
+    "closedAt": "2025-07-25T14:12:51.171Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "ed9b060f-6f59-43c0-8737-ba3a65d28c2c",
+        "firstName": "Tijana",
+        "lastName": "Lazovic",
+        "email": "tijana@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "5b72a2a4-b38f-4774-af0a-5c7d927bd774",
+    "title": "Talent Coordinator (Fixed-term)",
+    "status": "Closed",
+    "departmentId": "e5bfe78e-ca3e-4914-b5a2-61b6086b4b83",
+    "locationId": "ff4142e4-3af6-498b-9230-5ace51aa5a3e",
+    "createdAt": "2025-07-18T10:43:49.264Z",
+    "updatedAt": "2025-07-31T14:27:57.603Z",
+    "openedAt": "2025-07-18T10:50:10.969Z",
+    "closedAt": "2025-07-31T14:27:57.555Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "659d631c-844e-4de8-a099-25cf14863179",
+        "firstName": "Kristjana",
+        "lastName": "Thorarinsdottir",
+        "email": "kristjana@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "fa74ad21-bb99-4a85-806f-6dffd2590c23",
+    "title": "Talent Sourcer (Fixed-term)",
+    "status": "Closed",
+    "departmentId": "6da7fb3a-6b1f-4e84-b5eb-0579d15b3e93",
+    "locationId": "ff4142e4-3af6-498b-9230-5ace51aa5a3e",
+    "createdAt": "2025-07-18T10:50:49.469Z",
+    "updatedAt": "2025-10-03T12:10:05.210Z",
+    "openedAt": "2025-09-08T09:37:09.317Z",
+    "closedAt": "2025-10-03T12:10:05.188Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "659d631c-844e-4de8-a099-25cf14863179",
+        "firstName": "Kristjana",
+        "lastName": "Thorarinsdottir",
+        "email": "kristjana@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "47954cf6-1be0-4545-adf4-786a4775ddf5",
+    "title": "Talent Acquisition Partner (Volume)",
+    "status": "Closed",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "fce07755-76ef-40bc-b183-d1590b5c16a3",
+    "createdAt": "2025-07-28T13:58:56.214Z",
+    "updatedAt": "2025-08-08T09:29:24.003Z",
+    "openedAt": "2025-07-28T14:02:40.608Z",
+    "closedAt": "2025-08-08T09:29:23.989Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "659d631c-844e-4de8-a099-25cf14863179",
+        "firstName": "Kristjana",
+        "lastName": "Thorarinsdottir",
+        "email": "kristjana@tribe.xyz",
+        "role": "Hiring Manager"
+      },
+      {
+        "userId": "88a29d6a-5815-444c-8a19-91eb2697bab7",
+        "firstName": "Sanja",
+        "lastName": "Pavlovikj",
+        "email": "sanja.pavlovikj@tribe.xyz",
+        "role": "Recruiting Coordinator"
+      }
+    ]
+  },
+  {
+    "id": "3cce3e2b-04cd-451a-9257-d76ed2f32599",
+    "title": "Volume Talent Acquisition Partner - Russian Speaker",
+    "status": "Closed",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2025-08-04T08:08:13.533Z",
+    "updatedAt": "2025-09-05T11:26:24.909Z",
+    "openedAt": "2025-08-04T08:40:26.015Z",
+    "closedAt": "2025-09-05T11:26:24.899Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "c46fddcd-5a87-4203-8ab3-975cb3a09851",
+        "firstName": "Jacopo",
+        "lastName": "Lupo Ferrari",
+        "email": "jacopo@tribe.xyz",
+        "role": "Hiring Manager"
+      },
+      {
+        "userId": "88a29d6a-5815-444c-8a19-91eb2697bab7",
+        "firstName": "Sanja",
+        "lastName": "Pavlovikj",
+        "email": "sanja.pavlovikj@tribe.xyz",
+        "role": "Recruiting Coordinator"
+      },
+      {
+        "userId": "d6ab2676-5190-489e-b55e-e98123ed9a5f",
+        "firstName": "Elena",
+        "lastName": "Rodriguez",
+        "email": "elenar@tribe.xyz",
+        "role": "Sourcer"
+      },
+      {
+        "userId": "8e86d250-8359-4aab-ad00-4d91cf300819",
+        "firstName": "Chantal",
+        "lastName": "Bozkurt",
+        "email": "chantal@tribe.xyz",
+        "role": "Sourcer"
+      }
+    ]
+  },
+  {
+    "id": "b2239baf-0792-4522-a743-8a394f36711d",
+    "title": "Technical Talent Sourcer",
+    "status": "Closed",
+    "departmentId": "ea818567-ef91-48af-86c6-376953fcbbac",
+    "locationId": "0a0ffffe-014e-4eeb-b23b-da038f863fa0",
+    "createdAt": "2025-08-20T08:00:46.026Z",
+    "updatedAt": "2025-08-29T13:35:56.247Z",
+    "openedAt": "2025-08-20T08:04:12.233Z",
+    "closedAt": "2025-08-29T13:35:56.230Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "95ecd10e-d1d7-48b4-a890-06c1ab84c199",
+        "firstName": "Ella",
+        "lastName": "Darie",
+        "email": "ella@tribe.xyz",
+        "role": "Recruiting Coordinator"
+      },
+      {
+        "userId": "d9f02ddf-0a88-4213-8f1a-2f0a0ccafd37",
+        "firstName": "Blake",
+        "lastName": "Barkley",
+        "email": "blake@tribe.xyz",
+        "role": "Recruiter"
+      },
+      {
+        "userId": "19ae00c7-9fd7-4da6-ae18-80d4428a8800",
+        "firstName": "Jovana",
+        "lastName": "Drakula",
+        "email": "jovana@tribe.xyz",
+        "role": "Recruiter"
+      },
+      {
+        "userId": "3e6a3500-1cd8-4da3-90d4-f45a6a4275d7",
+        "firstName": "Elena",
+        "lastName": "Gjorgieva",
+        "email": "elenagjorgieva@tribe.xyz",
+        "role": "Sourcer"
+      },
+      {
+        "userId": "ed9b060f-6f59-43c0-8737-ba3a65d28c2c",
+        "firstName": "Tijana",
+        "lastName": "Lazovic",
+        "email": "tijana@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "153cc082-f442-47a6-9a13-5c8400fd0e89",
+    "title": "Commercial Talent Acquisition Partner - Russian Speaker",
+    "status": "Closed",
+    "departmentId": "ea818567-ef91-48af-86c6-376953fcbbac",
+    "locationId": "fce07755-76ef-40bc-b183-d1590b5c16a3",
+    "createdAt": "2025-08-21T14:50:49.384Z",
+    "updatedAt": "2025-09-04T13:45:05.706Z",
+    "openedAt": "2025-08-21T15:04:43.226Z",
+    "closedAt": "2025-09-04T13:45:05.666Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "88a29d6a-5815-444c-8a19-91eb2697bab7",
+        "firstName": "Sanja",
+        "lastName": "Pavlovikj",
+        "email": "sanja.pavlovikj@tribe.xyz",
+        "role": "Recruiting Coordinator"
+      },
+      {
+        "userId": "f4ce4f9c-4848-46e7-92cf-4e6263191381",
+        "firstName": "Lisa",
+        "lastName": "Gargulinska",
+        "email": "lisa@tribe.xyz",
+        "role": "Recruiter"
+      }
+    ]
+  },
+  {
+    "id": "cd633142-beb8-46fa-a976-3d1895b4ff1d",
+    "title": "Volume Talent Acquisition Partner (fixed-term) - Greek speaker",
+    "status": "Closed",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "cf289263-0069-4115-af8a-84a6c59c8372",
+    "createdAt": "2025-09-02T13:57:44.151Z",
+    "updatedAt": "2025-09-30T13:21:29.649Z",
+    "openedAt": "2025-09-02T14:30:48.933Z",
+    "closedAt": "2025-09-30T13:21:29.638Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "659d631c-844e-4de8-a099-25cf14863179",
+        "firstName": "Kristjana",
+        "lastName": "Thorarinsdottir",
+        "email": "kristjana@tribe.xyz",
+        "role": "Hiring Manager"
+      },
+      {
+        "userId": "d05cdcef-1e3c-4f34-b6e8-f716285ed945",
+        "firstName": "Iryna",
+        "lastName": "Dyda",
+        "email": "irynadyda@tribe.xyz",
+        "role": "Recruiter"
+      },
+      {
+        "userId": "f4ce4f9c-4848-46e7-92cf-4e6263191381",
+        "firstName": "Lisa",
+        "lastName": "Gargulinska",
+        "email": "lisa@tribe.xyz",
+        "role": "Recruiter"
+      },
+      {
+        "userId": "88a29d6a-5815-444c-8a19-91eb2697bab7",
+        "firstName": "Sanja",
+        "lastName": "Pavlovikj",
+        "email": "sanja.pavlovikj@tribe.xyz",
+        "role": "Recruiting Coordinator"
+      }
+    ]
+  },
+  {
+    "id": "71bc599f-e6ac-4757-bec2-87eeded0cd59",
+    "title": "Tech Talent Acquisition Partner (fixed-term)",
+    "status": "Closed",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "6d1f05c2-47a0-4052-ac7c-10d8ed6ddacc",
+    "createdAt": "2025-09-22T15:06:41.099Z",
+    "updatedAt": "2025-12-03T14:35:11.643Z",
+    "openedAt": "2025-09-22T15:16:23.240Z",
+    "closedAt": "2025-12-03T14:35:11.627Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "88a29d6a-5815-444c-8a19-91eb2697bab7",
+        "firstName": "Sanja",
+        "lastName": "Pavlovikj",
+        "email": "sanja.pavlovikj@tribe.xyz",
+        "role": "Recruiting Coordinator"
+      },
+      {
+        "userId": "d05cdcef-1e3c-4f34-b6e8-f716285ed945",
+        "firstName": "Iryna",
+        "lastName": "Dyda",
+        "email": "irynadyda@tribe.xyz",
+        "role": "Recruiter"
+      },
+      {
+        "userId": "659d631c-844e-4de8-a099-25cf14863179",
+        "firstName": "Kristjana",
+        "lastName": "Thorarinsdottir",
+        "email": "kristjana@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "643953da-fe16-4195-9e87-c4998573a8bb",
+    "title": "Commercial Talent Acquisition Partner (fixed-term)",
+    "status": "Closed",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "ff4142e4-3af6-498b-9230-5ace51aa5a3e",
+    "createdAt": "2025-09-25T09:55:40.837Z",
+    "updatedAt": "2025-10-20T12:39:33.139Z",
+    "openedAt": "2025-09-25T09:56:23.198Z",
+    "closedAt": "2025-10-20T12:39:33.130Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "659d631c-844e-4de8-a099-25cf14863179",
+        "firstName": "Kristjana",
+        "lastName": "Thorarinsdottir",
+        "email": "kristjana@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "a34fe515-2040-4fdd-860a-d1423f660732",
+    "title": "Principal of Brand & Partnerships",
+    "status": "Closed",
+    "departmentId": "89cc713a-1be0-439f-bbb0-746db1f78b01",
+    "locationId": "44b05052-8143-4200-aa1a-01e4372a4c39",
+    "createdAt": "2025-10-15T09:37:17.122Z",
+    "updatedAt": "2025-12-19T15:10:56.753Z",
+    "openedAt": "2025-10-15T09:50:03.631Z",
+    "closedAt": "2025-12-19T15:10:56.715Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe",
+        "firstName": "Martin",
+        "lastName": "Bernard",
+        "email": "martin@tribe.xyz",
+        "role": "Hiring Manager"
+      },
+      {
+        "userId": "cd103f7e-c97d-4cf9-a04e-f7d68a4051ea",
+        "firstName": "Anastasija",
+        "lastName": "Dugalic",
+        "email": "anastasija@tribe.xyz",
+        "role": "Recruiter"
+      },
+      {
+        "userId": "d05cdcef-1e3c-4f34-b6e8-f716285ed945",
+        "firstName": "Iryna",
+        "lastName": "Dyda",
+        "email": "irynadyda@tribe.xyz",
+        "role": "Sourcer"
+      },
+      {
+        "userId": "c46fddcd-5a87-4203-8ab3-975cb3a09851",
+        "firstName": "Jacopo",
+        "lastName": "Lupo Ferrari",
+        "email": "jacopo@tribe.xyz",
+        "role": "Hiring Manager"
+      },
+      {
+        "userId": "52b1d236-43fa-49e6-95ee-a77184ef55dc",
+        "firstName": "Rossella",
+        "lastName": "Petrillo",
+        "email": "rossella@tribe.xyz",
+        "role": "Recruiter"
+      }
+    ]
+  },
+  {
+    "id": "02a99b31-9254-4896-9a80-6a6ec70e29a8",
+    "title": "Talent Acquisition Partner (NY & SF)",
+    "status": "Closed",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "22edb2e6-d3bd-4ad4-adf6-4f232a1c6485",
+    "createdAt": "2025-10-16T11:08:56.457Z",
+    "updatedAt": "2025-10-21T08:46:51.254Z",
+    "openedAt": "2025-10-16T12:27:48.817Z",
+    "closedAt": "2025-10-21T08:46:51.237Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "659d631c-844e-4de8-a099-25cf14863179",
+        "firstName": "Kristjana",
+        "lastName": "Thorarinsdottir",
+        "email": "kristjana@tribe.xyz",
+        "role": "Hiring Manager"
+      },
+      {
+        "userId": "d05cdcef-1e3c-4f34-b6e8-f716285ed945",
+        "firstName": "Iryna",
+        "lastName": "Dyda",
+        "email": "irynadyda@tribe.xyz",
+        "role": "Recruiter"
+      }
+    ]
+  },
+  {
+    "id": "90000d4c-0a42-4ba8-8e75-f27239487dce",
+    "title": "Country Manager - Berlin (People & Talent Ecosystem)",
+    "status": "Closed",
+    "departmentId": "89cc713a-1be0-439f-bbb0-746db1f78b01",
+    "locationId": "a9df22d9-2e21-4a9c-98c9-d3f4e6f73d3e",
+    "createdAt": "2025-10-17T08:50:20.339Z",
+    "updatedAt": "2026-05-05T09:50:39.002Z",
+    "openedAt": "2025-10-17T09:14:36.438Z",
+    "closedAt": "2026-05-05T09:50:38.987Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "01ebf2a1-cf11-4d46-8418-10e7200fd422",
+        "firstName": "Salem",
+        "lastName": "Mansuri",
+        "email": "salem@tribe.xyz",
+        "role": "Hiring Manager"
+      },
+      {
+        "userId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe",
+        "firstName": "Martin",
+        "lastName": "Bernard",
+        "email": "martin@tribe.xyz",
+        "role": "Hiring Manager"
+      },
+      {
+        "userId": "c46fddcd-5a87-4203-8ab3-975cb3a09851",
+        "firstName": "Jacopo",
+        "lastName": "Lupo Ferrari",
+        "email": "jacopo@tribe.xyz",
+        "role": "Hiring Manager"
+      },
+      {
+        "userId": "bde79381-54b2-4f62-aafa-3753df682648",
+        "firstName": "Mia",
+        "lastName": "Gjorgievska",
+        "email": "mia@tribe.xyz",
+        "role": "Sourcer"
+      },
+      {
+        "userId": "88a29d6a-5815-444c-8a19-91eb2697bab7",
+        "firstName": "Sanja",
+        "lastName": "Pavlovikj",
+        "email": "sanja.pavlovikj@tribe.xyz",
+        "role": "Recruiting Coordinator"
+      }
+    ]
+  },
+  {
+    "id": "a2ef8452-0fc8-4376-9e51-e22b22056c60",
+    "title": "Tech Talent Acquisition Partner (U.S. Market)",
+    "status": "Closed",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "989a3573-52cc-427e-8d5c-6ccf85712285",
+    "createdAt": "2025-10-17T15:15:35.577Z",
+    "updatedAt": "2025-11-10T08:40:49.722Z",
+    "openedAt": "2025-10-17T15:16:35.962Z",
+    "closedAt": "2025-11-10T08:40:49.712Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "ed9b060f-6f59-43c0-8737-ba3a65d28c2c",
+        "firstName": "Tijana",
+        "lastName": "Lazovic",
+        "email": "tijana@tribe.xyz",
+        "role": "Hiring Manager"
+      },
+      {
+        "userId": "d05cdcef-1e3c-4f34-b6e8-f716285ed945",
+        "firstName": "Iryna",
+        "lastName": "Dyda",
+        "email": "irynadyda@tribe.xyz",
+        "role": "Recruiter"
+      },
+      {
+        "userId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe",
+        "firstName": "Martin",
+        "lastName": "Bernard",
+        "email": "martin@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "80ed9299-7377-400c-86cc-ac561cc158c3",
+    "title": "(Sales) Talent Acquisition Partner - German speaker",
+    "status": "Closed",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "b68424cd-e642-4bf4-b81d-a18d22736ae2",
+    "createdAt": "2025-10-28T13:32:40.834Z",
+    "updatedAt": "2025-12-02T15:27:17.387Z",
+    "openedAt": "2025-10-28T13:33:15.049Z",
+    "closedAt": "2025-12-02T15:27:17.368Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe",
+        "firstName": "Martin",
+        "lastName": "Bernard",
+        "email": "martin@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "a27d9f9d-8b06-435a-9474-aca484bcdd2b",
+    "title": "Volume Talent Acquisition Partner (Hebrew speaker)",
+    "status": "Closed",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "42884824-cb34-496a-a4e4-39ac6bcefdf1",
+    "createdAt": "2025-10-30T11:10:02.061Z",
+    "updatedAt": "2025-12-09T10:00:46.185Z",
+    "openedAt": "2025-10-30T11:10:23.671Z",
+    "closedAt": "2025-12-09T10:00:46.176Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "659d631c-844e-4de8-a099-25cf14863179",
+        "firstName": "Kristjana",
+        "lastName": "Thorarinsdottir",
+        "email": "kristjana@tribe.xyz",
+        "role": "Hiring Manager"
+      },
+      {
+        "userId": "c46fddcd-5a87-4203-8ab3-975cb3a09851",
+        "firstName": "Jacopo",
+        "lastName": "Lupo Ferrari",
+        "email": "jacopo@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "94f0d1d5-7a52-4e69-923d-00ab194569c8",
+    "title": "Senior Talent Acquisition Partner (Sales Hiring) - LATAM",
+    "status": "Closed",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "bb3724d0-7acc-4680-adaa-2c56a66d18df",
+    "createdAt": "2025-11-18T16:05:07.379Z",
+    "updatedAt": "2025-12-02T17:48:12.402Z",
+    "openedAt": "2025-11-18T16:08:33.158Z",
+    "closedAt": "2025-12-02T17:48:12.391Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe",
+        "firstName": "Martin",
+        "lastName": "Bernard",
+        "email": "martin@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "2403b4b8-1a49-4e45-a488-1459be0a3a97",
+    "title": "Senior Talent Acquisition Partner (Sales Hiring) - Europe",
+    "status": "Closed",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "fce07755-76ef-40bc-b183-d1590b5c16a3",
+    "createdAt": "2025-11-19T15:19:26.683Z",
+    "updatedAt": "2025-12-02T15:04:15.268Z",
+    "openedAt": "2025-11-19T15:20:53.796Z",
+    "closedAt": "2025-12-02T15:04:15.258Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe",
+        "firstName": "Martin",
+        "lastName": "Bernard",
+        "email": "martin@tribe.xyz",
+        "role": "Hiring Manager"
+      },
+      {
+        "userId": "6445a6bd-f477-4d7f-b863-6822c815ea5a",
+        "firstName": "Iulian",
+        "lastName": "Hodivoianu",
+        "email": "iulian@tribe.xyz",
+        "role": "Recruiter"
+      }
+    ]
+  },
+  {
+    "id": "6dc865ee-f8b5-4a88-8cca-cd1390a9cf52",
+    "title": "Talent Coordinator (Global & High-Velocity) - Immediate Start",
+    "status": "Closed",
+    "departmentId": "e5bfe78e-ca3e-4914-b5a2-61b6086b4b83",
+    "locationId": "fce07755-76ef-40bc-b183-d1590b5c16a3",
+    "createdAt": "2025-11-21T12:37:27.873Z",
+    "updatedAt": "2026-02-09T10:34:32.432Z",
+    "openedAt": "2026-01-13T11:01:30.830Z",
+    "closedAt": "2026-02-09T10:34:32.413Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "c46fddcd-5a87-4203-8ab3-975cb3a09851",
+        "firstName": "Jacopo",
+        "lastName": "Lupo Ferrari",
+        "email": "jacopo@tribe.xyz",
+        "role": "Hiring Manager"
+      },
+      {
+        "userId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe",
+        "firstName": "Martin",
+        "lastName": "Bernard",
+        "email": "martin@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "22846293-b69c-42a4-8268-3c2cedc55300",
+    "title": "Volume Talent Acquisition Partner (fixed-term) - Georgia/Hungary",
+    "status": "Closed",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "e3a166b3-bfe6-44ba-9f4b-52db4949391e",
+    "createdAt": "2025-11-28T12:53:50.285Z",
+    "updatedAt": "2025-12-18T10:27:09.357Z",
+    "openedAt": "2025-11-28T13:06:31.109Z",
+    "closedAt": "2025-12-18T10:27:09.343Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "659d631c-844e-4de8-a099-25cf14863179",
+        "firstName": "Kristjana",
+        "lastName": "Thorarinsdottir",
+        "email": "kristjana@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "82e62b69-7a49-4bc4-b0b5-58261bd79862",
+    "title": "Senior Talent Acquisition Partner (Las Vegas, NV)",
+    "status": "Closed",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "97199bc5-1c66-4e1c-b207-e912344d3cec",
+    "createdAt": "2025-12-03T15:11:16.027Z",
+    "updatedAt": "2026-01-12T08:45:18.647Z",
+    "openedAt": "2025-12-03T15:19:54.627Z",
+    "closedAt": "2026-01-12T08:45:18.637Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe",
+        "firstName": "Martin",
+        "lastName": "Bernard",
+        "email": "martin@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "290b16e3-58fd-4481-b03b-c5f66bfd4444",
+    "title": "Senior Talent Acquisition Partner (Italian speaker)",
+    "status": "Closed",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "fce07755-76ef-40bc-b183-d1590b5c16a3",
+    "createdAt": "2025-12-10T15:28:10.554Z",
+    "updatedAt": "2026-02-18T09:56:56.073Z",
+    "openedAt": "2025-12-10T15:30:31.258Z",
+    "closedAt": "2026-02-18T09:56:56.064Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": []
+  },
+  {
+    "id": "c39ba1e1-909d-4b4a-98d2-5a0615c7df54",
+    "title": "Talent Acquisition Partner (Spanish speaker)",
+    "status": "Closed",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "fce07755-76ef-40bc-b183-d1590b5c16a3",
+    "createdAt": "2025-12-12T13:56:32.459Z",
+    "updatedAt": "2026-01-22T13:26:19.522Z",
+    "openedAt": "2025-12-12T13:58:18.370Z",
+    "closedAt": "2026-01-22T13:26:19.514Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": []
+  },
+  {
+    "id": "4d56606d-625b-4794-9545-36c1dec6bd66",
+    "title": "Senior Tech Talent Acquisition Partner (US+EMEA) - Immediate Start",
+    "status": "Closed",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "44b05052-8143-4200-aa1a-01e4372a4c39",
+    "createdAt": "2026-01-13T11:25:40.938Z",
+    "updatedAt": "2026-02-12T09:43:59.216Z",
+    "openedAt": "2026-01-13T11:34:05.660Z",
+    "closedAt": "2026-02-12T09:43:59.207Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": []
+  },
+  {
+    "id": "29fa9991-63e9-4b6b-8544-3c796ad5766d",
+    "title": "Talent Acquisition Partner (Internal Recruitment)",
+    "status": "Closed",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "fce07755-76ef-40bc-b183-d1590b5c16a3",
+    "createdAt": "2026-01-22T13:55:22.937Z",
+    "updatedAt": "2026-04-15T18:51:21.303Z",
+    "openedAt": "2026-01-22T14:00:59.906Z",
+    "closedAt": "2026-04-15T18:51:21.291Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "95ecd10e-d1d7-48b4-a890-06c1ab84c199",
+        "firstName": "Ella",
+        "lastName": "Darie",
+        "email": "ella@tribe.xyz",
+        "role": "Hiring Manager"
+      },
+      {
+        "userId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe",
+        "firstName": "Martin",
+        "lastName": "Bernard",
+        "email": "martin@tribe.xyz",
+        "role": "Hiring Manager"
+      },
+      {
+        "userId": "88a29d6a-5815-444c-8a19-91eb2697bab7",
+        "firstName": "Sanja",
+        "lastName": "Pavlovikj",
+        "email": "sanja.pavlovikj@tribe.xyz",
+        "role": "Recruiting Coordinator"
+      },
+      {
+        "userId": "61a1939c-3a56-45da-97cd-6cce5bc6f32e",
+        "firstName": "Andrea",
+        "lastName": "Darabasic",
+        "email": "andreadarabasic@tribe.xyz",
+        "role": "Recruiter"
+      }
+    ]
+  },
+  {
+    "id": "f43853b5-ee06-4d34-afd9-5ee034b0fd4e",
+    "title": "Executive Search Talent Partner (APAC focus)",
+    "status": "Closed",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "fce07755-76ef-40bc-b183-d1590b5c16a3",
+    "createdAt": "2026-02-05T09:53:46.175Z",
+    "updatedAt": "2026-04-02T13:11:38.978Z",
+    "openedAt": "2026-02-05T09:53:57.990Z",
+    "closedAt": "2026-04-02T13:11:38.965Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "01ebf2a1-cf11-4d46-8418-10e7200fd422",
+        "firstName": "Salem",
+        "lastName": "Mansuri",
+        "email": "salem@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "c79fb7e1-a527-496f-9ab8-375da1eeab46",
+    "title": "Talent Acquisition Partner (Enterprise Sales) - Immediate Start",
+    "status": "Closed",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2026-02-10T12:22:08.296Z",
+    "updatedAt": "2026-03-06T16:58:32.498Z",
+    "openedAt": "2026-02-10T12:31:17.459Z",
+    "closedAt": "2026-03-06T16:58:32.483Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe",
+        "firstName": "Martin",
+        "lastName": "Bernard",
+        "email": "martin@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "508648c3-c1dd-4c07-ab46-ae4554e50913",
+    "title": "(Generalist) Talent Acquisition Partner - Immediate Start",
+    "status": "Closed",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "fce07755-76ef-40bc-b183-d1590b5c16a3",
+    "createdAt": "2026-03-23T15:09:15.889Z",
+    "updatedAt": "2026-04-24T12:56:03.501Z",
+    "openedAt": "2026-03-23T15:12:26.030Z",
+    "closedAt": "2026-04-24T12:56:03.469Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": []
+  },
+  {
+    "id": "990cff4e-be85-4ecf-b2d4-f6b61f9e8aed",
+    "title": "Talent Acquisition Partner (Deeptech & Scientific Hiring) - Immediate Start",
+    "status": "Closed",
+    "departmentId": "ea818567-ef91-48af-86c6-376953fcbbac",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2026-03-24T13:39:48.251Z",
+    "updatedAt": "2026-03-27T14:36:02.143Z",
+    "openedAt": "2026-03-24T13:59:23.478Z",
+    "closedAt": "2026-03-27T14:36:02.134Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "c7586a3e-d60e-48b4-8eb6-a6e5bdc0b485",
+        "firstName": "Simon",
+        "lastName": "Siew",
+        "email": "simon@tribe.xyz",
+        "role": "Recruiter"
+      },
+      {
+        "userId": "95ecd10e-d1d7-48b4-a890-06c1ab84c199",
+        "firstName": "Ella",
+        "lastName": "Darie",
+        "email": "ella@tribe.xyz",
+        "role": "Hiring Manager"
+      },
+      {
+        "userId": "01ebf2a1-cf11-4d46-8418-10e7200fd422",
+        "firstName": "Salem",
+        "lastName": "Mansuri",
+        "email": "salem@tribe.xyz",
+        "role": "Hiring Manager"
+      },
+      {
+        "userId": "b175fe20-1806-4fbf-8b51-72102bbab1dc",
+        "firstName": "Dušan",
+        "lastName": "Špica",
+        "email": "dushan@tribe.xyz",
+        "role": "Sourcer"
+      },
+      {
+        "userId": "d05cdcef-1e3c-4f34-b6e8-f716285ed945",
+        "firstName": "Iryna",
+        "lastName": "Dyda",
+        "email": "irynadyda@tribe.xyz",
+        "role": "Recruiting Coordinator"
+      },
+      {
+        "userId": "a4a58b08-2e3f-477c-b624-55ebf735d1e2",
+        "firstName": "Sanja",
+        "lastName": "Pavlovikj",
+        "email": "sanja@tribe.xyz",
+        "role": "Recruiting Coordinator"
+      }
+    ]
+  },
+  {
+    "id": "abaebbd1-2977-4289-8442-92b76b52c922",
+    "title": "Talent Aquisition Partner - TEST",
+    "status": "Closed",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "fce07755-76ef-40bc-b183-d1590b5c16a3",
+    "createdAt": "2026-04-09T21:47:07.094Z",
+    "updatedAt": "2026-04-28T12:27:59.513Z",
+    "openedAt": "2026-04-09T21:49:43.046Z",
+    "closedAt": "2026-04-28T12:27:59.504Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": []
+  },
+  {
+    "id": "fc7bb1a4-5b2e-4fe8-bdc1-f4c38ffc21da",
+    "title": "Employer Branding Specialist",
+    "status": "Archived",
+    "departmentId": "ea818567-ef91-48af-86c6-376953fcbbac",
+    "locationId": "803c5fe4-f47b-469b-ae23-f0f8f19575a2",
+    "createdAt": "2025-03-19T13:53:02.740Z",
+    "updatedAt": "2026-01-28T13:28:18.354Z",
+    "openedAt": "2025-03-19T14:46:36.150Z",
+    "closedAt": "2025-04-18T12:15:13.501Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "d9f02ddf-0a88-4213-8f1a-2f0a0ccafd37",
+        "firstName": "Blake",
+        "lastName": "Barkley",
+        "email": "blake@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "d3e5d9de-81e9-4ce1-afa3-d3aae78c03b6",
+    "title": "Talent Acquisition Template",
+    "status": "Archived",
+    "departmentId": "ea818567-ef91-48af-86c6-376953fcbbac",
+    "locationId": "0eb89872-9bdd-4ed4-9a25-e0bc8f2579fe",
+    "createdAt": "2025-04-15T12:31:45.893Z",
+    "updatedAt": "2026-01-28T13:25:40.692Z",
+    "openedAt": "2025-04-16T08:59:50.146Z",
+    "closedAt": "2025-04-18T12:15:22.233Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "cd103f7e-c97d-4cf9-a04e-f7d68a4051ea",
+        "firstName": "Anastasija",
+        "lastName": "Dugalic",
+        "email": "anastasija@tribe.xyz",
+        "role": "Recruiter"
+      },
+      {
+        "userId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe",
+        "firstName": "Martin",
+        "lastName": "Bernard",
+        "email": "martin@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "79c36bc8-29ae-42b2-9b8b-382d966e6f0a",
+    "title": "Talent Acquisition Partner - Hebrew Speaker",
+    "status": "Archived",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2025-04-18T13:30:06.725Z",
+    "updatedAt": "2026-02-05T17:01:08.455Z",
+    "openedAt": null,
+    "closedAt": null,
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "659d631c-844e-4de8-a099-25cf14863179",
+        "firstName": "Kristjana",
+        "lastName": "Thorarinsdottir",
+        "email": "kristjana@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "05c9fdb1-8e49-402f-9dd9-49f8309e4ce1",
+    "title": "Talent Acquisition Partner - Arabic Speaker",
+    "status": "Archived",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2025-04-18T20:11:07.523Z",
+    "updatedAt": "2026-02-05T17:01:02.607Z",
+    "openedAt": null,
+    "closedAt": null,
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "659d631c-844e-4de8-a099-25cf14863179",
+        "firstName": "Kristjana",
+        "lastName": "Thorarinsdottir",
+        "email": "kristjana@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "6fe235ba-3fde-4a5b-8748-5d68bb83a313",
+    "title": "[delete] Recruitment Operations Specialist - Hebrew",
+    "status": "Archived",
+    "departmentId": "e5bfe78e-ca3e-4914-b5a2-61b6086b4b83",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2025-04-21T13:21:59.717Z",
+    "updatedAt": "2025-05-28T11:49:42.326Z",
+    "openedAt": null,
+    "closedAt": null,
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": []
+  },
+  {
+    "id": "092ceb6e-d650-44c5-8208-82a9dde13039",
+    "title": "Recruitment Manager",
+    "status": "Archived",
+    "departmentId": "47e72c70-f4c7-4aa2-a2ef-ca56b4bfa5fe",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2025-04-21T13:22:19.823Z",
+    "updatedAt": "2026-01-28T13:27:35.442Z",
+    "openedAt": null,
+    "closedAt": null,
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": []
+  },
+  {
+    "id": "3e8f85ef-01e3-4fcb-b392-5b2c8dcfb2f7",
+    "title": "Junior People Ops Associate",
+    "status": "Archived",
+    "departmentId": "5817a3c1-c46d-4f31-8e76-fd73430e510a",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2025-04-21T13:22:38.484Z",
+    "updatedAt": "2026-02-05T17:01:03.703Z",
+    "openedAt": null,
+    "closedAt": null,
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": []
+  },
+  {
+    "id": "76d8a8e3-4286-4a26-8307-7acf66752fe0",
+    "title": "Talent Coordinator (Remote)",
+    "status": "Archived",
+    "departmentId": "e5bfe78e-ca3e-4914-b5a2-61b6086b4b83",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2025-04-21T13:23:25.108Z",
+    "updatedAt": "2026-02-05T17:04:47.706Z",
+    "openedAt": null,
+    "closedAt": null,
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": []
+  },
+  {
+    "id": "b570f0ed-9d15-4f6e-bb55-c7ff298937be",
+    "title": "Talent Acquisition Associate - Georgian Speaker",
+    "status": "Archived",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2025-04-21T13:24:03.912Z",
+    "updatedAt": "2026-02-05T17:01:04.672Z",
+    "openedAt": null,
+    "closedAt": null,
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": []
+  },
+  {
+    "id": "59eefa6b-3932-4ce6-a3c7-7903b3992c71",
+    "title": "Talent Acquisition Partner | Russian Speaker",
+    "status": "Archived",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2025-04-21T13:24:34.914Z",
+    "updatedAt": "2026-02-05T17:01:05.577Z",
+    "openedAt": null,
+    "closedAt": null,
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": []
+  },
+  {
+    "id": "cfea5de7-93d7-4125-8752-570429a03e85",
+    "title": "Talent Acquisition Lead | German Speaker",
+    "status": "Archived",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2025-04-21T13:24:56.045Z",
+    "updatedAt": "2026-02-05T17:01:06.438Z",
+    "openedAt": null,
+    "closedAt": null,
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": []
+  },
+  {
+    "id": "618d2e10-b976-4bb2-927a-c868bca168d8",
+    "title": "Talent Sourcers",
+    "status": "Archived",
+    "departmentId": "6da7fb3a-6b1f-4e84-b5eb-0579d15b3e93",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2025-04-21T13:25:19.481Z",
+    "updatedAt": "2026-02-05T17:04:48.218Z",
+    "openedAt": null,
+    "closedAt": null,
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": []
+  },
+  {
+    "id": "cdd6005f-6df4-4c47-82dd-6bc6852cc704",
+    "title": "Freelance Recruiter (Remote)",
+    "status": "Archived",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2025-04-21T13:30:38.706Z",
+    "updatedAt": "2026-02-05T17:01:07.524Z",
+    "openedAt": null,
+    "closedAt": null,
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": []
+  },
+  {
+    "id": "f9c8a48e-29c6-4874-8b8e-668b33dd8384",
+    "title": "Freelance Recruiter (Remote)",
+    "status": "Archived",
+    "departmentId": "89cc713a-1be0-439f-bbb0-746db1f78b01",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2025-04-21T13:32:11.486Z",
+    "updatedAt": "2026-01-28T13:28:01.475Z",
+    "openedAt": null,
+    "closedAt": null,
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": []
+  },
+  {
+    "id": "5d39e5aa-c106-45c1-afde-4f3472a7e711",
+    "title": "Talent Director",
+    "status": "Archived",
+    "departmentId": "89cc713a-1be0-439f-bbb0-746db1f78b01",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2025-04-21T13:35:10.012Z",
+    "updatedAt": "2026-01-28T13:17:35.679Z",
+    "openedAt": null,
+    "closedAt": null,
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": []
+  },
+  {
+    "id": "2ac1ca04-76e2-41f4-b75a-1b0a1c9b7dfc",
+    "title": "Test",
+    "status": "Archived",
+    "departmentId": "ea818567-ef91-48af-86c6-376953fcbbac",
+    "locationId": "dce53cbb-fc4e-494c-987f-ce85b68c7bf0",
+    "createdAt": "2025-04-22T12:56:32.067Z",
+    "updatedAt": "2026-01-28T13:16:27.945Z",
+    "openedAt": null,
+    "closedAt": null,
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": []
+  },
+  {
+    "id": "4b38c919-acfa-420b-a23a-997806b87a17",
+    "title": "Test ",
+    "status": "Archived",
+    "departmentId": "ea818567-ef91-48af-86c6-376953fcbbac",
+    "locationId": "62430ae6-384e-41f2-b77a-7968063a40c7",
+    "createdAt": "2025-04-22T13:07:30.788Z",
+    "updatedAt": "2026-02-05T17:01:01.615Z",
+    "openedAt": null,
+    "closedAt": null,
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "f4ce4f9c-4848-46e7-92cf-4e6263191381",
+        "firstName": "Lisa",
+        "lastName": "Gargulinska",
+        "email": "lisa@tribe.xyz",
+        "role": "Recruiter"
+      }
+    ]
+  },
+  {
+    "id": "f08a1ea1-8fab-4445-b97d-9625cbbdb274",
+    "title": "Junior Tech Talent Acquisition Partner TEST",
+    "status": "Archived",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "cf289263-0069-4115-af8a-84a6c59c8372",
+    "createdAt": "2025-07-09T07:01:02.682Z",
+    "updatedAt": "2026-03-04T09:01:54.364Z",
+    "openedAt": "2026-03-03T16:27:33.096Z",
+    "closedAt": "2026-03-04T09:01:52.749Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "f4ce4f9c-4848-46e7-92cf-4e6263191381",
+        "firstName": "Lisa",
+        "lastName": "Gargulinska",
+        "email": "lisa@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "13303c5d-fa16-4f56-ba48-a08fcd7cb7c3",
+    "title": "Senior Talent Sourcer (2025 data)",
+    "status": "Archived",
+    "departmentId": "6da7fb3a-6b1f-4e84-b5eb-0579d15b3e93",
+    "locationId": "fce07755-76ef-40bc-b183-d1590b5c16a3",
+    "createdAt": "2025-08-12T14:45:59.986Z",
+    "updatedAt": "2025-08-12T15:07:51.309Z",
+    "openedAt": null,
+    "closedAt": null,
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": []
+  },
+  {
+    "id": "fd1065bf-0483-41a8-907b-92767c99ee0d",
+    "title": "Team Leader, Talent Sourcing",
+    "status": "Archived",
+    "departmentId": "6da7fb3a-6b1f-4e84-b5eb-0579d15b3e93",
+    "locationId": "fce07755-76ef-40bc-b183-d1590b5c16a3",
+    "createdAt": "2025-08-12T15:03:06.275Z",
+    "updatedAt": "2025-08-12T15:09:13.808Z",
+    "openedAt": null,
+    "closedAt": null,
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": []
+  },
+  {
+    "id": "c15480d0-5493-4564-9b79-c3b5ee04698a",
+    "title": "Talent Acquisition Partner - Hebrew Speaker (fixed-term)",
+    "status": "Archived",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "42884824-cb34-496a-a4e4-39ac6bcefdf1",
+    "createdAt": "2025-09-29T17:34:04.453Z",
+    "updatedAt": "2026-01-28T13:26:06.104Z",
+    "openedAt": "2025-09-29T17:39:56.106Z",
+    "closedAt": null,
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "659d631c-844e-4de8-a099-25cf14863179",
+        "firstName": "Kristjana",
+        "lastName": "Thorarinsdottir",
+        "email": "kristjana@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "c5716f8b-bd19-444b-8d86-c08742edf041",
+    "title": "Tech Talent Acquisition Partner (Tech/Gaming) - Russian speaker",
+    "status": "Archived",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "fce07755-76ef-40bc-b183-d1590b5c16a3",
+    "createdAt": "2025-10-03T09:21:51.658Z",
+    "updatedAt": "2026-01-28T13:16:49.695Z",
+    "openedAt": "2025-10-03T09:30:13.061Z",
+    "closedAt": null,
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "ed9b060f-6f59-43c0-8737-ba3a65d28c2c",
+        "firstName": "Tijana",
+        "lastName": "Lazovic",
+        "email": "tijana@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  },
+  {
+    "id": "9593f4dd-d95f-4356-b66a-f2a03f5b4540",
+    "title": "TEST Tech Talent Acquisition Partner (German speaker)",
+    "status": "Archived",
+    "departmentId": "999bf11d-f6ad-4096-abd9-4abba3ac4f3b",
+    "locationId": "44b05052-8143-4200-aa1a-01e4372a4c39",
+    "createdAt": "2025-11-03T14:14:03.443Z",
+    "updatedAt": "2025-11-04T09:35:11.409Z",
+    "openedAt": "2025-11-03T14:14:51.752Z",
+    "closedAt": "2025-11-04T09:35:07.263Z",
+    "brandId": "4380b3f0-8d17-4c9a-9a78-9d943c68a404",
+    "hiringTeam": [
+      {
+        "userId": "cd103f7e-c97d-4cf9-a04e-f7d68a4051ea",
+        "firstName": "Anastasija",
+        "lastName": "Dugalic",
+        "email": "anastasija@tribe.xyz",
+        "role": "Hiring Manager"
+      }
+    ]
+  }
+]

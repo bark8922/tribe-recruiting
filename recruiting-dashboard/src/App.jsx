@@ -3638,27 +3638,27 @@ const IRTab = ({ data }) => {
         </div>
         <div className="flex gap-2 flex-wrap items-center">
           <select value={jobFilter} onChange={e => setJobFilter(e.target.value)}
-            className="px-3 py-1.5 text-sm rounded-md bg-gray-800 border border-gray-700 text-gray-200 hover:border-gray-600 focus:outline-none focus:border-gray-500">
+            className="px-3 py-1 text-sm rounded-md bg-gray-800 border border-gray-700 text-gray-200 hover:border-gray-600 focus:outline-none focus:border-gray-500">
             <option value="all">All jobs ({jobOptions.length})</option>
             {jobOptions.map(j => (
               <option key={j.job_id} value={j.job_id}>{j.job_title} ({j.days_open}d)</option>
             ))}
           </select>
           <select value={windowFilter} onChange={e => setWindowFilter(e.target.value)}
-            className="px-3 py-1.5 text-sm rounded-md bg-gray-800 border border-gray-700 text-gray-200 hover:border-gray-600 focus:outline-none focus:border-gray-500">
+            className="px-3 py-1 text-sm rounded-md bg-gray-800 border border-gray-700 text-gray-200 hover:border-gray-600 focus:outline-none focus:border-gray-500">
             {windowOptions.map(([v, label]) => (
               <option key={v} value={v}>{label}</option>
             ))}
           </select>
           <select value={sourcerFilter} onChange={e => setSourcerFilter(e.target.value)}
-            className="px-3 py-1.5 text-sm rounded-md bg-gray-800 border border-gray-700 text-gray-200 hover:border-gray-600 focus:outline-none focus:border-gray-500">
+            className="px-3 py-1 text-sm rounded-md bg-gray-800 border border-gray-700 text-gray-200 hover:border-gray-600 focus:outline-none focus:border-gray-500">
             <option value="all">All sourcers</option>
             {[...new Set(sourcedRows.map(r => r.sourcer))].sort().map(s => (
               <option key={s} value={s}>{s}</option>
             ))}
           </select>
           <select value={taFilter} onChange={e => setTaFilter(e.target.value)}
-            className="px-3 py-1.5 text-sm rounded-md bg-gray-800 border border-gray-700 text-gray-200 hover:border-gray-600 focus:outline-none focus:border-gray-500">
+            className="px-3 py-1 text-sm rounded-md bg-gray-800 border border-gray-700 text-gray-200 hover:border-gray-600 focus:outline-none focus:border-gray-500">
             <option value="all">All TAs</option>
             {[...new Set(interviewedRows.map(r => r.ta))].sort().map(t => (
               <option key={t} value={t}>{t}</option>
@@ -3666,7 +3666,7 @@ const IRTab = ({ data }) => {
           </select>
           {(jobFilter !== 'all' || windowFilter !== 'last4' || sourcerFilter !== 'all' || taFilter !== 'all' || highlightSourcer || highlightTA) && (
             <button onClick={() => { setJobFilter('all'); setWindowFilter('last4'); setSourcerFilter('all'); setTaFilter('all'); setHighlightSourcer(null); setHighlightTA(null); }}
-              className="px-3 py-1.5 text-sm rounded-md bg-blue-600 hover:bg-blue-500 text-white">
+              className="px-3 py-1 text-sm rounded-md bg-blue-600 hover:bg-blue-500 text-white">
               Clear filters
             </button>
           )}
@@ -3761,12 +3761,12 @@ const IRTab = ({ data }) => {
                 <tr key={j.job_id}
                     onClick={() => setJobFilter(jobFilter === j.job_id ? 'all' : j.job_id)}
                     className={`border-t border-gray-700 cursor-pointer hover:bg-gray-700 ${jobFilter === j.job_id ? 'bg-blue-900 bg-opacity-40' : ''}`}>
-                  <td className="py-1.5 text-gray-200 truncate" title={j.in_ashby && !j.in_bubble ? `${j.job_title} (Ashby only — not tagged Tribe.xyz (IR) in Bubble)` : j.job_title}>
+                  <td className="py-1 text-gray-200 truncate" title={j.in_ashby && !j.in_bubble ? `${j.job_title} (Ashby only — not tagged Tribe.xyz (IR) in Bubble)` : j.job_title}>
                     {j.job_title}
                     {j.in_ashby && !j.in_bubble && <span className="ml-1 text-xs text-amber-400" title="Ashby only — Bubble sourcing data unavailable">⚠</span>}
                   </td>
-                  <td className="py-1.5 text-right text-gray-300">{j.days_open}</td>
-                  <td className="py-1.5 text-right text-gray-500">{j.hires_total}</td>
+                  <td className="py-1 text-right text-gray-300">{j.days_open}</td>
+                  <td className="py-1 text-right text-gray-500">{j.hires_total}</td>
                 </tr>
               ))}
             </tbody>
@@ -3793,17 +3793,17 @@ const IRTab = ({ data }) => {
                 <tr key={i}
                     onClick={() => setHighlightSourcer(highlightSourcer === r.sourcer ? null : r.sourcer)}
                     className={`border-t border-gray-700 cursor-pointer hover:bg-gray-700 ${highlightSourcer === r.sourcer ? 'bg-amber-900 bg-opacity-40' : ''}`}>
-                  <td className="py-1.5 text-gray-200">{r.sourcer}</td>
-                  <td className="py-1.5 text-right text-gray-300">{r.contacted.toLocaleString()}</td>
-                  <td className="py-1.5 text-right text-gray-300">{r.pos_response.toLocaleString()}</td>
-                  <td className="py-1.5 text-right text-gray-500">{r.hired}</td>
+                  <td className="py-1 text-gray-200">{r.sourcer}</td>
+                  <td className="py-1 text-right text-gray-300">{r.contacted.toLocaleString()}</td>
+                  <td className="py-1 text-right text-gray-300">{r.pos_response.toLocaleString()}</td>
+                  <td className="py-1 text-right text-gray-500">{r.hired}</td>
                 </tr>
               ))}
               <tr className="border-t-2 border-gray-600">
-                <td className="py-1.5 font-medium text-white">Total</td>
-                <td className="py-1.5 text-right font-medium text-white">{totals.contacted.toLocaleString()}</td>
-                <td className="py-1.5 text-right font-medium text-white">{totals.pos_response.toLocaleString()}</td>
-                <td className="py-1.5 text-right font-medium text-white">{sourcedHired}</td>
+                <td className="py-1 font-medium text-white">Total</td>
+                <td className="py-1 text-right font-medium text-white">{totals.contacted.toLocaleString()}</td>
+                <td className="py-1 text-right font-medium text-white">{totals.pos_response.toLocaleString()}</td>
+                <td className="py-1 text-right font-medium text-white">{sourcedHired}</td>
               </tr>
             </tbody>
           </table>
@@ -3825,13 +3825,13 @@ const IRTab = ({ data }) => {
                 <tr key={i}
                     onClick={() => setHighlightTA(highlightTA === r.ta ? null : r.ta)}
                     className={`border-t border-gray-700 cursor-pointer hover:bg-gray-700 ${highlightTA === r.ta ? 'bg-amber-900 bg-opacity-40' : ''}`}>
-                  <td className={`py-1.5 ${r.ta === '(unattributed)' ? 'text-gray-500 italic' : 'text-gray-200'}`}>{r.ta}</td>
-                  <td className={`py-1.5 text-right ${r.ta === '(unattributed)' ? 'text-gray-500' : 'text-gray-300'}`}>{r.actual_screens}</td>
+                  <td className={`py-1 ${r.ta === '(unattributed)' ? 'text-gray-500 italic' : 'text-gray-200'}`}>{r.ta}</td>
+                  <td className={`py-1 text-right ${r.ta === '(unattributed)' ? 'text-gray-500' : 'text-gray-300'}`}>{r.actual_screens}</td>
                 </tr>
               ))}
               <tr className="border-t-2 border-gray-600">
-                <td className="py-1.5 font-medium text-white">Total</td>
-                <td className="py-1.5 text-right font-medium text-white">{interviewedAgg.reduce((s,r) => s + r.actual_screens, 0)}</td>
+                <td className="py-1 font-medium text-white">Total</td>
+                <td className="py-1 text-right font-medium text-white">{interviewedAgg.reduce((s,r) => s + r.actual_screens, 0)}</td>
               </tr>
             </tbody>
           </table>
@@ -3860,9 +3860,9 @@ const IRTab = ({ data }) => {
             <tbody>
               {weeklyAgg.map((w, i) => (
                 <tr key={i} className="border-t border-gray-700">
-                  <td className="py-1.5 text-gray-300">W{w.iso_week}</td>
+                  <td className="py-1 text-gray-300">W{w.iso_week}</td>
                   {['contacted','pos_response','rec_screens','actual_screens','ats','onsite','culture','call_w_client','offered','hired'].map(k => (
-                    <td key={k} className={`py-1.5 text-right ${w[k] === 0 ? 'text-gray-600' : 'text-gray-300'}`}>{w[k] === 0 ? '—' : w[k]}</td>
+                    <td key={k} className={`py-1 text-right ${w[k] === 0 ? 'text-gray-600' : 'text-gray-300'}`}>{w[k] === 0 ? '—' : w[k]}</td>
                   ))}
                 </tr>
               ))}
@@ -3871,6 +3871,7 @@ const IRTab = ({ data }) => {
         )}
       </div>
 
+      <div className="grid gap-3" style={{gridTemplateColumns: '1.2fr 1fr'}}>
       <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
         <div className="text-sm font-medium text-white mb-3">Disqualified by stage (per job) &middot; total {f_dqByStage.reduce((s, r) => s + r.total, 0)}</div>
         {f_dqByStage.length === 0 ? (
@@ -3890,14 +3891,14 @@ const IRTab = ({ data }) => {
             <tbody>
               {f_dqByStage.map((j, i) => (
                 <tr key={i} className="border-t border-gray-700">
-                  <td className="py-1.5 text-gray-200 truncate" title={j.job_title}>{j.job_title}</td>
-                  <td className="py-1.5 text-right text-gray-300">{j.stage_contacted || '—'}</td>
-                  <td className="py-1.5 text-right text-gray-300">{j.stage_rec_screen || '—'}</td>
-                  <td className="py-1.5 text-right text-gray-300">{j.stage_actual_screen || '—'}</td>
-                  <td className="py-1.5 text-right text-gray-300">{j.stage_move_to_ats || '—'}</td>
-                  <td className="py-1.5 text-right text-gray-300">{j.stage_onsite || '—'}</td>
-                  <td className="py-1.5 text-right text-gray-300">{j.stage_offer || '—'}</td>
-                  <td className="py-1.5 text-right font-medium text-white">{j.total}</td>
+                  <td className="py-1 text-gray-200 truncate" title={j.job_title}>{j.job_title}</td>
+                  <td className="py-1 text-right text-gray-300">{j.stage_contacted || '—'}</td>
+                  <td className="py-1 text-right text-gray-300">{j.stage_rec_screen || '—'}</td>
+                  <td className="py-1 text-right text-gray-300">{j.stage_actual_screen || '—'}</td>
+                  <td className="py-1 text-right text-gray-300">{j.stage_move_to_ats || '—'}</td>
+                  <td className="py-1 text-right text-gray-300">{j.stage_onsite || '—'}</td>
+                  <td className="py-1 text-right text-gray-300">{j.stage_offer || '—'}</td>
+                  <td className="py-1 text-right font-medium text-white">{j.total}</td>
                 </tr>
               ))}
             </tbody>
@@ -3918,15 +3919,16 @@ const IRTab = ({ data }) => {
               const pct = (r.count / localMax * 100).toFixed(1);
               const pctOfTotal = (r.count / localTotal * 100).toFixed(1);
               return (
-                <div key={i} className="grid items-center gap-3" style={{gridTemplateColumns: '200px 1fr 80px'}}>
+                <div key={i} className="grid items-center gap-2" style={{gridTemplateColumns: '180px 1fr 70px'}}>
                   <span className="text-xs text-gray-200" title={r.reason}>{r.reason}</span>
-                  <div className="bg-blue-400 rounded" style={{height: '14px', width: `${pct}%`, minWidth: '4px'}} />
+                  <div className="bg-blue-400 rounded" style={{height: '12px', width: `${pct}%`, minWidth: '4px'}} />
                   <span className="text-xs text-gray-400 text-right">{r.count} &middot; {pctOfTotal}%</span>
                 </div>
               );
             })}
           </div>
         )}
+      </div>
       </div>
     </div>
   );

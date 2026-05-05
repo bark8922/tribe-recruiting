@@ -149,7 +149,14 @@ def main():
     flat.mkdir(parents=True)
 
     stage_inputs(ci, flat)
-    run_ashby(flat, ashby_key)
+    # Phase 2b Ashby fetch DISABLED 2026-05-05 — first prod run hit 15+ min
+    # because fetch_jobs() pulled all 79 jobs across all statuses x ~100 apps
+    # each x 1 /application.info call. Restoring prior 3-4 min flow baseline
+    # while we redesign the extractor with a proper time budget + only
+    # active jobs + only fetch history for advanced-stage apps. The Ashby
+    # MCP-side scoping fix (c1ba95d) is in but the flow stays decoupled
+    # until we load-test the leaner version end-to-end.
+    # run_ashby(flat, ashby_key)
     out_path = run_render(flat)
     content = out_path.read_text(encoding="utf-8")
 

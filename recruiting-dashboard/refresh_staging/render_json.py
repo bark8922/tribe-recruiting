@@ -889,35 +889,30 @@ def load_ir_ashby_dq_reasons():
 
 
 def load_ir_ashby_funnel_jobweek():
-    """Per-(ashby_job_id, year, week, stage_title) count of stage entries from applicationHistory."""
-    apps_p = HERE / "ashby_applications.json"
-    hist_p = HERE / "ashby_application_history.json"
-    if not (apps_p.exists() and hist_p.exists()): return []
+    """Per-(ashby_job_id, year, week, stage_title) count of stage entries.
+    Reads ashby_application_histories.json — a list of {applicationId, applicationHistory: [...], candidate, job}
+    written by ashby_extract.fetch_late_stage_histories(). Each applicationHistory entry has
+    {enteredStageAt, leftStageAt, title, stageNumber}."""
+    hist_p = HERE / "ashby_application_histories.json"
+    if not hist_p.exists(): return []
     import json as _json
     from datetime import datetime
-    apps = _json.loads(apps_p.read_text())
-    hist = _json.loads(hist_p.read_text())
-    # Build app_id -> (job_id, job_title) map
-    app2job = {}
-    for a in apps:
-        app2job[a["id"]] = ((a.get("job") or {}).get("id",""), (a.get("job") or {}).get("title",""))
-    # Aggregate
+    histories = _json.loads(hist_p.read_text())
     by = {}
-    for h in hist:
-        aid = h.get("applicationId")
-        if not aid or aid not in app2job: continue
-        ent = h.get("enteredStageAt")
-        if not ent: continue
-        try:
-            d = datetime.fromisoformat(ent.replace("Z","+00:00"))
-            iso = d.isocalendar()
-        except Exception:
-            continue
-        if iso.year != 2026: continue
-        jid, jtl = app2job[aid]
-        stage = h.get("title") or ""
-        k = (jid, jtl, iso.year, iso.week, stage)
-        by[k] = by.get(k, 0) + 1
+    for app_h in histories:
+        jid = (app_h.get("job") or {}).get("id","")
+        jtl = (app_h.get("job") or {}).get("title","")
+        for h in (app_h.get("applicationHistory") or []):
+            ent = h.get("enteredStageAt")
+            if not ent: continue
+            try:
+                d = datetime.fromisoformat(ent.replace("Z","+00:00"))
+                iso = d.isocalendar()
+            except Exception:
+                continue
+            stage = h.get("title") or ""
+            k = (jid, jtl, iso.year, iso.week, stage)
+            by[k] = by.get(k, 0) + 1
     return [{"ashby_job_id": jid, "ashby_job_title": jtl,
              "iso_year": y, "iso_week": w, "stage": st, "count": n}
             for (jid, jtl, y, w, st), n in sorted(by.items())]

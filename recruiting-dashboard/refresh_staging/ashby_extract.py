@@ -188,6 +188,68 @@ def fetch_applications_for_job(api_key: str, job_id: str,
     return [_trim_application(a) for a in apps], new_token
 
 
+
+def _is_late_stage_app(a: dict) -> bool:
+    """Did this application reach Onsite / Final / Offer / Hired stages?
+    Used to decide whether the per-app history is worth fetching. Most apps
+    (especially the ~5k "Disqualify after application" rejections) never
+    progressed past stage 1, so fetching their history is wasted work.
+    """
+    if a.get("status") == "Hired":
+        return True
+    stage = a.get("currentInterviewStage") or {}
+    stage_type = (stage.get("type") or "").lower()
+    if stage_type in ("final interview", "offer", "hired"):
+        return True
+    title = (stage.get("title") or "").lower()
+    return any(k in title for k in ("onsite", "culture", "call with client",
+                                     "client prep", "offer", "final"))
+
+
+def fetch_application_info(api_key: str, application_id: str) -> dict:
+    """Full /application.info — used to extract embedded applicationHistory.
+    Stage transitions live in info.applicationHistory[] with enteredStageAt
+    and leftStageAt timestamps. There is no /applicationHistory.list endpoint
+    (verified 404 on 2026-05-04)."""
+    data = _post(api_key, "/application.info", {"applicationId": application_id})
+    return data.get("results") or {}
+
+
+def fetch_late_stage_histories(api_key: str, apps: list[dict],
+                                 already_have: set | None = None,
+                                 max_workers: int = 4,
+                                 deadline: float | None = None) -> list[dict]:
+    """Fetch applicationHistory for late-stage apps. Returns list of
+    {applicationId, applicationHistory: [...]} dicts. Skips apps in
+    already_have (for incremental — avoid re-fetching unchanged apps)."""
+    already_have = already_have or set()
+    targets = [a for a in apps if _is_late_stage_app(a) and a["id"] not in already_have]
+    if not targets:
+        return []
+    log.info("Fetching applicationHistory for %d late-stage apps", len(targets))
+
+    def _hist(a):
+        if deadline and time.time() > deadline:
+            return None
+        try:
+            info = fetch_application_info(api_key, a["id"])
+            return {"applicationId": a["id"],
+                    "applicationHistory": info.get("applicationHistory") or [],
+                    "candidate": (info.get("candidate") or {"name": (a.get("candidate") or {}).get("name")}),
+                    "job": {"id": (a.get("job") or {}).get("id"),
+                            "title": (a.get("job") or {}).get("title")}}
+        except Exception as e:
+            log.warning("history fetch failed for app %s: %s", a["id"][:8], e)
+            return None
+
+    out = []
+    with ThreadPoolExecutor(max_workers=max_workers) as ex:
+        for r in ex.map(_hist, targets):
+            if r:
+                out.append(r)
+    return out
+
+
 def extract_all(
     api_key: str,
     output_dir: Path | str,
@@ -255,13 +317,20 @@ def _run_baseline(api_key, output_dir, deadline, max_workers, t0):
     (output_dir / "ashby_applications.json").write_text(json.dumps(all_apps, indent=2, ensure_ascii=False))
     (output_dir / "sync_tokens.json").write_text(json.dumps(tokens, indent=2))
 
+    # Fetch applicationHistory for late-stage apps only (~200 of 15k)
+    histories = []
+    if time.time() < deadline:
+        histories = fetch_late_stage_histories(api_key, all_apps, max_workers=max_workers, deadline=deadline)
+    (output_dir / "ashby_application_histories.json").write_text(
+        json.dumps(histories, indent=2, ensure_ascii=False))
+
     elapsed = time.time() - t0
     status = "timeout" if time.time() > deadline else "ok"
-    log.info("baseline complete: %d jobs, %d apps, %d tokens, %d errors, %.1fs",
-             len(jobs), len(all_apps), len(tokens), len(errors), elapsed)
+    log.info("baseline complete: %d jobs, %d apps, %d tokens, %d histories, %d errors, %.1fs",
+             len(jobs), len(all_apps), len(tokens), len(histories), len(errors), elapsed)
     return {"mode": "baseline", "jobs_count": len(jobs), "apps_count": len(all_apps),
-            "tokens_count": len(tokens), "errors": errors,
-            "elapsed_s": elapsed, "status": status}
+            "tokens_count": len(tokens), "histories_count": len(histories),
+            "errors": errors, "elapsed_s": elapsed, "status": status}
 
 
 def _run_incremental(api_key, output_dir, baseline_dir, deadline, max_workers, t0):
@@ -318,10 +387,37 @@ def _run_incremental(api_key, output_dir, baseline_dir, deadline, max_workers, t
                 log.warning("incremental sync hit time budget; partial results saved")
                 break
 
+    # Refresh histories for apps that touch late stages (only fetch ones we
+    # don't already have — the existing history file is loaded as the seed).
+    hist_p = baseline_dir / "ashby_application_histories.json"
+    existing_histories = json.loads(hist_p.read_text()) if hist_p.exists() else []
+    have_ids = {h["applicationId"] for h in existing_histories}
+    if time.time() < deadline:
+        new_histories = fetch_late_stage_histories(
+            api_key, list(apps_by_id.values()), already_have=have_ids,
+            max_workers=max_workers, deadline=deadline)
+        # Also re-fetch histories for apps where status / current stage CHANGED
+        # so we capture e.g. Onsite -> Offer transitions on existing apps
+        changed_late = [a for a in apps_by_id.values()
+                        if _is_late_stage_app(a) and a["id"] in have_ids]
+        # For changed apps with existing history, re-fetch to overwrite
+        if changed_count > 0 and changed_late:
+            refresh = fetch_late_stage_histories(
+                api_key, changed_late, already_have=set(),
+                max_workers=max_workers, deadline=deadline)
+            # Merge: refresh overrides existing
+            refresh_ids = {h["applicationId"] for h in refresh}
+            existing_histories = [h for h in existing_histories if h["applicationId"] not in refresh_ids]
+            existing_histories.extend(refresh)
+        existing_histories.extend(new_histories)
+    histories_count = len(existing_histories)
+
     # Persist
     (output_dir / "ashby_jobs.json").write_text(json.dumps(fresh_jobs, indent=2, ensure_ascii=False))
     (output_dir / "ashby_applications.json").write_text(
         json.dumps(list(apps_by_id.values()), indent=2, ensure_ascii=False))
+    (output_dir / "ashby_application_histories.json").write_text(
+        json.dumps(existing_histories, indent=2, ensure_ascii=False))
     (output_dir / "sync_tokens.json").write_text(json.dumps(tokens, indent=2))
 
     elapsed = time.time() - t0
@@ -330,6 +426,7 @@ def _run_incremental(api_key, output_dir, baseline_dir, deadline, max_workers, t
              len(fresh_jobs), len(apps_by_id), changed_count, len(errors), elapsed)
     return {"mode": "incremental", "jobs_count": len(fresh_jobs),
             "apps_count": len(apps_by_id), "changed_count": changed_count,
+            "histories_count": histories_count,
             "errors": errors, "elapsed_s": elapsed, "status": status}
 
 

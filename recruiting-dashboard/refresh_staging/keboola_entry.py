@@ -87,9 +87,10 @@ def run_ashby(flat, ashby_key):
         import shutil
         # Seed staging with baseline files (the cloned repo has ashby_*_baseline.json)
         for src_name, dst_name in [
-            ("ashby_jobs_baseline.json",        "ashby_jobs.json"),
-            ("ashby_applications_baseline.json","ashby_applications.json"),
-            ("ashby_sync_tokens_baseline.json", "sync_tokens.json"),
+            ("ashby_jobs_baseline.json",                  "ashby_jobs.json"),
+            ("ashby_applications_baseline.json",          "ashby_applications.json"),
+            ("ashby_application_histories_baseline.json", "ashby_application_histories.json"),
+            ("ashby_sync_tokens_baseline.json",           "sync_tokens.json"),
         ]:
             src_p = staging / src_name
             if src_p.exists():

@@ -1,0 +1,4110 @@
+[
+  {
+    "applicationId": "e5503a96-d906-4eb2-a415-4c3eb5dd4560",
+    "applicationHistory": [
+      {
+        "id": "1511b658-887a-41bd-9f40-96916e2952fe",
+        "stageId": "97da8ae5-162d-423f-87be-647c4eebe898",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-22T17:46:27.909Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "c82eba1d-652d-48bc-bee1-09abfcf309db",
+      "name": "Lisa Gargulinska",
+      "primaryEmailAddress": {
+        "value": "lizagargulinska@gmail.com",
+        "type": "Personal",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "48537885879",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "615be379-7e1f-4fc3-bf09-54c021e3c406",
+      "title": "Talent Acquisition Partner (German speaker)"
+    }
+  },
+  {
+    "applicationId": "b6f72163-0151-410f-953f-37b7123178c9",
+    "applicationHistory": [
+      {
+        "id": "17b23703-82cc-4e76-b607-7b9d8fda583c",
+        "stageId": "97da8ae5-162d-423f-87be-647c4eebe898",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-22T17:47:32.052Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "1628b754-5a90-49aa-b6f5-c7e36ce378ca",
+      "name": "Samantha Schlappinger",
+      "primaryEmailAddress": {
+        "value": "samantha.schlappinger@gmail.com",
+        "type": "Other",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "351911035357",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "615be379-7e1f-4fc3-bf09-54c021e3c406",
+      "title": "Talent Acquisition Partner (German speaker)"
+    }
+  },
+  {
+    "applicationId": "0ccb3e54-7f19-402e-9025-caae3f662fa5",
+    "applicationHistory": [
+      {
+        "id": "2eb6e25a-8d0b-4760-9b01-09eae6dad7ab",
+        "stageId": "3576426a-cbec-4e0d-9283-6cdf17364b6f",
+        "title": "Application Review",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-12-02T14:47:52.888Z",
+        "leftStageAt": "2025-12-02T15:24:52.707Z",
+        "allowedActions": [
+          "set_entered_at",
+          "delete"
+        ],
+        "actorId": null
+      },
+      {
+        "id": "86d68a67-c27a-4d8f-b286-a0db8b6f9d6c",
+        "stageId": "3454ad9a-ea5e-4da7-93f0-aad1e347c0a9",
+        "title": "Initial Screen",
+        "stageNumber": 1,
+        "enteredStageAt": "2025-12-02T15:24:52.715Z",
+        "leftStageAt": "2025-12-05T17:42:04.381Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "c09e49c5-c70a-4a99-a4d7-dd1b157b463a",
+        "stageId": "c61e4a67-9b5b-4a2d-a378-198e12b02dbf",
+        "title": "WHO",
+        "stageNumber": 2,
+        "enteredStageAt": "2025-12-05T17:42:04.388Z",
+        "leftStageAt": "2025-12-11T14:46:36.378Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "e96097d3-c066-493f-894b-d73eda0e36ed",
+        "stageId": "8f887654-cae2-4888-9f91-9f7c35baf22d",
+        "title": "Final Interview",
+        "stageNumber": 3,
+        "enteredStageAt": "2025-12-11T14:46:36.387Z",
+        "leftStageAt": "2025-12-12T12:11:07.715Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "2f7de4c0-31dc-4f2f-98bf-f74b5b18fae8",
+        "stageId": "ececc6cc-6756-40fd-9a83-5442a52e0f62",
+        "title": "Call with Martin",
+        "stageNumber": 4,
+        "enteredStageAt": "2025-12-12T12:11:07.721Z",
+        "leftStageAt": "2025-12-19T11:47:01.188Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "7310ce69-019d-42eb-b302-3b4a1d188d7c",
+        "stageId": "63b43443-bebf-43a2-8dde-53c52c1ce749",
+        "title": "Archived",
+        "stageNumber": 5,
+        "enteredStageAt": "2025-12-19T11:47:01.195Z",
+        "leftStageAt": "2026-01-19T13:30:46.853Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "9b6d6d61-9deb-4d0d-a05f-10ac4681ea16",
+        "stageId": "8f887654-cae2-4888-9f91-9f7c35baf22d",
+        "title": "Final Interview",
+        "stageNumber": 6,
+        "enteredStageAt": "2026-01-19T13:30:46.861Z",
+        "leftStageAt": "2026-01-27T16:57:18.258Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "1c30ceba-8df0-45c0-bba0-40cde971770a",
+        "stageId": "63b43443-bebf-43a2-8dde-53c52c1ce749",
+        "title": "Archived",
+        "stageNumber": 7,
+        "enteredStageAt": "2026-01-27T16:57:18.268Z",
+        "leftStageAt": "2026-02-03T14:07:41.789Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "018388fc-dbfd-44d9-ae3c-7070d54a41a6",
+        "stageId": "97da8ae5-162d-423f-87be-647c4eebe898",
+        "title": "Hired",
+        "stageNumber": 8,
+        "enteredStageAt": "2026-02-03T14:07:41.798Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      }
+    ],
+    "candidate": {
+      "id": "3f0e6012-ff50-4f43-b224-a45ae3dabefb",
+      "name": "Dusan Spica",
+      "primaryEmailAddress": {
+        "value": "dushan.spica@gmail.com",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "615be379-7e1f-4fc3-bf09-54c021e3c406",
+      "title": "Talent Acquisition Partner (German speaker)"
+    }
+  },
+  {
+    "applicationId": "ff332af6-682b-49bd-8043-4509d9c7e209",
+    "applicationHistory": [
+      {
+        "id": "cdfe3adc-fb32-4f45-80b0-3309e83da71b",
+        "stageId": "b423dc82-bd86-45fa-b894-ff211c768fca",
+        "title": "Offer",
+        "stageNumber": 0,
+        "enteredStageAt": "2026-02-20T12:53:49.378Z",
+        "leftStageAt": "2026-02-24T16:46:20.211Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "5c403e27-742b-46c4-8f94-aef2748da718",
+        "stageId": "97da8ae5-162d-423f-87be-647c4eebe898",
+        "title": "Hired",
+        "stageNumber": 1,
+        "enteredStageAt": "2026-02-24T16:46:20.221Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      }
+    ],
+    "candidate": {
+      "id": "e71b204e-5892-4a01-afd8-3d820b333b32",
+      "name": "Mariam Chkhikvadze",
+      "primaryEmailAddress": {
+        "value": "mariaam.chkhikvadze@gmail.com",
+        "type": "Other",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "615be379-7e1f-4fc3-bf09-54c021e3c406",
+      "title": "Talent Acquisition Partner (German speaker)"
+    }
+  },
+  {
+    "applicationId": "3ce97b0c-0227-40e0-a535-de6717f3ab88",
+    "applicationHistory": [
+      {
+        "id": "f72564b5-5bea-4984-b449-0eeb28f6950d",
+        "stageId": "184bb031-304e-45a3-b520-c8a4849c3e47",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-22T18:02:19.220Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "5374369f-0c98-4cc8-8921-1b2b09a18f81",
+      "name": "Renata Kokhan",
+      "primaryEmailAddress": {
+        "value": "thanks.im.ok@gmail.com",
+        "type": "Other",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "1cf7d56a-d0bb-4d98-a44b-47311f351213",
+      "title": "(Senior) Talent Acquisition Partner - Remote"
+    }
+  },
+  {
+    "applicationId": "5afa291b-5d33-49a5-b87b-2301f6e351a9",
+    "applicationHistory": [
+      {
+        "id": "76f9b205-3b8d-4e40-a060-b6b9f8d1d8c5",
+        "stageId": "184bb031-304e-45a3-b520-c8a4849c3e47",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-22T18:03:12.051Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "34695a08-fef6-407e-a4c4-eecc7b0fd4d1",
+      "name": "Agustina Tamagnini",
+      "primaryEmailAddress": {
+        "value": "agustinatamagnini1@gmail.com",
+        "type": "Other",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "1cf7d56a-d0bb-4d98-a44b-47311f351213",
+      "title": "(Senior) Talent Acquisition Partner - Remote"
+    }
+  },
+  {
+    "applicationId": "1d4f4e74-1983-4872-8785-1d2c934f6d73",
+    "applicationHistory": [
+      {
+        "id": "99c4ba8a-a9a4-442f-bb5b-47fd38d0f12c",
+        "stageId": "184bb031-304e-45a3-b520-c8a4849c3e47",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-22T18:03:13.518Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "df4a9665-e606-4175-ab1a-4437191c8029",
+      "name": "Lapo Pastacaldi",
+      "primaryEmailAddress": {
+        "value": "lapopastacaldi@gmail.com",
+        "type": "Other",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "1cf7d56a-d0bb-4d98-a44b-47311f351213",
+      "title": "(Senior) Talent Acquisition Partner - Remote"
+    }
+  },
+  {
+    "applicationId": "1cac2ed9-bec1-42e5-b0a5-45bc83d99596",
+    "applicationHistory": [
+      {
+        "id": "a846d0c9-8908-4c17-bb09-0d776d976e57",
+        "stageId": "184bb031-304e-45a3-b520-c8a4849c3e47",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-22T18:03:15.425Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "a9ff921f-75bf-4163-98f9-3511d3a9f584",
+      "name": "Etienne Sargenton",
+      "primaryEmailAddress": {
+        "value": "etienesargenton@gmail.com",
+        "type": "Other",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "1cf7d56a-d0bb-4d98-a44b-47311f351213",
+      "title": "(Senior) Talent Acquisition Partner - Remote"
+    }
+  },
+  {
+    "applicationId": "cd3601f2-ac9f-4f78-baa3-82a250bbad79",
+    "applicationHistory": [
+      {
+        "id": "39e410a5-b466-4925-aacd-c5cf63d9b6d2",
+        "stageId": "184bb031-304e-45a3-b520-c8a4849c3e47",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-22T18:03:15.800Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "f34fec17-6256-4696-b5a8-a1886820b6b4",
+      "name": "Jessica Bodner",
+      "primaryEmailAddress": {
+        "value": "bodner.jessica@gmail.com",
+        "type": "Other",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "1cf7d56a-d0bb-4d98-a44b-47311f351213",
+      "title": "(Senior) Talent Acquisition Partner - Remote"
+    }
+  },
+  {
+    "applicationId": "cbe93fce-09e3-47c7-92f9-acd6feb82eee",
+    "applicationHistory": [
+      {
+        "id": "d9d21e54-53c1-46a4-ae7b-8f315a37771b",
+        "stageId": "184bb031-304e-45a3-b520-c8a4849c3e47",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-22T18:03:30.653Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "a766fc04-4259-48da-8782-a091fd8730a7",
+      "name": "Eduardo Moral",
+      "primaryEmailAddress": {
+        "value": "edumorcas@gmail.com",
+        "type": "Other",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "34616100890",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "1cf7d56a-d0bb-4d98-a44b-47311f351213",
+      "title": "(Senior) Talent Acquisition Partner - Remote"
+    }
+  },
+  {
+    "applicationId": "4d29dccd-5f78-4b28-8c8f-93f0169c275b",
+    "applicationHistory": [
+      {
+        "id": "84c49057-f756-4356-bfee-3d32ff8b9e71",
+        "stageId": "184bb031-304e-45a3-b520-c8a4849c3e47",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-22T18:03:31.394Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "ef9a6bcf-6e9e-4714-8408-6f3afef755b2",
+      "name": "Samantha Nel",
+      "primaryEmailAddress": {
+        "value": "samantha.nel.recruit@gmail.com",
+        "type": "Other",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "27829025056",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "1cf7d56a-d0bb-4d98-a44b-47311f351213",
+      "title": "(Senior) Talent Acquisition Partner - Remote"
+    }
+  },
+  {
+    "applicationId": "3747a9ee-bdee-4e86-924d-f8eae247c379",
+    "applicationHistory": [
+      {
+        "id": "ebf45b14-e5de-467a-987a-c9cb58653593",
+        "stageId": "184bb031-304e-45a3-b520-c8a4849c3e47",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-22T18:04:16.517Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "3e001f0d-a97c-4cf6-85db-7f9745795eb2",
+      "name": "Niki Vokalkova",
+      "primaryEmailAddress": {
+        "value": "n.vokalkova@gmail.com",
+        "type": "Other",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "420602811648",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "1cf7d56a-d0bb-4d98-a44b-47311f351213",
+      "title": "(Senior) Talent Acquisition Partner - Remote"
+    }
+  },
+  {
+    "applicationId": "07547dc8-738a-4cae-8512-aa1bec428b54",
+    "applicationHistory": [
+      {
+        "id": "95a78e79-9b51-4b9d-811a-52b243b45ae5",
+        "stageId": "184bb031-304e-45a3-b520-c8a4849c3e47",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-22T18:04:33.199Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "b81a4b28-d02b-47a0-8258-965fb5e05680",
+      "name": "Iulian Hodivoianu",
+      "primaryEmailAddress": {
+        "value": "iulian_hodivoianu@yahoo.com",
+        "type": "Other",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "1cf7d56a-d0bb-4d98-a44b-47311f351213",
+      "title": "(Senior) Talent Acquisition Partner - Remote"
+    }
+  },
+  {
+    "applicationId": "1dadc5bf-a31b-4172-9e19-9f17cf01519d",
+    "applicationHistory": [
+      {
+        "id": "b04b7c78-2631-4b04-ac77-a3a5395e8fc6",
+        "stageId": "184bb031-304e-45a3-b520-c8a4849c3e47",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-22T18:04:37.311Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "70ebe45d-d115-42d1-ba07-43a75efcab7b",
+      "name": "Patrick Carignano",
+      "primaryEmailAddress": {
+        "value": "patrickcarignano@icloud.com",
+        "type": "Other",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "393473765672",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "1cf7d56a-d0bb-4d98-a44b-47311f351213",
+      "title": "(Senior) Talent Acquisition Partner - Remote"
+    }
+  },
+  {
+    "applicationId": "b152a80a-f291-4b8d-b878-ba9f287f92f9",
+    "applicationHistory": [
+      {
+        "id": "1edfeb1a-2108-4168-b3fc-54b362ae01a6",
+        "stageId": "184bb031-304e-45a3-b520-c8a4849c3e47",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-22T18:05:15.144Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "cf50a4f8-d679-446f-8cac-a766fb5b16db",
+      "name": "Alexandra Richiteanu",
+      "primaryEmailAddress": {
+        "value": "aleexandra.richiteanu@gmail.com",
+        "type": "Other",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "34623969770",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "1cf7d56a-d0bb-4d98-a44b-47311f351213",
+      "title": "(Senior) Talent Acquisition Partner - Remote"
+    }
+  },
+  {
+    "applicationId": "8d323e4c-4d63-4969-9332-fc57aa67d8e0",
+    "applicationHistory": [
+      {
+        "id": "de6edc9b-bf8e-4593-a01a-08a3e92e571b",
+        "stageId": "184bb031-304e-45a3-b520-c8a4849c3e47",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-22T18:05:47.298Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "8cdd2b71-6a21-4f58-af5b-c400608e1df6",
+      "name": "Maria DESIREE Gerbore",
+      "primaryEmailAddress": {
+        "value": "mdesireegerbore@yahoo.com",
+        "type": "Other",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "34615450406",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "1cf7d56a-d0bb-4d98-a44b-47311f351213",
+      "title": "(Senior) Talent Acquisition Partner - Remote"
+    }
+  },
+  {
+    "applicationId": "c3280141-18a6-4bb1-97e0-810299fbba9c",
+    "applicationHistory": [
+      {
+        "id": "37f82186-ac9d-4a58-9d4b-4909a0b600b0",
+        "stageId": "184bb031-304e-45a3-b520-c8a4849c3e47",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-22T18:05:56.434Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "233f4525-18b2-42d9-bec4-bbe256089fee",
+      "name": "Eliza Molina",
+      "primaryEmailAddress": {
+        "value": "lizswollwo@gmail.com",
+        "type": "Other",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "1cf7d56a-d0bb-4d98-a44b-47311f351213",
+      "title": "(Senior) Talent Acquisition Partner - Remote"
+    }
+  },
+  {
+    "applicationId": "183d7acc-0f4e-46a6-b06d-b87a8c29f2b7",
+    "applicationHistory": [
+      {
+        "id": "e7137b9f-e8f0-4b2a-9ce6-e5d1a1403604",
+        "stageId": "184bb031-304e-45a3-b520-c8a4849c3e47",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-22T18:06:04.678Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "3befdcae-cf38-49fe-af59-94c6bd6a5769",
+      "name": "Lison Le Large",
+      "primaryEmailAddress": {
+        "value": "lisonlelarge@gmail.com",
+        "type": "Other",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "1cf7d56a-d0bb-4d98-a44b-47311f351213",
+      "title": "(Senior) Talent Acquisition Partner - Remote"
+    }
+  },
+  {
+    "applicationId": "7c29c816-ab38-4c9d-b89b-3907cacb45c4",
+    "applicationHistory": [
+      {
+        "id": "0bad7f82-a8f6-4327-aa29-68b193e37664",
+        "stageId": "184bb031-304e-45a3-b520-c8a4849c3e47",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-22T18:06:06.946Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "04ac7c86-ff2d-4420-8606-0694c0dcb049",
+      "name": "Romualdas Jagela",
+      "primaryEmailAddress": {
+        "value": "roman.jagela@jroconsult.com",
+        "type": "Other",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "447441396648",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "1cf7d56a-d0bb-4d98-a44b-47311f351213",
+      "title": "(Senior) Talent Acquisition Partner - Remote"
+    }
+  },
+  {
+    "applicationId": "9cf6d63f-5835-44ca-a232-4e9c017b22d7",
+    "applicationHistory": [
+      {
+        "id": "d5007008-099e-4c9a-89f5-f51e1b6dcb23",
+        "stageId": "184bb031-304e-45a3-b520-c8a4849c3e47",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-22T18:06:26.183Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "192c6b35-5fdf-4a10-bef7-4f0ba6a9e517",
+      "name": "Hana Langerová",
+      "primaryEmailAddress": {
+        "value": "hana.langerova@gmail.com",
+        "type": "Other",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "1cf7d56a-d0bb-4d98-a44b-47311f351213",
+      "title": "(Senior) Talent Acquisition Partner - Remote"
+    }
+  },
+  {
+    "applicationId": "6af8289b-b6a2-4b2f-9ee3-f567811bc511",
+    "applicationHistory": [
+      {
+        "id": "78ee0274-2579-46a6-8ab2-307ff0b7d307",
+        "stageId": "184bb031-304e-45a3-b520-c8a4849c3e47",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-22T18:07:01.293Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "5a91048c-51ac-4279-8dc0-41d45def005f",
+      "name": "Joe McAllister",
+      "primaryEmailAddress": {
+        "value": "joegmacc@gmail.com",
+        "type": "Other",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "1cf7d56a-d0bb-4d98-a44b-47311f351213",
+      "title": "(Senior) Talent Acquisition Partner - Remote"
+    }
+  },
+  {
+    "applicationId": "6cbd293e-f10e-4375-86dc-939168010870",
+    "applicationHistory": [
+      {
+        "id": "9bc18792-c3ee-4a9f-8de3-d1e8c969a11b",
+        "stageId": "184bb031-304e-45a3-b520-c8a4849c3e47",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-22T18:08:43.420Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "b0359e04-6982-4c3d-870f-4bbe54a24a5f",
+      "name": "Kasia Bieńczyk",
+      "primaryEmailAddress": {
+        "value": "katarzyna.bienczyk@gmail.com",
+        "type": "Other",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "48690688009",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "1cf7d56a-d0bb-4d98-a44b-47311f351213",
+      "title": "(Senior) Talent Acquisition Partner - Remote"
+    }
+  },
+  {
+    "applicationId": "adfac903-5d9d-4e1d-bfaa-8aa5e09e412b",
+    "applicationHistory": [
+      {
+        "id": "fb014e01-0702-42c6-89b4-aba3cd8948ce",
+        "stageId": "184bb031-304e-45a3-b520-c8a4849c3e47",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-22T18:09:13.705Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "5af16ded-79d8-4bac-be56-10d35b2ee91a",
+      "name": "Filip Nogowski",
+      "primaryEmailAddress": {
+        "value": "fnogowski@gmail.com",
+        "type": "Other",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "48511442736",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "1cf7d56a-d0bb-4d98-a44b-47311f351213",
+      "title": "(Senior) Talent Acquisition Partner - Remote"
+    }
+  },
+  {
+    "applicationId": "1951f9e0-c20b-432e-8323-b44a66a074e3",
+    "applicationHistory": [
+      {
+        "id": "bb2b9ccc-cff7-4ef0-b5da-0590aa34ac3a",
+        "stageId": "184bb031-304e-45a3-b520-c8a4849c3e47",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-22T18:09:44.921Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "c18a5e3a-5ce3-4bd2-a1f1-936caf1bf79d",
+      "name": "Alexandra Felea",
+      "primaryEmailAddress": {
+        "value": "alefelea@gmail.com",
+        "type": "Other",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "40720513296",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "1cf7d56a-d0bb-4d98-a44b-47311f351213",
+      "title": "(Senior) Talent Acquisition Partner - Remote"
+    }
+  },
+  {
+    "applicationId": "92cc9cd6-7070-4b05-b02e-bebb64884cc7",
+    "applicationHistory": [
+      {
+        "id": "28236368-c9be-4cfe-8220-5f7eb81fc89d",
+        "stageId": "184bb031-304e-45a3-b520-c8a4849c3e47",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-22T18:09:46.149Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "2069a440-6f41-4352-9813-ee72a88a2463",
+      "name": "Alvaro Pedraza",
+      "primaryEmailAddress": {
+        "value": "alvaro.ped.pat@gmail.com",
+        "type": "Other",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "34622760960",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "1cf7d56a-d0bb-4d98-a44b-47311f351213",
+      "title": "(Senior) Talent Acquisition Partner - Remote"
+    }
+  },
+  {
+    "applicationId": "adc983bd-96b1-4045-ab7c-1ab089922908",
+    "applicationHistory": [
+      {
+        "id": "dbaeded9-7e92-4b9d-96bc-328ff9c1d48f",
+        "stageId": "184bb031-304e-45a3-b520-c8a4849c3e47",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-22T18:09:54.140Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "1cc66fe3-29be-4310-abac-8bc848ef6f6a",
+      "name": "Rossella Petrillo",
+      "primaryEmailAddress": {
+        "value": "ross_93@live.it",
+        "type": "Other",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "393294932410",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "1cf7d56a-d0bb-4d98-a44b-47311f351213",
+      "title": "(Senior) Talent Acquisition Partner - Remote"
+    }
+  },
+  {
+    "applicationId": "5430af3e-8eef-485a-8008-9ccae84f2d16",
+    "applicationHistory": [
+      {
+        "id": "bda5c89b-bd28-4208-bd34-2bd7a792f082",
+        "stageId": "184bb031-304e-45a3-b520-c8a4849c3e47",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-22T18:10:02.387Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "531254ac-d34f-4d8d-bc34-b32e86a332f7",
+      "name": "Nemanja Erdevički",
+      "primaryEmailAddress": {
+        "value": "nemanja.erdevicki@hotmail.com",
+        "type": "Other",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "1cf7d56a-d0bb-4d98-a44b-47311f351213",
+      "title": "(Senior) Talent Acquisition Partner - Remote"
+    }
+  },
+  {
+    "applicationId": "b22ead3f-dd3e-4adc-bdca-2f696897bd58",
+    "applicationHistory": [
+      {
+        "id": "f9c5d2de-c98b-48d5-bf72-49c5d262b781",
+        "stageId": "184bb031-304e-45a3-b520-c8a4849c3e47",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-22T18:10:43.414Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "ce5c07ba-617a-40cf-9854-5491f11233c7",
+      "name": "Polina Novichenko",
+      "primaryEmailAddress": {
+        "value": "novichenko.polina@gmail.com",
+        "type": "Other",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "351936484270",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "1cf7d56a-d0bb-4d98-a44b-47311f351213",
+      "title": "(Senior) Talent Acquisition Partner - Remote"
+    }
+  },
+  {
+    "applicationId": "8dcc53c4-4ca3-4322-a19d-28690a7bd432",
+    "applicationHistory": [
+      {
+        "id": "0697bee9-cb24-4900-8b36-572f3feb37ab",
+        "stageId": "184bb031-304e-45a3-b520-c8a4849c3e47",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-22T18:14:50.946Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "785b2d9d-bc31-4e62-9a87-46ddbccd5139",
+      "name": "Joanna Bober",
+      "primaryEmailAddress": {
+        "value": "boberaska@gmail.com",
+        "type": "Other",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "48729961935",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "1cf7d56a-d0bb-4d98-a44b-47311f351213",
+      "title": "(Senior) Talent Acquisition Partner - Remote"
+    }
+  },
+  {
+    "applicationId": "87741619-9c5f-4225-bc84-739785b7f174",
+    "applicationHistory": [
+      {
+        "id": "805f15d6-9f05-4852-b2d3-2ee8fd3421d5",
+        "stageId": "184bb031-304e-45a3-b520-c8a4849c3e47",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-22T18:16:10.902Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "72b536da-3518-4e0a-adfe-576b914d7896",
+      "name": "Aurélie Algeri",
+      "primaryEmailAddress": {
+        "value": "aurelie.algeri@gmail.com",
+        "type": "Other",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "306948227061",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "1cf7d56a-d0bb-4d98-a44b-47311f351213",
+      "title": "(Senior) Talent Acquisition Partner - Remote"
+    }
+  },
+  {
+    "applicationId": "a00586e6-f0f2-4335-811d-5555d25f95c8",
+    "applicationHistory": [
+      {
+        "id": "0f610c5d-ad7e-4d8a-b948-41c7225aba05",
+        "stageId": "5dcffa44-edab-4099-8a6f-9c0e729a6aaf",
+        "title": "Talent Pool",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-08-12T15:06:25.053Z",
+        "leftStageAt": "2025-08-13T10:33:47.251Z",
+        "allowedActions": [
+          "set_entered_at",
+          "delete"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "902fd9be-c8f9-42df-8293-0831d05d32a7",
+        "stageId": "56012432-8315-4de8-a83d-26d0fe19af49",
+        "title": "Uncontacted",
+        "stageNumber": 1,
+        "enteredStageAt": "2025-08-13T10:33:47.274Z",
+        "leftStageAt": "2025-08-13T16:44:56.496Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "30d782e0-11bf-4914-9cf8-81f67fdf4c3e",
+        "stageId": "b7da600e-5ea9-41cc-8f9b-1cedb7394f37",
+        "title": "Initial Screen",
+        "stageNumber": 2,
+        "enteredStageAt": "2025-08-13T16:44:56.503Z",
+        "leftStageAt": "2025-08-25T14:01:26.320Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "a717fa2f-22a0-457e-a836-5d20d31ace7d",
+        "stageId": "5aeb44fe-115e-4b35-8d71-f8919dab68ef",
+        "title": "Final Interview",
+        "stageNumber": 3,
+        "enteredStageAt": "2025-08-25T14:01:26.329Z",
+        "leftStageAt": "2025-09-02T10:16:46.674Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "51a6f951-d675-44cb-af21-da685828e5d5",
+        "stageId": "f9278946-1ac9-41e3-bb9e-e19b966d0476",
+        "title": "Offer",
+        "stageNumber": 4,
+        "enteredStageAt": "2025-09-02T10:16:46.681Z",
+        "leftStageAt": "2025-09-02T10:27:58.984Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "8707f8f8-77ad-4543-8be6-2da21ff841eb",
+        "stageId": "5aeb44fe-115e-4b35-8d71-f8919dab68ef",
+        "title": "Final Interview",
+        "stageNumber": 5,
+        "enteredStageAt": "2025-09-02T10:27:59.005Z",
+        "leftStageAt": "2025-09-02T14:45:58.045Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "4f74d5d6-1bc5-46e4-a9c8-86fb6244bac6",
+        "stageId": "f9278946-1ac9-41e3-bb9e-e19b966d0476",
+        "title": "Offer",
+        "stageNumber": 6,
+        "enteredStageAt": "2025-09-02T14:45:58.051Z",
+        "leftStageAt": "2025-09-08T07:16:36.174Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "c88b2123-fa3d-4783-b6e1-08a64c8d4b25",
+        "stageId": "a47b3b6f-dc6e-4bba-8df2-4b6c0262123d",
+        "title": "Hired",
+        "stageNumber": 7,
+        "enteredStageAt": "2025-09-08T07:16:36.182Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      }
+    ],
+    "candidate": {
+      "id": "d523895d-0b98-4a39-a347-1164e30591c6",
+      "name": "Marina Lazarević",
+      "primaryEmailAddress": {
+        "value": "lazarevic.m98@gmail.com",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "8548333e-881e-4f5b-8f88-04251b0a8dc5",
+      "title": "Talent Sourcer (German Speaker)"
+    }
+  },
+  {
+    "applicationId": "bbdc10fc-0d02-46a7-864e-5e3e264ad2ac",
+    "applicationHistory": [
+      {
+        "id": "7530bc3e-c9a5-4d8c-8e24-de3c50bf6b71",
+        "stageId": "b7da600e-5ea9-41cc-8f9b-1cedb7394f37",
+        "title": "Initial Screen",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-11-25T13:05:13.637Z",
+        "leftStageAt": "2025-11-26T13:38:21.802Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "7576ae50-4937-4a57-a9f3-493aebed65bc",
+        "stageId": "fc18f826-401f-4fc2-a016-c3bc143cac1a",
+        "title": "WHO + Worksample",
+        "stageNumber": 1,
+        "enteredStageAt": "2025-11-26T13:38:21.806Z",
+        "leftStageAt": "2025-12-04T10:16:02.937Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "899e5204-ac2e-4839-94f7-4ca2f39761de",
+        "stageId": "5aeb44fe-115e-4b35-8d71-f8919dab68ef",
+        "title": "Final Interview",
+        "stageNumber": 2,
+        "enteredStageAt": "2025-12-04T10:16:02.946Z",
+        "leftStageAt": "2025-12-09T09:28:54.056Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "ebf17094-71bd-4433-b11a-e2173eb3fe5d",
+        "stageId": "04ea1b8e-7b83-43ce-8e84-247147558ed3",
+        "title": "Language Check",
+        "stageNumber": 3,
+        "enteredStageAt": "2025-12-09T09:28:54.065Z",
+        "leftStageAt": "2025-12-09T14:16:51.952Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "13486f4a-a899-47d6-a52f-9e725e45e208",
+        "stageId": "f9278946-1ac9-41e3-bb9e-e19b966d0476",
+        "title": "Offer",
+        "stageNumber": 4,
+        "enteredStageAt": "2025-12-09T14:16:51.961Z",
+        "leftStageAt": "2025-12-11T10:00:45.628Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "85fe8501-4f34-4926-be3a-f61e9f834b54",
+        "stageId": "a47b3b6f-dc6e-4bba-8df2-4b6c0262123d",
+        "title": "Hired",
+        "stageNumber": 5,
+        "enteredStageAt": "2025-12-11T10:00:45.634Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      }
+    ],
+    "candidate": {
+      "id": "4ac8d715-4dce-4061-bf7b-24c9a6402bb7",
+      "name": "Adis Prepoljac",
+      "primaryEmailAddress": {
+        "value": "prepoljac.a@gmail.com",
+        "type": "Personal",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "+387 63 915 919",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "8548333e-881e-4f5b-8f88-04251b0a8dc5",
+      "title": "Talent Sourcer (German Speaker)"
+    }
+  },
+  {
+    "applicationId": "ac18d677-6a81-4c8d-9ca3-6c15d6b96463",
+    "applicationHistory": [
+      {
+        "id": "663b3d4f-93e4-42aa-b655-c60b3c361895",
+        "stageId": "b9909600-3ab3-44a5-b9f7-ef6778b8a58a",
+        "title": "Initial Screen",
+        "stageNumber": 0,
+        "enteredStageAt": "2026-01-15T18:37:55.424Z",
+        "leftStageAt": "2026-01-19T11:16:01.839Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": null
+      },
+      {
+        "id": "498b4eef-573a-42a3-9ded-43569511bc2e",
+        "stageId": "ebd866e4-fd88-42a2-b3d2-62d2700798cd",
+        "title": "WHO",
+        "stageNumber": 1,
+        "enteredStageAt": "2026-01-19T11:16:01.844Z",
+        "leftStageAt": "2026-01-19T15:11:45.910Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "d05cdcef-1e3c-4f34-b6e8-f716285ed945"
+      },
+      {
+        "id": "81ed8cb6-9fe7-4baa-98b3-d00359f96a91",
+        "stageId": "b8069157-c728-452f-adc4-aab0973fd909",
+        "title": "Final Interview",
+        "stageNumber": 2,
+        "enteredStageAt": "2026-01-19T15:11:45.919Z",
+        "leftStageAt": "2026-01-19T17:28:49.033Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "ed89a8b6-a8b7-4006-b0da-ada2aa29651f",
+        "stageId": "a18e3811-945d-4d74-ad4c-ca0a8db8227f",
+        "title": "Call with Client",
+        "stageNumber": 3,
+        "enteredStageAt": "2026-01-19T17:28:49.039Z",
+        "leftStageAt": "2026-01-26T14:45:04.578Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "0cd9e61f-dc69-47cc-9751-c1d03f833120",
+        "stageId": "6adbdcb7-dc94-4b65-aef4-068e9e8ff705",
+        "title": "Archived",
+        "stageNumber": 4,
+        "enteredStageAt": "2026-01-26T14:45:04.587Z",
+        "leftStageAt": "2026-01-30T15:35:53.615Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "b657e292-7d54-476b-ae1c-1d55aa2a991d",
+        "stageId": "15a516bc-6843-403f-b0d0-88c909284681",
+        "title": "Hired",
+        "stageNumber": 5,
+        "enteredStageAt": "2026-01-30T15:35:53.628Z",
+        "leftStageAt": "2026-02-11T16:34:25.409Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      },
+      {
+        "id": "ca7c8cc8-69cc-4d4e-96c3-112a3a1c78ea",
+        "stageId": "1665f666-3e84-4843-b0cd-828b6af0e6b1",
+        "title": "Offer",
+        "stageNumber": 6,
+        "enteredStageAt": "2026-02-11T16:34:25.416Z",
+        "leftStageAt": "2026-02-11T16:34:37.131Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "c84544bf-c657-483e-92f7-c296fcb47ed5",
+        "stageId": "c4a7a542-9eb1-4fab-92d9-3f6cc419912a",
+        "title": "Offer",
+        "stageNumber": 7,
+        "enteredStageAt": "2026-02-11T16:34:37.134Z",
+        "leftStageAt": "2026-02-11T16:34:43.333Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "587c7e9e-b05c-4f95-b9f2-db04d72018d0",
+        "stageId": "d880b9c1-9157-497b-bb5d-386921068f05",
+        "title": "Hired",
+        "stageNumber": 8,
+        "enteredStageAt": "2026-02-11T16:34:43.338Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      }
+    ],
+    "candidate": {
+      "id": "3891f902-d7e7-4b44-bfb4-79cc9d5181da",
+      "name": "Mateja Joković",
+      "primaryEmailAddress": {
+        "value": "mejlzakalendare@gmail.com",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "398cc0bd-14cf-4637-9a97-143fbb30965e",
+      "title": "(Senior) Tech Talent Acquisition Partner"
+    }
+  },
+  {
+    "applicationId": "6e5ea885-9e30-494f-b58e-0f18b3090e1f",
+    "applicationHistory": [
+      {
+        "id": "1488df2f-8ce5-48ec-b0da-ea6656ec2868",
+        "stageId": "0b03cd52-a0fa-4c26-9304-e8f3c7e1c84c",
+        "title": "Initial Screen",
+        "stageNumber": 0,
+        "enteredStageAt": "2026-03-27T16:36:32.251Z",
+        "leftStageAt": "2026-03-31T10:44:35.915Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": null
+      },
+      {
+        "id": "5c88eaa7-87ff-4131-9ae4-f30081c6647a",
+        "stageId": "85be6bdc-364a-41c3-8aa5-e9e66684e9c1",
+        "title": "Final Interview",
+        "stageNumber": 1,
+        "enteredStageAt": "2026-03-31T10:44:35.922Z",
+        "leftStageAt": "2026-04-07T10:35:13.347Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "f70e4b49-a5e8-4967-8661-10918cbae859",
+        "stageId": "f86da1db-1d62-4d0a-9723-30e488cf812a",
+        "title": "Presented to Client",
+        "stageNumber": 2,
+        "enteredStageAt": "2026-04-07T10:35:13.354Z",
+        "leftStageAt": "2026-04-07T15:47:50.376Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "6f6f942d-6f89-4fcb-9881-22dc111ac564",
+        "stageId": "4ea1335c-b7b5-4379-a0ce-b3c671351f76",
+        "title": "Call with Client",
+        "stageNumber": 3,
+        "enteredStageAt": "2026-04-07T15:47:50.380Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      }
+    ],
+    "candidate": {
+      "id": "6f39cdff-02a6-4cc8-96c1-058280e36c30",
+      "name": "Pooja Chaudhry",
+      "primaryEmailAddress": {
+        "value": "poojasneh15@gmail.com",
+        "type": "Personal",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "+91 7009256233",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "039dca36-4bbe-4ad4-b0c4-a78104227a90",
+      "title": "Tech Talent Acquisition Partner (APAC)"
+    }
+  },
+  {
+    "applicationId": "03237aa8-87ef-48ab-ad8a-259749732a91",
+    "applicationHistory": [
+      {
+        "id": "647ab0bf-6bf9-4afb-b7f1-0013e90f012e",
+        "stageId": "0b03cd52-a0fa-4c26-9304-e8f3c7e1c84c",
+        "title": "Initial Screen",
+        "stageNumber": 0,
+        "enteredStageAt": "2026-03-30T03:32:22.817Z",
+        "leftStageAt": "2026-03-31T12:37:43.990Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": null
+      },
+      {
+        "id": "f070b4c6-9698-4923-861f-0959f16acca9",
+        "stageId": "f86da1db-1d62-4d0a-9723-30e488cf812a",
+        "title": "Presented to Client",
+        "stageNumber": 1,
+        "enteredStageAt": "2026-03-31T12:37:43.996Z",
+        "leftStageAt": "2026-03-31T12:37:46.331Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "c609938f-137e-452f-bc40-5d66e8a883b5",
+        "stageId": "85be6bdc-364a-41c3-8aa5-e9e66684e9c1",
+        "title": "Final Interview",
+        "stageNumber": 2,
+        "enteredStageAt": "2026-03-31T12:37:46.333Z",
+        "leftStageAt": "2026-04-07T10:35:11.857Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "385b129a-1eb9-4d53-be10-d6f6dc2508de",
+        "stageId": "f86da1db-1d62-4d0a-9723-30e488cf812a",
+        "title": "Presented to Client",
+        "stageNumber": 3,
+        "enteredStageAt": "2026-04-07T10:35:11.868Z",
+        "leftStageAt": "2026-04-07T15:47:48.910Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "efe27351-cfc1-4da6-a9c9-ae4374142c52",
+        "stageId": "4ea1335c-b7b5-4379-a0ce-b3c671351f76",
+        "title": "Call with Client",
+        "stageNumber": 4,
+        "enteredStageAt": "2026-04-07T15:47:48.920Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      }
+    ],
+    "candidate": {
+      "id": "ed8ea8ae-f8f6-42a7-beac-83c866906259",
+      "name": "Ayla Kamal",
+      "primaryEmailAddress": {
+        "value": "aylakamal@gmail.com",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "039dca36-4bbe-4ad4-b0c4-a78104227a90",
+      "title": "Tech Talent Acquisition Partner (APAC)"
+    }
+  },
+  {
+    "applicationId": "2df3e355-c0a4-4027-afab-ce1ec829970a",
+    "applicationHistory": [
+      {
+        "id": "b7ed5423-a99c-42f7-a304-6f51210638da",
+        "stageId": "688ca25f-6464-4661-92d2-a245fd26c4e7",
+        "title": "Recruiter Screen",
+        "stageNumber": 0,
+        "enteredStageAt": "2026-04-20T12:03:55.567Z",
+        "leftStageAt": "2026-04-21T12:16:11.013Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "0561580e-23d1-4ef5-9723-c5872c83e415",
+        "stageId": "1886839a-684a-448c-bdc3-363215de4107",
+        "title": "Final Interview",
+        "stageNumber": 1,
+        "enteredStageAt": "2026-04-21T12:16:11.017Z",
+        "leftStageAt": "2026-04-22T14:41:10.895Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "c9958f2a-bed9-4444-8801-d00dcd67e5c3",
+        "stageId": "0bd5341f-32af-485a-a87b-1fb8695f60d1",
+        "title": "Client Prep",
+        "stageNumber": 2,
+        "enteredStageAt": "2026-04-22T14:41:10.899Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      }
+    ],
+    "candidate": {
+      "id": "afc7c519-24be-4fca-9c4a-62830d4d4c33",
+      "name": "Paras Sharma",
+      "primaryEmailAddress": {
+        "value": "paras.sharma390@gmail.com",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "71defd22-cc1d-4854-a767-4fa584eb64ff",
+      "title": "Tech Talent Sourcer - Immediate Start"
+    }
+  },
+  {
+    "applicationId": "02a18d48-a129-48cb-886b-754258b1b15d",
+    "applicationHistory": [
+      {
+        "id": "d97dc672-1205-464f-a3c8-2953f0a56afc",
+        "stageId": "688ca25f-6464-4661-92d2-a245fd26c4e7",
+        "title": "Recruiter Screen",
+        "stageNumber": 0,
+        "enteredStageAt": "2026-04-21T15:13:51.292Z",
+        "leftStageAt": "2026-04-24T09:04:25.842Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "5ee99bc8-b980-4550-8c0a-7153ce575c8f",
+        "stageId": "1886839a-684a-448c-bdc3-363215de4107",
+        "title": "Final Interview",
+        "stageNumber": 1,
+        "enteredStageAt": "2026-04-24T09:04:25.850Z",
+        "leftStageAt": "2026-04-27T09:44:35.207Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "99fa4a11-babe-4507-9825-c25366938a6e",
+        "stageId": "0bd5341f-32af-485a-a87b-1fb8695f60d1",
+        "title": "Client Prep",
+        "stageNumber": 2,
+        "enteredStageAt": "2026-04-27T09:44:35.214Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      }
+    ],
+    "candidate": {
+      "id": "80adb3fb-0cac-4f89-a66b-978474a3d249",
+      "name": "Sunil Kumar",
+      "primaryEmailAddress": {
+        "value": "sunilkumar5804@gmail.com",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "71defd22-cc1d-4854-a767-4fa584eb64ff",
+      "title": "Tech Talent Sourcer - Immediate Start"
+    }
+  },
+  {
+    "applicationId": "8f877863-a904-4f78-88d5-ceacc5076a1e",
+    "applicationHistory": [
+      {
+        "id": "7602dc69-9595-4417-bd55-bfa4c805cf8d",
+        "stageId": "c40f09d4-09a4-4af6-a0cc-f35947605c77",
+        "title": "Application Review",
+        "stageNumber": 0,
+        "enteredStageAt": "2026-04-22T18:59:49.527Z",
+        "leftStageAt": "2026-04-24T09:24:27.522Z",
+        "allowedActions": [
+          "set_entered_at",
+          "delete"
+        ],
+        "actorId": null
+      },
+      {
+        "id": "b1753066-d1d2-4d66-b722-8f0d5ceb17a4",
+        "stageId": "688ca25f-6464-4661-92d2-a245fd26c4e7",
+        "title": "Recruiter Screen",
+        "stageNumber": 1,
+        "enteredStageAt": "2026-04-24T09:24:27.526Z",
+        "leftStageAt": "2026-04-27T08:17:03.981Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "31830999-b6d6-422c-927a-adbd33e774ca",
+        "stageId": "1886839a-684a-448c-bdc3-363215de4107",
+        "title": "Final Interview",
+        "stageNumber": 2,
+        "enteredStageAt": "2026-04-27T08:17:03.989Z",
+        "leftStageAt": "2026-04-27T14:06:43.203Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "b1d59c61-b171-4168-a464-6a50be2007ee",
+        "stageId": "0bd5341f-32af-485a-a87b-1fb8695f60d1",
+        "title": "Client Prep",
+        "stageNumber": 3,
+        "enteredStageAt": "2026-04-27T14:06:43.208Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      }
+    ],
+    "candidate": {
+      "id": "8eb40b1c-c4dc-4aee-8647-285de63a09db",
+      "name": "Kushagra Juneja",
+      "primaryEmailAddress": {
+        "value": "kushagrakj02@gmail.com",
+        "type": "Personal",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "9826240600",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "71defd22-cc1d-4854-a767-4fa584eb64ff",
+      "title": "Tech Talent Sourcer - Immediate Start"
+    }
+  },
+  {
+    "applicationId": "39d8a56c-0724-4040-bb1e-578c6e3bb1de",
+    "applicationHistory": [
+      {
+        "id": "819ba665-51c6-4fa3-84a7-ea6bb8833474",
+        "stageId": "b0637bea-f333-4118-a76c-cf503a1d04ed",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-18T16:39:24.010Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "1cb6c078-bf3e-4d43-b04f-df604b5234b7",
+      "name": "Damla Kocek",
+      "primaryEmailAddress": {
+        "value": "damlakocek@gmail.com",
+        "type": "Other",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "+420606777647",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "21c0c02d-f5f2-4be3-adfb-711c0161a460",
+      "title": "Recruitment Operations Specialist - Hebrew speaking"
+    }
+  },
+  {
+    "applicationId": "d7236181-4cdb-4d95-9305-6b54ca5577a6",
+    "applicationHistory": [
+      {
+        "id": "c666c0e4-9265-4c9d-8537-8c73d2c7401d",
+        "stageId": "b0637bea-f333-4118-a76c-cf503a1d04ed",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-18T16:39:42.982Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "ed41425f-1c7a-46d1-bb11-c0f73f0f2918",
+      "name": "Natalie Tal",
+      "primaryEmailAddress": {
+        "value": "natalietal@gmail.com",
+        "type": "Other",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "447523199542",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "21c0c02d-f5f2-4be3-adfb-711c0161a460",
+      "title": "Recruitment Operations Specialist - Hebrew speaking"
+    }
+  },
+  {
+    "applicationId": "aa6f4c0b-2163-47a1-8690-cbfa7b66d244",
+    "applicationHistory": [
+      {
+        "id": "34d68eb3-915b-4b14-96ec-59d77503c43d",
+        "stageId": "b0637bea-f333-4118-a76c-cf503a1d04ed",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-18T16:39:43.292Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "a253d3f2-5272-43cb-aa82-9c469fe96d65",
+      "name": "Erzana Maliqi",
+      "primaryEmailAddress": {
+        "value": "erzanaamaliqi@gmail.com",
+        "type": "Other",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "38971297058",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "21c0c02d-f5f2-4be3-adfb-711c0161a460",
+      "title": "Recruitment Operations Specialist - Hebrew speaking"
+    }
+  },
+  {
+    "applicationId": "62f427fc-4ba7-4b7b-b628-f9e6e52cefcf",
+    "applicationHistory": [
+      {
+        "id": "72665e31-a748-4b93-8986-b8c6153d927d",
+        "stageId": "a1a933f1-9dca-4eb8-92d2-905cc3386f78",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-09-16T11:49:35.314Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      }
+    ],
+    "candidate": {
+      "id": "1fa0e246-ee00-43a8-b12e-cfd9031a1e83",
+      "name": "Alexandra Ulrica Constantinidi"
+    },
+    "job": {
+      "id": "b4a5a169-2020-44dd-9fc8-4a4d71bf1b66",
+      "title": "Talent Acquisition Partner - (Greek speaker)"
+    }
+  },
+  {
+    "applicationId": "ee8c170d-90ff-401a-91bd-00d41ee0946f",
+    "applicationHistory": [
+      {
+        "id": "3289c2a3-fcc4-4af8-b301-32d0c74a7a83",
+        "stageId": "bfcb3736-b653-4cd3-a946-f0189e7f83e5",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-08-12T15:06:22.182Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      }
+    ],
+    "candidate": {
+      "id": "2911c2e1-c6ad-4820-a356-ce4425005563",
+      "name": "Elena Petrovska"
+    },
+    "job": {
+      "id": "81df8256-dfdc-40d3-b000-6a8ca27950d7",
+      "title": "Senior Talent Sourcer (Remote)"
+    }
+  },
+  {
+    "applicationId": "c15959ac-60eb-4611-a867-c726d569dd32",
+    "applicationHistory": [
+      {
+        "id": "6d56cc04-2a52-4246-a09c-b7214dc921b8",
+        "stageId": "bfcb3736-b653-4cd3-a946-f0189e7f83e5",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-08-12T15:06:36.200Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      }
+    ],
+    "candidate": {
+      "id": "8d92bca8-c57d-4273-a819-d2387d2c0734",
+      "name": "Luis Bravo"
+    },
+    "job": {
+      "id": "81df8256-dfdc-40d3-b000-6a8ca27950d7",
+      "title": "Senior Talent Sourcer (Remote)"
+    }
+  },
+  {
+    "applicationId": "03de6b80-57aa-4533-8846-dbc4fee1c810",
+    "applicationHistory": [
+      {
+        "id": "11469464-56c7-4367-ab28-c9ed4750f495",
+        "stageId": "bfcb3736-b653-4cd3-a946-f0189e7f83e5",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-08-12T15:06:41.404Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      }
+    ],
+    "candidate": {
+      "id": "f3a47c7d-0164-438d-945e-1c2c5a7be4f3",
+      "name": "Elena Rodriguez Lage"
+    },
+    "job": {
+      "id": "81df8256-dfdc-40d3-b000-6a8ca27950d7",
+      "title": "Senior Talent Sourcer (Remote)"
+    }
+  },
+  {
+    "applicationId": "9f2e4885-80cd-4273-b051-8bd5828087be",
+    "applicationHistory": [
+      {
+        "id": "7a4413b1-a977-453a-9092-e6aa84f1629b",
+        "stageId": "1cfe59e5-458c-443f-bdcd-3013dcd67780",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-09-16T11:49:45.669Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      }
+    ],
+    "candidate": {
+      "id": "ad4fef64-2ae9-43d1-8fc2-f9193ada84f2",
+      "name": "Christina Skordili"
+    },
+    "job": {
+      "id": "281350db-0046-479f-8a88-c9fe03293294",
+      "title": "Junior TA | Greek Speaker"
+    }
+  },
+  {
+    "applicationId": "d96eba38-2929-442b-abc3-8ddf0b558430",
+    "applicationHistory": [
+      {
+        "id": "77c674e5-e320-43ac-98f2-83589c24a1e1",
+        "stageId": "0b668c7c-cb6d-42d2-98e9-184a8bc32f48",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-22T18:06:41.400Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "9a246f19-14e1-45a6-a5b1-c81aeeb441b3",
+      "name": "Paulina Wojtan",
+      "primaryEmailAddress": {
+        "value": "wojtanpaula@gmail.com",
+        "type": "Other",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "48603289403",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "3bdf4ba8-f162-4a02-902a-6e64bb0f9c2f",
+      "title": "(Senior) Tech Talent Acquisition Partner - Remote"
+    }
+  },
+  {
+    "applicationId": "34944c70-3008-46b5-a132-a312b33fa30d",
+    "applicationHistory": [
+      {
+        "id": "ca8b34e5-9285-41d5-abc7-7880d9322ddc",
+        "stageId": "0b668c7c-cb6d-42d2-98e9-184a8bc32f48",
+        "title": "Hired",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-04-22T18:06:50.930Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      }
+    ],
+    "candidate": {
+      "id": "8f0fa2bc-7891-4f76-a41f-b1f78af8f652",
+      "name": "Mary Antonova",
+      "primaryEmailAddress": {
+        "value": "mary.antonova13@gmail.com",
+        "type": "Other",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "48663824073",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "3bdf4ba8-f162-4a02-902a-6e64bb0f9c2f",
+      "title": "(Senior) Tech Talent Acquisition Partner - Remote"
+    }
+  },
+  {
+    "applicationId": "1b49e85c-ad0a-4b19-b3d0-6776cc34b872",
+    "applicationHistory": [
+      {
+        "id": "80e7a90e-b8be-4a3a-bcf5-35d1ea649d7c",
+        "stageId": "6db182b3-0874-49a3-afd8-b6ad4a3d00a9",
+        "title": "Initial Screen",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-06-16T14:00:16.396Z",
+        "leftStageAt": "2025-06-16T14:00:41.078Z",
+        "allowedActions": [
+          "set_entered_at",
+          "delete"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "f8c5fe84-870f-451d-b9b0-aaa5a122882a",
+        "stageId": "7a8681d6-01d9-4cf0-b8ca-cde050a8789d",
+        "title": "Final Interview",
+        "stageNumber": 1,
+        "enteredStageAt": "2025-06-16T14:00:41.081Z",
+        "leftStageAt": "2025-07-01T13:45:50.360Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "aa179a69-d902-48ac-bcf8-9107a3b9f229",
+        "stageId": "721335bd-b996-41b9-bab7-f2fd948335ab",
+        "title": "Hired",
+        "stageNumber": 2,
+        "enteredStageAt": "2025-07-01T13:45:50.369Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "61a1939c-3a56-45da-97cd-6cce5bc6f32e"
+      }
+    ],
+    "candidate": {
+      "id": "80ae3f7a-356b-43d1-9e2d-40fffb0b51cf",
+      "name": "Tomer Fattal",
+      "primaryEmailAddress": {
+        "value": "tomerfattal9@gmail.com",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "438d319a-b1a5-427a-be46-d4a5ade5c7ac",
+      "title": "Talent Acquisition Partner - Hebrew Speaker"
+    }
+  },
+  {
+    "applicationId": "9819df88-4813-4c05-8de2-40c1b663b54e",
+    "applicationHistory": [
+      {
+        "id": "41b16f69-4ea6-4c94-81d7-279033f83580",
+        "stageId": "661d88e1-47d1-47a5-b844-f9c6abc09db5",
+        "title": "Initial Screen",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-06-17T15:27:00.521Z",
+        "leftStageAt": "2025-06-18T13:31:09.499Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "1d354a0b-2fd2-4052-9af9-0935163bcd82",
+        "stageId": "50f9d075-4614-4cb4-8db9-4942ce9b83e0",
+        "title": "Final Interview",
+        "stageNumber": 1,
+        "enteredStageAt": "2025-06-18T13:31:09.503Z",
+        "leftStageAt": "2025-06-19T17:42:57.235Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "a0493fcb-07fd-46a2-9340-a12e57230d4f",
+        "stageId": "7a8681d6-01d9-4cf0-b8ca-cde050a8789d",
+        "title": "Final Interview",
+        "stageNumber": 2,
+        "enteredStageAt": "2025-06-19T17:42:57.237Z",
+        "leftStageAt": "2025-07-01T13:46:08.821Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "a55a3813-d1eb-42fc-8c86-cc64165d166b",
+        "stageId": "722a1818-364e-4972-ba6d-3dfbc2d17cad",
+        "title": "Offer",
+        "stageNumber": 3,
+        "enteredStageAt": "2025-07-01T13:46:08.825Z",
+        "leftStageAt": "2025-07-02T08:26:52.314Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "61a1939c-3a56-45da-97cd-6cce5bc6f32e"
+      },
+      {
+        "id": "9b24e93c-9a12-45b4-ace7-035239fd535c",
+        "stageId": "721335bd-b996-41b9-bab7-f2fd948335ab",
+        "title": "Hired",
+        "stageNumber": 4,
+        "enteredStageAt": "2025-07-02T08:26:52.321Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "61a1939c-3a56-45da-97cd-6cce5bc6f32e"
+      }
+    ],
+    "candidate": {
+      "id": "84340269-2a0c-47af-a41b-f219ff979ecb",
+      "name": "Tawfik Shadafna",
+      "primaryEmailAddress": {
+        "value": "t.shad80@gmail.com",
+        "type": "Personal",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "+346707768",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "438d319a-b1a5-427a-be46-d4a5ade5c7ac",
+      "title": "Talent Acquisition Partner - Hebrew Speaker"
+    }
+  },
+  {
+    "applicationId": "9b20b5ee-b59a-4175-adea-668ec88b9db1",
+    "applicationHistory": [
+      {
+        "id": "16ad9e73-471c-4879-8bf5-e1740a66bcfb",
+        "stageId": "661d88e1-47d1-47a5-b844-f9c6abc09db5",
+        "title": "Initial Screen",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-06-17T15:23:25.847Z",
+        "leftStageAt": "2025-06-18T14:32:32.210Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "9599427a-8160-4061-9760-83bcdd68bfd0",
+        "stageId": "50f9d075-4614-4cb4-8db9-4942ce9b83e0",
+        "title": "Final Interview",
+        "stageNumber": 1,
+        "enteredStageAt": "2025-06-18T14:32:32.217Z",
+        "leftStageAt": "2025-07-01T13:45:07.116Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "e4e11a9f-e3d7-4db1-b627-484b66ce2f12",
+        "stageId": "31faed28-fe31-41ca-ab2d-6bf50be6b171",
+        "title": "Hired",
+        "stageNumber": 2,
+        "enteredStageAt": "2025-07-01T13:45:07.124Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "61a1939c-3a56-45da-97cd-6cce5bc6f32e"
+      }
+    ],
+    "candidate": {
+      "id": "a99439c8-6c54-47c1-b436-cbceadc1aee3",
+      "name": "Noa Dagan",
+      "primaryEmailAddress": {
+        "value": "Noadagan77@gmail.com",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "9bb3e951-3c0a-4681-953b-8b49a5a55072",
+      "title": "Recruitment Coordinator - Hebrew Speaker"
+    }
+  },
+  {
+    "applicationId": "468ac4ae-d45b-4288-a532-8c15ab1621bd",
+    "applicationHistory": [
+      {
+        "id": "6b6bff6d-30e1-4f0f-a2f3-0d5db179bd49",
+        "stageId": "a7b5629c-52c9-427a-bdc5-030061cf6645",
+        "title": "Sourced",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-07-08T13:50:23.645Z",
+        "leftStageAt": "2025-07-08T14:09:34.636Z",
+        "allowedActions": [
+          "set_entered_at",
+          "delete"
+        ],
+        "actorId": "8e86d250-8359-4aab-ad00-4d91cf300819"
+      },
+      {
+        "id": "f6b452bf-cd00-4e91-a58c-ea8679638bb5",
+        "stageId": "6bc7c72f-77e2-45e7-9a86-cf6b74e3ec0c",
+        "title": "Initial Screen",
+        "stageNumber": 1,
+        "enteredStageAt": "2025-07-08T14:09:34.643Z",
+        "leftStageAt": "2025-07-09T12:52:05.903Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "f03d2a9c-ac86-4fd7-a813-681f4dc970e7",
+        "stageId": "e7ca801c-a3f0-4d12-b7cf-fc56f7b1633b",
+        "title": "WHO",
+        "stageNumber": 2,
+        "enteredStageAt": "2025-07-09T12:52:05.912Z",
+        "leftStageAt": "2025-07-10T13:49:09.464Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "fa8a294a-74dc-4fc4-80ed-dbd14d0de0b4",
+        "stageId": "b5da20be-3013-4746-ab48-3a1be9b9a781",
+        "title": "Final Interview",
+        "stageNumber": 3,
+        "enteredStageAt": "2025-07-10T13:49:09.472Z",
+        "leftStageAt": "2025-07-11T12:16:24.334Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "26338083-a0ea-43b6-b172-2b53a4597229",
+        "stageId": "caadcbb7-8425-4522-b1db-1744256fb900",
+        "title": "Call with Client",
+        "stageNumber": 4,
+        "enteredStageAt": "2025-07-11T12:16:24.341Z",
+        "leftStageAt": "2025-07-16T13:34:43.971Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "c46fddcd-5a87-4203-8ab3-975cb3a09851"
+      },
+      {
+        "id": "7fb776f4-1cf0-495b-90b0-8219a0005524",
+        "stageId": "1a81ddbb-7f50-403e-9939-2d83bfee9286",
+        "title": "Offer",
+        "stageNumber": 5,
+        "enteredStageAt": "2025-07-16T13:34:43.981Z",
+        "leftStageAt": "2025-07-17T19:14:12.067Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "c46fddcd-5a87-4203-8ab3-975cb3a09851"
+      },
+      {
+        "id": "cbc57b2e-9e24-4499-b48f-694cc1cf7ca8",
+        "stageId": "b9096390-eac0-4555-8532-3fc2862b5840",
+        "title": "Hired",
+        "stageNumber": 6,
+        "enteredStageAt": "2025-07-17T19:14:12.075Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "61a1939c-3a56-45da-97cd-6cce5bc6f32e"
+      }
+    ],
+    "candidate": {
+      "id": "ba081d7c-2596-44dc-bdd1-ecce8d71858d",
+      "name": "Ekaterina Boyprav",
+      "primaryEmailAddress": {
+        "value": "katerina.boyprav@gmail.com",
+        "type": "Other",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "e8479384-81c5-4b0a-b590-c49a79805566",
+      "title": "Gaming Talent Acquisition Partner (Art & Creative) - Russian speaker"
+    }
+  },
+  {
+    "applicationId": "1bbb9756-2633-4c09-9193-5693a2918616",
+    "applicationHistory": [
+      {
+        "id": "1bebc1a7-5d8a-446f-8788-c4fcb4592cea",
+        "stageId": "6bc7c72f-77e2-45e7-9a86-cf6b74e3ec0c",
+        "title": "Initial Screen",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-10-06T16:42:58.971Z",
+        "leftStageAt": "2025-10-07T15:41:41.354Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": null
+      },
+      {
+        "id": "ef8c048c-cfd0-4983-8adb-bbb7dc40e0a7",
+        "stageId": "e7ca801c-a3f0-4d12-b7cf-fc56f7b1633b",
+        "title": "WHO",
+        "stageNumber": 1,
+        "enteredStageAt": "2025-10-07T15:41:41.360Z",
+        "leftStageAt": "2025-10-08T13:18:39.034Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "ed589ce1-8ca7-4391-b24f-b38ad4fb3e22",
+        "stageId": "b5da20be-3013-4746-ab48-3a1be9b9a781",
+        "title": "Final Interview",
+        "stageNumber": 2,
+        "enteredStageAt": "2025-10-08T13:18:39.038Z",
+        "leftStageAt": "2025-11-28T14:52:22.660Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "40c46b8a-bbc6-4a9c-aa2b-eac4e2e6b9b4",
+        "stageId": "b9096390-eac0-4555-8532-3fc2862b5840",
+        "title": "Hired",
+        "stageNumber": 3,
+        "enteredStageAt": "2025-11-28T14:52:22.668Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      }
+    ],
+    "candidate": {
+      "id": "2debe142-508a-4869-add5-effd75996e88",
+      "name": "Mark Kandaurov",
+      "primaryEmailAddress": {
+        "value": "kandaurov.mark@gmail.com",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "e8479384-81c5-4b0a-b590-c49a79805566",
+      "title": "Gaming Talent Acquisition Partner (Art & Creative) - Russian speaker"
+    }
+  },
+  {
+    "applicationId": "265e6d7a-3cd1-473c-8d09-c1f01b933125",
+    "applicationHistory": [
+      {
+        "id": "4b010fc7-3b91-4552-adf7-3e31e9a4a7ec",
+        "stageId": "0c09303e-e73a-48a2-8ab2-427733cb6dbb",
+        "title": "Initial Screen",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-07-24T13:29:58.783Z",
+        "leftStageAt": "2025-07-25T05:15:49.433Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": null
+      },
+      {
+        "id": "8ebbd75c-f53b-4f30-85ac-4bfce55f2ab7",
+        "stageId": "781fd710-0220-4394-9f43-d9ba9cdc73f7",
+        "title": "Final Interview",
+        "stageNumber": 1,
+        "enteredStageAt": "2025-07-25T05:15:49.442Z",
+        "leftStageAt": "2025-08-08T08:09:31.943Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "d05cdcef-1e3c-4f34-b6e8-f716285ed945"
+      },
+      {
+        "id": "4dfe6588-e030-4cd1-8843-c1739f5a62e5",
+        "stageId": "b6358b2c-10dc-4475-9a5a-2c4b0b26ddd5",
+        "title": "Offer",
+        "stageNumber": 2,
+        "enteredStageAt": "2025-08-08T08:09:31.965Z",
+        "leftStageAt": "2025-08-11T11:35:03.703Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "659d631c-844e-4de8-a099-25cf14863179"
+      },
+      {
+        "id": "a722649a-3d16-436f-8568-056e19dd1417",
+        "stageId": "d6949d44-a422-4fae-b690-898c8c6b83be",
+        "title": "Hired",
+        "stageNumber": 3,
+        "enteredStageAt": "2025-08-11T11:35:03.710Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      }
+    ],
+    "candidate": {
+      "id": "7882dc5e-866d-46fa-ab75-4651ee3fcf4b",
+      "name": "Abigail Nangungunang",
+      "primaryEmailAddress": {
+        "value": "abigailcaliwag@gmail.com",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "fa74ad21-bb99-4a85-806f-6dffd2590c23",
+      "title": "Talent Sourcer (Fixed-term)"
+    }
+  },
+  {
+    "applicationId": "183ab706-deb1-4b3d-a30b-c0a52e5b886b",
+    "applicationHistory": [
+      {
+        "id": "40cb2d71-c50e-4ee5-b4f4-a36d75f2fceb",
+        "stageId": "9460c091-3a5c-432f-869c-445ecbc6e196",
+        "title": "Initial Screen",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-08-06T15:14:58.523Z",
+        "leftStageAt": "2025-08-07T09:37:45.634Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d05cdcef-1e3c-4f34-b6e8-f716285ed945"
+      },
+      {
+        "id": "546ad6dc-5ecd-48bd-ab9b-e5e8cdbefe9b",
+        "stageId": "3b729d98-b56c-4de3-a3d8-28c1897bfc73",
+        "title": "Final Interview",
+        "stageNumber": 1,
+        "enteredStageAt": "2025-08-07T09:37:45.638Z",
+        "leftStageAt": "2025-08-11T07:09:51.296Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "9faa3080-81d8-4af3-aa0e-aeb85e1495cf",
+        "stageId": "c3ac1db9-38fe-4854-bab8-f85820db5c14",
+        "title": "Call with Client",
+        "stageNumber": 2,
+        "enteredStageAt": "2025-08-11T07:09:51.309Z",
+        "leftStageAt": "2025-08-11T10:18:14.150Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "659d631c-844e-4de8-a099-25cf14863179"
+      },
+      {
+        "id": "472bbc7d-0af5-43ae-bd07-d0d83ae4f2d8",
+        "stageId": "ff7bb353-e0d0-437c-a0d6-02e58cd77444",
+        "title": "Offer",
+        "stageNumber": 3,
+        "enteredStageAt": "2025-08-11T10:18:14.154Z",
+        "leftStageAt": "2025-08-11T11:37:56.832Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "a2fa0ec4-acd5-4cbe-8a6a-f2dade1cac3a",
+        "stageId": "165a587d-5b41-4c78-ad55-8ee378c38cbb",
+        "title": "Hired",
+        "stageNumber": 4,
+        "enteredStageAt": "2025-08-11T11:37:56.835Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      }
+    ],
+    "candidate": {
+      "id": "5bb3c5c7-5c33-4ab7-b44c-d70896749584",
+      "name": "Zarina Amanbekova",
+      "primaryEmailAddress": {
+        "value": "adalovazarina@gmail.com",
+        "type": "Personal",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "+36  705  977 444",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "3cce3e2b-04cd-451a-9257-d76ed2f32599",
+      "title": "Volume Talent Acquisition Partner - Russian Speaker"
+    }
+  },
+  {
+    "applicationId": "82667134-e33a-4899-8d1b-f7774b37a4a1",
+    "applicationHistory": [
+      {
+        "id": "99df3d98-f0ee-4909-b4df-34a5755c3cb0",
+        "stageId": "8eaf3220-cf60-4f6d-86a5-714dc745e975",
+        "title": "Application Review",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-08-26T11:04:32.425Z",
+        "leftStageAt": "2025-08-27T10:12:42.973Z",
+        "allowedActions": [
+          "set_entered_at",
+          "delete"
+        ],
+        "actorId": null
+      },
+      {
+        "id": "b0c45020-9f19-4d41-8720-875720b5001b",
+        "stageId": "9460c091-3a5c-432f-869c-445ecbc6e196",
+        "title": "Initial Screen",
+        "stageNumber": 1,
+        "enteredStageAt": "2025-08-27T10:12:42.982Z",
+        "leftStageAt": "2025-08-28T10:07:04.876Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "416e9c58-ec8e-4d5b-a5a1-6a1771a4f474",
+        "stageId": "3b729d98-b56c-4de3-a3d8-28c1897bfc73",
+        "title": "Final Interview",
+        "stageNumber": 2,
+        "enteredStageAt": "2025-08-28T10:07:04.880Z",
+        "leftStageAt": "2025-08-28T13:41:53.771Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "5a20ab12-2a83-41f4-84a6-2fc09cc8ecf3",
+        "stageId": "c3ac1db9-38fe-4854-bab8-f85820db5c14",
+        "title": "Call with Client",
+        "stageNumber": 3,
+        "enteredStageAt": "2025-08-28T13:41:53.775Z",
+        "leftStageAt": "2025-09-03T12:15:00.521Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "c46fddcd-5a87-4203-8ab3-975cb3a09851"
+      },
+      {
+        "id": "7b15d3a1-9e8d-49c8-ab6d-5fa1a2b6cc15",
+        "stageId": "ff7bb353-e0d0-437c-a0d6-02e58cd77444",
+        "title": "Offer",
+        "stageNumber": 4,
+        "enteredStageAt": "2025-09-03T12:15:00.530Z",
+        "leftStageAt": "2025-09-05T11:26:12.614Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "c46fddcd-5a87-4203-8ab3-975cb3a09851"
+      },
+      {
+        "id": "7ddc0436-6b52-42dc-8916-18cfe596f5b6",
+        "stageId": "165a587d-5b41-4c78-ad55-8ee378c38cbb",
+        "title": "Hired",
+        "stageNumber": 5,
+        "enteredStageAt": "2025-09-05T11:26:12.622Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      }
+    ],
+    "candidate": {
+      "id": "508747bd-08ce-42d5-a1ea-157e305c4502",
+      "name": "Alisa Liddell",
+      "primaryEmailAddress": {
+        "value": "liddellalisacz@gmail.com",
+        "type": "Personal",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "+420 722 388 102",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "3cce3e2b-04cd-451a-9257-d76ed2f32599",
+      "title": "Volume Talent Acquisition Partner - Russian Speaker"
+    }
+  },
+  {
+    "applicationId": "90e11628-47d6-404f-94d6-536f8c0efb48",
+    "applicationHistory": [
+      {
+        "id": "1e75e42a-1656-4989-b3ae-9252bf7f7869",
+        "stageId": "bc49e56b-3961-425d-9002-75934a892379",
+        "title": "Initial Screen",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-08-26T16:51:46.448Z",
+        "leftStageAt": "2025-08-27T10:44:53.292Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "d6ab2676-5190-489e-b55e-e98123ed9a5f"
+      },
+      {
+        "id": "691b6be1-183d-42d6-8182-1ca21a8c5d8b",
+        "stageId": "44a45fc1-a64c-4565-822a-c1acd2f1e7b0",
+        "title": "Final Interview",
+        "stageNumber": 1,
+        "enteredStageAt": "2025-08-27T10:44:53.297Z",
+        "leftStageAt": "2025-08-27T14:58:25.240Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "980ec90e-dff4-4dc1-9f7e-bcf1cf59bff4",
+        "stageId": "dc94c5e2-bd71-4fbf-b3cd-970366d01121",
+        "title": "Call with Client",
+        "stageNumber": 2,
+        "enteredStageAt": "2025-08-27T14:58:25.247Z",
+        "leftStageAt": "2025-09-02T11:45:28.443Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "c46fddcd-5a87-4203-8ab3-975cb3a09851"
+      },
+      {
+        "id": "e1e64eb0-37f6-4a80-87ec-3b29d5675ab3",
+        "stageId": "2f4d233f-f93d-4613-bdf0-c30b1bd1e78b",
+        "title": "Offer",
+        "stageNumber": 3,
+        "enteredStageAt": "2025-09-02T11:45:28.453Z",
+        "leftStageAt": "2025-09-04T12:06:43.106Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "c46fddcd-5a87-4203-8ab3-975cb3a09851"
+      },
+      {
+        "id": "103e008a-d49c-420e-aa7a-9091fc7ff59a",
+        "stageId": "81d087c6-2494-46e5-9814-f9f3f96a219e",
+        "title": "Hired",
+        "stageNumber": 4,
+        "enteredStageAt": "2025-09-04T12:06:43.118Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "c46fddcd-5a87-4203-8ab3-975cb3a09851"
+      }
+    ],
+    "candidate": {
+      "id": "df1146fc-97ce-46c5-a433-49665bc401fe",
+      "name": "Adelya Khakimova",
+      "primaryEmailAddress": {
+        "value": "adelya2808@gmail.com",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "153cc082-f442-47a6-9a13-5c8400fd0e89",
+      "title": "Commercial Talent Acquisition Partner - Russian Speaker"
+    }
+  },
+  {
+    "applicationId": "3e057832-c090-4df9-a334-989551b1d25a",
+    "applicationHistory": [
+      {
+        "id": "c0487650-7d30-492f-bab0-fe6c28fed929",
+        "stageId": "0abeee36-f543-4a4f-aeeb-5998477b4155",
+        "title": "Initial Screen",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-09-16T12:10:47.480Z",
+        "leftStageAt": "2025-09-17T11:44:12.865Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "48241e74-2fd2-4123-8ccf-f65c81f12c67",
+        "stageId": "04eb21b1-30fa-4bf8-9137-e5e6600de261",
+        "title": "Final Interview",
+        "stageNumber": 1,
+        "enteredStageAt": "2025-09-17T11:44:12.874Z",
+        "leftStageAt": "2025-09-25T11:30:37.443Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "b07e5905-de2b-4bc1-ae8c-7c79dc3538a4",
+        "stageId": "ea964af1-f056-479b-8ffe-1acc62a4a821",
+        "title": "Offer",
+        "stageNumber": 2,
+        "enteredStageAt": "2025-09-25T11:30:37.449Z",
+        "leftStageAt": "2025-09-30T13:21:14.036Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "95ecd10e-d1d7-48b4-a890-06c1ab84c199"
+      },
+      {
+        "id": "10b01a47-53b3-40cc-a6e9-678863cd4560",
+        "stageId": "0703138a-6cf2-4413-8feb-344d8695c46e",
+        "title": "Hired",
+        "stageNumber": 3,
+        "enteredStageAt": "2025-09-30T13:21:14.046Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      }
+    ],
+    "candidate": {
+      "id": "8e41f2b3-31fe-48ea-b9db-be9d5f523f7a",
+      "name": "Evagelina R",
+      "primaryEmailAddress": {
+        "value": "evagelina.rapanaki@icloud.com",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "cd633142-beb8-46fa-a976-3d1895b4ff1d",
+      "title": "Volume Talent Acquisition Partner (fixed-term) - Greek speaker"
+    }
+  },
+  {
+    "applicationId": "a6379b40-4585-46df-8a3f-601c96f58035",
+    "applicationHistory": [
+      {
+        "id": "2de02a7f-2c37-46ad-b943-f2d0dfad2bf7",
+        "stageId": "b2f406fa-afee-4d81-8512-fdacf1cff7b6",
+        "title": "Application Review",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-09-22T15:50:43.277Z",
+        "leftStageAt": "2025-09-22T16:13:27.093Z",
+        "allowedActions": [
+          "set_entered_at",
+          "delete"
+        ],
+        "actorId": null
+      },
+      {
+        "id": "13ee4f4d-6aa1-4adb-ab5a-207452d3825b",
+        "stageId": "ffc351f1-abb3-4f2b-9f27-24149e5f7363",
+        "title": "Initial Screen",
+        "stageNumber": 1,
+        "enteredStageAt": "2025-09-22T16:13:27.098Z",
+        "leftStageAt": "2025-09-22T16:38:56.471Z",
+        "allowedActions": [
+          "set_entered_at",
+          "delete"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "57fa7984-3a53-476b-a763-8d312d0cd3d3",
+        "stageId": "2a2533d1-94bf-44f6-9aa2-63f86d53cc33",
+        "title": "Tier 2 - Uncontacted",
+        "stageNumber": 2,
+        "enteredStageAt": "2025-09-22T16:38:56.474Z",
+        "leftStageAt": "2025-09-22T16:49:07.714Z",
+        "allowedActions": [
+          "set_entered_at",
+          "delete"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "69f40373-e3bf-468f-a65a-144400a6e484",
+        "stageId": "ffc351f1-abb3-4f2b-9f27-24149e5f7363",
+        "title": "Initial Screen",
+        "stageNumber": 3,
+        "enteredStageAt": "2025-09-22T16:49:07.718Z",
+        "leftStageAt": "2025-09-23T09:30:35.453Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "fb2df269-184d-4599-abad-1f6b05409d30",
+        "stageId": "5c21e7a0-ec4d-4c14-a5a8-0cbf5d7280ec",
+        "title": "WHO",
+        "stageNumber": 4,
+        "enteredStageAt": "2025-09-23T09:30:35.459Z",
+        "leftStageAt": "2025-09-23T12:35:34.477Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "e3f6a188-de12-4044-9e53-5d4b37127534",
+        "stageId": "3e8cf973-b3eb-4ac5-8167-eeaabfbfefa3",
+        "title": "Final Interview",
+        "stageNumber": 5,
+        "enteredStageAt": "2025-09-23T12:35:34.479Z",
+        "leftStageAt": "2025-09-25T08:38:12.198Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "9543fa50-e0d1-413c-ab16-4d3b137379d5",
+        "stageId": "f72c3fc9-22b6-4564-912b-92b43cab507b",
+        "title": "Call with Client (TA)",
+        "stageNumber": 6,
+        "enteredStageAt": "2025-09-25T08:38:12.203Z",
+        "leftStageAt": "2025-09-30T12:12:05.019Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "1b4981ae-7536-4338-830f-6c27a73d1a9f",
+        "stageId": "d11af60a-89b9-4b00-b186-7cbaee53eb8a",
+        "title": "Call with Client (HM)",
+        "stageNumber": 7,
+        "enteredStageAt": "2025-09-30T12:12:05.023Z",
+        "leftStageAt": "2025-10-03T07:41:21.852Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "4e6464ea-b67f-4b41-8b29-5b90424b60fe",
+        "stageId": "78dc00a1-570b-4c4f-bbf0-a771b215fc14",
+        "title": "Offer",
+        "stageNumber": 8,
+        "enteredStageAt": "2025-10-03T07:41:21.864Z",
+        "leftStageAt": "2025-10-03T13:07:33.527Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "95ecd10e-d1d7-48b4-a890-06c1ab84c199"
+      },
+      {
+        "id": "e1f98534-0e19-4a82-8b2c-d3cb08d78771",
+        "stageId": "5fa8c849-3297-4bde-b19c-15e38a0e5529",
+        "title": "Hired",
+        "stageNumber": 9,
+        "enteredStageAt": "2025-10-03T13:07:33.533Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      }
+    ],
+    "candidate": {
+      "id": "cc61fe16-3d85-4715-a5ec-4891a29d9f6b",
+      "name": "Akash Singh",
+      "primaryEmailAddress": {
+        "value": "akkiex007@gmail.com",
+        "type": "Personal",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "+91-9205702502",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "71bc599f-e6ac-4757-bec2-87eeded0cd59",
+      "title": "Tech Talent Acquisition Partner (fixed-term)"
+    }
+  },
+  {
+    "applicationId": "8782ccf8-11ae-4ef0-8537-7b3bd1ec9884",
+    "applicationHistory": [
+      {
+        "id": "2c446159-69af-4fbb-8c61-604a6f22e8b7",
+        "stageId": "b2f406fa-afee-4d81-8512-fdacf1cff7b6",
+        "title": "Application Review",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-09-23T09:50:57.664Z",
+        "leftStageAt": "2025-09-23T15:26:49.108Z",
+        "allowedActions": [
+          "set_entered_at",
+          "delete"
+        ],
+        "actorId": null
+      },
+      {
+        "id": "239b88e5-e6fa-4215-9a2b-4d12b6430609",
+        "stageId": "2a2533d1-94bf-44f6-9aa2-63f86d53cc33",
+        "title": "Tier 2 - Uncontacted",
+        "stageNumber": 1,
+        "enteredStageAt": "2025-09-23T15:26:49.112Z",
+        "leftStageAt": "2025-09-23T15:28:44.140Z",
+        "allowedActions": [
+          "set_entered_at",
+          "delete"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "f76a828d-8802-4900-90b5-3d5c3aca6d31",
+        "stageId": "ffc351f1-abb3-4f2b-9f27-24149e5f7363",
+        "title": "Initial Screen",
+        "stageNumber": 2,
+        "enteredStageAt": "2025-09-23T15:28:44.144Z",
+        "leftStageAt": "2025-09-24T09:12:33.985Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "36c22fbe-ff6b-4077-a5f4-c44e765213b3",
+        "stageId": "3e8cf973-b3eb-4ac5-8167-eeaabfbfefa3",
+        "title": "Final Interview",
+        "stageNumber": 3,
+        "enteredStageAt": "2025-09-24T09:12:33.990Z",
+        "leftStageAt": "2025-09-25T08:38:07.140Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "f2a0d2a5-b38c-499f-9546-45bad26f2ad0",
+        "stageId": "f72c3fc9-22b6-4564-912b-92b43cab507b",
+        "title": "Call with Client (TA)",
+        "stageNumber": 4,
+        "enteredStageAt": "2025-09-25T08:38:07.145Z",
+        "leftStageAt": "2025-09-30T12:12:06.489Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "b41455e0-37f7-421a-a858-9a9b6ba27235",
+        "stageId": "d11af60a-89b9-4b00-b186-7cbaee53eb8a",
+        "title": "Call with Client (HM)",
+        "stageNumber": 5,
+        "enteredStageAt": "2025-09-30T12:12:06.494Z",
+        "leftStageAt": "2025-10-03T07:41:23.457Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "ab63deda-64da-4f86-82da-12606cb48c77",
+        "stageId": "78dc00a1-570b-4c4f-bbf0-a771b215fc14",
+        "title": "Offer",
+        "stageNumber": 6,
+        "enteredStageAt": "2025-10-03T07:41:23.462Z",
+        "leftStageAt": "2025-10-03T13:07:39.788Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "95ecd10e-d1d7-48b4-a890-06c1ab84c199"
+      },
+      {
+        "id": "f7dd3ace-f1f7-4b30-9ae7-33255944bd0d",
+        "stageId": "5fa8c849-3297-4bde-b19c-15e38a0e5529",
+        "title": "Hired",
+        "stageNumber": 7,
+        "enteredStageAt": "2025-10-03T13:07:39.792Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      }
+    ],
+    "candidate": {
+      "id": "5ae72d0a-cc04-48eb-aaec-39cb65aafeda",
+      "name": "Danish Shams",
+      "primaryEmailAddress": {
+        "value": "shams.danish786@gmail.com",
+        "type": "Personal",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "8178194827",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "71bc599f-e6ac-4757-bec2-87eeded0cd59",
+      "title": "Tech Talent Acquisition Partner (fixed-term)"
+    }
+  },
+  {
+    "applicationId": "aea1ee79-de18-4094-b1e8-1a76656982b1",
+    "applicationHistory": [
+      {
+        "id": "7668d150-2255-4c64-a31d-5389d0b1f4ea",
+        "stageId": "b2f406fa-afee-4d81-8512-fdacf1cff7b6",
+        "title": "Application Review",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-09-30T09:47:36.912Z",
+        "leftStageAt": "2025-09-30T14:36:38.532Z",
+        "allowedActions": [
+          "set_entered_at",
+          "delete"
+        ],
+        "actorId": null
+      },
+      {
+        "id": "ba837da1-f95f-4f9d-8758-a25318feb177",
+        "stageId": "2a2533d1-94bf-44f6-9aa2-63f86d53cc33",
+        "title": "Tier 2 - Uncontacted",
+        "stageNumber": 1,
+        "enteredStageAt": "2025-09-30T14:36:38.547Z",
+        "leftStageAt": "2025-09-30T14:37:09.454Z",
+        "allowedActions": [
+          "set_entered_at",
+          "delete"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "d0e09819-5b6d-44f8-b5da-d48f960e3cf7",
+        "stageId": "ffc351f1-abb3-4f2b-9f27-24149e5f7363",
+        "title": "Initial Screen",
+        "stageNumber": 2,
+        "enteredStageAt": "2025-09-30T14:37:09.456Z",
+        "leftStageAt": "2025-10-14T12:36:51.981Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "862701a0-8346-41be-b0bd-c49854916a94",
+        "stageId": "3e8cf973-b3eb-4ac5-8167-eeaabfbfefa3",
+        "title": "Final Interview",
+        "stageNumber": 3,
+        "enteredStageAt": "2025-10-14T12:36:51.997Z",
+        "leftStageAt": "2025-10-24T13:59:57.489Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "95ecd10e-d1d7-48b4-a890-06c1ab84c199"
+      },
+      {
+        "id": "60a964bc-fabc-4f6e-b923-72d2675341b3",
+        "stageId": "f72c3fc9-22b6-4564-912b-92b43cab507b",
+        "title": "Call with Client (TA)",
+        "stageNumber": 4,
+        "enteredStageAt": "2025-10-24T13:59:57.502Z",
+        "leftStageAt": "2025-10-28T13:59:01.398Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "659d631c-844e-4de8-a099-25cf14863179"
+      },
+      {
+        "id": "cf2e0cc6-6cf1-47ae-94a5-cf8534a81c92",
+        "stageId": "d11af60a-89b9-4b00-b186-7cbaee53eb8a",
+        "title": "Call with Client (HM)",
+        "stageNumber": 5,
+        "enteredStageAt": "2025-10-28T13:59:01.402Z",
+        "leftStageAt": "2025-11-27T10:01:23.561Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "659d631c-844e-4de8-a099-25cf14863179"
+      },
+      {
+        "id": "231fef91-f0bd-48c4-b77e-746c0bb6b9e2",
+        "stageId": "78dc00a1-570b-4c4f-bbf0-a771b215fc14",
+        "title": "Offer",
+        "stageNumber": 6,
+        "enteredStageAt": "2025-11-27T10:01:23.570Z",
+        "leftStageAt": "2025-11-27T15:18:29.837Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "659d631c-844e-4de8-a099-25cf14863179"
+      },
+      {
+        "id": "37aead23-86c5-4a61-835d-076eacb9f2c1",
+        "stageId": "5fa8c849-3297-4bde-b19c-15e38a0e5529",
+        "title": "Hired",
+        "stageNumber": 7,
+        "enteredStageAt": "2025-11-27T15:18:29.846Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "659d631c-844e-4de8-a099-25cf14863179"
+      }
+    ],
+    "candidate": {
+      "id": "8ffdf83a-0535-4cb4-8372-7ea720f5baa3",
+      "name": "Nidhi Raina",
+      "primaryEmailAddress": {
+        "value": "raina.nidhi71@gmail.com",
+        "type": "Personal",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "+919560960740",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "71bc599f-e6ac-4757-bec2-87eeded0cd59",
+      "title": "Tech Talent Acquisition Partner (fixed-term)"
+    }
+  },
+  {
+    "applicationId": "814d0a99-4156-41ea-8654-5539d0051021",
+    "applicationHistory": [
+      {
+        "id": "d7f405e3-0eca-4196-99d7-28ee3026528f",
+        "stageId": "d0b1c864-7123-4a20-b51b-44cfe7612328",
+        "title": "Application Review",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-09-20T10:39:33.214Z",
+        "leftStageAt": "2025-09-22T19:15:38.229Z",
+        "allowedActions": [
+          "set_entered_at",
+          "delete"
+        ],
+        "actorId": null
+      },
+      {
+        "id": "6097c4b9-8dee-418b-ba78-797696461d1a",
+        "stageId": "0c09303e-e73a-48a2-8ab2-427733cb6dbb",
+        "title": "Initial Screen",
+        "stageNumber": 1,
+        "enteredStageAt": "2025-09-22T19:15:38.232Z",
+        "leftStageAt": "2025-09-24T08:48:07.599Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "8c00b7ac-c000-4fdf-9f20-b723e58eeaf8",
+        "stageId": "781fd710-0220-4394-9f43-d9ba9cdc73f7",
+        "title": "Final Interview",
+        "stageNumber": 2,
+        "enteredStageAt": "2025-09-24T08:48:07.602Z",
+        "leftStageAt": "2025-09-25T09:07:06.086Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "c62b0e90-aaae-44c2-b662-c1e2bd89e220",
+        "stageId": "173cdd79-7857-4bc6-8b73-e998f442ec9e",
+        "title": "Call with Client",
+        "stageNumber": 3,
+        "enteredStageAt": "2025-09-25T09:07:06.089Z",
+        "leftStageAt": "2025-10-02T07:45:41.887Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "5f571f5b-7496-4779-9d9d-a1f01bbf45b8",
+        "stageId": "b6358b2c-10dc-4475-9a5a-2c4b0b26ddd5",
+        "title": "Offer",
+        "stageNumber": 4,
+        "enteredStageAt": "2025-10-02T07:45:41.895Z",
+        "leftStageAt": "2025-10-03T12:09:40.807Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "659d631c-844e-4de8-a099-25cf14863179"
+      },
+      {
+        "id": "c9b6c5f1-9049-49b4-a9b0-4e02b396d0a5",
+        "stageId": "9491194b-e776-4b34-a623-98c9f3790b0b",
+        "title": "Offer",
+        "stageNumber": 5,
+        "enteredStageAt": "2025-10-03T12:09:40.812Z",
+        "leftStageAt": "2025-10-03T12:10:24.833Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "0fda648a-19b7-453d-ac35-d2a948a3ccc7",
+        "stageId": "b4947686-2ea5-4025-835a-ba5687de58f6",
+        "title": "Hired",
+        "stageNumber": 6,
+        "enteredStageAt": "2025-10-03T12:10:24.835Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      }
+    ],
+    "candidate": {
+      "id": "6d1ee62d-d934-40c1-9b00-dd7a0134a876",
+      "name": "Pratik Sridhar",
+      "primaryEmailAddress": {
+        "value": "pratiksrid@gmail.com",
+        "type": "Personal",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "+61 485 935 973",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "643953da-fe16-4195-9e87-c4998573a8bb",
+      "title": "Commercial Talent Acquisition Partner (fixed-term)"
+    }
+  },
+  {
+    "applicationId": "394f914f-2204-4992-bcb4-a43c8ce6916e",
+    "applicationHistory": [
+      {
+        "id": "cfca223a-14a9-4642-9f0b-76f26a635b6f",
+        "stageId": "30e17b67-99a3-4896-861e-b4310444a97e",
+        "title": "Application Review",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-11-11T19:19:08.044Z",
+        "leftStageAt": "2025-11-13T08:21:24.508Z",
+        "allowedActions": [
+          "set_entered_at",
+          "delete"
+        ],
+        "actorId": null
+      },
+      {
+        "id": "5b6b7649-d593-4bee-bf45-10d7ea077d4e",
+        "stageId": "d3368e11-4d14-453a-99a2-fcc85db4bcbe",
+        "title": "Initial Screen",
+        "stageNumber": 1,
+        "enteredStageAt": "2025-11-13T08:21:24.512Z",
+        "leftStageAt": "2025-11-18T08:10:17.232Z",
+        "allowedActions": [
+          "set_entered_at",
+          "delete"
+        ],
+        "actorId": "cd103f7e-c97d-4cf9-a04e-f7d68a4051ea"
+      },
+      {
+        "id": "7bc0dcb1-5c93-4288-981a-453f3b1351c2",
+        "stageId": "30e17b67-99a3-4896-861e-b4310444a97e",
+        "title": "Application Review",
+        "stageNumber": 2,
+        "enteredStageAt": "2025-11-18T08:10:17.235Z",
+        "leftStageAt": "2025-11-18T08:10:19.749Z",
+        "allowedActions": [
+          "set_entered_at",
+          "delete"
+        ],
+        "actorId": "cd103f7e-c97d-4cf9-a04e-f7d68a4051ea"
+      },
+      {
+        "id": "016ad377-465a-4aa5-bae7-d9db72099fee",
+        "stageId": "d3368e11-4d14-453a-99a2-fcc85db4bcbe",
+        "title": "Initial Screen",
+        "stageNumber": 3,
+        "enteredStageAt": "2025-11-18T08:10:19.750Z",
+        "leftStageAt": "2025-11-19T14:26:26.812Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "cd103f7e-c97d-4cf9-a04e-f7d68a4051ea"
+      },
+      {
+        "id": "3f30a1bd-5f29-4a85-8d95-27ad86847687",
+        "stageId": "615c3cff-6d20-43af-bed7-a63c487cdf1f",
+        "title": "WHO",
+        "stageNumber": 4,
+        "enteredStageAt": "2025-11-19T14:26:26.821Z",
+        "leftStageAt": "2025-11-25T12:08:39.547Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "cd103f7e-c97d-4cf9-a04e-f7d68a4051ea"
+      },
+      {
+        "id": "8b3f7b3b-04cd-4000-bca3-38a35cc049e9",
+        "stageId": "e1aec5f0-f08e-431c-a07a-4f3896f7c296",
+        "title": "Case Study",
+        "stageNumber": 5,
+        "enteredStageAt": "2025-11-25T12:08:39.555Z",
+        "leftStageAt": "2025-12-12T14:15:31.866Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "cd103f7e-c97d-4cf9-a04e-f7d68a4051ea"
+      },
+      {
+        "id": "bca14ba7-0c11-4985-b8a6-546c2cb13abb",
+        "stageId": "b6bd6ec9-f6d0-417d-9673-9a2a66873333",
+        "title": "Call with Martin",
+        "stageNumber": 6,
+        "enteredStageAt": "2025-12-12T14:15:31.874Z",
+        "leftStageAt": "2025-12-18T10:15:17.267Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "ddd6f09f-c827-4213-8c95-cb7f8ca7b525",
+        "stageId": "dde8b3e9-dcd1-40b3-a199-587ab5f67884",
+        "title": "Offer",
+        "stageNumber": 7,
+        "enteredStageAt": "2025-12-18T10:15:17.275Z",
+        "leftStageAt": "2025-12-19T12:53:18.581Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "911f38d0-2c2c-4d4b-bd92-8dc70a07c63e",
+        "stageId": "6ce52d87-4e20-4416-b91e-dde588960b7a",
+        "title": "Hired",
+        "stageNumber": 8,
+        "enteredStageAt": "2025-12-19T12:53:18.586Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      }
+    ],
+    "candidate": {
+      "id": "35dfb5a7-e594-46ec-8ae4-b33a67727124",
+      "name": "Caroline Murphy",
+      "primaryEmailAddress": {
+        "value": "carriecorkirl@gmail.com",
+        "type": "Personal",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "+3 9 3 4 5 5 1 7 7 5 0 4",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "a34fe515-2040-4fdd-860a-d1423f660732",
+      "title": "Principal of Brand & Partnerships"
+    }
+  },
+  {
+    "applicationId": "d1645ff1-c3d0-4910-823c-56bf2172961f",
+    "applicationHistory": [
+      {
+        "id": "2801c7d9-8511-4562-9756-06d237141598",
+        "stageId": "998523ca-b57e-4f6c-99ac-1cae33645594",
+        "title": "Initial Screen",
+        "stageNumber": 0,
+        "enteredStageAt": "2026-03-06T14:22:04.864Z",
+        "leftStageAt": "2026-03-10T16:35:15.030Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": null
+      },
+      {
+        "id": "d5fa1203-b691-4c36-8568-ba2cb45e4d23",
+        "stageId": "cb59e52a-90ae-4344-b659-f392a1b9b116",
+        "title": "WHO",
+        "stageNumber": 1,
+        "enteredStageAt": "2026-03-10T16:35:15.049Z",
+        "leftStageAt": "2026-03-12T16:21:26.589Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "01ebf2a1-cf11-4d46-8418-10e7200fd422"
+      },
+      {
+        "id": "0bd04d2a-c111-422d-bf64-6d92915acc79",
+        "stageId": "a96d11ca-da3d-4bb7-8ee4-8cab961ac3ad",
+        "title": "Case Study/Worksample",
+        "stageNumber": 2,
+        "enteredStageAt": "2026-03-12T16:21:26.604Z",
+        "leftStageAt": "2026-03-25T12:36:42.159Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "01ebf2a1-cf11-4d46-8418-10e7200fd422"
+      },
+      {
+        "id": "2eea908f-bab3-4292-94d1-94fca6387a4a",
+        "stageId": "e255f570-77dc-4b3e-b883-d9243a7988ea",
+        "title": "Call with Martin",
+        "stageNumber": 3,
+        "enteredStageAt": "2026-03-25T12:36:42.165Z",
+        "leftStageAt": "2026-04-03T14:09:30.146Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "7ddb282a-b326-49e1-ba4e-9b47f0b8d175",
+        "stageId": "ab5c69a5-def2-4fb3-8c58-933dfd38bb6b",
+        "title": "Offer",
+        "stageNumber": 4,
+        "enteredStageAt": "2026-04-03T14:09:30.157Z",
+        "leftStageAt": "2026-05-05T09:49:18.116Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "23d2963c-0b06-4983-a4b7-e3258b47cba2",
+        "stageId": "7f744e97-6dee-4352-afcf-4ce507df0f73",
+        "title": "Hired",
+        "stageNumber": 5,
+        "enteredStageAt": "2026-05-05T09:49:18.127Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      }
+    ],
+    "candidate": {
+      "id": "e4e38373-038f-4448-bf62-9c0c609a6de8",
+      "name": "Tahg Malady",
+      "primaryEmailAddress": {
+        "value": "tahg.malady@gmail.com",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "90000d4c-0a42-4ba8-8e75-f27239487dce",
+      "title": "Country Manager - Berlin (People & Talent Ecosystem)"
+    }
+  },
+  {
+    "applicationId": "3e801990-476d-46f8-803c-643e832f3a90",
+    "applicationHistory": [
+      {
+        "id": "c084cb5a-782a-44a3-a505-232912af00d9",
+        "stageId": "5f139df2-6d5e-4a71-b580-57398e869994",
+        "title": "Application Review",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-10-20T06:59:08.870Z",
+        "leftStageAt": "2025-10-20T11:30:09.771Z",
+        "allowedActions": [
+          "set_entered_at",
+          "delete"
+        ],
+        "actorId": null
+      },
+      {
+        "id": "293fa01f-c30d-4c04-9e8c-f3153fb19b9f",
+        "stageId": "9eae17c1-7081-44c0-8ca6-290a99aeec72",
+        "title": "Tier 2 - Uncontacted",
+        "stageNumber": 1,
+        "enteredStageAt": "2025-10-20T11:30:09.774Z",
+        "leftStageAt": "2025-10-20T11:45:59.939Z",
+        "allowedActions": [
+          "set_entered_at",
+          "delete"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "c38659e8-35cf-4f9c-a7c9-47da0243f077",
+        "stageId": "a80d7895-6ae6-4232-97d0-0f4e8545bdbd",
+        "title": "Initial Screen",
+        "stageNumber": 2,
+        "enteredStageAt": "2025-10-20T11:45:59.943Z",
+        "leftStageAt": "2025-10-21T18:51:00.334Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "751e5066-b8f6-495e-be90-de40d2059d45",
+        "stageId": "15806908-2974-4339-9484-a29bea607638",
+        "title": "WHO",
+        "stageNumber": 3,
+        "enteredStageAt": "2025-10-21T18:51:00.342Z",
+        "leftStageAt": "2025-10-22T15:20:30.806Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "453f1df8-d313-4881-b663-2746348bdd81",
+        "stageId": "4de226ea-745b-4e80-87c2-3c3a9cd47d79",
+        "title": "Final Interview",
+        "stageNumber": 4,
+        "enteredStageAt": "2025-10-22T15:20:30.811Z",
+        "leftStageAt": "2025-10-28T15:32:20.106Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "8da7192f-2b79-428c-9e75-b9375f3ba4c0",
+        "stageId": "601151a4-3d5f-45c5-a406-a02b26b9f6ff",
+        "title": "Culture Interview",
+        "stageNumber": 5,
+        "enteredStageAt": "2025-10-28T15:32:20.114Z",
+        "leftStageAt": "2025-11-04T10:39:41.117Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "1f91ecec-b106-44d6-bc1b-2706050d6427",
+        "stageId": "d2bec331-4c56-465c-a482-0e0b552137ee",
+        "title": "Call with Client",
+        "stageNumber": 6,
+        "enteredStageAt": "2025-11-04T10:39:41.124Z",
+        "leftStageAt": "2025-11-04T10:39:44.050Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      },
+      {
+        "id": "eec0f69d-a69c-4928-8df4-00ad2905efc0",
+        "stageId": "9951b7e1-785a-45f2-83d2-412b00903fbd",
+        "title": "Offer",
+        "stageNumber": 7,
+        "enteredStageAt": "2025-11-04T10:39:44.052Z",
+        "leftStageAt": "2025-11-10T08:33:57.966Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      },
+      {
+        "id": "5ce5ebe2-7d15-45f7-a6ca-010a5301a567",
+        "stageId": "aff1f300-e1e4-489e-a633-ed0ea4172f43",
+        "title": "Hired",
+        "stageNumber": 8,
+        "enteredStageAt": "2025-11-10T08:33:57.974Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      }
+    ],
+    "candidate": {
+      "id": "6e37fa88-55d6-450a-8c45-60a0e2d1632c",
+      "name": "Jonaed Iqbal",
+      "primaryEmailAddress": {
+        "value": "jiqbalrecruiter@gmail.com",
+        "type": "Personal",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "(917) 306-3499",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "a2ef8452-0fc8-4376-9e51-e22b22056c60",
+      "title": "Tech Talent Acquisition Partner (U.S. Market)"
+    }
+  },
+  {
+    "applicationId": "c4267184-f1ab-4332-a790-5ba4b73f1929",
+    "applicationHistory": [
+      {
+        "id": "c46a4c73-b61b-4177-871e-d2b92eda3276",
+        "stageId": "d9e28794-3d26-4341-84fd-01957ef2f0e8",
+        "title": "Application Review",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-11-03T14:57:51.139Z",
+        "leftStageAt": "2025-11-03T17:25:17.010Z",
+        "allowedActions": [
+          "set_entered_at",
+          "delete"
+        ],
+        "actorId": null
+      },
+      {
+        "id": "759f8fe9-6cda-4dea-bb9c-6a2d04290e75",
+        "stageId": "29875c7e-efd7-4b6b-8ad7-a77e27b6d2c4",
+        "title": "Initial Screen",
+        "stageNumber": 1,
+        "enteredStageAt": "2025-11-03T17:25:17.015Z",
+        "leftStageAt": "2025-11-04T09:48:44.737Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "79072d73-4c28-4915-9ced-e8ed5eb0fc14",
+        "stageId": "31197ef1-223e-46eb-9d15-8c4c456a3924",
+        "title": "WHO",
+        "stageNumber": 2,
+        "enteredStageAt": "2025-11-04T09:48:44.744Z",
+        "leftStageAt": "2025-11-04T11:31:31.217Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "1a1e841e-76ef-463c-91bf-cf34c611a1c1",
+        "stageId": "a006b462-1274-4ef4-8c33-6301198d3aa2",
+        "title": "Final Interview",
+        "stageNumber": 3,
+        "enteredStageAt": "2025-11-04T11:31:31.220Z",
+        "leftStageAt": "2025-11-04T16:54:19.804Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "adc013b7-8165-4cdc-b19e-6c3365de284a",
+        "stageId": "a8c5da1b-f78a-464c-ac3c-9116e35d7dfb",
+        "title": "Culture Interview",
+        "stageNumber": 4,
+        "enteredStageAt": "2025-11-04T16:54:19.821Z",
+        "leftStageAt": "2025-11-06T17:56:56.064Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      },
+      {
+        "id": "eb1a456e-976a-48c6-97e0-3cd98577f608",
+        "stageId": "16af2ad1-d374-4c5f-ad4d-c1ff4c4ceacb",
+        "title": "Call with Client",
+        "stageNumber": 5,
+        "enteredStageAt": "2025-11-06T17:56:56.072Z",
+        "leftStageAt": "2025-11-06T17:56:59.177Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      },
+      {
+        "id": "be6ce825-9c0a-452b-bf3c-aaa6889ff558",
+        "stageId": "13296e3b-8743-43ea-a8a7-f8c3c5dde2ca",
+        "title": "Offer",
+        "stageNumber": 6,
+        "enteredStageAt": "2025-11-06T17:56:59.179Z",
+        "leftStageAt": "2025-11-10T11:25:28.185Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "d1fc8edd-e70f-44d1-a183-bceaa5826cfe"
+      },
+      {
+        "id": "039cae4a-3a24-406f-bcc9-08cc95083170",
+        "stageId": "d23f0994-31d4-4eec-9d81-60b8be599262",
+        "title": "Hired",
+        "stageNumber": 7,
+        "enteredStageAt": "2025-11-10T11:25:28.193Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      }
+    ],
+    "candidate": {
+      "id": "6f17ec8c-14ec-4483-a479-9b814c0be692",
+      "name": "Andreas Weins",
+      "primaryEmailAddress": {
+        "value": "weins.recruiting@gmail.com",
+        "type": "Personal",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "(+49) 0178-6907931",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "80ed9299-7377-400c-86cc-ac561cc158c3",
+      "title": "(Sales) Talent Acquisition Partner - German speaker"
+    }
+  },
+  {
+    "applicationId": "d39724f7-07c3-4cf7-b5eb-0adf4bb27348",
+    "applicationHistory": [
+      {
+        "id": "81c98d5b-511d-4348-8a46-b6be50fbb349",
+        "stageId": "77224ab0-0bcc-4c60-a069-758c4c64cd42",
+        "title": "Application Review",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-12-01T12:48:43.099Z",
+        "leftStageAt": "2025-12-01T17:02:27.504Z",
+        "allowedActions": [
+          "set_entered_at",
+          "delete"
+        ],
+        "actorId": null
+      },
+      {
+        "id": "98e45ca1-394f-4cff-a62e-49990821d676",
+        "stageId": "9ea7828e-3635-4dac-a882-287fd617a6da",
+        "title": "Initial Screen",
+        "stageNumber": 1,
+        "enteredStageAt": "2025-12-01T17:02:27.512Z",
+        "leftStageAt": "2025-12-03T14:42:08.472Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "959bf7cc-5a74-4081-95e3-4ed0e8ae3653",
+        "stageId": "0a9f2bf0-f34e-43b9-b215-3ebeb3f96bf8",
+        "title": "Final Interview",
+        "stageNumber": 2,
+        "enteredStageAt": "2025-12-03T14:42:08.478Z",
+        "leftStageAt": "2025-12-09T11:29:59.867Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "0c3ca174-6f8a-4be4-bc69-50aa92f675fc",
+        "stageId": "72ba2a1c-d88a-4cd0-88e2-c63c2c53b12d",
+        "title": "Call with Client",
+        "stageNumber": 3,
+        "enteredStageAt": "2025-12-09T11:29:59.871Z",
+        "leftStageAt": "2025-12-18T10:17:10.450Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "659d631c-844e-4de8-a099-25cf14863179"
+      },
+      {
+        "id": "1871e7c6-4930-4ce5-ad77-2a4496180097",
+        "stageId": "4a1b50ab-76f2-413f-bb84-d4c765d422a4",
+        "title": "Offer",
+        "stageNumber": 4,
+        "enteredStageAt": "2025-12-18T10:17:10.459Z",
+        "leftStageAt": "2025-12-18T10:17:16.318Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "cc360431-4b88-4cec-87c7-b0b8339ac392",
+        "stageId": "0d1ce3ca-d592-4fab-a182-43d1d5996477",
+        "title": "Hired",
+        "stageNumber": 5,
+        "enteredStageAt": "2025-12-18T10:17:16.323Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      }
+    ],
+    "candidate": {
+      "id": "4272c1bc-4baf-43c7-981f-9bfcb9327230",
+      "name": "Ketevan Khorava",
+      "primaryEmailAddress": {
+        "value": "ketkhorava@gmail.com",
+        "type": "Personal",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "(+995) 555647767",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "22846293-b69c-42a4-8268-3c2cedc55300",
+      "title": "Volume Talent Acquisition Partner (fixed-term) - Georgia/Hungary"
+    }
+  },
+  {
+    "applicationId": "d0330bcf-4b5b-4b45-b152-818f55163a08",
+    "applicationHistory": [
+      {
+        "id": "eb2c2dda-14fa-4b60-b2c4-8d9bf31763c4",
+        "stageId": "b9909600-3ab3-44a5-b9f7-ef6778b8a58a",
+        "title": "Initial Screen",
+        "stageNumber": 0,
+        "enteredStageAt": "2026-01-20T18:08:39.782Z",
+        "leftStageAt": "2026-01-21T08:44:49.880Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": null
+      },
+      {
+        "id": "49bee176-05c5-4e74-a2d4-dbcf9f51f2d1",
+        "stageId": "ebd866e4-fd88-42a2-b3d2-62d2700798cd",
+        "title": "WHO",
+        "stageNumber": 1,
+        "enteredStageAt": "2026-01-21T08:44:49.885Z",
+        "leftStageAt": "2026-01-22T10:08:05.976Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "521fea18-66da-4b83-8213-969921d545e7",
+        "stageId": "b8069157-c728-452f-adc4-aab0973fd909",
+        "title": "Final Interview",
+        "stageNumber": 2,
+        "enteredStageAt": "2026-01-22T10:08:05.980Z",
+        "leftStageAt": "2026-01-27T10:31:35.037Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "6b84c0d9-a345-451c-a6f9-a9e19f4a20e0",
+        "stageId": "1665f666-3e84-4843-b0cd-828b6af0e6b1",
+        "title": "Offer",
+        "stageNumber": 3,
+        "enteredStageAt": "2026-01-27T10:31:35.043Z",
+        "leftStageAt": "2026-01-28T10:27:34.400Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "88b33a6f-0f1e-46a6-bec6-85afdbaded23",
+        "stageId": "15a516bc-6843-403f-b0d0-88c909284681",
+        "title": "Hired",
+        "stageNumber": 4,
+        "enteredStageAt": "2026-01-28T10:27:34.417Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      }
+    ],
+    "candidate": {
+      "id": "4f9af88c-0d8c-4729-a332-d75895601e95",
+      "name": "JP Davidtz",
+      "primaryEmailAddress": {
+        "value": "juandavidtz@gmail.com",
+        "type": "Personal",
+        "isPrimary": true
+      },
+      "primaryPhoneNumber": {
+        "value": "01-5710015",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "4d56606d-625b-4794-9545-36c1dec6bd66",
+      "title": "Senior Tech Talent Acquisition Partner (US+EMEA) - Immediate Start"
+    }
+  },
+  {
+    "applicationId": "d2839cd3-b2f1-490b-a996-60c6585a2636",
+    "applicationHistory": [
+      {
+        "id": "ff8b71f1-2951-4797-9280-6d827297ad00",
+        "stageId": "677fd0ea-a951-4b6d-88c0-0bce339e9e0b",
+        "title": "Initial Screen",
+        "stageNumber": 0,
+        "enteredStageAt": "2026-02-16T17:32:48.820Z",
+        "leftStageAt": "2026-02-17T17:44:40.606Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": null
+      },
+      {
+        "id": "e858863a-bd71-4903-a2bf-406d46ef4258",
+        "stageId": "bf3932c8-35ef-4b53-9191-c5e4c9ca4a76",
+        "title": "WHO",
+        "stageNumber": 1,
+        "enteredStageAt": "2026-02-17T17:44:40.614Z",
+        "leftStageAt": "2026-02-18T14:50:56.782Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "86dcb32f-9d74-4854-958f-73cf2d5f9840",
+        "stageId": "68764c3b-5943-4153-9366-a2625f811c61",
+        "title": "Final Interview",
+        "stageNumber": 2,
+        "enteredStageAt": "2026-02-18T14:50:56.795Z",
+        "leftStageAt": "2026-02-18T19:45:49.754Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "01f45c9a-441a-4852-9ba0-9c6dd515d5d9",
+        "stageId": "22460df1-c1e1-4def-ab31-db72a50b6987",
+        "title": "Call with Martin",
+        "stageNumber": 3,
+        "enteredStageAt": "2026-02-18T19:45:49.777Z",
+        "leftStageAt": "2026-02-19T17:26:28.638Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "0b86d5b3-8c12-422d-b3c3-1721156b9ef4",
+        "stageId": "f562fbde-3d86-4285-8b14-95e53ce33d90",
+        "title": "Presented to Client",
+        "stageNumber": 4,
+        "enteredStageAt": "2026-02-19T17:26:28.650Z",
+        "leftStageAt": "2026-02-23T08:52:57.833Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "7704a1f5-27d1-455a-b711-316b7d781177",
+        "stageId": "b297d255-337e-414b-a132-b02e32698059",
+        "title": "Call with Client",
+        "stageNumber": 5,
+        "enteredStageAt": "2026-02-23T08:52:57.839Z",
+        "leftStageAt": "2026-03-03T11:56:38.462Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "1310e021-7d88-4cc6-a223-2faed70dcd6d",
+        "stageId": "586d9c6d-03f5-4966-9119-a76a5b068160",
+        "title": "Offer",
+        "stageNumber": 6,
+        "enteredStageAt": "2026-03-03T11:56:38.471Z",
+        "leftStageAt": "2026-03-06T16:52:46.166Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      },
+      {
+        "id": "a83ce1f9-fb76-4ba3-b338-f051502a8872",
+        "stageId": "3bc2e562-ce65-4279-aefd-ca516590cfe0",
+        "title": "Hired",
+        "stageNumber": 7,
+        "enteredStageAt": "2026-03-06T16:52:46.171Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "ed427f3b-ac7c-440d-a0ea-ad1623c494dc"
+      }
+    ],
+    "candidate": {
+      "id": "64969637-cf6c-4e6a-92e3-914e868320f1",
+      "name": "Andrew Rodriguez",
+      "primaryEmailAddress": {
+        "value": "Andrew_rod56@yahoo.com",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "c79fb7e1-a527-496f-9ab8-375da1eeab46",
+      "title": "Talent Acquisition Partner (Enterprise Sales) - Immediate Start"
+    }
+  },
+  {
+    "applicationId": "c16bc415-35ce-46f4-ab39-31193b822972",
+    "applicationHistory": [
+      {
+        "id": "8d3c97bf-4052-4309-a2b2-02e3de9a5cf8",
+        "stageId": "fd327d98-f17b-4f57-a50a-683350055fab",
+        "title": "Application Review",
+        "stageNumber": 0,
+        "enteredStageAt": "2025-07-09T09:27:22.855Z",
+        "leftStageAt": "2025-07-15T13:40:27.683Z",
+        "allowedActions": [
+          "set_entered_at",
+          "delete"
+        ],
+        "actorId": null
+      },
+      {
+        "id": "faf366f0-d67e-472f-8fd0-69849071c77d",
+        "stageId": "e862466a-0002-433a-9c05-48730641e200",
+        "title": "Initial Screen",
+        "stageNumber": 1,
+        "enteredStageAt": "2025-07-15T13:40:27.689Z",
+        "leftStageAt": "2025-07-24T14:48:21.654Z",
+        "allowedActions": [
+          "set_entered_at"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "5eb0ddbf-d057-4c4f-bccc-430e12fe9699",
+        "stageId": "6224671a-919a-491c-b032-ab427b6ba463",
+        "title": "WHO",
+        "stageNumber": 2,
+        "enteredStageAt": "2025-07-24T14:48:21.666Z",
+        "leftStageAt": "2025-07-28T14:30:39.712Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "3268af78-2b92-4cbf-a874-dc7ae9c0bdb6",
+        "stageId": "7d9ae516-d216-4b2b-9358-bc5109ae462a",
+        "title": "Case Study",
+        "stageNumber": 3,
+        "enteredStageAt": "2025-07-28T14:30:39.720Z",
+        "leftStageAt": "2025-07-31T13:59:52.325Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "c53b6ffe-40aa-4090-a45b-dce952aed07a",
+        "stageId": "3a6b2836-6736-4002-a360-2f2e0cb97c14",
+        "title": "Call with Martin",
+        "stageNumber": 4,
+        "enteredStageAt": "2025-07-31T13:59:52.332Z",
+        "leftStageAt": "2025-08-11T13:48:36.163Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "9803f556-1375-45a1-825b-5ac04d656055",
+        "stageId": "de6f2ae8-d95e-4de2-a443-f80ba3ae1240",
+        "title": "Offer",
+        "stageNumber": 5,
+        "enteredStageAt": "2025-08-11T13:48:36.168Z",
+        "leftStageAt": "2025-08-12T10:09:13.960Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      },
+      {
+        "id": "05097a45-79a2-4699-aa14-d7064dd2ead9",
+        "stageId": "076cf269-bf29-490b-8dec-654517925d96",
+        "title": "Hired",
+        "stageNumber": 6,
+        "enteredStageAt": "2025-08-12T10:09:13.966Z",
+        "allowedActions": [
+          "none"
+        ],
+        "actorId": "88a29d6a-5815-444c-8a19-91eb2697bab7"
+      }
+    ],
+    "candidate": {
+      "id": "95ce9d67-9c63-48e6-8cf3-8828a1bd63e8",
+      "name": "Jelle van Schaick",
+      "primaryEmailAddress": {
+        "value": "Jelle@fuente.digital",
+        "type": "Personal",
+        "isPrimary": true
+      }
+    },
+    "job": {
+      "id": "d2250d98-1190-428d-9607-66205accf933",
+      "title": "Principal Marketing Expert"
+    }
+  }
+]

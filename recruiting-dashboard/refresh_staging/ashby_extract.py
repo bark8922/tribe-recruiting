@@ -168,16 +168,23 @@ def _paginate(api_key: str, path: str, base_body: dict, page_delay: float = 0.1)
     return results
 
 
-def fetch_jobs(api_key: str) -> list[dict]:
-    """All jobs across all statuses, filtered to Tribe.xyz brand client-side."""
+def fetch_jobs(api_key: str, statuses: tuple = ("Open", "Draft")) -> list[dict]:
+    """Tribe-brand jobs in the given statuses (default: Open + Draft only).
+
+    Restricting to active statuses keeps the downstream /application.info fetch
+    bounded — at ~50-300 apps per Closed/Archived job, fetching all statuses
+    blows up to 5,000-15,000 application.info calls and a 15+ min runtime.
+    For the IR tab we only need data from currently-active jobs anyway.
+    Pass statuses=("Open","Draft","Closed","Archived") for a full historical pull.
+    """
     all_jobs = []
-    for status in ("Open", "Draft", "Closed", "Archived"):
+    for status in statuses:
         results = _paginate(api_key, ENDPOINTS["jobs"], {"status": [status]})
         for j in results:
             brand_id = j.get("brandId") or (j.get("brand") or {}).get("id")
             if brand_id == TRIBE_BRAND_ID:
                 all_jobs.append(j)
-    log.info("Fetched %d Tribe-brand jobs across all statuses", len(all_jobs))
+    log.info("Fetched %d Tribe-brand jobs (statuses=%s)", len(all_jobs), statuses)
     return all_jobs
 
 
@@ -221,7 +228,7 @@ def fetch_offers(api_key: str) -> list[dict]:
 
 
 def extract_all(api_key: str, output_dir: Path | str, fetch_history: bool = True,
-                max_workers: int = 8) -> dict[str, int]:
+                max_workers: int = 12) -> dict[str, int]:
     """Run the full extract. Writes 5 JSON files into output_dir.
 
     Returns counts per file for logging.

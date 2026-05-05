@@ -38,7 +38,12 @@ def stage_inputs(ci, flat):
 
     copied = 0
     for p in src_dir.iterdir():
-        if p.suffix in (".py", ".sql", ".md"):
+        # .py / .sql / .md = source code render_json reads at runtime.
+        # ashby_*.json = baseline files seeded into staging by run_ashby()
+        # (other .json files in src_dir are not relevant to render_json).
+        if p.suffix in (".py", ".sql", ".md") or (
+            p.suffix == ".json" and p.name.startswith("ashby_")
+        ):
             shutil.copy(p, flat / "refresh_staging" / p.name)
             copied += 1
     print("[stage_inputs] copied " + str(copied) + " repo files", flush=True)

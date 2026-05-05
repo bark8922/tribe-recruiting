@@ -33,7 +33,8 @@ Scope filter:
 Endpoints used (all POST with JSON body, per Ashby convention):
     /job.list                 — all jobs in the brand (Open, Draft, Closed, Archived)
     /application.list         — applications per job (filter by jobId)
-    /applicationHistory.list  — stage transitions per application (entered_at, stage_id)
+    /application.info         — full application with applicationHistory embedded
+                                (stage transitions: enteredStageAt, leftStageAt, title, stageNumber)
     /interview.list           — interview templates (for stage names)
     /interviewStageGroup.list — stage groups for stage classification
     /offer.list               — offer records per application
@@ -96,7 +97,8 @@ TRIBE_BRAND_ID = "4380b3f0-8d17-4c9a-9a78-9d943c68a404"
 ENDPOINTS = {
     "jobs":                 "/job.list",
     "applications":         "/application.list",
-    "application_history":  "/applicationHistory.list",
+    # History is embedded in /application.info response (not a separate endpoint)
+    "application_info":     "/application.info",
     "interview_stages":     "/interviewStage.list",
     "interview_stage_groups": "/interviewStageGroup.list",
     "offers":               "/offer.list",
@@ -124,6 +126,10 @@ async def _request(
         "Authorization": _basic_auth_header(api_key),
         "Content-Type": "application/json",
         "Accept": "application/json",
+        # Cloudflare WAF in front of api.ashbyhq.com 403s requests with a default
+        # python urllib/aiohttp User-Agent (Cloudflare error 1010). Verified
+        # 2026-05-04: any non-default UA passes.
+        "User-Agent": "tribe-recruiting-dashboard/1.0 (ashby_extract.py)",
     }
     url = ASHBY_API + path
     for attempt in range(max_retries + 1):
@@ -204,10 +210,17 @@ async def fetch_applications_for_job(session, job_id: str, api_key: str) -> list
 
 
 async def fetch_application_history(session, application_id: str, api_key: str) -> list[dict]:
-    """Stage transition timeline for a single application."""
+    """Stage transition timeline for a single application.
+
+    Ashby has no /applicationHistory.list endpoint (verified 404 on 2026-05-04).
+    The history is EMBEDDED in /application.info as `applicationHistory`,
+    where each entry is {id, stageId, title, stageNumber, enteredStageAt,
+    leftStageAt (omitted on current stage), actorId}.
+    """
     body = {"applicationId": application_id}
-    results, _ = await _paginate(session, ENDPOINTS["application_history"], body, api_key)
-    return results
+    data = await _request(session, ENDPOINTS["application_info"], body, api_key)
+    info = data.get("results") or {}
+    return info.get("applicationHistory") or []
 
 
 async def fetch_interview_stages(session, api_key: str) -> list[dict]:

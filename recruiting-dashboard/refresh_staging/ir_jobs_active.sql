@@ -17,7 +17,7 @@ WITH ir_job AS (
     NULLIF(TRIM(j."job_sourcer"),'')   AS job_sourcer
   FROM "KEBOOLA_855"."out.c-reporting-v2"."job"    j
   JOIN "KEBOOLA_855"."out.c-reporting-v2"."client" cl ON cl."client_id" = j."client_id"
-  WHERE cl."client_name" IN ('Tribe.xyz (IR)', 'Tribe.xyz')
+  WHERE (cl."client_name" = 'Tribe.xyz (IR)' OR j."job_id" IN ('1761826848687x384161750920724500'))
     AND LOWER(NULLIF(j."is_job_archived",'')) <> 'true'
     AND LOWER(NULLIF(j."test",''))            <> 'true'
     AND NULLIF(j."job_title",'') IS NOT NULL

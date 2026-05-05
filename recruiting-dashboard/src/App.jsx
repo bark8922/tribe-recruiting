@@ -3404,6 +3404,7 @@ const IRTab = ({ data }) => {
   const ashbyActive     = data.ir_ashby_active_pipeline || [];
   const ashbyDQReasons  = data.ir_ashby_dq_reasons      || [];
   const ashbyHires      = data.ir_ashby_hires           || [];
+  const ashbyJobsOpen   = data.ir_ashby_jobs_open       || [];
   const hasAshby        = ashbyFunnel.length > 0 || ashbyHires.length > 0;
 
   const [jobFilter, setJobFilter]     = useState('all');
@@ -3541,10 +3542,38 @@ const IRTab = ({ data }) => {
     };
   }, [highlightTA, f_interviewed]);
 
-  // Job dropdown options — sorted by days_open desc
-  const jobOptions = useMemo(() =>
-    [...jobsActive].sort((a, b) => b.days_open - a.days_open),
-    [jobsActive]);
+  // Job dropdown options — merge Bubble + Ashby active jobs.
+  // Bubble's ir_jobs_active misses jobs that aren't tagged 'Tribe.xyz (IR)'
+  // in Bubble (Beauty Industry, Country Mgr Berlin, etc.). Ashby is the
+  // authoritative source for "what's currently open for internal hiring".
+  const jobOptions = useMemo(() => {
+    const norm = (t) => (t || '').toLowerCase().replace(/[^a-z0-9]/g,'').slice(0, 40);
+    const bubbleByKey = new Map();
+    for (const j of jobsActive) bubbleByKey.set(norm(j.job_title), j);
+
+    const merged = [];
+    // Start with all Ashby-Open/Draft jobs
+    for (const aj of ashbyJobsOpen) {
+      const k = norm(aj.ashby_job_title);
+      const bj = bubbleByKey.get(k);
+      merged.push({
+        job_id: bj?.job_id || aj.ashby_job_id,
+        job_title: aj.ashby_job_title || bj?.job_title || '?',
+        days_open: aj.days_open ?? bj?.days_open ?? 0,
+        hires_total: bj?.hires_total ?? 0,
+        job_recruiter: bj?.job_recruiter || '—',
+        job_sourcer: bj?.job_sourcer || '—',
+        in_bubble: !!bj,
+        in_ashby: true,
+      });
+      if (bj) bubbleByKey.delete(k);
+    }
+    // Add any remaining Bubble jobs that didn't match Ashby
+    for (const [, bj] of bubbleByKey) {
+      merged.push({ ...bj, in_bubble: true, in_ashby: false });
+    }
+    return merged.sort((a, b) => (b.days_open || 0) - (a.days_open || 0));
+  }, [jobsActive, ashbyJobsOpen]);
   const selectedJob = jobsActive.find(j => j.job_id === jobFilter);
 
   // Sourced hired count for KPI
@@ -3732,14 +3761,17 @@ const IRTab = ({ data }) => {
                 <tr key={j.job_id}
                     onClick={() => setJobFilter(jobFilter === j.job_id ? 'all' : j.job_id)}
                     className={`border-t border-gray-700 cursor-pointer hover:bg-gray-700 ${jobFilter === j.job_id ? 'bg-blue-900 bg-opacity-40' : ''}`}>
-                  <td className="py-1.5 text-gray-200 truncate" title={j.job_title}>{j.job_title}</td>
+                  <td className="py-1.5 text-gray-200 truncate" title={j.in_ashby && !j.in_bubble ? `${j.job_title} (Ashby only — not tagged Tribe.xyz (IR) in Bubble)` : j.job_title}>
+                    {j.job_title}
+                    {j.in_ashby && !j.in_bubble && <span className="ml-1 text-xs text-amber-400" title="Ashby only — Bubble sourcing data unavailable">⚠</span>}
+                  </td>
                   <td className="py-1.5 text-right text-gray-300">{j.days_open}</td>
                   <td className="py-1.5 text-right text-gray-500">{j.hires_total}</td>
                 </tr>
               ))}
             </tbody>
           </table>
-          <div className="text-xs text-gray-500 mt-2">Click a row to filter</div>
+          <div className="text-xs text-gray-500 mt-2">Click a row to filter &middot; ⚠ = Ashby-only (not yet tagged Tribe.xyz (IR) in Bubble — sourcing data won&apos;t show)</div>
         </div>
       </div>
 

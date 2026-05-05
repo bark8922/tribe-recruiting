@@ -918,6 +918,39 @@ def load_ir_ashby_funnel_jobweek():
             for (jid, jtl, y, w, st), n in sorted(by.items())]
 
 
+def load_ir_ashby_jobs_open():
+    """All Open + Draft Ashby jobs (Tribe brand). Includes jobs that aren't
+    yet tagged 'Tribe.xyz (IR)' in Bubble — captures the 5-job gap between
+    Bubble's flag and Ashby's reality (e.g. Beauty Industry, Country Manager
+    Berlin, etc.). Used by IR tab's Active Jobs panel as the authoritative
+    source of 'what's currently open for internal hiring'."""
+    p = HERE / "ashby_jobs.json"
+    if not p.exists(): return []
+    import json as _json
+    from datetime import datetime, timezone
+    jobs = _json.loads(p.read_text())
+    now = datetime.now(timezone.utc)
+    out = []
+    for j in jobs:
+        if j.get("status") not in ("Open", "Draft"): continue
+        opened = j.get("openedAt") or j.get("createdAt") or ""
+        days_open = None
+        try:
+            if opened:
+                days_open = (now - datetime.fromisoformat(opened.replace("Z","+00:00"))).days
+        except Exception:
+            pass
+        out.append({
+            "ashby_job_id": j["id"],
+            "ashby_job_title": j.get("title"),
+            "status": j.get("status"),
+            "openedAt": opened,
+            "createdAt": j.get("createdAt"),
+            "days_open": days_open,
+        })
+    return sorted(out, key=lambda x: x.get("days_open") or 0, reverse=True)
+
+
 def load_ir_ashby_hires():
     """Per-(ashby_job_id, year, week) hire count from applications with status=Hired."""
     p = HERE / "ashby_applications.json"
@@ -1763,6 +1796,7 @@ def main():
     out["ir_ashby_dq_reasons"]      = _ir_load(load_ir_ashby_dq_reasons,      "ir_ashby_dq_reasons")
     out["ir_ashby_funnel_jobweek"]  = _ir_load(load_ir_ashby_funnel_jobweek,  "ir_ashby_funnel_jobweek")
     out["ir_ashby_hires"]           = _ir_load(load_ir_ashby_hires,           "ir_ashby_hires")
+    out["ir_ashby_jobs_open"]       = _ir_load(load_ir_ashby_jobs_open,       "ir_ashby_jobs_open")
     if out["ir_funnel_jobweek"]:
         print(f"  ir_funnel_jobweek: {len(out['ir_funnel_jobweek'])} (job,week) rows  "
               f"sourced_jobweek: {len(out['ir_sourced_jobweek'])}  "

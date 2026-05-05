@@ -3407,22 +3407,40 @@ const IRTab = ({ data }) => {
   const hasAshby        = ashbyFunnel.length > 0 || ashbyHires.length > 0;
 
   const [jobFilter, setJobFilter]     = useState('all');
-  const [windowFilter, setWindowFilter] = useState('all');
+  const [windowFilter, setWindowFilter] = useState('last4');
   const [highlightSourcer, setHighlightSourcer] = useState(null);
+  const [sourcerFilter, setSourcerFilter] = useState('all');
+  const [taFilter, setTaFilter] = useState('all');
   const [highlightTA, setHighlightTA] = useState(null);
 
   // Compute the active week range from the filter
+  // Use TODAY's ISO week as the anchor, not the max week present in the data.
+  // That way "Last week" always means the previous completed week, even if
+  // the current week has no data yet.
+  const todayISOWeek = useMemo(() => {
+    const d = new Date();
+    const target = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+    target.setUTCDate(target.getUTCDate() + 4 - (target.getUTCDay() || 7));
+    const yearStart = new Date(Date.UTC(target.getUTCFullYear(), 0, 1));
+    return Math.ceil((((target - yearStart) / 86400000) + 1) / 7);
+  }, []);
+  const thisWeek = todayISOWeek;
+  const lastWeek = todayISOWeek - 1;
+
   const allWeeks = useMemo(() => {
     const ws = new Set(funnelRows.map(r => r.iso_week));
     return [...ws].sort((a, b) => a - b);
   }, [funnelRows]);
-  const maxWeek = allWeeks.length ? Math.max(...allWeeks) : 0;
+  const maxWeek = allWeeks.length ? Math.max(...allWeeks) : thisWeek;
 
   const inWindow = (week) => {
     if (windowFilter === 'all') return true;
-    if (windowFilter === 'last1')  return week === maxWeek;
-    if (windowFilter === 'last4')  return week >= maxWeek - 3 && week <= maxWeek;
-    if (windowFilter === 'last12') return week >= maxWeek - 11 && week <= maxWeek;
+    if (windowFilter === 'this_week') return week === thisWeek;
+    if (windowFilter === 'last_week') return week === lastWeek;
+    if (windowFilter === 'last4')  return week >= thisWeek - 4 && week <= thisWeek;   // 4 most recent completed weeks + this week
+    if (windowFilter === 'last12') return week >= thisWeek - 12 && week <= thisWeek;
+    if (windowFilter === 'last26') return week >= thisWeek - 26 && week <= thisWeek;  // ~6 months
+    if (windowFilter === 'ytd')    return week >= 1 && week <= thisWeek;              // assumes single-year data
     return true;
   };
 
@@ -3433,11 +3451,13 @@ const IRTab = ({ data }) => {
     funnelRows.filter(r => matchesJob(r.job_id) && inWindow(r.iso_week)),
     [funnelRows, jobFilter, windowFilter, maxWeek]);
   const f_sourced = useMemo(() =>
-    sourcedRows.filter(r => matchesJob(r.job_id) && inWindow(r.iso_week)),
-    [sourcedRows, jobFilter, windowFilter, maxWeek]);
+    sourcedRows.filter(r => matchesJob(r.job_id) && inWindow(r.iso_week)
+      && (sourcerFilter === 'all' || r.sourcer === sourcerFilter)),
+    [sourcedRows, jobFilter, windowFilter, sourcerFilter, thisWeek]);
   const f_interviewed = useMemo(() =>
-    interviewedRows.filter(r => matchesJob(r.job_id) && inWindow(r.iso_week)),
-    [interviewedRows, jobFilter, windowFilter, maxWeek]);
+    interviewedRows.filter(r => matchesJob(r.job_id) && inWindow(r.iso_week)
+      && (taFilter === 'all' || r.ta === taFilter)),
+    [interviewedRows, jobFilter, windowFilter, taFilter, thisWeek]);
   const f_dqReason = useMemo(() =>
     dqByJobReason.filter(r => matchesJob(r.job_id)),
     [dqByJobReason, jobFilter]);
@@ -3569,10 +3589,13 @@ const IRTab = ({ data }) => {
   const dqMax = Math.max(1, ...dqReasonAgg.map(r => r.count));
 
   const windowOptions = [
-    ['all', 'All weeks'],
-    ['last12', 'Last 12 weeks'],
-    ['last4', 'Last 4 weeks'],
-    ['last1', `Latest week (W${maxWeek})`],
+    ['this_week', `This week (W${thisWeek})`],
+    ['last_week', `Last week (W${lastWeek})`],
+    ['last4',     'Last 4 weeks'],
+    ['last12',    'Last 12 weeks'],
+    ['last26',    'Last 6 months'],
+    ['ytd',       'Year to date'],
+    ['all',       'All time'],
   ];
 
   return (
@@ -3598,8 +3621,22 @@ const IRTab = ({ data }) => {
               <option key={v} value={v}>{label}</option>
             ))}
           </select>
-          {(jobFilter !== 'all' || windowFilter !== 'all' || highlightSourcer || highlightTA) && (
-            <button onClick={() => { setJobFilter('all'); setWindowFilter('all'); setHighlightSourcer(null); setHighlightTA(null); }}
+          <select value={sourcerFilter} onChange={e => setSourcerFilter(e.target.value)}
+            className="px-3 py-1.5 text-sm rounded-md bg-gray-800 border border-gray-700 text-gray-200 hover:border-gray-600 focus:outline-none focus:border-gray-500">
+            <option value="all">All sourcers</option>
+            {[...new Set(sourcedRows.map(r => r.sourcer))].sort().map(s => (
+              <option key={s} value={s}>{s}</option>
+            ))}
+          </select>
+          <select value={taFilter} onChange={e => setTaFilter(e.target.value)}
+            className="px-3 py-1.5 text-sm rounded-md bg-gray-800 border border-gray-700 text-gray-200 hover:border-gray-600 focus:outline-none focus:border-gray-500">
+            <option value="all">All TAs</option>
+            {[...new Set(interviewedRows.map(r => r.ta))].sort().map(t => (
+              <option key={t} value={t}>{t}</option>
+            ))}
+          </select>
+          {(jobFilter !== 'all' || windowFilter !== 'last4' || sourcerFilter !== 'all' || taFilter !== 'all' || highlightSourcer || highlightTA) && (
+            <button onClick={() => { setJobFilter('all'); setWindowFilter('last4'); setSourcerFilter('all'); setTaFilter('all'); setHighlightSourcer(null); setHighlightTA(null); }}
               className="px-3 py-1.5 text-sm rounded-md bg-blue-600 hover:bg-blue-500 text-white">
               Clear filters
             </button>

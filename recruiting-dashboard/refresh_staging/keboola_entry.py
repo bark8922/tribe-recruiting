@@ -61,6 +61,24 @@ def stage_inputs(ci, flat):
     print("[stage_inputs] staged " + str(staged) + " input tables", flush=True)
 
 
+def run_ashby(flat, ashby_key):
+    """Fetch Ashby data into flat/refresh_staging/ashby_*.json. Best-effort:
+    if the key is missing or the fetch fails, log and skip. render_json.py
+    handles missing files gracefully."""
+    if not ashby_key:
+        print("[run_ashby] no #ashby_api_key set, skipping (Phase 2b not yet plumbed in)", flush=True)
+        return
+    staging = flat / "refresh_staging"
+    sys.path.insert(0, str(staging))
+    try:
+        import asyncio
+        import ashby_extract
+        counts = asyncio.run(ashby_extract.extract_all(ashby_key, staging, fetch_history=True))
+        print("[run_ashby] extracted: " + str(counts), flush=True)
+    except Exception as e:
+        print("[run_ashby] WARN failed: " + type(e).__name__ + ": " + str(e), flush=True)
+
+
 def run_render(flat):
     staging = flat / "refresh_staging"
     sys.path.insert(0, str(staging))
@@ -118,11 +136,18 @@ def main():
         raise RuntimeError("Missing #github_token in configuration parameters.")
     print("=== github_token loaded (len=" + str(len(github_token)) + ") ===", flush=True)
 
+    ashby_key = params.get("#ashby_api_key")
+    if not ashby_key:
+        ashby_key = params.get("user_properties", {}).get("#ashby_api_key")
+    if ashby_key:
+        print("=== ashby_api_key loaded (len=" + str(len(ashby_key)) + ") ===", flush=True)
+
     flat = Path("/tmp/flat")
     shutil.rmtree(flat, ignore_errors=True)
     flat.mkdir(parents=True)
 
     stage_inputs(ci, flat)
+    run_ashby(flat, ashby_key)
     out_path = run_render(flat)
     content = out_path.read_text(encoding="utf-8")
 

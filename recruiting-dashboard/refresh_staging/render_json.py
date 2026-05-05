@@ -853,6 +853,103 @@ def load_aux():
     return out
 
 
+def load_ir_ashby_active_pipeline():
+    """Per-(ashby_job_id, stage_title) count of currently-active apps. Empty if Ashby fetch was skipped."""
+    p = HERE / "ashby_applications.json"
+    if not p.exists(): return []
+    import json as _json
+    apps = _json.loads(p.read_text())
+    by_job_stage = {}
+    job_titles = {}
+    for a in apps:
+        if a.get("status") != "Active": continue
+        jid = (a.get("job") or {}).get("id") or ""
+        jtl = (a.get("job") or {}).get("title") or ""
+        job_titles[jid] = jtl
+        st = (a.get("currentInterviewStage") or {}).get("title") or "(none)"
+        k = (jid, st)
+        by_job_stage[k] = by_job_stage.get(k, 0) + 1
+    return [{"ashby_job_id": jid, "ashby_job_title": job_titles.get(jid, ""),
+             "stage": st, "count": n}
+            for (jid, st), n in sorted(by_job_stage.items(), key=lambda x: (-x[1], x[0]))]
+
+
+def load_ir_ashby_dq_reasons():
+    """Aggregated archive_reason counts across all Tribe Ashby applications."""
+    p = HERE / "ashby_applications.json"
+    if not p.exists(): return []
+    import json as _json
+    apps = _json.loads(p.read_text())
+    reasons = {}
+    for a in apps:
+        if a.get("status") != "Archived": continue
+        r = (a.get("archiveReason") or {}).get("text") or "(none)"
+        reasons[r] = reasons.get(r, 0) + 1
+    return [{"reason": r, "count": n} for r, n in sorted(reasons.items(), key=lambda x: -x[1])]
+
+
+def load_ir_ashby_funnel_jobweek():
+    """Per-(ashby_job_id, year, week, stage_title) count of stage entries from applicationHistory."""
+    apps_p = HERE / "ashby_applications.json"
+    hist_p = HERE / "ashby_application_history.json"
+    if not (apps_p.exists() and hist_p.exists()): return []
+    import json as _json
+    from datetime import datetime
+    apps = _json.loads(apps_p.read_text())
+    hist = _json.loads(hist_p.read_text())
+    # Build app_id -> (job_id, job_title) map
+    app2job = {}
+    for a in apps:
+        app2job[a["id"]] = ((a.get("job") or {}).get("id",""), (a.get("job") or {}).get("title",""))
+    # Aggregate
+    by = {}
+    for h in hist:
+        aid = h.get("applicationId")
+        if not aid or aid not in app2job: continue
+        ent = h.get("enteredStageAt")
+        if not ent: continue
+        try:
+            d = datetime.fromisoformat(ent.replace("Z","+00:00"))
+            iso = d.isocalendar()
+        except Exception:
+            continue
+        if iso.year != 2026: continue
+        jid, jtl = app2job[aid]
+        stage = h.get("title") or ""
+        k = (jid, jtl, iso.year, iso.week, stage)
+        by[k] = by.get(k, 0) + 1
+    return [{"ashby_job_id": jid, "ashby_job_title": jtl,
+             "iso_year": y, "iso_week": w, "stage": st, "count": n}
+            for (jid, jtl, y, w, st), n in sorted(by.items())]
+
+
+def load_ir_ashby_hires():
+    """Per-(ashby_job_id, year, week) hire count from applications with status=Hired."""
+    p = HERE / "ashby_applications.json"
+    if not p.exists(): return []
+    import json as _json
+    from datetime import datetime
+    apps = _json.loads(p.read_text())
+    by = {}
+    for a in apps:
+        if a.get("status") != "Hired": continue
+        # Use updatedAt as proxy for hire date (Ashby doesn't return a hire-specific timestamp on the app object)
+        ts = a.get("updatedAt") or a.get("archivedAt")
+        if not ts: continue
+        try:
+            d = datetime.fromisoformat(ts.replace("Z","+00:00"))
+            iso = d.isocalendar()
+        except Exception:
+            continue
+        jid = (a.get("job") or {}).get("id","")
+        jtl = (a.get("job") or {}).get("title","")
+        k = (jid, jtl, iso.year, iso.week)
+        by[k] = by.get(k, 0) + 1
+    return [{"ashby_job_id": jid, "ashby_job_title": jtl,
+             "iso_year": y, "iso_week": w, "count": n}
+            for (jid, jtl, y, w), n in sorted(by.items())]
+
+
 def load_ir_funnel_jobweek():
     """Per-(job_id, ISO year, ISO week) full funnel for Tribe.xyz (IR).
     Frontend filters by job_id and aggregates across weeks."""
@@ -1666,6 +1763,11 @@ def main():
     out["ir_dq_by_stage"]         = _ir_load(load_ir_dq_by_stage,         "ir_dq_by_stage")
     out["ir_jobs_active"]         = _ir_load(load_ir_jobs_active,         "ir_jobs_active")
     out["ir_dq_byjob_reason"]     = _ir_load(load_ir_dq_byjob_reason,     "ir_dq_byjob_reason")
+    # Ashby-derived right side of the IR funnel (Phase 2b). Empty if extractor was skipped.
+    out["ir_ashby_active_pipeline"] = _ir_load(load_ir_ashby_active_pipeline, "ir_ashby_active_pipeline")
+    out["ir_ashby_dq_reasons"]      = _ir_load(load_ir_ashby_dq_reasons,      "ir_ashby_dq_reasons")
+    out["ir_ashby_funnel_jobweek"]  = _ir_load(load_ir_ashby_funnel_jobweek,  "ir_ashby_funnel_jobweek")
+    out["ir_ashby_hires"]           = _ir_load(load_ir_ashby_hires,           "ir_ashby_hires")
     if out["ir_funnel_jobweek"]:
         print(f"  ir_funnel_jobweek: {len(out['ir_funnel_jobweek'])} (job,week) rows  "
               f"sourced_jobweek: {len(out['ir_sourced_jobweek'])}  "

@@ -3384,6 +3384,12 @@ const IRTab = ({ data }) => {
   const dqByStage       = data.ir_dq_by_stage         || [];
   const jobsActive      = data.ir_jobs_active         || [];
   const dqByJobReason   = data.ir_dq_byjob_reason     || [];
+  // Phase 2b: Ashby-derived right side of funnel. Empty if extractor not yet plumbed in.
+  const ashbyFunnel     = data.ir_ashby_funnel_jobweek  || [];
+  const ashbyActive     = data.ir_ashby_active_pipeline || [];
+  const ashbyDQReasons  = data.ir_ashby_dq_reasons      || [];
+  const ashbyHires      = data.ir_ashby_hires           || [];
+  const hasAshby        = ashbyFunnel.length > 0 || ashbyHires.length > 0;
 
   const [jobFilter, setJobFilter]     = useState('all');
   const [windowFilter, setWindowFilter] = useState('all');
@@ -3509,17 +3515,39 @@ const IRTab = ({ data }) => {
   // Sourced hired count for KPI
   const sourcedHired = sourcedAgg.reduce((s, r) => s + r.hired, 0);
 
+  // Ashby override for right-side stages — when Ashby data is present, replace
+  // Bubble's sparse counts with Ashby's authoritative ones for the same window.
+  // Stage names mapped: Onsite, Culture Interview, Call with Client, Offered, Hired
+  // (case-insensitive, includes substring match for variants like "Final Interview - Onsite")
+  const ashbyStageMap = useMemo(() => {
+    if (!ashbyFunnel.length) return null;
+    const matches = (stage, target) => {
+      const s = (stage || '').toLowerCase();
+      return s.includes(target.toLowerCase());
+    };
+    const inJob = (r) => jobFilter === 'all' || /* TODO: cross-system job match */ true;
+    const inWk = (r) => inWindow(r.iso_week);
+    const sumIf = (pred) => ashbyFunnel.filter(r => inJob(r) && inWk(r) && pred(r.stage)).reduce((s, r) => s + r.count, 0);
+    return {
+      onsite:        sumIf(s => matches(s, 'onsite')),
+      culture:       sumIf(s => matches(s, 'culture')),
+      call_w_client: sumIf(s => matches(s, 'call with client') || matches(s, 'client prep')),
+      offered:       sumIf(s => matches(s, 'offer')),
+      hired:         ashbyHires.filter(r => inWk(r.iso_week)).reduce((s, r) => s + r.count, 0),
+    };
+  }, [ashbyFunnel, ashbyHires, jobFilter, windowFilter, maxWeek]);
+
   const funnelStages = [
-    { label: 'Contacted',          n: totals.contacted,      color: 'bg-blue-300', source: 'bubble' },
-    { label: 'Positive response',  n: totals.pos_response,   color: 'bg-blue-400', source: 'bubble' },
-    { label: 'Recruiter screens',  n: totals.rec_screens,    color: 'bg-blue-500', source: 'bubble' },
-    { label: 'Actual screens',     n: totals.actual_screens, color: 'bg-blue-600', source: 'bubble' },
-    { label: 'Moved to ATS',       n: totals.ats,            color: 'bg-blue-700', source: 'bubble' },
-    { label: 'Onsite',             n: totals.onsite,         color: 'bg-teal-500', source: 'ashby' },
-    { label: 'Culture interview',  n: totals.culture,        color: 'bg-teal-600', source: 'ashby' },
-    { label: 'Call with client',   n: totals.call_w_client,  color: 'bg-teal-700', source: 'ashby' },
-    { label: 'Offered',            n: totals.offered,        color: 'bg-gray-700', source: 'ashby' },
-    { label: 'Hired',              n: totals.hired,          color: 'bg-gray-700', source: 'ashby' },
+    { label: 'Contacted',          n: totals.contacted,                           color: 'bg-blue-300', source: 'bubble' },
+    { label: 'Positive response',  n: totals.pos_response,                        color: 'bg-blue-400', source: 'bubble' },
+    { label: 'Recruiter screens',  n: totals.rec_screens,                         color: 'bg-blue-500', source: 'bubble' },
+    { label: 'Actual screens',     n: totals.actual_screens,                      color: 'bg-blue-600', source: 'bubble' },
+    { label: 'Moved to ATS',       n: totals.ats,                                 color: 'bg-blue-700', source: 'bubble' },
+    { label: 'Onsite',             n: ashbyStageMap?.onsite        ?? totals.onsite,        color: 'bg-teal-500', source: ashbyStageMap ? 'ashby' : 'bubble' },
+    { label: 'Culture interview',  n: ashbyStageMap?.culture       ?? totals.culture,       color: 'bg-teal-600', source: ashbyStageMap ? 'ashby' : 'bubble' },
+    { label: 'Call with client',   n: ashbyStageMap?.call_w_client ?? totals.call_w_client, color: 'bg-teal-700', source: ashbyStageMap ? 'ashby' : 'bubble' },
+    { label: 'Offered',            n: ashbyStageMap?.offered       ?? totals.offered,       color: 'bg-teal-700', source: ashbyStageMap ? 'ashby' : 'bubble' },
+    { label: 'Hired',              n: ashbyStageMap?.hired         ?? totals.hired,         color: 'bg-teal-700', source: ashbyStageMap ? 'ashby' : 'bubble' },
   ];
   const maxN = Math.max(1, totals.contacted);
   const dqTotal = dqReasonAgg.reduce((s, r) => s + r.count, 0);
@@ -3537,7 +3565,9 @@ const IRTab = ({ data }) => {
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
           <h2 className="text-2xl font-bold text-white">Internal Recruiting</h2>
-          <p className="text-sm text-gray-400 mt-1">Tribe.xyz (IR) jobs &middot; left side from Bubble, right side will come from Ashby (v2)</p>
+          <p className="text-sm text-gray-400 mt-1">
+          Tribe.xyz (IR) jobs &middot; left side from Bubble, right side {hasAshby ? <span className="text-teal-400">live from Ashby ✓</span> : <span className="text-gray-500">awaiting Ashby (v2)</span>}
+        </p>
         </div>
         <div className="flex gap-2 flex-wrap items-center">
           <select value={jobFilter} onChange={e => setJobFilter(e.target.value)}
@@ -3792,15 +3822,17 @@ const IRTab = ({ data }) => {
       </div>
 
       <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
-        <div className="text-sm font-medium text-white mb-1">Disqualified reasons ({dqReasonAgg.length})</div>
-        <div className="text-xs text-gray-500 italic mb-3">From candidate.reason_not_interested &middot; {dqTotal} total DQs &middot; v2 will use Ashby's structured taxonomy</div>
+        <div className="text-sm font-medium text-white mb-1">Disqualified reasons ({(ashbyDQReasons.length > 0 ? ashbyDQReasons : dqReasonAgg).length})</div>
+        <div className="text-xs text-gray-500 italic mb-3">{ashbyDQReasons.length > 0 ? `From Ashby archive_reason · ${ashbyDQReasons.reduce((s,r) => s + r.count, 0)} total archives` : `From candidate.reason_not_interested · ${dqTotal} total DQs · v2 will use Ashby's structured taxonomy`}</div>
         {dqReasonAgg.length === 0 ? (
           <div className="text-xs text-gray-500 italic">No DQ reasons for the selected filter.</div>
         ) : (
           <div className="space-y-1.5">
-            {dqReasonAgg.map((r, i) => {
-              const pct = (r.count / dqMax * 100).toFixed(1);
-              const pctOfTotal = (r.count / dqTotal * 100).toFixed(1);
+            {(ashbyDQReasons.length > 0 ? ashbyDQReasons : dqReasonAgg).map((r, i, arr) => {
+              const localMax = Math.max(1, ...arr.map(x => x.count));
+              const localTotal = arr.reduce((s, x) => s + x.count, 0) || 1;
+              const pct = (r.count / localMax * 100).toFixed(1);
+              const pctOfTotal = (r.count / localTotal * 100).toFixed(1);
               return (
                 <div key={i} className="grid items-center gap-3" style={{gridTemplateColumns: '200px 1fr 80px'}}>
                   <span className="text-xs text-gray-200" title={r.reason}>{r.reason}</span>

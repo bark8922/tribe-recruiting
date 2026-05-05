@@ -3488,6 +3488,51 @@ const IRTab = ({ data }) => {
     return result;
   }, [ashbyJobsAll, windowFilter, thisWeek]);
 
+  // Job dropdown / Active Jobs panel — Ashby is source of truth for activity.
+  // A job is "active in the selected window" iff it was active in ANY ISO
+  // week that the inWindow() filter accepts. Bubble fields (TA, sourcer)
+  // are joined in by fuzzy title match when available.
+  const jobOptions = useMemo(() => {
+    const norm = (t) => (t || '').toLowerCase().replace(/[^a-z0-9]/g,'').slice(0, 40);
+    const bubbleByKey = new Map();
+    for (const j of jobsActive) bubbleByKey.set(norm(j.job_title), j);
+
+    const now = new Date();
+    const activeInWindow = ashbyJobsAll.filter(aj => ashbyActiveJobIds.has(aj.ashby_job_id));
+
+    return activeInWindow.map(aj => {
+      const k = norm(aj.ashby_job_title);
+      const bj = bubbleByKey.get(k);
+      const opened = aj.openedAt ? new Date(aj.openedAt) : null;
+      const closed = aj.closedAt ? new Date(aj.closedAt) : null;
+      const refDate = closed || now;
+      const days_open = opened ? Math.floor((refDate - opened) / 86400000) : 0;
+      return {
+        job_id: bj?.job_id || aj.ashby_job_id,
+        ashby_job_id: aj.ashby_job_id,
+        job_title: aj.ashby_job_title || bj?.job_title || '?',
+        status: aj.status,
+        days_open,
+        hires_total: bj?.hires_total ?? 0,
+        job_recruiter: bj?.job_recruiter || '—',
+        job_sourcer: bj?.job_sourcer || '—',
+        in_bubble: !!bj,
+        in_ashby: true,
+        is_currently_open: aj.status === 'Open' || aj.status === 'Draft',
+      };
+    }).sort((a, b) => {
+      // Currently-Open jobs first, then by days_open desc
+      if (a.is_currently_open !== b.is_currently_open) return a.is_currently_open ? -1 : 1;
+      return (b.days_open || 0) - (a.days_open || 0);
+    });
+  }, [jobsActive, ashbyJobsAll, ashbyActiveJobIds]);
+
+  // Set of Bubble job_ids whose Ashby counterpart is active in the window.
+  // Defined right after jobOptions and BEFORE the f_* filters that consume it,
+  // because const refs are in temporal dead zone until their initializer runs.
+  const activeBubbleJobIds = useMemo(() => new Set(jobOptions.map(j => j.job_id)), [jobOptions]);
+
+
 
 
   const matchesJob = (jobId) => jobFilter === 'all' || jobId === jobFilter;
@@ -3495,7 +3540,7 @@ const IRTab = ({ data }) => {
   // Filtered datasets
   const f_funnel = useMemo(() =>
     funnelRows.filter(r => matchesJob(r.job_id) && inWindow(r.iso_week) && activeBubbleJobIds.has(r.job_id)),
-    [funnelRows, jobFilter, windowFilter, thisWeek]);
+    [funnelRows, jobFilter, windowFilter, thisWeek, activeBubbleJobIds]);
   const f_sourced = useMemo(() =>
     sourcedRows.filter(r => matchesJob(r.job_id) && inWindow(r.iso_week) && activeBubbleJobIds.has(r.job_id)
       && (sourcerFilter === 'all' || r.sourcer === sourcerFilter)),
@@ -3587,50 +3632,6 @@ const IRTab = ({ data }) => {
     };
   }, [highlightTA, f_interviewed]);
 
-  // Job dropdown / Active Jobs panel — Ashby is source of truth for activity.
-  // A job is "active in the selected window" iff it was active in ANY ISO
-  // week that the inWindow() filter accepts. Bubble fields (TA, sourcer)
-  // are joined in by fuzzy title match when available.
-  const jobOptions = useMemo(() => {
-    const norm = (t) => (t || '').toLowerCase().replace(/[^a-z0-9]/g,'').slice(0, 40);
-    const bubbleByKey = new Map();
-    for (const j of jobsActive) bubbleByKey.set(norm(j.job_title), j);
-
-    const now = new Date();
-    const activeInWindow = ashbyJobsAll.filter(aj => ashbyActiveJobIds.has(aj.ashby_job_id));
-
-    return activeInWindow.map(aj => {
-      const k = norm(aj.ashby_job_title);
-      const bj = bubbleByKey.get(k);
-      const opened = aj.openedAt ? new Date(aj.openedAt) : null;
-      const closed = aj.closedAt ? new Date(aj.closedAt) : null;
-      const refDate = closed || now;
-      const days_open = opened ? Math.floor((refDate - opened) / 86400000) : 0;
-      return {
-        job_id: bj?.job_id || aj.ashby_job_id,
-        ashby_job_id: aj.ashby_job_id,
-        job_title: aj.ashby_job_title || bj?.job_title || '?',
-        status: aj.status,
-        days_open,
-        hires_total: bj?.hires_total ?? 0,
-        job_recruiter: bj?.job_recruiter || '—',
-        job_sourcer: bj?.job_sourcer || '—',
-        in_bubble: !!bj,
-        in_ashby: true,
-        is_currently_open: aj.status === 'Open' || aj.status === 'Draft',
-      };
-    }).sort((a, b) => {
-      // Currently-Open jobs first, then by days_open desc
-      if (a.is_currently_open !== b.is_currently_open) return a.is_currently_open ? -1 : 1;
-      return (b.days_open || 0) - (a.days_open || 0);
-    });
-  }, [jobsActive, ashbyJobsAll, ashbyActiveJobIds]);
-
-  // Set of Bubble job_ids whose Ashby counterpart is active in the window.
-  // Defined AFTER jobOptions because it depends on it (React hooks run
-  // top-to-bottom; const refs in the same component body are in temporal
-  // dead zone until their initializer runs).
-  const activeBubbleJobIds = useMemo(() => new Set(jobOptions.map(j => j.job_id)), [jobOptions]);
   const selectedJob = jobsActive.find(j => j.job_id === jobFilter);
 
   // Sourced hired count for KPI

@@ -3548,7 +3548,7 @@ const IRTab = ({ data }) => {
       culture:       sumIf(s => matches(s, 'culture')),
       call_w_client: sumIf(s => matches(s, 'call with client') || matches(s, 'client prep')),
       offered:       sumIf(s => matches(s, 'offer')),
-      hired:         ashbyHires.filter(r => inWk(r.iso_week)).reduce((s, r) => s + r.count, 0),
+      hired:         ashbyHires.filter(r => inWindow(r.iso_week)).reduce((s, r) => s + r.count, 0),
     };
   }, [ashbyFunnel, ashbyHires, jobFilter, windowFilter, maxWeek]);
 

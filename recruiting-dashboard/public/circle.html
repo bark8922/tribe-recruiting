@@ -210,4 +210,9 @@
     .then(data => {
       const member = (getParam('member') || Object.keys(data.members)[0] || '').toLowerCase();
       const period = getParam('period') || 'this_week';
-      render(
+      render(data, member, period);
+    })
+    .catch(err => renderError(`Could not load circle_data.json: ${err.message}`));
+  </script>
+</body>
+</html>

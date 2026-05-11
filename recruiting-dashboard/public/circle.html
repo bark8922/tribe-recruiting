@@ -101,6 +101,7 @@
   function renderHeader(member, periods, currentPeriod, allMembers) {
     const overrideName = getParam('first_name');
     const displayName = (overrideName && overrideName.trim()) ? overrideName.trim() : member.first_name;
+    const isLocked = !!getParam('member') && !getParam('admin');
     const memberOpts = Object.entries(allMembers)
       .map(([email, m]) => `<option value="${email}" ${email===member.email?'selected':''}>${m.name}</option>`).join('');
     const periodOpts = Object.entries(periods)
@@ -120,7 +121,7 @@
           </div>
         </div>
         <div class="flex gap-2">
-          <select id="member-sel" class="pill" style="cursor:pointer;">${memberOpts}</select>
+          ${isLocked ? '' : `<select id="member-sel" class="pill" style="cursor:pointer;">${memberOpts}</select>`}
           <select id="period-sel" class="pill" style="cursor:pointer;">${periodOpts}</select>
         </div>
       </div>`;
@@ -190,12 +191,15 @@
       ${renderLegend()}
     `;
 
-    document.getElementById('member-sel').addEventListener('change', e => {
-      const u = new URL(window.location.href);
-      u.searchParams.set('member', e.target.value);
-      window.history.replaceState({}, '', u);
-      render(data, e.target.value, periodKey);
-    });
+    const memSel = document.getElementById('member-sel');
+    if (memSel) {
+      memSel.addEventListener('change', e => {
+        const u = new URL(window.location.href);
+        u.searchParams.set('member', e.target.value);
+        window.history.replaceState({}, '', u);
+        render(data, e.target.value, periodKey);
+      });
+    }
     document.getElementById('period-sel').addEventListener('change', e => {
       const u = new URL(window.location.href);
       u.searchParams.set('period', e.target.value);

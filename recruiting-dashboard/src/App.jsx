@@ -3349,48 +3349,11 @@ const TSSummaryTab = ({ data }) => {
   );
 };
 
-// Password gate for restricted tabs (WBR + MBR). Soft client-side gate only —
-// keeps casual viewers out; not real security (data.json is still public).
-// Shared unlock: entering password once unlocks both WBR and MBR for the session.
-const RESTRICTED_PASSWORD = 'tr!be2026';
-const RESTRICTED_TABS = new Set(['wbr', 'mbr']);
-const RESTRICTED_STORAGE_KEY = 'tribe_restricted_unlocked_v1';
-
-const PasswordGate = ({ tabLabel, onUnlock }) => {
-  const [pw, setPw] = useState('');
-  const [err, setErr] = useState(false);
-  const submit = (e) => {
-    e.preventDefault();
-    if (pw === RESTRICTED_PASSWORD) {
-      try { window.sessionStorage.setItem(RESTRICTED_STORAGE_KEY, '1'); } catch (_) {}
-      onUnlock();
-    } else {
-      setErr(true);
-    }
-  };
-  return (
-    <div className="flex items-center justify-center py-24">
-      <form onSubmit={submit} className="w-full max-w-sm bg-gray-800 border border-gray-700 rounded-lg p-6 space-y-4">
-        <div>
-          <h2 className="text-lg font-semibold text-white">{tabLabel} is password-protected</h2>
-          <p className="text-sm text-gray-400 mt-1">Enter the password to view this tab.</p>
-        </div>
-        <input
-          type="password"
-          autoFocus
-          value={pw}
-          onChange={(e) => { setPw(e.target.value); if (err) setErr(false); }}
-          className={`w-full bg-gray-900 border rounded-md px-3 py-2 text-white placeholder-gray-500 focus:outline-none ${err ? 'border-red-500' : 'border-gray-600'}`}
-          placeholder="Password"
-        />
-        {err && <p className="text-sm text-red-400">Incorrect password.</p>}
-        <button type="submit" className="w-full bg-white text-gray-900 font-medium rounded-md py-2 hover:bg-gray-200 transition-colors">
-          Unlock
-        </button>
-      </form>
-    </div>
-  );
-};
+// Leadership-only tabs (WBR + MBR) are hidden unless the URL contains
+// ?role=leadership. Auth is enforced by Cloudflare Access (Google SSO,
+// @tribe.xyz) in front of recruiting.tribe.xyz and tribe-recruiting.pages.dev,
+// so the prior in-app sessionStorage password gate has been removed.
+const LEADERSHIP_TABS = new Set(['wbr', 'mbr']);
 
 const IRTab = ({ data }) => {
   const funnelRows      = data.ir_funnel_jobweek      || [];
@@ -3947,14 +3910,23 @@ const IRTab = ({ data }) => {
 
 // Main Dashboard
 const RecruitingDashboard = () => {
+  // Leadership tabs (WBR/MBR) are exposed via ?role=leadership. Auth itself is
+  // handled by Cloudflare Access (Google SSO + @tribe.xyz). Without the param,
+  // the tabs are hidden from the nav entirely.
+  const isLeadership = (() => {
+    try {
+      return typeof window !== 'undefined' &&
+        new URLSearchParams(window.location.search).get('role') === 'leadership';
+    } catch (_) { return false; }
+  })();
+  const visibleTabs = isLeadership
+    ? ['project', 'wbr', 'mbr', 'tth', 'ts_summary', 'ir']
+    : ['project', 'tth', 'ts_summary', 'ir'];
   const [activeTab, setActiveTab] = useState('project');
-  const [restrictedUnlocked, setRestrictedUnlocked] = useState(() => {
-    try { return typeof window !== 'undefined' && window.sessionStorage.getItem(RESTRICTED_STORAGE_KEY) === '1'; }
-    catch (_) { return false; }
-  });
+  // If state somehow lands on a leadership tab without the param (e.g. stale
+  // in-memory state after the param is removed), snap back to Project Dashboard.
+  const safeActiveTab = (!isLeadership && LEADERSHIP_TABS.has(activeTab)) ? 'project' : activeTab;
   const dashboardData = dashboardDataSnowflake;
-  const showGate = RESTRICTED_TABS.has(activeTab) && !restrictedUnlocked;
-  const tabLabelMap = { wbr: 'WBR', mbr: 'MBR' };
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <div className="bg-gray-800 border-b border-gray-700 px-6 py-6 flex items-start justify-between">
@@ -3965,27 +3937,21 @@ const RecruitingDashboard = () => {
       </div>
       <div className="bg-gray-800 border-b border-gray-700 px-6">
         <div className="flex gap-8">
-          {['project', 'wbr', 'mbr', 'tth', 'ts_summary', 'ir'].map((tab) => (
+          {visibleTabs.map((tab) => (
             <button key={tab} onClick={() => setActiveTab(tab)}
-              className={`py-4 px-2 font-medium border-b-2 transition-colors ${activeTab === tab ? 'text-white border-white' : 'text-gray-400 border-transparent hover:text-gray-300'}`}>
+              className={`py-4 px-2 font-medium border-b-2 transition-colors ${safeActiveTab === tab ? 'text-white border-white' : 'text-gray-400 border-transparent hover:text-gray-300'}`}>
               {tab === 'wbr' ? 'WBR' : tab === 'mbr' ? 'MBR' : tab === 'project' ? 'Project Dashboard' : tab === 'tth' ? 'Time to Hire' : tab === 'ts_summary' ? 'KPI - TS Summary' : 'Internal Recruiting'}
             </button>
           ))}
         </div>
       </div>
       <div className="px-6 py-6">
-        {showGate ? (
-          <PasswordGate tabLabel={tabLabelMap[activeTab]} onUnlock={() => setRestrictedUnlocked(true)} />
-        ) : (
-          <>
-            {activeTab === 'wbr' && <WBRTab data={dashboardData} />}
-            {activeTab === 'mbr' && <MBRTab data={dashboardData} />}
-            {activeTab === 'project' && <ProjectDashboardTab data={dashboardData} />}
-            {activeTab === 'tth' && <TTHTab data={dashboardData} />}
-            {activeTab === 'ts_summary' && <TSSummaryTab data={dashboardData} />}
-            {activeTab === 'ir' && <IRTab data={dashboardData} />}
-          </>
-        )}
+        {safeActiveTab === 'wbr' && isLeadership && <WBRTab data={dashboardData} />}
+        {safeActiveTab === 'mbr' && isLeadership && <MBRTab data={dashboardData} />}
+        {safeActiveTab === 'project' && <ProjectDashboardTab data={dashboardData} />}
+        {safeActiveTab === 'tth' && <TTHTab data={dashboardData} />}
+        {safeActiveTab === 'ts_summary' && <TSSummaryTab data={dashboardData} />}
+        {safeActiveTab === 'ir' && <IRTab data={dashboardData} />}
       </div>
     </div>
   );

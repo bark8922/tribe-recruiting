@@ -116,8 +116,10 @@
           </div>
           <h1 class="text-4xl font-bold tracking-tight">Hello, ${displayName}</h1>
           <div class="mt-1 text-sm" style="color:#5b6470;">
-            Your hiring progress <span class="font-semibold" style="color:var(--brand);">${periods[currentPeriod].label.toLowerCase()}</span>
-            <span class="role-badge ml-2">${member.role}</span>
+            ${member._empty
+              ? `No targets set for you yet — ask your manager to add you to Circle.`
+              : `Your hiring progress <span class="font-semibold" style="color:var(--brand);">${periods[currentPeriod].label.toLowerCase()}</span>
+                 <span class="role-badge ml-2">${member.role}</span>`}
           </div>
         </div>
         <div class="flex gap-2">
@@ -209,12 +211,36 @@
   }
 
   // ---------- bootstrap ----------
+  function emptyMember(email, firstName) {
+    const blank = () => Object.fromEntries(STAGES.map(s => [s, { actual: 0, target: 0 }]));
+    return {
+      name: firstName || email.split('@')[0],
+      first_name: firstName || '',
+      role: 'Preview',
+      client: '',
+      data: { this_week: blank(), last_week: blank() },
+      _empty: true,
+    };
+  }
+
   fetch('./circle_data.json', { cache: 'no-store' })
     .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
     .then(data => {
-      const member = (getParam('member') || Object.keys(data.members)[0] || '').toLowerCase();
+      const memberParam = (getParam('member') || '').toLowerCase();
       const period = getParam('period') || 'this_week';
-      render(data, member, period);
+      const isAdmin = !!getParam('admin');
+      let memberKey;
+      if (memberParam && data.members[memberParam]) {
+        memberKey = memberParam;
+      } else if (isAdmin) {
+        memberKey = Object.keys(data.members)[0];
+      } else if (memberParam) {
+        data.members[memberParam] = emptyMember(memberParam, getParam('first_name'));
+        memberKey = memberParam;
+      } else {
+        memberKey = Object.keys(data.members)[0];
+      }
+      render(data, memberKey, period);
     })
     .catch(err => renderError(`Could not load circle_data.json: ${err.message}`));
   </script>

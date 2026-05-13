@@ -3910,13 +3910,22 @@ const IRTab = ({ data }) => {
 
 // Main Dashboard
 const RecruitingDashboard = () => {
-  // Leadership tabs (WBR/MBR) are exposed via ?role=leadership. Auth itself is
-  // handled by Cloudflare Access (Google SSO + @tribe.xyz). Without the param,
-  // the tabs are hidden from the nav entirely.
+  // Leadership tabs (WBR/MBR) are gated by the Pages Functions auth flow:
+  // /functions/api/login.ts sets a non-HttpOnly `tribe_role=leadership` cookie
+  // for the 23 leadership emails. We also keep the legacy ?role=leadership URL
+  // param as a fallback for direct testing.
   const isLeadership = (() => {
     try {
-      return typeof window !== 'undefined' &&
-        new URLSearchParams(window.location.search).get('role') === 'leadership';
+      if (typeof document !== 'undefined') {
+        const fromCookie = document.cookie
+          .split(';')
+          .some(c => c.trim() === 'tribe_role=leadership');
+        if (fromCookie) return true;
+      }
+      if (typeof window !== 'undefined') {
+        return new URLSearchParams(window.location.search).get('role') === 'leadership';
+      }
+      return false;
     } catch (_) { return false; }
   })();
   const visibleTabs = isLeadership

@@ -6,6 +6,7 @@ import {
 } from 'recharts';
 import { Search } from 'lucide-react';
 import dashboardDataSnowflake from './dashboard_data_snowflake.json';
+import clientProfitabilityData from './client_profitability.json';
 
 // WEEKS is now derived per-render from data.wbr_ta_weekly_roster keys so that
 // newly-added weeks (e.g. w16, w17) appear automatically once the weekly roster
@@ -1180,6 +1181,205 @@ const WBRTab = ({ data }) => {
         </p>
       </div>
 
+      {/* Client Profitability — ported from the finance dashboard. Own month
+          filter, defaults to the latest period in the snapshot. No drill-down.
+          Data is a slim copy of dashboard-src/data.json (cr + ea client rows)
+          produced by recruiting-pipeline/build_client_profitability.py. */}
+      <ClientProfitabilitySection />
+
+    </div>
+  );
+};
+
+// Client Profitability — table embedded at the bottom of WBR. The JSX is a
+// direct port of the finance dashboard's "Client Profitability" card so the
+// numbers and colour coding match exactly. Drill-down removed; uses its own
+// month dropdown that defaults to the latest period in the snapshot.
+const fmtEUR = (n) => {
+  if (n == null || Number.isNaN(n)) return '—';
+  const abs = Math.abs(n);
+  if (abs >= 1_000_000) return `€${(n / 1_000_000).toFixed(1)}M`;
+  if (abs >= 1_000) return `€${Math.round(n / 1_000)}K`;
+  return `€${Math.round(n)}`;
+};
+const BU_BADGE_COLORS = {
+  Martin: '#3b82f6',
+  Kristjana: '#10b981',
+  Jacopo: '#f59e0b',
+  Salem: '#8b5cf6',
+  Tijana: '#ec4899',
+};
+const formatPeriodLabel = (ym) => {
+  if (!ym) return '';
+  const [y, m] = ym.split('-');
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return `${months[parseInt(m, 10) - 1]} ${y}`;
+};
+
+const ClientProfitabilitySection = () => {
+  const D = clientProfitabilityData;
+  const periods = useMemo(() => (D.periods || []).slice().sort(), []);
+  const latestPeriod = periods.length ? periods[periods.length - 1] : null;
+  const [selectedPeriod, setSelectedPeriod] = useState(latestPeriod);
+  const [sort, setSort] = useState({ col: 'rev', asc: false });
+
+  const rows = useMemo(() => {
+    const pf = selectedPeriod;
+    if (!pf) return { rows: [], totals: null };
+    const agg = {};
+    // Revenue from cr (per-client revenue ledger).
+    (D.cr || []).filter(c => c.p === pf).forEach(c => {
+      if (!agg[c.c]) agg[c.c] = { client: c.c, bu: c.bu || '', rev: 0, directCost: 0, sourcingCost: 0 };
+      agg[c.c].rev += c.r || 0;
+      if (c.bu) agg[c.c].bu = c.bu;
+    });
+    // Cost from ea (Client rows only, filtered upstream by build script).
+    (D.ea || []).filter(e => e.p === pf).forEach(e => {
+      if (!agg[e.d]) agg[e.d] = { client: e.d, bu: e.bu || '', rev: 0, directCost: 0, sourcingCost: 0 };
+      const a = agg[e.d];
+      // Same rule as finance dashboard: rev>0 → Direct Cost, rev=0 → Sourcing Cost.
+      if ((e.rev || 0) > 0) a.directCost += (e.pr || 0);
+      else a.sourcingCost += (e.pr || 0);
+      if (e.bu) a.bu = e.bu;
+    });
+    const rowList = Object.values(agg)
+      .filter(r => r.rev > 0 || r.directCost > 0 || r.sourcingCost > 0)
+      .map(r => {
+        const directProfit = r.rev - r.directCost;
+        const directMargin = r.rev > 0 ? Math.round((directProfit / r.rev) * 100) : 0;
+        const netProfit = directProfit - r.sourcingCost;
+        const netMargin = r.rev > 0 ? Math.round((netProfit / r.rev) * 100) : 0;
+        return { ...r, directProfit, directMargin, netProfit, netMargin };
+      })
+      .sort((a, b) => {
+        const { col, asc } = sort;
+        let va = typeof a[col] === 'number' ? a[col] : (a[col] || '').toString().toLowerCase();
+        let vb = typeof b[col] === 'number' ? b[col] : (b[col] || '').toString().toLowerCase();
+        if (va < vb) return asc ? -1 : 1;
+        if (va > vb) return asc ? 1 : -1;
+        return 0;
+      });
+    const tot = rowList.reduce((s, r) => ({
+      rev: s.rev + r.rev,
+      directCost: s.directCost + r.directCost,
+      directProfit: s.directProfit + r.directProfit,
+      sourcingCost: s.sourcingCost + r.sourcingCost,
+      netProfit: s.netProfit + r.netProfit,
+    }), { rev: 0, directCost: 0, directProfit: 0, sourcingCost: 0, netProfit: 0 });
+    tot.directMargin = tot.rev > 0 ? Math.round((tot.directProfit / tot.rev) * 100) : 0;
+    tot.netMargin = tot.rev > 0 ? Math.round((tot.netProfit / tot.rev) * 100) : 0;
+    return { rows: rowList, totals: tot };
+  }, [selectedPeriod, sort]);
+
+  const mColor = (m) => m > 30 ? 'text-green-400' : m > 15 ? 'text-yellow-400' : m > 0 ? 'text-orange-400' : 'text-red-400';
+  const directMarginColor = (m) => m >= 60 ? 'text-green-400' : m >= 55 ? 'text-yellow-400' : 'text-red-400';
+
+  const cols = [
+    { col: 'client', l: 'Client' },
+    { col: 'bu', l: 'BU' },
+    { col: 'rev', l: 'Revenue', r: true },
+    { col: 'directCost', l: 'Direct Cost', r: true },
+    { col: 'directProfit', l: 'Direct Profit', r: true },
+    { col: 'directMargin', l: 'Margin %', r: true },
+    { col: 'sourcingCost', l: 'Sourcing Cost', r: true },
+    { col: 'netMargin', l: 'Net Margin %', r: true },
+  ];
+
+  const onHeaderClick = (h) =>
+    setSort(s => s.col === h.col ? { col: h.col, asc: !s.asc } : { col: h.col, asc: h.r ? false : true });
+
+  if (!periods.length) {
+    return (
+      <div className="bg-gray-800 rounded-lg p-4">
+        <h3 className="text-base font-semibold text-white mb-1">Client Profitability</h3>
+        <p className="text-xs text-gray-500">No data available.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-gray-800 rounded-lg p-4">
+      <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
+        <div>
+          <h3 className="text-base font-semibold text-white">
+            Client Profitability — {formatPeriodLabel(selectedPeriod)}
+          </h3>
+          <p className="text-xs text-gray-500 mt-0.5">
+            From the finance dashboard. Revenue from <code className="text-gray-400">cr</code>; cost from <code className="text-gray-400">ea</code> client rows.
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <label className="text-gray-400 text-xs">Month:</label>
+          <select
+            value={selectedPeriod || ''}
+            onChange={(e) => setSelectedPeriod(e.target.value)}
+            className="bg-gray-700 border border-gray-600 rounded-lg px-2 py-1.5 text-sm text-white min-w-[140px]"
+          >
+            {periods.slice().reverse().map(p => (
+              <option key={p} value={p}>{formatPeriodLabel(p)}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <div className="overflow-x-auto max-h-[480px] overflow-y-auto">
+        <table className="w-full text-xs">
+          <thead className="sticky top-0 bg-gray-800 z-10">
+            <tr className="text-gray-400 border-b border-gray-700">
+              {cols.map(h => (
+                <th
+                  key={h.col}
+                  className={`py-2 px-2 cursor-pointer select-none hover:text-blue-400 transition-colors ${h.r ? 'text-right' : 'text-left'}`}
+                  onClick={() => onHeaderClick(h)}
+                >
+                  {h.l} {sort.col === h.col ? (sort.asc ? '▲' : '▼') : <span className="text-gray-600">⇅</span>}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.rows.map((r, i) => (
+              <tr key={i} className="border-b border-gray-800 hover:bg-gray-750">
+                <td className="py-1.5 px-2 font-medium text-white">{r.client}</td>
+                <td className="py-1.5 px-2">
+                  {r.bu && (
+                    <span
+                      className="px-2 py-0.5 rounded-full text-xs"
+                      style={{
+                        backgroundColor: (BU_BADGE_COLORS[r.bu] || '#64748b') + '25',
+                        color: BU_BADGE_COLORS[r.bu] || '#94a3b8',
+                      }}
+                    >
+                      {r.bu}
+                    </span>
+                  )}
+                </td>
+                <td className="py-1.5 px-2 text-right text-blue-400">{fmtEUR(r.rev)}</td>
+                <td className="py-1.5 px-2 text-right text-red-400">{fmtEUR(r.directCost)}</td>
+                <td className={`py-1.5 px-2 text-right font-medium ${r.directProfit >= 0 ? 'text-green-400' : 'text-red-400'}`}>{fmtEUR(r.directProfit)}</td>
+                <td className={`py-1.5 px-2 text-right ${directMarginColor(r.directMargin)}`}>{r.directMargin}%</td>
+                <td className="py-1.5 px-2 text-right text-orange-400">{fmtEUR(r.sourcingCost)}</td>
+                <td className={`py-1.5 px-2 text-right ${mColor(r.netMargin)}`}>{r.netMargin}%</td>
+              </tr>
+            ))}
+            {rows.totals && (
+              <tr className="bg-gray-800 font-semibold border-t-2 border-gray-600">
+                <td className="py-2 px-2 text-white">Total ({rows.rows.length} clients)</td>
+                <td></td>
+                <td className="py-2 px-2 text-right text-blue-400">{fmtEUR(rows.totals.rev)}</td>
+                <td className="py-2 px-2 text-right text-red-400">{fmtEUR(rows.totals.directCost)}</td>
+                <td className={`py-2 px-2 text-right ${rows.totals.directProfit >= 0 ? 'text-green-400' : 'text-red-400'}`}>{fmtEUR(rows.totals.directProfit)}</td>
+                <td className={`py-2 px-2 text-right ${directMarginColor(rows.totals.directMargin)}`}>{rows.totals.directMargin}%</td>
+                <td className="py-2 px-2 text-right text-orange-400">{fmtEUR(rows.totals.sourcingCost)}</td>
+                <td className={`py-2 px-2 text-right ${mColor(rows.totals.netMargin)}`}>{rows.totals.netMargin}%</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+      <p className="text-gray-500 text-xs mt-2">
+        Direct Cost = staff working on the project. Direct Profit = Revenue − Direct Cost. Sourcing Cost = sourcer + TA time allocated to the project. Net Margin = (Direct Profit − Sourcing Cost) ÷ Revenue. Overhead is excluded.
+      </p>
     </div>
   );
 };

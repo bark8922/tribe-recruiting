@@ -1227,10 +1227,11 @@ const ClientProfitabilitySection = () => {
     const pf = selectedPeriod;
     if (!pf) return { rows: [], totals: null };
     const agg = {};
-    // Revenue from cr (per-client revenue ledger).
+    // Revenue from cr (per-client revenue ledger). NET = c.r + c.v (c.v is the
+    // vacation deduction, already negative). Must match the finance dashboard KPI.
     (D.cr || []).filter(c => c.p === pf).forEach(c => {
       if (!agg[c.c]) agg[c.c] = { client: c.c, bu: c.bu || '', rev: 0, directCost: 0, sourcingCost: 0 };
-      agg[c.c].rev += c.r || 0;
+      agg[c.c].rev += (c.r || 0) + (c.v || 0);
       if (c.bu) agg[c.c].bu = c.bu;
     });
     // Cost from ea (Client rows only, filtered upstream by build script).

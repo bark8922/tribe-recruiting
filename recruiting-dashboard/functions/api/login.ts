@@ -3,6 +3,7 @@
 // signed) and `tribe_role` (readable by client JS) cookies.
 
 import {
+  DIRECTOR_EMAILS,
   LEADERSHIP_EMAILS,
   SESSION_MAX_AGE_MS,
   roleCookie,
@@ -64,14 +65,19 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
     return redirectTo("/?error=1");
   }
 
-  const isLeadership = LEADERSHIP_EMAILS.has(email);
+  const isDirector = DIRECTOR_EMAILS.has(email);
+  const isLeadership = isDirector || LEADERSHIP_EMAILS.has(email);
   const exp = Date.now() + SESSION_MAX_AGE_MS;
   const signed = await signSession({ email, isLeadership, exp }, secret);
+
+  // tribe_role is read by client JS to flip tab visibility.
+  // Directors are a strict subset of leadership — they also see WBR/MBR.
+  const role = isDirector ? "director" : isLeadership ? "leadership" : "member";
 
   const headers = new Headers();
   headers.append("location", "/");
   headers.append("set-cookie", sessionCookie(signed));
-  headers.append("set-cookie", roleCookie(isLeadership ? "leadership" : "member"));
+  headers.append("set-cookie", roleCookie(role));
   headers.set("cache-control", "no-store");
   return new Response(null, { status: 302, headers });
 };

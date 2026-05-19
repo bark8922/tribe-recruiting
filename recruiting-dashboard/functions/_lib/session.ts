@@ -38,6 +38,17 @@ export const LEADERSHIP_EMAILS: Set<string> = new Set([
   "wladyslaw@tribe.xyz",
 ]);
 
+// 6 director emails — strict subset of LEADERSHIP_EMAILS. Lowercase only.
+// Used to gate the Profitability tab (tribe_role=director cookie).
+export const DIRECTOR_EMAILS: Set<string> = new Set([
+  "blake@tribe.xyz",
+  "ella@tribe.xyz",
+  "jacopo@tribe.xyz",
+  "kristjana@tribe.xyz",
+  "martin@tribe.xyz",
+  "salem@tribe.xyz",
+]);
+
 export interface SessionPayload {
   email: string;
   isLeadership: boolean;
@@ -145,7 +156,7 @@ export function sessionCookie(value: string, maxAgeSeconds = SESSION_MAX_AGE_SEC
   return `${SESSION_COOKIE}=${encodeURIComponent(value)}; Path=/; Max-Age=${maxAgeSeconds}; HttpOnly; Secure; SameSite=None`;
 }
 
-export function roleCookie(role: "leadership" | "member", maxAgeSeconds = SESSION_MAX_AGE_SECONDS): string {
+export function roleCookie(role: "director" | "leadership" | "member", maxAgeSeconds = SESSION_MAX_AGE_SECONDS): string {
   return `${ROLE_COOKIE}=${role}; Path=/; Max-Age=${maxAgeSeconds}; Secure; SameSite=None`;
 }
 

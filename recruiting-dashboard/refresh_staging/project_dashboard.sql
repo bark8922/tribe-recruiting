@@ -27,13 +27,17 @@
 -- Filters (canonical, matches WBR/MBR):
 --   candidate.is_candidate_archived <> 'true'
 --   job.test <> 'true'
---   client.client_name NOT IN ('Tribe.xyz','Kamila AI - TEST')
+--   client.client_name NOT IN ('BD - Tribe','Tribe - Marketing','Kamila AI - TEST','Bubble test')
+--   NOTE: Tribe.xyz and Tribe.xyz (IR) are INCLUDED here (2026-04-23 parity fix).
+--   PBI Project Dashboard displays these, and our prior exclusion caused a
+--   ~9-16% top-of-funnel undercount vs PBI. App.jsx gates them behind the
+--   showInternal toggle so users can still filter them out per-view.
 --
 -- External-recruiter filter is deliberately NOT applied here. PBIX includes
 -- externals at per-client / per-job grain. Applied only at "All-clients"
 -- aggregate KPI card, which App.jsx handles post-aggregation.
 --
--- Date window: 2026 and later (adjust if you need to backfill 2025).
+-- Date window: 2025 and later (lowered from 2026 on 2026-05-20 to unblock historical lookback).
 
 WITH cand AS (
   SELECT
@@ -103,49 +107,49 @@ viewed AS (
   JOIN job_meta jm ON jm."job_id" = e."job_id"
   WHERE e."event_type" = 'Linkedin Visited Profile'
     AND TRY_TO_DATE(e."date_created") IS NOT NULL
-    AND YEAROFWEEKISO(TRY_TO_DATE(e."date_created")) >= 2026
+    AND YEAROFWEEKISO(TRY_TO_DATE(e."date_created")) >= 2025
   GROUP BY 1,2,3,4,5,6,7,8,9,10
 ),
 screens AS (
   SELECT client, job_id, job_title, job_category, ta, ts, candidate_source, is_external_recruiter,
          YEAROFWEEKISO(ds) AS iso_year, WEEKISO(ds) AS iso_week,
          COUNT(DISTINCT "candidate_id") AS screens
-  FROM joined WHERE ds IS NOT NULL AND YEAROFWEEKISO(ds) >= 2026
+  FROM joined WHERE ds IS NOT NULL AND YEAROFWEEKISO(ds) >= 2025
   GROUP BY 1,2,3,4,5,6,7,8,9,10
 ),
 contacted AS (
   SELECT client, job_id, job_title, job_category, ta, ts, candidate_source, is_external_recruiter,
          YEAROFWEEKISO(dc) AS iso_year, WEEKISO(dc) AS iso_week,
          COUNT(DISTINCT "candidate_id") AS contacted
-  FROM joined WHERE dc IS NOT NULL AND YEAROFWEEKISO(dc) >= 2026
+  FROM joined WHERE dc IS NOT NULL AND YEAROFWEEKISO(dc) >= 2025
   GROUP BY 1,2,3,4,5,6,7,8,9,10
 ),
 actual_screens AS (
   SELECT client, job_id, job_title, job_category, ta, ts, candidate_source, is_external_recruiter,
          YEAROFWEEKISO(dsa) AS iso_year, WEEKISO(dsa) AS iso_week,
          COUNT(DISTINCT "candidate_id") AS actual_screens
-  FROM joined WHERE dsa IS NOT NULL AND YEAROFWEEKISO(dsa) >= 2026
+  FROM joined WHERE dsa IS NOT NULL AND YEAROFWEEKISO(dsa) >= 2025
   GROUP BY 1,2,3,4,5,6,7,8,9,10
 ),
 ats_ AS (
   SELECT client, job_id, job_title, job_category, ta, ts, candidate_source, is_external_recruiter,
          YEAROFWEEKISO(di) AS iso_year, WEEKISO(di) AS iso_week,
          COUNT(DISTINCT "candidate_id") AS ats
-  FROM joined WHERE di IS NOT NULL AND YEAROFWEEKISO(di) >= 2026
+  FROM joined WHERE di IS NOT NULL AND YEAROFWEEKISO(di) >= 2025
   GROUP BY 1,2,3,4,5,6,7,8,9,10
 ),
 offers AS (
   SELECT client, job_id, job_title, job_category, ta, ts, candidate_source, is_external_recruiter,
          YEAROFWEEKISO(doff) AS iso_year, WEEKISO(doff) AS iso_week,
          COUNT(DISTINCT "candidate_id") AS offered
-  FROM joined WHERE doff IS NOT NULL AND YEAROFWEEKISO(doff) >= 2026
+  FROM joined WHERE doff IS NOT NULL AND YEAROFWEEKISO(doff) >= 2025
   GROUP BY 1,2,3,4,5,6,7,8,9,10
 ),
 hires AS (
   SELECT client, job_id, job_title, job_category, ta, ts, candidate_source, is_external_recruiter,
          YEAROFWEEKISO(dh) AS iso_year, WEEKISO(dh) AS iso_week,
          COUNT(DISTINCT "candidate_id") AS hired
-  FROM joined WHERE dh IS NOT NULL AND YEAROFWEEKISO(dh) >= 2026
+  FROM joined WHERE dh IS NOT NULL AND YEAROFWEEKISO(dh) >= 2025
   GROUP BY 1,2,3,4,5,6,7,8,9,10
 ),
 pos_resp AS (
@@ -167,7 +171,7 @@ pos_resp AS (
   WHERE e."event_type"        = 'Moved to stage'
     AND e."moved_to_stageType" = 'Positive Response'
     AND TRY_TO_DATE(e."date_created") IS NOT NULL
-    AND YEAROFWEEKISO(TRY_TO_DATE(e."date_created")) >= 2026
+    AND YEAROFWEEKISO(TRY_TO_DATE(e."date_created")) >= 2025
   GROUP BY 1,2,3,4,5,6,7,8,9,10
 ),
 keys AS (

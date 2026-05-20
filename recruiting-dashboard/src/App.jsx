@@ -1637,7 +1637,7 @@ const pdPeriodWindow = (period) => {
     case 'qtd':        return [new Date(today.getFullYear(), Math.floor(today.getMonth() / 3) * 3, 1), today];
     case 'ytd':        return [new Date(today.getFullYear(), 0, 1), today];
     case 'all':
-    default:           return [new Date('2026-01-01'), today];
+    default:           return [new Date('2025-01-01'), today];
   }
 };
 

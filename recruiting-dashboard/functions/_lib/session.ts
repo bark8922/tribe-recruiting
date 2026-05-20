@@ -8,7 +8,7 @@
 
 export const SESSION_COOKIE = "tribe_session";
 export const ROLE_COOKIE = "tribe_role";
-export const SESSION_MAX_AGE_SECONDS = 86400; // 24h
+export const SESSION_MAX_AGE_SECONDS = 2592000; // 30 days
 export const SESSION_MAX_AGE_MS = SESSION_MAX_AGE_SECONDS * 1000;
 
 // 23 leadership emails — keep lowercase.

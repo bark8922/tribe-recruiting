@@ -1695,8 +1695,16 @@ const ProjectDashboardTab = ({ data }) => {
   const [expandedJobs, setExpandedJobs] = useState(new Set());
   const [expandedTas, setExpandedTas] = useState(new Set());
   const [expandedTses, setExpandedTses] = useState(new Set());
+  // Attribution mode: 'job' = TA from job.job_recruiter (default, original),
+  // 'event' = TA from event.who_event_created_for (PBI-parity, picks up
+  // cross-team work + handovers). Both data surfaces ship side by side.
+  const [attrMode, setAttrMode] = useState('job');
 
-  const pdRows = (data.project_dashboard && data.project_dashboard.rows) || [];
+  const eventAttrRows = (data.project_dashboard_eventattr && data.project_dashboard_eventattr.rows) || [];
+  const eventAttrAvailable = eventAttrRows.length > 0;
+  const pdRows = (attrMode === 'event' && eventAttrAvailable)
+    ? eventAttrRows
+    : ((data.project_dashboard && data.project_dashboard.rows) || []);
   const pdHires = data.project_dashboard_hires || [];
 
   const usingCustom = !!(customStart && customEnd);
@@ -1920,7 +1928,25 @@ const ProjectDashboardTab = ({ data }) => {
                 className="ml-1 px-2 py-1 text-xs text-gray-300 hover:text-white">clear</button>
             )}
           </div>
-          <span className="text-xs text-gray-400 ml-auto">window: {startStr} → {endStr}</span>
+          <div className="flex items-center gap-2 ml-auto">
+            <span className="text-xs text-gray-400">Attribution:</span>
+            <div className="flex rounded border border-gray-600 overflow-hidden text-xs">
+              <button
+                onClick={() => setAttrMode('job')}
+                className={attrMode === 'job' ? 'px-2 py-1 bg-blue-700 text-white' : 'px-2 py-1 bg-gray-700 text-gray-300 hover:text-white'}
+                title="TA = job's assigned recruiter (original method, default)">
+                Job-assigned TA
+              </button>
+              <button
+                onClick={() => { if (eventAttrAvailable) setAttrMode('event'); }}
+                disabled={!eventAttrAvailable}
+                className={(attrMode === 'event' ? 'px-2 py-1 bg-blue-700 text-white' : 'px-2 py-1 bg-gray-700 text-gray-300 hover:text-white') + (eventAttrAvailable ? '' : ' opacity-40 cursor-not-allowed')}
+                title={eventAttrAvailable ? 'TA = who logged the event (PBI parity, captures cross-team work + handovers)' : 'Event-based data not loaded yet'}>
+                Event-based{eventAttrAvailable ? '' : ' (n/a)'}
+              </button>
+            </div>
+          </div>
+          <span className="text-xs text-gray-400">window: {startStr} → {endStr}</span>
         </div>
         <div className="flex flex-wrap gap-3 items-center mt-3">
           <div className="flex-1 relative" style={{ minWidth: 220 }}>

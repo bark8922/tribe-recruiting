@@ -82,6 +82,7 @@ SNOW_TS_JOBS = HERE / "snowflake_ts_jobs.csv"
 SNOW_AUX = HERE / "snowflake_aux_12w.csv"
 SNOW_TS_SUMMARY = HERE / "snowflake_ts_summary.csv"  # per-sourcer x per-week (KPI-TS Summary tab)
 SNOW_PROJECT_DASHBOARD = HERE / "snowflake_project_dashboard.csv"
+SNOW_PROJECT_DASHBOARD_EVENTATTR = HERE / "snowflake_project_dashboard_eventattr.csv"  # parallel event-based attribution
 SNOW_PROJECT_HIRES = HERE / "snowflake_project_dashboard_hires.csv"
 SNOW_MBR_CONTACTED_EV = HERE / "snowflake_mbr_contacted_ev.csv"
 
@@ -608,7 +609,7 @@ def load_mbr_contacted_ev():
     return out
 
 
-def load_project_dashboard():
+def load_project_dashboard(source_path=SNOW_PROJECT_DASHBOARD):
     """Return {"rows": [...]} from snowflake_project_dashboard.csv.
 
     Produced by project_dashboard.sql — per-(client, job, TA, TS, category,
@@ -619,10 +620,10 @@ def load_project_dashboard():
     24/24 per-client metrics within 1-3 units.
 
     File is opt-in. Returns empty list if missing so legacy runs still work."""
-    if not SNOW_PROJECT_DASHBOARD.exists():
+    if not source_path.exists():
         return {"rows": []}
     rows = []
-    with SNOW_PROJECT_DASHBOARD.open() as f:
+    with source_path.open() as f:
         for row in csv.DictReader(f):
             client = (row.get("CLIENT") or "").strip()
             if client in INTERNAL_CLIENTS:
@@ -648,6 +649,16 @@ def load_project_dashboard():
                 "hired":                  int(row.get("HIRED") or 0),
             })
     return {"rows": rows}
+
+
+def load_project_dashboard_eventattr():
+    """Return {"rows": [...]} from snowflake_project_dashboard_eventattr.csv.
+
+    Parallel to load_project_dashboard() but event-based attribution
+    (TA = event.who_event_created_for). Produced by
+    project_dashboard_eventattr.sql. Same schema; React offers an attribution
+    toggle (default = job_recruiter). Empty if file missing."""
+    return load_project_dashboard(source_path=SNOW_PROJECT_DASHBOARD_EVENTATTR)
 
 
 def load_project_hires():
@@ -1716,9 +1727,12 @@ def main():
     # counts + line-level hires. Both opt-in (load_project_* gracefully return
     # empty when the CSV is missing). Frontend filters/aggregates client-side.
     out["project_dashboard"] = load_project_dashboard()
+    out["project_dashboard_eventattr"] = load_project_dashboard_eventattr()
     out["project_dashboard_hires"] = load_project_hires()
     if out["project_dashboard"]["rows"]:
         print(f"  project_dashboard: {len(out['project_dashboard']['rows'])} rows")
+    if out["project_dashboard_eventattr"]["rows"]:
+        print(f"  project_dashboard_eventattr: {len(out['project_dashboard_eventattr']['rows'])} rows")
     if out["project_dashboard_hires"]:
         print(f"  project_dashboard_hires: {len(out['project_dashboard_hires'])} hires")
     # Time to Hire tab — tth_jobs + tth_monthly from snowflake_tth_jobs.csv.

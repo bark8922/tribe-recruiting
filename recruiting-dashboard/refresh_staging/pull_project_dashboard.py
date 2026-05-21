@@ -76,6 +76,8 @@ HERE = Path(__file__).resolve().parent
 TABLES = [
     ("out.c-Project-Dashboard---weekly-funnel.project_dashboard",
      HERE / "snowflake_project_dashboard.csv"),
+    ("out.c-Project-Dashboard---event-attr.project_dashboard_eventattr",
+     HERE / "snowflake_project_dashboard_eventattr.csv"),
     ("out.c-Project-Dashboard---hires-drill-down.project_dashboard_hires",
      HERE / "snowflake_project_dashboard_hires.csv"),
     ("out.c-MBR-Contacted---event-based-attribution.mbr_contacted_ev",

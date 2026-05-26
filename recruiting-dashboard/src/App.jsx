@@ -3380,6 +3380,205 @@ const TSSummaryTab = ({ data }) => {
 // ?role=leadership. Auth is enforced by Cloudflare Access (Google SSO,
 // @tribe.xyz) in front of recruiting.tribe.xyz and tribe-recruiting.pages.dev,
 // so the prior in-app sessionStorage password gate has been removed.
+
+// ── Weekly Progress Tab ───────────────────────────────────────────────────
+// Company / team funnel trend by ISO week AND by month, filterable by
+// Client / TA / TS. Mirrors the legacy Power BI "Weekly Progress" page
+// (Weekly Performance + Monthly Performance pivots). Every metric is
+// aggregated client-side from project_dashboard.rows — the same data surface
+// the Project Dashboard tab uses; no extra pipeline data is required, except
+// the optional `reacted` column which auto-appears once the PD SQL emits it.
+const WP_WINDOWS = [
+  ['12', 'Last 12 weeks'],
+  ['26', 'Last 26 weeks'],
+  ['2026', '2026 only'],
+  ['2025', '2025 only'],
+  ['all', 'All weeks (2025–26)'],
+];
+
+const WeeklyProgressTab = ({ data }) => {
+  const rows = (data.project_dashboard && data.project_dashboard.rows) || [];
+  const [fClient, setFClient] = useState('');
+  const [fTa, setFTa] = useState('');
+  const [fTs, setFTs] = useState('');
+  const [win, setWin] = useState('12');
+
+  const clients = useMemo(() => Array.from(new Set(rows.map((r) => normalizeClientPD(r.client)).filter(Boolean))).sort(), [rows]);
+  const tas = useMemo(() => Array.from(new Set(rows.map((r) => r.ta).filter(Boolean))).sort(), [rows]);
+  const tses = useMemo(() => Array.from(new Set(rows.map((r) => r.ts).filter(Boolean))).sort(), [rows]);
+  const hasReacted = useMemo(() => rows.some((r) => r.reacted != null), [rows]);
+
+  const filtered = useMemo(() => rows.filter((r) => {
+    if (!r.iso_week || r.iso_week < 1 || r.iso_week > 53) return false;
+    if (r.iso_year !== 2025 && r.iso_year !== 2026) return false;
+    if (fClient && normalizeClientPD(r.client) !== fClient) return false;
+    if (fTa && r.ta !== fTa) return false;
+    if (fTs && r.ts !== fTs) return false;
+    return true;
+  }), [rows, fClient, fTa, fTs]);
+
+  const blank = () => ({ viewed: 0, contacted: 0, reacted: 0, positive_response: 0, screens: 0, actual_screens: 0, ats: 0, offered: 0, hired: 0 });
+  const addInto = (acc, r) => {
+    acc.viewed += r.viewed || 0; acc.contacted += r.contacted || 0; acc.reacted += r.reacted || 0;
+    acc.positive_response += r.positive_response || 0; acc.screens += r.screens || 0;
+    acc.actual_screens += r.actual_screens || 0; acc.ats += r.ats || 0;
+    acc.offered += r.offered || 0; acc.hired += r.hired || 0;
+  };
+
+  const weekly = useMemo(() => {
+    const m = new Map();
+    filtered.forEach((r) => {
+      const key = `${r.iso_year}-${String(r.iso_week).padStart(2, '0')}`;
+      if (!m.has(key)) m.set(key, { key, year: r.iso_year, week: r.iso_week, ...blank() });
+      addInto(m.get(key), r);
+    });
+    let arr = Array.from(m.values()).sort((a, b) => b.key.localeCompare(a.key));
+    if (win === '12') arr = arr.slice(0, 12);
+    else if (win === '26') arr = arr.slice(0, 26);
+    else if (win === '2026') arr = arr.filter((w) => w.year === 2026);
+    else if (win === '2025') arr = arr.filter((w) => w.year === 2025);
+    return arr;
+  }, [filtered, win]);
+
+  const monthly = useMemo(() => {
+    const m = new Map();
+    filtered.forEach((r) => {
+      const key = isoWeekToMonth(r.iso_year, r.iso_week);
+      if (!m.has(key)) m.set(key, { key, ...blank() });
+      addInto(m.get(key), r);
+    });
+    return Array.from(m.values()).sort((a, b) => b.key.localeCompare(a.key));
+  }, [filtered]);
+
+  const totalsOf = (arr) => arr.reduce((t, r) => { addInto(t, r); return t; }, blank());
+  const rate = (num, den) => (den ? Math.min(num / den, 1) : null);
+
+  const weekLabel = (year, week) => {
+    const mon = isoWeekToDate(year, week);
+    const sun = new Date(mon.getTime() + 6 * 86400000);
+    const f = (d) => d.toLocaleString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+    return `${year} W${String(week).padStart(2, '0')} · ${f(mon)}–${sun.getUTCDate()}`;
+  };
+  const monthLabel = (key) => new Date(key + '-01').toLocaleString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
+
+  const header = (firstCol) => (
+    <thead>
+      <tr className="text-gray-300 border-b border-gray-700 text-xs">
+        <th className="text-left px-2 py-1 whitespace-nowrap">{firstCol}</th>
+        <th className="text-center px-1 py-1">LinkedIn Viewed</th>
+        <th className="text-center px-1 py-1">Contacted</th>
+        {hasReacted && <th className="text-center px-1 py-1">Reacted</th>}
+        <th className="text-center px-1 py-1">Pos Resp</th>
+        <th className="text-center px-1 py-1">Rec Screens</th>
+        <th className="text-center px-1 py-1">Actual Screens</th>
+        <th className="text-center px-1 py-1">Moved to ATS</th>
+        <th className="text-center px-1 py-1">Offered</th>
+        <th className="text-center px-1 py-1">Hired</th>
+        <th className="text-center px-1 py-1">% V→C</th>
+        {hasReacted && <th className="text-center px-1 py-1">% C→R</th>}
+        <th className="text-center px-1 py-1">% C→PR</th>
+        <th className="text-center px-1 py-1">% PR→S</th>
+        <th className="text-center px-1 py-1">% S→ATS</th>
+        <th className="text-center px-1 py-1">% AS→ATS</th>
+      </tr>
+    </thead>
+  );
+
+  const renderRow = (label, c, opts = {}) => {
+    const base = opts.total ? 'text-white font-semibold' : 'text-gray-200';
+    const cls = opts.total ? 'border-t-2 border-gray-600' : 'border-t border-gray-700 hover:bg-gray-700';
+    return (
+      <tr key={label} className={cls} style={opts.total ? { backgroundColor: '#1F2937' } : {}}>
+        <td className="px-2 py-1 text-white whitespace-nowrap">{label}</td>
+        <td className={`text-center px-1 py-1 ${base}`}>{c.viewed.toLocaleString()}</td>
+        <td className={`text-center px-1 py-1 ${base} font-medium`}>{c.contacted.toLocaleString()}</td>
+        {hasReacted && <td className={`text-center px-1 py-1 ${base}`}>{c.reacted.toLocaleString()}</td>}
+        <td className={`text-center px-1 py-1 ${base}`}>{c.positive_response.toLocaleString()}</td>
+        <td className={`text-center px-1 py-1 ${base}`}>{c.screens.toLocaleString()}</td>
+        <td className={`text-center px-1 py-1 ${base}`}>{c.actual_screens.toLocaleString()}</td>
+        <td className={`text-center px-1 py-1 ${base}`}>{c.ats.toLocaleString()}</td>
+        <td className={`text-center px-1 py-1 ${base}`}>{c.offered.toLocaleString()}</td>
+        <td className={`text-center px-1 py-1 ${base} font-medium`}>{c.hired.toLocaleString()}</td>
+        <td className="text-center px-1 py-1 text-gray-400">{pdPct(rate(c.contacted, c.viewed))}</td>
+        {hasReacted && <td className="text-center px-1 py-1 text-gray-400">{pdPct(rate(c.reacted, c.contacted))}</td>}
+        <td className="text-center px-1 py-1 text-gray-400">{pdPct(rate(c.positive_response, c.contacted))}</td>
+        <td className="text-center px-1 py-1 text-gray-400">{pdPct(rate(c.screens, c.positive_response))}</td>
+        <td className="text-center px-1 py-1 text-gray-400">{pdPct(rate(c.ats, c.screens))}</td>
+        <td className="text-center px-1 py-1 text-gray-400">{pdPct(rate(c.ats, c.actual_screens))}</td>
+      </tr>
+    );
+  };
+
+  const wTot = totalsOf(weekly);
+  const mTot = totalsOf(monthly);
+  const filterNote = [fClient, fTa && `TA: ${fTa}`, fTs && `TS: ${fTs}`].filter(Boolean).join(' · ') || 'All clients · all TAs · all TSes';
+
+  return (
+    <div className="space-y-6">
+      <div className="bg-gray-800 rounded-lg p-4">
+        <div className="flex flex-wrap items-center gap-3 mb-1">
+          <h2 className="text-xl font-bold text-white">Weekly Progress</h2>
+          <span className="text-xs text-gray-400">Full funnel by week &amp; month · {filterNote}</span>
+        </div>
+        <div className="flex flex-wrap gap-2 mt-3">
+          <select value={fClient} onChange={(e) => setFClient(e.target.value)} className="bg-gray-700 text-white text-sm rounded px-2 py-1 border border-gray-600">
+            <option value="">All Clients</option>
+            {clients.map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
+          <select value={fTa} onChange={(e) => setFTa(e.target.value)} className="bg-gray-700 text-white text-sm rounded px-2 py-1 border border-gray-600">
+            <option value="">All TAs</option>
+            {tas.map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
+          <select value={fTs} onChange={(e) => setFTs(e.target.value)} className="bg-gray-700 text-white text-sm rounded px-2 py-1 border border-gray-600">
+            <option value="">All TSes</option>
+            {tses.map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
+          {(fClient || fTa || fTs) && <button onClick={() => { setFClient(''); setFTa(''); setFTs(''); }} className="text-xs text-gray-400 hover:text-white px-2 py-1">Clear</button>}
+        </div>
+        {!hasReacted && <div className="mt-2 text-xs text-gray-500">The “Reacted” column &amp; % C→R appear automatically once the pipeline emits the reacted count (next refresh after the PD SQL update).</div>}
+      </div>
+
+      <div className="bg-gray-800 rounded-lg p-4">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="text-lg font-semibold text-white">Weekly Performance</h3>
+          <select value={win} onChange={(e) => setWin(e.target.value)} className="bg-gray-700 text-white text-xs rounded px-2 py-1 border border-gray-600">
+            {WP_WINDOWS.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+          </select>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            {header('Week')}
+            <tbody>
+              {weekly.map((w) => renderRow(weekLabel(w.year, w.week), w))}
+              {weekly.length > 0 && renderRow('Total', wTot, { total: true })}
+            </tbody>
+          </table>
+        </div>
+        {weekly.length === 0 && <div className="text-sm text-gray-500 py-4 text-center">No data for this selection.</div>}
+      </div>
+
+      <div className="bg-gray-800 rounded-lg p-4">
+        <h3 className="text-lg font-semibold text-white mb-3">Monthly Performance</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            {header('Month')}
+            <tbody>
+              {monthly.map((mo) => renderRow(monthLabel(mo.key), mo))}
+              {monthly.length > 0 && renderRow('Total', mTot, { total: true })}
+            </tbody>
+          </table>
+        </div>
+        {monthly.length === 0 && <div className="text-sm text-gray-500 py-4 text-center">No data for this selection.</div>}
+      </div>
+
+      <div className="text-xs text-gray-500">
+        Source: project_dashboard.rows ({rows.length.toLocaleString()} job×week rows, 2025–26) aggregated live. Conversion rates capped at 100%, blank when the denominator is 0.
+      </div>
+    </div>
+  );
+};
+
+
 const LEADERSHIP_TABS = new Set(['wbr', 'mbr']);
 const DIRECTOR_TABS = new Set(['profitability']);
 
@@ -4158,10 +4357,10 @@ const RecruitingDashboard = () => {
   const isDirector = role === 'director';
   const isLeadership = isDirector || role === 'leadership';
   const visibleTabs = isDirector
-    ? ['project', 'wbr', 'mbr', 'profitability', 'tth', 'ts_summary', 'ir']
+    ? ['project', 'weekly', 'wbr', 'mbr', 'profitability', 'tth', 'ts_summary', 'ir']
     : isLeadership
-      ? ['project', 'wbr', 'mbr', 'tth', 'ts_summary', 'ir']
-      : ['project', 'tth', 'ts_summary', 'ir'];
+      ? ['project', 'weekly', 'wbr', 'mbr', 'tth', 'ts_summary', 'ir']
+      : ['project', 'weekly', 'tth', 'ts_summary', 'ir'];
   const [activeTab, setActiveTab] = useState('project');
   // Snap-back: if state lands on a tab the current role doesn't see, fall back
   // to Project Dashboard. Covers both leadership-only and director-only tabs.
@@ -4184,7 +4383,7 @@ const RecruitingDashboard = () => {
           {visibleTabs.map((tab) => (
             <button key={tab} onClick={() => setActiveTab(tab)}
               className={`py-4 px-2 font-medium border-b-2 transition-colors ${safeActiveTab === tab ? 'text-white border-white' : 'text-gray-400 border-transparent hover:text-gray-300'}`}>
-              {tab === 'wbr' ? 'WBR' : tab === 'mbr' ? 'MBR' : tab === 'profitability' ? 'Profitability' : tab === 'project' ? 'Project Dashboard' : tab === 'tth' ? 'Time to Hire' : tab === 'ts_summary' ? 'KPI - TS Summary' : 'Internal Recruiting'}
+              {tab === 'wbr' ? 'WBR' : tab === 'mbr' ? 'MBR' : tab === 'profitability' ? 'Profitability' : tab === 'project' ? 'Project Dashboard' : tab === 'weekly' ? 'Weekly Progress' : tab === 'tth' ? 'Time to Hire' : tab === 'ts_summary' ? 'KPI - TS Summary' : 'Internal Recruiting'}
             </button>
           ))}
         </div>
@@ -4194,6 +4393,7 @@ const RecruitingDashboard = () => {
         {safeActiveTab === 'mbr' && isLeadership && <MBRTab data={dashboardData} />}
         {safeActiveTab === 'profitability' && isDirector && <ProfitabilityTab />}
         {safeActiveTab === 'project' && <ProjectDashboardTab data={dashboardData} />}
+        {safeActiveTab === 'weekly' && <WeeklyProgressTab data={dashboardData} />}
         {safeActiveTab === 'tth' && <TTHTab data={dashboardData} />}
         {safeActiveTab === 'ts_summary' && <TSSummaryTab data={dashboardData} />}
         {safeActiveTab === 'ir' && <IRTab data={dashboardData} />}

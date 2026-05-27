@@ -96,6 +96,7 @@ SNOW_IR_JOBS_ACTIVE        = HERE / "snowflake_ir_jobs_active.csv"
 SNOW_IR_DQ_BYJOB_REASON    = HERE / "snowflake_ir_dq_byjob_reason.csv"
 SNOW_TTH_JOBS = HERE / "snowflake_tth_jobs.csv"
 SNOW_WEEKLY_SUMMARY = HERE / "snowflake_weekly_summary.csv"  # PBI Weekly Progress port (dim_type x dim_value x week)
+SNOW_WEEKLY_SUMMARY_BYJOB = HERE / "snowflake_weekly_summary_byjob.csv"  # person x job drill
 
 # WBR target sheet CSVs — synced by n8n workflow j5QsaTUpk4Nk1xhn.
 # These are the SINGLE SOURCE OF TRUTH for who appears in the dashboard:
@@ -1454,6 +1455,37 @@ def load_weekly_summary(source_path=SNOW_WEEKLY_SUMMARY):
     return rows
 
 
+def load_weekly_summary_byjob(source_path=SNOW_WEEKLY_SUMMARY_BYJOB):
+    """Person x job drill companion to weekly_summary. Grain (dim_type ta/ts,
+    person, job_id, client, job_title, iso week) + full funnel. Produced by the
+    weekly_summary_byjob block (transformation 01ksm8rz0qfrhgzekke65bkd28).
+    Opt-in: returns [] if not staged yet."""
+    if not source_path.exists():
+        return []
+    rows = []
+    with source_path.open() as f:
+        for row in csv.DictReader(f):
+            rows.append({
+                "dim_type":          (row.get("DIM_TYPE") or "").strip(),
+                "person":            (row.get("PERSON") or "").strip(),
+                "job_id":            (row.get("JOB_ID") or "").strip(),
+                "client":            (row.get("CLIENT") or "").strip(),
+                "job_title":         (row.get("JOB_TITLE") or "").strip(),
+                "iso_year":          int(row.get("ISO_YEAR") or 0),
+                "iso_week":          int(row.get("ISO_WEEK") or 0),
+                "viewed":            int(row.get("VIEWED") or 0),
+                "contacted":         int(row.get("CONTACTED") or 0),
+                "reacted":           int(row.get("REACTED") or 0),
+                "positive_response": int(row.get("POSITIVE_RESPONSE") or 0),
+                "screens":           int(row.get("REC_SCREENS") or 0),
+                "actual_screens":    int(row.get("ACTUAL_SCREENS") or 0),
+                "ats":               int(row.get("ATS") or 0),
+                "offered":           int(row.get("OFFERED") or 0),
+                "hired":             int(row.get("HIRED") or 0),
+            })
+    return rows
+
+
 def main():
     live = load_live()
     raw_wbr = load_wbr()
@@ -1761,6 +1793,9 @@ def main():
     out["project_dashboard_eventattr"] = load_project_dashboard_eventattr()
     out["project_dashboard_hires"] = load_project_hires()
     out["weekly_summary"] = load_weekly_summary()
+    out["weekly_summary_byjob"] = load_weekly_summary_byjob()
+    if out["weekly_summary_byjob"]:
+        print(f"  weekly_summary_byjob: {len(out['weekly_summary_byjob'])} rows")
     if out["weekly_summary"]:
         print(f"  weekly_summary: {len(out['weekly_summary'])} rows")
     if out["project_dashboard"]["rows"]:

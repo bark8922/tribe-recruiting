@@ -3382,11 +3382,10 @@ const TSSummaryTab = ({ data }) => {
 // so the prior in-app sessionStorage password gate has been removed.
 
 // ── Weekly Summary Tab ────────────────────────────────────────────────────
-// Faithful render of Andy's PBI "Weekly Progress" page. Reads the pre-aggregated
-// data.weekly_summary table (produced by weekly_summary.sql; grain = dim_type
-// [company/ta/ts/client] x dim_value x iso week, full funnel incl. viewed +
-// reacted). Pick ONE dimension at a time (Client / TA / TS); default = company.
-// Numbers validated to the unit vs PBI exports (Andrea+Nare TS, Anna+Dušan TA).
+// PBI "Weekly Progress" port. Person/client/company weekly+monthly funnel from
+// data.weekly_summary; drill into a person's clients/jobs via data.weekly_summary_byjob.
+// Person headline stays de-duplicated (matches person view); per-job rows can sum
+// to slightly more than the person total (a candidate on >1 job counts in each).
 const WSUM_WINDOWS = [
   ['12', 'Last 12 weeks'], ['26', 'Last 26 weeks'], ['2026', '2026 only'], ['2025', '2025 only'], ['all', 'All weeks (2025–26)'],
 ];
@@ -3394,38 +3393,54 @@ const WSUM_METRICS = ['viewed','contacted','reacted','positive_response','screen
 
 const WeeklySummaryTab = ({ data }) => {
   const rows = data.weekly_summary || [];
+  const byjob = data.weekly_summary_byjob || [];
   const [fClient, setFClient] = useState('');
   const [fTa, setFTa] = useState('');
   const [fTs, setFTs] = useState('');
+  const [subClient, setSubClient] = useState('');
+  const [subJob, setSubJob] = useState('');
   const [win, setWin] = useState('12');
 
   const clients = useMemo(() => Array.from(new Set(rows.filter((r) => r.dim_type === 'client').map((r) => r.dim_value).filter(Boolean))).sort(), [rows]);
   const tas = useMemo(() => Array.from(new Set(rows.filter((r) => r.dim_type === 'ta').map((r) => r.dim_value).filter(Boolean))).sort(), [rows]);
   const tses = useMemo(() => Array.from(new Set(rows.filter((r) => r.dim_type === 'ts').map((r) => r.dim_value).filter(Boolean))).sort(), [rows]);
 
-  const dimType = fTs ? 'ts' : fTa ? 'ta' : fClient ? 'client' : 'company';
-  const dimValue = fTs || fTa || fClient || '';
+  const primaryType = fTs ? 'ts' : fTa ? 'ta' : fClient ? 'client' : 'company';
+  const primaryVal = fTs || fTa || fClient || '';
+  const isPerson = primaryType === 'ta' || primaryType === 'ts';
 
-  const sel = useMemo(() => rows.filter((r) => r.dim_type === dimType && r.dim_value === dimValue && r.iso_week >= 1 && (r.iso_year === 2025 || r.iso_year === 2026)), [rows, dimType, dimValue]);
+  const personByjob = useMemo(() => (isPerson ? byjob.filter((r) => r.dim_type === primaryType && r.person === primaryVal) : []), [byjob, isPerson, primaryType, primaryVal]);
+  const subClients = useMemo(() => Array.from(new Set(personByjob.map((r) => r.client).filter(Boolean))).sort(), [personByjob]);
+  const subJobs = useMemo(() => {
+    const seen = new Map();
+    personByjob.forEach((r) => { if (subClient && r.client !== subClient) return; if (!seen.has(r.job_id)) seen.set(r.job_id, { job_id: r.job_id, label: `${r.job_title}${subClient ? '' : ' — ' + r.client}` }); });
+    return Array.from(seen.values()).sort((a, b) => a.label.localeCompare(b.label));
+  }, [personByjob, subClient]);
+
+  const drilled = isPerson && (subClient || subJob);
+
+  const selRows = useMemo(() => {
+    if (drilled) {
+      return personByjob.filter((r) => (subJob ? r.job_id === subJob : true) && (subClient ? r.client === subClient : true) && r.iso_week >= 1 && (r.iso_year === 2025 || r.iso_year === 2026));
+    }
+    return rows.filter((r) => r.dim_type === primaryType && r.dim_value === primaryVal && r.iso_week >= 1 && (r.iso_year === 2025 || r.iso_year === 2026));
+  }, [drilled, personByjob, subJob, subClient, rows, primaryType, primaryVal]);
 
   const blank = () => { const o = {}; WSUM_METRICS.forEach((m) => { o[m] = 0; }); return o; };
-  const addInto = (acc, r) => { WSUM_METRICS.forEach((m) => { acc[m] += (r[m] || 0); }); };
+  const addInto = (a, r) => { WSUM_METRICS.forEach((m) => { a[m] += (r[m] || 0); }); };
 
   const weekly = useMemo(() => {
-    let arr = sel.map((r) => { const o = { key: `${r.iso_year}-${String(r.iso_week).padStart(2, '0')}`, year: r.iso_year, week: r.iso_week }; WSUM_METRICS.forEach((m) => { o[m] = r[m] || 0; }); return o; });
-    arr.sort((a, b) => b.key.localeCompare(a.key));
-    if (win === '12') arr = arr.slice(0, 12);
-    else if (win === '26') arr = arr.slice(0, 26);
-    else if (win === '2026') arr = arr.filter((w) => w.year === 2026);
-    else if (win === '2025') arr = arr.filter((w) => w.year === 2025);
+    const m = new Map();
+    selRows.forEach((r) => { const k = `${r.iso_year}-${String(r.iso_week).padStart(2, '0')}`; if (!m.has(k)) m.set(k, { key: k, year: r.iso_year, week: r.iso_week, ...blank() }); addInto(m.get(k), r); });
+    let arr = Array.from(m.values()).sort((a, b) => b.key.localeCompare(a.key));
+    if (win === '12') arr = arr.slice(0, 12); else if (win === '26') arr = arr.slice(0, 26); else if (win === '2026') arr = arr.filter((w) => w.year === 2026); else if (win === '2025') arr = arr.filter((w) => w.year === 2025);
     return arr;
-  }, [sel, win]);
-
+  }, [selRows, win]);
   const monthly = useMemo(() => {
     const m = new Map();
-    sel.forEach((r) => { const k = isoWeekToMonth(r.iso_year, r.iso_week); if (!m.has(k)) m.set(k, { key: k, ...blank() }); addInto(m.get(k), r); });
+    selRows.forEach((r) => { const k = isoWeekToMonth(r.iso_year, r.iso_week); if (!m.has(k)) m.set(k, { key: k, ...blank() }); addInto(m.get(k), r); });
     return Array.from(m.values()).sort((a, b) => b.key.localeCompare(a.key));
-  }, [sel]);
+  }, [selRows]);
 
   const totalsOf = (arr) => arr.reduce((t, r) => { addInto(t, r); return t; }, blank());
   const rate = (n, d) => (d ? Math.min(n / d, 1) : null);
@@ -3435,24 +3450,14 @@ const WeeklySummaryTab = ({ data }) => {
   const header = (firstCol) => (
     <thead><tr className="text-gray-300 border-b border-gray-700 text-xs">
       <th className="text-left px-2 py-1 whitespace-nowrap">{firstCol}</th>
-      <th className="text-center px-1 py-1">LinkedIn Viewed</th>
-      <th className="text-center px-1 py-1">Contacted</th>
-      <th className="text-center px-1 py-1">Reacted</th>
-      <th className="text-center px-1 py-1">Pos Resp</th>
-      <th className="text-center px-1 py-1">Rec Screens</th>
-      <th className="text-center px-1 py-1">Actual Screens</th>
-      <th className="text-center px-1 py-1">Moved to ATS</th>
-      <th className="text-center px-1 py-1">Offered</th>
-      <th className="text-center px-1 py-1">Hired</th>
-      <th className="text-center px-1 py-1">% V→C</th>
-      <th className="text-center px-1 py-1">% C→R</th>
-      <th className="text-center px-1 py-1">% C→PR</th>
-      <th className="text-center px-1 py-1">% PR→S</th>
-      <th className="text-center px-1 py-1">% S→ATS</th>
-      <th className="text-center px-1 py-1">% AS→ATS</th>
+      <th className="text-center px-1 py-1">LinkedIn Viewed</th><th className="text-center px-1 py-1">Contacted</th>
+      <th className="text-center px-1 py-1">Reacted</th><th className="text-center px-1 py-1">Pos Resp</th>
+      <th className="text-center px-1 py-1">Rec Screens</th><th className="text-center px-1 py-1">Actual Screens</th>
+      <th className="text-center px-1 py-1">Moved to ATS</th><th className="text-center px-1 py-1">Offered</th><th className="text-center px-1 py-1">Hired</th>
+      <th className="text-center px-1 py-1">% V→C</th><th className="text-center px-1 py-1">% C→R</th><th className="text-center px-1 py-1">% C→PR</th>
+      <th className="text-center px-1 py-1">% PR→S</th><th className="text-center px-1 py-1">% S→ATS</th><th className="text-center px-1 py-1">% AS→ATS</th>
     </tr></thead>
   );
-
   const renderRow = (label, c, opts = {}) => {
     const base = opts.total ? 'text-white font-semibold' : 'text-gray-200';
     const cls = opts.total ? 'border-t-2 border-gray-600' : 'border-t border-gray-700 hover:bg-gray-700';
@@ -3478,35 +3483,45 @@ const WeeklySummaryTab = ({ data }) => {
     );
   };
 
-  const wTot = totalsOf(weekly);
-  const mTot = totalsOf(monthly);
-  const scopeNote = dimType === 'company' ? 'Company-wide (all clients · all recruiters)'
-    : dimType === 'ts' ? `Sourcer: ${dimValue}` : dimType === 'ta' ? `TA: ${dimValue}` : `Client: ${dimValue}`;
-  const setOnly = (which, val) => { setFClient(which === 'client' ? val : ''); setFTa(which === 'ta' ? val : ''); setFTs(which === 'ts' ? val : ''); };
+  const wTot = totalsOf(weekly); const mTot = totalsOf(monthly);
+  const setPrimary = (which, val) => { setFClient(which === 'client' ? val : ''); setFTa(which === 'ta' ? val : ''); setFTs(which === 'ts' ? val : ''); setSubClient(''); setSubJob(''); };
+  const jobLabel = (subJobs.find((j) => j.job_id === subJob) || {}).label || '';
+  const scope = primaryType === 'company' ? 'Company-wide (all clients · all recruiters)'
+    : primaryType === 'client' ? `Client: ${primaryVal}`
+    : `${primaryType === 'ts' ? 'Sourcer' : 'TA'}: ${primaryVal}${subClient ? ' · ' + subClient : ''}${subJob ? ' · ' + jobLabel : ''}`;
 
   return (
     <div className="space-y-6">
       <div className="bg-gray-800 rounded-lg p-4">
         <div className="flex flex-wrap items-center gap-3 mb-1">
           <h2 className="text-xl font-bold text-white">Weekly Summary</h2>
-          <span className="text-xs text-gray-400">Full funnel by week &amp; month · includes archived jobs · {scopeNote}</span>
+          <span className="text-xs text-gray-400">Full funnel by week &amp; month · includes archived jobs · {scope}</span>
         </div>
         <div className="flex flex-wrap gap-2 mt-3">
-          <select value={fClient} onChange={(e) => setOnly('client', e.target.value)} className="bg-gray-700 text-white text-sm rounded px-2 py-1 border border-gray-600">
-            <option value="">All Clients</option>
-            {clients.map((c) => <option key={c} value={c}>{c}</option>)}
+          <select value={fClient} onChange={(e) => setPrimary('client', e.target.value)} className="bg-gray-700 text-white text-sm rounded px-2 py-1 border border-gray-600">
+            <option value="">All Clients</option>{clients.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
-          <select value={fTa} onChange={(e) => setOnly('ta', e.target.value)} className="bg-gray-700 text-white text-sm rounded px-2 py-1 border border-gray-600">
-            <option value="">All TAs</option>
-            {tas.map((c) => <option key={c} value={c}>{c}</option>)}
+          <select value={fTa} onChange={(e) => setPrimary('ta', e.target.value)} className="bg-gray-700 text-white text-sm rounded px-2 py-1 border border-gray-600">
+            <option value="">All TAs</option>{tas.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
-          <select value={fTs} onChange={(e) => setOnly('ts', e.target.value)} className="bg-gray-700 text-white text-sm rounded px-2 py-1 border border-gray-600">
-            <option value="">All Sourcers (TS)</option>
-            {tses.map((c) => <option key={c} value={c}>{c}</option>)}
+          <select value={fTs} onChange={(e) => setPrimary('ts', e.target.value)} className="bg-gray-700 text-white text-sm rounded px-2 py-1 border border-gray-600">
+            <option value="">All Sourcers (TS)</option>{tses.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
-          {(fClient || fTa || fTs) && <button onClick={() => setOnly('', '')} className="text-xs text-gray-400 hover:text-white px-2 py-1">Clear</button>}
-          <span className="text-xs text-gray-500 self-center">Filter by one dimension at a time.</span>
+          {(fClient || fTa || fTs) && <button onClick={() => setPrimary('', '')} className="text-xs text-gray-400 hover:text-white px-2 py-1">Clear</button>}
         </div>
+        {isPerson && (
+          <div className="flex flex-wrap items-center gap-2 mt-3 pt-3 border-t border-gray-700">
+            <span className="text-xs text-gray-400">Drill into {primaryVal}'s jobs:</span>
+            <select value={subClient} onChange={(e) => { setSubClient(e.target.value); setSubJob(''); }} className="bg-gray-700 text-white text-sm rounded px-2 py-1 border border-gray-600">
+              <option value="">All their clients</option>{subClients.map((c) => <option key={c} value={c}>{c}</option>)}
+            </select>
+            <select value={subJob} onChange={(e) => setSubJob(e.target.value)} className="bg-gray-700 text-white text-sm rounded px-2 py-1 border border-gray-600">
+              <option value="">All their positions</option>{subJobs.map((j) => <option key={j.job_id} value={j.job_id}>{j.label}</option>)}
+            </select>
+            {(subClient || subJob) && <button onClick={() => { setSubClient(''); setSubJob(''); }} className="text-xs text-gray-400 hover:text-white px-2 py-1">Clear drill</button>}
+          </div>
+        )}
+        {drilled && <div className="mt-2 text-xs text-gray-500">Drill view from per-job data. A candidate worked on multiple jobs is counted in each, so these rows can sum to slightly more than {primaryVal}'s de-duplicated total.</div>}
       </div>
 
       <div className="bg-gray-800 rounded-lg p-4">
@@ -3516,37 +3531,26 @@ const WeeklySummaryTab = ({ data }) => {
             {WSUM_WINDOWS.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
           </select>
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">{header('Week')}
-            <tbody>
-              {weekly.map((w) => renderRow(weekLabel(w.year, w.week), w))}
-              {weekly.length > 0 && renderRow('Total', wTot, { total: true })}
-            </tbody>
-          </table>
-        </div>
+        <div className="overflow-x-auto"><table className="w-full text-sm">{header('Week')}
+          <tbody>{weekly.map((w) => renderRow(weekLabel(w.year, w.week), w))}{weekly.length > 0 && renderRow('Total', wTot, { total: true })}</tbody>
+        </table></div>
         {weekly.length === 0 && <div className="text-sm text-gray-500 py-4 text-center">No data for this selection.</div>}
       </div>
 
       <div className="bg-gray-800 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-white mb-3">Monthly Performance</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">{header('Month')}
-            <tbody>
-              {monthly.map((mo) => renderRow(monthLabel(mo.key), mo))}
-              {monthly.length > 0 && renderRow('Total', mTot, { total: true })}
-            </tbody>
-          </table>
-        </div>
+        <div className="overflow-x-auto"><table className="w-full text-sm">{header('Month')}
+          <tbody>{monthly.map((mo) => renderRow(monthLabel(mo.key), mo))}{monthly.length > 0 && renderRow('Total', mTot, { total: true })}</tbody>
+        </table></div>
         {monthly.length === 0 && <div className="text-sm text-gray-500 py-4 text-center">No data for this selection.</div>}
       </div>
 
       <div className="text-xs text-gray-500">
-        Source: data.weekly_summary ({rows.length.toLocaleString()} rows) — PBI "Weekly Progress" port, includes archived jobs. Sourcer = who_created_event_first; TA = who_event_created_for. Conversion rates capped at 100%, blank when denominator is 0.
+        Source: data.weekly_summary{drilled ? ' / weekly_summary_byjob' : ''} — PBI "Weekly Progress" port, includes archived jobs. Sourcer = who_created_event_first; TA = who_event_created_for. Conversion rates capped at 100%, blank when denominator is 0.
       </div>
     </div>
   );
 };
-
 
 const LEADERSHIP_TABS = new Set(['wbr', 'mbr']);
 const DIRECTOR_TABS = new Set(['profitability']);

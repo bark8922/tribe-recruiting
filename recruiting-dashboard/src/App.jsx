@@ -7,6 +7,7 @@ import {
 import { Search } from 'lucide-react';
 import dashboardDataSnowflake from './dashboard_data_snowflake.json';
 import clientProfitabilityData from './client_profitability.json';
+import teamLeadsData from './team_leads.json';
 
 // WEEKS is now derived per-render from data.wbr_ta_weekly_roster keys so that
 // newly-added weeks (e.g. w16, w17) appear automatically once the weekly roster
@@ -129,6 +130,22 @@ const WBRTab = ({ data }) => {
   // Drill-down modal — click a Client, TA, or TS row to see last 6 weeks.
   // { kind: 'client'|'ta'|'ts', title, displayClient?, taName?, tsName? }
   const [drillDown, setDrillDown] = useState(null);
+
+  // Team-lead filter (Bamboo-derived, see refresh_team_leads.py).
+  // Single-select dropdown; when set, filters TA Weekly Detail + TS Weekly +
+  // TS Overall Conversion Rate to that lead's direct reports only (no transitive).
+  // Client Summary stays unfiltered. Ex-employees / unmatched names never
+  // appear under any team filter (only in 'All teams' view).
+  const [selectedTeamLead, setSelectedTeamLead] = useState('');
+  const teamLeadOptions = useMemo(
+    () => (teamLeadsData.leads || []).map(l => l.name).sort((a, b) => a.localeCompare(b)),
+    []
+  );
+  const selectedLeadReports = useMemo(() => {
+    if (!selectedTeamLead) return null;
+    const lead = (teamLeadsData.leads || []).find(l => l.name === selectedTeamLead);
+    return lead ? new Set(lead.reports) : new Set();
+  }, [selectedTeamLead]);
 
   // 6 weeks ending at the currently selected week (w12-w17 if selectedWeek=17).
   const drillWeeks = useMemo(
@@ -557,14 +574,17 @@ const WBRTab = ({ data }) => {
 
     // Sort: group first, then client, then TA
     const groupOrder = { 'Dolphins/Whales': 0, 'Ponies/Unicorns': 1, 'Other': 2 };
-    return Array.from(deduped.values()).sort((a, b) => {
+    const _detail = Array.from(deduped.values()).sort((a, b) => {
       const ga = groupOrder[a.team_group] ?? 2;
       const gb = groupOrder[b.team_group] ?? 2;
       if (ga !== gb) return ga - gb;
       if (a.client !== b.client) return a.client.localeCompare(b.client);
       return a.ta.localeCompare(b.ta);
     });
-  }, [data, selectedWeek]);
+    return selectedLeadReports
+      ? _detail.filter(r => selectedLeadReports.has(r.ta))
+      : _detail;
+  }, [data, selectedWeek, selectedLeadReports]);
 
   // TS weekly data for selected week - enriched with actuals
   const tsData = useMemo(() => {
@@ -585,7 +605,7 @@ const WBRTab = ({ data }) => {
     // AND no comment for the week (same rule we apply to TA Detail). Catches
     // weekly-note placeholders like Mia Gjorgievska who show up on the roster
     // but have nothing to review.
-    return Object.values(tsMap).map((t) => {
+    const _tsBase = Object.values(tsMap).map((t) => {
       const tsName = t.ts;
       const actuals = data.ts_actuals?.[tsName]?.[weekKey] || {};
       // Prefer the per-week ts_jobs_weekly (new pipeline metric) when present;
@@ -625,8 +645,12 @@ const WBRTab = ({ data }) => {
         + (r.ats||0) + (r.offers||0) + (r.hires||0) + (r.num_jobs||0) > 0;
       const hasNote = !!((r.comment && r.comment.trim()) || (r.reasoning && r.reasoning.trim()));
       return anyActivity || hasNote;
-    }).sort((a, b) => a.ts.localeCompare(b.ts));
-  }, [data, selectedWeek]);
+    });
+    const _tsDataSorted = _tsBase.sort((a, b) => a.ts.localeCompare(b.ts));
+    return selectedLeadReports
+      ? _tsDataSorted.filter(r => selectedLeadReports.has(r.ts))
+      : _tsDataSorted;
+  }, [data, selectedWeek, selectedLeadReports]);
 
   // TS Overall Conversion Rate with Officially Assigned Active Pipelines
   // ─────────────────────────────────────────────────────────────────────
@@ -651,7 +675,7 @@ const WBRTab = ({ data }) => {
         .map((t) => t.ts)
     );
     const source = (data.ts_conversion || []).filter((row) => activeRoster.has(row.ts));
-    return source.map((row) => {
+    const _convBase = source.map((row) => {
       const contacted = row.contacted || 0;
       const recruiterScreens = row.recruiter_screens || 0;
       const actualScreens = row.actual_screens || 0;
@@ -670,8 +694,12 @@ const WBRTab = ({ data }) => {
         pct_screen_to_actual: (recruiterScreens > 0 && actualScreens    > 0) ? Math.round(actualScreens    / recruiterScreens * 1000) / 10 : null,
         pct_actual_to_ats:    (actualScreens    > 0 && ats              > 0) ? Math.round(ats              / actualScreens    * 1000) / 10 : null,
       };
-    }).sort((a, b) => a.ts.localeCompare(b.ts));
-  }, [data, selectedWeek]);
+    });
+    const _convSorted = _convBase.sort((a, b) => a.ts.localeCompare(b.ts));
+    return selectedLeadReports
+      ? _convSorted.filter(r => selectedLeadReports.has(r.ts))
+      : _convSorted;
+  }, [data, selectedWeek, selectedLeadReports]);
 
   return (
     <div className="space-y-6">
@@ -799,6 +827,37 @@ const WBRTab = ({ data }) => {
         <span className="text-xs text-gray-500 ml-2">Tip: click any Client, TA, or TS row below for a 6-week drill-down</span>
       </div>
 
+      {/* Team-lead filter (Bamboo-derived). Client Summary always shows full;
+          TA Detail / TS Weekly / TS Conversion filter to lead's direct reports. */}
+      <div className="flex items-center gap-3 flex-wrap">
+        <label className="text-sm font-medium text-gray-300">Filter by lead:</label>
+        <select
+          value={selectedTeamLead}
+          onChange={(e) => setSelectedTeamLead(e.target.value)}
+          className="px-3 py-2 bg-gray-700 text-white rounded border border-gray-600 text-sm"
+          style={{ minWidth: '220px' }}
+        >
+          <option value="">All teams</option>
+          {teamLeadOptions.map((name) => (
+            <option key={name} value={name}>{name}</option>
+          ))}
+        </select>
+        {selectedTeamLead && (
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded text-sm font-semibold"
+                style={{ backgroundColor: '#1e40af', color: '#dbeafe' }}>
+            Showing: {selectedTeamLead}'s team
+            <button
+              onClick={() => setSelectedTeamLead('')}
+              className="text-blue-200 hover:text-white"
+              style={{ marginLeft: '4px', fontWeight: 'normal' }}
+              title="Clear filter"
+            >
+              ✕
+            </button>
+          </span>
+        )}
+      </div>
+
       {/* Client Summary — compact 600px centered */}
       <div className="bg-gray-800 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-white mb-4">Client Summary — Week {selectedWeek}</h3>
@@ -866,6 +925,7 @@ const WBRTab = ({ data }) => {
       </div>
 
       {/* TA Detail */}
+      {(!selectedTeamLead || taDetail.length > 0) && (
       <div className="bg-gray-800 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-white mb-4">TA Weekly Detail — Week {selectedWeek}</h3>
         <div>
@@ -1021,8 +1081,10 @@ const WBRTab = ({ data }) => {
           </table>
         </div>
       </div>
+      )}
 
       {/* TS Weekly — compact with wide comment + TA Names columns */}
+      {(!selectedTeamLead || tsData.length > 0) && (
       <div className="bg-gray-800 rounded-lg p-4">
           <h3 className="text-lg font-semibold text-white mb-4">TS (Sourcer) Weekly — Week {selectedWeek}</h3>
           <div>
@@ -1101,8 +1163,10 @@ const WBRTab = ({ data }) => {
             </table>
           </div>
         </div>
+      )}
 
       {/* TS Overall Conversion Rate with Officially Assigned Active Pipelines */}
+      {(!selectedTeamLead || tsConversion.length > 0) && (
       <div className="bg-gray-800 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-white mb-1">TS Overall Conversion Rate with Officially Assigned Active Pipelines</h3>
         <p className="text-xs text-gray-500 mb-4">
@@ -1180,6 +1244,7 @@ const WBRTab = ({ data }) => {
           Source: <code className="text-gray-400">ts_conversion.sql</code> · Andy Hsu logic · Calibrated vs PBI w16 2026-04-20 — 12/12 Active Pipelines exact, 12/12 colour triplets exact, 98.99% aggregate volume accuracy
         </p>
       </div>
+      )}
 
     </div>
   );

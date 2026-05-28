@@ -1,0 +1,136 @@
+{
+  "generated_at": "2026-05-28T12:31:22Z",
+  "source": "bamboohr_directory",
+  "leads": [
+    {
+      "name": "Andrea Akovic",
+      "reports": [
+        "Marina Lazarevic",
+        "Naledi Ngwenya"
+      ]
+    },
+    {
+      "name": "Chené Elliot",
+      "reports": [
+        "Adelya Khakimova",
+        "Alexandra Richiteanu",
+        "Elena Petrovska",
+        "Jelena  Lacmanovic",
+        "Jovana Drakula",
+        "Nenad Skoko",
+        "Tina Aramouni",
+        "Zelimir Stajcic"
+      ]
+    },
+    {
+      "name": "Gustavo Loureiro Castro",
+      "reports": [
+        "Nare Avetisyan",
+        "Rodrigo Gomes",
+        "Valeriia Yurykova"
+      ]
+    },
+    {
+      "name": "Jacopo Lupo Ferrari",
+      "reports": [
+        "Andrea Akovic",
+        "Gustavo Loureiro Castro"
+      ]
+    },
+    {
+      "name": "Kristina Colovic",
+      "reports": [
+        "Anna Tyulpanova",
+        "Samantha Nel",
+        "Wladyslaw Gadomski"
+      ]
+    },
+    {
+      "name": "Kristjana Thorarinsdottir",
+      "reports": [
+        "Chené Elliot",
+        "Simon  Siew",
+        "Vladimir Stankovic"
+      ]
+    },
+    {
+      "name": "Lejla Dizdarevic",
+      "reports": [
+        "Aleksandra Vistac",
+        "Dušan Špica",
+        "Maria Desiree Gerbore",
+        "Marina Nikolic"
+      ]
+    },
+    {
+      "name": "Meho Saracevic",
+      "reports": [
+        "Ekaterina Boyprav",
+        "Jonaed Iqbal",
+        "Mateja Jokovic"
+      ]
+    },
+    {
+      "name": "Niki Vokalkova",
+      "reports": [
+        "Alisa Liddell",
+        "Dora Vrbanić",
+        "Fuad Safarov"
+      ]
+    },
+    {
+      "name": "Salem Mansuri",
+      "reports": [
+        "Kristina Colovic",
+        "Lejla Silva",
+        "Meho Saracevic"
+      ]
+    },
+    {
+      "name": "Sanja Pavlovikj",
+      "reports": [
+        "Iryna Dyda"
+      ]
+    },
+    {
+      "name": "Simon Siew",
+      "reports": [
+        "Chantal Bozkurt",
+        "Dolores Palotas"
+      ]
+    },
+    {
+      "name": "Vladimir Stankovic",
+      "reports": [
+        "Ejla Suljcic",
+        "Jan Dokulil",
+        "Lisa Gargulinska",
+        "Milica Mladzic",
+        "Niki Vokalkova"
+      ]
+    }
+  ],
+  "unmatched_funnel_names": [
+    "Adis Prepoljac",
+    "Akash Singh",
+    "Aleksandra Markovic",
+    "Andreas Weins",
+    "Danish Shams",
+    "Evagelina Rapanaki",
+    "Filip Nogowski",
+    "Ketevan Khorava",
+    "Mark Kandaurov",
+    "Mia Gjorgievska",
+    "Milica Veselinovic",
+    "Nidhi Raina",
+    "Rafael Rosa",
+    "Tinatini Karaulashvili",
+    "Zarina Amanbekova"
+  ],
+  "name_overrides_applied": {
+    "Lejla Silva": "Lejla Dizdarevic",
+    "Tina Aramouni": "Tina Abdul-Karim",
+    "Maria Desiree Gerbore": "Maria Gerbore",
+    "Valeriia Yurykova": "Valeriia Yurikova"
+  }
+}

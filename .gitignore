@@ -29,3 +29,4 @@ pnpm-debug.log*
 # Power BI data cache (regenerable from TMDL — too large for Git)
 **/cache.abf
 **/*.abf
+__pycache__/

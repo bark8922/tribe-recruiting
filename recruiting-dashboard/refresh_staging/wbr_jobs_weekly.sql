@@ -9,7 +9,7 @@
 --   filtered by:
 --     job[job_title] <> BLANK()
 --     candidate[is_candidate_archived] = FALSE()
---     client[client_name] <> BLANK() AND NOT IN {'Tribe.xyz','Kamila AI - TEST'}
+--     client[client_name] <> BLANK() AND NOT IN {'Kamila AI - TEST'}
 --     job[test] <> TRUE()
 --     event[who_event_created_for] <> BLANK()
 --     'Calendar'[Year] >= 2024
@@ -45,7 +45,7 @@ WITH filtered_events AS (
     AND j."job_title" IS NOT NULL AND j."job_title" <> ''
     AND (LOWER(NULLIF(j."test", '')) <> 'true' OR j."test" IS NULL)
     AND cl."client_name" IS NOT NULL AND cl."client_name" <> ''
-    AND cl."client_name" NOT IN ('Tribe.xyz', 'Kamila AI - TEST')
+    AND cl."client_name" NOT IN ('Kamila AI - TEST')
     AND e."who_event_created_for" IS NOT NULL AND e."who_event_created_for" <> ''
 )
 SELECT

@@ -165,8 +165,8 @@ def mbr_normalize_client(c: str) -> str:
 
 
 INTERNAL_CLIENTS = {
-    "Tribe.xyz", "Tribe.xyz (IR)", "BD - Tribe",
-    "Tribe - Marketing", "Kamila AI - TEST", "Bubble test",
+    "BD - Tribe", "Tribe - Marketing",
+    "Kamila AI - TEST", "Bubble test",
 }
 
 # Ghost TAs: appear in WBR target sheet but must be excluded from the dashboard.

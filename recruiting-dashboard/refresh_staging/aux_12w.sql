@@ -5,7 +5,7 @@
 --   Filters (CALCULATETABLE):
 --     job[job_title] <> BLANK()
 --     candidate[is_candidate_archived] = FALSE
---     client[client_name] <> BLANK() AND NOT IN {'Tribe.xyz','Kamila AI - TEST'}
+--     client[client_name] <> BLANK() AND NOT IN {'Kamila AI - TEST'}
 --     job[test] <> TRUE
 --     event[who_event_created_for] <> BLANK() (for stage-event attribution)
 --     Calendar[Year] >= 2024
@@ -56,7 +56,7 @@ cjc AS (
   WHERE LOWER(NULLIF(c."is_candidate_archived",'')) <> 'true'
     AND j."job_title" IS NOT NULL AND j."job_title" <> ''
     AND cl."client_name" IS NOT NULL AND cl."client_name" <> ''
-    AND cl."client_name" NOT IN ('Tribe.xyz','Kamila AI - TEST','Tribe.xyz (IR)')
+    AND cl."client_name" NOT IN ('Kamila AI - TEST')
     AND (LOWER(NULLIF(j."test",'')) <> 'true' OR j."test" IS NULL)
 ),
 cs_dates AS (
@@ -229,7 +229,7 @@ jobs_60d_base AS (
     AND j."job_title" IS NOT NULL AND j."job_title" <> ''
     AND (LOWER(NULLIF(j."test",'')) <> 'true' OR j."test" IS NULL)
     AND cl."client_name" IS NOT NULL AND cl."client_name" <> ''
-    AND cl."client_name" NOT IN ('Tribe.xyz','Kamila AI - TEST','Tribe.xyz (IR)')
+    AND cl."client_name" NOT IN ('Kamila AI - TEST')
     AND DATEDIFF('day', TRY_TO_DATE(j."date_created"), CURRENT_DATE()) >= 60
     AND j."job_recruiter" IS NOT NULL AND j."job_recruiter" <> ''
 ),

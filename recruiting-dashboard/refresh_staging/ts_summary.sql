@@ -40,8 +40,7 @@ WITH current_ts AS (
     ('Lilit Test - Technical content creator'),('Test - Lilit HR admin'),
     ('Test by Nare'),('Test Client Alex'),('Test company by Iryna'),
     ('Test Iryna'),('Test Marko New Client'),('Test_Lilit'),
-    ('testclient'),('TestClientMelani'),('Kamila AI - TEST'),
-    ('Tribe.xyz'),('Tribe.xyz (IR)')
+    ('testclient'),('TestClientMelani'),('Kamila AI - TEST')
   ) AS t(client_name)
 ), good_jobs AS (
   SELECT j."job_id", j."job_category"

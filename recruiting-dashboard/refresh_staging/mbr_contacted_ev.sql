@@ -24,7 +24,7 @@ WHERE e."event_type" = 'Moved to stage'
   AND LOWER(NULLIF(j."test",'')) <> 'true'
   AND LOWER(NULLIF(c."is_candidate_archived",'')) <> 'true'
   AND cl."client_name" IS NOT NULL AND cl."client_name" <> ''
-  AND cl."client_name" NOT IN ('Tribe.xyz','Tribe.xyz (IR)','BD - Tribe','Tribe - Marketing','Kamila AI - TEST','Bubble test')
+  AND cl."client_name" NOT IN ('BD - Tribe','Tribe - Marketing','Kamila AI - TEST','Bubble test')
   AND e."who_event_created_for" IS NOT NULL AND e."who_event_created_for" <> ''
   AND YEAROFWEEKISO(TRY_TO_DATE(e."date_created")) = 2026
 GROUP BY 1,2,3,4

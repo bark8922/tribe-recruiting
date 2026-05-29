@@ -13,7 +13,7 @@
 --     - event in the ISO week
 --     - job.is_job_archived <> true, job.test <> true, job.job_title non-blank
 --     - candidate.is_candidate_archived <> true
---     - client.client_name NOT IN ('Tribe.xyz', 'Kamila AI - TEST')
+--     - client.client_name NOT IN ('Kamila AI - TEST')
 --     - event is a "Contacted" event — either:
 --         event_type = 'Moved to stage' AND moved_to_stage = 'Contacted', OR
 --         event_type = 'Candidate created' AND moved_to_stage = 'Contacted'
@@ -54,7 +54,7 @@ WITH filtered AS (
     AND LOWER(NULLIF(j."is_job_archived", '')) <> 'true'
     AND j."job_title" IS NOT NULL AND j."job_title" <> ''
     AND cl."client_name" IS NOT NULL AND cl."client_name" <> ''
-    AND cl."client_name" NOT IN ('Tribe.xyz', 'Kamila AI - TEST')
+    AND cl."client_name" NOT IN ('Kamila AI - TEST')
     AND cd."candidate_sourcer" IS NOT NULL AND cd."candidate_sourcer" <> ''
     AND cd."candidate_sourcer" <> '-not available-'
     AND TRY_TO_DATE(e."date_created") IS NOT NULL

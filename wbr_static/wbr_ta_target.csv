@@ -1566,3 +1566,33 @@ row_number,Client,TA,Year,Month,Contacted,Actual Screens,Moved to ATS,Hires
 1566,Eucalyptus,Alisa Liddell,2026,5,100,15,7,
 1567,Aiven,Vladimir Stankovic,2026,5,50,12,5,
 1568,Glovo,Milica Mladzic,2026,5,70,15,10,
+1569,Aiven,Fuad Safarov,2026,6,50,12,5,3.5
+1570,Aiven,Vladimir Stankovic,2026,6,50,12,5,
+1571,Aviv ,Anna Tyulpanova,2026,6,70,15,10,
+1572,Aviv ,Wladyslaw Gadomski,2026,6,70,15,10,
+1573,Aviv ,Lejla Silva,2026,6,70,15,10,
+1574,Aviv ,Kristina Colovic,2026,6,70,15,10,
+1575,Aviv ,Alexandra Richiteanu,2026,6,70,15,10,
+1576,Aviv ,Jovana Drakula,2026,6,100,6,4,
+1577,Enam,Aleksandra Vistac,2026,6,70,17,7,
+1578,Eucalyptus,Meho Saracevic,2026,6,100,15,7,
+1579,Eucalyptus,Dušan Špica,2026,6,100,15,7,
+1580,Eucalyptus,Alisa Liddell,2026,6,100,15,7,
+1581,Glovo,Chené Elliot,2026,6,70,15,10,
+1582,Glovo,Milica Mladzic ,2026,6,20,15,10,
+1583,Glovo,Samantha Nel,2026,6,70,15,,
+1584,Glovo,Milica Mladzic,2026,6,70,15,10,
+1585,Nexi,Maria Desiree Gerbore,2026,6,60,10,6,
+1586,Parloa,Filip Nogowski,2026,6,50,15,8,
+1587,Parloa,Jonaed Iqbal,2026,6,100,8,5,
+1588,SevenRooms,Zelimir Stajcic,2026,6,100,5,3,
+1589,Taxfix,Marina Nikolic,2026,6,40,15,5,
+1590,Wolt Central & South,Niki Vokalkova,2026,6,0,15,8,1.25
+1591,Wolt Germany ,Lisa Gargulinska,2026,6,100,15,8,1.25
+1592,Wolt HQ,Nenad Skoko,2026,6,60,15,8,1
+1593,Wolt HQ,Elena Petrovska,2026,6,100,4,3,
+1594,Wolt Market,Jan Dokulil,2026,6,120,19,10,1.25
+1595,"Wolt North, Baltics & Benelux",Jelena Lacmanovic,2026,6,70,15,8,1.25
+1596,"Wolt North, Baltics & Benelux",Tina Aramouni ,2026,6,20,10,8,1.25
+1597,"Wolt North, Baltics & Benelux",Adelya Khakimova,2026,6,50,15,8,1.25
+1598,Wolt Tech,Ejla Suljcic,2026,6,100,,,

@@ -1312,12 +1312,40 @@ const MBRTab = ({ data }) => {
       }
     });
 
+    // Most-recent week in the MBR window — used for the "previous-week" activity
+    // check (mirrors WBR's hide-if-no-activity-in-selected-week rule).
+    const lastMbrWeek = MBR_WEEKS[MBR_WEEKS.length - 1];
+
     const result = [];
     targets.forEach(t => {
       const displayClient = mbrAbbrevClient(t.client);
       const key = `${displayClient}|${normalizeTa(t.ta)}`;
       const a = data.mbr_ta_actuals?.[key] || {};
       const note = latestNote[normalizeTa(t.ta)];
+
+      // Per-week (last MBR week) actuals — pulled from data.wbr_actuals so we can
+      // apply the same "no activity in the most recent week → hide" rule that WBR
+      // uses. Sums across any wbr_actuals keys whose client+TA normalize to this
+      // (displayClient, t.ta) pair.
+      let lastWeekActivity = 0;
+      Object.keys(data.wbr_actuals || {}).forEach((wkey) => {
+        const [rawClient, rawTa] = wkey.split('|');
+        if (
+          kebolaClientMatches(rawClient, displayClient) &&
+          normalizeTa(rawTa) === normalizeTa(t.ta)
+        ) {
+          const wk = data.wbr_actuals[wkey]?.[lastMbrWeek];
+          if (wk) {
+            lastWeekActivity +=
+              (wk.contacted || 0) +
+              (wk.actual_screens || wk.screened || 0) +
+              (wk.ats || 0) +
+              (wk.offers || 0) +
+              (wk.hires || 0);
+          }
+        }
+      });
+
       result.push({
         client: displayClient,
         ta: t.ta,
@@ -1340,17 +1368,22 @@ const MBRTab = ({ data }) => {
         hires_target:          (Number(t.hires)          || 0) * weekCount,
         pct_screens_to_hires: a.screens_12w > 0 ? Math.round((a.hires_12w || 0) / a.screens_12w * 100) : null,
         comment: note?.comment || note?.reasoning || '',
+        _last_week_activity: lastWeekActivity,
       });
     });
     const groupOrder = { 'Dolphins/Whales': 0, 'Ponies/Unicorns': 1 };
-    // Mia filter (matches TS rollup below): hide TA rows with no activity in
-    // the MBR window AND no 12w activity AND no open >60d jobs AND no comment.
-    // A target alone shouldn't keep a TA on the list — happens when someone
-    // (e.g. Grover/Rodrigo Gomez) is in the target sheet but has rolled off.
+    // Activity filter (Blake 2026-06-01): mirror the WBR rule — if a TA has zero
+    // activity in the most recent (last) week of the MBR window, drop them. WBR
+    // already hides Ekaterin Boyprav and Mateja on this basis; the MBR should too.
+    // We still require *some* MBR-window or 12w activity (keeps the prior filter
+    // floor) so a target alone (or a stale comment) can't keep a row alive.
     const filtered = result.filter((r) =>
-      (r.contacted > 0) || (r.actual_screens > 0) || (r.ats > 0) || (r.hires > 0) ||
-      (r.hires_12w > 0) || (r.screens_12w > 0) || (r.ats_12w > 0) ||
-      (r.jobs_60d > 0) || !!r.comment
+      (r._last_week_activity > 0) &&
+      (
+        (r.contacted > 0) || (r.actual_screens > 0) || (r.ats > 0) || (r.hires > 0) ||
+        (r.hires_12w > 0) || (r.screens_12w > 0) || (r.ats_12w > 0) ||
+        (r.jobs_60d > 0)
+      )
     );
     return filtered.sort((a, b) => {
       const ga = groupOrder[a.team_group] ?? 2;

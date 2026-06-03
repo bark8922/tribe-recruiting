@@ -13,6 +13,8 @@ import base64
 import json
 import logging
 import shutil
+import time
+import urllib.error
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
@@ -127,34 +129,56 @@ def run_render(flat):
 
 
 def push_to_github(token, content):
+    """Push content to GitHub Contents API with retry on transient 5xx / 409.
+
+    GitHub's Contents API occasionally returns 500 Internal Server Error on large
+    PUTs (the JSON is ~27 MB; ~37 MB base64-encoded). Pre-2026-06-03 behaviour was
+    to fail the whole Flow on any 5xx. Now we retry up to 3 times with exponential
+    backoff and re-fetch the SHA each attempt (so a 409 from a race with a manual
+    commit also recovers).
+    """
     url = "https://api.github.com/repos/" + REPO + "/contents/" + TARGET_FILE
     headers = {
         "Authorization": "token " + token,
         "Accept": "application/vnd.github.v3+json",
         "User-Agent": "keboola-custom-python-tribe-recruiting",
     }
-    req = urllib.request.Request(url + "?ref=main", headers=headers)
-    with urllib.request.urlopen(req, timeout=30) as r:
-        current = json.loads(r.read())
-    sha = current["sha"]
-    print("[push_to_github] current sha: " + sha[:10], flush=True)
-
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
-    body = json.dumps({
-        "message": "refresh: Keboola-driven rebuild (" + now + ")",
-        "content": base64.b64encode(content.encode("utf-8")).decode("ascii"),
-        "sha": sha,
-        "branch": "main",
-    }).encode("utf-8")
-    req = urllib.request.Request(
-        url, data=body, method="PUT",
-        headers={**headers, "Content-Type": "application/json"},
-    )
-    with urllib.request.urlopen(req, timeout=60) as r:
-        resp = json.loads(r.read())
-    commit = resp["commit"]
-    print("[push_to_github] pushed " + commit["sha"][:10] + ": " + commit["html_url"], flush=True)
-    return commit["sha"]
+    encoded = base64.b64encode(content.encode("utf-8")).decode("ascii")
+
+    last_err = None
+    for attempt in range(1, 4):
+        try:
+            req = urllib.request.Request(url + "?ref=main", headers=headers)
+            with urllib.request.urlopen(req, timeout=30) as r:
+                current = json.loads(r.read())
+            sha = current["sha"]
+            print("[push_to_github] attempt " + str(attempt) + " current sha: " + sha[:10], flush=True)
+
+            body = json.dumps({
+                "message": "refresh: Keboola-driven rebuild (" + now + ")",
+                "content": encoded,
+                "sha": sha,
+                "branch": "main",
+            }).encode("utf-8")
+            req = urllib.request.Request(
+                url, data=body, method="PUT",
+                headers={**headers, "Content-Type": "application/json"},
+            )
+            with urllib.request.urlopen(req, timeout=120) as r:
+                resp = json.loads(r.read())
+            commit = resp["commit"]
+            print("[push_to_github] pushed " + commit["sha"][:10] + ": " + commit["html_url"], flush=True)
+            return commit["sha"]
+        except urllib.error.HTTPError as e:
+            last_err = e
+            if e.code >= 500 or e.code == 409:
+                backoff = 5 * (2 ** (attempt - 1))  # 5s, 10s, 20s
+                print("[push_to_github] attempt " + str(attempt) + " failed: HTTP " + str(e.code) + " - retrying in " + str(backoff) + "s", flush=True)
+                time.sleep(backoff)
+                continue
+            raise
+    raise last_err
 
 
 def main():

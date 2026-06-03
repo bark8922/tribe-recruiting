@@ -12,7 +12,9 @@ print("=== keboola_entry.py loaded ===", flush=True)
 import base64
 import json
 import logging
+import os
 import shutil
+import subprocess
 import time
 import urllib.error
 import urllib.request
@@ -129,56 +131,64 @@ def run_render(flat):
 
 
 def push_to_github(token, content):
-    """Push content to GitHub Contents API with retry on transient 5xx / 409.
+    """Push content to GitHub via git CLI (not Contents API).
 
-    GitHub's Contents API occasionally returns 500 Internal Server Error on large
-    PUTs (the JSON is ~27 MB; ~37 MB base64-encoded). Pre-2026-06-03 behaviour was
-    to fail the whole Flow on any 5xx. Now we retry up to 3 times with exponential
-    backoff and re-fetch the SHA each attempt (so a 409 from a race with a manual
-    commit also recovers).
+    The container clones bark8922/tribe-recruiting at /code/repo_clone before
+    running this script. We write the new JSON to that working copy, then
+    `git add / commit / push` via the same PAT used for the clone.
+
+    Why not the Contents API: GitHub's REST Contents endpoint returns HTTP 500
+    on PUTs above ~45 MB base64 (the JSON is ~30 MB → ~40 MB base64). git's
+    smart-HTTP transport packs and streams, so the size limit is effectively
+    GitHub's per-push 2 GB ceiling — well above what we'll ever send here.
+    Hit consistently on 2026-06-03 after the viewed-attribution change split
+    the row count up; retry-on-5xx didn't help because every PUT 500'd.
+
+    Returns the new commit SHA (short, 10 chars).
     """
-    url = "https://api.github.com/repos/" + REPO + "/contents/" + TARGET_FILE
-    headers = {
-        "Authorization": "token " + token,
-        "Accept": "application/vnd.github.v3+json",
-        "User-Agent": "keboola-custom-python-tribe-recruiting",
-    }
+    repo_dir = Path("/code/repo_clone")
+    if not repo_dir.exists():
+        raise RuntimeError("Expected git clone at /code/repo_clone — component not configured?")
+
+    target = repo_dir / TARGET_FILE
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(content, encoding="utf-8")
+    size_kb = target.stat().st_size // 1024
+    print("[push_to_github] wrote " + TARGET_FILE + " (" + str(size_kb) + " KB)", flush=True)
+
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
-    encoded = base64.b64encode(content.encode("utf-8")).decode("ascii")
+    env = os.environ.copy()
+    env["GIT_AUTHOR_NAME"] = "Keboola Flow"
+    env["GIT_AUTHOR_EMAIL"] = "blake@tribe.xyz"
+    env["GIT_COMMITTER_NAME"] = "Keboola Flow"
+    env["GIT_COMMITTER_EMAIL"] = "blake@tribe.xyz"
 
-    last_err = None
-    for attempt in range(1, 4):
-        try:
-            req = urllib.request.Request(url + "?ref=main", headers=headers)
-            with urllib.request.urlopen(req, timeout=30) as r:
-                current = json.loads(r.read())
-            sha = current["sha"]
-            print("[push_to_github] attempt " + str(attempt) + " current sha: " + sha[:10], flush=True)
+    def run(cmd):
+        print("[push_to_github] $ " + " ".join(cmd), flush=True)
+        result = subprocess.run(cmd, cwd=str(repo_dir), env=env, capture_output=True, text=True, timeout=120)
+        if result.stdout:
+            print(result.stdout, flush=True)
+        if result.returncode != 0:
+            print("STDERR: " + (result.stderr or ""), flush=True)
+            raise RuntimeError("git " + cmd[1] + " failed (rc=" + str(result.returncode) + ")")
+        return result.stdout.strip()
 
-            body = json.dumps({
-                "message": "refresh: Keboola-driven rebuild (" + now + ")",
-                "content": encoded,
-                "sha": sha,
-                "branch": "main",
-            }).encode("utf-8")
-            req = urllib.request.Request(
-                url, data=body, method="PUT",
-                headers={**headers, "Content-Type": "application/json"},
-            )
-            with urllib.request.urlopen(req, timeout=120) as r:
-                resp = json.loads(r.read())
-            commit = resp["commit"]
-            print("[push_to_github] pushed " + commit["sha"][:10] + ": " + commit["html_url"], flush=True)
-            return commit["sha"]
-        except urllib.error.HTTPError as e:
-            last_err = e
-            if e.code >= 500 or e.code == 409:
-                backoff = 5 * (2 ** (attempt - 1))  # 5s, 10s, 20s
-                print("[push_to_github] attempt " + str(attempt) + " failed: HTTP " + str(e.code) + " - retrying in " + str(backoff) + "s", flush=True)
-                time.sleep(backoff)
-                continue
-            raise
-    raise last_err
+    run(["git", "add", TARGET_FILE])
+    status = subprocess.run(["git", "status", "--porcelain", TARGET_FILE], cwd=str(repo_dir), capture_output=True, text=True)
+    if not status.stdout.strip():
+        print("[push_to_github] no changes vs main — skipping commit", flush=True)
+        head = run(["git", "rev-parse", "HEAD"])
+        return head
+
+    # Authenticated push URL (embed PAT). Avoid logging the URL.
+    push_url = "https://x-access-token:" + token + "@github.com/" + REPO + ".git"
+    subprocess.run(["git", "remote", "set-url", "origin", push_url], cwd=str(repo_dir), check=True)
+
+    run(["git", "commit", "-m", "refresh: Keboola-driven rebuild (" + now + ")"])
+    run(["git", "push", "origin", "HEAD:main"])
+    sha = run(["git", "rev-parse", "HEAD"])
+    print("[push_to_github] pushed " + sha[:10], flush=True)
+    return sha
 
 
 def main():

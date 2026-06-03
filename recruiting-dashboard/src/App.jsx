@@ -3090,19 +3090,25 @@ const TSSummaryTab = ({ data }) => {
         filteredRows.forEach(r => { if (TS_SUMMARY_ROSTER.has(r.ts)) t.viewed += r.viewed || 0; });
       }
     } else {
-      // PD-rows path (active, 2026-06-03). PD's SQL was upgraded to attribute viewed
-      // (LinkedIn Visited Profile) by event.who_created_event_first and to compute
-      // reacted (PBI Candidate Response measure), so every funnel metric comes from
-      // filteredRows. Client filter applies uniformly.
+      // PD-rows path (active). 2026-06-03: had a brief window where PD's viewed CTE
+      // attributed by sourcer; reverted because the resulting row count blew the
+      // bundle past Cloudflare's 25MB asset limit. Viewed + Reacted now pulled from
+      // ts_summary (sourcer aggregate, no client column — client filter is approx).
       filteredRows.forEach(r => {
         if (!TS_SUMMARY_ROSTER.has(r.ts)) return;
-        t.viewed += r.viewed || 0;
         t.contacted += r.contacted || 0;
-        t.reacted += r.reacted || 0;
         t.positive_response += r.positive_response || 0;
         t.actual_screens += r.actual_screens || 0;
         t.ats += r.ats || 0;
         t.offers += r.offered || 0;
+      });
+      tsSummary.forEach(r => {
+        if (r.iso_year < 2024 || r.iso_year > 2030) return;
+        if (periodWeekSet && !periodWeekSet.has(`${r.iso_year}-W${String(r.iso_week).padStart(2, '0')}`)) return;
+        if (sourcer !== 'All' && r.ts !== sourcer) return;
+        if (!TS_SUMMARY_ROSTER.has(r.ts)) return;
+        t.viewed += r.viewed || 0;
+        t.reacted += r.reacted || 0;
       });
       t.hires = filteredHires.filter(h => TS_SUMMARY_ROSTER.has(h.ts)).length;
     }

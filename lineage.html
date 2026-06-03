@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tribe Data Lineage</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<style>
+  :root {
+    --bg: #0f1419;
+    --panel: #1a1f2e;
+    --panel-border: #2a3142;
+    --text: #e7ecf3;
+    --text-dim: #9aa5b8;
+    --text-dimmer: #6b7588;
+    --accent: #5b9dff;
+    --accent-soft: #2a4a7a;
+    --warn: #ffb347;
+    --good: #6ee7a7;
+    --bad: #ff6b6b;
+    --raw: #b794f6;
+    --transform: #5b9dff;
+    --output: #6ee7a7;
+    --dashboard: #ffd166;
+    --pbi: #ff8c69;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 15px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  }
+  .wrap { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+  nav.toc {
+    background: var(--panel);
+    border-right: 1px solid var(--panel-border);
+    padding: 24px 18px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  nav.toc h1 {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+    margin: 0 0 12px 0;
+  }
+  nav.toc h1 small { display: block; font-size: 11px; letter-spacing: 0.5px; text-transform: none; color: var(--text-dimmer); margin-top: 4px;}
+  nav.toc a {
+    display: block;
+    padding: 6px 8px;
+    margin: 1px 0;
+    border-radius: 4px;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 13px;
+  }
+  nav.toc a:hover { background: var(--accent-soft); color: var(--text); }
+  nav.toc a.sub { padding-left: 22px; font-size: 12px; color: var(--text-dimmer); }
+  main { padding: 32px 48px 80px; max-width: 1100px; }
+  h1.title { font-size: 28px; margin: 0 0 4px; }
+  .subtitle { color: var(--text-dim); font-size: 14px; margin-bottom: 28px; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; margin-right: 6px; vertical-align: middle; }
+  .badge.raw { background: var(--raw); color: #1a0e35;}
+  .badge.transform { background: var(--transform); color: #0a1c3a; }
+  .badge.output { background: var(--output); color: #073023; }
+  .badge.dashboard { background: var(--dashboard); color: #3d2a00; }
+  .badge.pbi { background: var(--pbi); color: #3a1500; }
+  .badge.warn { background: var(--warn); color: #3a1f00; }
+  .badge.bad { background: var(--bad); color: #470000; }
+  .badge.good { background: var(--good); color: #073023; }
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin: 24px 0;
+  }
+  .panel h2 { margin-top: 0; }
+  h2 { font-size: 20px; margin: 32px 0 12px; border-bottom: 1px solid var(--panel-border); padding-bottom: 6px; }
+  h3 { font-size: 16px; color: var(--text); margin: 22px 0 8px; }
+  h4 { font-size: 14px; color: var(--text-dim); margin: 16px 0 6px; text-transform: uppercase; letter-spacing: 0.5px;}
+  table { border-collapse: collapse; width: 100%; margin: 12px 0 18px; font-size: 13px;}
+  th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--panel-border); vertical-align: top; }
+  th { color: var(--text-dim); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.4px; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  code { background: rgba(255,255,255,0.08); padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+  pre { background: var(--panel); padding: 14px; border-radius: 6px; overflow-x: auto; font-size: 12px; line-height: 1.5; }
+  p { margin: 10px 0; }
+  ul { margin: 8px 0; padding-left: 20px; }
+  li { margin: 3px 0; }
+  hr { border: none; border-top: 1px solid var(--panel-border); margin: 32px 0; }
+  blockquote { border-left: 3px solid var(--accent); padding: 4px 14px; margin: 12px 0; color: var(--text-dim); background: rgba(91,157,255,0.05); }
+  .check { color: var(--good); }
+  .cross { color: var(--bad); }
+  details { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 6px; margin: 8px 0; padding: 0;}
+  summary { padding: 12px 16px; cursor: pointer; font-weight: 600; user-select: none; }
+  summary:hover { color: var(--accent); }
+  details[open] summary { border-bottom: 1px solid var(--panel-border); }
+  details > div { padding: 14px 16px; }
+
+  /* Diagram */
+  .diagram { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 8px; padding: 20px; margin: 22px 0; overflow-x: auto; }
+  .diagram svg { display: block; margin: 0 auto; min-width: 900px; max-width: 100%; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="toc">
+    <h1>Data Lineage <small>2026-06-03</small></h1>
+    <a href="#diagram">Pipeline diagram</a>
+    <a href="#stage1">Stage 1 — Bubble raw</a>
+    <a href="#stage2">Stage 2 — PROD V2</a>
+    <a href="#stage3">Stage 3 — Flow A transforms</a>
+    <a href="#stage4">Stage 4 — Dashboards</a>
+    <a href="#stage5">Stage 5 — PBI risk register</a>
+    <a href="#cost">Cost map</a>
+    <a href="#surprises">Surprises</a>
+    <a href="#appendix">Appendix (schedules, buckets)</a>
+    <hr>
+    <a href="https://github.com/bark8922/tribe-recruiting/blob/main/DATA_LINEAGE.md" style="font-size:11px;">Source markdown →</a>
+  </nav>
+
+  <main>
+    <h1 class="title">Tribe Data Lineage</h1>
+    <p class="subtitle">Where every dashboard number comes from — Bubble → Keboola → React (+ the PBI chain that dies 2026-08-31).</p>
+
+    <blockquote>
+      <strong>Why this exists.</strong> Built so we never make Keboola changes without seeing the full graph first. Every number on these pages was pulled live from Keboola Storage / Component / Telemetry APIs on 2026-06-03, plus the React stack source in this repo. Anything inferred is flagged <em>(unverified)</em>.
+    </blockquote>
+
+    <!-- ============== DIAGRAM ============== -->
+    <h2 id="diagram">Pipeline at a glance</h2>
+    <div class="diagram">
+      <svg viewBox="0 0 1000 580" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#9aa5b8"/>
+          </marker>
+          <marker id="arr-pbi" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#ff8c69"/>
+          </marker>
+        </defs>
+
+        <!-- Stage 1: Bubble -->
+        <rect x="30" y="30" width="220" height="180" rx="8" fill="#2a1d4d" stroke="#b794f6" stroke-width="1.5"/>
+        <text x="140" y="55" text-anchor="middle" fill="#b794f6" font-size="13" font-weight="700">STAGE 1 — RAW</text>
+        <text x="140" y="76" text-anchor="middle" fill="#e7ecf3" font-size="12">Bubble.io API</text>
+        <text x="140" y="100" text-anchor="middle" fill="#e7ecf3" font-size="11">Incremental (2.47 GB)</text>
+        <text x="140" y="115" text-anchor="middle" fill="#9aa5b8" font-size="10">12 hot tables: Events, Position,</text>
+        <text x="140" y="128" text-anchor="middle" fill="#9aa5b8" font-size="10">Talent, Candidate, Company...</text>
+        <text x="140" y="155" text-anchor="middle" fill="#e7ecf3" font-size="11">Full + aliases (9 MB)</text>
+        <text x="140" y="170" text-anchor="middle" fill="#9aa5b8" font-size="10">30 ref tables: Roles, EventType,</text>
+        <text x="140" y="183" text-anchor="middle" fill="#9aa5b8" font-size="10">dropdowns, Goals, etc.</text>
+        <text x="140" y="200" text-anchor="middle" fill="#9aa5b8" font-size="9">+ talent_locations + Geocoding API</text>
+
+        <!-- Stage 2: PROD V2 -->
+        <rect x="290" y="30" width="220" height="180" rx="8" fill="#1d3a5e" stroke="#5b9dff" stroke-width="1.5"/>
+        <text x="400" y="55" text-anchor="middle" fill="#5b9dff" font-size="13" font-weight="700">STAGE 2 — PROD V2</text>
+        <text x="400" y="76" text-anchor="middle" fill="#e7ecf3" font-size="12">cfg 375145203</text>
+        <text x="400" y="95" text-anchor="middle" fill="#9aa5b8" font-size="10">5 code parts, 28 CTAS</text>
+        <text x="400" y="115" text-anchor="middle" fill="#e7ecf3" font-size="11">→ 17 tables in</text>
+        <text x="400" y="130" text-anchor="middle" fill="#e7ecf3" font-size="11">out.c-reporting-v2</text>
+        <text x="400" y="155" text-anchor="middle" fill="#9aa5b8" font-size="10">5 core: candidate, candidate_stage,</text>
+        <text x="400" y="168" text-anchor="middle" fill="#9aa5b8" font-size="10">client, event, job</text>
+        <text x="400" y="185" text-anchor="middle" fill="#9aa5b8" font-size="10">12 extras: talent_*, screen_*,</text>
+        <text x="400" y="198" text-anchor="middle" fill="#9aa5b8" font-size="10">user, analytic, job_*</text>
+
+        <!-- Stage 3: Flow A -->
+        <rect x="550" y="30" width="220" height="280" rx="8" fill="#1d3a2e" stroke="#6ee7a7" stroke-width="1.5"/>
+        <text x="660" y="55" text-anchor="middle" fill="#6ee7a7" font-size="13" font-weight="700">STAGE 3 — FLOW A</text>
+        <text x="660" y="76" text-anchor="middle" fill="#e7ecf3" font-size="12">7 SQL transforms</text>
+        <text x="660" y="92" text-anchor="middle" fill="#9aa5b8" font-size="10">→ 24 output tables</text>
+        <line x1="570" y1="105" x2="750" y2="105" stroke="#2a3142" stroke-width="1"/>
+        <text x="660" y="123" text-anchor="middle" fill="#e7ecf3" font-size="10">PD weekly funnel → 1 tbl</text>
+        <text x="660" y="138" text-anchor="middle" fill="#e7ecf3" font-size="10">PD event-attr → 1 tbl</text>
+        <text x="660" y="153" text-anchor="middle" fill="#e7ecf3" font-size="10">PD hires → 1 tbl</text>
+        <text x="660" y="168" text-anchor="middle" fill="#e7ecf3" font-size="10">MBR Contacted event → 1 tbl</text>
+        <text x="660" y="187" text-anchor="middle" fill="#ffd166" font-size="10" font-weight="700">WBR/MBR megatransform</text>
+        <text x="660" y="200" text-anchor="middle" fill="#9aa5b8" font-size="9">→ 15 tbls (WBR, MBR, TS Sum,</text>
+        <text x="660" y="212" text-anchor="middle" fill="#9aa5b8" font-size="9">IR×6, Sourcing×2)</text>
+        <text x="660" y="231" text-anchor="middle" fill="#e7ecf3" font-size="10">TTH jobs → 1 tbl</text>
+        <text x="660" y="246" text-anchor="middle" fill="#e7ecf3" font-size="10">Weekly Summary → 2 tbls</text>
+        <text x="660" y="265" text-anchor="middle" fill="#9aa5b8" font-size="10">+ WBR Google Sheet</text>
+        <text x="660" y="278" text-anchor="middle" fill="#9aa5b8" font-size="10">(5 tabs in in.c-wbr-sheet)</text>
+
+        <!-- Stage 4: Dashboards -->
+        <rect x="810" y="30" width="160" height="280" rx="8" fill="#4a3a1d" stroke="#ffd166" stroke-width="1.5"/>
+        <text x="890" y="55" text-anchor="middle" fill="#ffd166" font-size="13" font-weight="700">STAGE 4 — REACT</text>
+        <text x="890" y="76" text-anchor="middle" fill="#e7ecf3" font-size="11">Recruiting (6 tabs)</text>
+        <text x="890" y="93" text-anchor="middle" fill="#9aa5b8" font-size="10">WBR · MBR · PD ·</text>
+        <text x="890" y="106" text-anchor="middle" fill="#9aa5b8" font-size="10">TTH · TS Summary · IR</text>
+        <text x="890" y="125" text-anchor="middle" fill="#9aa5b8" font-size="9">recruiting.tribe.xyz</text>
+        <line x1="830" y1="140" x2="950" y2="140" stroke="#2a3142" stroke-width="1"/>
+        <text x="890" y="160" text-anchor="middle" fill="#e7ecf3" font-size="11">Sourcing Dashboard</text>
+        <text x="890" y="177" text-anchor="middle" fill="#9aa5b8" font-size="9">tribe-sourcing.pages.dev</text>
+        <line x1="830" y1="195" x2="950" y2="195" stroke="#2a3142" stroke-width="1"/>
+        <text x="890" y="215" text-anchor="middle" fill="#e7ecf3" font-size="11">Circle (separate)</text>
+        <text x="890" y="232" text-anchor="middle" fill="#9aa5b8" font-size="9">overview.tribe.xyz</text>
+        <text x="890" y="252" text-anchor="middle" fill="#6b7588" font-size="9">Reads Keboola direct,</text>
+        <text x="890" y="264" text-anchor="middle" fill="#6b7588" font-size="9">not via Flow A</text>
+
+        <!-- Stage 5: PBI -->
+        <rect x="290" y="380" width="480" height="170" rx="8" fill="#4a221d" stroke="#ff8c69" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <text x="530" y="405" text-anchor="middle" fill="#ff8c69" font-size="13" font-weight="700">STAGE 5 — POWERBI (DIES 2026-08-31)</text>
+        <text x="530" y="430" text-anchor="middle" fill="#e7ecf3" font-size="11">Data Gateway → READER_SCHEMA → PBI semantic model</text>
+        <text x="530" y="450" text-anchor="middle" fill="#9aa5b8" font-size="10">Andy's PBIX: 35 pages, 200 DAX measures</text>
+        <text x="530" y="470" text-anchor="middle" fill="#9aa5b8" font-size="10">Consumes all 17 reporting-v2 tables (heavily uses the 12 the React stack doesn't)</text>
+        <text x="530" y="495" text-anchor="middle" fill="#ffb347" font-size="10">Drives: Executive Search, Hired Candidate Salary Audit, Data Download tab,</text>
+        <text x="530" y="510" text-anchor="middle" fill="#ffb347" font-size="10">Pipelines Health, OKR, Sourcing Stats, Recruiting Trends, +28 more</text>
+        <text x="530" y="535" text-anchor="middle" fill="#ff6b6b" font-size="10" font-weight="700">⚠ client_cost frozen since 2026-04-14 (Revenue 2 disabled)</text>
+
+        <!-- Arrows main flow -->
+        <line x1="250" y1="120" x2="285" y2="120" stroke="#9aa5b8" stroke-width="2" marker-end="url(#arr)"/>
+        <line x1="510" y1="120" x2="545" y2="120" stroke="#9aa5b8" stroke-width="2" marker-end="url(#arr)"/>
+        <line x1="770" y1="160" x2="805" y2="160" stroke="#9aa5b8" stroke-width="2" marker-end="url(#arr)"/>
+
+        <!-- Arrow PROD V2 → PBI -->
+        <path d="M400 215 Q400 320 460 380" stroke="#ff8c69" stroke-width="2" stroke-dasharray="5,3" fill="none" marker-end="url(#arr-pbi)"/>
+        <text x="380" y="340" fill="#ff8c69" font-size="10">all 17 tables</text>
+
+        <!-- Legend -->
+        <text x="50" y="540" fill="#6b7588" font-size="10">Flow B (cron 5 7,10,16 * * *) = Stage 1→2→PBI</text>
+        <text x="50" y="555" fill="#6b7588" font-size="10">Flow A (cron 40 10,14,16,8 * * *) = Stage 3→4</text>
+        <text x="50" y="570" fill="#6b7588" font-size="10">Dashed = will be removed on 2026-08-31</text>
+      </svg>
+    </div>
+
+    <p>The full graph in prose lives in <a href="https://github.com/bark8922/tribe-recruiting/blob/main/DATA_LINEAGE.md"><code>DATA_LINEAGE.md</code></a>. Skim the sections below for the spot-checks and the surprises.</p>
+
+    <!-- ============== STAGE 1 ============== -->
+    <h2 id="stage1"><span class="badge raw">RAW</span>Stage 1 — Bubble extracts</h2>
+
+    <details open>
+      <summary>Incremental extractor — <code>122527414</code> (2.47 GB)</summary>
+      <div>
+        <p>Pulls last 7 days of changes for 12 high-traffic tables. <strong>Events</strong> alone is 1.28 GB / 14.88M rows — the elephant.</p>
+        <table>
+          <tr><th>Table</th><th class="num">Rows</th><th class="num">Size</th><th>What it is</th></tr>
+          <tr><td><code>Events</code></td><td class="num">14.88 M</td><td class="num">1.28 GB</td><td>Every event on every candidate since 2020</td></tr>
+          <tr><td><code>Position</code></td><td class="num">8.04 M</td><td class="num">621 MB</td><td>Work history scraped from LinkedIn</td></tr>
+          <tr><td><code>Nylas_Email_message</code></td><td class="num">2.57 M</td><td class="num">97 MB</td><td>Email sync</td></tr>
+          <tr><td><code>duxsoup_messages</code></td><td class="num">2.09 M</td><td class="num">64 MB</td><td>LinkedIn outreach</td></tr>
+          <tr><td><code>Talent</code></td><td class="num">1.62 M</td><td class="num">163 MB</td><td>Master talent profile + LinkedIn link</td></tr>
+          <tr><td><code>Candidate</code></td><td class="num">1.35 M</td><td class="num">86 MB</td><td>One candidate per (talent, job) pair</td></tr>
+          <tr><td><code>Analytic</code></td><td class="num">1.09 M</td><td class="num">49 MB</td><td>Bubble pageview/event tally</td></tr>
+          <tr><td><code>Company</code></td><td class="num">991 K</td><td class="num">90 MB</td><td>Bubble company database</td></tr>
+          <tr><td><code>Emails</code> · <code>stages</code> · <code>recruiter_screeen_notes</code></td><td class="num">~265 K</td><td class="num">~17 MB</td><td>Auxiliary high-traffic</td></tr>
+        </table>
+      </div>
+    </details>
+
+    <details>
+      <summary>Full extractor — <code>122491135</code> (9 MB)</summary>
+      <div>
+        <p>30 reference tables (dropdowns, lookups, EventType, Goals, Roles, etc.) plus aliases of the 12 heavy tables. The aliases <strong>point back to the Incremental bucket</strong> — same row counts, same data. <em>(verified by row counts)</em></p>
+        <p>This bucket exists because the Incremental extractor fails when an empty array comes back; Full-load ensures small reference tables always have data.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Sheet + staging side-paths</summary>
+      <div>
+        <p><strong><code>in.c-stage-data</code></strong>: <code>talent_locations</code> (3.8K unique strings) + <code>talent_locations_processed</code> (29K, after Geocoding API).</p>
+        <p><strong><code>in.c-wbr-sheet</code></strong>: 5 tabs from Andy's WBR Target Google Sheet — <code>wbr_ta_target</code> (1597), <code>wbr_ta_weekly_note</code> (6152), <code>wbr_ts_weekly</code> (3065), <code>wbr_ir</code> (45), <code>wbr_reasoning_guidance</code> (21). <strong>This is the single source of truth for who appears in the WBR/MBR dashboards.</strong></p>
+      </div>
+    </details>
+
+    <!-- ============== STAGE 2 ============== -->
+    <h2 id="stage2"><span class="badge transform">TRANSFORM</span>Stage 2 — PROD V2 monolith</h2>
+
+    <p>Config <code>375145203</code>. <strong>~6.7 credits per run, ~80 sec wall-clock, 3×/day.</strong> Structurally 1 block named <code>code</code> with 5 ordered parts:</p>
+
+    <table>
+      <tr><th>Part</th><th>Size</th><th>What it does</th></tr>
+      <tr><td>Part 0 — Recruitee staging</td><td class="num">5.5 KB</td><td>Builds <code>recruitee_stage</code> CTE from frozen-since-2023 Recruitee data. Joins into Part 2.</td></tr>
+      <tr><td>Part 1 — Bubble data</td><td class="num">38.97 KB</td><td><strong>88% of all PROD V2 code.</strong> Builds <code>tmp_job</code>, <code>final_event</code> (11 LEFT JOINs + ROW_NUMBER window over 14.9M-row Events), <code>final_candidate_stage_bubble</code> (6 sequential UPDATEs), <code>final_talent_bubble</code>, <code>final_email</code>, <code>final_talent_position</code>, <code>final_talent_employer</code>, <code>final_screen</code>, <code>final_screen_techstack</code>, <code>final_screen_lang</code>, <code>final_user</code>, <code>final_job_goals</code>.</td></tr>
+      <tr><td>Part 2 — Recruitee data</td><td class="num">8.76 KB</td><td>Builds Recruitee variants of talent / candidate / event. Frozen source data.</td></tr>
+      <tr><td>Part 3 — Final tables</td><td class="num">7.60 KB</td><td>Unions Bubble + Recruitee → final <code>talent</code>, <code>candidate</code>, <code>event</code>, <code>candidate_stage</code>, <code>client</code>.</td></tr>
+      <tr><td>Part 4 — Andy tail</td><td class="num">432 B</td><td>Builds <code>analytic</code> + <code>job_ai_filter</code>.</td></tr>
+    </table>
+
+    <h3>17 output tables (all in <code>out.c-reporting-v2</code>)</h3>
+
+    <table>
+      <tr><th>Table</th><th class="num">Rows</th><th class="num">Size</th><th>Built in</th><th>Flow A</th><th>PBI</th></tr>
+      <tr><td><strong><code>candidate</code></strong></td><td class="num">1.38 M</td><td class="num">106 MB</td><td>Part 3</td><td><span class="check">✓</span></td><td><span class="check">✓ heavy</span></td></tr>
+      <tr><td><strong><code>candidate_stage</code></strong></td><td class="num">1.38 M</td><td class="num">63 MB</td><td>Part 3</td><td><span class="check">✓</span></td><td><span class="check">✓ heavy</span></td></tr>
+      <tr><td><strong><code>client</code></strong></td><td class="num">121</td><td class="num">6 KB</td><td>Part 3</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+      <tr><td><strong><code>event</code></strong></td><td class="num">14.86 M</td><td class="num">825 MB</td><td>Part 3</td><td><span class="check">✓</span></td><td><span class="check">✓ heavy</span></td></tr>
+      <tr><td><strong><code>job</code></strong></td><td class="num">6,583</td><td class="num">548 KB</td><td>Part 1</td><td><span class="check">✓</span></td><td><span class="check">✓ heavy</span></td></tr>
+      <tr><td><code>talent</code></td><td class="num">1.65 M</td><td class="num">123 MB</td><td>Part 3</td><td><span class="cross">✗</span></td><td><span class="check">✓ Exec Search, Hired-Cand Salary</span></td></tr>
+      <tr><td><code>talent_email</code></td><td class="num">105 K</td><td class="num">7 MB</td><td>Part 1</td><td><span class="cross">✗</span></td><td><span class="check">✓ 10 pages filter</span></td></tr>
+      <tr><td><code>talent_position</code></td><td class="num">6.87 M</td><td class="num">187 MB</td><td>Part 1</td><td><span class="cross">✗</span></td><td><span class="cross">✗ not loaded</span></td></tr>
+      <tr><td><code>talent_employer</code></td><td class="num">432 K</td><td class="num">14 MB</td><td>Part 1</td><td><span class="cross">✗</span></td><td><span class="cross">✗ loaded but dead</span></td></tr>
+      <tr><td><code>screen</code></td><td class="num">80 K</td><td class="num">5 MB</td><td>Part 1</td><td><span class="cross">✗</span></td><td><span class="check">✓ 4 pages</span></td></tr>
+      <tr><td><code>screen_techstack</code></td><td class="num">1,852</td><td class="num">44 KB</td><td>Part 1</td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+      <tr><td><code>screen_lang</code></td><td class="num">4,509</td><td class="num">119 KB</td><td>Part 1</td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+      <tr><td><code>user</code></td><td class="num">282</td><td class="num">16 KB</td><td>Part 1</td><td><span class="cross">✗</span></td><td><span class="check">✓ join hub (5 rels)</span></td></tr>
+      <tr><td><code>analytic</code></td><td class="num">54,590</td><td class="num">445 KB</td><td>Part 4</td><td><span class="cross">✗</span></td><td><span class="check">✓ as <code>analytic_usage</code></span></td></tr>
+      <tr><td><code>job_ai_filter</code></td><td class="num">1,300</td><td class="num">77 KB</td><td>Part 4</td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+      <tr><td><code>job_goal</code></td><td class="num">40</td><td class="num">4 KB</td><td>Part 1</td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td></tr>
+    </table>
+
+    <p><em>Sidecar:</em> <code>client_cost</code> is in <code>out.c-reporting-v2</code> too but produced by a different (currently disabled) config — see Surprises.</p>
+
+    <!-- ============== STAGE 3 ============== -->
+    <h2 id="stage3"><span class="badge output">FLOW A</span>Stage 3 — 7 SQL transforms</h2>
+
+    <p>Runs 4×/day. Reads from <code>out.c-reporting-v2</code> + <code>in.c-wbr-sheet</code>. Writes to dashboard-specific output buckets.</p>
+
+    <table>
+      <tr><th>Config</th><th>Reads</th><th>Writes</th><th>60-day cr</th></tr>
+      <tr><td><code>01kpqh9r7g…</code> PD weekly funnel</td><td>5 core</td><td><code>project_dashboard</code></td><td class="num">18</td></tr>
+      <tr><td><code>01ks4qf6z…</code> PD event-attr</td><td>5 core</td><td><code>project_dashboard_eventattr</code></td><td class="num">3</td></tr>
+      <tr><td><code>01kpqharhz…</code> PD hires drill-down</td><td>4 core (no event)</td><td><code>project_dashboard_hires</code></td><td class="num">9</td></tr>
+      <tr><td><code>01kpqxgcz…</code> MBR Contacted event-attr</td><td>4 core (no candidate_stage)</td><td><code>mbr_contacted_ev</code></td><td class="num">8</td></tr>
+      <tr><td><code>01kpr0tr0…</code> <strong>WBR/MBR megatransform</strong></td><td>5 core + WBR sheet + self-ref</td><td><strong>15 tables</strong> — see below</td><td class="num"><strong>38</strong></td></tr>
+      <tr><td><code>01kpztmw7…</code> TTH jobs</td><td>4 core (no event)</td><td><code>tth_jobs</code></td><td class="num">10</td></tr>
+      <tr><td><code>01ksm8rz…</code> Weekly Summary PBI port</td><td>5 core</td><td><code>weekly_summary</code> + <code>weekly_summary_byjob</code></td><td class="num">2.4</td></tr>
+    </table>
+
+    <details>
+      <summary>The 15 tables produced by the WBR/MBR megatransform</summary>
+      <div>
+        <ul>
+          <li><code>wbr_weekly</code> — WBR per-(client, TA, week) funnel</li>
+          <li><code>wbr_jobs_weekly</code> — WBR # Jobs column</li>
+          <li><code>wbr_ts_jobs_weekly</code> — WBR per-TS # Jobs + TS metadata</li>
+          <li><code>ts_weekly</code> — WBR TS per-week funnel</li>
+          <li><code>ts_conversion</code> — WBR TS conversion rate column</li>
+          <li><code>aux_12w</code> — WBR/MBR 12-week + 60-day rollups (hires, screens, ATS, ttf, jobs_60d)</li>
+          <li><code>ts_summary_per_sourcer</code> — KPI - TS Summary tab</li>
+          <li><code>ir_funnel_jobweek</code> · <code>ir_sourced_jobweek</code> · <code>ir_interviewed_jobweek</code> · <code>ir_dq_by_stage</code> · <code>ir_jobs_active</code> · <code>ir_dq_byjob_reason</code> — Internal Recruiting tab (6 tables)</li>
+          <li><code>sourcing_dashboard_per_sourcer</code> · <code>sourcing_wbr_comments</code> — Sourcing Dashboard</li>
+        </ul>
+        <p><strong>Risk:</strong> a single failure here breaks every dashboard except Project Dashboard and Time to Hire. Worth knowing.</p>
+      </div>
+    </details>
+
+    <!-- ============== STAGE 4 ============== -->
+    <h2 id="stage4"><span class="badge dashboard">DASHBOARDS</span>Stage 4 — React tabs</h2>
+
+    <h3>Recruiting Dashboard — <code>recruiting.tribe.xyz</code></h3>
+
+    <table>
+      <tr><th>Tab</th><th>data.json keys read in App.jsx</th><th>Source transform output</th></tr>
+      <tr><td><strong>WBR</strong> (line 102)</td><td><code>wbr_actuals</code>, <code>weekly_trend</code>, <code>ta_jobs_weekly</code>, <code>ts_actuals</code>, <code>ts_conversion</code>, <code>ts_positive_responses</code>, <code>targets</code>, <code>ts_weekly</code>, <code>ta_weekly_notes</code></td><td><code>wbr_weekly</code> + <code>wbr_jobs_weekly</code> + <code>ts_weekly</code> + <code>ts_conversion</code> + WBR sheet</td></tr>
+      <tr><td><strong>MBR</strong> (line 1188)</td><td><code>mbr_ta_actuals</code>, <code>mbr_ts_actuals</code>, <code>mbr_client_totals</code>, <code>mbr_ta_targets</code>, <code>mbr_window</code>, <code>wbr_actuals</code></td><td><code>aux_12w</code> + <code>wbr_weekly</code> + WBR sheet</td></tr>
+      <tr><td><strong>Project Dashboard</strong> (line 1714, default)</td><td><code>project_dashboard.rows</code>, <code>project_dashboard_hires</code>, <code>project_dashboard_eventattr.rows</code></td><td>3 PD transforms</td></tr>
+      <tr><td><strong>Time to Hire</strong> (line 2322)</td><td><code>tth_jobs</code></td><td><code>tth_jobs</code></td></tr>
+      <tr><td><strong>KPI - TS Summary</strong> (line 2688)</td><td><code>ts_summary</code> (primary), <code>project_dashboard.rows</code> (fallback), <code>project_dashboard_hires</code>, <code>tth_jobs</code></td><td><code>ts_summary_per_sourcer</code> + PD variants</td></tr>
+      <tr><td><strong>Internal Recruiting</strong> (line 3428)</td><td>6 <code>ir_*</code> keys + 4 <code>ir_ashby_*</code> (Phase 2b, currently empty)</td><td>6 IR tables in WBR/MBR megatransform</td></tr>
+    </table>
+
+    <p>Auth: Cloudflare Access (Google SSO, @tribe.xyz). WBR/MBR hidden unless <code>?role=leadership</code>.</p>
+
+    <h3>Other dashboards</h3>
+
+    <ul>
+      <li><strong>Sourcing Dashboard</strong> (<code>tribe-sourcing.pages.dev</code>) — Custom Python <code>01kt1ns5mq…</code> pulls <code>sourcing_dashboard_per_sourcer</code> + <code>sourcing_wbr_comments</code>, pushes to GitHub, auto-deploys. Gated by 8-email allowlist + <code>?member=email</code>.</li>
+      <li><strong>Circle</strong> (<code>overview.tribe.xyz</code>) — Independent: reads Keboola directly every 2h via Worker + GH Actions, not part of Flow A.</li>
+      <li><strong>Finance Dashboard</strong> — Runs entirely on GitHub Actions with a separate Bubble pull. Not part of this Keboola project.</li>
+    </ul>
+
+    <!-- ============== STAGE 5 ============== -->
+    <h2 id="stage5"><span class="badge pbi">PBI — DIES 8/31</span>Stage 5 — PowerBI risk register</h2>
+
+    <p><strong>Data Gateway</strong> (<code>01k9vy0j2t8mnkvz2y6fap7327</code>) exposes Snowflake schema <code>READER_SCHEMA_855_942138244</code> from which PBI reads. Andy's PBIX has <strong>35 pages</strong>, <strong>200 DAX measures</strong>.</p>
+
+    <h3>Features dying 2026-08-31 (rebuild status)</h3>
+
+    <table>
+      <tr><th>PBI feature</th><th>Tables required</th><th>Rebuild status</th></tr>
+      <tr><td>Executive Search</td><td><code>talent</code>, <code>talent_email</code>, <code>screen</code></td><td><span class="cross">Not rebuilt</span> — Rodrigo's Data Download ask</td></tr>
+      <tr><td>Hired Candidate Salary Audit</td><td><code>talent</code>, <code>screen</code></td><td><span class="cross">Not rebuilt</span></td></tr>
+      <tr><td>Sourcing Stats (LI viewed/contacted)</td><td><code>event</code> filtered to View/Contact</td><td><span class="badge warn">Partial</span> — covered by Sourcing Dashboard</td></tr>
+      <tr><td>Internal Recruiting (Recruitee)</td><td>Recruitee tables (frozen 2023)</td><td><span class="check">N/A</span> — already dead</td></tr>
+      <tr><td>Bubble Usage tiles (7-day MA)</td><td><code>analytic</code></td><td><span class="cross">Not rebuilt</span> — low priority</td></tr>
+      <tr><td>Revenue tiles (€)</td><td><code>client_cost</code></td><td><span class="badge bad">DATA STALE since 2026-04-14</span></td></tr>
+      <tr><td>Pipelines Health, OKR, Open Roles, etc.</td><td>candidate + candidate_stage + event + job</td><td><span class="badge warn">Partially overlaps</span> with WBR/PD/TS Summary</td></tr>
+    </table>
+
+    <h3>Features already covered by React stack</h3>
+    <p>WBR · MBR · Project Dashboard · Time to Hire · KPI - TS Summary · Internal Recruitment (Phase 2a Bubble) · Sourcing Dashboard (Phase 1-3).</p>
+
+    <!-- ============== COST ============== -->
+    <h2 id="cost">Cost map</h2>
+
+    <p>May 2026 = <strong>370 PPU credits</strong>. After Phase 1 cron cut (3 June: 5/day → 3/day), projected July 2026 ≈ <strong>265 PPU</strong> (-28%).</p>
+
+    <table>
+      <tr><th>Stage</th><th>Configs</th><th class="num">60-day cr</th></tr>
+      <tr><td>1. Bubble extract</td><td>2</td><td class="num">70</td></tr>
+      <tr><td>1. WBR sheet + Telemetry</td><td>2</td><td class="num">3.3</td></tr>
+      <tr><td>2. Talent loc + Geocoding</td><td>2</td><td class="num">29</td></tr>
+      <tr><td>2. PROD V2</td><td>1</td><td class="num"><strong>395</strong></td></tr>
+      <tr><td>2. Revenue 2 (pre-disable jobs only)</td><td>1</td><td class="num">4</td></tr>
+      <tr><td>3. Flow A (7 transforms)</td><td>7</td><td class="num">88</td></tr>
+      <tr><td>4. Custom Python writers</td><td>2</td><td class="num">6</td></tr>
+      <tr><td>5. Data Gateway (PBI-only)</td><td>1</td><td class="num">28</td></tr>
+      <tr><td>5. PBI refreshes</td><td>5</td><td class="num">2</td></tr>
+      <tr><td><strong>Total (60d)</strong></td><td></td><td class="num"><strong>~625</strong></td></tr>
+    </table>
+
+    <p><strong>Storage:</strong> 4.6 GB total, of which ~700 MB is stale buckets safe to delete (<code>out.c-reporting</code> v1 = 472 MB plus 4 Recruitee buckets = ~190 MB).</p>
+
+    <!-- ============== SURPRISES ============== -->
+    <h2 id="surprises">Surprises worth remembering</h2>
+
+    <div class="panel">
+      <h3>Revenue 2 was running until 2026-04-14, then went silent</h3>
+      <p>Config <code>458760018</code> "Revenue - 2. data prep" is marked <code>enabled=false</code> in Flow B. But its last 10 jobs all ran on 2026-04-13/14 at 5×/day. Someone disabled it. Result: <code>client_cost</code> has been frozen since 2026-04-14 — and PBI has 3 active revenue measures pointing at it. <strong>Andy's PBI revenue tiles have been showing 7-week-old data.</strong> Either intentional (no one noticed) or oversight.</p>
+      <p><strong>Action:</strong> ask Andy whether this was intentional.</p>
+    </div>
+
+    <div class="panel">
+      <h3><code>talent_employer</code> is dead even inside PBI</h3>
+      <p>Loaded by Andy's PBIX from <code>out.c-reporting-v2.talent_employer</code> but has <strong>0 relationships, 0 measures, 0 page references</strong>. 432K rows / 14 MB materialized every PROD V2 run. Wasted on both sides. Only reason not to drop: Rodrigo's potential Data Download ask.</p>
+    </div>
+
+    <div class="panel">
+      <h3><code>analytic</code> is renamed to <code>analytic_usage</code> in PBI</h3>
+      <p>PBI's M query aliases the table. Name-only searches for <code>analytic</code> in the PBIX will miss the 2 measures (<code>7 days moving avg</code>, <code>7 days moving avg limited</code>) that use it.</p>
+    </div>
+
+    <div class="panel">
+      <h3>The Full Bubble extractor is mostly aliases</h3>
+      <p>The "Full" bucket (122491135) holds 42 tables, but the 12 high-traffic ones are aliases pointing back to the Incremental bucket (122527414). When PROD V2 references <code>bubble_Event</code>, the actual data lives in the Incremental bucket. <em>(verified: row counts identical in both)</em></p>
+    </div>
+
+    <div class="panel">
+      <h3>PROD V2 runs the Events scan twice</h3>
+      <p>Part 1 has a CTAS for <code>final_event</code> with a ROW_NUMBER window over all 14.9M events, then a post-CTAS UPDATE that re-runs the same window. Combined with 11 LEFT JOINs in the CTAS, this is the cost driver. If we ever want to optimize PROD V2, this is where the gain is.</p>
+    </div>
+
+    <div class="panel">
+      <h3>WBR/MBR megatransform is 15 tables in one config</h3>
+      <p>Config <code>01kpr0tr0…</code> produces 15 output tables — WBR, MBR, TS Summary, IR (6), Sourcing Dashboard (2). Operationally convenient but a single failure breaks every dashboard except Project Dashboard + Time to Hire.</p>
+    </div>
+
+    <!-- ============== APPENDIX ============== -->
+    <h2 id="appendix">Appendix</h2>
+
+    <h3>Flow schedules (Europe/Prague TZ)</h3>
+    <table>
+      <tr><th>Flow</th><th>ID</th><th>Cron</th><th>Frequency</th></tr>
+      <tr><td>Recruiting Dashboard (Flow A)</td><td><code>01kpqyq1pz…</code></td><td><code>40 10,14,16,8 * * *</code></td><td>4×/day at 8:40, 10:40, 14:40, 16:40</td></tr>
+      <tr><td>6x daily NEW (Flow B)</td><td><code>118392817</code></td><td><code>5 7,10,16 * * *</code></td><td><strong>3×/day (as of 2026-06-03)</strong></td></tr>
+      <tr><td>1× monthly telemetry</td><td><code>270972256</code></td><td><code>0 4 1 * *</code></td><td>1×/month, 1st 04:00</td></tr>
+    </table>
+
+    <h3>Storage buckets — live</h3>
+    <p style="font-size:13px;color:var(--text-dim)"><code>in.c-kds-team-ex-bubble-io-122491135</code>, <code>in.c-kds-team-ex-bubble-io-122527414</code>, <code>in.c-stage-data</code>, <code>in.c-wbr-sheet</code>, <code>in.c-keboola-ex-telemetry-data-270972036</code>, <code>out.c-reporting-v2</code>, <code>out.c-Project-Dashboard---weekly-funnel</code>, <code>out.c-Project-Dashboard---event-attr</code>, <code>out.c-Project-Dashboard---hires-drill-down</code>, <code>out.c-MBR-Contacted---event-based-attribution</code>, <code>out.c-WBRMBR-weekly-aggregations</code>, <code>out.c-TTH---tth-jobs</code>, <code>out.c-Weekly-Summary---PBI-Weekly-Progress-port</code>.</p>
+
+    <h3>Storage buckets — safe to delete (~700 MB)</h3>
+    <p style="font-size:13px;color:var(--text-dim)"><code>out.c-reporting</code> (v1), <code>in.c-ex-recruitee</code>, <code>in.c-ex-recruitee-current</code>, <code>in.c-ex-recruitee-internal</code>, <code>in.c-ex-recruitee-sourcing-backup</code>, <code>in.c-ex-replyio</code>, <code>in.c-keboola-ex-gcalendar-585671508</code>, <code>in.c-keboola-ex-google-drive-454298387</code>.</p>
+
+    <hr>
+    <p style="color:var(--text-dimmer); font-size:12px;">Generated 2026-06-03 from live Keboola APIs + repo source. To rebuild, open this doc in Cowork and say "rebuild data lineage from current state."</p>
+
+  </main>
+</div>
+</body>
+</html>

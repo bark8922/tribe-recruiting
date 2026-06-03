@@ -3090,14 +3090,29 @@ const TSSummaryTab = ({ data }) => {
         filteredRows.forEach(r => { if (TS_SUMMARY_ROSTER.has(r.ts)) t.viewed += r.viewed || 0; });
       }
     } else {
+      // PD-rows path (active). Everything except Viewed comes from filteredRows
+      // (already client/sourcer/period/archive-filtered). Viewed is pulled from
+      // ts_summary because PD's `viewed` CTE hardcodes ts='' (events only attributed
+      // to TA), so PD rows have 0 viewed under any sourcer filter. ts_summary has
+      // per-sourcer-per-week viewed. Limitation: ts_summary has no client column, so
+      // when a client filter is active, Viewed is approximate (sourcer's total views
+      // across all their clients).
       filteredRows.forEach(r => {
         if (!TS_SUMMARY_ROSTER.has(r.ts)) return;
-        t.viewed += r.viewed || 0;
         t.contacted += r.contacted || 0;
         t.positive_response += r.positive_response || 0;
         t.actual_screens += r.actual_screens || 0;
         t.ats += r.ats || 0;
         t.offers += r.offered || 0;
+      });
+      // Viewed: filter ts_summary by same period (via week-set) + sourcer filter.
+      tsSummary.forEach(r => {
+        if (r.iso_year < 2024 || r.iso_year > 2030) return;
+        if (periodWeekSet && !periodWeekSet.has(`${r.iso_year}-W${String(r.iso_week).padStart(2, '0')}`)) return;
+        if (sourcer !== 'All' && r.ts !== sourcer) return;
+        if (!TS_SUMMARY_ROSTER.has(r.ts)) return;
+        t.viewed += r.viewed || 0;
+        t.reacted += r.reacted || 0;
       });
       t.hires = filteredHires.filter(h => TS_SUMMARY_ROSTER.has(h.ts)).length;
     }
@@ -3116,7 +3131,7 @@ const TSSummaryTab = ({ data }) => {
       const conv = (prev != null && prev > 0) ? s.count / prev : null;
       return { ...s, conv };
     });
-  }, [useTsSummary, tsSummary, filteredRows, filteredHires, year, quarter, month, sourcer]);
+  }, [useTsSummary, tsSummary, filteredRows, filteredHires, year, quarter, month, sourcer, periodWeekSet]);
 
   // Monthly trends — three ratios over time. Ignores year/quarter/month filters
   // (always shows full 2024-present history) so the user sees historical context

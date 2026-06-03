@@ -19,10 +19,21 @@
 --   External = job.is_external_recruiter
 --
 -- Metric sources:
---   Contacted / Actual Screens / ATS / Offered / Hired → candidate_stage.date_*
+--   Contacted / Offered / Hired                        → candidate_stage.date_*
+--   Screens (Recruiter Screens)                        → candidate_stage.date_screen
+--   Actual Screens (2026-06-03 fix)                    → candidate_stage.date_screen_actual
+--                                                        AND candidate has 'Evaluation' event
+--   ATS (2026-06-03 fix)                               → candidate_stage.date_interview
+--                                                        AND candidate has 'Moved to ATS' event
 --   Positive Response                                  → event table
 --     event_type='Moved to stage' AND moved_to_stageType='Positive Response',
 --     counted on event.date_created.
+--
+-- Why event gates on Actual Screens + ATS (added 2026-06-03):
+--   Per Blake: "Actual Screens" means the candidate actually went through evaluation,
+--   not just that date_screen_actual got typed in. Mirrors ts_summary.sql gates +
+--   matches PBI canon. Pre-fix PD over-counted by ~5-7% on these two metrics vs the
+--   correct definition (Andrea Apr 2026: 80 → ~75 act, 35 → ~31 ats).
 --
 -- Filters (canonical, matches WBR/MBR):
 --   candidate.is_candidate_archived <> 'true'
@@ -73,6 +84,19 @@ stage AS (
     TRY_TO_DATE(cs."date_offer")         AS doff,
     TRY_TO_DATE(cs."date_hired")         AS dh
   FROM "KEBOOLA_855"."out.c-reporting-v2"."candidate_stage" cs
+),
+-- Event-gate CTEs (added 2026-06-03). Mirror ts_summary.sql so Actual Screens + ATS
+-- mean what their labels say (candidate went through evaluation / was moved to ATS),
+-- not just "the date field got filled in."
+eval_ev AS (
+  SELECT DISTINCT "candidate_id"
+  FROM "KEBOOLA_855"."out.c-reporting-v2"."event"
+  WHERE "event_type" = 'Evaluation'
+),
+ats_ev AS (
+  SELECT DISTINCT "candidate_id"
+  FROM "KEBOOLA_855"."out.c-reporting-v2"."event"
+  WHERE "moved_to_stage" = 'Moved to ATS'
 ),
 joined AS (
   SELECT
@@ -125,17 +149,25 @@ contacted AS (
   GROUP BY 1,2,3,4,5,6,7,8,9,10
 ),
 actual_screens AS (
+  -- 2026-06-03: gate on Evaluation event (was: date alone). See header comment.
   SELECT client, job_id, job_title, job_category, ta, ts, candidate_source, is_external_recruiter,
          YEAROFWEEKISO(dsa) AS iso_year, WEEKISO(dsa) AS iso_week,
          COUNT(DISTINCT "candidate_id") AS actual_screens
-  FROM joined WHERE dsa IS NOT NULL AND YEAROFWEEKISO(dsa) >= 2025
+  FROM joined
+  WHERE dsa IS NOT NULL
+    AND YEAROFWEEKISO(dsa) >= 2025
+    AND "candidate_id" IN (SELECT "candidate_id" FROM eval_ev)
   GROUP BY 1,2,3,4,5,6,7,8,9,10
 ),
 ats_ AS (
+  -- 2026-06-03: gate on 'Moved to ATS' event (was: date alone). See header comment.
   SELECT client, job_id, job_title, job_category, ta, ts, candidate_source, is_external_recruiter,
          YEAROFWEEKISO(di) AS iso_year, WEEKISO(di) AS iso_week,
          COUNT(DISTINCT "candidate_id") AS ats
-  FROM joined WHERE di IS NOT NULL AND YEAROFWEEKISO(di) >= 2025
+  FROM joined
+  WHERE di IS NOT NULL
+    AND YEAROFWEEKISO(di) >= 2025
+    AND "candidate_id" IN (SELECT "candidate_id" FROM ats_ev)
   GROUP BY 1,2,3,4,5,6,7,8,9,10
 ),
 offers AS (
@@ -202,14 +234,3 @@ SELECT
   COALESCE(a.actual_screens,     0) AS "ACTUAL_SCREENS",
   COALESCE(t.ats,                0) AS "ATS",
   COALESCE(o.offered,            0) AS "OFFERED",
-  COALESCE(h.hired,              0) AS "HIRED"
-FROM keys k
-LEFT JOIN viewed         v ON v.client=k.client AND v.job_id=k.job_id AND v.ta=k.ta AND v.ts=k.ts AND v.candidate_source=k.candidate_source AND v.iso_year=k.iso_year AND v.iso_week=k.iso_week
-LEFT JOIN contacted      c ON c.client=k.client AND c.job_id=k.job_id AND c.ta=k.ta AND c.ts=k.ts AND c.candidate_source=k.candidate_source AND c.iso_year=k.iso_year AND c.iso_week=k.iso_week
-LEFT JOIN screens       sc ON sc.client=k.client AND sc.job_id=k.job_id AND sc.ta=k.ta AND sc.ts=k.ts AND sc.candidate_source=k.candidate_source AND sc.iso_year=k.iso_year AND sc.iso_week=k.iso_week
-LEFT JOIN actual_screens a ON a.client=k.client AND a.job_id=k.job_id AND a.ta=k.ta AND a.ts=k.ts AND a.candidate_source=k.candidate_source AND a.iso_year=k.iso_year AND a.iso_week=k.iso_week
-LEFT JOIN ats_           t ON t.client=k.client AND t.job_id=k.job_id AND t.ta=k.ta AND t.ts=k.ts AND t.candidate_source=k.candidate_source AND t.iso_year=k.iso_year AND t.iso_week=k.iso_week
-LEFT JOIN offers         o ON o.client=k.client AND o.job_id=k.job_id AND o.ta=k.ta AND o.ts=k.ts AND o.candidate_source=k.candidate_source AND o.iso_year=k.iso_year AND o.iso_week=k.iso_week
-LEFT JOIN hires          h ON h.client=k.client AND h.job_id=k.job_id AND h.ta=k.ta AND h.ts=k.ts AND h.candidate_source=k.candidate_source AND h.iso_year=k.iso_year AND h.iso_week=k.iso_week
-LEFT JOIN pos_resp       p ON p.client=k.client AND p.job_id=k.job_id AND p.ta=k.ta AND p.ts=k.ts AND p.candidate_source=k.candidate_source AND p.iso_year=k.iso_year AND p.iso_week=k.iso_week
-ORDER BY k.client, k.job_id, k.iso_year, k.iso_week

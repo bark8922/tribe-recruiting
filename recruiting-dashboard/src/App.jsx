@@ -2778,15 +2778,17 @@ const isoWeekToQuarter = (year, week) => {
 };
 
 const TSSummaryTab = ({ data }) => {
-  // Prefer the dedicated ts_summary aggregate (PBI-aligned attribution: event.who_created_event_first
-  // + is_job_archived=False + test=False + Current_TS roster + test-client exclusions).
-  // Validated 2026-04-27: 11/11 PBI sourcers within 10% drift vs snapshot data (2).xlsx.
-  // Falls back to PD-rows-based aggregation if ts_summary is empty (e.g., Flow hasn't run yet
-  // since the new SQL block was added). The fallback uses job-level TS (job.job_sourcer) which
-  // mismatches PBI on Marina/Elena/Milica/Rodrigo/Valeriia by 50-370% — see
-  // legacy-pbix/snapshots-2026-04-24/INDEX.md and project_kpi_ts_summary_tab_20260427.md memory.
-  const tsSummary = data.ts_summary || [];
-  const useTsSummary = tsSummary.length > 0;
+  // 2026-06-03 (Andrea/Sanja feedback): rebuilt to derive from project_dashboard.rows so
+  // this tab matches Project Dashboard numbers for the same period. Attribution =
+  // candidate_sourcer (same as PD). Archive filter is now a UI toggle (default INCLUDE
+  // — matches PBI Weekly Progress canon + Gustavo's Sourcing Dashboard rule).
+  // Year/Quarter/Month dropdowns map to calendar ranges via pdWeekSetFor: picking
+  // "2026-04" produces {2026-W14..2026-W18}, exactly matching PD's 01/04 → 30/04.
+  // Weekly grain means boundary weeks spill (W14 Mar 30-Apr 5, W18 Apr 27-May 3).
+  // Same behaviour as PD. PD's Actual Screens / ATS are now event-gated (Keboola fix
+  // 2026-06-03), so the two tabs reconcile to the unit.
+  const tsSummary = data.ts_summary || []; // legacy, no longer used for aggregation
+  const useTsSummary = false; // forced PD-rows path
   const rows = (data.project_dashboard && data.project_dashboard.rows) || [];
   const hires = data.project_dashboard_hires || [];
   const jobs = data.jobs || [];
@@ -2804,6 +2806,14 @@ const TSSummaryTab = ({ data }) => {
   const [sourcer, setSourcer] = useState('All');
   const [techRoleFilter, setTechRoleFilter] = useState('All');
   const [includeExternal, setIncludeExternal] = useState(false);
+  const [includeArchived, setIncludeArchived] = useState(true);
+
+  // Set of archived job_ids — drives the "Include archived jobs" toggle.
+  const archivedJobIds = useMemo(() => {
+    const s = new Set();
+    jobs.forEach(j => { if (String(j.is_job_archived || '').toLowerCase() === 'true') s.add(j.job_id); });
+    return s;
+  }, [jobs]);
 
   // Map job_id → tech_role flag (from tth_jobs which has the canonical calc column)
   const techRoleByJob = useMemo(() => {
@@ -2833,15 +2843,21 @@ const TSSummaryTab = ({ data }) => {
   const months = useMemo(() => {
     if (year === 'All') return ['All'];
     const ms = new Set();
+    // Each ISO week spans 7 days — add months of Mon AND Sun so boundary weeks
+    // (e.g. W14 Mar 30-Apr 5) appear under both March and April.
     rows.forEach(r => {
       if (r.iso_year !== Number(year)) return;
-      ms.add(isoWeekToMonth(r.iso_year, r.iso_week));
+      const mon = isoWeekToDate(r.iso_year, r.iso_week);
+      const sun = new Date(mon.getTime() + 6 * 86400000);
+      const ym = (d) => `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`;
+      ms.add(ym(mon));
+      ms.add(ym(sun));
     });
     hires.forEach(h => {
       if (!h.date_hired || h.date_hired.slice(0, 4) !== year) return;
       ms.add(h.date_hired.slice(0, 7));
     });
-    return ['All', ...Array.from(ms).sort()];
+    return ['All', ...Array.from(ms).filter(m => m.startsWith(year)).sort()];
   }, [rows, hires, year]);
 
   const clients = useMemo(() => {
@@ -2856,26 +2872,39 @@ const TSSummaryTab = ({ data }) => {
     return ['All', ...Array.from(ss).sort()];
   }, [rows]);
 
-  // Period match — used to filter both rows (iso_year+week) and hires (date_hired)
+  // Year/Quarter/Month → calendar date range → ISO week set via pdWeekSetFor.
+  // Picking "2026-04" produces {2026-W14..2026-W18}, exactly matching PD's
+  // 01/04 → 30/04 picker. Boundary weeks spill (W14 starts Mar 30, W18 ends May 3).
+  const [periodStart, periodEnd] = useMemo(() => {
+    if (year === 'All') return [null, null];
+    const y = Number(year);
+    if (month !== 'All' && /^\d{4}-\d{2}$/.test(month)) {
+      const m = Number(month.slice(5, 7));
+      return [new Date(Date.UTC(y, m - 1, 1)), new Date(Date.UTC(y, m, 0))];
+    }
+    if (quarter !== 'All') {
+      const q = Number(quarter.replace('Q', ''));
+      return [new Date(Date.UTC(y, (q - 1) * 3, 1)), new Date(Date.UTC(y, q * 3, 0))];
+    }
+    return [new Date(Date.UTC(y, 0, 1)), new Date(Date.UTC(y, 11, 31))];
+  }, [year, quarter, month]);
+
+  const periodWeekSet = useMemo(() => {
+    if (!periodStart || !periodEnd) return null;
+    return pdWeekSetFor(periodStart, periodEnd);
+  }, [periodStart, periodEnd]);
+
   const rowMatchesPeriod = (r) => {
-    if (r.iso_year < 2024 || r.iso_year > 2030) return false; // skip bad iso years (e.g. 2202)
-    if (year === 'All') return true;
-    if (r.iso_year !== Number(year)) return false;
-    if (month !== 'All') return isoWeekToMonth(r.iso_year, r.iso_week) === month;
-    if (quarter !== 'All') return isoWeekToQuarter(r.iso_year, r.iso_week) === quarter;
-    return true;
+    if (r.iso_year < 2024 || r.iso_year > 2030) return false;
+    if (!periodWeekSet) return true;
+    return periodWeekSet.has(`${r.iso_year}-W${String(r.iso_week).padStart(2, '0')}`);
   };
   const hireMatchesPeriod = (h) => {
     if (!h.date_hired) return false;
-    const hy = h.date_hired.slice(0, 4);
-    if (year !== 'All' && hy !== year) return false;
-    if (month !== 'All' && h.date_hired.slice(0, 7) !== month) return false;
-    if (quarter !== 'All') {
-      const m = Number(h.date_hired.slice(5, 7));
-      const qNum = Number(quarter.replace('Q', ''));
-      if (Math.floor((m - 1) / 3) + 1 !== qNum) return false;
-    }
-    return true;
+    if (!periodStart || !periodEnd) return true;
+    const startStr = pdIsoDate(periodStart);
+    const endStr = pdIsoDate(periodEnd);
+    return h.date_hired >= startStr && h.date_hired <= endStr;
   };
 
   // Apply all filters to PD rows
@@ -2885,14 +2914,12 @@ const TSSummaryTab = ({ data }) => {
     if (sourcer !== 'All' && r.ts !== sourcer) return false;
     if (techRoleFilter !== 'All' && techRoleFor(r.job_id) !== techRoleFilter) return false;
     if (!includeExternal && r.is_external_recruiter) return false;
+    if (!includeArchived && archivedJobIds.has(r.job_id)) return false;
     return true;
-  }), [rows, year, quarter, month, client, sourcer, techRoleFilter, includeExternal, techRoleByJob, categoryByJob]);
+  }), [rows, periodWeekSet, client, sourcer, techRoleFilter, includeExternal, includeArchived, archivedJobIds, techRoleByJob, categoryByJob]);
 
-  // Apply filters to hires.
-  // Hard-cap to TS_SUMMARY_ROSTER (12 names) so the KPI cards count hires by
-  // the Current_TS team only. Without this filter, project_dashboard_hires
-  // returns all-company hires (~1,320 in 2026) instead of just sourcing team
-  // hires (~6) — making the Hires KPI card meaningless on a TS-only page.
+  // Apply filters to hires. Hard-capped to TS_SUMMARY_ROSTER so the Hires KPI
+  // counts the sourcing team only (~6 in 2026), not all-company (~1,320).
   const filteredHires = useMemo(() => hires.filter(h => {
     if (!h.ts || !TS_SUMMARY_ROSTER.has(h.ts)) return false;
     if (!hireMatchesPeriod(h)) return false;
@@ -2900,8 +2927,9 @@ const TSSummaryTab = ({ data }) => {
     if (sourcer !== 'All' && h.ts !== sourcer) return false;
     if (techRoleFilter !== 'All' && techRoleFor(h.job_id) !== techRoleFilter) return false;
     if (!includeExternal && h.is_external_recruiter) return false;
+    if (!includeArchived && archivedJobIds.has(h.job_id)) return false;
     return true;
-  }), [hires, year, quarter, month, client, sourcer, techRoleFilter, includeExternal, techRoleByJob, categoryByJob]);
+  }), [hires, periodStart, periodEnd, client, sourcer, techRoleFilter, includeExternal, includeArchived, archivedJobIds, techRoleByJob, categoryByJob]);
 
   // KPI cards. Prefer ts_summary aggregate (PBI-aligned) when available.
   // Without it, fall back to project_dashboard_hires filtered to the TS roster
@@ -3251,24 +3279,14 @@ const TSSummaryTab = ({ data }) => {
           </div>
         </div>
         <div className="text-xs text-right">
-          {useTsSummary ? (
-            <span className="text-green-400">ts_summary aggregate &middot; PBI-aligned</span>
-          ) : (
-            <span className="text-yellow-400">PD-rows fallback &middot; awaiting Flow refresh</span>
-          )}<br />
+          <span className="text-green-400">PD-rows aggregation &middot; matches Project Dashboard</span><br />
           <span className="text-gray-500">
-            {useTsSummary ? `${tsSummary.length.toLocaleString()} (sourcer, week) rows` : `${filteredRows.length.toLocaleString()} PD rows`} &middot; {filteredHires.length.toLocaleString()} hires
+            {filteredRows.length.toLocaleString()} PD rows &middot; {filteredHires.length.toLocaleString()} hires
           </span>
         </div>
       </div>
 
-      {(quarter !== 'All' || month !== 'All') && useTsSummary && tsSummary.every(r => r.iso_week === 0) && (
-        <div className="bg-yellow-900/40 border border-yellow-700 rounded-lg px-4 py-2 text-xs text-yellow-200">
-          ⚠ Quarter/Month filters are showing YEAR totals — weekly data hasn't been refreshed by the Flow yet. Numbers don't reflect the {quarter !== 'All' ? quarter : month} cut. Will resolve on next Flow run.
-        </div>
-      )}
-
-      <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
+      <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
         <Select label="Year" value={year} onChange={v => { setYear(v); setQuarter('All'); setMonth('All'); }} options={years} />
         <Select label="Quarter" value={quarter} onChange={v => { setQuarter(v); setMonth('All'); }} options={year === 'All' ? ['All'] : ['All', 'Q1', 'Q2', 'Q3', 'Q4']} />
         <Select label="Month" value={month} onChange={setMonth} options={months} />
@@ -3280,6 +3298,13 @@ const TSSummaryTab = ({ data }) => {
             <input type="checkbox" checked={includeExternal} onChange={e => setIncludeExternal(e.target.checked)}
               className="rounded" />
             Include external recruiter
+          </label>
+        </div>
+        <div className="flex items-end">
+          <label className="flex items-center gap-2 text-xs text-gray-300 pb-1.5 cursor-pointer">
+            <input type="checkbox" checked={includeArchived} onChange={e => setIncludeArchived(e.target.checked)}
+              className="rounded" />
+            Include archived jobs
           </label>
         </div>
       </div>
@@ -3339,7 +3364,7 @@ const TSSummaryTab = ({ data }) => {
           </div>
           <div className="px-4 py-2 text-xs text-gray-500 border-t border-gray-700 leading-relaxed">
             Conversion % is from the previous stage. Recruiter Screens omitted (PBI funnel chains Pos Response &rarr; Actual Screens directly).
-            {funnel[0] && funnel[0].count === 0 && <span className="text-yellow-400"> Viewed = 0 — awaiting Flow refresh of new ts_summary.viewed column.</span>}
+            {funnel[0] && funnel[0].count === 0 && sourcer !== 'All' && <span className="text-yellow-400"> Viewed = 0 — LinkedIn views are currently attributed to TA only; sourcer-level views fix in flight.</span>}
           </div>
         </div>
 
@@ -3464,10 +3489,7 @@ const TSSummaryTab = ({ data }) => {
       </div>
 
       <div className="text-xs text-gray-500 leading-relaxed">
-        Per-Sourcer table + trends: {useTsSummary
-          ? 'sourced from data.ts_summary (Keboola block b0.c6, attribution event.who_created_event_first; filters is_job_archived=False, test=False, Current_TS roster, test-client exclusions). Validated 2026-04-27: 11/11 PBI sourcers within 10% drift vs data (2).xlsx.'
-          : 'fallback: project_dashboard.rows (job-level TS attribution mismatches PBI by 50-370% on Marina, Elena, Milica, Rodrigo, Valeriia). Will switch to data.ts_summary on next Flow refresh.'}
-        <br />
+        Per-Sourcer table + funnel sourced from <code>project_dashboard.rows</code> (attribution = <code>candidate.candidate_sourcer</code>; same as Project Dashboard tab). Year/Quarter/Month picker uses calendar dates mapped to ISO week set via <code>pdWeekSetFor</code> — picking "2026-04" matches PD's 01/04 → 30/04. Numbers reconcile to the unit with Project Dashboard.<br />
         Pipelines, hires, KPIs from project_dashboard_hires, tth_jobs, jobs. Tech Role from tth_jobs.tech_role with job_category fallback. Disqualification matrix deferred.
       </div>
     </div>

@@ -81,6 +81,7 @@ SNOW_TS_CONV = HERE / "snowflake_ts_conversion.csv"
 SNOW_TS_JOBS = HERE / "snowflake_ts_jobs.csv"
 SNOW_AUX = HERE / "snowflake_aux_12w.csv"
 SNOW_TS_SUMMARY = HERE / "snowflake_ts_summary.csv"  # per-sourcer x per-week (KPI-TS Summary tab)
+SNOW_TS_SUMMARY_BY_CLIENT = HERE / "snowflake_ts_summary_by_client.csv"  # per-(sourcer, client, week) — feeds client-filtered viewed/reacted on PD + TS Summary
 SNOW_PROJECT_DASHBOARD = HERE / "snowflake_project_dashboard.csv"
 SNOW_PROJECT_DASHBOARD_EVENTATTR = HERE / "snowflake_project_dashboard_eventattr.csv"  # parallel event-based attribution
 SNOW_PROJECT_HIRES = HERE / "snowflake_project_dashboard_hires.csv"
@@ -1147,6 +1148,41 @@ def load_ts_summary():
     return rows
 
 
+def load_ts_summary_by_client():
+    """Return [{ts, client, iso_year, iso_week, viewed, reacted}] from
+    snowflake_ts_summary_by_client.csv. Feeds the dashboard when a client filter
+    is applied to viewed/reacted (PD per-client rollup and TS Summary funnel).
+
+    Why a separate aggregate: the main project_dashboard table can't carry
+    per-sourcer viewed without exploding row count past Cloudflare's 25MB asset
+    limit. This dedicated (ts, client, week) table is ~5k rows — tiny.
+
+    Returns [] if CSV missing (Flow may not have run yet for the new transform).
+    """
+    if not SNOW_TS_SUMMARY_BY_CLIENT.exists():
+        return []
+    rows = []
+    def _g(row, key):
+        v = _ci(row, key)
+        if v is None or v == "":
+            return 0
+        try:
+            return int(float(v))
+        except (TypeError, ValueError):
+            return 0
+    with SNOW_TS_SUMMARY_BY_CLIENT.open() as f:
+        for row in csv.DictReader(f):
+            rows.append({
+                "ts": _ci(row, "ts"),
+                "client": _ci(row, "client"),
+                "iso_year": int(_ci(row, "iso_year")),
+                "iso_week": int(_ci(row, "iso_week")),
+                "viewed": _g(row, "viewed"),
+                "reacted": _g(row, "reacted"),
+            })
+    return rows
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Computed surfaces
 # ─────────────────────────────────────────────────────────────────────────────
@@ -1841,6 +1877,13 @@ def main():
     out["ts_summary"] = load_ts_summary()
     if out["ts_summary"]:
         print(f"  ts_summary: {len(out['ts_summary'])} (sourcer, year, week) rows")
+
+    # ts_summary_by_client - small (sourcer, client, week) aggregate for client-
+    # filtered viewed/reacted. Powers PD per-client-row viewed when a sourcer is
+    # selected, and TS Summary funnel viewed/reacted when a client is selected.
+    out["ts_summary_by_client"] = load_ts_summary_by_client()
+    if out["ts_summary_by_client"]:
+        print(f"  ts_summary_by_client: {len(out['ts_summary_by_client'])} (sourcer, client, week) rows")
 
     # Internal Recruiting tab (Phase 2a, 2026-05-01) — Bubble-only port of
     # Andy's PBI Internal Recruitment page. Tribe.xyz (IR) jobs only.

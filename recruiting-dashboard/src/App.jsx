@@ -1859,9 +1859,9 @@ const ProjectDashboardTab = ({ data }) => {
       row.offered += r.offered; row.hired += r.hired;
     }
     // 2026-06-04: when filtered by sourcer, PD's viewed CTE has ts='' (job-level
-    // TA attribution only). Override per-client viewed with ts_summary_by_client
-    // totals so Naledi-style "0 LI views" is fixed at the client-rollup level.
-    // Per-job viewed remains 0 in this mode — fixable later if needed.
+    // TA attribution only). Surface client-level viewed totals from ts_summary_by_client.
+    // Includes view-only clients (sourcer viewed candidates but hasn't contacted/screened
+    // anyone there yet) — those become new rows in the per-client rollup.
     if (filterTs) {
       const tsByClient = (data.ts_summary_by_client || []).filter(r => {
         if (r.ts !== filterTs) return false;
@@ -1873,9 +1873,19 @@ const ProjectDashboardTab = ({ data }) => {
         const c = normalizeClientPD(r.client);
         viewedByClient[c] = (viewedByClient[c] || 0) + (r.viewed || 0);
       });
+      // Overwrite viewed on existing rows + add new rows for view-only clients.
       for (const row of m.values()) {
         if (viewedByClient[row.client] != null) row.viewed = viewedByClient[row.client];
       }
+      Object.entries(viewedByClient).forEach(([c, v]) => {
+        if (!m.has(c) && v > 0) {
+          m.set(c, {
+            client: c, jobIds: new Set(), tas: new Set(), tses: new Set([filterTs]),
+            viewed: v, contacted: 0, positive_response: 0,
+            screens: 0, actual_screens: 0, ats: 0, offered: 0, hired: 0,
+          });
+        }
+      });
     }
     return Array.from(m.values()).sort((a, b) => a.client.localeCompare(b.client));
   }, [filtered, filterTs, weekSet, data]);
@@ -2826,6 +2836,15 @@ const TSSummaryTab = ({ data }) => {
   const [techRoleFilter, setTechRoleFilter] = useState('All');
   const [includeExternal, setIncludeExternal] = useState(false);
   const [includeArchived, setIncludeArchived] = useState(true);
+  // Per-sourcer drill-down expansion. Click a sourcer row in the Per-Sourcer
+  // table to reveal that sourcer's breakdown by role. Stored as a Set so
+  // multiple sourcers can be expanded simultaneously.
+  const [expandedSourcers, setExpandedSourcers] = useState(() => new Set());
+  const toggleSourcer = (ts) => setExpandedSourcers(prev => {
+    const next = new Set(prev);
+    if (next.has(ts)) next.delete(ts); else next.add(ts);
+    return next;
+  });
 
   // Set of archived job_ids — drives the "Include archived jobs" toggle.
   const archivedJobIds = useMemo(() => {
@@ -3070,6 +3089,60 @@ const TSSummaryTab = ({ data }) => {
       .filter(x => x.contacted + x.actual_screens + x.hires > 0)
       .sort((a, b) => a.sourcer.localeCompare(b.sourcer));
   }, [tsSummary, useTsSummary, filteredRows, filteredHires, year, quarter, month, sourcer]);
+
+  // Per-(sourcer, job) breakdown for the drill-down rows in the Per-Sourcer
+  // table. Sums weekly PD rows by (ts, job_id), attaches hire counts and the
+  // archived flag, and groups them under each sourcer sorted by actual_screens
+  // desc. Same attribution + filters as `perSourcer` above. Answers Gustavo's
+  // 2026-06-04 question — "on which roles is Andrea's pipeline actually
+  // happening, and which of them got archived?".
+  const perSourcerJobs = useMemo(() => {
+    const byTs = {}; // ts -> { job_id -> agg }
+    filteredRows.forEach(r => {
+      if (!r.ts || !TS_SUMMARY_ROSTER.has(r.ts)) return;
+      if (!r.job_id) return;
+      if (!byTs[r.ts]) byTs[r.ts] = {};
+      const bucket = byTs[r.ts];
+      if (!bucket[r.job_id]) bucket[r.job_id] = {
+        job_id: r.job_id,
+        job_title: r.job_title || '(untitled)',
+        client: r.client || '',
+        archived: archivedJobIds.has(r.job_id),
+        viewed: 0, contacted: 0, positive_response: 0, screens: 0,
+        actual_screens: 0, ats: 0, offered: 0, hires: 0,
+      };
+      const a = bucket[r.job_id];
+      a.viewed += r.viewed || 0;
+      a.contacted += r.contacted || 0;
+      a.positive_response += r.positive_response || 0;
+      a.screens += r.screens || 0;
+      a.actual_screens += r.actual_screens || 0;
+      a.ats += r.ats || 0;
+      a.offered += r.offered || 0;
+    });
+    filteredHires.forEach(h => {
+      if (!h.ts || !TS_SUMMARY_ROSTER.has(h.ts)) return;
+      if (!h.job_id) return;
+      if (!byTs[h.ts]) byTs[h.ts] = {};
+      const bucket = byTs[h.ts];
+      if (!bucket[h.job_id]) bucket[h.job_id] = {
+        job_id: h.job_id,
+        job_title: h.job_title || '(untitled)',
+        client: h.client || '',
+        archived: archivedJobIds.has(h.job_id),
+        viewed: 0, contacted: 0, positive_response: 0, screens: 0,
+        actual_screens: 0, ats: 0, offered: 0, hires: 0,
+      };
+      bucket[h.job_id].hires += 1;
+    });
+    const out = {};
+    Object.keys(byTs).forEach(ts => {
+      out[ts] = Object.values(byTs[ts])
+        .filter(j => j.contacted + j.actual_screens + j.hires > 0)
+        .sort((a, b) => b.actual_screens - a.actual_screens || b.contacted - a.contacted);
+    });
+    return out;
+  }, [filteredRows, filteredHires, archivedJobIds]);
 
   // Funnel — 8 PBI stages in order:
   // Viewed -> Contacted -> Reacted -> Positive Response -> Actual Screens -> Move to ATS -> Offers -> Hired
@@ -3412,7 +3485,8 @@ const TSSummaryTab = ({ data }) => {
             <table className="min-w-full text-xs">
               <thead className="bg-gray-900 text-gray-300">
                 <tr>
-                  <th className="text-left px-3 py-2 font-medium sticky left-0 bg-gray-900">Sourcer</th>
+                  <th className="text-left px-2 py-2 font-medium sticky left-0 bg-gray-900 w-6"></th>
+                  <th className="text-left px-3 py-2 font-medium sticky left-6 bg-gray-900">Sourcer</th>
                   <th className="text-right px-2 py-2 font-medium">% Cont&rarr;PR</th>
                   <th className="text-right px-2 py-2 font-medium">% Scr&rarr;Actual</th>
                   <th className="text-right px-2 py-2 font-medium">% Actual&rarr;ATS</th>
@@ -3427,24 +3501,65 @@ const TSSummaryTab = ({ data }) => {
                 </tr>
               </thead>
               <tbody>
-                {perSourcer.map(r => (
-                  <tr key={r.sourcer} className="border-t border-gray-700 hover:bg-gray-700">
-                    <td className="px-3 py-1.5 text-white sticky left-0 bg-gray-800">{r.sourcer}</td>
-                    <td className="px-2 py-1.5 text-right font-semibold" style={cellStyle(r.pctContPR, 'pctContPR')}>{fmtPct(r.pctContPR)}</td>
-                    <td className="px-2 py-1.5 text-right font-semibold" style={cellStyle(r.pctScrActual, 'pctScrActual')}>{fmtPct(r.pctScrActual)}</td>
-                    <td className="px-2 py-1.5 text-right font-semibold" style={cellStyle(r.pctActualATS, 'pctActualATS')}>{fmtPct(r.pctActualATS)}</td>
-                    <td className="px-2 py-1.5 text-right text-gray-300">{r.contacted.toLocaleString()}</td>
-                    <td className="px-2 py-1.5 text-right text-gray-300">{r.positive_response.toLocaleString()}</td>
-                    <td className="px-2 py-1.5 text-right text-gray-300">{r.screens.toLocaleString()}</td>
-                    <td className="px-2 py-1.5 text-right text-gray-300">{r.actual_screens.toLocaleString()}</td>
-                    <td className="px-2 py-1.5 text-right text-gray-300">{r.ats.toLocaleString()}</td>
-                    <td className="px-2 py-1.5 text-right text-gray-300">{r.offered.toLocaleString()}</td>
-                    <td className="px-2 py-1.5 text-right text-green-300 font-semibold">{r.hires.toLocaleString()}</td>
-                    <td className="px-2 py-1.5 text-right text-gray-400">{r.jobs}</td>
-                  </tr>
-                ))}
+                {perSourcer.map(r => {
+                  const isOpen = expandedSourcers.has(r.sourcer);
+                  const drilldown = perSourcerJobs[r.sourcer] || [];
+                  return (
+                    <React.Fragment key={r.sourcer}>
+                      <tr
+                        className="border-t border-gray-700 hover:bg-gray-700 cursor-pointer"
+                        onClick={() => toggleSourcer(r.sourcer)}
+                        title="Click to see this sourcer's breakdown by role"
+                      >
+                        <td className="px-2 py-1.5 text-gray-400 sticky left-0 bg-gray-800 text-center select-none">{isOpen ? '▼' : '▶'}</td>
+                        <td className="px-3 py-1.5 text-white sticky left-6 bg-gray-800">{r.sourcer}</td>
+                        <td className="px-2 py-1.5 text-right font-semibold" style={cellStyle(r.pctContPR, 'pctContPR')}>{fmtPct(r.pctContPR)}</td>
+                        <td className="px-2 py-1.5 text-right font-semibold" style={cellStyle(r.pctScrActual, 'pctScrActual')}>{fmtPct(r.pctScrActual)}</td>
+                        <td className="px-2 py-1.5 text-right font-semibold" style={cellStyle(r.pctActualATS, 'pctActualATS')}>{fmtPct(r.pctActualATS)}</td>
+                        <td className="px-2 py-1.5 text-right text-gray-300">{r.contacted.toLocaleString()}</td>
+                        <td className="px-2 py-1.5 text-right text-gray-300">{r.positive_response.toLocaleString()}</td>
+                        <td className="px-2 py-1.5 text-right text-gray-300">{r.screens.toLocaleString()}</td>
+                        <td className="px-2 py-1.5 text-right text-gray-300">{r.actual_screens.toLocaleString()}</td>
+                        <td className="px-2 py-1.5 text-right text-gray-300">{r.ats.toLocaleString()}</td>
+                        <td className="px-2 py-1.5 text-right text-gray-300">{r.offered.toLocaleString()}</td>
+                        <td className="px-2 py-1.5 text-right text-green-300 font-semibold">{r.hires.toLocaleString()}</td>
+                        <td className="px-2 py-1.5 text-right text-gray-400">{r.jobs}</td>
+                      </tr>
+                      {isOpen && drilldown.length > 0 && drilldown.map(j => {
+                        const pctContPR = j.contacted ? Math.min(1, j.positive_response / j.contacted) : null;
+                        const pctScrActual = j.screens ? Math.min(1, j.actual_screens / j.screens) : null;
+                        const pctActualATS = j.actual_screens ? Math.min(1, j.ats / j.actual_screens) : null;
+                        return (
+                          <tr key={r.sourcer + '::' + j.job_id} className="border-t border-gray-800 bg-gray-900/40 text-[11px]">
+                            <td className="px-2 py-1 sticky left-0 bg-gray-900/40"></td>
+                            <td className="px-3 py-1 sticky left-6 bg-gray-900/40 text-gray-300 max-w-[260px] truncate" title={`${j.client} — ${j.job_title}${j.archived ? ' (archived)' : ''}`}>
+                              <span className="text-gray-500">↳</span> {j.client ? <span className="text-gray-500">{j.client} · </span> : null}{j.job_title}
+                              {j.archived && <span className="ml-1 px-1 py-0.5 text-[9px] rounded bg-gray-700 text-gray-400 align-middle">archived</span>}
+                            </td>
+                            <td className="px-2 py-1 text-right text-gray-400" style={cellStyle(pctContPR, 'pctContPR')}>{fmtPct(pctContPR)}</td>
+                            <td className="px-2 py-1 text-right text-gray-400" style={cellStyle(pctScrActual, 'pctScrActual')}>{fmtPct(pctScrActual)}</td>
+                            <td className="px-2 py-1 text-right text-gray-400" style={cellStyle(pctActualATS, 'pctActualATS')}>{fmtPct(pctActualATS)}</td>
+                            <td className="px-2 py-1 text-right text-gray-400">{j.contacted.toLocaleString()}</td>
+                            <td className="px-2 py-1 text-right text-gray-400">{j.positive_response.toLocaleString()}</td>
+                            <td className="px-2 py-1 text-right text-gray-400">{j.screens.toLocaleString()}</td>
+                            <td className="px-2 py-1 text-right text-gray-400">{j.actual_screens.toLocaleString()}</td>
+                            <td className="px-2 py-1 text-right text-gray-400">{j.ats.toLocaleString()}</td>
+                            <td className="px-2 py-1 text-right text-gray-400">{j.offered.toLocaleString()}</td>
+                            <td className="px-2 py-1 text-right text-green-400/80">{j.hires ? j.hires.toLocaleString() : ''}</td>
+                            <td className="px-2 py-1 text-right text-gray-500"></td>
+                          </tr>
+                        );
+                      })}
+                      {isOpen && drilldown.length === 0 && (
+                        <tr className="border-t border-gray-800 bg-gray-900/40">
+                          <td colSpan={13} className="px-6 py-2 text-[11px] text-gray-500 italic">No per-role activity for {r.sourcer} in current filter.</td>
+                        </tr>
+                      )}
+                    </React.Fragment>
+                  );
+                })}
                 {perSourcer.length === 0 && (
-                  <tr><td colSpan={12} className="px-3 py-6 text-center text-gray-500">No sourcer activity in current filter.</td></tr>
+                  <tr><td colSpan={13} className="px-3 py-6 text-center text-gray-500">No sourcer activity in current filter.</td></tr>
                 )}
               </tbody>
             </table>
@@ -4411,122 +4526,4 @@ const ProfitabilityTab = () => {
               </tr>
             </thead>
             <tbody>
-              {computed.rows.map((r, i) => (
-                <tr key={i} className="border-b border-gray-800 hover:bg-gray-750">
-                  <td className="py-1.5 px-2 font-medium text-white">{r.client}</td>
-                  <td className="py-1.5 px-2">
-                    {r.bu && (
-                      <span
-                        className="px-2 py-0.5 rounded-full text-xs"
-                        style={{
-                          backgroundColor: (BU_BADGE_COLORS[r.bu] || '#64748b') + '25',
-                          color: BU_BADGE_COLORS[r.bu] || '#94a3b8',
-                        }}
-                      >
-                        {r.bu}
-                      </span>
-                    )}
-                  </td>
-                  <td className="py-1.5 px-2 text-right text-blue-400">{fmtEUR(r.rev)}</td>
-                  <td className="py-1.5 px-2 text-right text-red-400">{fmtEUR(r.directCost)}</td>
-                  <td className={`py-1.5 px-2 text-right font-medium ${r.directProfit >= 0 ? 'text-green-400' : 'text-red-400'}`}>{fmtEUR(r.directProfit)}</td>
-                  <td className={`py-1.5 px-2 text-right ${directMarginColor(r.directMargin)}`}>{r.directMargin}%</td>
-                  <td className="py-1.5 px-2 text-right text-orange-400">{fmtEUR(r.sourcingCost)}</td>
-                  <td className={`py-1.5 px-2 text-right ${mColor(r.netMargin)}`}>{r.netMargin}%</td>
-                </tr>
-              ))}
-              {computed.totals && (
-                <tr className="bg-gray-800 font-semibold border-t-2 border-gray-600">
-                  <td className="py-2 px-2 text-white">Total ({computed.rows.length} clients)</td>
-                  <td></td>
-                  <td className="py-2 px-2 text-right text-blue-400">{fmtEUR(computed.totals.rev)}</td>
-                  <td className="py-2 px-2 text-right text-red-400">{fmtEUR(computed.totals.directCost)}</td>
-                  <td className={`py-2 px-2 text-right ${computed.totals.directProfit >= 0 ? 'text-green-400' : 'text-red-400'}`}>{fmtEUR(computed.totals.directProfit)}</td>
-                  <td className={`py-2 px-2 text-right ${directMarginColor(computed.totals.directMargin)}`}>{computed.totals.directMargin}%</td>
-                  <td className="py-2 px-2 text-right text-orange-400">{fmtEUR(computed.totals.sourcingCost)}</td>
-                  <td className={`py-2 px-2 text-right ${mColor(computed.totals.netMargin)}`}>{computed.totals.netMargin}%</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-        <p className="text-gray-500 text-xs mt-2">
-          Direct Cost = staff working on the project. Direct Profit = Revenue − Direct Cost. Sourcing Cost = sourcer + TA time allocated to the project. Net Margin = (Direct Profit − Sourcing Cost) ÷ Revenue. Overhead is excluded.
-        </p>
-      </div>
-    </div>
-  );
-};
-
-// Main Dashboard
-const RecruitingDashboard = () => {
-  // Leadership tabs (WBR/MBR) are gated by the Pages Functions auth flow:
-  // /functions/api/login.ts sets a non-HttpOnly `tribe_role=leadership` cookie
-  // for the 23 leadership emails. We also keep the legacy ?role=leadership URL
-  // param as a fallback for direct testing.
-  // Cookie-based role detection. Director > leadership > member.
-  // Director cookie unlocks the Profitability tab in addition to WBR/MBR.
-  const role = (() => {
-    try {
-      if (typeof document !== 'undefined') {
-        const roleCookie = document.cookie
-          .split(';')
-          .map(c => c.trim())
-          .find(c => c.startsWith('tribe_role='));
-        if (roleCookie) return roleCookie.split('=')[1];
-      }
-      if (typeof window !== 'undefined') {
-        return new URLSearchParams(window.location.search).get('role') || 'member';
-      }
-      return 'member';
-    } catch (_) { return 'member'; }
-  })();
-  const isDirector = role === 'director';
-  const isLeadership = isDirector || role === 'leadership';
-  const visibleTabs = isDirector
-    ? ['project', 'weekly', 'wbr', 'mbr', 'profitability', 'tth', 'ts_summary', 'ir']
-    : isLeadership
-      ? ['project', 'weekly', 'wbr', 'mbr', 'tth', 'ts_summary', 'ir']
-      : ['project', 'weekly', 'tth', 'ts_summary', 'ir'];
-  const [activeTab, setActiveTab] = useState('project');
-  // Snap-back: if state lands on a tab the current role doesn't see, fall back
-  // to Project Dashboard. Covers both leadership-only and director-only tabs.
-  const safeActiveTab =
-    (!isLeadership && LEADERSHIP_TABS.has(activeTab)) ||
-    (!isDirector && DIRECTOR_TABS.has(activeTab))
-      ? 'project'
-      : activeTab;
-  const dashboardData = dashboardDataSnowflake;
-  return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <div className="bg-gray-800 border-b border-gray-700 px-6 py-6 flex items-start justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-white">Tribe.xyz Recruiting Dashboard</h1>
-          <p className="text-sm text-gray-400 mt-1">Snowflake pipeline</p>
-        </div>
-      </div>
-      <div className="bg-gray-800 border-b border-gray-700 px-6">
-        <div className="flex gap-8">
-          {visibleTabs.map((tab) => (
-            <button key={tab} onClick={() => setActiveTab(tab)}
-              className={`py-4 px-2 font-medium border-b-2 transition-colors ${safeActiveTab === tab ? 'text-white border-white' : 'text-gray-400 border-transparent hover:text-gray-300'}`}>
-              {tab === 'wbr' ? 'WBR' : tab === 'mbr' ? 'MBR' : tab === 'profitability' ? 'Profitability' : tab === 'project' ? 'Project Dashboard' : tab === 'weekly' ? 'Weekly Summary' : tab === 'tth' ? 'Time to Hire' : tab === 'ts_summary' ? 'KPI - TS Summary' : 'Internal Recruiting'}
-            </button>
-          ))}
-        </div>
-      </div>
-      <div className="px-6 py-6">
-        {safeActiveTab === 'wbr' && isLeadership && <WBRTab data={dashboardData} />}
-        {safeActiveTab === 'mbr' && isLeadership && <MBRTab data={dashboardData} />}
-        {safeActiveTab === 'profitability' && isDirector && <ProfitabilityTab />}
-        {safeActiveTab === 'project' && <ProjectDashboardTab data={dashboardData} />}
-        {safeActiveTab === 'weekly' && <WeeklySummaryTab data={dashboardData} />}
-        {safeActiveTab === 'tth' && <TTHTab data={dashboardData} />}
-        {safeActiveTab === 'ts_summary' && <TSSummaryTab data={dashboardData} />}
-        {safeActiveTab === 'ir' && <IRTab data={dashboardData} />}
-      </div>
-    </div>
-  );
-};
-
-export default RecruitingDashboard;
+              {computed.rows.map

@@ -2836,6 +2836,15 @@ const TSSummaryTab = ({ data }) => {
   const [techRoleFilter, setTechRoleFilter] = useState('All');
   const [includeExternal, setIncludeExternal] = useState(false);
   const [includeArchived, setIncludeArchived] = useState(true);
+  // Per-sourcer drill-down expansion. Click a sourcer row in the Per-Sourcer
+  // table to reveal that sourcer's breakdown by role. Stored as a Set so
+  // multiple sourcers can be expanded simultaneously.
+  const [expandedSourcers, setExpandedSourcers] = useState(() => new Set());
+  const toggleSourcer = (ts) => setExpandedSourcers(prev => {
+    const next = new Set(prev);
+    if (next.has(ts)) next.delete(ts); else next.add(ts);
+    return next;
+  });
 
   // Set of archived job_ids — drives the "Include archived jobs" toggle.
   const archivedJobIds = useMemo(() => {
@@ -3080,6 +3089,60 @@ const TSSummaryTab = ({ data }) => {
       .filter(x => x.contacted + x.actual_screens + x.hires > 0)
       .sort((a, b) => a.sourcer.localeCompare(b.sourcer));
   }, [tsSummary, useTsSummary, filteredRows, filteredHires, year, quarter, month, sourcer]);
+
+  // Per-(sourcer, job) breakdown for the drill-down rows in the Per-Sourcer
+  // table. Sums weekly PD rows by (ts, job_id), attaches hire counts and the
+  // archived flag, and groups them under each sourcer sorted by actual_screens
+  // desc. Same attribution + filters as `perSourcer` above. Answers Gustavo's
+  // 2026-06-04 question — "on which roles is Andrea's pipeline actually
+  // happening, and which of them got archived?".
+  const perSourcerJobs = useMemo(() => {
+    const byTs = {}; // ts -> { job_id -> agg }
+    filteredRows.forEach(r => {
+      if (!r.ts || !TS_SUMMARY_ROSTER.has(r.ts)) return;
+      if (!r.job_id) return;
+      if (!byTs[r.ts]) byTs[r.ts] = {};
+      const bucket = byTs[r.ts];
+      if (!bucket[r.job_id]) bucket[r.job_id] = {
+        job_id: r.job_id,
+        job_title: r.job_title || '(untitled)',
+        client: r.client || '',
+        archived: archivedJobIds.has(r.job_id),
+        viewed: 0, contacted: 0, positive_response: 0, screens: 0,
+        actual_screens: 0, ats: 0, offered: 0, hires: 0,
+      };
+      const a = bucket[r.job_id];
+      a.viewed += r.viewed || 0;
+      a.contacted += r.contacted || 0;
+      a.positive_response += r.positive_response || 0;
+      a.screens += r.screens || 0;
+      a.actual_screens += r.actual_screens || 0;
+      a.ats += r.ats || 0;
+      a.offered += r.offered || 0;
+    });
+    filteredHires.forEach(h => {
+      if (!h.ts || !TS_SUMMARY_ROSTER.has(h.ts)) return;
+      if (!h.job_id) return;
+      if (!byTs[h.ts]) byTs[h.ts] = {};
+      const bucket = byTs[h.ts];
+      if (!bucket[h.job_id]) bucket[h.job_id] = {
+        job_id: h.job_id,
+        job_title: h.job_title || '(untitled)',
+        client: h.client || '',
+        archived: archivedJobIds.has(h.job_id),
+        viewed: 0, contacted: 0, positive_response: 0, screens: 0,
+        actual_screens: 0, ats: 0, offered: 0, hires: 0,
+      };
+      bucket[h.job_id].hires += 1;
+    });
+    const out = {};
+    Object.keys(byTs).forEach(ts => {
+      out[ts] = Object.values(byTs[ts])
+        .filter(j => j.contacted + j.actual_screens + j.hires > 0)
+        .sort((a, b) => b.actual_screens - a.actual_screens || b.contacted - a.contacted);
+    });
+    return out;
+  }, [filteredRows, filteredHires, archivedJobIds]);
 
   // Funnel — 8 PBI stages in order:
   // Viewed -> Contacted -> Reacted -> Positive Response -> Actual Screens -> Move to ATS -> Offers -> Hired
@@ -3422,7 +3485,8 @@ const TSSummaryTab = ({ data }) => {
             <table className="min-w-full text-xs">
               <thead className="bg-gray-900 text-gray-300">
                 <tr>
-                  <th className="text-left px-3 py-2 font-medium sticky left-0 bg-gray-900">Sourcer</th>
+                  <th className="text-left px-2 py-2 font-medium sticky left-0 bg-gray-900 w-6"></th>
+                  <th className="text-left px-3 py-2 font-medium sticky left-6 bg-gray-900">Sourcer</th>
                   <th className="text-right px-2 py-2 font-medium">% Cont&rarr;PR</th>
                   <th className="text-right px-2 py-2 font-medium">% Scr&rarr;Actual</th>
                   <th className="text-right px-2 py-2 font-medium">% Actual&rarr;ATS</th>
@@ -3437,24 +3501,65 @@ const TSSummaryTab = ({ data }) => {
                 </tr>
               </thead>
               <tbody>
-                {perSourcer.map(r => (
-                  <tr key={r.sourcer} className="border-t border-gray-700 hover:bg-gray-700">
-                    <td className="px-3 py-1.5 text-white sticky left-0 bg-gray-800">{r.sourcer}</td>
-                    <td className="px-2 py-1.5 text-right font-semibold" style={cellStyle(r.pctContPR, 'pctContPR')}>{fmtPct(r.pctContPR)}</td>
-                    <td className="px-2 py-1.5 text-right font-semibold" style={cellStyle(r.pctScrActual, 'pctScrActual')}>{fmtPct(r.pctScrActual)}</td>
-                    <td className="px-2 py-1.5 text-right font-semibold" style={cellStyle(r.pctActualATS, 'pctActualATS')}>{fmtPct(r.pctActualATS)}</td>
-                    <td className="px-2 py-1.5 text-right text-gray-300">{r.contacted.toLocaleString()}</td>
-                    <td className="px-2 py-1.5 text-right text-gray-300">{r.positive_response.toLocaleString()}</td>
-                    <td className="px-2 py-1.5 text-right text-gray-300">{r.screens.toLocaleString()}</td>
-                    <td className="px-2 py-1.5 text-right text-gray-300">{r.actual_screens.toLocaleString()}</td>
-                    <td className="px-2 py-1.5 text-right text-gray-300">{r.ats.toLocaleString()}</td>
-                    <td className="px-2 py-1.5 text-right text-gray-300">{r.offered.toLocaleString()}</td>
-                    <td className="px-2 py-1.5 text-right text-green-300 font-semibold">{r.hires.toLocaleString()}</td>
-                    <td className="px-2 py-1.5 text-right text-gray-400">{r.jobs}</td>
-                  </tr>
-                ))}
+                {perSourcer.map(r => {
+                  const isOpen = expandedSourcers.has(r.sourcer);
+                  const drilldown = perSourcerJobs[r.sourcer] || [];
+                  return (
+                    <React.Fragment key={r.sourcer}>
+                      <tr
+                        className="border-t border-gray-700 hover:bg-gray-700 cursor-pointer"
+                        onClick={() => toggleSourcer(r.sourcer)}
+                        title="Click to see this sourcer's breakdown by role"
+                      >
+                        <td className="px-2 py-1.5 text-gray-400 sticky left-0 bg-gray-800 text-center select-none">{isOpen ? '▼' : '▶'}</td>
+                        <td className="px-3 py-1.5 text-white sticky left-6 bg-gray-800">{r.sourcer}</td>
+                        <td className="px-2 py-1.5 text-right font-semibold" style={cellStyle(r.pctContPR, 'pctContPR')}>{fmtPct(r.pctContPR)}</td>
+                        <td className="px-2 py-1.5 text-right font-semibold" style={cellStyle(r.pctScrActual, 'pctScrActual')}>{fmtPct(r.pctScrActual)}</td>
+                        <td className="px-2 py-1.5 text-right font-semibold" style={cellStyle(r.pctActualATS, 'pctActualATS')}>{fmtPct(r.pctActualATS)}</td>
+                        <td className="px-2 py-1.5 text-right text-gray-300">{r.contacted.toLocaleString()}</td>
+                        <td className="px-2 py-1.5 text-right text-gray-300">{r.positive_response.toLocaleString()}</td>
+                        <td className="px-2 py-1.5 text-right text-gray-300">{r.screens.toLocaleString()}</td>
+                        <td className="px-2 py-1.5 text-right text-gray-300">{r.actual_screens.toLocaleString()}</td>
+                        <td className="px-2 py-1.5 text-right text-gray-300">{r.ats.toLocaleString()}</td>
+                        <td className="px-2 py-1.5 text-right text-gray-300">{r.offered.toLocaleString()}</td>
+                        <td className="px-2 py-1.5 text-right text-green-300 font-semibold">{r.hires.toLocaleString()}</td>
+                        <td className="px-2 py-1.5 text-right text-gray-400">{r.jobs}</td>
+                      </tr>
+                      {isOpen && drilldown.length > 0 && drilldown.map(j => {
+                        const pctContPR = j.contacted ? Math.min(1, j.positive_response / j.contacted) : null;
+                        const pctScrActual = j.screens ? Math.min(1, j.actual_screens / j.screens) : null;
+                        const pctActualATS = j.actual_screens ? Math.min(1, j.ats / j.actual_screens) : null;
+                        return (
+                          <tr key={r.sourcer + '::' + j.job_id} className="border-t border-gray-800 bg-gray-900/40 text-[11px]">
+                            <td className="px-2 py-1 sticky left-0 bg-gray-900/40"></td>
+                            <td className="px-3 py-1 sticky left-6 bg-gray-900/40 text-gray-300 max-w-[260px] truncate" title={`${j.client} — ${j.job_title}${j.archived ? ' (archived)' : ''}`}>
+                              <span className="text-gray-500">↳</span> {j.client ? <span className="text-gray-500">{j.client} · </span> : null}{j.job_title}
+                              {j.archived && <span className="ml-1 px-1 py-0.5 text-[9px] rounded bg-gray-700 text-gray-400 align-middle">archived</span>}
+                            </td>
+                            <td className="px-2 py-1 text-right text-gray-400" style={cellStyle(pctContPR, 'pctContPR')}>{fmtPct(pctContPR)}</td>
+                            <td className="px-2 py-1 text-right text-gray-400" style={cellStyle(pctScrActual, 'pctScrActual')}>{fmtPct(pctScrActual)}</td>
+                            <td className="px-2 py-1 text-right text-gray-400" style={cellStyle(pctActualATS, 'pctActualATS')}>{fmtPct(pctActualATS)}</td>
+                            <td className="px-2 py-1 text-right text-gray-400">{j.contacted.toLocaleString()}</td>
+                            <td className="px-2 py-1 text-right text-gray-400">{j.positive_response.toLocaleString()}</td>
+                            <td className="px-2 py-1 text-right text-gray-400">{j.screens.toLocaleString()}</td>
+                            <td className="px-2 py-1 text-right text-gray-400">{j.actual_screens.toLocaleString()}</td>
+                            <td className="px-2 py-1 text-right text-gray-400">{j.ats.toLocaleString()}</td>
+                            <td className="px-2 py-1 text-right text-gray-400">{j.offered.toLocaleString()}</td>
+                            <td className="px-2 py-1 text-right text-green-400/80">{j.hires ? j.hires.toLocaleString() : ''}</td>
+                            <td className="px-2 py-1 text-right text-gray-500"></td>
+                          </tr>
+                        );
+                      })}
+                      {isOpen && drilldown.length === 0 && (
+                        <tr className="border-t border-gray-800 bg-gray-900/40">
+                          <td colSpan={13} className="px-6 py-2 text-[11px] text-gray-500 italic">No per-role activity for {r.sourcer} in current filter.</td>
+                        </tr>
+                      )}
+                    </React.Fragment>
+                  );
+                })}
                 {perSourcer.length === 0 && (
-                  <tr><td colSpan={12} className="px-3 py-6 text-center text-gray-500">No sourcer activity in current filter.</td></tr>
+                  <tr><td colSpan={13} className="px-3 py-6 text-center text-gray-500">No sourcer activity in current filter.</td></tr>
                 )}
               </tbody>
             </table>

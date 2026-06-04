@@ -81,7 +81,6 @@ SNOW_TS_CONV = HERE / "snowflake_ts_conversion.csv"
 SNOW_TS_JOBS = HERE / "snowflake_ts_jobs.csv"
 SNOW_AUX = HERE / "snowflake_aux_12w.csv"
 SNOW_TS_SUMMARY = HERE / "snowflake_ts_summary.csv"  # per-sourcer x per-week (KPI-TS Summary tab)
-SNOW_TS_SUMMARY_BY_CLIENT = HERE / "snowflake_ts_summary_by_client.csv"  # per-(sourcer, client, week) — feeds client-filtered viewed/reacted on PD + TS Summary
 SNOW_PROJECT_DASHBOARD = HERE / "snowflake_project_dashboard.csv"
 SNOW_PROJECT_DASHBOARD_EVENTATTR = HERE / "snowflake_project_dashboard_eventattr.csv"  # parallel event-based attribution
 SNOW_PROJECT_HIRES = HERE / "snowflake_project_dashboard_hires.csv"
@@ -96,6 +95,8 @@ SNOW_IR_DQ_BY_STAGE        = HERE / "snowflake_ir_dq_by_stage.csv"
 SNOW_IR_JOBS_ACTIVE        = HERE / "snowflake_ir_jobs_active.csv"
 SNOW_IR_DQ_BYJOB_REASON    = HERE / "snowflake_ir_dq_byjob_reason.csv"
 SNOW_TTH_JOBS = HERE / "snowflake_tth_jobs.csv"
+SNOW_WEEKLY_SUMMARY = HERE / "snowflake_weekly_summary.csv"  # PBI Weekly Progress port (dim_type x dim_value x week)
+SNOW_WEEKLY_SUMMARY_BYJOB = HERE / "snowflake_weekly_summary_byjob.csv"  # person x job drill
 
 # WBR target sheet CSVs — synced by n8n workflow j5QsaTUpk4Nk1xhn.
 # These are the SINGLE SOURCE OF TRUTH for who appears in the dashboard:
@@ -611,19 +612,14 @@ def load_mbr_contacted_ev():
 
 
 def load_project_dashboard(source_path=SNOW_PROJECT_DASHBOARD):
-    """Return {"rows": [...]} from a project_dashboard funnel CSV.
+    """Return {"rows": [...]} from snowflake_project_dashboard.csv.
 
-    Default source (snowflake_project_dashboard.csv) is produced by
-    project_dashboard.sql — per-(client, job, TA, TS, category, source,
-    external, week) funnel counts with TA = job.job_recruiter attribution.
-    Powers the Project Dashboard tab.
+    Produced by project_dashboard.sql — per-(client, job, TA, TS, category,
+    source, external, day) funnel counts with 6 metrics (contacted, PR,
+    actual_screens, ats, offered, hired). Powers the Project Dashboard tab.
 
     Attribution validated 2026-04-20 against PBIX Overview (Apr 13-19):
     24/24 per-client metrics within 1-3 units.
-
-    The same parser is reused for the parallel event-attributed table
-    (snowflake_project_dashboard_eventattr.csv, TA = event.who_event_created_for)
-    via load_project_dashboard_eventattr() — identical schema.
 
     File is opt-in. Returns empty list if missing so legacy runs still work."""
     if not source_path.exists():
@@ -647,6 +643,7 @@ def load_project_dashboard(source_path=SNOW_PROJECT_DASHBOARD):
                 "iso_week":               int(row.get("ISO_WEEK") or 0),
                 "viewed":                 int(row.get("VIEWED") or 0),
                 "contacted":              int(row.get("CONTACTED") or 0),
+                "reacted":                int(row.get("REACTED") or 0),
                 "positive_response":      int(row.get("POSITIVE_RESPONSE") or 0),
                 "screens":                int(row.get("SCREENS") or 0),
                 "actual_screens":         int(row.get("ACTUAL_SCREENS") or 0),
@@ -660,10 +657,10 @@ def load_project_dashboard(source_path=SNOW_PROJECT_DASHBOARD):
 def load_project_dashboard_eventattr():
     """Return {"rows": [...]} from snowflake_project_dashboard_eventattr.csv.
 
-    Parallel to load_project_dashboard() but with event-based attribution
+    Parallel to load_project_dashboard() but event-based attribution
     (TA = event.who_event_created_for). Produced by
-    project_dashboard_eventattr.sql. Same schema; the React frontend offers an
-    attribution toggle (default = job_recruiter). Empty if file missing."""
+    project_dashboard_eventattr.sql. Same schema; React offers an attribution
+    toggle (default = job_recruiter). Empty if file missing."""
     return load_project_dashboard(source_path=SNOW_PROJECT_DASHBOARD_EVENTATTR)
 
 
@@ -870,6 +867,122 @@ def load_aux():
     return out
 
 
+def load_ir_ashby_active_pipeline():
+    """Per-(ashby_job_id, stage_title) count of currently-active apps. Empty if Ashby fetch was skipped."""
+    p = HERE / "ashby_applications.json"
+    if not p.exists(): return []
+    import json as _json
+    apps = _json.loads(p.read_text())
+    by_job_stage = {}
+    job_titles = {}
+    for a in apps:
+        if a.get("status") != "Active": continue
+        jid = (a.get("job") or {}).get("id") or ""
+        jtl = (a.get("job") or {}).get("title") or ""
+        job_titles[jid] = jtl
+        st = (a.get("currentInterviewStage") or {}).get("title") or "(none)"
+        k = (jid, st)
+        by_job_stage[k] = by_job_stage.get(k, 0) + 1
+    return [{"ashby_job_id": jid, "ashby_job_title": job_titles.get(jid, ""),
+             "stage": st, "count": n}
+            for (jid, st), n in sorted(by_job_stage.items(), key=lambda x: (-x[1], x[0]))]
+
+
+def load_ir_ashby_dq_reasons():
+    """Aggregated archive_reason counts across all Tribe Ashby applications."""
+    p = HERE / "ashby_applications.json"
+    if not p.exists(): return []
+    import json as _json
+    apps = _json.loads(p.read_text())
+    reasons = {}
+    for a in apps:
+        if a.get("status") != "Archived": continue
+        r = (a.get("archiveReason") or {}).get("text") or "(none)"
+        reasons[r] = reasons.get(r, 0) + 1
+    return [{"reason": r, "count": n} for r, n in sorted(reasons.items(), key=lambda x: -x[1])]
+
+
+def load_ir_ashby_funnel_jobweek():
+    """Per-(ashby_job_id, year, week, stage_title) count of stage entries.
+    Reads ashby_application_histories.json — a list of {applicationId, applicationHistory: [...], candidate, job}
+    written by ashby_extract.fetch_late_stage_histories(). Each applicationHistory entry has
+    {enteredStageAt, leftStageAt, title, stageNumber}."""
+    hist_p = HERE / "ashby_application_histories.json"
+    if not hist_p.exists(): return []
+    import json as _json
+    from datetime import datetime
+    histories = _json.loads(hist_p.read_text())
+    by = {}
+    for app_h in histories:
+        jid = (app_h.get("job") or {}).get("id","")
+        jtl = (app_h.get("job") or {}).get("title","")
+        for h in (app_h.get("applicationHistory") or []):
+            ent = h.get("enteredStageAt")
+            if not ent: continue
+            try:
+                d = datetime.fromisoformat(ent.replace("Z","+00:00"))
+                iso = d.isocalendar()
+            except Exception:
+                continue
+            stage = h.get("title") or ""
+            k = (jid, jtl, iso.year, iso.week, stage)
+            by[k] = by.get(k, 0) + 1
+    return [{"ashby_job_id": jid, "ashby_job_title": jtl,
+             "iso_year": y, "iso_week": w, "stage": st, "count": n}
+            for (jid, jtl, y, w, st), n in sorted(by.items())]
+
+
+def load_ir_ashby_jobs_all():
+    """All Ashby Tribe-brand jobs (any status) with openedAt/closedAt
+    timestamps. The dashboard frontend uses these to determine, per ISO
+    week, which jobs were active during that week:
+      active_in_week(W) =
+        openedAt <= sunday_of_W AND
+        (closedAt is null OR closedAt >= monday_of_W)
+    Replaces the older ir_ashby_jobs_open which only emitted Open+Draft.
+    Now emits all 79 jobs so date-windowed filters can resolve historical
+    activity correctly."""
+    p = HERE / "ashby_jobs.json"
+    if not p.exists(): return []
+    import json as _json
+    jobs = _json.loads(p.read_text())
+    return [{
+        "ashby_job_id":     j["id"],
+        "ashby_job_title":  j.get("title"),
+        "status":           j.get("status"),
+        "openedAt":         j.get("openedAt") or j.get("createdAt") or "",
+        "closedAt":         j.get("closedAt") or "",
+        "createdAt":        j.get("createdAt") or "",
+    } for j in jobs]
+
+
+def load_ir_ashby_hires():
+    """Per-(ashby_job_id, year, week) hire count from applications with status=Hired."""
+    p = HERE / "ashby_applications.json"
+    if not p.exists(): return []
+    import json as _json
+    from datetime import datetime
+    apps = _json.loads(p.read_text())
+    by = {}
+    for a in apps:
+        if a.get("status") != "Hired": continue
+        # Use updatedAt as proxy for hire date (Ashby doesn't return a hire-specific timestamp on the app object)
+        ts = a.get("updatedAt") or a.get("archivedAt")
+        if not ts: continue
+        try:
+            d = datetime.fromisoformat(ts.replace("Z","+00:00"))
+            iso = d.isocalendar()
+        except Exception:
+            continue
+        jid = (a.get("job") or {}).get("id","")
+        jtl = (a.get("job") or {}).get("title","")
+        k = (jid, jtl, iso.year, iso.week)
+        by[k] = by.get(k, 0) + 1
+    return [{"ashby_job_id": jid, "ashby_job_title": jtl,
+             "iso_year": y, "iso_week": w, "count": n}
+            for (jid, jtl, y, w), n in sorted(by.items())]
+
+
 def load_ir_funnel_jobweek():
     """Per-(job_id, ISO year, ISO week) full funnel for Tribe.xyz (IR).
     Frontend filters by job_id and aggregates across weeks."""
@@ -1030,41 +1143,6 @@ def load_ts_summary():
                 "hires": _g(row, "hires"),
                 "hires_tech": _g(row, "hires_tech"),
                 "jobs": _g(row, "jobs"),
-            })
-    return rows
-
-
-def load_ts_summary_by_client():
-    """Return [{ts, client, iso_year, iso_week, viewed, reacted}] from
-    snowflake_ts_summary_by_client.csv. Feeds the dashboard when a client filter
-    is applied to viewed/reacted (PD per-client and TS Summary funnel).
-
-    Why a separate aggregate: the main project_dashboard table can't carry
-    per-sourcer viewed without exploding row count past Cloudflare's 25MB asset
-    limit. This dedicated (ts, client, week) table is ~5k rows — tiny.
-
-    Returns [] if CSV missing (Flow may not have run yet for the new transform).
-    """
-    if not SNOW_TS_SUMMARY_BY_CLIENT.exists():
-        return []
-    rows = []
-    def _g(row, key):
-        v = _ci(row, key)
-        if v is None or v == "":
-            return 0
-        try:
-            return int(float(v))
-        except (TypeError, ValueError):
-            return 0
-    with SNOW_TS_SUMMARY_BY_CLIENT.open() as f:
-        for row in csv.DictReader(f):
-            rows.append({
-                "ts": _ci(row, "ts"),
-                "client": _ci(row, "client"),
-                "iso_year": int(_ci(row, "iso_year")),
-                "iso_week": int(_ci(row, "iso_week")),
-                "viewed": _g(row, "viewed"),
-                "reacted": _g(row, "reacted"),
             })
     return rows
 
@@ -1347,6 +1425,66 @@ def build_mbr_client_totals(mbr_ta_actuals):
 # ─────────────────────────────────────────────────────────────────────────────
 # Main
 # ─────────────────────────────────────────────────────────────────────────────
+
+def load_weekly_summary(source_path=SNOW_WEEKLY_SUMMARY):
+    """Return list of weekly_summary rows — the PBI 'Weekly Progress' port.
+    Grain: dim_type (company/ta/ts/client) x dim_value x iso_year x iso_week,
+    full funnel incl. viewed + reacted. Produced by weekly_summary.sql
+    (transformation 01ksm8rz0qfrhgzekke65bkd28). Opt-in: returns [] if the CSV
+    has not been staged yet so legacy/partial runs still work."""
+    if not source_path.exists():
+        return []
+    rows = []
+    with source_path.open() as f:
+        for row in csv.DictReader(f):
+            rows.append({
+                "dim_type":          (row.get("DIM_TYPE") or "").strip(),
+                "dim_value":         (row.get("DIM_VALUE") or "").strip(),
+                "iso_year":          int(row.get("ISO_YEAR") or 0),
+                "iso_week":          int(row.get("ISO_WEEK") or 0),
+                "viewed":            int(row.get("VIEWED") or 0),
+                "contacted":         int(row.get("CONTACTED") or 0),
+                "reacted":           int(row.get("REACTED") or 0),
+                "positive_response": int(row.get("POSITIVE_RESPONSE") or 0),
+                "screens":           int(row.get("REC_SCREENS") or 0),
+                "actual_screens":    int(row.get("ACTUAL_SCREENS") or 0),
+                "ats":               int(row.get("ATS") or 0),
+                "offered":           int(row.get("OFFERED") or 0),
+                "hired":             int(row.get("HIRED") or 0),
+            })
+    return rows
+
+
+def load_weekly_summary_byjob(source_path=SNOW_WEEKLY_SUMMARY_BYJOB):
+    """Person x job drill companion to weekly_summary. Grain (dim_type ta/ts,
+    person, job_id, client, job_title, iso week) + full funnel. Produced by the
+    weekly_summary_byjob block (transformation 01ksm8rz0qfrhgzekke65bkd28).
+    Opt-in: returns [] if not staged yet."""
+    if not source_path.exists():
+        return []
+    rows = []
+    with source_path.open() as f:
+        for row in csv.DictReader(f):
+            rows.append({
+                "dim_type":          (row.get("DIM_TYPE") or "").strip(),
+                "person":            (row.get("PERSON") or "").strip(),
+                "job_id":            (row.get("JOB_ID") or "").strip(),
+                "client":            (row.get("CLIENT") or "").strip(),
+                "job_title":         (row.get("JOB_TITLE") or "").strip(),
+                "iso_year":          int(row.get("ISO_YEAR") or 0),
+                "iso_week":          int(row.get("ISO_WEEK") or 0),
+                "viewed":            int(row.get("VIEWED") or 0),
+                "contacted":         int(row.get("CONTACTED") or 0),
+                "reacted":           int(row.get("REACTED") or 0),
+                "positive_response": int(row.get("POSITIVE_RESPONSE") or 0),
+                "screens":           int(row.get("REC_SCREENS") or 0),
+                "actual_screens":    int(row.get("ACTUAL_SCREENS") or 0),
+                "ats":               int(row.get("ATS") or 0),
+                "offered":           int(row.get("OFFERED") or 0),
+                "hired":             int(row.get("HIRED") or 0),
+            })
+    return rows
+
 
 def main():
     live = load_live()
@@ -1654,6 +1792,12 @@ def main():
     out["project_dashboard"] = load_project_dashboard()
     out["project_dashboard_eventattr"] = load_project_dashboard_eventattr()
     out["project_dashboard_hires"] = load_project_hires()
+    out["weekly_summary"] = load_weekly_summary()
+    out["weekly_summary_byjob"] = load_weekly_summary_byjob()
+    if out["weekly_summary_byjob"]:
+        print(f"  weekly_summary_byjob: {len(out['weekly_summary_byjob'])} rows")
+    if out["weekly_summary"]:
+        print(f"  weekly_summary: {len(out['weekly_summary'])} rows")
     if out["project_dashboard"]["rows"]:
         print(f"  project_dashboard: {len(out['project_dashboard']['rows'])} rows")
     if out["project_dashboard_eventattr"]["rows"]:
@@ -1698,22 +1842,35 @@ def main():
     if out["ts_summary"]:
         print(f"  ts_summary: {len(out['ts_summary'])} (sourcer, year, week) rows")
 
-    # ts_summary_by_client - small (sourcer, client, week) aggregate for client-
-    # filtered viewed/reacted. Powers PD per-client-row viewed when a sourcer is
-    # selected, and TS Summary funnel viewed/reacted when a client is selected.
-    out["ts_summary_by_client"] = load_ts_summary_by_client()
-    if out["ts_summary_by_client"]:
-        print(f"  ts_summary_by_client: {len(out['ts_summary_by_client'])} (sourcer, client, week) rows")
-
     # Internal Recruiting tab (Phase 2a, 2026-05-01) — Bubble-only port of
     # Andy's PBI Internal Recruitment page. Tribe.xyz (IR) jobs only.
     # Phase 2b will overlay Ashby for the right side of the funnel.
-    out["ir_funnel_jobweek"]      = load_ir_funnel_jobweek()
-    out["ir_sourced_jobweek"]     = load_ir_sourced_jobweek()
-    out["ir_interviewed_jobweek"] = load_ir_interviewed_jobweek()
-    out["ir_dq_by_stage"]         = load_ir_dq_by_stage()
-    out["ir_jobs_active"]         = load_ir_jobs_active()
-    out["ir_dq_byjob_reason"]     = load_ir_dq_byjob_reason()
+    # Internal Recruiting tab data — load CSVs, but PRESERVE existing live
+    # values if the CSV is missing/empty. Without this preservation, n8n's
+    # nightly refresh wipes the tab to all-empty whenever Keboola doesn't
+    # have the ir_* tables (the IR transformations were never wired up; see
+    # legacy-pbix/.../project_ir_phase2a_shipped.md). Fixed 2026-05-04.
+    def _ir_load(loader_fn, key):
+        loaded = loader_fn()
+        if loaded:
+            return loaded
+        existing = (live or {}).get(key) or []
+        if existing:
+            print(f"  WARN: {key} CSV missing/empty — preserving {len(existing)} entries from live JSON")
+        return existing
+
+    out["ir_funnel_jobweek"]      = _ir_load(load_ir_funnel_jobweek,      "ir_funnel_jobweek")
+    out["ir_sourced_jobweek"]     = _ir_load(load_ir_sourced_jobweek,     "ir_sourced_jobweek")
+    out["ir_interviewed_jobweek"] = _ir_load(load_ir_interviewed_jobweek, "ir_interviewed_jobweek")
+    out["ir_dq_by_stage"]         = _ir_load(load_ir_dq_by_stage,         "ir_dq_by_stage")
+    out["ir_jobs_active"]         = _ir_load(load_ir_jobs_active,         "ir_jobs_active")
+    out["ir_dq_byjob_reason"]     = _ir_load(load_ir_dq_byjob_reason,     "ir_dq_byjob_reason")
+    # Ashby-derived right side of the IR funnel (Phase 2b). Empty if extractor was skipped.
+    out["ir_ashby_active_pipeline"] = _ir_load(load_ir_ashby_active_pipeline, "ir_ashby_active_pipeline")
+    out["ir_ashby_dq_reasons"]      = _ir_load(load_ir_ashby_dq_reasons,      "ir_ashby_dq_reasons")
+    out["ir_ashby_funnel_jobweek"]  = _ir_load(load_ir_ashby_funnel_jobweek,  "ir_ashby_funnel_jobweek")
+    out["ir_ashby_hires"]           = _ir_load(load_ir_ashby_hires,           "ir_ashby_hires")
+    out["ir_ashby_jobs_all"]        = _ir_load(load_ir_ashby_jobs_all,        "ir_ashby_jobs_all")
     if out["ir_funnel_jobweek"]:
         print(f"  ir_funnel_jobweek: {len(out['ir_funnel_jobweek'])} (job,week) rows  "
               f"sourced_jobweek: {len(out['ir_sourced_jobweek'])}  "

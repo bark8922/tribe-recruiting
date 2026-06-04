@@ -1858,27 +1858,8 @@ const ProjectDashboardTab = ({ data }) => {
       row.screens += (r.screens || 0); row.actual_screens += r.actual_screens; row.ats += r.ats;
       row.offered += r.offered; row.hired += r.hired;
     }
-    // 2026-06-04: when filtered by sourcer, PD's viewed CTE has ts='' (job-level
-    // TA attribution only). Override per-client viewed with ts_summary_by_client
-    // totals so Naledi-style "0 LI views" is fixed at the client-rollup level.
-    // Per-job viewed remains 0 in this mode — fixable later if needed.
-    if (filterTs) {
-      const tsByClient = (data.ts_summary_by_client || []).filter(r => {
-        if (r.ts !== filterTs) return false;
-        const wk = `${r.iso_year}-W${String(r.iso_week).padStart(2, '0')}`;
-        return weekSet.has(wk);
-      });
-      const viewedByClient = {};
-      tsByClient.forEach(r => {
-        const c = normalizeClientPD(r.client);
-        viewedByClient[c] = (viewedByClient[c] || 0) + (r.viewed || 0);
-      });
-      for (const row of m.values()) {
-        if (viewedByClient[row.client] != null) row.viewed = viewedByClient[row.client];
-      }
-    }
     return Array.from(m.values()).sort((a, b) => a.client.localeCompare(b.client));
-  }, [filtered, filterTs, weekSet, data]);
+  }, [filtered]);
 
   // ── Per-client job rollup ──
   const jobsByClient = useMemo(() => {
@@ -3109,10 +3090,10 @@ const TSSummaryTab = ({ data }) => {
         filteredRows.forEach(r => { if (TS_SUMMARY_ROSTER.has(r.ts)) t.viewed += r.viewed || 0; });
       }
     } else {
-      // PD-rows path. 2026-06-04: viewed + reacted now from ts_summary_by_client
-      // when a client filter is active (it's a small per-(sourcer, client, week)
-      // aggregate so the data ALREADY scoped by client). Falls back to ts_summary
-      // (sourcer total) when no client filter — same numbers either way for All.
+      // PD-rows path (active). 2026-06-03: had a brief window where PD's viewed CTE
+      // attributed by sourcer; reverted because the resulting row count blew the
+      // bundle past Cloudflare's 25MB asset limit. Viewed + Reacted now pulled from
+      // ts_summary (sourcer aggregate, no client column — client filter is approx).
       filteredRows.forEach(r => {
         if (!TS_SUMMARY_ROSTER.has(r.ts)) return;
         t.contacted += r.contacted || 0;
@@ -3121,14 +3102,10 @@ const TSSummaryTab = ({ data }) => {
         t.ats += r.ats || 0;
         t.offers += r.offered || 0;
       });
-      const tsByClient = data.ts_summary_by_client || [];
-      const useByClient = client !== 'All' && tsByClient.length > 0;
-      const viewedSource = useByClient ? tsByClient : tsSummary;
-      viewedSource.forEach(r => {
+      tsSummary.forEach(r => {
         if (r.iso_year < 2024 || r.iso_year > 2030) return;
         if (periodWeekSet && !periodWeekSet.has(`${r.iso_year}-W${String(r.iso_week).padStart(2, '0')}`)) return;
         if (sourcer !== 'All' && r.ts !== sourcer) return;
-        if (useByClient && r.client !== client) return;
         if (!TS_SUMMARY_ROSTER.has(r.ts)) return;
         t.viewed += r.viewed || 0;
         t.reacted += r.reacted || 0;

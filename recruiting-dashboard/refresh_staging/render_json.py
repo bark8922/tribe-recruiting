@@ -572,7 +572,7 @@ def load_ts_jobs_weekly():
                 wn = int(row["ISO_WEEK"])
             except (ValueError, KeyError):
                 continue
-            if y != 2026 or wn < 1 or wn > 20:
+            if y != 2026 or wn < 1 or wn > MAX_ISO_WEEK:
                 continue
             wk = f"w{wn}"
             ts = (row.get("TS") or "").strip()

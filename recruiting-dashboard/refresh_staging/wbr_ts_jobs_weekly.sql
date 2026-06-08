@@ -5,46 +5,35 @@
 --
 -- Drives the TS Weekly tab's `# Jobs`, `# TA`, and `TA Names` columns.
 --
--- PBI DAX replica (validated 2026-04-20 vs PBI w16 — 10/11 TSes exact on # Jobs,
--- 11/11 exact on # TAs and TA names):
+-- DEFINITION (rewritten 2026-06-08, per Blake):
+--   TA Names = the people actually doing recruiter-side work ("touching the
+--   role") on the jobs a sourcer contacted into that ISO week — NOT the static
+--   job.job_recruiter assignment, which is frequently set to the sourcer
+--   themselves or left unset and produced spurious blanks.
 --
---   # Jobs per week for TS = COUNT(DISTINCT event.job_id) WHERE:
---     - TS = candidate.candidate_sourcer
---     - event in the ISO week
---     - job.is_job_archived <> true, job.test <> true, job.job_title non-blank
---     - candidate.is_candidate_archived <> true
---     - client.client_name NOT IN ('Kamila AI - TEST')
---     - event is a "Contacted" event — either:
---         event_type = 'Moved to stage' AND moved_to_stage = 'Contacted', OR
---         event_type = 'Candidate created' AND moved_to_stage = 'Contacted'
+--   # Jobs  = COUNT(DISTINCT job_id) the TS contacted into that week
+--             (same Contacted-event definition as before).
+--   TA Names / # TAs = DISTINCT event.who_event_created_for on RECRUITER-STAGE
+--             events (Recruiter Screen / Moved to ATS / Onsite / Offer / Hired)
+--             logged on those same jobs in the SAME ISO week, excluding the
+--             sourcer themselves (whitespace-normalised so "Jelena  Lacmanovic"
+--             never self-matches "Jelena Lacmanovic"), excluding '-not available-'.
 --
--- The "Contacted events only" filter is what narrows the count from "all
--- events" (which gives Jonaed/Elena/Marina 2x over) to PBI's "pipelines the
--- TS is actively sourcing this week". Without this filter: Jovana 9 vs PBI 4,
--- Marina 11 vs 5, Elena 8 vs 4 — big regressions.
+--   "Strict same-week" is intentional (confirmed by Blake): if no TA did
+--   recruiter-stage work on the role that week, TA Names is blank — that is a
+--   real signal, not a data artefact.
 --
--- # TA and TA Names: DISTINCT job.job_recruiter over those same jobs,
--- EXCLUDING self-attribution (when TS = job.job_recruiter).
---
--- Validation vs PBI w16 (2026-04-20):
---   Andrea Akovic       6/4 (PBI 7/4, -1 jobs drift)   — TA names EXACT
---   Elena Petrovska     4/0  (PBI 4/0)  — EXACT
---   Gustavo Loureiro    4/2  (PBI 4/2)  — EXACT (Ella Darie, Filip Nogowski)
---   Jovana Drakula      4/0  (PBI 4/0)  — EXACT
---   Marina Lazarevic    5/2  (PBI 5/2)  — EXACT (Kristina, Wladyslaw)
---   Milica Veselinovic  1/0  (PBI 1/0)  — EXACT
---   Naledi Ngwenya      4/0  (PBI 4/0)  — EXACT
---   Nare Avetisyan      7/3  (PBI 7/3)  — EXACT (Adis, Anna, Lejla)
---   Rodrigo Gomes       5/3  (PBI 5/3)  — EXACT (Aleksandra, Jaksa, Vladimir)
---   Valeriia Yurykova   4/4  (PBI 4/4)  — EXACT (Ella, Jelena L., Marina N., Nenad)
---   Zelimir Stajcic     1/0  (PBI 1/0)  — EXACT
+-- Filters on the touched-jobs set: job.is_job_archived <> true, job.test <> true,
+-- job.job_title non-blank, client.client_name non-blank & not 'Kamila AI - TEST',
+-- candidate.is_candidate_archived <> true, candidate_sourcer present & not
+-- '-not available-'.
 
-WITH filtered AS (
-  SELECT DISTINCT j."job_id",
-    TRIM(cd."candidate_sourcer") AS ts,
-    TRIM(j."job_recruiter")      AS ta,
-    YEAROFWEEKISO(TRY_TO_DATE(e."date_created")) AS iso_year,
-    WEEKISO(TRY_TO_DATE(e."date_created"))       AS iso_week
+WITH touched AS (
+  SELECT DISTINCT
+    TRIM(cd."candidate_sourcer") AS "ts",
+    j."job_id"                   AS "job_id",
+    YEAROFWEEKISO(TRY_TO_DATE(e."date_created")) AS "iso_year",
+    WEEKISO(TRY_TO_DATE(e."date_created"))       AS "iso_week"
   FROM "KEBOOLA_855"."out.c-reporting-v2"."event"     e
   JOIN "KEBOOLA_855"."out.c-reporting-v2"."candidate" cd ON cd."candidate_id" = e."candidate_id"
   JOIN "KEBOOLA_855"."out.c-reporting-v2"."job"       j  ON j."job_id"        = cd."job_id"
@@ -62,16 +51,41 @@ WITH filtered AS (
       (e."event_type" = 'Moved to stage'    AND e."moved_to_stage" = 'Contacted') OR
       (e."event_type" = 'Candidate created' AND e."moved_to_stage" = 'Contacted')
     )
+),
+ta AS (
+  SELECT DISTINCT
+    t."ts", t."iso_year", t."iso_week", t."job_id",
+    TRIM(ev."who_event_created_for") AS "actor"
+  FROM touched t
+  JOIN "KEBOOLA_855"."out.c-reporting-v2"."event" ev ON ev."job_id" = t."job_id"
+  WHERE YEAROFWEEKISO(TRY_TO_DATE(ev."date_created")) = t."iso_year"
+    AND WEEKISO(TRY_TO_DATE(ev."date_created"))       = t."iso_week"
+    AND ev."event_type" = 'Moved to stage'
+    AND ev."moved_to_stage" IN ('Recruiter Screen', 'Moved to ATS', 'Move to ATS stage', 'Onsite', 'Offer', 'Hired')
+    AND ev."who_event_created_for" IS NOT NULL
+    AND TRIM(ev."who_event_created_for") <> ''
+    AND TRIM(ev."who_event_created_for") <> '-not available-'
+    AND REGEXP_REPLACE(TRIM(ev."who_event_created_for"), ' +', ' ') <> REGEXP_REPLACE(t."ts", ' +', ' ')
+),
+job_counts AS (
+  SELECT "ts", "iso_year", "iso_week", COUNT(DISTINCT "job_id") AS "num_jobs"
+  FROM touched GROUP BY 1, 2, 3
+),
+ta_agg AS (
+  SELECT "ts", "iso_year", "iso_week",
+    COUNT(DISTINCT "actor") AS "num_tas",
+    LISTAGG(DISTINCT "actor", ', ') WITHIN GROUP (ORDER BY "actor") AS "ta_names"
+  FROM ta GROUP BY 1, 2, 3
 )
 SELECT
-  ts AS "TS",
-  iso_year AS "ISO_YEAR",
-  iso_week AS "ISO_WEEK",
-  COUNT(DISTINCT "job_id") AS "NUM_JOBS",
-  COUNT(DISTINCT CASE WHEN ta <> ts AND ta <> '-not available-' AND COALESCE(ta, '') <> '' THEN ta END) AS "NUM_TAS",
-  LISTAGG(DISTINCT CASE WHEN ta <> ts AND ta <> '-not available-' AND COALESCE(ta, '') <> '' THEN ta END, ', ')
-    WITHIN GROUP (ORDER BY CASE WHEN ta <> ts AND ta <> '-not available-' AND COALESCE(ta, '') <> '' THEN ta END) AS "TA_NAMES"
-FROM filtered
-WHERE iso_year = 2026
-GROUP BY 1, 2, 3
+  jc."ts"       AS "TS",
+  jc."iso_year" AS "ISO_YEAR",
+  jc."iso_week" AS "ISO_WEEK",
+  jc."num_jobs" AS "NUM_JOBS",
+  COALESCE(ta_agg."num_tas", 0)   AS "NUM_TAS",
+  COALESCE(ta_agg."ta_names", '') AS "TA_NAMES"
+FROM job_counts jc
+LEFT JOIN ta_agg
+  ON ta_agg."ts" = jc."ts" AND ta_agg."iso_year" = jc."iso_year" AND ta_agg."iso_week" = jc."iso_week"
+WHERE jc."iso_year" = 2026
 ORDER BY "TS", "ISO_YEAR", "ISO_WEEK"

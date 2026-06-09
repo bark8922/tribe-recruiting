@@ -19,7 +19,7 @@
 --   Actual Screen  = candidate has 'Evaluation' event;  dated by candidate_stage.date_screen_actual
 --   Filters: job.test<>true, candidate not archived, job not archived,
 --            client NOT IN ('BD - Tribe','Tribe - Marketing','Kamila AI - TEST','Bubble test').
---   Tribe.xyz / Tribe.xyz (IR) are INCLUDED (internal-unfiltered convention).
+--   Tribe.xyz / Tribe.xyz (IR) are EXCLUDED: this tab is client-delivery only (Blake 2026-06-09).
 --
 -- Conversion can exceed 100%: a candidate can reach ATS via a route that never
 -- recorded an in-window actual screen (applicant/referral, or screen outside the
@@ -33,7 +33,7 @@ WITH job_meta AS (
   JOIN "KEBOOLA_855"."out.c-reporting-v2"."client" cl ON cl."client_id" = j."client_id"
   WHERE LOWER(NULLIF(j."test",'')) <> 'true'
     AND cl."client_name" IS NOT NULL AND cl."client_name" <> ''
-    AND cl."client_name" NOT IN ('BD - Tribe','Tribe - Marketing','Kamila AI - TEST','Bubble test')
+    AND cl."client_name" NOT IN ('BD - Tribe','Tribe - Marketing','Kamila AI - TEST','Bubble test','Tribe.xyz','Tribe.xyz (IR)')
     AND LOWER(NULLIF(j."is_job_archived",'')) <> 'true'
     AND TRY_TO_DATE(j."date_created") >= DATEADD('day', -45, CURRENT_DATE())
 ),

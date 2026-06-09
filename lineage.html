@@ -161,7 +161,7 @@
         <rect x="290" y="30" width="220" height="180" rx="8" fill="#1d3a5e" stroke="#5b9dff" stroke-width="1.5"/>
         <text x="400" y="55" text-anchor="middle" fill="#5b9dff" font-size="13" font-weight="700">STAGE 2 — PROD V2</text>
         <text x="400" y="76" text-anchor="middle" fill="#e7ecf3" font-size="12">cfg 375145203</text>
-        <text x="400" y="95" text-anchor="middle" fill="#9aa5b8" font-size="10">5 code parts, 28 CTAS</text>
+        <text x="400" y="95" text-anchor="middle" fill="#9aa5b8" font-size="10">3 code parts (was 5)</text>
         <text x="400" y="115" text-anchor="middle" fill="#e7ecf3" font-size="11">→ 17 tables in</text>
         <text x="400" y="130" text-anchor="middle" fill="#e7ecf3" font-size="11">out.c-reporting-v2</text>
         <text x="400" y="155" text-anchor="middle" fill="#9aa5b8" font-size="10">5 core: candidate, candidate_stage,</text>
@@ -272,16 +272,16 @@
     <!-- ============== STAGE 2 ============== -->
     <h2 id="stage2"><span class="badge transform">TRANSFORM</span>Stage 2 — PROD V2 monolith</h2>
 
-    <p>Config <code>375145203</code>. <strong>~6.7 credits per run, ~80 sec wall-clock, 3×/day.</strong> Structurally 1 block named <code>code</code> with 5 ordered parts:</p>
+    <p>Config <code>375145203</code>. <strong>3×/day, ~800 sec wall-clock per run.</strong> Structurally 1 block named <code>code</code> with <strong>3 ordered parts</strong> (down from 5 after the Phase 2 refactor on 2026-06-08/09 — Part 0 and Part 2 were removed and their outputs replaced with Storage Input from the static bucket <code>out.c-recruitee-static</code>):</p>
 
     <table>
       <tr><th>Part</th><th>Size</th><th>What it does</th></tr>
-      <tr><td>Part 0 — Recruitee staging</td><td class="num">5.5 KB</td><td>Builds <code>recruitee_stage</code> CTE from frozen-since-2023 Recruitee data. Joins into Part 2.</td></tr>
-      <tr><td>Part 1 — Bubble data</td><td class="num">38.97 KB</td><td><strong>88% of all PROD V2 code.</strong> Builds <code>tmp_job</code>, <code>final_event</code> (11 LEFT JOINs + ROW_NUMBER window over 14.9M-row Events), <code>final_candidate_stage_bubble</code> (6 sequential UPDATEs), <code>final_talent_bubble</code>, <code>final_email</code>, <code>final_talent_position</code>, <code>final_talent_employer</code>, <code>final_screen</code>, <code>final_screen_techstack</code>, <code>final_screen_lang</code>, <code>final_user</code>, <code>final_job_goals</code>.</td></tr>
-      <tr><td>Part 2 — Recruitee data</td><td class="num">8.76 KB</td><td>Builds Recruitee variants of talent / candidate / event. Frozen source data.</td></tr>
-      <tr><td>Part 3 — Final tables</td><td class="num">7.60 KB</td><td>Unions Bubble + Recruitee → final <code>talent</code>, <code>candidate</code>, <code>event</code>, <code>candidate_stage</code>, <code>client</code>.</td></tr>
+      <tr><td>Part 1 — Bubble data</td><td class="num">~39 KB</td><td><strong>88% of all PROD V2 code.</strong> Builds <code>tmp_job</code>, <code>final_event</code> (11 LEFT JOINs + ROW_NUMBER window over 14.9M-row Events), <code>final_candidate_stage_bubble</code> (6 sequential UPDATEs — three of them reference the statically-staged <code>RECRUITEE_EVENTS</code> table from Storage Input), <code>final_talent_bubble</code>, <code>final_email</code>, <code>final_talent_position</code>, <code>final_talent_employer</code>, <code>final_screen</code>, <code>final_screen_techstack</code>, <code>final_screen_lang</code>, <code>final_user</code>, <code>final_job_goals</code>.</td></tr>
+      <tr><td>Part 3 — Final tables</td><td class="num">~8 KB</td><td>Unions Bubble + Recruitee → final <code>talent</code>, <code>candidate</code>, <code>event</code>, <code>candidate_stage</code>, <code>client</code>. The Recruitee side comes from <strong>Storage Input</strong> (<code>out.c-recruitee-static.final_*_recruitee</code>), pre-computed once on 2026-06-08. Each UNION SELECT against a recruitee table uses <code>TRY_TO_BOOLEAN</code>/<code>TRY_TO_DATE</code> casts to convert TEXT columns (Storage Input default) back to BOOLEAN/DATE.</td></tr>
       <tr><td>Part 4 — Andy tail</td><td class="num">432 B</td><td>Builds <code>analytic</code> + <code>job_ai_filter</code>.</td></tr>
     </table>
+
+    <p style="background: rgba(255,255,255,0.05); padding: 10px 14px; border-radius: 6px; margin-top: 12px;"><strong>Phase 2 refactor note (2026-06-09):</strong> Original Parts 0 and 2 recomputed frozen Recruitee outputs every PROD V2 run, 3 times daily. Both were removed; pre-computed tables now flow through as Storage Input from <code>out.c-recruitee-static</code>. The static rebuild transformation (<code>01ktkfs2j50hre305cv1w1kqpg</code>) ran once and is idle. Net ~7% runtime saved (~62 sec/run × 3 runs/day × 30 days ≈ 10-15 cr/mo) on top of the larger Phase 0/1 savings. Critical detail for anyone re-touching this: the Storage Input destinations for <code>recruitee_stage</code> and <code>recruitee_events</code> are <strong>UPPERCASE</strong> because Part 1 references them unquoted (Snowflake auto-uppercases unquoted identifiers); the 4 final_*_recruitee inputs use lowercase because Part 3 references them quoted.</p>
 
     <h3>17 output tables (all in <code>out.c-reporting-v2</code>)</h3>
 

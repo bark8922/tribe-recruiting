@@ -1,10 +1,12 @@
 # Tribe Data Lineage
 
-**As of 2026-06-03.** Source of truth for "where does each number come from?" Built so we never make Keboola changes without seeing the full graph first.
+**Originally as of 2026-06-03. Last updated 2026-06-09 to reflect Phase 2 cost-reduction refactor.** Source of truth for "where does each number come from?" Built so we never make Keboola changes without seeing the full graph first.
 
 > **How to read this doc.** Sections 1-5 are the live React dashboard chain (Bubble → Keboola → React). Section 6 is the parallel PowerBI chain that dies 2026-08-31. Section 7 maps cost to stage. Section 8 captures the surprises worth remembering.
 >
 > **Accuracy.** Every table name, row count, and refresh time was pulled live from Keboola Storage API on 2026-06-03. Code-part summaries from a parsed copy of the transformation config JSON. Dashboard tab → key mapping read directly from `App.jsx` and `refresh_staging/render_json.py`. PBI dependencies cross-referenced against `legacy-pbix/dax_index.json` + `relationships_raw.json`. Anything I'm not certain of is flagged inline with **(unverified)**.
+>
+> **What changed 2026-06-09 (Phase 2):** PROD V2 went from 5 code parts to 3. Part 0 (Recruitee staging) and Part 2 (Recruitee data) were removed. Their outputs now come from a pre-computed static bucket (`out.c-recruitee-static`) that gets staged as Storage Input. Section 3 reflects the new structure. Cost figures in section 7 are pre-Phase-2 baseline (60-day actuals from telemetry refreshed 2026-06-01) — post-Phase-2 actuals will be visible in the July 1 telemetry refresh.
 
 ---
 
@@ -95,18 +97,15 @@ The Keboola Google Drive extractor `01kpr3tek8ezs48pg02e60jdpe` reads Andy's WBR
 
 ## 3. Stage 2 — PROD V2 (config `375145203`)
 
-The monolithic Snowflake transformation that turns raw Bubble data into the 17 reporting tables everything downstream consumes. **~6.7 credits per run, ~80 sec wall-clock, runs 3×/day.** Writes to `out.c-reporting-v2`.
+The monolithic Snowflake transformation that turns raw Bubble data into the 17 reporting tables everything downstream consumes. **Runs 3×/day, ~13 min wall-clock (~800 sec).** Writes to `out.c-reporting-v2`.
 
-Structurally it's a single `code` block with **5 ordered code parts**:
+Structurally it's a single `code` block with **3 ordered code parts** (down from 5 after Phase 2 refactor on 2026-06-08/09):
 
-### Part 0 — Recruitee staging (5.5 KB)
-Creates `recruitee_stage` temp table mapping Recruitee stage_id → stage_name → category. The Recruitee buckets (`in.c-ex-recruitee*`) are stale since **2023-06-29** so this part processes frozen data. Output joins into Part 2's `final_talent_recruitee`.
-
-### Part 1 — Bubble data (38.97 KB — 88% of all PROD V2 code)
+### Part 1 — Bubble data (~39 KB, ~88% of all PROD V2 code)
 The expensive bit. Builds:
 - `tmp_job` from `bubble_Jobs` (6.6K rows)
 - `final_event` from `bubble_Event` with 11 LEFT JOINs + a `ROW_NUMBER() OVER (PARTITION BY talent,job,event_type,date::DATE)` window scan over the entire 14.9M-row Events table — runs the scan twice (the post-CTAS `UPDATE final_event SET who_created_event_first = ...` repeats it)
-- `final_candidate_stage_bubble` from `bubble_Candidate` + `bubble_stages`, then 6 sequential `UPDATE` passes adding stage dates (date_contacted, date_screen, date_screen_actual, date_interview, date_offer, date_hired)
+- `final_candidate_stage_bubble` from `bubble_Candidate` + `bubble_stages`, then 6 sequential `UPDATE` passes adding stage dates (date_contacted, date_screen, date_screen_actual, date_interview, date_offer, date_hired). Three of these UPDATEs reference the **statically-staged `RECRUITEE_EVENTS`** table (provided as Storage Input from `out.c-recruitee-static.recruitee_events`, uppercase destination because Part 1 references the table unquoted).
 - `final_talent_bubble` from `bubble_Talent` + `bubble_Emails` + `talent_locations_processed`
 - `final_email` from `bubble_Emails`
 - `final_talent_position` from `bubble_Positions` (filter empty Worked_from)
@@ -116,16 +115,24 @@ The expensive bit. Builds:
 - `final_user` from `bubble_User` + latest "Change positions" event + Roles + sub_roles
 - `final_job_goals` from `bubble_Goals` (filtered to ≥2021-07-11)
 
-### Part 2 — Recruitee data (8.76 KB)
-Builds `final_talent_recruitee`, `final_candidate_recruitee`, `final_event_recruitee` from frozen Recruitee tables. Output unioned with Bubble equivalents in Part 3.
+### Part 3 — Final tables (~8 KB)
+Unions Bubble + Recruitee variants into the 5 final core tables. The Recruitee side comes from **Storage Input** (`out.c-recruitee-static.final_*_recruitee`) — pre-computed once on 2026-06-08 and never recomputed since Recruitee data is permanently frozen at 2023-06-29. Each UNION SELECT against a recruitee_* table uses `TRY_TO_BOOLEAN` / `TRY_TO_DATE` casts to convert Storage Input's default TEXT typing back to BOOLEAN/DATE.
 
-### Part 3 — Final tables (7.60 KB)
-Unions Bubble + Recruitee variants into the 5 final core tables:
-- `final_talent_all` → output as `talent`
+- `final_talent_all` → output as `talent` (UNION of `final_talent_bubble` + staged `final_talent_recruitee`)
 - `final_candidate_all` → output as `candidate`
 - `final_event_all` → output as `event`
-- `final_candidate_stage_all` → output as `candidate_stage`
+- `final_candidate_stage_all` → output as `candidate_stage` (multi-step: builds `final_candidate_stage_tmp` UNION, then enriches with `hired_order`, `hired_views`, `hired_contacts`, `hired_screens`)
 - `final_client_all` → output as `client`
+
+Also includes post-UNION updates: `final_candidate_all.is_candidate_reacted`, `final_job.date_first_hired`, `final_job.date_first_hired_contacted`.
+
+### Part 4 — Andy tail (~430 bytes)
+Two small CTAS: `analytic` (aggregated from `bubble_Analytic`) + `job_ai_filter` (passthrough of `bubble_JobAiFilter`).
+
+### Static Recruitee bucket (`out.c-recruitee-static`)
+Pre-computed once on 2026-06-08 via transformation `01ktkfs2j50hre305cv1w1kqpg` (Recruitee static rebuild). Contains 6 tables totaling ~5.8 MB: `recruitee_stage`, `recruitee_events`, `final_talent_recruitee`, `final_candidate_recruitee`, `final_candidate_stage_recruitee`, `final_event_recruitee`. The rebuild transformation is idle (never re-runs) because Recruitee source data hasn't changed since 2023-06-29 and the rebuild outputs are deterministic.
+
+**Why the refactor:** Original Part 0 (5.5 KB Recruitee staging) and Part 2 (8.76 KB Recruitee data) recomputed the same frozen Recruitee outputs every PROD V2 run, 3 times daily. Both parts removed in Phase 2 cost-reduction work. Net ~7% runtime saved (~62 sec/run × 3 runs/day × 30 days = ~10-15 cr/mo). The pre-computed tables now flow through as Storage Inputs.
 
 ### Part 4 — Andy tail (432 bytes)
 Two small CTAS: `analytic` (aggregated from `bubble_Analytic`) + `job_ai_filter` (passthrough of `bubble_JobAiFilter`).

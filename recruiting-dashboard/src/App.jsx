@@ -1775,6 +1775,9 @@ const normalizeClientPD = (client) => {
   return trimmed;
 };
 
+// Non-real PD clients: always excluded from Project Dashboard (Tribe.xyz (IR) is kept).
+const PD_EXCLUDED_CLIENTS = new Set(['Tribe.xyz', 'Tribe: Talent Pools']);
+
 const pdPct = (v) => v == null ? '—' : `${(v * 100).toFixed(0)}%`;
 
 const ProjectDashboardTab = ({ data }) => {
@@ -1820,7 +1823,7 @@ const ProjectDashboardTab = ({ data }) => {
       const wk = `${r.iso_year}-W${String(r.iso_week).padStart(2, '0')}`;
       if (!weekSet.has(wk)) return false;
       if (!showExternal && r.is_external_recruiter) return false;
-      if (!showInternal && (r.client === 'Tribe.xyz' || r.client === 'Tribe.xyz (IR)')) return false;
+      if (PD_EXCLUDED_CLIENTS.has(r.client)) return false;
       if (filterClient && normalizeClientPD(r.client) !== filterClient) return false;
       if (filterTa && r.ta !== filterTa) return false;
       if (filterTs && r.ts !== filterTs) return false;
@@ -1980,7 +1983,7 @@ const ProjectDashboardTab = ({ data }) => {
   }, [filtered]);
 
   // Filter dropdown options
-  const uniqueClients    = useMemo(() => Array.from(new Set(pdRows.map((r) => normalizeClientPD(r.client)))).sort(), [pdRows]);
+  const uniqueClients    = useMemo(() => Array.from(new Set(pdRows.filter((r) => !PD_EXCLUDED_CLIENTS.has(r.client)).map((r) => normalizeClientPD(r.client)))).sort(), [pdRows]);
   const uniqueTas        = useMemo(() => Array.from(new Set(pdRows.map((r) => r.ta).filter(Boolean))).sort(), [pdRows]);
   const uniqueTses       = useMemo(() => Array.from(new Set(pdRows.map((r) => r.ts).filter(Boolean))).sort(), [pdRows]);
   const uniqueCategories = useMemo(() => Array.from(new Set(pdRows.map((r) => r.job_category).filter(Boolean))).sort(), [pdRows]);
@@ -1992,7 +1995,7 @@ const ProjectDashboardTab = ({ data }) => {
       if (!h.date_hired) return false;
       if (h.date_hired < startStr || h.date_hired > endStr) return false;
       if (!showExternal && h.is_external_recruiter) return false;
-      if (!showInternal && (h.client === 'Tribe.xyz' || h.client === 'Tribe.xyz (IR)')) return false;
+      if (PD_EXCLUDED_CLIENTS.has(h.client)) return false;
       if (filterClient && normalizeClientPD(h.client) !== filterClient) return false;
       if (filterTa && h.ta !== filterTa) return false;
       if (filterTs && h.ts !== filterTs) return false;
@@ -2110,10 +2113,6 @@ const ProjectDashboardTab = ({ data }) => {
           <label className="flex items-center gap-2 text-sm text-gray-300">
             <input type="checkbox" checked={showExternal} onChange={(e) => setShowExternal(e.target.checked)} />
             Include external recruiters
-          </label>
-          <label className="flex items-center gap-2 text-sm text-gray-300">
-            <input type="checkbox" checked={showInternal} onChange={(e) => setShowInternal(e.target.checked)} />
-            Include Tribe internal roles
           </label>
         </div>
       </div>

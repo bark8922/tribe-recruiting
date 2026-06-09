@@ -8,6 +8,7 @@
 
 export const SESSION_COOKIE = "tribe_session";
 export const ROLE_COOKIE = "tribe_role";
+export const PROJECT_HEALTH_COOKIE = "tribe_ph";
 export const SESSION_MAX_AGE_SECONDS = 2592000; // 30 days
 export const SESSION_MAX_AGE_MS = SESSION_MAX_AGE_SECONDS * 1000;
 
@@ -47,6 +48,13 @@ export const DIRECTOR_EMAILS: Set<string> = new Set([
   "kristjana@tribe.xyz",
   "martin@tribe.xyz",
   "salem@tribe.xyz",
+]);
+
+// New Project Health tab (2026-06-09) — strictly Blake + Jacopo for now.
+// Gates the gated NPH tab via a readable tribe_ph=1 cookie. Lowercase only.
+export const PROJECT_HEALTH_EMAILS: Set<string> = new Set([
+  "blake@tribe.xyz",
+  "jacopo@tribe.xyz",
 ]);
 
 export interface SessionPayload {
@@ -158,6 +166,10 @@ export function sessionCookie(value: string, maxAgeSeconds = SESSION_MAX_AGE_SEC
 
 export function roleCookie(role: "director" | "leadership" | "member", maxAgeSeconds = SESSION_MAX_AGE_SECONDS): string {
   return `${ROLE_COOKIE}=${role}; Path=/; Max-Age=${maxAgeSeconds}; Secure; SameSite=None`;
+}
+
+export function projHealthCookie(allowed: boolean, maxAgeSeconds = SESSION_MAX_AGE_SECONDS): string {
+  return `${PROJECT_HEALTH_COOKIE}=${allowed ? "1" : "0"}; Path=/; Max-Age=${maxAgeSeconds}; Secure; SameSite=None`;
 }
 
 export function clearCookie(name: string): string {

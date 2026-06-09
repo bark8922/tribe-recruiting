@@ -96,6 +96,7 @@ SNOW_IR_INTERVIEWED_JOBWEEK= HERE / "snowflake_ir_interviewed_jobweek.csv"
 SNOW_IR_DQ_BY_STAGE        = HERE / "snowflake_ir_dq_by_stage.csv"
 SNOW_IR_JOBS_ACTIVE        = HERE / "snowflake_ir_jobs_active.csv"
 SNOW_IR_DQ_BYJOB_REASON    = HERE / "snowflake_ir_dq_byjob_reason.csv"
+SNOW_NEW_PROJECT_HEALTH    = HERE / "snowflake_new_project_health.csv"
 SNOW_TTH_JOBS = HERE / "snowflake_tth_jobs.csv"
 SNOW_WEEKLY_SUMMARY = HERE / "snowflake_weekly_summary.csv"  # PBI Weekly Progress port (dim_type x dim_value x week)
 SNOW_WEEKLY_SUMMARY_BYJOB = HERE / "snowflake_weekly_summary_byjob.csv"  # person x job drill
@@ -1102,6 +1103,36 @@ def load_ir_jobs_active():
     return rows
 
 
+def load_new_project_health():
+    """Per-role health for roles opened in the last ~45 days (gated NPH tab).
+
+    Reads snowflake_new_project_health.csv. Stores raw fields; the frontend
+    computes days_open (vs today), days_to_first_ats (date_created -> date_first_ats),
+    and the Actual Screen -> ATS conversion (w4_ats / w4_actual_screens), and
+    filters to roles open <= 30 days. See new_project_health.sql for definitions.
+    """
+    if not SNOW_NEW_PROJECT_HEALTH.exists():
+        return []
+    rows = []
+    with SNOW_NEW_PROJECT_HEALTH.open() as f:
+        for row in csv.DictReader(f):
+            jid = (row.get("JOB_ID") or "").strip()
+            if not jid:
+                continue
+            rows.append({
+                "job_id":             jid,
+                "client":             (row.get("CLIENT") or "").strip(),
+                "job_title":          (row.get("JOB_TITLE") or "").strip(),
+                "ta":                 (row.get("TA") or "").strip(),
+                "is_external":        (row.get("IS_EXTERNAL_RECRUITER") or "").strip().lower() == "true",
+                "date_created":       (row.get("DATE_CREATED") or "").strip(),
+                "date_first_ats":     (row.get("DATE_FIRST_ATS") or "").strip(),
+                "w4_actual_screens":  int(row.get("W4_ACTUAL_SCREENS") or 0),
+                "w4_ats":             int(row.get("W4_ATS") or 0),
+            })
+    return rows
+
+
 def load_ts_summary():
     """Return [{ts, iso_year, iso_week, viewed, contacted, reacted,
     positive_response, screens, actual_screens, ats, offers, hires,
@@ -1949,6 +1980,7 @@ def main():
     out["ir_dq_by_stage"]         = _ir_load(load_ir_dq_by_stage,         "ir_dq_by_stage")
     out["ir_jobs_active"]         = _ir_load(load_ir_jobs_active,         "ir_jobs_active")
     out["ir_dq_byjob_reason"]     = _ir_load(load_ir_dq_byjob_reason,     "ir_dq_byjob_reason")
+    out["new_project_health"]     = _ir_load(load_new_project_health,     "new_project_health")
     # Ashby-derived right side of the IR funnel (Phase 2b). Empty if extractor was skipped.
     out["ir_ashby_active_pipeline"] = _ir_load(load_ir_ashby_active_pipeline, "ir_ashby_active_pipeline")
     out["ir_ashby_dq_reasons"]      = _ir_load(load_ir_ashby_dq_reasons,      "ir_ashby_dq_reasons")

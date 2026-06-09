@@ -5,6 +5,8 @@
 import {
   DIRECTOR_EMAILS,
   LEADERSHIP_EMAILS,
+  PROJECT_HEALTH_EMAILS,
+  projHealthCookie,
   SESSION_MAX_AGE_MS,
   roleCookie,
   sessionCookie,
@@ -73,11 +75,13 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
   // tribe_role is read by client JS to flip tab visibility.
   // Directors are a strict subset of leadership — they also see WBR/MBR.
   const role = isDirector ? "director" : isLeadership ? "leadership" : "member";
+  const isProjHealth = PROJECT_HEALTH_EMAILS.has(email);
 
   const headers = new Headers();
   headers.append("location", "/");
   headers.append("set-cookie", sessionCookie(signed));
   headers.append("set-cookie", roleCookie(role));
+  headers.append("set-cookie", projHealthCookie(isProjHealth));
   headers.set("cache-control", "no-store");
   return new Response(null, { status: 302, headers });
 };

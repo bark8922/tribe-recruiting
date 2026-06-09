@@ -122,6 +122,10 @@ TABLES = [
      HERE / "snowflake_ir_jobs_active.csv"),
     ("out.c-WBRMBR-weekly-aggregations.ir_dq_byjob_reason",
      HERE / "snowflake_ir_dq_byjob_reason.csv"),
+    # New Project Health tab (2026-06-09) — per-role KR2/KR3 for roles opened
+    # <=45d. SQL in refresh_staging/new_project_health.sql.
+    ("out.c-WBRMBR-weekly-aggregations.new_project_health",
+     HERE / "snowflake_new_project_health.csv"),
     # Note: the Google Drive extractor (config 01kpr3tek8ezs48pg02e60jdpe) also
     # writes 5 sheet tabs to in.c-wbr-sheet.wbr_{ta_target,ta_weekly_note,
     # ts_weekly,ir,reasoning_guidance}. We intentionally do NOT pull those
@@ -134,6 +138,11 @@ TABLES = [
 ]
 
 log = logging.getLogger("pull_project_dashboard")
+
+# Tables whose absence must NOT abort the whole pull. new_project_health is
+# served from a committed snapshot CSV + render preserves it; the Keboola
+# source table may not be wired on every environment yet (2026-06-09).
+OPTIONAL_TABLES = {"out.c-WBRMBR-weekly-aggregations.new_project_health"}
 
 
 def _get_token() -> str:
@@ -223,7 +232,13 @@ def main() -> int:
 
     t0 = time.time()
     for table_id, out_path in TABLES:
-        _export_one(table_id, out_path, token)
+        try:
+            _export_one(table_id, out_path, token)
+        except Exception as e:
+            if table_id in OPTIONAL_TABLES:
+                log.warning("optional table %s unavailable (%s); keeping existing CSV", table_id, e)
+                continue
+            raise
     log.info("Pull complete in %.1fs", time.time() - t0)
     return 0
 

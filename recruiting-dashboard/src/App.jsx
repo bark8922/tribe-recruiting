@@ -3821,6 +3821,185 @@ const WeeklySummaryTab = ({ data }) => {
   );
 };
 
+
+// ---------- New Project Health Tab ----------
+// Gated (Blake + Jacopo). Roles opened <=30 days, grouped by client, drill to
+// roles. KR2 = days from role creation to first ATS move. KR3 = Actual Screen ->
+// ATS conversion (cumulative first 4 weeks). Every column sortable. Data:
+// data.new_project_health (per-role from new_project_health.sql).
+const nphPillStyles = {
+  green: { background: 'rgba(34,197,94,0.18)',  color: '#4ade80' },
+  amber: { background: 'rgba(245,158,11,0.18)', color: '#fbbf24' },
+  red:   { background: 'rgba(239,68,68,0.18)',  color: '#f87171' },
+  gray:  { background: 'rgba(148,163,184,0.15)', color: '#94a3b8' },
+};
+const NphPill = ({ text, kind }) => (
+  <span style={{ ...nphPillStyles[kind], padding: '2px 10px', borderRadius: '6px', fontWeight: 500, fontSize: '13px', display: 'inline-block', minWidth: '48px', textAlign: 'center' }}>{text}</span>
+);
+const nphDfaKind = (v) => (v == null ? 'gray' : v <= 10 ? 'green' : v <= 20 ? 'amber' : 'red');
+const nphConvKind = (v) => (v == null ? 'gray' : v >= 60 ? 'green' : v >= 40 ? 'amber' : 'red');
+const nphSortRows = (rows, key, dir) => {
+  const mul = dir === 'desc' ? -1 : 1;
+  return [...rows].sort((a, b) => {
+    const av = a[key], bv = b[key];
+    const an = (av == null), bn = (bv == null);
+    if (an && bn) return 0;
+    if (an) return 1;
+    if (bn) return -1;
+    if (typeof av === 'string') return mul * av.localeCompare(bv);
+    return mul * (av - bv);
+  });
+};
+const NphTh = ({ label, k, sort, setSort, align }) => (
+  <th
+    onClick={() => setSort((sp) => ({ key: k, dir: sp.key === k && sp.dir === 'asc' ? 'desc' : 'asc' }))}
+    className={`px-3 py-2 font-medium cursor-pointer select-none hover:text-white ${align === 'right' ? 'text-right' : 'text-left'}`}
+  >
+    {label}{sort.key === k ? (sort.dir === 'asc' ? ' ▲' : ' ▼') : ''}
+  </th>
+);
+
+const NewProjectHealthTab = ({ data }) => {
+  const [expanded, setExpanded] = useState(null);
+  const [sort, setSort] = useState({ key: 'client', dir: 'asc' });
+  const [roleSort, setRoleSort] = useState({ key: 'daysOpen', dir: 'asc' });
+
+  const roles = useMemo(() => {
+    const today = new Date();
+    return (data.new_project_health || []).map((r) => {
+      const dc = new Date(r.date_created);
+      const daysOpen = Math.floor((today - dc) / 86400000);
+      let dfa = null;
+      if (r.date_first_ats) {
+        dfa = Math.round((new Date(r.date_first_ats) - dc) / 86400000);
+        if (dfa < 0) dfa = 0;
+      }
+      const conv = r.w4_actual_screens > 0 ? Math.round((100 * r.w4_ats) / r.w4_actual_screens) : null;
+      return { ...r, daysOpen, dfa, conv };
+    }).filter((r) => r.daysOpen >= 0 && r.daysOpen <= 30);
+  }, [data]);
+
+  const clients = useMemo(() => {
+    const m = {};
+    roles.forEach((r) => { (m[r.client] = m[r.client] || []).push(r); });
+    return Object.entries(m).map(([client, rs]) => {
+      const dfas = rs.filter((r) => r.dfa != null).map((r) => r.dfa);
+      const as = rs.reduce((acc, r) => acc + r.w4_actual_screens, 0);
+      const ats = rs.reduce((acc, r) => acc + r.w4_ats, 0);
+      return {
+        client, rolesList: rs, n: rs.length,
+        avgOpen: Math.round(rs.reduce((acc, r) => acc + r.daysOpen, 0) / rs.length),
+        avgDfa: dfas.length ? Math.round(dfas.reduce((a, b) => a + b, 0) / dfas.length) : null,
+        conv: as > 0 ? Math.round((100 * ats) / as) : null,
+      };
+    });
+  }, [roles]);
+
+  const sortedClients = useMemo(() => nphSortRows(clients, sort.key, sort.dir), [clients, sort]);
+
+  const kpis = useMemo(() => {
+    const dfas = roles.filter((r) => r.dfa != null).map((r) => r.dfa);
+    const as = roles.reduce((acc, r) => acc + r.w4_actual_screens, 0);
+    const ats = roles.reduce((acc, r) => acc + r.w4_ats, 0);
+    return {
+      roles: roles.length,
+      clients: clients.length,
+      avgDfa: dfas.length ? Math.round(dfas.reduce((a, b) => a + b, 0) / dfas.length) : '—',
+      conv: as > 0 ? Math.round((100 * ats) / as) + '%' : '—',
+    };
+  }, [roles, clients]);
+
+  return (
+    <div>
+      <div className="flex items-start justify-between mb-1">
+        <h2 className="text-2xl font-bold text-white">New Project Health</h2>
+        <div className="text-xs text-gray-500 text-right mt-1">Leadership only &middot; roles opened &le;30 days &middot; first ATS measured from role creation date</div>
+      </div>
+      <p className="text-sm text-gray-400 mb-5">Roles opened in the last 30 days. <span className="text-gray-300">Days to 1st ATS</span> (KR2) and <span className="text-gray-300">Actual Screen &rarr; ATS conversion</span> (KR3). Click a client to drill into its roles. Every column sorts.</p>
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+        <Kpi label="New roles" value={kpis.roles} />
+        <Kpi label="Clients" value={kpis.clients} />
+        <Kpi label="Avg days to first ATS" value={kpis.avgDfa} />
+        <Kpi label="Avg Actual Screen → ATS" value={kpis.conv} />
+      </div>
+
+      {sortedClients.length === 0 ? (
+        <div className="bg-gray-800 rounded-lg p-8 text-center text-gray-400">No roles opened in the last 30 days.</div>
+      ) : (
+        <div className="bg-gray-800 rounded-lg overflow-hidden">
+          <table className="w-full text-sm">
+            <thead className="text-gray-400 border-b border-gray-700">
+              <tr>
+                <NphTh label="Client" k="client" sort={sort} setSort={setSort} />
+                <NphTh label="Roles" k="n" sort={sort} setSort={setSort} align="right" />
+                <NphTh label="Avg days open" k="avgOpen" sort={sort} setSort={setSort} align="right" />
+                <NphTh label="Days to 1st ATS" k="avgDfa" sort={sort} setSort={setSort} align="right" />
+                <NphTh label="Actual Screen → ATS" k="conv" sort={sort} setSort={setSort} align="right" />
+              </tr>
+            </thead>
+            <tbody>
+              {sortedClients.map((c) => {
+                const open = expanded === c.client;
+                const sortedRoles = nphSortRows(c.rolesList, roleSort.key, roleSort.dir);
+                return (
+                  <React.Fragment key={c.client}>
+                    <tr onClick={() => setExpanded(open ? null : c.client)} className="border-b border-gray-700 hover:bg-gray-700 cursor-pointer" style={{ backgroundColor: open ? 'rgba(255,255,255,0.03)' : undefined }}>
+                      <td className="px-3 py-3 font-medium text-white">
+                        <span className="inline-block text-gray-500 mr-2" style={{ transform: open ? 'rotate(90deg)' : 'none', transition: 'transform .15s' }}>{'▶'}</span>
+                        {c.client}
+                      </td>
+                      <td className="px-3 py-3 text-right text-gray-300">{c.n}</td>
+                      <td className="px-3 py-3 text-right text-gray-300">{c.avgOpen}d</td>
+                      <td className="px-3 py-3 text-right"><NphPill text={c.avgDfa == null ? '—' : c.avgDfa + 'd'} kind={nphDfaKind(c.avgDfa)} /></td>
+                      <td className="px-3 py-3 text-right"><NphPill text={c.conv == null ? '—' : c.conv + '%'} kind={nphConvKind(c.conv)} /></td>
+                    </tr>
+                    {open && (
+                      <tr className="bg-gray-900">
+                        <td colSpan={5} className="px-3 py-3">
+                          <table className="w-full text-sm">
+                            <thead className="text-gray-500 border-b border-gray-800">
+                              <tr>
+                                <NphTh label="Role" k="job_title" sort={roleSort} setSort={setRoleSort} />
+                                <NphTh label="TA" k="ta" sort={roleSort} setSort={setRoleSort} />
+                                <NphTh label="Days open" k="daysOpen" sort={roleSort} setSort={setRoleSort} align="right" />
+                                <NphTh label="Days to 1st ATS" k="dfa" sort={roleSort} setSort={setRoleSort} align="right" />
+                                <NphTh label="Actual Screen → ATS" k="conv" sort={roleSort} setSort={setRoleSort} align="right" />
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {sortedRoles.map((r) => (
+                                <tr key={r.job_id} className="border-b border-gray-800">
+                                  <td className="px-3 py-2 text-gray-200">{r.job_title}{r.is_external ? <span className="text-gray-600 text-xs ml-2">ext</span> : null}</td>
+                                  <td className="px-3 py-2 text-gray-400">{r.ta}</td>
+                                  <td className="px-3 py-2 text-right text-gray-300">{r.daysOpen}d</td>
+                                  <td className="px-3 py-2 text-right"><NphPill text={r.dfa == null ? '—' : r.dfa + 'd'} kind={nphDfaKind(r.dfa)} /></td>
+                                  <td className="px-3 py-2 text-right"><NphPill text={r.conv == null ? '—' : r.conv + '%'} kind={nphConvKind(r.conv)} /></td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    )}
+                  </React.Fragment>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      <div className="flex gap-5 mt-4 text-xs text-gray-500 flex-wrap items-center">
+        <span><span style={{ display: 'inline-block', width: 10, height: 10, borderRadius: 2, background: '#4ade80', verticalAlign: '-1px' }}></span> healthy</span>
+        <span><span style={{ display: 'inline-block', width: 10, height: 10, borderRadius: 2, background: '#fbbf24', verticalAlign: '-1px' }}></span> watch</span>
+        <span><span style={{ display: 'inline-block', width: 10, height: 10, borderRadius: 2, background: '#f87171', verticalAlign: '-1px' }}></span> at risk</span>
+        <span className="ml-auto">Days to 1st ATS: green &le;10, amber 11&ndash;20, red &gt;20 &middot; Conversion: green &ge;60%, amber 40&ndash;59%, red &lt;40%</span>
+      </div>
+    </div>
+  );
+};
+
 const LEADERSHIP_TABS = new Set(['wbr', 'mbr']);
 const DIRECTOR_TABS = new Set(['profitability']);
 
@@ -4527,7 +4706,7 @@ const ProfitabilityTab = () => {
             </thead>
             <tbody>
               {computed.rows.map((r, i) => (
-                <tr key={i} className="border-b border-gray-800 hover:bg-gray-750">
+                <tr key={i} className="border-b border-gray-800 hover:bg-gray-700">
                   <td className="py-1.5 px-2 font-medium text-white">{r.client}</td>
                   <td className="py-1.5 px-2">
                     {r.bu && (
@@ -4598,17 +4777,31 @@ const RecruitingDashboard = () => {
   })();
   const isDirector = role === 'director';
   const isLeadership = isDirector || role === 'leadership';
-  const visibleTabs = isDirector
+  // New Project Health tab — strictly Blake + Jacopo via tribe_ph=1 cookie
+  // (set by /functions/api/login.ts). ?ph=1 URL param kept as a test fallback.
+  const canProjectHealth = (() => {
+    try {
+      if (typeof document !== 'undefined') {
+        const c = document.cookie.split(';').map((x) => x.trim()).find((x) => x.startsWith('tribe_ph='));
+        if (c && c.split('=')[1] === '1') return true;
+      }
+      if (typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('ph') === '1') return true;
+      return false;
+    } catch (_) { return false; }
+  })();
+  let visibleTabs = isDirector
     ? ['project', 'weekly', 'wbr', 'mbr', 'profitability', 'tth', 'ts_summary', 'ir']
     : isLeadership
       ? ['project', 'weekly', 'wbr', 'mbr', 'tth', 'ts_summary', 'ir']
       : ['project', 'weekly', 'tth', 'ts_summary', 'ir'];
+  if (canProjectHealth) visibleTabs = [...visibleTabs, 'project_health'];
   const [activeTab, setActiveTab] = useState('project');
   // Snap-back: if state lands on a tab the current role doesn't see, fall back
   // to Project Dashboard. Covers both leadership-only and director-only tabs.
   const safeActiveTab =
     (!isLeadership && LEADERSHIP_TABS.has(activeTab)) ||
-    (!isDirector && DIRECTOR_TABS.has(activeTab))
+    (!isDirector && DIRECTOR_TABS.has(activeTab)) ||
+    (!canProjectHealth && activeTab === 'project_health')
       ? 'project'
       : activeTab;
   const dashboardData = dashboardDataSnowflake;
@@ -4625,7 +4818,7 @@ const RecruitingDashboard = () => {
           {visibleTabs.map((tab) => (
             <button key={tab} onClick={() => setActiveTab(tab)}
               className={`py-4 px-2 font-medium border-b-2 transition-colors ${safeActiveTab === tab ? 'text-white border-white' : 'text-gray-400 border-transparent hover:text-gray-300'}`}>
-              {tab === 'wbr' ? 'WBR' : tab === 'mbr' ? 'MBR' : tab === 'profitability' ? 'Profitability' : tab === 'project' ? 'Project Dashboard' : tab === 'weekly' ? 'Weekly Summary' : tab === 'tth' ? 'Time to Hire' : tab === 'ts_summary' ? 'KPI - TS Summary' : 'Internal Recruiting'}
+              {tab === 'wbr' ? 'WBR' : tab === 'mbr' ? 'MBR' : tab === 'profitability' ? 'Profitability' : tab === 'project' ? 'Project Dashboard' : tab === 'weekly' ? 'Weekly Summary' : tab === 'tth' ? 'Time to Hire' : tab === 'ts_summary' ? 'KPI - TS Summary' : tab === 'ir' ? 'Internal Recruiting' : 'New Project Health'}
             </button>
           ))}
         </div>
@@ -4639,6 +4832,7 @@ const RecruitingDashboard = () => {
         {safeActiveTab === 'tth' && <TTHTab data={dashboardData} />}
         {safeActiveTab === 'ts_summary' && <TSSummaryTab data={dashboardData} />}
         {safeActiveTab === 'ir' && <IRTab data={dashboardData} />}
+        {safeActiveTab === 'project_health' && canProjectHealth && <NewProjectHealthTab data={dashboardData} />}
       </div>
     </div>
   );

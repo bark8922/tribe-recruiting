@@ -3909,6 +3909,13 @@ const NewProjectHealthTab = ({ data }) => {
     };
   }, [roles, clients]);
 
+  const Kpi = ({ label, value }) => (
+    <div className="bg-blue-100 text-blue-900 rounded-lg px-4 py-3 min-w-[120px] flex-1">
+      <div className="text-2xl font-bold">{value == null ? '-' : value}</div>
+      <div className="text-xs text-blue-800 mt-1">{label}</div>
+    </div>
+  );
+
   return (
     <div>
       <div className="flex items-start justify-between mb-1">

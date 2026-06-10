@@ -195,6 +195,30 @@ def push_to_github(token, content):
     return sha
 
 
+
+def notify_circle(token):
+    """Fire a repository_dispatch at bark8922/tribe-circle so its refresh
+    workflow rebuilds circle_data.json immediately after our push, instead of
+    waiting on GitHub's best-effort cron (which silently dropped both morning
+    slots on 2026-06-10 and left Circle stale all morning).
+
+    Best-effort by design: a failed dispatch must never fail the Flow. The
+    cron in tribe-circle stays as a backstop.
+    """
+    url = "https://api.github.com/repos/bark8922/tribe-circle/dispatches"
+    body = json.dumps({"event_type": "recruiting-data-updated"}).encode("utf-8")
+    req = urllib.request.Request(url, data=body, method="POST", headers={
+        "Authorization": "Bearer " + token,
+        "Accept": "application/vnd.github+json",
+        "User-Agent": "keboola-recruiting-refresh",
+    })
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            print("[notify_circle] dispatch sent, HTTP " + str(resp.status), flush=True)
+    except Exception as exc:
+        print("[notify_circle] WARNING: dispatch failed (non-fatal): " + repr(exc), flush=True)
+
+
 def main():
     print("=== main() called ===", flush=True)
     ci = CommonInterface()
@@ -224,6 +248,7 @@ def main():
     content = out_path.read_text(encoding="utf-8")
 
     sha = push_to_github(github_token, content)
+    notify_circle(github_token)
     print("=== done: commit=" + sha[:10] + " size=" + str(len(content) // 1024) + "KB ===", flush=True)
     return 0
 

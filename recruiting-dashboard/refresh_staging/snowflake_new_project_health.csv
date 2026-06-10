@@ -1,45 +1,87 @@
 JOB_ID,CLIENT,JOB_TITLE,TA,IS_EXTERNAL_RECRUITER,DATE_CREATED,DATE_FIRST_ATS,W4_ACTUAL_SCREENS,W4_ATS
+1781004000068x614726314335666200,AVIV,"Senior Backend Engineer, Romania (Contractor) Kristina",Kristina Colovic,false,2026-06-09,,0,0
 1780948201546x511155649381662700,AVIV,Junior Backend Developer - France,Iryna Dyda,true,2026-06-08,,0,0
-1780328272082x222571569976705020,AVIV,Senior Front End Engineer (DE) - Alex,Alexandra Richiteanu,false,2026-06-01,,0,0
 1780324773234x469050419941736450,AVIV,Frontend Engineer - DE,Iryna Dyda,false,2026-06-01,2026-06-04,5,4
-1779970626328x834670130159681500,AVIV,"Engineering Manager, Platform - Berlin",Kristina Colovic,true,2026-05-28,2026-06-04,6,5
-1779781704010x899739640171331600,AVIV,"Engineering Manager Trust & Safety, Berlin (Wlad)",Wladyslaw Gadomski,false,2026-05-26,2026-05-27,5,4
-1779729846009x817600643033989100,AVIV,Frontend Engineer - Croatia,Iryna Dyda,false,2026-05-25,2026-06-01,13,8
-1779729977672x962552236573720600,AVIV,Backend Engineer - Croatia,Iryna Dyda,false,2026-05-25,2026-06-03,8,4
+1780328272082x222571569976705020,AVIV,Senior Front End Engineer (DE) - Alex,Alexandra Richiteanu,false,2026-06-01,,0,0
+1779970626328x834670130159681500,AVIV,"Engineering Manager, Platform - Berlin",Kristina Colovic,true,2026-05-28,2026-06-04,7,6
+1779781704010x899739640171331600,AVIV,"Engineering Manager Trust & Safety, Berlin (Wlad)",Wladyslaw Gadomski,false,2026-05-26,2026-05-27,6,5
+1779729977672x962552236573720600,AVIV,Backend Engineer - Croatia,Iryna Dyda,false,2026-05-25,2026-06-03,10,6
+1779729846009x817600643033989100,AVIV,Frontend Engineer - Croatia,Iryna Dyda,false,2026-05-25,2026-06-01,14,9
 1779287502590x544398473900326900,AVIV,Sr Platform Engineer - Contractor,Wladyslaw Gadomski,false,2026-05-20,2026-06-02,2,1
-1779111938424x336950569178497000,AVIV,"QA Automation - Financing, Croatia",Lejla Silva,false,2026-05-18,2026-05-22,12,10
 1779112032424x907451151344205800,AVIV,"QA Automation - Authentication, Croatia",Lejla Silva,false,2026-05-18,2026-05-25,13,8
+1779111938424x336950569178497000,AVIV,"QA Automation - Financing, Croatia",Lejla Silva,false,2026-05-18,2026-05-22,14,11
 1778829612482x568236602980302850,AVIV,"Product Manager, Lead AVIV Berlin ",Jovana Drakula,true,2026-05-15,,0,0
 1778683287482x195811766812016640,AVIV,Fullstack .NET (Bucharest),Iryna Dyda,false,2026-05-13,2026-05-14,9,8
-1778673333753x755455990320857100,AVIV,"Engineering Manager France, Kristina",Kristina Colovic,false,2026-05-13,2026-05-19,14,10
+1778683338804x926854333803266000,AVIV,Fullstack React (Bucharest),Iryna Dyda,false,2026-05-13,2026-05-15,15,10
 1778673284727x519021825440350200,AVIV,"Engineering Manager T&S Kristina, Berlin",Kristina Colovic,false,2026-05-13,2026-05-22,18,8
-1778683338804x926854333803266000,AVIV,Fullstack React (Bucharest),Iryna Dyda,false,2026-05-13,2026-05-15,12,8
-1778238210297x617135774419124200,AVIV,"Senior Backend Engineer, Platform Team - Berlin (Kristina)",Kristina Colovic,false,2026-05-08,2026-05-11,14,10
+1778673333753x755455990320857100,AVIV,"Engineering Manager France, Kristina",Kristina Colovic,false,2026-05-13,2026-05-19,14,10
 1778238250267x806800061349494800,AVIV,"Senior Backend Engineer, Platform Team - Berlin (Wlad)",Wladyslaw Gadomski,false,2026-05-08,2026-05-22,10,7
+1778238210297x617135774419124200,AVIV,"Senior Backend Engineer, Platform Team - Berlin (Kristina)",Kristina Colovic,false,2026-05-08,2026-05-11,14,10
 1777560614549x771295529444311000,AVIV, Market Research TABP Belgium - AVIV,Jovana Drakula,true,2026-04-30,,0,0
+1776767826716x982121841327341600,AVIV,Senior iOS Engineer - Germany,Alexandra Richiteanu,false,2026-04-21,2026-05-19,2,1
+1776767694969x733318081986691100,AVIV,Senior Android Engineer - Germany,Alexandra Richiteanu,false,2026-04-21,2026-05-18,2,2
+1776332739979x794531231558008800,AVIV,"Engineering Director, Platforms",Jovana Drakula,true,2026-04-16,2026-04-29,17,2
+1776233524214x161582576756064260,AVIV,VP of Product,Jovana Drakula,true,2026-04-15,2026-04-22,12,2
+1776165059453x461431607535861800,AVIV,Senior Android Engineer - Croatia,Alexandra Richiteanu,false,2026-04-14,2026-04-22,13,7
+1776164934061x218226347507712000,AVIV,Senior IOS Engineer - Croatia,Alexandra Richiteanu,false,2026-04-14,2026-04-16,17,12
+1775206191653x934212136994340900,AVIV,Product Manager Demand (AVIV),Jovana Drakula,true,2026-04-03,2026-04-20,12,1
+1775211650509x258412021772451840,AVIV,Principal Quality engineer,Wladyslaw Gadomski,false,2026-04-03,2026-04-08,23,9
+1775125002560x755091190743302100,AVIV,Staff Backend Engineer Trust & Safety - Kristina - Berlin,Kristina Colovic,false,2026-04-02,2026-04-07,17,14
+1775124928738x792744654411137000,AVIV,Senior Backend Engineer Trust & Safety - Kristina - Berlin,Kristina Colovic,false,2026-04-02,2026-04-06,40,26
+1775137953484x447343876051304450,AVIV,Staff Backend Engineer Trust & Safety - Wlad - Berlin,Wladyslaw Gadomski,false,2026-04-02,2026-04-10,8,4
+1775138003344x487773161371467800,AVIV,Senior Backend Engineer Trust & Safety - Wlad - Berlin,Wladyslaw Gadomski,false,2026-04-02,2026-04-08,40,28
 1779483364737x708646471537786900,Aiven,Brand Designer (Finland),Vladimir Stankovic,false,2026-05-22,2026-05-29,10,8
 1778840593499x929159847163723800,Aiven,Technical Support Engineer - Australia / India,Fuad Safarov,false,2026-05-15,2026-05-29,8,7
 1778840709159x865462834632065000,Aiven,Inside Sales Representative,Fuad Safarov,false,2026-05-15,2026-05-21,9,8
 1778666254554x143049343041536000,Aiven,Software Engineer - ClickHouse (Germany),Vladimir Stankovic,false,2026-05-13,2026-05-15,15,7
+1777017827149x657905825884405800,Aiven,"Senior Technical Account Manager, EMEA",Fuad Safarov,false,2026-04-24,2026-05-13,14,8
+1775842278115x877537953046855700,Aiven,"Manager, Technical Writing",Vladimir Stankovic,false,2026-04-10,2026-05-29,0,0
+1775651749069x453454844985606140,Aiven,Senior Software Engineer (Israel),Vladimir Stankovic,false,2026-04-08,2026-04-10,12,1
+1775651825154x949444861303455700,Aiven,Senior Software Engineer (Finland),Vladimir Stankovic,false,2026-04-08,2026-04-10,55,28
+1775552220428x685390723465871400,Aiven,Enterprise Account Executive - Sweden,Fuad Safarov,false,2026-04-07,2026-04-08,10,9
+1775551815119x528177390986985500,Aiven,Enterprise Account Executive - Berlin,Fuad Safarov,false,2026-04-07,2026-04-07,18,2
+1775559518020x990970449391779800,Enam,Fullstack Engineer - Email sequence,Aleksandra Vistac,false,2026-04-07,,0,0
 1778859938444x522071930312589300,Eucalyptus,Creative Producer / Creative Project Manager,Alisa Liddell,false,2026-05-15,2026-05-15,8,8
 1777486143400x521437858390343700,Eucalyptus,Growth Marketing Manager,Alisa Liddell,false,2026-04-29,2026-05-04,19,13
+1775055351940x175535104353894400,Eucalyptus,Creative Strategist (Paid Social),Alisa Liddell,false,2026-04-01,2026-04-10,12,7
+1775055553196x717323579568947200,Eucalyptus,Performance Marketer,Alisa Liddell,false,2026-04-01,2026-04-13,8,6
 1779196393064x911687372396822500,Glovo,iOS Engineer - IC4 (Sam),Samantha Nel,false,2026-05-19,2026-05-22,13,4
+1779108500859x912793032939536400,Glovo,Cloud Security Engineer,Chené Elliot,false,2026-05-18,,1,0
 1778496860405x505024749759889400,Glovo,Account Manager Regions - Milan,Milica Mladzic,false,2026-05-11,2026-05-27,5,5
-1777281385245x962416365381615600,Glovo,Account Manager Regions Italy - Firenze,Milica Mladzic,false,2026-04-27,2026-05-18,3,2
-1777281168376x249892841526132740,Glovo,Account Manager Regions Italy - Bologna,Milica Mladzic,false,2026-04-27,2026-05-11,20,12
-1777281480146x386265215830065150,Glovo,Senior Account Manager Regions Italy - Torino,Milica Mladzic,false,2026-04-27,2026-05-11,6,6
-1777281919298x441709701401149440,Glovo,Sales Executive SMB Italy - Milan,Milica Mladzic,false,2026-04-27,2026-05-14,10,5
 1777281028347x615178116354277400,Glovo,Account Manager Regions Italy - Rome,Milica Mladzic,false,2026-04-27,2026-05-07,19,11
-1777281724972x384671184211410940,Glovo,Account Manager SMB Italy - Milan,Milica Mladzic,false,2026-04-27,2026-05-05,15,12
+1777281168376x249892841526132740,Glovo,Account Manager Regions Italy - Bologna,Milica Mladzic,false,2026-04-27,2026-05-11,20,12
 1777281286085x119523599455092740,Glovo,Account Manager Regions Italy - Milan,Milica Mladzic,false,2026-04-27,2026-05-28,2,0
-1778589331171x831632718065827800,Nexi,Supporting other TAs,Maria Desiree Gerbore,false,2026-05-12,2026-05-19,20,13
-1780217990838x496680852749811700,Parloa,SAP Integration Engineer,Jonaed Iqbal,true,2026-05-31,,14,0
+1777281480146x386265215830065150,Glovo,Senior Account Manager Regions Italy - Torino,Milica Mladzic,false,2026-04-27,2026-05-11,6,6
+1777281385245x962416365381615600,Glovo,Account Manager Regions Italy - Firenze,Milica Mladzic,false,2026-04-27,2026-05-18,3,2
+1777281919298x441709701401149440,Glovo,Sales Executive SMB Italy - Milan,Milica Mladzic,false,2026-04-27,2026-05-14,10,5
+1777281724972x384671184211410940,Glovo,Account Manager SMB Italy - Milan,Milica Mladzic,false,2026-04-27,2026-05-05,15,12
+1776155280233x867244093444980700,Glovo,iOS Engineer IC3 (Chene),Chené Elliot,false,2026-04-14,2026-04-30,2,2
+1776155229443x398373782847750140,Glovo,iOS Engineer IC2 (Chene),Chené Elliot,false,2026-04-14,2026-04-17,50,24
+1775140193294x599142206485823500,Glovo,Frontend Engineer - L1,Samantha Nel,false,2026-04-02,2026-05-15,0,0
+1775139786221x517847899092287500,Glovo,Data Internship,Samantha Nel,false,2026-04-02,2026-04-02,0,1
+1778589331171x831632718065827800,Nexi,Supporting other TAs,Maria Desiree Gerbore,false,2026-05-12,2026-05-19,26,16
+1777014522014x134354524406808580,Nexi,Field Sales Manager - Zurich,Adis Prepoljac,false,2026-04-24,2026-04-24,4,5
+1777014203637x968959109743247400,Nexi,Field Sales Manager - Luzern,Adis Prepoljac,false,2026-04-24,2026-04-24,5,8
+1776167973748x713928106570416100,Nexi,Independent Software Vendor Partner Account Manager,Adis Prepoljac,false,2026-04-14,2026-04-24,4,4
+1776162119822x238969524091617280,Nexi,"Key Account Manager Value Added Services (DCC, Dynamic Currency Conversion)",Adis Prepoljac,false,2026-04-14,2026-04-14,0,1
 1780195232703x520525683101794300,Parloa,GTM Engineer,Jonaed Iqbal,true,2026-05-31,,7,0
-1779792152732x200231050734731260,Parloa,Business Development Executive EMEA,Gustavo Loureiro Castro,true,2026-05-26,2026-06-05,3,2
+1780217990838x496680852749811700,Parloa,SAP Integration Engineer,Jonaed Iqbal,true,2026-05-31,,14,0
+1779792152732x200231050734731260,Parloa,Business Development Executive EMEA,Gustavo Loureiro Castro,true,2026-05-26,2026-06-05,4,3
 1778514590060x785602757326536700,Parloa,Senior IS&T Governance Partner,Jonaed Iqbal,false,2026-05-11,2026-05-12,4,3
+1776161479950x832763580951560200,Parloa,Staff Product Designer,Gustavo Loureiro Castro,true,2026-04-14,2026-04-21,7,6
+1775970273851x768389579166711800,Parloa,Senior Salesforce Adminstrator,Jonaed Iqbal,false,2026-04-12,2026-04-25,1,1
+1776129142247x694600564780302300,PhantomBuster,Head of Marketing,Mateja Jokovic,false,2026-04-14,2026-04-14,1,1
+1775241025329x976553262888779800,PhantomBuster,SEO & AI Search Specialist,Mateja Jokovic,false,2026-04-03,2026-04-03,3,2
+1775253369619x573374155412209660,PhantomBuster,Product Expert - Customer Care Agent,Mateja Jokovic,false,2026-04-03,2026-04-03,9,3
+1775381586941x137783279795830780,Scorewarrior,Senior Gamedev Recruiter,Mark Kandaurov,false,2026-04-05,,2,0
+1775557121218x939775019023597600,SevenRooms,Strategic Customer Success Manager - Dubai,Adelya Khakimova,false,2026-04-07,2026-04-19,21,6
 1779879195745x269918544983490560,Taxfix,GTM Engineer,Marina Nikolic,false,2026-05-27,,0,0
-1778661110339x342622609631608800,Taxfix,Senior Marketing Data Analyst,Marina Nikolic,false,2026-05-13,2026-05-13,6,6
+1778661110339x342622609631608800,Taxfix,Senior Marketing Data Analyst,Marina Nikolic,false,2026-05-13,2026-05-13,7,7
 1777987322411x102512047924183040,Taxfix,Senior Fullstack Engineer - Stuttgart,Marina Nikolic,false,2026-05-05,2026-05-19,10,8
+1776933465311x373205304762957800,Taxfix,Software Engineer - FullStack,Marina Nikolic,false,2026-04-23,2026-04-23,34,29
+1776068857353x506312724308557800,Taxfix,Working Student Automation Engineer,Marina Nikolic,false,2026-04-13,2026-04-27,11,9
+1780991897689x618831523072966700,Wolt,Sales Manager - Prague,Niki Vokalkova,false,2026-06-09,2026-06-09,1,1
+1781004171357x231846267847704580,Wolt,"Store Manager (WM Distribution Center), Hungary, Q2 2026",Nenad Skoko,false,2026-06-09,2026-06-09,0,1
 1780916551860x156414970281066500,Wolt,Regional CRM Lead (North region),Elena Petrovska,true,2026-06-08,,0,0
 1780868639927x830354321008492500,Wolt,Store Manager - Berlin,Jan Dokulil,false,2026-06-07,2026-06-07,2,2
 1780492908784x589183335658684400,Wolt,"Store Team Lead, Szeged, Hungary Q2 '26",Nenad Skoko,false,2026-06-03,2026-06-08,0,1
@@ -49,29 +91,47 @@ JOB_ID,CLIENT,JOB_TITLE,TA,IS_EXTERNAL_RECRUITER,DATE_CREATED,DATE_FIRST_ATS,W4_
 1780255101228x765962538807984100,Wolt,Senior Go Dev Data Group,Ejla Suljcic,true,2026-05-31,,0,0
 1779870541406x894207762128175100,Wolt,Merchant Associate - Blava,Niki Vokalkova,false,2026-05-27,2026-06-03,4,1
 1779794569993x204519145452339200,Wolt,Content Associate - Baku,Jan Dokulil,false,2026-05-26,2026-05-26,1,1
-1779789308480x321852111809675260,Wolt,Account Manager - Brno,Niki Vokalkova,false,2026-05-26,2026-05-27,6,5
 1779826298254x899801413851545600,Wolt,Store Manager - Cyprus,Jan Dokulil,false,2026-05-26,,0,0
+1779789308480x321852111809675260,Wolt,Account Manager - Brno,Niki Vokalkova,false,2026-05-26,2026-05-27,6,5
 1779445203229x683558468490100700,Wolt,"Category Manager, Czechia, Q2 2026",Nenad Skoko,false,2026-05-22,,0,0
 1779271061334x322752073245392900,Wolt,Merchant Account Development Manager (m/w/d) Berlin,Lisa Gargulinska,false,2026-05-20,2026-05-22,4,1
 1779258169273x145089529770410000,Wolt,Sales Support Associate - Greece,Adelya Khakimova,false,2026-05-20,2026-05-20,2,2
-1778755297381x718678733343948800,Wolt,Hybrid Sales Manager - Germany ,Adelya Khakimova,false,2026-05-14,2026-05-17,5,5
+1778764716897x753404041980805100,Wolt,Area Manager - Athens,Jan Dokulil,false,2026-05-14,2026-05-14,1,1
 1778750065408x861715954167709700,Wolt,Sales Support Associate-Athens,Tina Aramouni,false,2026-05-14,2026-05-14,20,20
 1778767219128x645563696286269400,Wolt,Onboarding Launch Specialist - Finland,Niki Vokalkova,false,2026-05-14,2026-05-14,15,11
-1778764716897x753404041980805100,Wolt,Area Manager - Athens,Jan Dokulil,false,2026-05-14,2026-05-14,1,1
-1778595291071x747854155298897900,Wolt,"Team Lead Sales, Region North",Lisa Gargulinska,false,2026-05-12,2026-05-22,8,6
-1778592510049x208416889183141900,Wolt,Area Manager - Malta,Jan Dokulil,false,2026-05-12,2026-05-24,7,4
-1778580786537x112830253034373120,Wolt,Retail Account Manager (AZE) ,Adelya Khakimova,false,2026-05-12,2026-05-17,19,6
+1778755297381x718678733343948800,Wolt,Hybrid Sales Manager - Germany ,Adelya Khakimova,false,2026-05-14,2026-05-17,5,5
 1778595793299x548488999757938700,Wolt,Territory Sales Manager - Berlin ,Lisa Gargulinska,false,2026-05-12,,3,0
 1778595342890x760789216279920600,Wolt,"Enterprise Sales Manager, Retail",Lisa Gargulinska,false,2026-05-12,2026-06-03,3,2
-1778479247884x933743598925774800,Wolt,Sales Manager-Sweden,Tina Aramouni,false,2026-05-11,2026-05-12,10,9
+1778595291071x747854155298897900,Wolt,"Team Lead Sales, Region North",Lisa Gargulinska,false,2026-05-12,2026-05-22,8,6
+1778580786537x112830253034373120,Wolt,Retail Account Manager (AZE) ,Adelya Khakimova,false,2026-05-12,2026-05-17,19,6
+1778592510049x208416889183141900,Wolt,Area Manager - Malta,Jan Dokulil,false,2026-05-12,2026-05-24,7,4
 1778501360032x181990237728931840,Wolt,"Retail Operations Excellence Specialist, Croatia",Nenad Skoko,false,2026-05-11,2026-05-21,10,5
+1778479247884x933743598925774800,Wolt,Sales Manager-Sweden,Tina Aramouni,false,2026-05-11,2026-05-12,10,9
 1778479191189x925207639857561600,Wolt,Sales Manager-Denmark,Tina Aramouni,false,2026-05-11,2026-05-20,8,8
-1778440569953x667365067168940000,Wolt,Go/ Python I4,Ejla Suljcic,true,2026-05-10,2026-05-17,8,5
 1778446891962x653783916069519400,Wolt,Applied Scientist,Ejla Suljcic,true,2026-05-10,,0,0
+1778440569953x667365067168940000,Wolt,Go/ Python I4,Ejla Suljcic,true,2026-05-10,2026-05-17,8,5
 1778233814595x768879759816654800,Wolt,B2B Marketing (Dx and Mx),Elena Petrovska,true,2026-05-08,2026-06-01,6,5
 1778057401019x487740683564613600,Wolt,"Head of Supply, Greece",Elena Petrovska,true,2026-05-06,2026-06-01,6,3
 1778072574829x376368955057766400,Wolt,Account Manager - Wolt for Work,Niki Vokalkova,false,2026-05-06,2026-05-13,15,9
 1777540603499x788570363141816300,Wolt,Global Revenue S&O,Elena Petrovska,true,2026-04-30,2026-05-14,2,2
-1777468219861x263056314632503300,Wolt,"Enterprise Sales Manager, Poland",Niki Vokalkova,false,2026-04-29,2026-05-05,20,9
 1777473783609x171420471839424500,Wolt,"Area Manager (WM), Czechia",Nenad Skoko,false,2026-04-29,2026-05-22,1,1
+1777468219861x263056314632503300,Wolt,"Enterprise Sales Manager, Poland",Niki Vokalkova,false,2026-04-29,2026-05-05,20,9
 1777284652877x748905681153425400,Wolt,Head of Partnerships,Elena Petrovska,true,2026-04-27,2026-05-13,2,2
+1776935952908x871402512143876100,Wolt,Marketing Manager - Norway,Elena Petrovska,true,2026-04-23,2026-05-19,2,1
+1776946337682x175310840399396860,Wolt,Store Manager (Bergen),Jan Dokulil,false,2026-04-23,2026-05-03,3,2
+1776862201667x936823939323658200,Wolt,"Store Manager (WM), Turku Finland, Q2 2026",Nenad Skoko,false,2026-04-22,2026-05-15,10,7
+1776774072451x591251363900948500,Wolt,Revenue Strategy and Operations  Manager - Commerce Platform,Elena Petrovska,true,2026-04-21,2026-05-15,1,1
+1776765224256x762752769425670100,Wolt,"Category Manager (WM), Slovenia",Nenad Skoko,false,2026-04-21,2026-05-06,7,5
+1776662370563x570920990827085800,Wolt,Account Management Lead ,Adelya Khakimova,false,2026-04-20,2026-05-10,2,1
+1776662016241x890569544355020800,Wolt,Ops Excellence Specialist (GEO) ,Adelya Khakimova,false,2026-04-20,2026-05-10,7,3
+1776662305695x867664369647616000,Wolt,Key Account Manager (Malta) ,Adelya Khakimova,false,2026-04-20,2026-05-10,8,3
+1776430744626x648206653244833800,Wolt,Supply Chain Manager Cyprus,Jan Dokulil,false,2026-04-17,2026-05-10,4,1
+1776157198763x704644042368745500,Wolt,Creative Producer Lead,Elena Petrovska,true,2026-04-14,2026-04-23,8,5
+1776193244015x580844261861752800,Wolt,Brand Tech & Creative Operations Lead ,Elena Petrovska,true,2026-04-14,2026-04-29,7,4
+1776019670864x279914445004865540,Wolt,Senior Staff Engineer,Ejla Suljcic,true,2026-04-12,2026-04-19,3,3
+1775746005997x884574833229168600,Wolt,"Store Manager (WM), Budapest, Q2 2026",Nenad Skoko,false,2026-04-09,2026-04-23,6,8
+1775659269113x432295379987857400,Wolt,Category Manager - Cyprus,Jan Dokulil,false,2026-04-08,2026-04-16,8,5
+1775474457958x248015888347562000,Wolt,"Mass Account Manager, Stuttgart",Milica Veselinovic,true,2026-04-06,,0,0
+1775474382081x644127110362300400,Wolt,"Inside Sales Manager, Berlin&Munich",Milica Veselinovic,true,2026-04-06,,0,0
+1775134606089x181269612030066700,Wolt,"Senior Restaurant Partnership Manager, Krakow",Milica Veselinovic,true,2026-04-02,2026-04-21,3,2
+1775125735494x364560877536935940,Wolt,"Regional Manager, Consumer (Cx) - (Poland)",Elena Petrovska,true,2026-04-02,2026-04-14,6,2

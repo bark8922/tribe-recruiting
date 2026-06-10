@@ -3822,10 +3822,12 @@ const WeeklySummaryTab = ({ data }) => {
 
 
 // ---------- New Project Health Tab ----------
-// Gated (Blake + Jacopo). Roles opened <=30 days, grouped by client, drill to
-// roles. KR2 = days from role creation to first ATS move. KR3 = Actual Screen ->
-// ATS conversion (cumulative first 4 weeks). Every column sortable. Data:
-// data.new_project_health (per-role from new_project_health.sql).
+// Gated (Blake + Jacopo). Q2 OKR tracking for new client roles.
+//   KR2: first move to ATS within 4 business days on 90% of new projects.
+//   KR3: Actual Screen -> ATS conversion above 60% by week 4.
+// Top = OKR scorecard over the current-quarter cohort (roles started in the
+// quarter, never dropped — a Q2 role maturing in Q3 stays in Q2). Bottom = live
+// operational list of roles open <=30 days. Data: data.new_project_health.
 const nphPillStyles = {
   green: { background: 'rgba(34,197,94,0.18)',  color: '#4ade80' },
   amber: { background: 'rgba(245,158,11,0.18)', color: '#fbbf24' },
@@ -3833,9 +3835,8 @@ const nphPillStyles = {
   gray:  { background: 'rgba(148,163,184,0.15)', color: '#94a3b8' },
 };
 const NphPill = ({ text, kind }) => (
-  <span style={{ ...nphPillStyles[kind], padding: '2px 10px', borderRadius: '6px', fontWeight: 500, fontSize: '13px', display: 'inline-block', minWidth: '48px', textAlign: 'center' }}>{text}</span>
+  <span style={{ ...nphPillStyles[kind], padding: '2px 9px', borderRadius: '6px', fontWeight: 500, fontSize: '12px', display: 'inline-block', minWidth: '54px', textAlign: 'center' }}>{text}</span>
 );
-const nphDfaKind = (v) => (v == null ? 'gray' : v <= 10 ? 'green' : v <= 20 ? 'amber' : 'red');
 const nphConvKind = (v) => (v == null ? 'gray' : v >= 60 ? 'green' : v >= 40 ? 'amber' : 'red');
 const nphSortRows = (rows, key, dir) => {
   const mul = dir === 'desc' ? -1 : 1;
@@ -3857,56 +3858,20 @@ const NphTh = ({ label, k, sort, setSort, align }) => (
     {label}{sort.key === k ? (sort.dir === 'asc' ? ' ▲' : ' ▼') : ''}
   </th>
 );
+// Business days strictly after `a` up to and including `b` (weekends excluded).
+const nphBizDays = (a, b) => {
+  if (!a || !b) return null;
+  if (b <= a) return 0;
+  let n = 0; const cur = new Date(a);
+  while (cur < b) { cur.setDate(cur.getDate() + 1); const d = cur.getDay(); if (d !== 0 && d !== 6) n += 1; }
+  return n;
+};
+const nphQuarterKey = (d) => `${d.getFullYear()}-Q${Math.floor(d.getMonth() / 3) + 1}`;
 
 const NewProjectHealthTab = ({ data }) => {
   const [expanded, setExpanded] = useState(null);
   const [sort, setSort] = useState({ key: 'client', dir: 'asc' });
   const [roleSort, setRoleSort] = useState({ key: 'daysOpen', dir: 'asc' });
-
-  const roles = useMemo(() => {
-    const today = new Date();
-    return (data.new_project_health || []).map((r) => {
-      const dc = new Date(r.date_created);
-      const daysOpen = Math.floor((today - dc) / 86400000);
-      let dfa = null;
-      if (r.date_first_ats) {
-        dfa = Math.round((new Date(r.date_first_ats) - dc) / 86400000);
-        if (dfa < 0) dfa = 0;
-      }
-      const conv = r.w4_actual_screens > 0 ? Math.round((100 * r.w4_ats) / r.w4_actual_screens) : null;
-      return { ...r, daysOpen, dfa, conv };
-    }).filter((r) => r.daysOpen >= 0 && r.daysOpen <= 30);
-  }, [data]);
-
-  const clients = useMemo(() => {
-    const m = {};
-    roles.forEach((r) => { (m[r.client] = m[r.client] || []).push(r); });
-    return Object.entries(m).map(([client, rs]) => {
-      const dfas = rs.filter((r) => r.dfa != null).map((r) => r.dfa);
-      const as = rs.reduce((acc, r) => acc + r.w4_actual_screens, 0);
-      const ats = rs.reduce((acc, r) => acc + r.w4_ats, 0);
-      return {
-        client, rolesList: rs, n: rs.length,
-        avgOpen: Math.round(rs.reduce((acc, r) => acc + r.daysOpen, 0) / rs.length),
-        avgDfa: dfas.length ? Math.round(dfas.reduce((a, b) => a + b, 0) / dfas.length) : null,
-        conv: as > 0 ? Math.round((100 * ats) / as) : null,
-      };
-    });
-  }, [roles]);
-
-  const sortedClients = useMemo(() => nphSortRows(clients, sort.key, sort.dir), [clients, sort]);
-
-  const kpis = useMemo(() => {
-    const dfas = roles.filter((r) => r.dfa != null).map((r) => r.dfa);
-    const as = roles.reduce((acc, r) => acc + r.w4_actual_screens, 0);
-    const ats = roles.reduce((acc, r) => acc + r.w4_ats, 0);
-    return {
-      roles: roles.length,
-      clients: clients.length,
-      avgDfa: dfas.length ? Math.round(dfas.reduce((a, b) => a + b, 0) / dfas.length) : '—',
-      conv: as > 0 ? Math.round((100 * ats) / as) + '%' : '—',
-    };
-  }, [roles, clients]);
 
   const Kpi = ({ label, value }) => (
     <div className="bg-blue-100 text-blue-900 rounded-lg px-4 py-3 min-w-[120px] flex-1">
@@ -3915,21 +3880,117 @@ const NewProjectHealthTab = ({ data }) => {
     </div>
   );
 
+  const today = new Date();
+  const MS = 86400000;
+
+  const roles = useMemo(() => {
+    return (data.new_project_health || []).map((r) => {
+      const dc = new Date(r.date_created);
+      const daysOpen = Math.floor((today - dc) / MS);
+      const dfa = r.date_first_ats ? new Date(r.date_first_ats) : null;
+      const bd = dfa ? nphBizDays(dc, dfa) : null;                 // business days to first ATS (KR2)
+      const bizElapsed = nphBizDays(dc, today);
+      const conv = r.w4_actual_screens > 0 ? Math.round((100 * r.w4_ats) / r.w4_actual_screens) : null;
+      const mature = daysOpen >= 28;                               // reached week 4
+      const weekNum = Math.min(4, Math.floor(daysOpen / 7) + 1);
+      return { ...r, dc, daysOpen, dfa, bd, bizElapsed, conv, mature, weekNum, qkey: nphQuarterKey(dc) };
+    });
+  }, [data]);
+
+  // ---- OKR scorecard: current-quarter cohort ----
+  const score = useMemo(() => {
+    const qk = nphQuarterKey(today);
+    const cohort = roles.filter((r) => r.qkey === qk);
+    // KR2 — decidable once the role got an ATS OR the 4-business-day window has closed.
+    const kr2Decidable = cohort.filter((r) => r.dfa || r.bizElapsed > 4);
+    const kr2Within = kr2Decidable.filter((r) => r.dfa && r.bd <= 4);
+    const gotAts = cohort.filter((r) => r.dfa);
+    const kr2Pct = kr2Decidable.length ? Math.round((100 * kr2Within.length) / kr2Decidable.length) : null;
+    const kr2AvgBd = gotAts.length ? (gotAts.reduce((s, r) => s + r.bd, 0) / gotAts.length).toFixed(1) : null;
+    // KR3 — mature roles with >0 actual screens (0-screen roles excluded: usually a named/direct hire).
+    const kr3Pool = cohort.filter((r) => r.mature && r.w4_actual_screens > 0);
+    const kr3Hit = kr3Pool.filter((r) => r.conv >= 60);
+    const kr3Pct = kr3Pool.length ? Math.round((100 * kr3Hit.length) / kr3Pool.length) : null;
+    const sAs = kr3Pool.reduce((s, r) => s + r.w4_actual_screens, 0);
+    const sAts = kr3Pool.reduce((s, r) => s + r.w4_ats, 0);
+    const kr3Blend = sAs > 0 ? Math.round((100 * sAts) / sAs) : null;
+    return { qk, cohortN: cohort.length, kr2Pct, kr2AvgBd, kr2Den: kr2Decidable.length, kr3Pct, kr3Blend, kr3Den: kr3Pool.length };
+  }, [roles]);
+
+  // ---- Operational list: roles open <=30 days, grouped by client ----
+  const activeRoles = useMemo(() => roles.filter((r) => r.daysOpen >= 0 && r.daysOpen <= 30), [roles]);
+  const clients = useMemo(() => {
+    const m = {};
+    activeRoles.forEach((r) => { (m[r.client] = m[r.client] || []).push(r); });
+    return Object.entries(m).map(([client, rs]) => {
+      const conv = rs.filter((r) => r.conv != null);
+      const as = rs.reduce((a, r) => a + r.w4_actual_screens, 0);
+      const ats = rs.reduce((a, r) => a + r.w4_ats, 0);
+      return {
+        client, rolesList: rs, n: rs.length,
+        avgOpen: Math.round(rs.reduce((a, r) => a + r.daysOpen, 0) / rs.length),
+        convNow: as > 0 ? Math.round((100 * ats) / as) : null,
+      };
+    });
+  }, [activeRoles]);
+  const sortedClients = useMemo(() => nphSortRows(clients, sort.key, sort.dir), [clients, sort]);
+
+  const firstAtsPill = (r) => {
+    if (r.dfa) { const k = r.bd <= 4 ? 'green' : r.bd <= 8 ? 'amber' : 'red'; return <NphPill text={`${r.bd} bd${r.bd <= 4 ? ' ✓' : ''}`} kind={k} />; }
+    if (r.bizElapsed > 4) return <NphPill text="not yet" kind="red" />;
+    return <NphPill text="pending" kind="gray" />;
+  };
+  const week4Pill = (r) => {
+    if (!r.mature) return <NphPill text={`wk ${r.weekNum} of 4`} kind="gray" />;
+    if (r.conv == null) return <NphPill text="no screens" kind="gray" />;
+    const ok = r.conv >= 60;
+    return <NphPill text={`${r.conv}% ${ok ? '✓' : '✗'}`} kind={ok ? 'green' : 'red'} />;
+  };
+
   return (
     <div>
       <div className="flex items-start justify-between mb-1">
         <h2 className="text-2xl font-bold text-white">New Project Health</h2>
-        <div className="text-xs text-gray-500 text-right mt-1">Leadership only &middot; roles opened &le;30 days &middot; first ATS measured from role creation date</div>
-      </div>
-      <p className="text-sm text-gray-400 mb-5">Roles opened in the last 30 days. <span className="text-gray-300">Days to 1st ATS</span> (KR2) and <span className="text-gray-300">Actual Screen &rarr; ATS conversion</span> (KR3). Click a client to drill into its roles. Every column sorts.</p>
-
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-        <Kpi label="New roles" value={kpis.roles} />
-        <Kpi label="Clients" value={kpis.clients} />
-        <Kpi label="Avg days to first ATS" value={kpis.avgDfa} />
-        <Kpi label="Avg Actual Screen → ATS" value={kpis.conv} />
+        <div className="text-xs text-gray-500 text-right mt-1">Leadership only &middot; client delivery &middot; new roles since Q2 start (1 Apr 2026)</div>
       </div>
 
+      {/* OKR scorecard */}
+      <div className="text-sm font-medium text-gray-300 mt-4 mb-1">{score.qk} OKR scorecard</div>
+      <div className="text-xs text-gray-500 mb-3">{score.cohortN} new projects this quarter &middot; {score.kr3Den} have reached week 4</div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-7">
+        <div className="bg-gray-800 border border-gray-700 rounded-lg px-5 py-4">
+          <div className="text-sm font-medium text-white">KR2 &middot; First move to ATS</div>
+          <div className="text-xs text-gray-500 mb-3">Goal: 90% of projects within 4 business days</div>
+          <div className="flex gap-8">
+            <div>
+              <div className="text-3xl font-bold" style={{ color: (score.kr2Pct ?? 0) >= 90 ? '#4ade80' : '#fbbf24' }}>{score.kr2Pct == null ? '—' : score.kr2Pct + '%'}</div>
+              <div className="text-xs text-gray-400 mt-1">within 4 business days</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-white">{score.kr2AvgBd == null ? '—' : score.kr2AvgBd}</div>
+              <div className="text-xs text-gray-400 mt-1">avg business days to ATS</div>
+            </div>
+          </div>
+        </div>
+        <div className="bg-gray-800 border border-gray-700 rounded-lg px-5 py-4">
+          <div className="text-sm font-medium text-white">KR3 &middot; Actual Screen &rarr; ATS by week 4</div>
+          <div className="text-xs text-gray-500 mb-3">Goal: conversion above 60% by week 4</div>
+          <div className="flex gap-8">
+            <div>
+              <div className="text-3xl font-bold" style={{ color: (score.kr3Pct ?? 0) >= 60 ? '#4ade80' : '#fbbf24' }}>{score.kr3Pct == null ? '—' : score.kr3Pct + '%'}</div>
+              <div className="text-xs text-gray-400 mt-1">of roles hit &ge;60%</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold" style={{ color: (score.kr3Blend ?? 0) >= 60 ? '#4ade80' : '#fbbf24' }}>{score.kr3Blend == null ? '—' : score.kr3Blend + '%'}</div>
+              <div className="text-xs text-gray-400 mt-1">blended conversion</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Operational list */}
+      <div className="text-sm font-medium text-gray-300 mb-1">Active new roles</div>
+      <div className="text-xs text-gray-500 mb-3">Open &le;30 days &middot; live tracker &middot; click a client to drill into its roles</div>
       {sortedClients.length === 0 ? (
         <div className="bg-gray-800 rounded-lg p-8 text-center text-gray-400">No roles opened in the last 30 days.</div>
       ) : (
@@ -3940,8 +4001,7 @@ const NewProjectHealthTab = ({ data }) => {
                 <NphTh label="Client" k="client" sort={sort} setSort={setSort} />
                 <NphTh label="Roles" k="n" sort={sort} setSort={setSort} align="right" />
                 <NphTh label="Avg days open" k="avgOpen" sort={sort} setSort={setSort} align="right" />
-                <NphTh label="Days to 1st ATS" k="avgDfa" sort={sort} setSort={setSort} align="right" />
-                <NphTh label="Actual Screen → ATS" k="conv" sort={sort} setSort={setSort} align="right" />
+                <NphTh label="Actual Screen &rarr; ATS now" k="convNow" sort={sort} setSort={setSort} align="right" />
               </tr>
             </thead>
             <tbody>
@@ -3957,30 +4017,29 @@ const NewProjectHealthTab = ({ data }) => {
                       </td>
                       <td className="px-3 py-3 text-right text-gray-300">{c.n}</td>
                       <td className="px-3 py-3 text-right text-gray-300">{c.avgOpen}d</td>
-                      <td className="px-3 py-3 text-right"><NphPill text={c.avgDfa == null ? '—' : c.avgDfa + 'd'} kind={nphDfaKind(c.avgDfa)} /></td>
-                      <td className="px-3 py-3 text-right"><NphPill text={c.conv == null ? '—' : c.conv + '%'} kind={nphConvKind(c.conv)} /></td>
+                      <td className="px-3 py-3 text-right"><NphPill text={c.convNow == null ? '—' : c.convNow + '%'} kind={nphConvKind(c.convNow)} /></td>
                     </tr>
                     {open && (
                       <tr className="bg-gray-900">
-                        <td colSpan={5} className="px-3 py-3">
+                        <td colSpan={4} className="px-3 py-3">
                           <table className="w-full text-sm">
                             <thead className="text-gray-500 border-b border-gray-800">
                               <tr>
                                 <NphTh label="Role" k="job_title" sort={roleSort} setSort={setRoleSort} />
-                                <NphTh label="TA" k="ta" sort={roleSort} setSort={setRoleSort} />
                                 <NphTh label="Days open" k="daysOpen" sort={roleSort} setSort={setRoleSort} align="right" />
-                                <NphTh label="Days to 1st ATS" k="dfa" sort={roleSort} setSort={setRoleSort} align="right" />
-                                <NphTh label="Actual Screen → ATS" k="conv" sort={roleSort} setSort={setRoleSort} align="right" />
+                                <NphTh label="First ATS" k="bd" sort={roleSort} setSort={setRoleSort} align="right" />
+                                <NphTh label="AS &rarr; ATS now" k="conv" sort={roleSort} setSort={setRoleSort} align="right" />
+                                <NphTh label="Week 4" k="daysOpen" sort={roleSort} setSort={setRoleSort} align="right" />
                               </tr>
                             </thead>
                             <tbody>
                               {sortedRoles.map((r) => (
                                 <tr key={r.job_id} className="border-b border-gray-800">
-                                  <td className="px-3 py-2 text-gray-200">{r.job_title}{r.is_external ? <span className="text-gray-600 text-xs ml-2">ext</span> : null}</td>
-                                  <td className="px-3 py-2 text-gray-400">{r.ta}</td>
+                                  <td className="px-3 py-2 text-gray-200">{r.job_title}<div className="text-xs text-gray-500">{r.ta}{r.is_external ? ' · ext' : ''}</div></td>
                                   <td className="px-3 py-2 text-right text-gray-300">{r.daysOpen}d</td>
-                                  <td className="px-3 py-2 text-right"><NphPill text={r.dfa == null ? '—' : r.dfa + 'd'} kind={nphDfaKind(r.dfa)} /></td>
+                                  <td className="px-3 py-2 text-right">{firstAtsPill(r)}</td>
                                   <td className="px-3 py-2 text-right"><NphPill text={r.conv == null ? '—' : r.conv + '%'} kind={nphConvKind(r.conv)} /></td>
+                                  <td className="px-3 py-2 text-right">{week4Pill(r)}</td>
                                 </tr>
                               ))}
                             </tbody>
@@ -3996,11 +4055,8 @@ const NewProjectHealthTab = ({ data }) => {
         </div>
       )}
 
-      <div className="flex gap-5 mt-4 text-xs text-gray-500 flex-wrap items-center">
-        <span><span style={{ display: 'inline-block', width: 10, height: 10, borderRadius: 2, background: '#4ade80', verticalAlign: '-1px' }}></span> healthy</span>
-        <span><span style={{ display: 'inline-block', width: 10, height: 10, borderRadius: 2, background: '#fbbf24', verticalAlign: '-1px' }}></span> watch</span>
-        <span><span style={{ display: 'inline-block', width: 10, height: 10, borderRadius: 2, background: '#f87171', verticalAlign: '-1px' }}></span> at risk</span>
-        <span className="ml-auto">Days to 1st ATS: green &le;10, amber 11&ndash;20, red &gt;20 &middot; Conversion: green &ge;60%, amber 40&ndash;59%, red &lt;40%</span>
+      <div className="text-xs text-gray-500 mt-4 leading-relaxed">
+        First ATS = business days from role creation to first candidate reaching ATS (green &le;4). Week 4 stays &ldquo;wk N of 4&rdquo; until a role is 28 days old, then locks to its final Actual Screen&rarr;ATS result vs 60%. Roles with no actual screens by week 4 are excluded from KR3 (typically a named/direct hire). Mature roles keep feeding the scorecard after they leave this list at 30 days.
       </div>
     </div>
   );

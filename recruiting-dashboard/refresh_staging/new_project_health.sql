@@ -1,8 +1,9 @@
 -- new_project_health.sql — per-role health for roles opened in the last ~45 days.
 --
--- Drives the gated "New Project Health" tab (Jacopo OKR KR2 + KR3). Frontend
--- filters to roles open <=30 days; we pull 45 here so a role doesn't pop in/out
--- right at the boundary and so days_open can be recomputed client-side daily.
+-- Drives the gated "New Project Health" tab (Jacopo OKR KR2 + KR3). We pull the
+-- whole quarterly cohort (roles created since Q2 start, 1 Apr 2026, no cap) so the
+-- OKR scorecard can score roles once they reach week 4 even after they leave the
+-- operational <=30-day list. Frontend filters/buckets by quarter + 30-day window.
 --
 -- Output schema (matches snowflake_new_project_health.csv):
 --   JOB_ID, CLIENT, JOB_TITLE, TA, IS_EXTERNAL_RECRUITER, DATE_CREATED,
@@ -35,7 +36,7 @@ WITH job_meta AS (
     AND cl."client_name" IS NOT NULL AND cl."client_name" <> ''
     AND cl."client_name" NOT IN ('BD - Tribe','Tribe - Marketing','Kamila AI - TEST','Bubble test','Tribe.xyz','Tribe.xyz (IR)')
     AND LOWER(NULLIF(j."is_job_archived",'')) <> 'true'
-    AND TRY_TO_DATE(j."date_created") >= DATEADD('day', -45, CURRENT_DATE())
+    AND TRY_TO_DATE(j."date_created") >= DATE '2026-04-01'
 ),
 cand AS (
   SELECT c."candidate_id" AS cid, c."job_id" AS jid

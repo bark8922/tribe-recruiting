@@ -12,7 +12,7 @@ export const PROJECT_HEALTH_COOKIE = "tribe_ph";
 export const SESSION_MAX_AGE_SECONDS = 2592000; // 30 days
 export const SESSION_MAX_AGE_MS = SESSION_MAX_AGE_SECONDS * 1000;
 
-// 23 leadership emails — keep lowercase.
+// 24 leadership emails — keep lowercase.
 export const LEADERSHIP_EMAILS: Set<string> = new Set([
   "anastasija@tribe.xyz",
   "andrea@tribe.xyz",
@@ -24,6 +24,7 @@ export const LEADERSHIP_EMAILS: Set<string> = new Set([
   "jacopo@tribe.xyz",
   "katarina@tribe.xyz",
   "kristina@tribe.xyz",
+  "kristinaxnikolic@gmail.com", // Kristina Colovic's Bubble account email
   "kristjana@tribe.xyz",
   "lejla@tribe.xyz",
   "maria.gerbore@tribe.xyz",

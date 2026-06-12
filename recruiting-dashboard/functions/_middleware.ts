@@ -6,7 +6,7 @@
 // SameSite=None + Secure cookies are required so the dashboard works
 // when iframed inside Bubble (overview.tribe.xyz).
 
-import { PROJECT_HEALTH_EMAILS, SESSION_COOKIE, parseCookies, projHealthCookie, verifySession } from "./_lib/session";
+import { DIRECTOR_EMAILS, LEADERSHIP_EMAILS, PROJECT_HEALTH_EMAILS, SESSION_COOKIE, parseCookies, projHealthCookie, roleCookie, verifySession } from "./_lib/session";
 
 interface Env {
   SESSION_SECRET: string;
@@ -50,12 +50,21 @@ export const onRequest: PagesFunction<Env> = async (ctx: Ctx) => {
     // for the allowlisted emails, so the gate never depends on catching a fresh
     // login. Everyone else passes through untouched (identical to prior behavior).
     const resp = await ctx.next();
+    const out = new Response(resp.body, resp);
+    // Also refresh the role cookie from the CURRENT allowlists on every
+    // authenticated request, so allowlist changes apply on next page load
+    // without requiring a logout/login (sessions last 30 days).
+    const email = session.email.toLowerCase();
+    const role = DIRECTOR_EMAILS.has(email)
+      ? "director"
+      : LEADERSHIP_EMAILS.has(email)
+        ? "leadership"
+        : "member";
+    out.headers.append("set-cookie", roleCookie(role));
     if (PROJECT_HEALTH_EMAILS.has(session.email)) {
-      const out = new Response(resp.body, resp);
       out.headers.append("set-cookie", projHealthCookie(true));
-      return out;
     }
-    return resp;
+    return out;
   }
 
   // No valid session — return the login page (200 OK) for ALL gated paths.

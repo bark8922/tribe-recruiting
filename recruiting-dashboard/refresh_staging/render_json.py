@@ -83,6 +83,7 @@ SNOW_AUX = HERE / "snowflake_aux_12w.csv"
 SNOW_TS_SUMMARY = HERE / "snowflake_ts_summary.csv"  # per-sourcer x per-week (KPI-TS Summary tab)
 SNOW_TS_SUMMARY_BY_CLIENT = HERE / "snowflake_ts_summary_by_client.csv"  # per-(sourcer, client, week) — feeds client-filtered viewed/reacted on PD + TS Summary
 SNOW_DROPS_BY_SOURCER = HERE / "snowflake_drops_by_sourcer.csv"  # per-(sourcer, job, week, reason) drop counts — feeds Circle's rejection-reasons pie
+SNOW_DROPS_BY_RECRUITER = HERE / "snowflake_drops_by_recruiter.csv"  # per-(recruiter, job, week, reason) drop counts, who_event_created_for attribution — feeds Circle's rejection-reasons pie for TAs
 SNOW_PROJECT_DASHBOARD = HERE / "snowflake_project_dashboard.csv"
 SNOW_PROJECT_DASHBOARD_EVENTATTR = HERE / "snowflake_project_dashboard_eventattr.csv"  # parallel event-based attribution
 SNOW_PROJECT_HIRES = HERE / "snowflake_project_dashboard_hires.csv"
@@ -1249,6 +1250,37 @@ def load_drops_by_sourcer():
     return rows
 
 
+def load_drops_by_recruiter():
+    """Return [{recruiter, job_id, client, job_title, iso_year, iso_week, reason, drops}]
+    from snowflake_drops_by_recruiter.csv. Same shape as drops_by_sourcer but
+    attributed to whoever created the Disqualified event (who_event_created_for),
+    so it covers TAs as well as sourcers. Powers Circle's rejection-reasons pie
+    on TA cards. Returns [] if CSV missing.
+    """
+    if not SNOW_DROPS_BY_RECRUITER.exists():
+        return []
+    rows = []
+    with SNOW_DROPS_BY_RECRUITER.open() as f:
+        for row in csv.DictReader(f):
+            try:
+                drops = int(float(_ci(row, "drops") or 0))
+            except (TypeError, ValueError):
+                drops = 0
+            if drops <= 0:
+                continue
+            rows.append({
+                "recruiter": _ci(row, "recruiter"),
+                "job_id": _ci(row, "job_id"),
+                "client": _ci(row, "client"),
+                "job_title": _ci(row, "job_title"),
+                "iso_year": int(_ci(row, "iso_year")),
+                "iso_week": int(_ci(row, "iso_week")),
+                "reason": _ci(row, "reason"),
+                "drops": drops,
+            })
+    return rows
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Computed surfaces
 # ─────────────────────────────────────────────────────────────────────────────
@@ -1956,6 +1988,12 @@ def main():
     out["drops_by_sourcer"] = load_drops_by_sourcer()
     if out["drops_by_sourcer"]:
         print(f"  drops_by_sourcer: {len(out['drops_by_sourcer'])} (sourcer, job, week, reason) rows")
+
+    # drops_by_recruiter - same, but attributed by who created the Disqualified
+    # event, so TAs are covered too. Powers Circle's pie on TA cards.
+    out["drops_by_recruiter"] = load_drops_by_recruiter()
+    if out["drops_by_recruiter"]:
+        print(f"  drops_by_recruiter: {len(out['drops_by_recruiter'])} (recruiter, job, week, reason) rows")
 
     # Internal Recruiting tab (Phase 2a, 2026-05-01) — Bubble-only port of
     # Andy's PBI Internal Recruitment page. Tribe.xyz (IR) jobs only.

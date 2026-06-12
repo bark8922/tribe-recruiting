@@ -101,6 +101,41 @@ const allTargetsMet = (pairs) => {
 };
 
 // WBR Tab
+
+// --- CSV export (DOM-based: serializes the rendered table, so it cannot diverge from screen) ---
+const csvCell = (s) => {
+  const v = String(s ?? '').replace(/\u00A0/g, ' ').replace(/\s+/g, ' ').trim();
+  return /[",\n;]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
+};
+const CsvBtn = ({ fname }) => {
+  const ref = React.useRef(null);
+  const onClick = () => {
+    const sib = ref.current?.nextElementSibling;
+    const table = sib && sib.tagName === 'TABLE' ? sib : ref.current?.parentElement?.querySelector('table');
+    if (!table) return;
+    const lines = Array.from(table.querySelectorAll('tr')).map((tr) =>
+      Array.from(tr.querySelectorAll('th,td')).map((c) => csvCell(c.textContent)).join(',')
+    );
+    const blob = new Blob(['\uFEFF' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fname + '_' + new Date().toISOString().slice(0, 10) + '.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+  return (
+    <div ref={ref} className="flex justify-end mb-1">
+      <button type="button" onClick={onClick} title="Download this table as CSV"
+        className="text-xs px-2 py-1 rounded border border-gray-600 bg-gray-700 text-gray-300 hover:bg-gray-600">
+        ⤓ CSV
+      </button>
+    </div>
+  );
+};
+
 const WBRTab = ({ data }) => {
   // Derive week list from the weekly roster (keys like "w15", "w16"). This
   // auto-advances as Andy adds new weeks to the TA Weekly Note sheet.
@@ -862,6 +897,7 @@ const WBRTab = ({ data }) => {
       <div className="bg-gray-800 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-white mb-4">Client Summary — Week {selectedWeek}</h3>
         <div style={{ overflowX: 'auto' }}>
+          <CsvBtn fname="wbr_client_summary" />
           <table className="text-sm" style={{ width: '780px', maxWidth: '100%', margin: '0 auto', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
             <colgroup>
               <col style={{ width: '180px' }} />
@@ -929,6 +965,7 @@ const WBRTab = ({ data }) => {
       <div className="bg-gray-800 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-white mb-4">TA Weekly Detail — Week {selectedWeek}</h3>
         <div>
+          <CsvBtn fname="wbr_ta_weekly_detail" />
           <table className="text-sm" style={{ width: '100%', tableLayout: 'fixed', borderCollapse: 'separate', borderSpacing: 0 }}>
             <colgroup>
               <col style={{ width: '120px' }} />
@@ -1088,6 +1125,7 @@ const WBRTab = ({ data }) => {
       <div className="bg-gray-800 rounded-lg p-4">
           <h3 className="text-lg font-semibold text-white mb-4">TS (Sourcer) Weekly — Week {selectedWeek}</h3>
           <div>
+            <CsvBtn fname="wbr_ts_weekly" />
             <table className="text-sm" style={{ width: '100%', tableLayout: 'fixed', borderCollapse: 'separate', borderSpacing: 0 }}>
               <colgroup>
                 <col style={{ width: '150px' }} />
@@ -2144,6 +2182,7 @@ const ProjectDashboardTab = ({ data }) => {
           </div>
         </div>
         <div className="overflow-x-auto">
+          <CsvBtn fname="pd_job_performance_by_client" />
           <table className="w-full text-sm">
             <thead>
               <tr className="text-gray-300 border-b border-gray-700 text-xs">
@@ -2665,6 +2704,7 @@ const TTHTab = ({ data }) => {
           First Hired per Job by Client / Job Title
         </div>
         <div className="overflow-x-auto">
+          <CsvBtn fname="tth_first_hired_by_client_job" />
           <table className="min-w-full text-sm">
             <thead className="bg-gray-900 text-gray-300">
               <tr>
@@ -2711,6 +2751,7 @@ const TTHTab = ({ data }) => {
           First Hired per Job by Job Category / Subcategory
         </div>
         <div className="overflow-x-auto">
+          <CsvBtn fname="tth_first_hired_by_category" />
           <table className="min-w-full text-sm">
             <thead className="bg-gray-900 text-gray-300">
               <tr>
@@ -3481,6 +3522,7 @@ const TSSummaryTab = ({ data }) => {
             <span className="text-xs text-gray-400 font-normal">{perSourcer.length} sourcers</span>
           </div>
           <div className="overflow-x-auto">
+            <CsvBtn fname="ts_summary_per_sourcer" />
             <table className="min-w-full text-xs">
               <thead className="bg-gray-900 text-gray-300">
                 <tr>
@@ -3799,7 +3841,7 @@ const WeeklySummaryTab = ({ data }) => {
             {WSUM_WINDOWS.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
           </select>
         </div>
-        <div className="overflow-x-auto"><table className="w-full text-sm">{header('Week')}
+        <div className="overflow-x-auto"><CsvBtn fname="weekly_performance" /><table className="w-full text-sm">{header('Week')}
           <tbody>{weekly.map((w) => renderRow(weekLabel(w.year, w.week), w))}{weekly.length > 0 && renderRow('Total', wTot, { total: true })}</tbody>
         </table></div>
         {weekly.length === 0 && <div className="text-sm text-gray-500 py-4 text-center">No data for this selection.</div>}
@@ -3807,7 +3849,7 @@ const WeeklySummaryTab = ({ data }) => {
 
       <div className="bg-gray-800 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-white mb-3">Monthly Performance</h3>
-        <div className="overflow-x-auto"><table className="w-full text-sm">{header('Month')}
+        <div className="overflow-x-auto"><CsvBtn fname="monthly_performance" /><table className="w-full text-sm">{header('Month')}
           <tbody>{monthly.map((mo) => renderRow(monthLabel(mo.key), mo))}{monthly.length > 0 && renderRow('Total', mTot, { total: true })}</tbody>
         </table></div>
         {monthly.length === 0 && <div className="text-sm text-gray-500 py-4 text-center">No data for this selection.</div>}

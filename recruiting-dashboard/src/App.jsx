@@ -755,7 +755,8 @@ const WBRTab = ({ data }) => {
                 ? drillTaComments(drillDown.taName)
                 : drillDown.kind === 'ts' ? drillTsComments(drillDown.tsName)
                 : {};
-              return (
+              return (<>
+            <CsvBtn fname="wbr_drilldown_weekly" />
             <table className="text-sm" style={{ width: '100%', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
               <colgroup>
                 <col style={{ width: '70px' }} />
@@ -839,7 +840,7 @@ const WBRTab = ({ data }) => {
                   {showComment && <td className="text-left px-3 py-2 text-gray-400">—</td>}
                 </tr>
               </tbody>
-            </table>
+            </table></>
               );
             })()}
             <p className="text-xs text-gray-500 mt-4">Click outside this panel or press ✕ to close.</p>
@@ -1212,6 +1213,7 @@ const WBRTab = ({ data }) => {
           Funnel metrics count candidates on those pipelines only.
         </p>
         <div style={{ overflowX: 'auto' }}>
+          <CsvBtn fname="wbr_ts_conversion" />
           <table className="text-sm" style={{ width: '900px', maxWidth: '100%', margin: '0 auto', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
             <colgroup>
               <col style={{ width: '150px' }} />
@@ -1521,6 +1523,7 @@ const MBRTab = ({ data }) => {
       <div className="bg-gray-800 rounded-lg p-4" key={group}>
         <h3 className="text-lg font-semibold text-white mb-4">{label} — TAs (Last 4 Weeks)</h3>
         <div className="overflow-x-auto">
+          <CsvBtn fname={'mbr_tas_' + group} />
           <table className="text-sm" style={{ width: '1500px', maxWidth: '100%', margin: '0 auto', tableLayout: 'fixed' }}>
             <colgroup>
               <col style={{ width: '100px' }} />
@@ -1621,6 +1624,7 @@ const MBRTab = ({ data }) => {
       <div className="bg-gray-800 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-white mb-4">Client's Target — Last 4 Weeks</h3>
         <div style={{ overflowX: 'auto' }}>
+          <CsvBtn fname="mbr_client_targets_last4w" />
           <table className="text-sm" style={{ width: '780px', maxWidth: '100%', margin: '0 auto', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
             <colgroup>
               <col style={{ width: '130px' }} />
@@ -1678,6 +1682,7 @@ const MBRTab = ({ data }) => {
       <div className="bg-gray-800 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-white mb-4">TS's Target — Last 4 Weeks</h3>
         <div style={{ overflowX: 'auto' }}>
+          <CsvBtn fname="mbr_ts_targets_last4w" />
           <table className="text-sm" style={{ width: '1300px', maxWidth: '100%', margin: '0 auto', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
             <colgroup>
               <col style={{ width: '150px' }} />
@@ -2283,6 +2288,7 @@ const ProjectDashboardTab = ({ data }) => {
           </div>
         </div>
         <div className="overflow-x-auto">
+          <CsvBtn fname="pd_ta_overview_by_client" />
           <table className="w-full text-sm">
             <thead>
               <tr className="text-gray-300 border-b border-gray-700 text-xs">
@@ -2355,6 +2361,7 @@ const ProjectDashboardTab = ({ data }) => {
           </div>
         </div>
         <div className="overflow-x-auto">
+          <CsvBtn fname="pd_ts_overview_by_client" />
           <table className="w-full text-sm">
             <thead>
               <tr className="text-gray-300 border-b border-gray-700 text-xs">
@@ -2408,6 +2415,7 @@ const ProjectDashboardTab = ({ data }) => {
         </button>
         {hiresOpen && (
           <div className="overflow-x-auto mt-3">
+            <CsvBtn fname="pd_hires_in_period" />
             <table className="w-full text-sm">
               <thead>
                 <tr className="text-gray-300 border-b border-gray-700">
@@ -3618,6 +3626,7 @@ const TSSummaryTab = ({ data }) => {
             <span className="text-xs text-gray-400 font-normal">{noHireBySourcer.length} sourcers</span>
           </div>
           <div className="overflow-x-auto max-h-[500px]">
+            <CsvBtn fname="ts_pipelines_no_hires_by_sourcer" />
             <table className="min-w-full text-xs">
               <thead className="bg-gray-900 text-gray-300 sticky top-0">
                 <tr>
@@ -3651,6 +3660,7 @@ const TSSummaryTab = ({ data }) => {
             <span className="text-xs text-gray-400 font-normal">{pipelinesNoHire.length} jobs</span>
           </div>
           <div className="overflow-x-auto max-h-[500px]">
+            <CsvBtn fname="ts_pipelines_no_hires_job_detail" />
             <table className="min-w-full text-xs">
               <thead className="bg-gray-900 text-gray-300 sticky top-0">
                 <tr>
@@ -4037,6 +4047,7 @@ const NewProjectHealthTab = ({ data }) => {
         <div className="bg-gray-800 rounded-lg p-8 text-center text-gray-400">No roles opened in the last 30 days.</div>
       ) : (
         <div className="bg-gray-800 rounded-lg overflow-hidden">
+          <CsvBtn fname="project_health_kr2_first_ats" />
           <table className="w-full text-sm">
             <thead className="text-gray-400 border-b border-gray-700">
               <tr>
@@ -4064,6 +4075,7 @@ const NewProjectHealthTab = ({ data }) => {
                     {open && (
                       <tr className="bg-gray-900">
                         <td colSpan={4} className="px-3 py-3">
+                          <CsvBtn fname="project_health_kr3_as_to_ats" />
                           <table className="w-full text-sm">
                             <thead className="text-gray-500 border-b border-gray-800">
                               <tr>
@@ -4476,6 +4488,7 @@ const IRTab = ({ data }) => {
 
         <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
           <div className="text-sm font-medium text-white mb-3">Active jobs ({jobOptions.length})</div>
+          <CsvBtn fname="ir_active_jobs" />
           <table className="w-full text-xs">
             <thead><tr className="text-gray-400 text-left">
               <th className="pb-2 font-normal">Job</th>
@@ -4507,6 +4520,7 @@ const IRTab = ({ data }) => {
             <div className="text-sm font-medium text-white">Sourced by ({sourcedAgg.length})</div>
             <div className="text-xs text-gray-500">Click row to highlight in funnel</div>
           </div>
+          <CsvBtn fname="ir_sourced_by" />
           <table className="w-full text-xs">
             <thead><tr className="text-gray-400">
               <th className="pb-2 font-normal text-left">Sourcer</th>
@@ -4541,6 +4555,7 @@ const IRTab = ({ data }) => {
             <div className="text-sm font-medium text-white">Interviewed by &middot; Actual Screens</div>
             <div className="text-xs text-gray-500">Click to highlight</div>
           </div>
+          <CsvBtn fname="ir_interviewed_by" />
           <table className="w-full text-xs">
             <thead><tr className="text-gray-400">
               <th className="pb-2 font-normal text-left">TA</th>
@@ -4568,7 +4583,8 @@ const IRTab = ({ data }) => {
         <div className="text-sm font-medium text-white mb-3">Weekly performance ({weeklyAgg.length} weeks shown)</div>
         {weeklyAgg.length === 0 ? (
           <div className="text-xs text-gray-500 italic">No data for the selected filter.</div>
-        ) : (
+        ) : (<>
+          <CsvBtn fname="ir_weekly_performance" />
           <table className="w-full text-xs">
             <thead><tr className="text-gray-400">
               <th className="pb-2 font-normal text-left">Week</th>
@@ -4593,7 +4609,7 @@ const IRTab = ({ data }) => {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table></>
         )}
       </div>
 
@@ -4602,7 +4618,8 @@ const IRTab = ({ data }) => {
         <div className="text-sm font-medium text-white mb-3">Disqualified by stage (per job) &middot; total {f_dqByStage.reduce((s, r) => s + r.total, 0)}</div>
         {f_dqByStage.length === 0 ? (
           <div className="text-xs text-gray-500 italic">No DQs logged for the selected filter.</div>
-        ) : (
+        ) : (<>
+          <CsvBtn fname="ir_dq_by_stage" />
           <table className="w-full text-xs">
             <thead><tr className="text-gray-400">
               <th className="pb-2 font-normal text-left">Job</th>
@@ -4628,7 +4645,7 @@ const IRTab = ({ data }) => {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table></>
         )}
       </div>
 
@@ -4794,6 +4811,7 @@ const ProfitabilityTab = () => {
         </div>
 
         <div className="overflow-x-auto max-h-[640px] overflow-y-auto">
+          <CsvBtn fname="profitability_by_client" />
           <table className="w-full text-xs">
             <thead className="sticky top-0 bg-gray-800 z-10">
               <tr className="text-gray-400 border-b border-gray-700">

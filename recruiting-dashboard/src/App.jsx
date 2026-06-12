@@ -1832,7 +1832,7 @@ const DQ_COLORS = ['#60a5fa', '#34d399', '#fbbf24', '#a78bfa', '#f472b6', '#fb92
 const DQ_PERIODS = [['all', 'All time'], ['ytd', 'This year'], ['12w', 'Last 12 weeks'], ['4w', 'Last 4 weeks']];
 
 const DQReasonsSection = () => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [dq, setDq] = useState(null);
   const [err, setErr] = useState(null);
   const [client, setClient] = useState('');
@@ -1862,37 +1862,55 @@ const DQReasonsSection = () => {
     return [d.toISOString().slice(0, 10), '9999-12-31'];
   }, [period, usingCustom, customStart, customEnd]);
 
-  const clientOptions = useMemo(() => (dq ? [...new Set(dq.rows.map((r) => dq.clients[r[0]]))].sort() : []), [dq]);
-  const jobOptions = useMemo(() => {
-    if (!dq) return [];
-    const ci = client === '' ? -1 : dq.clients.indexOf(client);
-    return [...new Set(dq.rows.filter((r) => ci < 0 || r[0] === ci).map((r) => dq.jobs[r[1]]))].sort();
-  }, [dq, client]);
-  const taOptions = useMemo(() => {
-    if (!dq) return [];
-    const ci = client === '' ? -1 : dq.clients.indexOf(client);
-    return [...new Set(dq.rows.filter((r) => ci < 0 || r[0] === ci).map((r) => dq.tas[r[2]]))].sort();
-  }, [dq, client]);
-
-  const byReason = useMemo(() => {
-    if (!dq) return [];
+  // Shared filter predicates. Each dropdown's option list applies every OTHER
+  // active filter plus the time range, so picking a TA narrows jobs/clients,
+  // picking "Last 4 weeks" hides clients/jobs/TAs with no DQs in the window, etc.
+  const filt = useMemo(() => {
+    if (!dq) return null;
     const ci = client === '' ? -1 : dq.clients.indexOf(client);
     const ji = job === '' ? -1 : dq.jobs.indexOf(job);
     const ti = ta === '' ? -1 : dq.tas.indexOf(ta);
+    const inRange = (r) => {
+      if (!range) return true;
+      if (r[3] < 0) return false;
+      const w = dq.weeks[r[3]];
+      return w >= range[0] && w <= range[1];
+    };
+    return { ci, ji, ti, inRange };
+  }, [dq, client, job, ta, range]);
+  const clientOptions = useMemo(() => {
+    if (!dq) return [];
+    const { ji, ti, inRange } = filt;
+    return [...new Set(dq.rows.filter((r) => (ji < 0 || r[1] === ji) && (ti < 0 || r[2] === ti) && inRange(r)).map((r) => dq.clients[r[0]]))].sort();
+  }, [dq, filt]);
+  const jobOptions = useMemo(() => {
+    if (!dq) return [];
+    const { ci, ti, inRange } = filt;
+    return [...new Set(dq.rows.filter((r) => (ci < 0 || r[0] === ci) && (ti < 0 || r[2] === ti) && inRange(r)).map((r) => dq.jobs[r[1]]))].sort();
+  }, [dq, filt]);
+  const taOptions = useMemo(() => {
+    if (!dq) return [];
+    const { ci, ji, inRange } = filt;
+    return [...new Set(dq.rows.filter((r) => (ci < 0 || r[0] === ci) && (ji < 0 || r[1] === ji) && inRange(r)).map((r) => dq.tas[r[2]]))].sort();
+  }, [dq, filt]);
+  // Auto-clear a selection that fell out of its (now narrower) option list.
+  React.useEffect(() => { if (dq && client && !clientOptions.includes(client)) setClient(''); }, [dq, client, clientOptions]);
+  React.useEffect(() => { if (dq && job && !jobOptions.includes(job)) setJob(''); }, [dq, job, jobOptions]);
+  React.useEffect(() => { if (dq && ta && !taOptions.includes(ta)) setTa(''); }, [dq, ta, taOptions]);
+
+  const byReason = useMemo(() => {
+    if (!dq) return [];
+    const { ci, ji, ti, inRange } = filt;
     const m = new Map();
     for (const r of dq.rows) {
       if (ci >= 0 && r[0] !== ci) continue;
       if (ji >= 0 && r[1] !== ji) continue;
       if (ti >= 0 && r[2] !== ti) continue;
-      if (range) {
-        if (r[3] < 0) continue;
-        const w = dq.weeks[r[3]];
-        if (w < range[0] || w > range[1]) continue;
-      }
+      if (!inRange(r)) continue;
       m.set(r[4], (m.get(r[4]) || 0) + r[5]);
     }
     return [...m.entries()].map(([ri, n]) => ({ reason: dq.reasons[ri], n })).sort((a, b) => b.n - a.n);
-  }, [dq, client, job, ta, range]);
+  }, [dq, filt]);
 
   const total = byReason.reduce((s, r) => s + r.n, 0);
   const shown = showAll ? byReason : byReason.slice(0, 10);
@@ -1920,7 +1938,7 @@ const DQReasonsSection = () => {
       {open && dq && (
         <div className="mt-3">
           <div className="flex flex-wrap gap-2 items-center mb-3">
-            <select value={client} onChange={(e) => { setClient(e.target.value); setJob(''); setTa(''); }}
+            <select value={client} onChange={(e) => setClient(e.target.value)}
               className="px-2 py-1 bg-gray-700 text-white rounded border border-gray-600 text-xs" style={{ maxWidth: 180 }}>
               <option value="">All clients</option>
               {clientOptions.map((c) => <option key={c} value={c}>{c}</option>)}

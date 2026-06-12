@@ -29,6 +29,7 @@ print("=== keboola.component imported ===", flush=True)
 
 REPO = "bark8922/tribe-recruiting"
 TARGET_FILE = "recruiting-dashboard/src/dashboard_data_snowflake.json"
+DQ_TARGET_FILE = "recruiting-dashboard/public/dq_reasons.json"
 
 
 def stage_inputs(ci, flat):
@@ -134,7 +135,18 @@ def run_render(flat):
     return out
 
 
-def push_to_github(token, content):
+def get_dq_artifact(flat):
+    """Optional second artifact: rendered_dq_reasons.json (PD tab DQ section).
+    Returns Path or None — absence must never fail the flow."""
+    out = flat / "refresh_staging" / "rendered_dq_reasons.json"
+    if out.exists():
+        print("[get_dq_artifact] found (" + str(out.stat().st_size // 1024) + " KB)", flush=True)
+        return out
+    print("[get_dq_artifact] not produced - skipping", flush=True)
+    return None
+
+
+def push_to_github(token, content, dq_content=None):
     """Push content to GitHub via git CLI (not Contents API).
 
     The container clones bark8922/tribe-recruiting at /code/repo_clone before
@@ -160,6 +172,14 @@ def push_to_github(token, content):
     size_kb = target.stat().st_size // 1024
     print("[push_to_github] wrote " + TARGET_FILE + " (" + str(size_kb) + " KB)", flush=True)
 
+    tracked = [TARGET_FILE]
+    if dq_content is not None:
+        dq_target = repo_dir / DQ_TARGET_FILE
+        dq_target.parent.mkdir(parents=True, exist_ok=True)
+        dq_target.write_text(dq_content, encoding="utf-8")
+        tracked.append(DQ_TARGET_FILE)
+        print("[push_to_github] wrote " + DQ_TARGET_FILE + " (" + str(dq_target.stat().st_size // 1024) + " KB)", flush=True)
+
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     env = os.environ.copy()
     env["GIT_AUTHOR_NAME"] = "Keboola Flow"
@@ -177,8 +197,8 @@ def push_to_github(token, content):
             raise RuntimeError("git " + cmd[1] + " failed (rc=" + str(result.returncode) + ")")
         return result.stdout.strip()
 
-    run(["git", "add", TARGET_FILE])
-    status = subprocess.run(["git", "status", "--porcelain", TARGET_FILE], cwd=str(repo_dir), capture_output=True, text=True)
+    run(["git", "add"] + tracked)
+    status = subprocess.run(["git", "status", "--porcelain"] + tracked, cwd=str(repo_dir), capture_output=True, text=True)
     if not status.stdout.strip():
         print("[push_to_github] no changes vs main — skipping commit", flush=True)
         head = run(["git", "rev-parse", "HEAD"])
@@ -246,8 +266,10 @@ def main():
     run_ashby(flat, ashby_key)  # v2 lean+incremental, 180s deadline, best-effort
     out_path = run_render(flat)
     content = out_path.read_text(encoding="utf-8")
+    dq_path = get_dq_artifact(flat)
+    dq_content = dq_path.read_text(encoding="utf-8") if dq_path else None
 
-    sha = push_to_github(github_token, content)
+    sha = push_to_github(github_token, content, dq_content)
     notify_circle(github_token)
     print("=== done: commit=" + sha[:10] + " size=" + str(len(content) // 1024) + "KB ===", flush=True)
     return 0

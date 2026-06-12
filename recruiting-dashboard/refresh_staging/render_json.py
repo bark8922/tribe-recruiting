@@ -73,6 +73,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 LIVE_JSON = ROOT / "dashboard_data.json"
 OUT_JSON = HERE / "rendered_dashboard_data.json"
+OUT_DQ_JSON = HERE / "rendered_dq_reasons.json"
 
 SNOW_WBR = HERE / "snowflake_wbr.csv"
 SNOW_WBR_JOBS = HERE / "snowflake_wbr_jobs.csv"
@@ -84,6 +85,7 @@ SNOW_TS_SUMMARY = HERE / "snowflake_ts_summary.csv"  # per-sourcer x per-week (K
 SNOW_TS_SUMMARY_BY_CLIENT = HERE / "snowflake_ts_summary_by_client.csv"  # per-(sourcer, client, week) — feeds client-filtered viewed/reacted on PD + TS Summary
 SNOW_DROPS_BY_SOURCER = HERE / "snowflake_drops_by_sourcer.csv"  # per-(sourcer, job, week, reason) drop counts — feeds Circle's rejection-reasons pie
 SNOW_DROPS_BY_RECRUITER = HERE / "snowflake_drops_by_recruiter.csv"  # per-(recruiter, job, week, reason) drop counts, who_event_created_for attribution — feeds Circle's rejection-reasons pie for TAs
+SNOW_DQ_REASONS = HERE / "snowflake_dq_reasons.csv"  # (client, job_title, TA, dq_week, reason, n) — PD tab DQ section, PBI Overview pie parity
 SNOW_PROJECT_DASHBOARD = HERE / "snowflake_project_dashboard.csv"
 SNOW_PROJECT_DASHBOARD_EVENTATTR = HERE / "snowflake_project_dashboard_eventattr.csv"  # parallel event-based attribution
 SNOW_PROJECT_HIRES = HERE / "snowflake_project_dashboard_hires.csv"
@@ -1620,6 +1622,63 @@ def load_weekly_summary_byjob(source_path=SNOW_WEEKLY_SUMMARY_BYJOB):
     return rows
 
 
+
+
+def build_dq_reasons_artifact():
+    """Dictionary-encoded DQ reasons payload for the PD tab section.
+
+    Separate lazy-loaded JSON (recruiting-dashboard/public/dq_reasons.json) so
+    the main dashboard_data file does not grow. Grain matches the dq_reasons
+    Keboola table: (client, job_title, ta, week_start, reason) -> n.
+    week index -1 = candidate has no Disqualified event (kept for all-time
+    views, excluded when a date range is applied). Returns row count or 0.
+    """
+    if not SNOW_DQ_REASONS.exists():
+        print("  dq_reasons: snowflake_dq_reasons.csv missing - skipping artifact")
+        return 0
+    clients, jobs, tas, weeks, reasons = {}, {}, {}, {}, {}
+
+    def idx(d, v):
+        if v not in d:
+            d[v] = len(d)
+        return d[v]
+
+    rows = []
+    with SNOW_DQ_REASONS.open() as f:
+        for row in csv.DictReader(f):
+            try:
+                n = int(float(_ci(row, "n") or 0))
+            except (TypeError, ValueError):
+                n = 0
+            if n <= 0:
+                continue
+            wk = (_ci(row, "week_start") or "").strip()[:10]
+            rows.append([
+                idx(clients, _ci(row, "client") or ""),
+                idx(jobs, _ci(row, "job_title") or ""),
+                idx(tas, _ci(row, "ta") or ""),
+                idx(weeks, wk) if wk else -1,
+                idx(reasons, _ci(row, "reason") or ""),
+                n,
+            ])
+    if not rows:
+        print("  dq_reasons: CSV empty - skipping artifact")
+        return 0
+    payload = {
+        "generated_at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
+        "clients": [k for k, _ in sorted(clients.items(), key=lambda x: x[1])],
+        "jobs": [k for k, _ in sorted(jobs.items(), key=lambda x: x[1])],
+        "tas": [k for k, _ in sorted(tas.items(), key=lambda x: x[1])],
+        "weeks": [k for k, _ in sorted(weeks.items(), key=lambda x: x[1])],
+        "reasons": [k for k, _ in sorted(reasons.items(), key=lambda x: x[1])],
+        "rows": rows,
+    }
+    with OUT_DQ_JSON.open("w") as f:
+        json.dump(payload, f, separators=(",", ":"), ensure_ascii=False)
+    print(f"  dq_reasons: {len(rows)} rows -> {OUT_DQ_JSON.name} ({OUT_DQ_JSON.stat().st_size // 1024} KB)")
+    return len(rows)
+
+
 def main():
     live = load_live()
     raw_wbr = load_wbr()
@@ -2032,6 +2091,8 @@ def main():
               f"dq_by_stage: {len(out['ir_dq_by_stage'])}  "
               f"jobs: {len(out['ir_jobs_active'])}  "
               f"dq_byjob_reason: {len(out['ir_dq_byjob_reason'])}")
+
+    build_dq_reasons_artifact()
 
     with OUT_JSON.open("w") as f:
         json.dump(out, f, indent=2, ensure_ascii=False, sort_keys=False)

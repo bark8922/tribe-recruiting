@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
   LineChart, Line, AreaChart, Area, FunnelChart, Funnel, LabelList,
-  CartesianGrid, Legend
+  CartesianGrid, Legend, PieChart, Pie, Cell
 } from 'recharts';
 import { Search } from 'lucide-react';
 import dashboardDataSnowflake from './dashboard_data_snowflake.json';
@@ -1823,6 +1823,201 @@ const PD_EXCLUDED_CLIENTS = new Set(['Tribe.xyz', 'Tribe: Talent Pools']);
 
 const pdPct = (v) => v == null ? '—' : `${(v * 100).toFixed(0)}%`;
 
+// ---------- PD Disqualified Reasons section ----------
+// Filterable port of the PBI Overview "Disqualified Reason" pie. Data comes
+// from public/dq_reasons.json (lazy-fetched on first expand), dictionary-
+// encoded rows: [clientIdx, jobIdx, taIdx, weekIdx, reasonIdx, n], weekIdx -1
+// = candidate has no Disqualified event (included only in All time).
+const DQ_COLORS = ['#60a5fa', '#34d399', '#fbbf24', '#a78bfa', '#f472b6', '#fb923c', '#93c5fd', '#a3e635', '#fca5a5', '#5eead4', '#c4b5fd', '#fdba74', '#86efac', '#f9a8d4', '#cbd5e1'];
+const DQ_PERIODS = [['all', 'All time'], ['ytd', 'This year'], ['12w', 'Last 12 weeks'], ['4w', 'Last 4 weeks']];
+
+const DQReasonsSection = () => {
+  const [open, setOpen] = useState(false);
+  const [dq, setDq] = useState(null);
+  const [err, setErr] = useState(null);
+  const [client, setClient] = useState('');
+  const [job, setJob] = useState('');
+  const [ta, setTa] = useState('');
+  const [period, setPeriod] = useState('all');
+  const [customStart, setCustomStart] = useState('');
+  const [customEnd, setCustomEnd] = useState('');
+  const [showAll, setShowAll] = useState(false);
+
+  React.useEffect(() => {
+    if (!open || dq || err) return;
+    fetch('dq_reasons.json')
+      .then((r) => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(setDq)
+      .catch((e) => setErr(String(e && e.message ? e.message : e)));
+  }, [open, dq, err]);
+
+  const usingCustom = customStart !== '' || customEnd !== '';
+  const range = useMemo(() => {
+    if (usingCustom) return [customStart || '0000-01-01', customEnd || '9999-12-31'];
+    if (period === 'all') return null;
+    const now = new Date();
+    if (period === 'ytd') return [now.getFullYear() + '-01-01', '9999-12-31'];
+    const weeks = period === '4w' ? 4 : 12;
+    const d = new Date(now); d.setDate(d.getDate() - weeks * 7);
+    return [d.toISOString().slice(0, 10), '9999-12-31'];
+  }, [period, usingCustom, customStart, customEnd]);
+
+  const clientOptions = useMemo(() => (dq ? [...new Set(dq.rows.map((r) => dq.clients[r[0]]))].sort() : []), [dq]);
+  const jobOptions = useMemo(() => {
+    if (!dq) return [];
+    const ci = client === '' ? -1 : dq.clients.indexOf(client);
+    return [...new Set(dq.rows.filter((r) => ci < 0 || r[0] === ci).map((r) => dq.jobs[r[1]]))].sort();
+  }, [dq, client]);
+  const taOptions = useMemo(() => {
+    if (!dq) return [];
+    const ci = client === '' ? -1 : dq.clients.indexOf(client);
+    return [...new Set(dq.rows.filter((r) => ci < 0 || r[0] === ci).map((r) => dq.tas[r[2]]))].sort();
+  }, [dq, client]);
+
+  const byReason = useMemo(() => {
+    if (!dq) return [];
+    const ci = client === '' ? -1 : dq.clients.indexOf(client);
+    const ji = job === '' ? -1 : dq.jobs.indexOf(job);
+    const ti = ta === '' ? -1 : dq.tas.indexOf(ta);
+    const m = new Map();
+    for (const r of dq.rows) {
+      if (ci >= 0 && r[0] !== ci) continue;
+      if (ji >= 0 && r[1] !== ji) continue;
+      if (ti >= 0 && r[2] !== ti) continue;
+      if (range) {
+        if (r[3] < 0) continue;
+        const w = dq.weeks[r[3]];
+        if (w < range[0] || w > range[1]) continue;
+      }
+      m.set(r[4], (m.get(r[4]) || 0) + r[5]);
+    }
+    return [...m.entries()].map(([ri, n]) => ({ reason: dq.reasons[ri], n })).sort((a, b) => b.n - a.n);
+  }, [dq, client, job, ta, range]);
+
+  const total = byReason.reduce((s, r) => s + r.n, 0);
+  const shown = showAll ? byReason : byReason.slice(0, 10);
+  const maxN = byReason.length ? byReason[0].n : 1;
+  const donutData = useMemo(() => {
+    const top = byReason.slice(0, 10);
+    const rest = byReason.slice(10).reduce((s, r) => s + r.n, 0);
+    return rest > 0 ? [...top, { reason: 'Rest', n: rest }] : top;
+  }, [byReason]);
+
+  return (
+    <div className="bg-gray-800 rounded-lg p-4">
+      <button type="button" onClick={() => setOpen(!open)} className="w-full flex items-center justify-between text-left">
+        <h3 className="text-lg font-semibold text-white">
+          Disqualified Reasons{open && total > 0 ? ` · ${total.toLocaleString()}` : ''}
+        </h3>
+        <span className="text-gray-400 text-sm">{open ? '▾ hide' : '▸ show'}</span>
+      </button>
+      {open && err && (
+        <div className="text-sm text-gray-400 mt-3">
+          Data not available yet — dq_reasons.json populates on the next scheduled refresh. ({err})
+        </div>
+      )}
+      {open && !err && !dq && <div className="text-sm text-gray-400 mt-3">Loading…</div>}
+      {open && dq && (
+        <div className="mt-3">
+          <div className="flex flex-wrap gap-2 items-center mb-3">
+            <select value={client} onChange={(e) => { setClient(e.target.value); setJob(''); setTa(''); }}
+              className="px-2 py-1 bg-gray-700 text-white rounded border border-gray-600 text-xs" style={{ maxWidth: 180 }}>
+              <option value="">All clients</option>
+              {clientOptions.map((c) => <option key={c} value={c}>{c}</option>)}
+            </select>
+            <select value={job} onChange={(e) => setJob(e.target.value)}
+              className="px-2 py-1 bg-gray-700 text-white rounded border border-gray-600 text-xs" style={{ maxWidth: 220 }}>
+              <option value="">All jobs</option>
+              {jobOptions.map((j) => <option key={j} value={j}>{j}</option>)}
+            </select>
+            <select value={ta} onChange={(e) => setTa(e.target.value)}
+              className="px-2 py-1 bg-gray-700 text-white rounded border border-gray-600 text-xs" style={{ maxWidth: 160 }}>
+              <option value="">All TAs</option>
+              {taOptions.map((t) => <option key={t} value={t}>{t}</option>)}
+            </select>
+            <select value={period} disabled={usingCustom}
+              onChange={(e) => setPeriod(e.target.value)}
+              className="px-2 py-1 bg-gray-700 text-white rounded border border-gray-600 text-xs">
+              {DQ_PERIODS.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+            </select>
+            <div className="flex items-center gap-1 text-xs text-gray-400">
+              <span>or custom:</span>
+              <input type="date" value={customStart} onChange={(e) => setCustomStart(e.target.value)}
+                className="px-1 py-1 bg-gray-700 text-white rounded border border-gray-600 text-xs" />
+              <span>→</span>
+              <input type="date" value={customEnd} onChange={(e) => setCustomEnd(e.target.value)}
+                className="px-1 py-1 bg-gray-700 text-white rounded border border-gray-600 text-xs" />
+              {usingCustom && (
+                <button onClick={() => { setCustomStart(''); setCustomEnd(''); }}
+                  className="ml-1 px-1 text-xs text-gray-300 hover:text-white">clear</button>
+              )}
+            </div>
+            <span className="ml-auto text-xs text-gray-400">{total.toLocaleString()} disqualified</span>
+          </div>
+          {byReason.length === 0 ? (
+            <div className="text-sm text-gray-400">No disqualifications match the current filters.</div>
+          ) : (
+            <div className="flex flex-wrap gap-6 items-start">
+              <div style={{ width: 230, height: 230 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie data={donutData} dataKey="n" nameKey="reason" innerRadius={58} outerRadius={92} stroke="none" isAnimationActive={false}>
+                      {donutData.map((e, i) => (
+                        <Cell key={i} fill={e.reason === 'Rest' ? '#4b5563' : DQ_COLORS[i % DQ_COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      formatter={(v, name) => [v.toLocaleString() + ' (' + (total ? (100 * v / total).toFixed(1) : 0) + '%)', name]}
+                      contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #4b5563', borderRadius: 6, fontSize: 12 }}
+                      itemStyle={{ color: '#e5e7eb' }} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="flex-1" style={{ minWidth: 320 }}>
+                <CsvBtn fname="pd_dq_reasons" />
+                <table className="w-full text-xs">
+                  <thead>
+                    <tr className="text-gray-300 border-b border-gray-700">
+                      <th className="text-left px-2 py-1">Reason</th>
+                      <th className="text-right px-2 py-1">#</th>
+                      <th className="text-right px-2 py-1">%</th>
+                      <th className="px-2 py-1" style={{ width: '30%' }}></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {shown.map((r, i) => (
+                      <tr key={r.reason} className="border-b border-gray-700">
+                        <td className="px-2 py-1 text-gray-200">
+                          <span className="inline-block rounded-sm mr-2" style={{ width: 8, height: 8, backgroundColor: i < 10 ? DQ_COLORS[i % DQ_COLORS.length] : '#4b5563' }}></span>
+                          {r.reason}
+                        </td>
+                        <td className="px-2 py-1 text-right text-white">{r.n.toLocaleString()}</td>
+                        <td className="px-2 py-1 text-right text-gray-400">{total ? (100 * r.n / total).toFixed(1) : '0.0'}%</td>
+                        <td className="px-2 py-1">
+                          <div className="bg-gray-700 rounded-sm" style={{ height: 6 }}>
+                            <div className="rounded-sm" style={{ height: 6, width: Math.max(2, Math.round(100 * r.n / maxN)) + '%', backgroundColor: i < 10 ? DQ_COLORS[i % DQ_COLORS.length] : '#4b5563' }}></div>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                {byReason.length > 10 && (
+                  <button type="button" onClick={() => setShowAll(!showAll)}
+                    className="mt-2 text-xs text-gray-400 hover:text-white">
+                    {showAll ? '▴ show top 10' : `▾ show all ${byReason.length} reasons`}
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+
 const ProjectDashboardTab = ({ data }) => {
   const [period, setPeriod] = useState('last_week');
   const [customStart, setCustomStart] = useState('');
@@ -2444,6 +2639,8 @@ const ProjectDashboardTab = ({ data }) => {
           </div>
         )}
       </div>
+
+      <DQReasonsSection />
     </div>
   );
 };

@@ -1,11 +1,13 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
   LineChart, Line, AreaChart, Area, FunnelChart, Funnel, LabelList,
   CartesianGrid, Legend, PieChart, Pie, Cell
 } from 'recharts';
 import { Search } from 'lucide-react';
-import dashboardDataSnowflake from './dashboard_data_snowflake.json';
+// dashboard_data_snowflake.json is loaded at runtime (gzipped) by RecruitingDashboard
+// instead of being imported here. Inlining the ~50MB JSON pushed the JS bundle past
+// Cloudflare Pages' 25 MiB per-file limit and broke every deploy from 2026-06-15.
 import clientProfitabilityData from './client_profitability.json';
 import teamLeadsData from './team_leads.json';
 
@@ -5133,6 +5135,35 @@ const RecruitingDashboard = () => {
       : ['project', 'weekly', 'tth', 'ts_summary', 'ir'];
   if (canProjectHealth) visibleTabs = [...visibleTabs, 'project_health'];
   const [activeTab, setActiveTab] = useState('project');
+  // Load the heavy Snowflake data file at runtime from a gzipped /public asset
+  // (see scripts/gzip-data.mjs). Keeps it out of the JS bundle so deploys stay
+  // under Cloudflare's 25 MiB limit and the initial download is ~5MB not ~32MB.
+  const [dashboardData, setDashboardData] = useState(null);
+  const [dataError, setDataError] = useState(null);
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch('dashboard_data_snowflake.json.gz', { cache: 'no-cache' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const buf = await res.arrayBuffer();
+        let text;
+        try {
+          if (typeof DecompressionStream === 'undefined') throw new Error('no DecompressionStream');
+          const stream = new Response(buf).body.pipeThrough(new DecompressionStream('gzip'));
+          text = await new Response(stream).text();
+        } catch (_) {
+          // Fallback: CDN may have transparently decompressed the asset.
+          text = new TextDecoder().decode(buf);
+        }
+        const obj = JSON.parse(text);
+        if (!cancelled) setDashboardData(obj);
+      } catch (e) {
+        if (!cancelled) setDataError(String(e && e.message ? e.message : e));
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
   // Snap-back: if state lands on a tab the current role doesn't see, fall back
   // to Project Dashboard. Covers both leadership-only and director-only tabs.
   const safeActiveTab =
@@ -5141,7 +5172,23 @@ const RecruitingDashboard = () => {
     (!canProjectHealth && activeTab === 'project_health')
       ? 'project'
       : activeTab;
-  const dashboardData = dashboardDataSnowflake;
+  if (dataError) {
+    return (
+      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-lg mb-2">Couldn't load dashboard data</div>
+          <div className="text-sm text-gray-400 font-mono">{dataError}</div>
+        </div>
+      </div>
+    );
+  }
+  if (!dashboardData) {
+    return (
+      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+        <div className="text-gray-400">Loading dashboard data…</div>
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <div className="bg-gray-800 border-b border-gray-700 px-6 py-6 flex items-start justify-between">

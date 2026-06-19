@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sourcing Dashboard — Phase 1 Mock</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { background:#111827; color:#fff; font-family:'Inter',system-ui,sans-serif; }
+  .tag { display:inline-block; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:600; }
+</style>
+</head>
+<body class="min-h-screen p-6">
+  <!-- HEADER -->
+  <div class="mb-6 border-b border-gray-700 pb-4">
+    <div class="flex items-baseline justify-between">
+      <div>
+        <h1 class="text-3xl font-bold">Sourcing Dashboard</h1>
+        <p class="text-sm text-gray-400 mt-1">Phase 1 — TS-Summary (quarterly) · <span class="text-yellow-300">MOCK v1 · for Blake review</span></p>
+      </div>
+      <div class="text-right text-xs text-gray-500">
+        Data: live Keboola (2026-05-29)<br/>
+        Methodology: Option C — locked
+      </div>
+    </div>
+  </div>
+
+  <!-- METHODOLOGY BOX -->
+  <div class="bg-gray-800 border border-gray-700 rounded-lg p-4 mb-6">
+    <div class="flex items-start gap-2 mb-2">
+      <span class="tag bg-blue-700 text-blue-100">METHODOLOGY</span>
+      <p class="text-sm text-gray-300">
+        Numbers reflect <strong>internal sourcing work only</strong>. A sourcer's contact/screen/hire counts toward the team if either:
+        (a) they were on <em>Bench/Internal</em> in BambooHR at the event date, OR
+        (b) they were billed to a client but sourced for a <em>different</em> client (cross-client sourcing).
+        client work (sourcer billed to client X and sourced for client X) is excluded.
+      </p>
+    </div>
+    <div class="flex gap-3 text-xs text-gray-400 mt-3 pt-3 border-t border-gray-700">
+      <span><strong class="text-gray-200">Roster:</strong> 20 sourcers (Sourcer L1–L3, Sourcing Leads, Sourcing Mgr — active + terminated 2025+)</span>
+      <span>·</span>
+      <span><strong class="text-gray-200">Archived jobs:</strong> included</span>
+      <span>·</span>
+      <span><strong class="text-gray-200">Tribe internal:</strong> included</span>
+    </div>
+  </div>
+
+  <!-- TOGGLE STUBS -->
+  <div class="bg-gray-800 border border-gray-700 rounded-lg p-3 mb-6 flex items-center gap-4">
+    <span class="text-xs text-gray-400 font-semibold">VIEW</span>
+    <label class="flex items-center gap-2 text-sm cursor-pointer">
+      <input type="checkbox" checked disabled class="rounded"/>
+      <span>Default (internal + cross-client)</span>
+    </label>
+    <label class="flex items-center gap-2 text-sm cursor-pointer opacity-50">
+      <input type="checkbox" disabled class="rounded"/>
+      <span>Include client work <span class="text-xs text-gray-500">(would show Gustavo's old Notion totals)</span></span>
+    </label>
+    <label class="flex items-center gap-2 text-sm cursor-pointer opacity-50">
+      <input type="checkbox" disabled class="rounded"/>
+      <span>Show archived-only roles <span class="text-xs text-gray-500">(per Gustavo's ask)</span></span>
+    </label>
+    <span class="text-xs text-yellow-300 ml-auto">stubs — not wired</span>
+  </div>
+
+  <!-- MAIN TABLE -->
+  <div class="bg-gray-800 border border-gray-700 rounded-lg overflow-hidden mb-6">
+    <div class="p-4 border-b border-gray-700">
+      <h2 class="text-lg font-semibold">Hires &amp; Talent Sourcing Team Size — Quarterly</h2>
+      <p class="text-xs text-gray-400 mt-1">Source: Keboola <code>ts_summary_per_sourcer</code> · Option C filter applied</p>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead class="bg-gray-900 text-gray-300 uppercase text-xs">
+          <tr>
+            <th class="text-left p-3">Quarter</th>
+            <th class="text-right p-3">Contacted</th>
+            <th class="text-right p-3">Pos Response</th>
+            <th class="text-right p-3">Recruiter Screens</th>
+            <th class="text-right p-3">Actual Screens</th>
+            <th class="text-right p-3">Moved to ATS</th>
+            <th class="text-right p-3">Offered</th>
+            <th class="text-right p-3">Hired</th>
+            <th class="text-right p-3">Team Size</th>
+            <th class="text-right p-3 bg-gray-800">Hires / Sourcer</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-t border-gray-700 hover:bg-gray-900/50">
+            <td class="p-3 font-medium">2026 Q2 <span class="tag bg-yellow-700 text-yellow-100 ml-1">in progress</span></td>
+            <td class="text-right p-3">8,976</td><td class="text-right p-3">1,272</td>
+            <td class="text-right p-3">1,003</td><td class="text-right p-3">672</td>
+            <td class="text-right p-3">382</td><td class="text-right p-3">8</td>
+            <td class="text-right p-3">7</td><td class="text-right p-3">10</td>
+            <td class="text-right p-3 bg-gray-900/40">0.70</td>
+          </tr>
+          <tr class="border-t border-gray-700 hover:bg-gray-900/50">
+            <td class="p-3 font-medium">2026 Q1</td>
+            <td class="text-right p-3">8,109</td><td class="text-right p-3">1,356</td>
+            <td class="text-right p-3">1,035</td><td class="text-right p-3">625</td>
+            <td class="text-right p-3">302</td><td class="text-right p-3">10</td>
+            <td class="text-right p-3">8</td><td class="text-right p-3">14</td>
+            <td class="text-right p-3 bg-gray-900/40">0.57</td>
+          </tr>
+          <tr class="border-t border-gray-700 hover:bg-gray-900/50">
+            <td class="p-3 font-medium">2025 Q4</td>
+            <td class="text-right p-3">12,849</td><td class="text-right p-3">1,494</td>
+            <td class="text-right p-3">1,067</td><td class="text-right p-3">589</td>
+            <td class="text-right p-3">293</td><td class="text-right p-3">15</td>
+            <td class="text-right p-3">11</td><td class="text-right p-3">13</td>
+            <td class="text-right p-3 bg-gray-900/40">0.85</td>
+          </tr>
+          <tr class="border-t border-gray-700 hover:bg-gray-900/50">
+            <td class="p-3 font-medium">2025 Q3</td>
+            <td class="text-right p-3">16,584</td><td class="text-right p-3">2,600</td>
+            <td class="text-right p-3">1,635</td><td class="text-right p-3">931</td>
+            <td class="text-right p-3">445</td><td class="text-right p-3">16</td>
+            <td class="text-right p-3">11</td><td class="text-right p-3">16</td>
+            <td class="text-right p-3 bg-gray-900/40">0.69</td>
+          </tr>
+          <tr class="border-t border-gray-700 hover:bg-gray-900/50">
+            <td class="p-3 font-medium">2025 Q2</td>
+            <td class="text-right p-3">20,866</td><td class="text-right p-3">2,765</td>
+            <td class="text-right p-3">2,001</td><td class="text-right p-3">972</td>
+            <td class="text-right p-3">520</td><td class="text-right p-3">21</td>
+            <td class="text-right p-3">15</td><td class="text-right p-3">15</td>
+            <td class="text-right p-3 bg-gray-900/40">1.00</td>
+          </tr>
+          <tr class="border-t border-gray-700 hover:bg-gray-900/50">
+            <td class="p-3 font-medium">2025 Q1</td>
+            <td class="text-right p-3">16,782</td>
+            <td class="text-right p-3 text-gray-500">No data</td>
+            <td class="text-right p-3">1,573</td><td class="text-right p-3">681</td>
+            <td class="text-right p-3">368</td><td class="text-right p-3">16</td>
+            <td class="text-right p-3">12</td><td class="text-right p-3">13</td>
+            <td class="text-right p-3 bg-gray-900/40">0.92</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="p-3 border-t border-gray-700 text-xs text-gray-500">
+      "No data" for Pos Response 2025 Q1: stage tracking started 2025-04-14, pre-dates the quarter.
+    </div>
+  </div>
+
+  <!-- COMPARISON BOX — INTERNAL: BLAKE-ONLY, REMOVE FROM FINAL -->
+  <div class="bg-gray-800 border border-yellow-700/40 rounded-lg p-4 mb-6">
+    <div class="text-xs text-yellow-300 mb-2 uppercase font-semibold">For Blake — won't ship in the final dashboard</div>
+    <h3 class="text-sm font-semibold text-gray-300 mb-2">Why these numbers look lower than Gustavo's Notion table</h3>
+    <p class="text-xs text-gray-400 mb-3">Gustavo's existing Notion "Hires &amp; Team Size" table effectively shows all sourcer-attributed work, including client work done while seated at a client. Per Gustavo's confirmed methodology (Option C), the dashboard excludes that client work. Example, 2026 Q1 contacted:</p>
+    <table class="w-full text-xs">
+      <thead class="text-gray-500 uppercase">
+        <tr><th class="text-left p-2">Source</th><th class="text-right p-2">Contacted</th><th class="text-left p-2 pl-6">What it counts</th></tr>
+      </thead>
+      <tbody>
+        <tr class="border-t border-gray-700">
+          <td class="p-2">Gustavo's Notion</td>
+          <td class="text-right p-2">15,537</td>
+          <td class="p-2 pl-6 text-gray-400">All sourcer-attributed work, no filter</td>
+        </tr>
+        <tr class="border-t border-gray-700">
+          <td class="p-2">This dashboard (Option C)</td>
+          <td class="text-right p-2 text-green-300">8,109</td>
+          <td class="p-2 pl-6 text-gray-400">Internal-period work + cross-client sourcing only</td>
+        </tr>
+        <tr class="border-t border-gray-700">
+          <td class="p-2 text-gray-500">Excluded (client work)</td>
+          <td class="text-right p-2 text-gray-500">7,428</td>
+          <td class="p-2 pl-6 text-gray-500">e.g. Ejla 1,610 Wolt; Zelimir 1,243 SevenRooms; Gustavo 1,141 Parloa</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- WHAT'S NEXT -->
+  <div class="bg-gray-900 border border-yellow-700/40 rounded-lg p-4 text-sm">
+    <h3 class="text-yellow-300 font-semibold mb-2">What this mock does NOT yet include</h3>
+    <ul class="list-disc list-inside text-gray-400 space-y-1">
+      <li>Per-sourcer breakdown drill-down (planned for v2)</li>
+      <li>Weekly / monthly toggles (quarterly only for v1)</li>
+      <li>Trend charts (top-of-funnel volume over time, hires-per-sourcer line)</li>
+      <li>Live data — these numbers are baked in from a 2026-05-29 query</li>
+      <li>The "Include client work" / "Show archived-only" toggles are stubs (not wired)</li>
+    </ul>
+    <p class="text-xs text-gray-500 mt-3">If you approve this layout → next step is the Build step in §5 of the plan: SQL block + Cloudflare Workers deploy + Bubble iframe.</p>
+  </div>
+
+</body>
+</html>

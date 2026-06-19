@@ -1,0 +1,57 @@
+dashboard_name,role_in_dashboard,match_type,bamboo_name,bamboo_email,bamboo_title,bamboo_department,bamboo_supervisor
+Adelya Khakimova,TA,exact_after_diacritic_fold,Adelya Khakimova,adelya@tribe.xyz,Talent Acquisition Partner L2,Talent Acquisition,Chené Elliot
+Adis Prepoljac,TA+TS,unmatched,,,,,
+Akash Singh,TA,unmatched,,,,,
+Aleksandra Markovic,TS,first_only_unique,Aleksandra Vistac,aleksandra@tribe.xyz,Talent Acquisition Partner L1,Talent Acquisition,Lejla Dizdarevic
+Aleksandra Vistac,TA,exact_after_diacritic_fold,Aleksandra Vistac,aleksandra@tribe.xyz,Talent Acquisition Partner L1,Talent Acquisition,Lejla Dizdarevic
+Alexandra Richiteanu,TA,exact_after_diacritic_fold,Alexandra Richiteanu,alexandra.richiteanu@tribe.xyz,Talent Acquisition Partner L3,Talent Acquisition,Chené Elliot
+Alisa Liddell,TA,exact_after_diacritic_fold,Alisa Liddell,alisa@tribe.xyz,Talent Acquisition Partner L1,Talent Acquisition,Niki Vokalkova
+Andrea Akovic,TS,exact_after_diacritic_fold,Andrea Akovic,andrea@tribe.xyz,Sourcing Lead,Leadership,Jacopo Lupo Ferrari
+Andreas Weins,TA,unmatched,,,,,
+Anna Tyulpanova,TA,exact_after_diacritic_fold,Anna Tyulpanova,annatyulpanova@tribe.xyz,Talent Acquisition Partner L3,Talent Acquisition,Kristina Colovic
+Chantal Bozkurt,TA,exact_after_diacritic_fold,Chantal Bozkurt,chantal@tribe.xyz,Sourcer L3,Talent Acquisition,Simon Siew
+Chené Elliot,TA,exact_after_diacritic_fold,Chené Elliot,chene@tribe.xyz,Senior Manager,Leadership,Kristjana Thorarinsdottir
+Danish Shams,TA,unmatched,,,,,
+Dolores Palotas,TA,exact_after_diacritic_fold,Dolores Palotas,dolores@tribe.xyz,Sourcer L2,Talent Acquisition,Simon Siew
+Dora Vrbanić,TA,exact_after_diacritic_fold,Dora Vrbanić,dora@tribe.xyz,Talent Acquisition Partner L1,Talent Acquisition,Niki Vokalkova
+Dušan Špica,TA,exact_after_diacritic_fold,Dušan Špica,dushan@tribe.xyz,Talent Acquisition Partner L2,Talent Acquisition,Lejla Dizdarevic
+Ejla Suljcic,TA+TS,exact_after_diacritic_fold,Ejla Suljčić,ejla@tribe.xyz,Sourcer L2,Sourcing,Vladimir Stankovic
+Ekaterina Boyprav,TA,exact_after_diacritic_fold,Ekaterina Boyprav,ekaterina@tribe.xyz,Talent Acquisition Partner L3,Talent Acquisition,Meho Saracevic
+Elena Petrovska,TA+TS,exact_after_diacritic_fold,Elena Petrovska,elenapetrovska@tribe.xyz,Sourcer L1,Sourcing,Chené Elliot
+Evagelina Rapanaki,TA,unmatched,,,,,
+Filip Nogowski,TA,first_only_unique,Filip Serafin,filip@tribe.xyz,Talent Acquisition Partner L3,Talent Acquisition,Meho Saracevic
+Fuad Safarov,TA,exact_after_diacritic_fold,Fuad Safarov,fuad@tribe.xyz,Talent Acquisition Partner L2,Talent Acquisition,Niki Vokalkova
+Gustavo Loureiro Castro,TS,exact_after_diacritic_fold,Gustavo Loureiro Castro,gustavo@tribe.xyz,Sourcing Manager,Leadership,Jacopo Lupo Ferrari
+Iryna Dyda,TS,exact_after_diacritic_fold,Iryna Dyda,irynadyda@tribe.xyz,Talent Acquisition Partner L1,Talent Acquisition,Sanja Pavlovikj
+Jan Dokulil,TA,exact_after_diacritic_fold,Jan Dokulil,jandokulil@tribe.xyz,Talent Acquisition Partner L2,Talent Acquisition,Vladimir Stankovic
+Jelena  Lacmanovic,TA,exact_after_diacritic_fold,Jelena Lacmanović,jelenalacmanovic@tribe.xyz,Talent Acquisition Partner L2,Talent Acquisition,Chené Elliot
+Jonaed Iqbal,TA,exact_after_diacritic_fold,Jonaed Iqbal,jonaed@tribe.xyz,Talent Acquisition Partner L3,Talent Acquisition,Meho Saracevic
+Jovana Drakula,TA+TS,exact_after_diacritic_fold,Jovana Drakula,jovana@tribe.xyz,Talent Acquisition Partner L1,Talent Acquisition,Chené Elliot
+Ketevan Khorava,TA,unmatched,,,,,
+Kristina Colovic,TA,exact_after_diacritic_fold,Kristina Colovic,kristina@tribe.xyz,Team Lead,Leadership,Salem Mansuri
+Lejla Silva,TA,first_only_unique,Lejla Dizdarevic,lejla@tribe.xyz,Team Lead,Leadership,Salem Mansuri
+Lisa Gargulinska,TA,exact_after_diacritic_fold,Lisa Gargulinska,lisa@tribe.xyz,Talent Acquisition Partner L3,Talent Acquisition,Vladimir Stankovic
+Maria Desiree Gerbore,TA,last+first_fold,Maria Gerbore,maria.gerbore@tribe.xyz,Talent Acquisition Partner L3,Talent Acquisition,Lejla Dizdarevic
+Marina Lazarevic,TS,exact_after_diacritic_fold,Marina Lazarević,marina@tribe.xyz,Sourcer L3,Sourcing,Andrea Akovic
+Marina Nikolic,TA,exact_after_diacritic_fold,Marina Nikolic,marinanikolic@tribe.xyz,Talent Acquisition Partner L2,Talent Acquisition,Lejla Dizdarevic
+Mark Kandaurov,TA,unmatched,,,,,
+Mateja Jokovic,TA,exact_after_diacritic_fold,Mateja Joković,mateja@tribe.xyz,Talent Acquisition Partner L2,Talent Acquisition,Meho Saracevic
+Meho Saracevic,TA,exact_after_diacritic_fold,Meho Saracevic,meho@tribe.xyz,Team Lead,Leadership,Salem Mansuri
+Mia Gjorgievska,TS,unmatched,,,,,
+Milica Veselinovic,TA+TS,first_only_unique,Milica Mladzic,milica@tribe.xyz,Talent Acquisition Partner L2,Talent Acquisition,Vladimir Stankovic
+Naledi Ngwenya,TS,exact_after_diacritic_fold,Naledi Ngwenya,naledi@tribe.xyz,Sourcer L3,Sourcing,Andrea Akovic
+Nare Avetisyan,TS,exact_after_diacritic_fold,Nare Avetisyan,nare@tribe.xyz,Sourcer L2,Sourcing,Gustavo Loureiro Castro
+Nenad Skoko,TA,exact_after_diacritic_fold,Nenad Skoko,nenad@tribe.xyz,Talent Acquisition Partner L2,Talent Acquisition,Chené Elliot
+Nidhi Raina,TA,unmatched,,,,,
+Niki Vokalkova,TA,exact_after_diacritic_fold,Niki Vokalkova,niki@tribe.xyz,Interim Team Lead,Leadership,Vladimir Stankovic
+Rafael Rosa,TA,unmatched,,,,,
+Rodrigo Gomes,TS,exact_after_diacritic_fold,Rodrigo Gomes,rodrigo@tribe.xyz,Sourcer L3,Sourcing,Gustavo Loureiro Castro
+Samantha Nel,TA,exact_after_diacritic_fold,Samantha Nel,samanthanel@tribe.xyz,Talent Acquisition Partner L3,Talent Acquisition,Kristina Colovic
+Simon  Siew,TA,exact_after_diacritic_fold,Simon Siew,simon@tribe.xyz,Staff TA,Talent Acquisition,Kristjana Thorarinsdottir
+Tina Aramouni,TA,first_only_unique,Tina Abdul-Karim,tinaaramouni@tribe.xyz,Talent Acquisition Partner L3,Talent Acquisition,Chené Elliot
+Tinatini Karaulashvili,TA,unmatched,,,,,
+Valeriia Yurykova,TS,first_only_unique,Valeriia Yurikova,valeriia@tribe.xyz,Sourcer L2,Sourcing,Gustavo Loureiro Castro
+Vladimir Stankovic,TA,exact_after_diacritic_fold,Vladimir Stankovic,vladimir@tribe.xyz,Manager,Leadership,Kristjana Thorarinsdottir
+Wladyslaw Gadomski,TA,exact_after_diacritic_fold,Wladyslaw Gadomski,wladyslaw@tribe.xyz,Talent Acquisition Partner L3,Talent Acquisition,Kristina Colovic
+Zarina Amanbekova,TA,unmatched,,,,,
+Zelimir Stajcic,TA+TS,exact_after_diacritic_fold,Želimir Stajčić,zelimir@tribe.xyz,Sourcer L3,Sourcing,Chené Elliot

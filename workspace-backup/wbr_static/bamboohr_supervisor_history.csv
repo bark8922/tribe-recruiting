@@ -1,0 +1,834 @@
+employee_id,employee_number,name,effective_date,reports_to,job_title,division
+335,157,Abigail Caliwag,2025-08-25,Chené Elliot,Sourcer L3,Wolt
+336,158,Adelya Khakimova,2025-09-15,Chené Elliot,Talent Acquisition Partner L2,Wolt
+349,171,Adis Prepoljac,2026-01-05,Sanja Pavlovikj,Sourcer L1,Internal
+349,171,Adis Prepoljac,2026-02-23,Sanja Pavlovikj,Sourcer L1,Nexi
+271,A46,Adriana da Silva,2021-05-05,,,
+271,A46,Adriana da Silva,2021-05-05,,,
+160,42,Adrijana Cetkovic,2022-02-21,Petr Mladěnka,Talent Acquisition Partner L1,Core Tribe
+160,42,Adrijana Cetkovic,2022-02-21,Petr Mladěnka,Talent Acquisition Partner L1,Growth
+160,42,Adrijana Cetkovic,2024-02-01,Marcela Maia,Talent Acquisition Partner L1,Core Tribe
+238,A13,Aga Krupa,2022-11-01,,,
+322,144,Agustina Tamagnini,2025-03-17,Rossella Petrillo,Talent Acquisition Partner L2,Glovo
+341,163,Akash Singh,2025-10-09,Kristjana Thorarinsdottir,Talent Acquisition Partner L2,Bench
+341,163,Akash Singh,2025-10-13,Kristjana Thorarinsdottir,Talent Acquisition Partner L2,Wolt
+341,163,Akash Singh,2025-11-03,Vladimir Stankovic,Talent Acquisition Partner L2,Wolt
+151,33,Alberto Barroca,2021-12-01,Vladimir Stankovic,Sourcer L2,Upvest
+151,33,Alberto Barroca,2021-12-01,Vladimir Stankovic,Sourcer L2,
+151,33,Alberto Barroca,2024-02-01,Vladimir Stankovic,Sourcer L2,Internal
+151,33,Alberto Barroca,2024-04-15,Vladimir Stankovic,Sourcer L2,Droppe
+151,33,Alberto Barroca,2024-09-30,Vladimir Stankovic,Sourcer L2,Bench
+151,33,Alberto Barroca,2025-02-17,Salem Mansuri,Sourcer L2,Bench
+151,33,Alberto Barroca,2025-03-17,Salem Mansuri,Sourcer L2,Droppe
+151,33,Alberto Barroca,2025-06-20,Salem Mansuri,Sourcer L2,Bench
+304,126,Aleksandra Karatanovska,2024-10-21,Meho Saracevic,Sourcer L3,Internal
+304,126,Aleksandra Karatanovska,2025-02-17,Gustavo Loureiro Castro,Sourcer L3,Internal
+304,126,Aleksandra Karatanovska,2025-04-28,Andrea Akovic,Sourcer L3,Internal
+304,126,Aleksandra Karatanovska,2025-07-01,Gino Lodola,Strategic Sourcer (BD & Talent),Internal
+191,75,Aleksandra Markovic,2024-10-08,Jaksa Marojevic,Sourcer L2,Kranus Health
+191,75,Aleksandra Markovic,2025-02-17,Salem Mansuri,Sourcer L2,Kranus Health
+191,75,Aleksandra Markovic,2025-04-16,Salem Mansuri,Sourcer L2,Bench
+191,75,Aleksandra Markovic,2025-05-19,Andrea Akovic,Sourcer L2,Bench
+157,39,Aleksandra Vistac,2022-02-07,Vladimir Stankovic,Sourcer L1,Circula
+157,39,Aleksandra Vistac,2022-02-07,Vladimir Stankovic,Sourcer L1,
+157,39,Aleksandra Vistac,2024-02-01,Vladimir Stankovic,Sourcer L1,Bench
+157,39,Aleksandra Vistac,2025-02-01,Vladimir Stankovic,Sourcer L2,Bench
+157,39,Aleksandra Vistac,2025-02-17,Anastasija Dugalic,Sourcer L2,Bench
+157,39,Aleksandra Vistac,2025-03-13,Anastasija Dugalic,Talent Acquisition Partner L1,Glovo
+157,39,Aleksandra Vistac,2025-11-28,Anastasija Dugalic,Talent Acquisition Partner L1,Bench
+157,39,Aleksandra Vistac,2026-01-01,Lejla Dizdarevic,Talent Acquisition Partner L1,Enam
+157,39,Aleksandra Vistac,2026-01-01,Lejla Dizdarevic,Talent Acquisition Partner L1,Enam
+157,39,Aleksandra Vistac,2026-01-12,Lejla Dizdarevic,Talent Acquisition Partner L1,Enam
+189,72,Alexander Enns,2023-08-24,Jacopo Lupo Ferrari,Talent Acquisition Partner L3,Core Tribe
+305,127,Alexandra Constantinide,2024-11-04,Marko Pavicevic,Talent Acquisition Partner L1,Wolt
+305,127,Alexandra Constantinide,2025-02-17,Christina Skordili,Talent Acquisition Partner L1,Wolt
+305,127,Alexandra Constantinide,2025-07-01,Vladimir Stankovic,Talent Acquisition Partner L1,Wolt
+305,127,Alexandra Constantinide,2025-08-01,Jaksa Marojevic,Talent Acquisition Partner L1,Wolt
+305,127,Alexandra Constantinide,2025-09-08,Simon Siew,Talent Acquisition Partner L1,Wolt
+221,102,Alexandra Felea,2023-12-20,Salem Mansuri,Talent Acquisition Partner L3,Taxfix
+221,102,Alexandra Felea,2025-02-17,Salem Mansuri,Team Lead,Taxfix
+221,102,Alexandra Felea,2025-08-14,Jacopo Lupo Ferrari,Team Lead,Taxfix
+221,102,Alexandra Felea,2025-10-01,Salem Mansuri,Team Lead,Taxfix
+221,102,Alexandra Felea,2025-12-31,Salem Mansuri,Team Lead,Bench
+289,113,Alexandra Richiteanu,2024-03-18,Chené Elliot,Talent Acquisition Partner L3,Bench
+289,113,Alexandra Richiteanu,2024-05-02,Chené Elliot,Talent Acquisition Partner L3,Codexo
+289,113,Alexandra Richiteanu,2024-07-01,Chené Elliot,Talent Acquisition Partner L3,Bench
+289,113,Alexandra Richiteanu,2024-08-15,Chené Elliot,Talent Acquisition Partner L3,Wolt
+289,113,Alexandra Richiteanu,2026-01-26,Chené Elliot,Talent Acquisition Partner L3,Aviv
+261,A36,Algirdas Zalatoris,2020-09-05,,,
+261,A36,Algirdas Zalatoris,2020-09-05,,,
+257,A32,Alicia Parra,2020-03-01,,,
+257,A32,Alicia Parra,2020-03-01,,,
+128,9,Alicja Wroclawska,2021-09-15,Lejla Dizdarevic,Talent Coordinator,Wolt
+128,9,Alicja Wroclawska,2021-09-15,Lejla Dizdarevic,Talent Coordinator,
+258,A33,Alina Maliuk,2020-01-01,,,
+258,A33,Alina Maliuk,2020-01-01,,,
+337,159,Alisa Liddell,2025-09-08,Vladimir Stankovic,Talent Acquisition Partner L1,Wolt
+337,159,Alisa Liddell,2025-11-03,Niki Vokalkova,Talent Acquisition Partner L1,Wolt
+337,159,Alisa Liddell,2026-03-31,Niki Vokalkova,Talent Acquisition Partner L1,Eucalyptus
+138,19,Allan Rauter,2021-05-12,Martin Bernard,Talent Director,Core Tribe
+138,19,Allan Rauter,2021-05-12,Martin Bernard,Talent Director,Senior Leadership
+217,101,Alper Projka,2023-11-27,Martin Bernard,Talent Sourcing Lead,Core Tribe
+217,101,Alper Projka,2024-07-29,Martin Bernard,Talent Sourcing Lead L3,Core Tribe
+217,101,Alper Projka,2024-08-01,Jacopo Lupo Ferrari,Talent Sourcing Lead L3,Core Tribe
+147,29,Alvaro Pedraza Patilla,2022-11-10,András Tóth,Talent Acquisition Partner L2,Wolt
+147,29,Alvaro Pedraza Patilla,2024-04-01,András Tóth,Talent Acquisition Partner L2,Wolt
+147,29,Alvaro Pedraza Patilla,2024-05-06,Kristina Colovic,Talent Acquisition Partner L2,Wolt
+208,92,Ananda Semenescu,2023-10-30,Petr Mladěnka,Sourcer L1,Core Tribe
+208,92,Ananda Semenescu,2023-10-30,Petr Mladěnka,Sourcer L1,
+208,92,Ananda Semenescu,2024-02-01,Marcela Maia,Sourcer L1,Core Tribe
+170,52,Anastasiia Butsenko,2022-10-13,Marko Pavicevic,Sourcer L1,Wolt
+170,52,Anastasiia Butsenko,2022-10-13,Marko Pavicevic,Sourcer L1,
+170,52,Anastasiia Butsenko,2024-02-01,Marko Pavicevic,Sourcer L2,Wolt
+231,A6,Anastasiia Nikolova,2022-01-01,,,
+231,A6,Anastasiia Nikolova,2022-01-01,,,
+121,2,Anastasija Dugalic,2019-03-15,Allan Rauter,TA Lead L2,Wolt
+121,2,Anastasija Dugalic,2024-07-01,Allan Rauter,TA Lead L2,Bench
+121,2,Anastasija Dugalic,2024-08-01,Jacopo Lupo Ferrari,TA Lead L2,Bench
+121,2,Anastasija Dugalic,2024-09-16,Jacopo Lupo Ferrari,TA Lead L2,AlephAlpha
+121,2,Anastasija Dugalic,2025-02-01,Jacopo Lupo Ferrari,TA Lead L3,AlephAlpha
+121,2,Anastasija Dugalic,2025-02-17,Tijana Lazovic,Senior Manager,AlephAlpha
+121,2,Anastasija Dugalic,2025-07-03,Tijana Lazovic,Senior Manager,Bench
+283,A56,Andre Thaisz,1120-11-01,,,
+283,A56,Andre Thaisz,1120-11-01,,,
+156,38,Andrea Akovic,2023-02-06,András Tóth,Sourcer L1,Internal
+156,38,Andrea Akovic,2024-02-01,Manuel Carvalho,Sourcer L1,Internal
+156,38,Andrea Akovic,2024-04-29,Manuel Carvalho,Sourcer L1,Amenitiz
+156,38,Andrea Akovic,2024-05-27,Manuel Carvalho,Sourcer L1,Bench
+156,38,Andrea Akovic,2024-08-26,Gustavo Loureiro Castro,Sourcer L2,Bench
+156,38,Andrea Akovic,2025-02-01,Gustavo Loureiro Castro,Sourcer L3,Bench
+156,38,Andrea Akovic,2025-02-11,Gustavo Loureiro Castro,Sourcer L3,Wemolo
+156,38,Andrea Akovic,2025-02-17,Rossella Petrillo,Sourcer L3,Wemolo
+156,38,Andrea Akovic,2025-04-21,Jacopo Lupo Ferrari,Sourcing Lead,Wemolo
+156,38,Andrea Akovic,2025-09-01,Jacopo Lupo Ferrari,Sourcing Lead,Bench
+156,38,Andrea Akovic,2025-11-25,Jacopo Lupo Ferrari,Sourcing Lead,Fever
+156,38,Andrea Akovic,2026-02-01,Jacopo Lupo Ferrari,Sourcing Lead,Bench
+156,38,Andrea Akovic,2026-02-03,Jacopo Lupo Ferrari,Sourcing Lead,FTAPI
+156,38,Andrea Akovic,2026-02-17,Jacopo Lupo Ferrari,Sourcing Lead,Bench
+291,115,Andrea Darabašić,2024-04-15,Ella Darie,People Operations Specialist,Core Tribe
+291,115,Andrea Darabašić,2026-02-01,Ella Darie,People Operations Manager,Core Tribe
+344,166,Andreas Weins,2025-11-10,Lejla Dizdarevic,Talent Acquisition Partner L3,Bench
+344,166,Andreas Weins,2025-11-12,Lejla Dizdarevic,Talent Acquisition Partner L3,Nexi
+344,166,Andreas Weins,2026-02-14,Lejla Dizdarevic,Talent Acquisition Partner L3,Bench
+357,178,Andrew Rodriguez,2026-03-18,Kristjana Thorarinsdottir,Talent Acquisition Partner L3,Aiven
+163,45,András Tóth,2022-04-18,Allan Rauter,TA Lead L1,Wolt
+163,45,András Tóth,2024-02-01,Allan Rauter,TA Lead L2,Wolt
+183,66,Andy Hsu,2023-05-22,Martin Bernard,Data Analyst,Core Tribe
+183,66,Andy Hsu,2023-05-22,Martin Bernard,Data Analyst,Product
+183,66,Andy Hsu,2024-05-14,Allan Rauter,Data Analyst,Core Tribe
+183,66,Andy Hsu,2024-08-01,Martin Bernard,Data Analyst,Core Tribe
+251,A26,Anja Doksani,2022-06-01,,,
+251,A26,Anja Doksani,2022-06-01,,,
+249,A24,Anja Sevo,2022-02-01,,,
+249,A24,Anja Sevo,2022-02-01,,,
+129,10,Anna Golubeva,2021-02-08,Vladimir Stankovic,Talent Acquisition Partner L2,Wolt
+129,10,Anna Golubeva,2025-02-17,Kristina Colovic,Talent Acquisition Partner L2,Wolt
+129,10,Anna Golubeva,2025-03-31,Kristina Colovic,Talent Acquisition Partner L2,Bench
+286,111,Anna Martirosyan,2024-02-05,Ella Darie,People Operations Specialist,Core Tribe
+155,37,Anna Tyulpanova,2023-06-10,,Talent Acquisition Partner L3,Bench
+155,37,Anna Tyulpanova,2023-08-01,,Talent Acquisition Partner L3,Wargaming
+155,37,Anna Tyulpanova,2024-08-10,,Talent Acquisition Partner L3,Bench
+155,37,Anna Tyulpanova,2024-12-09,Jaksa Marojevic,Talent Acquisition Partner L3,Juni
+155,37,Anna Tyulpanova,2024-12-20,Jaksa Marojevic,Talent Acquisition Partner L3,Bench
+155,37,Anna Tyulpanova,2025-02-10,Chené Elliot,Talent Acquisition Partner L3,Wolt
+155,37,Anna Tyulpanova,2025-06-14,Chené Elliot,Talent Acquisition Partner L3,Bench
+155,37,Anna Tyulpanova,2025-07-23,Anastasija Dugalic,Talent Acquisition Partner L3,Scorewarrior
+155,37,Anna Tyulpanova,2025-10-03,Anastasija Dugalic,Talent Acquisition Partner L3,Bench
+155,37,Anna Tyulpanova,2026-01-01,Kristina Colovic,Talent Acquisition Partner L3,Bench
+155,37,Anna Tyulpanova,2026-01-26,Kristina Colovic,Talent Acquisition Partner L3,Aviv
+226,A1,Antoinette Kley-Gomez,2021-05-01,,,
+268,A43,Antonela Mihai,2021-10-01,,,
+268,A43,Antonela Mihai,2021-10-01,,,
+298,120,Arnaud Saintemarie,2024-11-04,Jacopo Lupo Ferrari,Talent Director,Core Tribe
+298,120,Arnaud Saintemarie,2025-02-17,Jacopo Lupo Ferrari,Director of Employer Branding and Internal Recruitment,Core Tribe
+118,64,Blake Barkley,2023-05-01,Martin Bernard,Executive Assistant,Core Tribe
+118,64,Blake Barkley,2023-05-01,Martin Bernard,Executive Assistant,
+186,69,Borys Kowalik,2023-07-17,Jacopo Lupo Ferrari,Performance Marketeer,Wolt
+186,69,Borys Kowalik,2023-07-17,Jacopo Lupo Ferrari,Performance Marketeer,
+266,A41,Carmen Mesa Molero,2021-08-16,,,
+260,A35,Carolina Fernandes,2019-09-01,,,
+351,173,Caroline Murphy,2026-01-12,Martin Bernard,Principal of Marketing,Core Tribe
+294,116,Channing Adler,2024-04-29,Martin Bernard,Product Manager,Core Tribe
+325,147,Chantal Bozkurt,2025-03-24,Gustavo Loureiro Castro,Sourcer L3,Internal
+325,147,Chantal Bozkurt,2025-04-28,Andrea Akovic,Sourcer L3,Internal
+325,147,Chantal Bozkurt,2025-08-06,Jaksa Marojevic,Talent Acquisition Partner L1,Wolt
+325,147,Chantal Bozkurt,2025-09-08,Simon Siew,Talent Acquisition Partner L1,Wolt
+325,147,Chantal Bozkurt,2026-04-01,Simon Siew,Sourcer L3,Bench
+325,147,Chantal Bozkurt,2026-04-13,Simon Siew,Sourcer L3,Parloa Gmbh
+167,49,Chené Elliot,2022-06-01,Jacopo Lupo Ferrari,TA Lead L1,Wolt
+167,49,Chené Elliot,2024-02-01,Jacopo Lupo Ferrari,TA Lead L2,Wolt
+167,49,Chené Elliot,2025-02-17,Kristjana Thorarinsdottir,Manager,Wolt
+167,49,Chené Elliot,2025-08-01,Kristjana Thorarinsdottir,Senior Manager,Wolt
+167,49,Chené Elliot,2026-01-24,Kristjana Thorarinsdottir,Senior Manager,Bench
+167,49,Chené Elliot,2026-01-26,Kristjana Thorarinsdottir,Senior Manager,DualEntry
+167,49,Chené Elliot,2026-02-07,Kristjana Thorarinsdottir,Senior Manager,Bench
+167,49,Chené Elliot,2026-02-24,Kristjana Thorarinsdottir,Senior Manager,Glovo
+119,25,Christin Haschke,2021-08-08,Ella Darie,People Operations Manager,Core Tribe
+119,25,Christin Haschke,2021-08-08,Ella Darie,People Operations Manager,People Operations
+287,A59,Christina Mattar,2023-04-16,,,
+220,105,Christina Skordili,2023-11-27,Kristina Colovic,Talent Acquisition Partner L1,Wolt
+220,105,Christina Skordili,2024-05-01,Kristina Colovic,Talent Acquisition Partner L1,Wolt
+220,105,Christina Skordili,2025-02-17,Kristjana Thorarinsdottir,Team Lead,Wolt
+248,A23,Cristyn Nartey,2022-03-01,,,
+248,A23,Cristyn Nartey,2022-03-01,,,
+312,134,Damla Kocek,2025-02-18,Katarina Matić,Data Recruitment Specialist,Wolt
+312,134,Damla Kocek,2025-03-27,Kristjana Thorarinsdottir,Data Recruitment Specialist,Wolt
+312,134,Damla Kocek,2025-10-09,Rafael Rosa,Data Recruitment Specialist,Wolt
+312,134,Damla Kocek,2026-03-14,Niki Vokalkova,Data Recruitment Specialist,Wolt
+269,A44,Daniela Nunes,2022-06-01,,,
+269,A44,Daniela Nunes,2022-06-01,,,
+342,164,Danish Shams,2025-10-09,Kristjana Thorarinsdottir,Talent Acquisition Partner L2,Wolt
+342,164,Danish Shams,2025-11-03,Vladimir Stankovic,Talent Acquisition Partner L2,Wolt
+303,123,Dimitrios Christofilopoulos,2024-10-30,Salem Mansuri,Talent Acquisition Partner L1,Wolt
+165,47,Dolores Palotas,2022-05-16,Jaksa Marojevic,Talent Coordinator,Wolt
+165,47,Dolores Palotas,2022-05-16,Jaksa Marojevic,Sourcer L2,
+165,47,Dolores Palotas,2024-08-16,Jaksa Marojevic,Talent Coordinator,Bench
+165,47,Dolores Palotas,2024-11-20,Jaksa Marojevic,Sourcer L2,Juni
+165,47,Dolores Palotas,2024-12-20,Jaksa Marojevic,Sourcer L2,Bench
+165,47,Dolores Palotas,2025-02-17,Rossella Petrillo,Sourcer L2,Bench
+165,47,Dolores Palotas,2025-04-28,Gustavo Loureiro Castro,Sourcer L2,Bench
+165,47,Dolores Palotas,2025-07-28,Jaksa Marojevic,Talent Acquisition Partner L1,Wolt
+165,47,Dolores Palotas,2025-09-08,Simon Siew,Talent Acquisition Partner L1,Wolt
+165,47,Dolores Palotas,2026-04-01,Simon Siew,Sourcer L2,Bench
+144,26,Dora Vrbanić,2021-08-30,Marko Pavicevic,Talent Acquisition Partner L1,Wolt
+144,26,Dora Vrbanić,2021-08-30,Marko Pavicevic,Talent Acquisition Partner L1,
+144,26,Dora Vrbanić,2024-07-01,Marko Pavicevic,Talent Acquisition Partner L1,Bench
+144,26,Dora Vrbanić,2025-10-15,Vladimir Stankovic,Talent Acquisition Partner L1,Wolt
+144,26,Dora Vrbanić,2025-11-03,Niki Vokalkova,Talent Acquisition Partner L1,Wolt
+144,26,Dora Vrbanić,2026-01-17,Niki Vokalkova,Talent Acquisition Partner L1,Bench
+293,A61,Doruk Helvacioglu,2022-06-01,,,
+132,13,Dusan Lazovic,2021-03-01,Salem Mansuri,Sourcer L2,Internal
+132,13,Dusan Lazovic,2021-03-01,Salem Mansuri,Sourcer L2,
+132,13,Dusan Lazovic,2024-02-01,Gustavo Loureiro Castro,Sourcer L2,Internal
+354,176,Dušan Špica,2026-03-03,Lejla Dizdarevic,Talent Acquisition Partner L2,Bench
+354,176,Dušan Špica,2026-03-25,Lejla Dizdarevic,Talent Acquisition Partner L2,Eucalyptus
+310,132,Eduardo Moral Casimiro,2025-02-10,Jaksa Marojevic,Talent Acquisition Partner L3,Bench
+310,132,Eduardo Moral Casimiro,2025-02-17,Jaksa Marojevic,Talent Acquisition Partner L3,Wolt
+310,132,Eduardo Moral Casimiro,2025-07-25,Jaksa Marojevic,Talent Acquisition Partner L3,Bench
+310,132,Eduardo Moral Casimiro,2025-08-25,Jaksa Marojevic,Talent Acquisition Partner L3,Glovo
+310,132,Eduardo Moral Casimiro,2025-08-25,Rossella Petrillo,Talent Acquisition Partner L3,Glovo
+310,132,Eduardo Moral Casimiro,2025-09-27,Rossella Petrillo,Talent Acquisition Partner L3,Bench
+310,132,Eduardo Moral Casimiro,2025-11-18,Rossella Petrillo,Talent Acquisition Partner L3,Grover
+310,132,Eduardo Moral Casimiro,2026-01-23,Kristina Colovic,Talent Acquisition Partner L3,Grover
+310,132,Eduardo Moral Casimiro,2026-03-18,Kristina Colovic,Talent Acquisition Partner L3,Bench
+302,125,Ejla Suljčić,2024-11-11,Jaksa Marojevic,Sourcer L2,Bench
+302,125,Ejla Suljčić,2025-02-17,Gustavo Loureiro Castro,Sourcer L2,Bench
+302,125,Ejla Suljčić,2025-04-28,Sanja Pavlovikj,Sourcer L2,Bench
+302,125,Ejla Suljčić,2025-06-12,Sanja Pavlovikj,Sourcer L2,Glovo
+302,125,Ejla Suljčić,2025-09-13,Sanja Pavlovikj,Sourcer L2,Bench
+302,125,Ejla Suljčić,2025-12-15,Vladimir Stankovic,Sourcer L2,Wolt
+332,154,Ekaterina Boyprav,2025-07-28,Anastasija Dugalic,Talent Acquisition Partner L3,Scorewarrior
+332,154,Ekaterina Boyprav,2026-01-01,Meho Saracevic,Talent Acquisition Partner L3,Scorewarrior
+250,A25,Elena Gerasimova Hristova,2022-05-01,,,
+250,A25,Elena Gerasimova Hristova,2022-05-01,,,
+219,104,Elena Gjorgieva,2023-11-27,Allan Rauter,Sourcer L1,Internal
+219,104,Elena Gjorgieva,2023-12-11,Alper Projka,Sourcer L1,Internal
+219,104,Elena Gjorgieva,2024-06-14,Alper Projka,Sourcer L1,Droppe
+219,104,Elena Gjorgieva,2024-07-29,Alper Projka,Sourcer L1,Internal
+219,104,Elena Gjorgieva,2024-08-01,Alper Projka,Sourcer L2,Internal
+219,104,Elena Gjorgieva,2024-08-12,Alper Projka,Sourcer L2,Droppe
+219,104,Elena Gjorgieva,2024-09-02,Marko Pavicevic,Sourcer L2,Droppe
+219,104,Elena Gjorgieva,2024-11-22,Marko Pavicevic,Sourcer L2,Bench
+219,104,Elena Gjorgieva,2025-02-11,Marko Pavicevic,Talent Acquisition Partner L1,Sumitomo
+219,104,Elena Gjorgieva,2025-08-01,Marko Pavicevic,Talent Acquisition Partner L1,Bench
+219,104,Elena Gjorgieva,2025-10-01,Marko Pavicevic,Talent Acquisition Partner L1,Sirius
+219,104,Elena Gjorgieva,2025-11-01,Marko Pavicevic,Talent Acquisition Partner L1,Bench
+219,104,Elena Gjorgieva,2025-12-27,Kristina Colovic,Talent Acquisition Partner L1,Bench
+219,104,Elena Gjorgieva,2026-01-26,Kristina Colovic,Talent Acquisition Partner L1,Aviv
+323,145,Elena Petrovska,2025-03-17,Gustavo Loureiro Castro,Sourcer L1,Bench
+323,145,Elena Petrovska,2025-12-30,Chené Elliot,Sourcer L1,Wolt
+319,141,Elena Rodriguez Lage,2025-03-31,Gustavo Loureiro Castro,Sourcer L3,Internal
+319,141,Elena Rodriguez Lage,2025-04-28,Sanja Pavlovikj,Sourcer L3,Internal
+215,98,Eliza da Silva,2023-11-17,Salem Mansuri,Talent Acquisition Partner L2,Wolt
+215,98,Eliza da Silva,2024-08-31,Salem Mansuri,Talent Acquisition Partner L2,Bench
+117,73,Ella Darie,2023-09-01,Martin Bernard,Head of People,Core Tribe
+117,73,Ella Darie,2023-09-01,Martin Bernard,Head of People,People Operations
+136,17,Elmo Nikamaa,2023-10-31,Kristina Colovic,Talent Acquisition Partner L3,Core Tribe
+214,99,Emmet Coleman,2023-11-23,Marko Mitic,Sourcer L2,Internal
+214,99,Emmet Coleman,2024-01-19,Martin Bernard,Sourcer L2,Internal
+214,99,Emmet Coleman,2024-05-13,Channing Adler,Sourcer L2,Internal
+256,A31,Enisa Bahic,2020-03-01,,,
+256,A31,Enisa Bahic,2020-03-01,,,
+311,133,Erzana Maliqi,2025-02-18,Katarina Matić,Data Recruitment Specialist,Wolt
+311,133,Erzana Maliqi,2025-03-27,Kristjana Thorarinsdottir,Data Recruitment Specialist,Wolt
+311,133,Erzana Maliqi,2025-10-09,Rafael Rosa,Data Recruitment Specialist,Wolt
+311,133,Erzana Maliqi,2026-03-14,Niki Vokalkova,Data Recruitment Specialist,Wolt
+314,136,Etienne Sargenton,2025-02-24,Alexandra Felea,Talent Acquisition Partner L3,Glovo
+314,136,Etienne Sargenton,2025-09-01,Alexandra Felea,Talent Acquisition Partner L3,Bench
+339,161,Evangelia Rapanaki,2025-09-29,Vladimir Stankovic,Talent Acquisition Partner L1,Wolt
+339,161,Evangelia Rapanaki,2025-11-03,Niki Vokalkova,Talent Acquisition Partner L1,Wolt
+181,63,Fanni Szabo,2023-01-31,Kristina Colovic,Talent Coordinator,Wolt
+181,63,Fanni Szabo,2023-01-31,Kristina Colovic,Talent Coordinator,
+181,63,Fanni Szabo,2024-02-12,Kristina Colovic,Talent Coordinator,Bench
+174,56,Filip Nogowski,2022-12-05,Marko Pavicevic,Talent Acquisition Partner L3,Wolt
+174,56,Filip Nogowski,2022-12-05,Marko Pavicevic,Talent Acquisition Partner L3,
+174,56,Filip Nogowski,2025-03-01,Vladimir Stankovic,Talent Acquisition Partner L3,Bench
+174,56,Filip Nogowski,2025-03-04,Marko Pavicevic,Talent Acquisition Partner L3,Wolt
+174,56,Filip Nogowski,2025-03-05,Vladimir Stankovic,Talent Acquisition Partner L3,Wolt
+174,56,Filip Nogowski,2025-06-01,Anastasija Dugalic,Talent Acquisition Partner L3,Parloa Gmbh
+174,56,Filip Nogowski,2026-01-01,Meho Saracevic,Talent Acquisition Partner L3,Parloa Gmbh
+216,103,Fuad Safarov,2023-11-13,Rossella Petrillo,Talent Acquisition Partner L1,Wolt
+216,103,Fuad Safarov,2025-02-01,Rossella Petrillo,Talent Acquisition Partner L2,Wolt
+216,103,Fuad Safarov,2025-02-17,Kristina Colovic,Talent Acquisition Partner L2,Wolt
+216,103,Fuad Safarov,2025-08-02,Chené Elliot,Talent Acquisition Partner L2,Wolt
+216,103,Fuad Safarov,2025-09-12,Chené Elliot,Talent Acquisition Partner L2,Bench
+216,103,Fuad Safarov,2025-10-20,Chené Elliot,Talent Acquisition Partner L2,Wolt
+216,103,Fuad Safarov,2025-11-03,Niki Vokalkova,Talent Acquisition Partner L2,Wolt
+216,103,Fuad Safarov,2026-03-26,Niki Vokalkova,Talent Acquisition Partner L2,Aiven
+265,A40,Geeta Sood,2021-08-01,,,
+265,A40,Geeta Sood,2021-08-01,,,
+149,31,Georgia Vasilaki,2021-11-15,Marko Pavicevic,Sourcer L2,Wolt
+149,31,Georgia Vasilaki,2021-11-15,Marko Pavicevic,Sourcer L2,
+149,31,Georgia Vasilaki,2024-08-01,Marko Pavicevic,Talent Acquisition Partner L1,Bench
+149,31,Georgia Vasilaki,2024-08-05,Marko Pavicevic,Talent Acquisition Partner L1,Cogny
+149,31,Georgia Vasilaki,2024-09-01,Marko Pavicevic,Talent Acquisition Partner L1,Wolt
+149,31,Georgia Vasilaki,2025-02-17,Kristina Colovic,Talent Acquisition Partner L1,Wolt
+149,31,Georgia Vasilaki,2025-05-31,Kristina Colovic,Talent Acquisition Partner L1,Bench
+149,31,Georgia Vasilaki,2025-09-01,Marko Pavicevic,Talent Acquisition Partner L1,Bench
+234,A9,Ghukas Stepanyan,2022-04-01,,,
+234,A9,Ghukas Stepanyan,2022-04-01,,,
+308,130,Gino Lodola,2025-01-06,Martin Bernard,Director of Business Development,Core Tribe
+143,24,Gustavo Loureiro Castro,2021-08-02,Salem Mansuri,Sourcer L2,About You
+143,24,Gustavo Loureiro Castro,2023-12-11,Alper Projka,Sourcer L2,About You
+143,24,Gustavo Loureiro Castro,2024-02-06,Alper Projka,Talent Sourcing Lead L1,About You
+143,24,Gustavo Loureiro Castro,2024-07-19,Alper Projka,Talent Sourcing Lead L1,Bench
+143,24,Gustavo Loureiro Castro,2024-08-05,Alper Projka,Talent Sourcing Lead L1,Statista
+143,24,Gustavo Loureiro Castro,2024-09-09,Salem Mansuri,Talent Sourcing Lead L1,Statista
+143,24,Gustavo Loureiro Castro,2024-10-01,Salem Mansuri,Talent Sourcing Lead 2,Statista
+143,24,Gustavo Loureiro Castro,2025-02-17,Arnaud Saintemarie,Sourcing Manager,Statista
+143,24,Gustavo Loureiro Castro,2025-04-02,Jacopo Lupo Ferrari,Sourcing Manager,Statista
+143,24,Gustavo Loureiro Castro,2026-01-01,Jacopo Lupo Ferrari,Sourcing Manager,Bench
+143,24,Gustavo Loureiro Castro,2026-01-19,Jacopo Lupo Ferrari,Sourcing Manager,Parloa Gmbh
+201,85,Hana Langerova,2023-10-02,Anastasija Dugalic,Talent Acquisition Partner L2,Wolt
+201,85,Hana Langerova,2023-10-02,Anastasija Dugalic,Talent Acquisition Partner L2,
+201,85,Hana Langerova,2025-02-17,Kristina Colovic,Talent Acquisition Partner L2,Wolt
+201,85,Hana Langerova,2025-05-30,Kristina Colovic,Talent Acquisition Partner L2,Bench
+205,89,Hana Mutka,2023-10-02,Kristina Colovic,Talent Coordinator,Wolt
+205,89,Hana Mutka,2023-10-02,Kristina Colovic,Talent Coordinator,
+205,89,Hana Mutka,2025-02-17,Katarina Matić,Talent Coordinator,Wolt
+247,A22,Harun Cehovic,2021-09-10,,,
+281,A57,Helen Sydorenko,2021-11-25,,,
+281,A57,Helen Sydorenko,2021-11-25,,,
+300,122,Helena Pitrákova,2024-10-09,Blake Barkley,Sales and Data Management Intern,Core Tribe
+240,A15,Ikuko Nakaishi,2023-06-01,,,
+240,A15,Ikuko Nakaishi,2023-06-01,,,
+232,A7,Ioana Petrovicescu,2022-01-01,,,
+232,A7,Ioana Petrovicescu,2022-01-01,,,
+218,100,Iryna Dyda,2023-11-27,Allan Rauter,Sourcer L1,Internal
+218,100,Iryna Dyda,2023-12-11,Alper Projka,Sourcer L1,Internal
+218,100,Iryna Dyda,2024-02-01,Manuel Carvalho,Sourcer L1,Internal
+218,100,Iryna Dyda,2024-09-02,Meho Saracevic,Sourcer L1,Bench
+218,100,Iryna Dyda,2024-10-01,Meho Saracevic,Talent Acquisition Partner L1,Wolt
+218,100,Iryna Dyda,2025-02-17,Christina Skordili,Talent Acquisition Partner L1,Wolt
+218,100,Iryna Dyda,2025-04-07,Christina Skordili,Talent Acquisition Partner L1,Bench
+218,100,Iryna Dyda,2025-07-01,Sanja Pavlovikj,Talent Acquisition Partner L1,Internal
+169,51,Iryna Schumik,2022-06-13,Jaksa Marojevic,Sourcer L1,Wargaming
+169,51,Iryna Schumik,2022-06-13,Jaksa Marojevic,Sourcer L1,
+169,51,Iryna Schumik,2024-08-01,Jaksa Marojevic,Sourcer L2,Wargaming
+169,51,Iryna Schumik,2024-08-12,Jaksa Marojevic,Sourcer L2,Bench
+169,51,Iryna Schumik,2024-09-23,Marko Pavicevic,Sourcer L2,Bench
+169,51,Iryna Schumik,2024-10-01,Marko Pavicevic,Talent Acquisition Partner L1,Wolt
+169,51,Iryna Schumik,2025-02-17,Christina Skordili,Talent Acquisition Partner L1,Wolt
+169,51,Iryna Schumik,2025-04-07,Christina Skordili,Talent Acquisition Partner L1,Bench
+169,51,Iryna Schumik,2025-07-03,Christina Skordili,Talent Acquisition Partner L1,Wolt
+169,51,Iryna Schumik,2025-07-21,Vladimir Stankovic,Talent Acquisition Partner L1,Wolt
+307,129,Iulian Hodivoianu,2024-12-09,Salem Mansuri,Talent Acquisition Partner L3,Bench
+307,129,Iulian Hodivoianu,2025-01-14,Salem Mansuri,Talent Acquisition Partner L3,Glovo
+307,129,Iulian Hodivoianu,2025-08-01,Salem Mansuri,Talent Acquisition Partner L3,Bench
+307,129,Iulian Hodivoianu,2025-10-01,Alexandra Felea,Talent Acquisition Partner L3,Bench
+307,129,Iulian Hodivoianu,2025-11-25,Alexandra Felea,Talent Acquisition Partner L3,Fever
+307,129,Iulian Hodivoianu,2026-01-01,Salem Mansuri,Talent Acquisition Partner L3,Fever
+254,A29,Ivana Stojkovic,2020-01-01,,,
+254,A29,Ivana Stojkovic,2020-01-01,,,
+352,174,JP Davidtz,2026-02-02,Kristjana Thorarinsdottir,Talent Acquisition Partner L3,DualEntry
+352,174,JP Davidtz,2026-02-18,Kristjana Thorarinsdottir,Talent Acquisition Partner L3,Bench
+122,3,Jacopo Lupo Ferrari,2019-07-14,Martin Bernard,Talent Director,Core Tribe
+122,3,Jacopo Lupo Ferrari,2019-07-14,Martin Bernard,Talent Director,Senior Leadership
+122,3,Jacopo Lupo Ferrari,2024-08-01,Martin Bernard,Head of Delivery,Core Tribe
+122,3,Jacopo Lupo Ferrari,2026-02-02,Martin Bernard,Head of Delivery,Nexi
+139,20,Jaksa Marojevic,2021-05-19,Tijana Lazovic,TA Lead L1,Wargaming
+139,20,Jaksa Marojevic,2024-02-01,Tijana Lazovic,TA Lead L2,Wargaming
+139,20,Jaksa Marojevic,2024-07-12,Tijana Lazovic,TA Lead L2,Bench
+139,20,Jaksa Marojevic,2024-08-01,Jacopo Lupo Ferrari,TA Lead L2,Bench
+139,20,Jaksa Marojevic,2024-09-02,Jacopo Lupo Ferrari,TA Lead L2,Wolt
+139,20,Jaksa Marojevic,2025-02-17,Kristjana Thorarinsdottir,Manager,Wolt
+139,20,Jaksa Marojevic,2025-08-29,Kristjana Thorarinsdottir,Manager,Bench
+275,A50,Jakub Ossowski,2020-09-01,,,
+275,A50,Jakub Ossowski,2020-09-01,,,
+176,58,Jan Dokulil,2022-12-05,Jaksa Marojevic,Sourcer L2,Wolt
+176,58,Jan Dokulil,2023-10-01,Jaksa Marojevic,Talent Acquisition Partner L1,Wolt
+176,58,Jan Dokulil,2025-02-01,Jaksa Marojevic,Talent Acquisition Partner L2,Wolt
+176,58,Jan Dokulil,2025-02-17,Vladimir Stankovic,Talent Acquisition Partner L2,Wolt
+228,A3,Jan Vorisek,2021-05-01,,,
+228,A3,Jan Vorisek,2021-05-01,,,
+273,A48,Janet Kostadinova,2022-07-01,,,
+273,A48,Janet Kostadinova,2022-07-01,,,
+276,A51,Javier Marquez,2021-01-01,,,
+276,A51,Javier Marquez,2021-01-01,,,
+162,44,Jelena Lacmanović,2022-04-04,Chené Elliot,Talent Acquisition Partner L1,About You
+162,44,Jelena Lacmanović,2022-04-04,Chené Elliot,Talent Acquisition Partner L1,
+162,44,Jelena Lacmanović,2024-04-15,Chené Elliot,Talent Acquisition Partner L1,Skuba Slovenia
+162,44,Jelena Lacmanović,2024-06-03,Chené Elliot,Talent Acquisition Partner L1,Skuba
+162,44,Jelena Lacmanović,2024-09-01,Chené Elliot,Talent Acquisition Partner L1,Bench
+162,44,Jelena Lacmanović,2024-09-23,Chené Elliot,Talent Acquisition Partner L1,Wolt
+162,44,Jelena Lacmanović,2025-08-01,Chené Elliot,Talent Acquisition Partner L2,Wolt
+262,A37,Jelena Milic,2020-12-01,,,
+262,A37,Jelena Milic,2020-12-01,,,
+242,A17,Jelena Voss,2021-02-20,,,
+242,A17,Jelena Voss,2021-02-20,,,
+334,156,Jelle van Schaick,2025-08-12,Martin Bernard,Director of Marketing,Core Tribe
+334,156,Jelle van Schaick,2025-10-01,Martin Bernard,Director of Marketing,Core Tribe
+315,137,Jessica Bodner,2025-02-24,Alexandra Felea,Talent Acquisition Partner L3,Glovo
+315,137,Jessica Bodner,2025-07-03,Alexandra Felea,Talent Acquisition Partner L3,Bench
+200,84,Joanna Bober,2023-10-02,Anastasija Dugalic,Talent Acquisition Partner L2,Wolt
+200,84,Joanna Bober,2023-10-02,Anastasija Dugalic,Talent Acquisition Partner L2,
+200,84,Joanna Bober,2025-02-01,Anastasija Dugalic,Talent Acquisition Partner L3,Wolt
+200,84,Joanna Bober,2025-02-17,Jaksa Marojevic,Talent Acquisition Partner L3,Wolt
+200,84,Joanna Bober,2025-09-08,Simon Siew,Talent Acquisition Partner L3,Wolt
+200,84,Joanna Bober,2025-11-14,Simon Siew,Talent Acquisition Partner L3,Bench
+193,77,Joe McAllister,2023-09-18,Allan Rauter,Talent Acquisition Partner L3,Wolt
+193,77,Joe McAllister,2023-09-18,Allan Rauter,Talent Acquisition Partner L3,
+227,A2,John Tsitzos,2023-02-28,,,
+227,A2,John Tsitzos,2023-05-01,,,
+345,167,Jonaed Iqbal,2025-11-12,Meho Saracevic,Talent Acquisition Partner L3,Parloa Gmbh
+153,35,Jovana Drakula,2022-01-03,Chené Elliot,Sourcer L2,Wolt
+153,35,Jovana Drakula,2022-01-03,Chené Elliot,Sourcer L2,
+153,35,Jovana Drakula,2024-08-01,Chené Elliot,Sourcer L3,Wolt
+153,35,Jovana Drakula,2025-06-02,Meho Saracevic,Talent Acquisition Partner L1,Glovo
+153,35,Jovana Drakula,2025-08-01,Meho Saracevic,Talent Acquisition Partner L1,Bench
+153,35,Jovana Drakula,2025-09-30,Chené Elliot,Talent Acquisition Partner L1,Wolt
+153,35,Jovana Drakula,2026-02-14,Chené Elliot,Talent Acquisition Partner L1,Bench
+153,35,Jovana Drakula,2026-02-16,Chené Elliot,Talent Acquisition Partner L1,Aviv
+145,27,Kanita Bajic,2021-09-16,Kristjana Thorarinsdottir,Sourcer L1,
+145,27,Kanita Bajic,2023-11-06,Marko Pavicevic,Sourcer L1,Wolt
+255,A30,Karina Kysilova,2020-04-01,,,
+255,A30,Karina Kysilova,2020-04-01,,,
+130,11,Karolina Olesińska,2021-02-22,Chené Elliot,Talent Acquisition Partner L2,Wolt
+130,11,Karolina Olesińska,2021-02-22,Chené Elliot,Talent Acquisition Partner L2,
+130,11,Karolina Olesińska,2024-02-01,Chené Elliot,Talent Acquisition Partner L3,Wolt
+194,78,Kasia Bienczyk,2023-09-18,Anastasija Dugalic,Talent Acquisition Partner L2,Wolt
+194,78,Kasia Bienczyk,2023-09-18,Anastasija Dugalic,Talent Acquisition Partner L2,
+161,43,Katarina Matić,2022-02-21,Jacopo Lupo Ferrari,Sourcer L1,Wolt
+161,43,Katarina Matić,2023-09-04,Kristina Colovic,Talent Coordinator,Wolt
+161,43,Katarina Matić,2025-02-01,Chené Elliot,Coordinator Lead,Wolt
+320,142,Katerina Wright,2025-03-24,Marko Pavicevic,Talent Acquisition Partner L3,Parloa Gmbh
+133,14,Kathleen Dongo,2022-03-14,Kristjana Thorarinsdottir,Sourcer L1,
+133,14,Kathleen Dongo,2023-11-06,Tijana Lazovic,Talent Coordinator,Wolt
+133,14,Kathleen Dongo,2024-04-04,Kristjana Thorarinsdottir,Talent Coordinator,Wolt
+133,14,Kathleen Dongo,2025-02-17,Katarina Matić,Talent Coordinator,Wolt
+350,172,Ketevan Khorava,2025-12-24,Niki Vokalkova,Talent Acquisition Partner L1,Wolt
+252,A27,Klaudia Tanevska,2023-02-01,,,
+126,7,Kristina Colovic,2020-02-02,Jacopo Lupo Ferrari,TA Lead L1,Wolt
+126,7,Kristina Colovic,2024-08-01,Alper Projka,TA Lead L1,Wolt
+126,7,Kristina Colovic,2024-09-02,Chené Elliot,TA Lead L1,Wolt
+126,7,Kristina Colovic,2026-01-01,Jacopo Lupo Ferrari,Team Lead,Bench
+126,7,Kristina Colovic,2026-01-26,Jacopo Lupo Ferrari,Team Lead,Aviv
+126,7,Kristina Colovic,2026-03-23,Salem Mansuri,Team Lead,Aviv
+140,21,Kristjana Thorarinsdottir,2021-06-07,Jacopo Lupo Ferrari,TA Lead L3,Wolt
+140,21,Kristjana Thorarinsdottir,2023-10-24,Jacopo Lupo Ferrari,TA Lead L3,Bench
+140,21,Kristjana Thorarinsdottir,2024-04-04,Jacopo Lupo Ferrari,TA Lead L3,Bench
+140,21,Kristjana Thorarinsdottir,2024-07-17,Jacopo Lupo Ferrari,TA Lead L3,Wolt
+140,21,Kristjana Thorarinsdottir,2025-02-01,Jacopo Lupo Ferrari,Talent Director,Core Tribe
+313,135,Lapo Pastacaldi,2025-02-11,Tijana Lazovic,Talent Acquisition Partner L2,Glovo
+313,135,Lapo Pastacaldi,2025-02-17,Alexandra Felea,Talent Acquisition Partner L2,Glovo
+142,23,Laura Ilioaea,2021-08-02,Kristjana Thorarinsdottir,Talent Acquisition Partner L2,
+142,23,Laura Ilioaea,2023-11-06,Tijana Lazovic,Talent Acquisition Partner L2,Wolt
+142,23,Laura Ilioaea,2024-04-04,Kristjana Thorarinsdottir,Talent Acquisition Partner L2,Wolt
+142,23,Laura Ilioaea,2025-02-17,Chené Elliot,Talent Acquisition Partner L2,Wolt
+279,A54,Laura Maria Liszewska,2021-08-01,,,
+279,A54,Laura Maria Liszewska,2021-08-01,,,
+137,18,Lejla Dizdarevic,2021-05-04,Jacopo Lupo Ferrari,Interim TA Lead L1,Wolt
+137,18,Lejla Dizdarevic,2024-02-01,Jacopo Lupo Ferrari,TA Lead L1,Wolt
+137,18,Lejla Dizdarevic,2024-08-01,Anastasija Dugalic,TA Lead L1,Wolt
+137,18,Lejla Dizdarevic,2024-10-31,Anastasija Dugalic,TA Lead L1,Bench
+137,18,Lejla Dizdarevic,2025-02-17,Anastasija Dugalic,Team Lead,Bench
+137,18,Lejla Dizdarevic,2025-11-25,Anastasija Dugalic,Team Lead,Fever
+137,18,Lejla Dizdarevic,2026-01-15,Jacopo Lupo Ferrari,Team Lead,Fever
+137,18,Lejla Dizdarevic,2026-01-26,Jacopo Lupo Ferrari,Team Lead,Aviv
+137,18,Lejla Dizdarevic,2026-03-23,Salem Mansuri,Team Lead,Aviv
+158,40,Lilit Mamulyan,2022-02-07,Vladimir Stankovic,Talent Coordinator,Wolt
+158,40,Lilit Mamulyan,2022-02-07,Vladimir Stankovic,Talent Coordinator,
+324,146,Lisa Gargulinska,2025-03-17,Marko Pavicevic,Talent Acquisition Partner L3,Bench
+324,146,Lisa Gargulinska,2025-05-05,Marko Pavicevic,Talent Acquisition Partner L3,Desk.ly
+324,146,Lisa Gargulinska,2025-07-12,Ella Darie,Talent Acquisition Partner L3,Internal
+324,146,Lisa Gargulinska,2025-09-24,Vladimir Stankovic,Talent Acquisition Partner L3,Wolt
+206,90,Lison Le Large,2023-10-02,Salem Mansuri,Talent Acquisition Partner L3,Wolt
+206,90,Lison Le Large,2023-10-02,Salem Mansuri,Talent Acquisition Partner L3,
+188,71,Luc Palmer,2023-08-15,Jacopo Lupo Ferrari,Talent Acquisition Partner L3,Wolt
+188,71,Luc Palmer,2023-08-15,Jacopo Lupo Ferrari,Talent Acquisition Partner L3,
+317,139,Luis Bravo Querales,2025-03-03,Marko Pavicevic,Sourcer L3,Bench
+317,139,Luis Bravo Querales,2025-04-28,Andrea Akovic,Sourcer L3,Bench
+164,46,Lukas Takac,2022-05-03,Chené Elliot,Talent Acquisition Partner L2,Bench
+164,46,Lukas Takac,2022-05-03,Chené Elliot,Talent Acquisition Partner L2,
+164,46,Lukas Takac,2023-11-13,Chené Elliot,Talent Acquisition Partner L2,ProtonMail
+164,46,Lukas Takac,2024-03-01,Chené Elliot,Talent Acquisition Partner L2,Bench
+164,46,Lukas Takac,2024-03-04,Chené Elliot,Talent Acquisition Partner L2,Skuba
+164,46,Lukas Takac,2024-04-01,Chené Elliot,Talent Acquisition Partner L3,Bench
+164,46,Lukas Takac,2024-04-11,Chené Elliot,Talent Acquisition Partner L2,Phantom Buster
+164,46,Lukas Takac,2024-08-01,Chené Elliot,Talent Acquisition Partner L3,Phantom Buster
+164,46,Lukas Takac,2025-02-14,Chené Elliot,Talent Acquisition Partner L3,Bench
+164,46,Lukas Takac,2025-02-17,Rossella Petrillo,Talent Acquisition Partner L3,Bench
+164,46,Lukas Takac,2025-02-24,Rossella Petrillo,Talent Acquisition Partner L3,Glovo
+164,46,Lukas Takac,2025-08-18,Rossella Petrillo,Talent Acquisition Partner L3,Bench
+195,79,Manuel Carvalho,2023-09-18,Lejla Dizdarevic,Sourcer L1,Wolt
+195,79,Manuel Carvalho,2023-09-18,Lejla Dizdarevic,Sourcer L1,
+195,79,Manuel Carvalho,2023-12-11,Alper Projka,Sourcer L1,Wolt
+195,79,Manuel Carvalho,2024-02-01,Alper Projka,Talent Sourcing Lead L1,Wolt
+195,79,Manuel Carvalho,2024-03-24,Alper Projka,Talent Sourcing Lead L1,Internal
+195,79,Manuel Carvalho,2024-04-29,Alper Projka,Talent Sourcing Lead L1,Amenitiz
+146,28,Marcela Maia,2021-10-04,Petr Mladěnka,Talent Acquisition Partner L2,Core Tribe
+146,28,Marcela Maia,2021-10-04,Petr Mladěnka,Talent Acquisition Partner L2,Growth
+146,28,Marcela Maia,2024-02-06,Petr Mladěnka,TA Lead L1,Core Tribe
+146,28,Marcela Maia,2024-03-18,Martin Bernard,TA Lead L1,Core Tribe
+146,28,Marcela Maia,2024-05-14,Allan Rauter,TA Lead L1,Core Tribe
+295,117,Marco Wirsching,2024-06-03,Petr Mladěnka,Junior Account Executive,Core Tribe
+295,117,Marco Wirsching,2024-07-08,Martin Bernard,Junior Account Executive,Core Tribe
+179,61,Maria Bielska,2023-01-31,Meho Saracevic,Talent Coordinator,Wolt
+179,61,Maria Bielska,2023-01-31,Meho Saracevic,Talent Coordinator,
+288,112,Maria Gerbore,2024-03-18,András Tóth,Talent Acquisition Partner L3,Wolt
+288,112,Maria Gerbore,2024-05-06,Salem Mansuri,Talent Acquisition Partner L3,Wolt
+288,112,Maria Gerbore,2024-06-01,Salem Mansuri,Talent Acquisition Partner L3,Bench
+288,112,Maria Gerbore,2024-09-02,Salem Mansuri,Talent Acquisition Partner L3,AlephAlpha
+288,112,Maria Gerbore,2025-02-01,Anastasija Dugalic,Talent Acquisition Partner L3,AlephAlpha
+288,112,Maria Gerbore,2025-07-03,Anastasija Dugalic,Talent Acquisition Partner L3,Glovo
+288,112,Maria Gerbore,2025-07-03,Anastasija Dugalic,Talent Acquisition Partner L3,Bench
+288,112,Maria Gerbore,2025-10-03,Anastasija Dugalic,Talent Acquisition Partner L3,Bench
+288,112,Maria Gerbore,2025-11-10,Anastasija Dugalic,Talent Acquisition Partner L3,Nexi
+288,112,Maria Gerbore,2026-01-01,Lejla Dizdarevic,Talent Acquisition Partner L3,Nexi
+264,A39,Maria Li,2021-06-15,,,
+264,A39,Maria Li,2021-06-15,,,
+355,177,Mariam Chkhikvadze,2026-03-25,Meho Saracevic,Talent Acquisition Partner L2,Bench
+244,A19,Mariana Chacchio,2022-05-21,,,
+244,A19,Mariana Chacchio,2022-05-21,,,
+172,54,Mariia Charushyna,2022-11-28,Rossella Petrillo,Sourcer L1,Wolt
+172,54,Mariia Charushyna,2022-11-28,Rossella Petrillo,Sourcer L1,
+159,41,Marija Obradovic,2021-02-08,Anastasija Dugalic,Talent Acquisition Partner L2,Wolt
+159,41,Marija Obradovic,2021-02-08,Anastasija Dugalic,Talent Acquisition Partner L2,
+152,34,Marija Vidovic,2022-01-03,Lejla Dizdarevic,Talent Coordinator,Wolt
+152,34,Marija Vidovic,2022-01-03,Lejla Dizdarevic,Talent Coordinator,
+338,160,Marina Lazarević,2025-10-13,Andrea Akovic,Sourcer L3,Internal
+290,114,Marina Nikolic,2024-04-01,Marcela Maia,Sourcer L1,Core Tribe
+290,114,Marina Nikolic,2024-09-18,Rossella Petrillo,Sourcer L1,Core Tribe
+290,114,Marina Nikolic,2024-10-02,Rossella Petrillo,Sourcer L1,Internal
+290,114,Marina Nikolic,2025-01-09,Rossella Petrillo,Talent Acquisition Partner L1,Sirius
+290,114,Marina Nikolic,2025-02-28,Rossella Petrillo,Talent Acquisition Partner L1,Bench
+290,114,Marina Nikolic,2025-04-22,Rossella Petrillo,Talent Acquisition Partner L1,Glovo
+290,114,Marina Nikolic,2025-08-16,Rossella Petrillo,Talent Acquisition Partner L1,Bench
+290,114,Marina Nikolic,2025-08-18,Rossella Petrillo,Talent Acquisition Partner L1,Taxfix
+290,114,Marina Nikolic,2026-01-23,Lejla Dizdarevic,Talent Acquisition Partner L1,Taxfix
+290,114,Marina Nikolic,2026-02-01,Lejla Dizdarevic,Talent Acquisition Partner L2,Taxfix
+343,165,Mark Kandaurov,2025-11-27,Meho Saracevic,Talent Acquisition Partner L3,Scorewarrior
+196,80,Marko Mitic,2023-10-02,Martin Bernard,Product Manager,Core Tribe
+196,80,Marko Mitic,2023-10-02,Martin Bernard,Product Manager,Product
+173,55,Marko Pavicevic,2022-12-05,Allan Rauter,TA Lead L1,Circula
+173,55,Marko Pavicevic,2022-12-05,Allan Rauter,TA Lead L1,Leadership
+173,55,Marko Pavicevic,2024-02-01,Allan Rauter,TA Lead L2,Circula
+173,55,Marko Pavicevic,2024-08-01,Jacopo Lupo Ferrari,TA Lead L2,Circula
+173,55,Marko Pavicevic,2025-01-08,Jacopo Lupo Ferrari,TA Lead L2,Enam
+173,55,Marko Pavicevic,2025-02-01,Jacopo Lupo Ferrari,TA Lead L3,Enam
+173,55,Marko Pavicevic,2025-02-17,Tijana Lazovic,Senior Manager,Enam
+120,1,Martin Bernard,2019-01-01,,CEO,Core Tribe
+120,1,Martin Bernard,2019-01-01,,CEO,Founder
+297,119,Mary Antonova,2024-09-09,Marko Pavicevic,Talent Acquisition Partner L3,Bench
+297,119,Mary Antonova,2024-09-16,Marko Pavicevic,Talent Acquisition Partner L3,Wolt
+297,119,Mary Antonova,2024-11-01,Marko Pavicevic,Talent Acquisition Partner L3,Bench
+210,94,Mary Tigranyan,2023-10-30,Allan Rauter,Sourcer L1,Internal
+210,94,Mary Tigranyan,2023-10-30,Allan Rauter,Sourcer L1,
+210,94,Mary Tigranyan,2023-12-11,Alper Projka,Sourcer L1,Internal
+210,94,Mary Tigranyan,2024-02-01,Gustavo Loureiro Castro,Sourcer L1,Internal
+235,A10,Masiwa Simoloka,2022-06-01,,,
+235,A10,Masiwa Simoloka,2022-06-01,,,
+353,175,Mateja Joković,2026-02-03,Meho Saracevic,Talent Acquisition Partner L2,Bench
+353,175,Mateja Joković,2026-02-09,Meho Saracevic,Talent Acquisition Partner L2,Phantom Buster
+233,A8,Maurice Stuart,2022-05-01,,,
+233,A8,Maurice Stuart,2022-05-01,,,
+131,12,Meho Saracevic,2021-03-01,Jacopo Lupo Ferrari,Interim TA Lead L1,Wolt
+131,12,Meho Saracevic,2021-03-01,Jacopo Lupo Ferrari,Interim TA Lead L1,
+131,12,Meho Saracevic,2024-02-01,Jacopo Lupo Ferrari,TA Lead L1,Wolt
+131,12,Meho Saracevic,2024-08-23,Jacopo Lupo Ferrari,TA Lead L1,Bench
+131,12,Meho Saracevic,2024-09-01,Marko Pavicevic,TA Lead L1,Internal
+131,12,Meho Saracevic,2025-02-17,Arnaud Saintemarie,TA Lead L1,Internal
+131,12,Meho Saracevic,2025-02-20,Arnaud Saintemarie,Team Lead,Internal
+131,12,Meho Saracevic,2025-04-02,Jacopo Lupo Ferrari,Team Lead,Internal
+131,12,Meho Saracevic,2025-04-07,Tijana Lazovic,Team Lead,Glovo
+131,12,Meho Saracevic,2025-09-01,Tijana Lazovic,Team Lead,Bench
+131,12,Meho Saracevic,2025-09-22,Tijana Lazovic,Team Lead,Eucalyptus
+131,12,Meho Saracevic,2026-01-15,Jacopo Lupo Ferrari,Team Lead,Eucalyptus
+131,12,Meho Saracevic,2026-03-23,Salem Mansuri,Team Lead,Eucalyptus
+175,57,Melani Moneva,2022-12-05,Rossella Petrillo,Sourcer L1,Wolt
+175,57,Melani Moneva,2022-12-05,Rossella Petrillo,Sourcer L1,
+187,70,Melanie Wagner,2023-07-26,Petr Mladěnka,Business Development Representative,Core Tribe
+187,70,Melanie Wagner,2023-07-26,Petr Mladěnka,Business Development Representative,Growth
+229,A4,Merdina Mostarlic,2021-05-15,,,
+229,A4,Merdina Mostarlic,2021-05-15,,,
+207,91,Mia Gjorgievska,2023-10-02,Salem Mansuri,Sourcer L2,Wolt
+207,91,Mia Gjorgievska,2023-10-02,Salem Mansuri,Sourcer L1,
+207,91,Mia Gjorgievska,2024-09-02,Salem Mansuri,Sourcer L2,Bench
+207,91,Mia Gjorgievska,2025-02-17,Anastasija Dugalic,Sourcer L2,Bench
+207,91,Mia Gjorgievska,2025-03-17,Anastasija Dugalic,Sourcer L2,Parloa Gmbh
+207,91,Mia Gjorgievska,2025-09-16,Anastasija Dugalic,Sourcer L2,Bench
+207,91,Mia Gjorgievska,2025-11-24,Anastasija Dugalic,Sourcer L2,Wolt
+223,107,Miguel Santos,2023-12-11,Lejla Dizdarevic,Talent Coordinator,Wolt
+182,65,Mihai Revenco,2023-05-22,Martin Bernard,Sr Bubble,Core Tribe
+182,65,Mihai Revenco,2023-05-22,Martin Bernard,Sr Bubble,Product
+182,65,Mihai Revenco,2024-05-13,Channing Adler,Sr Bubble,Core Tribe
+182,65,Mihai Revenco,2024-08-24,Martin Bernard,Sr Bubble,Core Tribe
+127,8,Mikhail Kuzmin,2023-05-13,Martin Bernard,Sr Bubble,Core Tribe
+127,8,Mikhail Kuzmin,2023-05-13,Martin Bernard,Sr Bubble,Product
+127,8,Mikhail Kuzmin,2024-05-13,Channing Adler,Sr Bubble,Core Tribe
+127,8,Mikhail Kuzmin,2024-08-24,Martin Bernard,Sr Bubble,Core Tribe
+243,A18,Milica Markoc,2022-07-01,,,
+243,A18,Milica Markoc,2022-07-01,,,
+212,96,Milica Milicevic,2023-10-30,Allan Rauter,Sourcer L1,Internal
+212,96,Milica Milicevic,2023-10-30,Allan Rauter,Sourcer L1,
+212,96,Milica Milicevic,2023-12-11,Alper Projka,Sourcer L1,Internal
+125,6,Milica Mladzic,2020-01-14,András Tóth,Talent Acquisition Partner L2,Wolt
+125,6,Milica Mladzic,2020-01-14,András Tóth,Talent Acquisition Partner L2,
+125,6,Milica Mladzic,2024-05-06,Lejla Dizdarevic,Talent Acquisition Partner L2,Wolt
+125,6,Milica Mladzic,2024-11-27,Anastasija Dugalic,Talent Acquisition Partner L2,Wolt
+125,6,Milica Mladzic,2025-02-17,Christina Skordili,Talent Acquisition Partner L2,Wolt
+125,6,Milica Mladzic,2025-07-01,Vladimir Stankovic,Talent Acquisition Partner L2,Wolt
+125,6,Milica Mladzic,2025-08-16,Vladimir Stankovic,Talent Acquisition Partner L2,Bench
+178,60,Milica Veselinovic,2023-01-11,András Tóth,Sourcer L1,Wolt
+178,60,Milica Veselinovic,2023-01-11,András Tóth,Sourcer L1,
+178,60,Milica Veselinovic,2024-05-06,Manuel Carvalho,Sourcer L1,Wolt
+178,60,Milica Veselinovic,2024-08-01,Gustavo Loureiro Castro,Sourcer L2,Wolt
+178,60,Milica Veselinovic,2025-02-01,Gustavo Loureiro Castro,Sourcer L3,Wolt
+178,60,Milica Veselinovic,2025-02-17,Katarina Matić,Sourcer L3,Wolt
+178,60,Milica Veselinovic,2025-06-22,Chené Elliot,Sourcer L3,Wolt
+203,87,Naledi Ngwenya,2023-10-02,Meho Saracevic,Talent Coordinator,Wolt
+203,87,Naledi Ngwenya,2023-10-02,Meho Saracevic,Talent Coordinator,
+203,87,Naledi Ngwenya,2026-02-03,Andrea Akovic,Sourcer L3,Aviv
+203,87,Naledi Ngwenya,2026-02-06,Andrea Akovic,Sourcer L3,Bench
+203,87,Naledi Ngwenya,2026-02-17,Andrea Akovic,Sourcer L3,FTAPI
+211,95,Nare Avetisyan,2023-10-30,Allan Rauter,Sourcer L2,Internal
+211,95,Nare Avetisyan,2023-10-30,Allan Rauter,Sourcer L2,
+211,95,Nare Avetisyan,2023-12-11,Alper Projka,Sourcer L2,Internal
+211,95,Nare Avetisyan,2024-02-01,Gustavo Loureiro Castro,Sourcer L2,Internal
+211,95,Nare Avetisyan,2024-08-14,Gustavo Loureiro Castro,Sourcer L2,Bench
+211,95,Nare Avetisyan,2024-09-02,Gustavo Loureiro Castro,Sourcer L2,Wolt
+211,95,Nare Avetisyan,2024-12-31,Gustavo Loureiro Castro,Sourcer L2,Bench
+166,48,Nastasija Zivkovic,2022-06-01,Marko Pavicevic,Talent Acquisition Partner L2,About You
+166,48,Nastasija Zivkovic,2022-06-01,Marko Pavicevic,Talent Acquisition Partner L2,
+166,48,Nastasija Zivkovic,2024-04-22,Marko Pavicevic,Talent Acquisition Partner L2,Fernride
+166,48,Nastasija Zivkovic,2024-10-07,Marko Pavicevic,Talent Acquisition Partner L2,Bench
+166,48,Nastasija Zivkovic,2024-11-01,Marko Pavicevic,Talent Acquisition Partner L3,Bench
+166,48,Nastasija Zivkovic,2024-11-12,Marko Pavicevic,Talent Acquisition Partner L3,Eleqtron
+166,48,Nastasija Zivkovic,2025-05-01,Marko Pavicevic,Talent Acquisition Partner L3,Bench
+168,50,Natalia Mamchich,2022-06-13,Tijana Lazovic,Talent Acquisition Partner L2,
+168,50,Natalia Mamchich,2023-11-06,Vladimir Stankovic,Talent Acquisition Partner L2,Wolt
+267,A42,Natalia Nowacka,2021-09-01,,,
+267,A42,Natalia Nowacka,2021-09-01,,,
+327,149,Natalie Tal Prowse,2025-03-31,Kristjana Thorarinsdottir,Data Recruitment Specialist,Wolt
+327,149,Natalie Tal Prowse,2025-10-09,Rafael Rosa,Data Recruitment Specialist,Wolt
+327,149,Natalie Tal Prowse,2026-03-14,Niki Vokalkova,Data Recruitment Specialist,Wolt
+225,109,Nelson Agro,2024-01-04,Alper Projka,Sourcer L1,Bench
+225,109,Nelson Agro,2024-02-12,Alper Projka,Sourcer L1,Phantom Buster
+225,109,Nelson Agro,2024-08-01,Gustavo Loureiro Castro,Sourcer L2,Phantom Buster
+225,109,Nelson Agro,2025-02-17,Marko Pavicevic,Sourcer L2,Phantom Buster
+190,74,Nemanja Banjanin,2023-09-11,Martin Bernard,Product Designer,Core Tribe
+190,74,Nemanja Banjanin,2023-09-11,Martin Bernard,Product Designer,Product
+190,74,Nemanja Banjanin,2024-05-13,Channing Adler,Product Designer,Core Tribe
+190,74,Nemanja Banjanin,2024-08-24,Martin Bernard,Product Designer,Core Tribe
+184,67,Nemanja Erdevički,2023-05-22,Allan Rauter,Talent Acquisition Partner L3,Wolt
+184,67,Nemanja Erdevički,2023-05-22,Allan Rauter,Talent Acquisition Partner L3,
+184,67,Nemanja Erdevički,2024-04-29,Kristjana Thorarinsdottir,Talent Acquisition Partner L3,Wolt
+184,67,Nemanja Erdevički,2025-02-17,Vladimir Stankovic,Talent Acquisition Partner L3,Wolt
+184,67,Nemanja Erdevički,2025-09-13,Vladimir Stankovic,Talent Acquisition Partner L3,Bench
+282,A58,Nenad Cvetkovic,2020-10-01,,,
+282,A58,Nenad Cvetkovic,2020-10-01,,,
+199,83,Nenad Skoko,2023-10-02,Anastasija Dugalic,Sourcer L1,About You
+199,83,Nenad Skoko,2023-10-02,Anastasija Dugalic,Sourcer L1,
+199,83,Nenad Skoko,2024-07-19,Anastasija Dugalic,Sourcer L1,Bench
+199,83,Nenad Skoko,2024-08-01,Anastasija Dugalic,Sourcer L2,Bench
+199,83,Nenad Skoko,2024-09-02,Anastasija Dugalic,Talent Acquisition Partner L1,Cogny
+199,83,Nenad Skoko,2024-11-21,Anastasija Dugalic,Talent Acquisition Partner L1,Sumitomo
+199,83,Nenad Skoko,2024-12-31,Anastasija Dugalic,Talent Acquisition Partner L1,Bench
+199,83,Nenad Skoko,2025-01-08,Anastasija Dugalic,Talent Acquisition Partner L1,Circula
+199,83,Nenad Skoko,2025-04-01,Anastasija Dugalic,Talent Acquisition Partner L1,Bench
+199,83,Nenad Skoko,2025-05-09,Chené Elliot,Talent Acquisition Partner L1,Bench
+199,83,Nenad Skoko,2025-05-19,Chené Elliot,Talent Acquisition Partner L1,Wolt
+199,83,Nenad Skoko,2026-02-01,Chené Elliot,Talent Acquisition Partner L2,Wolt
+274,A49,Nesrin Akgunduz,2021-02-20,,,
+274,A49,Nesrin Akgunduz,2021-02-20,,,
+347,169,Nidhi Raina,2025-12-03,Vladimir Stankovic,Talent Acquisition Partner L2,Wolt
+316,138,Niki Vokalkova,2025-04-14,Salem Mansuri,Talent Acquisition Partner L3,Bench
+316,138,Niki Vokalkova,2025-05-16,Kristina Colovic,Talent Acquisition Partner L3,Wolt
+316,138,Niki Vokalkova,2025-08-02,Vladimir Stankovic,Talent Acquisition Partner L3,Wolt
+316,138,Niki Vokalkova,2025-11-03,Vladimir Stankovic,Interim Team Lead,Wolt
+330,152,Noa Dagan,2025-06-29,Katarina Matić,Talent Coordinator,Wolt
+330,152,Noa Dagan,2025-10-31,Katarina Matić,Talent Acquisition Partner L1,Wolt
+292,A60,Nora Csokli,2019-05-01,,,
+236,A11,Olga Drabkin,2021-09-01,,,
+236,A11,Olga Drabkin,2021-09-01,,,
+204,88,Oliver Weigert,2023-10-02,Meho Saracevic,Talent Coordinator,Wolt
+204,88,Oliver Weigert,2023-10-02,Meho Saracevic,Talent Coordinator,
+270,A45,Onur Oğuz,2022-05-01,,,
+270,A45,Onur Oğuz,2022-05-01,,,
+253,A28,Parveen Kauldhar,2020-01-01,,,
+253,A28,Parveen Kauldhar,2020-01-01,,,
+326,148,Patrick Carignano,2025-06-23,Salem Mansuri,Talent Acquisition Partner L3,Bench
+301,124,Paulina Wojtan,2024-10-17,Anastasija Dugalic,Talent Acquisition Partner L3,Bench
+301,124,Paulina Wojtan,2025-02-17,Jaksa Marojevic,Talent Acquisition Partner L3,Wolt
+301,124,Paulina Wojtan,2025-06-10,Jaksa Marojevic,Talent Acquisition Partner L3,Bench
+246,A21,Pedro Reis Silva,2022-04-01,,,
+124,5,Petr Mladěnka,2019-10-04,Martin Bernard,BD and IR Director,Core Tribe
+124,5,Petr Mladěnka,2019-10-04,Martin Bernard,BD and IR Director,Senior Leadership
+239,A14,Polina Novichenko,2022-11-01,,,
+239,A14,Polina Novichenko,2022-11-01,,,
+340,162,Pratik Sridhar,2025-10-06,Kristjana Thorarinsdottir,Talent Acquisition Partner L3,Wolt
+340,162,Pratik Sridhar,2025-10-09,Rafael Rosa,Talent Acquisition Partner L3,Wolt
+346,168,Priya Sen,2025-11-17,Kristjana Thorarinsdottir,Talent Acquisition Partner L3,Wolt
+185,68,Rachele Alvarado,2023-06-12,Jacopo Lupo Ferrari,Performance Marketeer,Wolt
+185,68,Rachele Alvarado,2023-06-12,Jacopo Lupo Ferrari,Performance Marketeer,
+185,68,Rachele Alvarado,2025-02-17,Kristjana Thorarinsdottir,Performance Marketeer,Wolt
+198,82,Rafael Rosa,2023-10-02,Allan Rauter,Talent Acquisition Partner L3,Wolt
+198,82,Rafael Rosa,2023-10-02,Allan Rauter,Talent Acquisition Partner L3,
+198,82,Rafael Rosa,2024-04-29,Kristjana Thorarinsdottir,Talent Acquisition Partner L3,Wolt
+198,82,Rafael Rosa,2025-02-17,Vladimir Stankovic,Talent Acquisition Partner L3,Wolt
+198,82,Rafael Rosa,2026-02-14,Vladimir Stankovic,Talent Acquisition Partner L3,Bench
+321,143,Renata Kokhan,2025-03-17,Alexandra Felea,Talent Acquisition Partner L2,Glovo
+328,150,Robert Galas,2025-05-19,Jacopo Lupo Ferrari,Recruitment Manager,Core Tribe
+263,A38,Rocio Villareal,2021-05-19,,,
+141,22,Rodrigo Gomes,2021-07-21,Rossella Petrillo,Sourcer L1,Internal
+141,22,Rodrigo Gomes,2021-07-21,Rossella Petrillo,Sourcer L1,
+141,22,Rodrigo Gomes,2024-02-01,Rossella Petrillo,Sourcer L1,Circula
+141,22,Rodrigo Gomes,2024-04-29,Gustavo Loureiro Castro,Sourcer L1,Circula
+141,22,Rodrigo Gomes,2024-08-01,Gustavo Loureiro Castro,Sourcer L2,Circula
+141,22,Rodrigo Gomes,2025-02-17,Marko Pavicevic,Sourcer L2,Circula
+141,22,Rodrigo Gomes,2025-06-16,Marko Pavicevic,Sourcer L2,Bench
+141,22,Rodrigo Gomes,2025-08-01,Marko Pavicevic,Sourcer L3,Bench
+141,22,Rodrigo Gomes,2025-08-18,Gustavo Loureiro Castro,Sourcer L3,Bench
+141,22,Rodrigo Gomes,2025-11-18,Gustavo Loureiro Castro,Sourcer L3,Grover
+141,22,Rodrigo Gomes,2026-03-18,Gustavo Loureiro Castro,Sourcer L3,Bench
+197,81,Romualdas Jagela,2023-10-02,Allan Rauter,Talent Acquisition Partner L3,Wolt
+197,81,Romualdas Jagela,2023-10-02,Allan Rauter,Talent Acquisition Partner L3,
+197,81,Romualdas Jagela,2024-04-29,Kristjana Thorarinsdottir,Talent Acquisition Partner L3,Wolt
+171,53,Rossella Petrillo,2023-11-02,Allan Rauter,TA Lead L1,Circula
+171,53,Rossella Petrillo,2024-05-20,Allan Rauter,TA Lead L1,Bench
+171,53,Rossella Petrillo,2024-08-01,Kristjana Thorarinsdottir,TA Lead L1,Bench
+171,53,Rossella Petrillo,2024-09-02,Kristjana Thorarinsdottir,TA Lead L1,AlephAlpha
+171,53,Rossella Petrillo,2025-02-17,Anastasija Dugalic,Team Lead,AlephAlpha
+171,53,Rossella Petrillo,2025-03-01,Anastasija Dugalic,Team Lead,Bench
+171,53,Rossella Petrillo,2025-03-05,Anastasija Dugalic,Team Lead,Glovo
+171,53,Rossella Petrillo,2025-08-01,Anastasija Dugalic,Manager,Glovo
+171,53,Rossella Petrillo,2025-09-12,Anastasija Dugalic,Manager,Bench
+148,30,Salem Mansuri,2021-11-10,Jacopo Lupo Ferrari,TA Lead L1,Wolt
+148,30,Salem Mansuri,2024-02-01,Jacopo Lupo Ferrari,TA Lead L2,Wolt
+148,30,Salem Mansuri,2024-07-01,Jacopo Lupo Ferrari,TA Lead L2,Bench
+148,30,Salem Mansuri,2024-07-11,Jacopo Lupo Ferrari,TA Lead L2,Ivy
+148,30,Salem Mansuri,2024-10-02,Jacopo Lupo Ferrari,TA Lead L2,Bench
+148,30,Salem Mansuri,2025-01-02,Jacopo Lupo Ferrari,TA Lead L2,Taxfix
+148,30,Salem Mansuri,2025-02-01,Jacopo Lupo Ferrari,TA Lead L3,Taxfix
+148,30,Salem Mansuri,2025-02-17,Tijana Lazovic,Senior Manager,Taxfix
+148,30,Salem Mansuri,2025-05-31,Tijana Lazovic,Senior Manager,Core Tribe
+148,30,Salem Mansuri,2025-09-11,Jacopo Lupo Ferrari,Talent Director,Core Tribe
+148,30,Salem Mansuri,2026-01-01,Martin Bernard,Talent Director,Core Tribe
+309,131,Samantha Nel,2025-01-31,Salem Mansuri,Talent Acquisition Partner L3,Bench
+309,131,Samantha Nel,2025-02-03,Salem Mansuri,Talent Acquisition Partner L3,Glovo
+309,131,Samantha Nel,2025-10-01,Alexandra Felea,Talent Acquisition Partner L3,Glovo
+309,131,Samantha Nel,2025-10-03,Alexandra Felea,Talent Acquisition Partner L3,Bench
+309,131,Samantha Nel,2026-01-01,Kristina Colovic,Talent Acquisition Partner L3,Bench
+309,131,Samantha Nel,2026-01-14,Salem Mansuri,Talent Acquisition Partner L3,DualEntry
+309,131,Samantha Nel,2026-01-23,Kristina Colovic,Talent Acquisition Partner L3,DualEntry
+309,131,Samantha Nel,2026-02-07,Kristina Colovic,Talent Acquisition Partner L3,Bench
+309,131,Samantha Nel,2026-02-23,Kristina Colovic,Talent Acquisition Partner L3,Glovo
+192,76,Samantha Schlappinger,2023-09-15,Tijana Lazovic,Talent Acquisition Partner L2,Wolt
+192,76,Samantha Schlappinger,2023-09-15,Tijana Lazovic,Talent Acquisition Partner L2,
+192,76,Samantha Schlappinger,2024-04-18,Vladimir Stankovic,Talent Acquisition Partner L2,Wolt
+192,76,Samantha Schlappinger,2025-02-17,Vladimir Stankovic,Talent Acquisition Partner L2,Wolt
+192,76,Samantha Schlappinger,2025-05-02,Vladimir Stankovic,Talent Acquisition Partner L2,Bench
+224,108,Sanja Pavlovikj,2024-01-02,Alper Projka,Sourcer L1,Internal
+224,108,Sanja Pavlovikj,2024-04-03,Alper Projka,Sourcer L1,Wolt
+224,108,Sanja Pavlovikj,2024-07-01,Alper Projka,Sourcer L1,Bench
+224,108,Sanja Pavlovikj,2024-08-01,Alper Projka,Sourcer L2,Internal
+224,108,Sanja Pavlovikj,2024-09-02,Gustavo Loureiro Castro,Sourcer L2,Internal
+224,108,Sanja Pavlovikj,2024-09-04,Martin Bernard,Sourcer L2,Internal
+224,108,Sanja Pavlovikj,2025-02-01,Martin Bernard,Sourcer L3,Internal
+224,108,Sanja Pavlovikj,2025-02-17,Gustavo Loureiro Castro,Sourcer L3,Internal
+224,108,Sanja Pavlovikj,2025-04-21,Jacopo Lupo Ferrari,Sourcing Lead,Internal
+224,108,Sanja Pavlovikj,2025-07-01,Ella Darie,Sourcing Lead,Internal
+180,62,Sashka Sarafinovska,2023-01-31,Meho Saracevic,Talent Coordinator,Wolt
+180,62,Sashka Sarafinovska,2023-01-31,Meho Saracevic,Talent Coordinator,
+180,62,Sashka Sarafinovska,2025-02-17,Katarina Matić,Talent Coordinator,Wolt
+296,118,Simon Siew,2024-09-09,Salem Mansuri,Talent Acquisition Partner L3,Bench
+296,118,Simon Siew,2024-09-16,Salem Mansuri,Talent Acquisition Partner L3,Wolt
+296,118,Simon Siew,2025-02-11,Salem Mansuri,Staff TA,Wolt
+296,118,Simon Siew,2025-02-17,Jaksa Marojevic,Staff TA,Wolt
+296,118,Simon Siew,2025-09-08,Kristjana Thorarinsdottir,Staff TA,Wolt
+296,118,Simon Siew,2026-01-26,Kristjana Thorarinsdottir,Staff TA,DualEntry
+296,118,Simon Siew,2026-02-18,Kristjana Thorarinsdottir,Staff TA,Bench
+245,A20,Sinisa Jungic,2022-04-01,,,
+348,170,Sireen Hamed,2025-12-15,Niki Vokalkova,Talent Acquisition Partner L1,Wolt
+280,A55,Slavoljub Mihaklovic,2020-09-01,,,
+280,A55,Slavoljub Mihaklovic,2020-09-01,,,
+237,A12,Stina Van Der Straeten,2022-01-01,,,
+331,153,Tawfik Shadafna,2025-07-07,Vladimir Stankovic,Talent Acquisition Partner L2,Wolt
+230,A5,Theodora Georgiou,2021-10-20,,,
+230,A5,Theodora Georgiou,2021-10-20,,,
+277,A52,Tiago Soares,2020-09-05,,,
+277,A52,Tiago Soares,2020-09-05,,,
+123,4,Tijana Lazovic,2019-09-24,Martin Bernard,TA Lead L3,Wolt
+123,4,Tijana Lazovic,2024-07-17,Martin Bernard,TA Lead L3,Bench
+123,4,Tijana Lazovic,2024-08-01,Jacopo Lupo Ferrari,Talent Director,Core Tribe
+135,16,Tijana Mosic,2021-04-07,András Tóth,Talent Acquisition Partner L2,Wolt
+135,16,Tijana Mosic,2021-04-07,András Tóth,Talent Acquisition Partner L2,
+154,36,Tijana Ristovic,2022-01-03,Vladimir Stankovic,Sourcer L1,
+154,36,Tijana Ristovic,2023-11-06,Tijana Lazovic,Sourcer L1,Wolt
+154,36,Tijana Ristovic,2024-04-22,Jaksa Marojevic,Sourcer L1,Wolt
+154,36,Tijana Ristovic,2024-08-19,Jaksa Marojevic,Sourcer L2,Bench
+272,A47,Tijana Stanic,2021-06-24,,,
+272,A47,Tijana Stanic,2021-06-24,,,
+306,128,Tina Abdul-Karim,2024-12-04,Kristina Colovic,Talent Acquisition Partner L3,Wolt
+306,128,Tina Abdul-Karim,2025-02-17,Chené Elliot,Talent Acquisition Partner L3,Wolt
+213,97,Tina Lee,2023-10-30,Chené Elliot,Talent Acquisition Partner L3,Wolt
+213,97,Tina Lee,2023-10-30,Chené Elliot,Talent Acquisition Partner L3,
+299,121,Tinatini Karaulashvili,2024-10-07,Meho Saracevic,Talent Acquisition Partner L1,Wolt
+299,121,Tinatini Karaulashvili,2025-02-17,Christina Skordili,Talent Acquisition Partner L1,Wolt
+299,121,Tinatini Karaulashvili,2025-07-01,Vladimir Stankovic,Talent Acquisition Partner L1,Wolt
+299,121,Tinatini Karaulashvili,2025-11-03,Niki Vokalkova,Talent Acquisition Partner L1,Wolt
+278,A53,Tom Carr,2021-05-01,,,
+278,A53,Tom Carr,2021-05-01,,,
+329,151,Tomer Fattal,2025-06-29,Vladimir Stankovic,Talent Acquisition Partner L2,Wolt
+209,93,Valeriia Yurikova,2023-10-30,Allan Rauter,Sourcer L1,Internal
+209,93,Valeriia Yurikova,2023-10-30,Allan Rauter,Sourcer L1,
+209,93,Valeriia Yurikova,2023-12-11,Alper Projka,Sourcer L1,Internal
+209,93,Valeriia Yurikova,2024-02-01,Manuel Carvalho,Sourcer L1,Internal
+209,93,Valeriia Yurikova,2024-10-02,Rossella Petrillo,Sourcer L1,Bench
+209,93,Valeriia Yurikova,2025-02-17,Gustavo Loureiro Castro,Sourcer L2,Bench
+259,A34,Vesna Vuković,2020-12-15,,,
+259,A34,Vesna Vuković,2020-12-15,,,
+134,15,Vladimir Stankovic,2021-03-15,Tijana Lazovic,Interim TA Lead L1,Wolt
+134,15,Vladimir Stankovic,2024-02-01,Tijana Lazovic,TA Lead L1,Wolt
+134,15,Vladimir Stankovic,2024-08-01,Jacopo Lupo Ferrari,TA Lead L1,Wolt
+134,15,Vladimir Stankovic,2025-02-20,Kristjana Thorarinsdottir,Team Lead,Wolt
+134,15,Vladimir Stankovic,2025-08-01,Kristjana Thorarinsdottir,Manager,Wolt
+134,15,Vladimir Stankovic,2026-02-14,Kristjana Thorarinsdottir,Manager,Bench
+134,15,Vladimir Stankovic,2026-03-09,Kristjana Thorarinsdottir,Manager,Aiven
+150,32,Volodymyr Romanenko,2021-11-15,Tijana Lazovic,Talent Acquisition Partner L2,
+150,32,Volodymyr Romanenko,2023-11-06,Jaksa Marojevic,Talent Acquisition Partner L2,Alpas
+150,32,Volodymyr Romanenko,2024-02-01,Jaksa Marojevic,Talent Acquisition Partner L3,Bench
+150,32,Volodymyr Romanenko,2024-04-08,Jaksa Marojevic,Talent Acquisition Partner L3,Forto
+202,86,Wladyslaw Gadomski,2023-10-02,Anastasija Dugalic,Talent Acquisition Partner L3,Wolt
+202,86,Wladyslaw Gadomski,2023-10-02,Anastasija Dugalic,Talent Acquisition Partner L3,
+202,86,Wladyslaw Gadomski,2024-09-02,Anastasija Dugalic,Talent Acquisition Partner L3,Bench
+202,86,Wladyslaw Gadomski,2024-11-20,Anastasija Dugalic,Talent Acquisition Partner L3,Juni
+202,86,Wladyslaw Gadomski,2024-12-09,Anastasija Dugalic,Talent Acquisition Partner L3,Bench
+202,86,Wladyslaw Gadomski,2025-01-02,Anastasija Dugalic,Talent Acquisition Partner L3,Taxfix
+202,86,Wladyslaw Gadomski,2025-02-17,Salem Mansuri,Talent Acquisition Partner L3,Taxfix
+202,86,Wladyslaw Gadomski,2025-10-01,Alexandra Felea,Talent Acquisition Partner L3,Taxfix
+202,86,Wladyslaw Gadomski,2026-01-01,Kristina Colovic,Talent Acquisition Partner L3,Bench
+202,86,Wladyslaw Gadomski,2026-01-26,Kristina Colovic,Talent Acquisition Partner L3,Aviv
+222,106,Yelyzaveta Merezhko,2023-12-04,Alper Projka,Sourcer L1,Internal
+222,106,Yelyzaveta Merezhko,2024-05-21,Alper Projka,Sourcer L1,Intrasoft
+222,106,Yelyzaveta Merezhko,2024-07-22,Alper Projka,Sourcer L1,Bench
+177,59,Zahraa Amod,2023-01-01,Rossella Petrillo,Talent Coordinator,Wolt
+177,59,Zahraa Amod,2023-01-01,Rossella Petrillo,Sourcer L1,
+177,59,Zahraa Amod,2023-12-11,Rossella Petrillo,Talent Coordinator,Bench
+333,155,Zarina Amanbekova,2025-08-13,Jaksa Marojevic,Talent Acquisition Partner L1,Wolt
+333,155,Zarina Amanbekova,2025-09-08,Simon Siew,Talent Acquisition Partner L1,Wolt
+356,200,test test name,0000-00-00,,,
+318,140,Želimir Stajčić,2025-03-17,Gustavo Loureiro Castro,Sourcer L3,Internal
+318,140,Želimir Stajčić,2025-04-28,Sanja Pavlovikj,Sourcer L3,Internal
+318,140,Želimir Stajčić,2025-09-02,Chené Elliot,Sourcer L3,Wolt
+318,140,Želimir Stajčić,2026-06-01,Chené Elliot,Sourcer L3,Bench

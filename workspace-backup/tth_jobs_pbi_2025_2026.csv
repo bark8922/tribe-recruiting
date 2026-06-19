@@ -1,0 +1,763 @@
+job_id,client_name,job_title,job_category,job_subcategory,ta,date_created,date_first_hired,date_first_hired_contacted,tth,t2find,t2fill,has_t2f_2025,has_t2fi_2025,has_t2f_2026,has_t2fi_2026,tech_role,cand_months
+1769431186075x467734053742182400,AVIV,Salesforce Engineer (Mid Level) Romania,Engineering Management,Not apply,Kristina Colovic,2026-01-26,2026-03-16,2026-03-16,0,49,49,0,0,1,1,Yes,"2026-01,2026-02,2026-03"
+1769431287668x418349861038981100,AVIV,"Engineering Manager Aviv, Romania",Engineering Management,Not apply,Kristina Colovic,2026-01-26,2026-03-09,2026-01-30,38,4,42,0,0,1,1,Yes,"2026-01,2026-02,2026-03"
+1769432170729x727629820647964700,AVIV,Mobile Engineer IOS - RO,Software Engineering,Mobile,Lejla Silva,2026-01-26,2026-02-12,2026-01-27,16,1,17,0,0,1,1,Yes,"2026-01,2026-02"
+1769440200921x554672371148259300,AVIV,Backend Engineer (Intermediate) - RO,Software Engineering,Backend,Alexandra Richiteanu,2026-01-26,2026-03-10,2026-02-16,22,21,43,0,0,1,1,Yes,"2026-01,2026-02,2026-03,2026-04"
+1769519870970x340364602799292400,AVIV,Front End developer RO,Software Engineering,Frontend ,Anna Tyulpanova,2026-01-27,2026-02-20,2026-01-27,24,0,24,0,0,1,1,Yes,"2026-01,2026-02,2026-03,2026-04"
+1769701024383x396838718197202940,AVIV,Mobile Engineer Android - Serbia,Software Engineering,Mobile,Alexandra Richiteanu,2026-01-29,2026-03-13,2026-02-18,23,20,43,0,0,1,1,Yes,"2026-01,2026-02,2026-03,2026-04"
+1769701086705x822539239012434000,AVIV,Mobile Engineer IOS - Serbia,Software Engineering,Mobile,Lejla Silva,2026-01-29,2026-02-27,2026-02-04,23,6,29,0,0,1,1,Yes,"2026-01,2026-02"
+1771937222893x768587340339740700,AVIV,QA Test Automation Engineer,Engineering Management,QA,Kristina Colovic,2026-02-24,2026-03-18,2026-03-02,16,6,22,0,0,1,1,Yes,"2026-02,2026-03"
+1775670016632x595002397648486400,Aiven,"Inside Sales Solution Architect - Banglore, Karnataka",Information Technology,Solutions Architect,Fuad Safarov,2026-04-08,2026-04-22,2026-04-08,14,0,14,0,0,0,1,Yes,2026-04
+1726824587874x959300848446603300,Aleph Alpha,Senior Front-End Engineer,Software Engineering,Frontend ,Maria Desiree Gerbore,2024-09-20,2024-10-23,2024-09-24,29,4,33,1,1,0,0,Yes,2025-05
+1727347715697x291650640728555500,Aleph Alpha,Senior Product Manager,Product Manager,Product Manager,Maria Desiree Gerbore,2024-09-26,2024-11-08,2024-10-01,38,5,43,1,1,0,0,Yes,"2025-01,2025-02"
+1728392874005x843300709391401000,Aleph Alpha,Engineering Manager,Engineering Management,Machine Learning,Anastasija Dugalic,2024-10-08,2025-01-27,2024-12-04,54,57,111,1,0,0,0,Yes,"2025-02,2025-06"
+1729245937666x297533983921274900,Aleph Alpha,Senior Marketing Manager,Marketing,Not apply,Rossella Petrillo,2024-10-18,2025-01-08,2024-11-22,47,35,82,1,0,0,0,No,"2025-01,2025-02"
+1730287960574x510177937349148700,Aleph Alpha,Senior Systems Engineer,DevOps,Not apply,Anastasija Dugalic,2024-10-30,2024-12-10,2024-11-14,26,15,41,1,1,0,0,Yes,"2025-01,2025-02,2025-03,2025-04"
+1730815479977x254894788249911300,Aleph Alpha,Principal Software Engineer,Software Engineering,Not apply,Anastasija Dugalic,2024-11-05,2025-01-27,2024-11-18,70,13,83,1,0,0,0,Yes,"2025-01,2025-02"
+1732006350014x182822608729538560,Aleph Alpha,Senior Frontend Developer ,Information Technology,Not apply,Rossella Petrillo,2024-11-19,2025-01-28,2024-12-10,49,21,70,1,0,0,0,Yes,"2025-01,2025-02"
+1732693866113x268263032833441800,Aleph Alpha,AI Solutions Engineer,Other,Non-Tech,Rossella Petrillo,2024-11-27,2024-12-23,2024-12-05,18,8,26,1,1,0,0,No,"2025-01,2025-02"
+1733748709364x962866809060458500,Aleph Alpha,Field Marketing Manager - Public,Marketing,Not apply,Rossella Petrillo,2024-12-09,2025-02-21,2025-02-04,17,57,74,1,1,0,0,No,"2025-01,2025-02"
+1740397621245x520102464763985900,Aleph Alpha,"Staff Software Engineer (Studio, Catch, Assistant)",Software Engineering,Backend,Anastasija Dugalic,2025-02-24,2025-04-29,2025-03-26,34,30,64,1,1,0,0,Yes,"2025-02,2025-03,2025-04,2025-05,2025-06"
+1741789254827x987842519451041800,Aleph Alpha,Staff Systems Engineer,DevOps,DevOps,Anastasija Dugalic,2025-03-12,2025-05-14,2025-04-03,41,22,63,1,1,0,0,Yes,"2025-03,2025-04,2025-05"
+1743404716213x804269580822249500,Aleph Alpha,Gen AI - Senior Product Manager,Product Manager,Product Manager,Maria Desiree Gerbore,2025-03-31,2025-04-15,2025-04-02,13,2,15,1,1,0,0,Yes,"2025-03,2025-04,2025-05"
+1744007104508x748236246020522000,Aleph Alpha,Compliance Officer,Other,Non-Tech,Maria Desiree Gerbore,2025-04-07,2025-05-21,2025-04-22,29,15,44,1,1,0,0,No,"2025-04,2025-05"
+1744205702844x747893166650687500,Aleph Alpha,Product Team Lead - Creance,Product Manager,Product Manager,Maria Desiree Gerbore,2025-04-09,2025-06-06,2025-04-14,53,5,58,1,1,0,0,Yes,2025-04
+1744206112951x444503736137023500,Aleph Alpha,Team Lead Product - OS/Assistant,Product Manager,Product Manager,Maria Desiree Gerbore,2025-04-09,2025-05-21,2025-04-10,41,1,42,1,1,0,0,Yes,2025-04
+1763358128612x223705266995593200,Doordash,"Software Engineer, Backend - India",Software Engineering,Backend,Akash Singh,2025-11-17,2026-02-05,2025-11-19,78,2,80,1,1,1,1,Yes,"2025-11,2025-12,2026-01,2026-02,2026-03"
+1767880224617x594852046268530700,Doordash,Data Engineer,Software Engineering,Data,Danish Shams,2026-01-08,2026-02-16,2026-02-16,0,39,39,0,0,1,1,Yes,"2026-01,2026-02,2026-03"
+1770651153044x376036759032823800,Doordash,Regional Marketing Manager EMEA 7Rooms,Marketing,Not apply,Milica Veselinovic,2026-02-09,2026-04-21,2026-02-24,56,15,71,0,0,1,1,No,"2026-02,2026-03"
+1772216240739x325241842932121600,Doordash,"Business Systems Analyst, Core HCM & Security",HR,Generalist TA,Nidhi Raina,2026-02-27,2026-04-21,2026-03-22,30,23,53,0,0,1,1,No,"2026-02,2026-03"
+1768557536533x655414581658910700,DualEntry,Backend Software Engineer (Senior/Staff),Software Engineering,Backend,Samantha Nel,2026-01-16,2026-02-06,2026-01-29,8,13,21,0,0,1,1,Yes,"2026-01,2026-02"
+1769519564410x301316401749032960,DualEntry,Frontend Engineer ( Senior),Software Engineering,Frontend ,Chené Elliot,2026-01-27,2026-02-05,2026-01-27,9,0,9,0,0,1,1,Yes,"2026-01,2026-02"
+1769597623821x642639979457019900,DualEntry, Customer Experience (CX) / Implementations Lead (Remote),Product Manager,Product Manager,Simon  Siew,2026-01-28,2026-02-15,2026-02-15,0,18,18,0,0,1,1,Yes,"2026-01,2026-02"
+1736933064008x545766020475256800,Enam,Fullstack Engineer (Sequence),Software Engineering,Full Stack,Aleksandra Vistac,2025-01-15,2025-11-05,2025-08-17,80,214,294,1,1,1,0,Yes,"2025-01,2025-02,2025-03,2025-04,2025-05,2025-06,2025-07,2025-08,2025-09,2025-10,2025-11,2025-12,2026-01,2026-03,2026-04"
+1736934796460x763481035954192400,Enam,Fullstack Engineer,Software Engineering,Full Stack,Aleksandra Vistac,2025-01-15,2025-03-18,2025-01-29,48,14,62,1,1,1,1,Yes,"2025-01,2025-02,2025-03,2025-04,2025-05,2025-06,2025-07,2025-08,2025-09,2025-10,2025-11,2025-12,2026-02,2026-03,2026-04"
+1765812267512x563701614211760100,Enam,Security Compliance Engineer Inmail ,Information Technology,Not apply,Aleksandra Vistac,2025-12-15,2026-01-24,2025-12-19,36,4,40,1,1,0,0,Yes,2025-12
+1758630263202x283279464630059000,Eucalyptus,Growth Lead - Canada,Marketing,Performance Marketing Manager,Meho Saracevic,2025-09-23,2025-10-18,2025-09-30,18,7,25,1,1,0,0,No,"2025-09,2025-10"
+1759491843951x495797108562985000,Eucalyptus,"Launcher, UK",Operations,Operations Specialist,Meho Saracevic,2025-10-03,2025-11-12,2025-11-06,6,34,40,1,1,1,0,No,"2025-10,2025-11,2026-01,2026-02,2026-03,2026-04"
+1761038810981x427879014152536060,Eucalyptus,"Head of Performance Marketing (Meta), UK/AU",Marketing,Performance Marketing Manager,Meho Saracevic,2025-10-21,2026-01-19,2025-12-01,49,41,90,1,1,0,0,No,"2025-10,2025-11,2025-12"
+1761038856744x910151478011756500,Eucalyptus,"Creative AI Implementation Lead, UK/AU",Marketing,Not apply,Meho Saracevic,2025-10-21,2025-12-19,2025-11-17,32,27,59,1,1,0,0,No,"2025-10,2025-11,2025-12"
+1762962792238x582505008172630000,Eucalyptus,Medical Support Associate - Canada,Other,Non-Tech,Meho Saracevic,2025-11-12,2026-01-05,2025-12-04,32,22,54,1,1,1,1,No,"2025-11,2025-12,2026-01"
+1764848976979x161783343491055600,Eucalyptus,"Patient Operations Lead, CA",Other,Non-Tech,Meho Saracevic,2025-12-04,2026-03-13,2026-02-11,30,69,99,1,0,1,1,No,"2025-12,2026-01,2026-02,2026-03"
+1767881709829x173124899950559230,Eucalyptus,"Copywriter, CA",Marketing,Not apply,Meho Saracevic,2026-01-08,2026-03-09,2026-01-16,52,8,60,0,0,1,1,No,2026-01
+1769529249684x417117629664722940,Eucalyptus,Nurse Practitioner ,Operations,Not apply,Meho Saracevic,2026-01-27,2026-02-25,2026-02-24,1,28,29,0,0,1,1,No,"2026-01,2026-02"
+1773663264463x849538762857250800,Eucalyptus,"Medical Support Associate, DE",Other,Non-Tech,Meho Saracevic,2026-03-16,2026-03-31,2026-03-16,15,0,15,0,0,1,1,No,"2026-03,2026-04"
+1774519521018x502430651468480500,Eucalyptus,Patient Support Specialist - Germany,Other,Non-Tech,Meho Saracevic,2026-03-26,2026-04-22,2026-04-22,0,27,27,0,0,1,1,No,"2026-03,2026-04"
+1774886728048x462608906724573200,Eucalyptus,Health Coach - Germany,Other,Non-Tech,Meho Saracevic,2026-03-30,2026-04-24,2026-03-31,24,1,25,0,0,1,1,No,"2026-03,2026-04"
+1736955489046x862735458932621300,Glovo,IOS Engineer - Mid,Software Engineering,Mobile,Samantha Nel,2025-01-15,2025-03-04,2025-02-19,13,35,48,1,1,0,0,Yes,"2025-01,2025-02,2025-03,2025-04,2025-05,2025-06,2025-07,2025-09"
+1736956222267x773337290865639400,Glovo,IOS Engineer - Senior,Software Engineering,Mobile,Samantha Nel,2025-01-15,2025-02-28,2025-02-18,10,34,44,1,1,0,0,Yes,"2025-01,2025-02,2025-03,2025-04,2025-05,2025-06,2025-08,2025-09"
+1736956322943x634263245299908600,Glovo,Backend Engineer ll (Mid),Software Engineering,Mobile,Iulian Hodivoianu,2025-01-15,2025-03-20,2025-02-13,35,29,64,1,1,0,0,Yes,"2025-01,2025-02,2025-03,2025-04,2025-05,2025-06,2025-07"
+1737453361589x282245421340819460,Glovo,Backend Engineer l (Junior),Software Engineering,Backend,Iulian Hodivoianu,2025-01-21,2025-03-20,2025-02-22,26,32,58,1,1,0,0,Yes,"2025-02,2025-03,2025-04,2025-05,2025-06,2025-07"
+1737453482077x539424205693255700,Glovo,Backend Engineer lll (Senior),Software Engineering,Backend,Iulian Hodivoianu,2025-01-21,2025-03-20,2025-02-22,26,32,58,1,1,0,0,Yes,"2025-01,2025-02,2025-03,2025-04,2025-05,2025-06,2025-07"
+1741078538224x843643291964801000,Glovo,Growth Analyst,Data Analytics,Business Analyst,Meho Saracevic,2025-03-04,2025-05-29,2025-05-29,0,86,86,1,1,0,0,Yes,"2025-03,2025-04,2025-05"
+1741081231044x462014148276387800,Glovo,BE II - Barcelona,Software Engineering,Backend,Lukáš Takáč,2025-03-04,2025-04-07,2025-03-13,25,9,34,1,1,0,0,Yes,"2025-03,2025-04,2025-05,2025-06,2025-07,2025-08"
+1741703272810x734753097680158700,Glovo,Data Analyst I - Partner Operations,Operations,Operations Manager,Meho Saracevic,2025-03-11,2025-05-29,2025-05-26,3,76,79,1,1,0,0,No,"2025-03,2025-04,2025-05"
+1741703440948x292860146002952200,Glovo,Salesforce Administrator - Global HQ,Other,Non-Tech,Rossella Petrillo,2025-03-11,2025-04-11,2025-03-24,18,13,31,1,1,0,0,No,2025-03
+1741703514009x682341697579909100,Glovo,Account Manager Top Accounts Italy,Sales,Account Manager,Rossella Petrillo,2025-03-11,2025-06-10,2025-06-10,0,91,91,1,1,0,0,No,"2025-04,2025-05,2025-06,2025-07,2025-08,2025-09"
+1742226096658x266083899717713900,Glovo,Demand Planner IT,Operations,Operations Associate,Rossella Petrillo,2025-03-17,2025-06-25,2025-06-25,0,100,100,1,1,0,0,No,"2025-03,2025-04,2025-05,2025-06"
+1742226192932x117448190648123400,Glovo,Business Analyst I live operations Global,Operations,Operations Specialist,Rossella Petrillo,2025-03-17,2025-06-06,2025-05-15,22,59,81,1,1,0,0,No,"2025-03,2025-04,2025-05,2025-06"
+1742226276423x311244502622535700,Glovo,Account Manager Regions Spain,Sales,Account Manager,Rossella Petrillo,2025-03-17,2025-05-12,2025-04-11,31,25,56,1,1,0,0,No,"2025-03,2025-04"
+1742226413907x500013919449907200,Glovo,Fleet Support Specialist Spain ,Operations,Operations Specialist,Aleksandra Vistac,2025-03-17,2025-07-09,2025-06-27,12,102,114,1,1,0,0,No,"2025-04,2025-06,2025-07"
+1742378855382x273270384884449280,Glovo,Account manager Vigo,Sales,Account Manager,Jessica Bodner,2025-03-19,2025-04-01,2025-03-19,13,0,13,1,1,0,0,No,2025-03
+1742378936240x537475157032435700,Glovo,Fintech Growth Analyst,Data Analytics,Data Analyst,Jessica Bodner,2025-03-19,2025-05-19,2025-05-13,6,55,61,1,1,0,0,Yes,"2025-03,2025-04,2025-05"
+1742379022128x558520111771418600,Glovo,Sales Executive,Sales,Sales Development Rep,Maria Desiree Gerbore,2025-03-19,2025-04-10,2025-03-19,22,0,22,1,1,0,0,No,"2025-03,2025-04,2025-05,2025-06,2025-07,2025-08,2025-09,2025-10"
+1742379159577x117101072086466560,Glovo,Project manager Brand Ads,Project Manager,Project Manager,Jovana Drakula,2025-03-19,2025-06-30,2025-06-30,0,103,103,1,1,0,0,No,"2025-03,2025-04,2025-05,2025-06"
+1742379282308x635854151829684200,Glovo,Sr Microsft Business Central Developer ,Software Engineering,Not apply,Jovana Drakula,2025-03-19,2025-08-12,2025-07-09,34,112,146,1,1,0,0,Yes,"2025-03,2025-04,2025-06,2025-07,2025-08,2025-09"
+1742379383642x512780570896105500,Glovo,Workforce management & forcasting analyst,Operations,Operations Specialist,Jessica Bodner,2025-03-19,2025-06-02,2025-04-16,47,28,75,1,1,0,0,No,"2025-03,2025-04,2025-05,2025-06"
+1742476225109x573873999453618200,Glovo,(Sr) Finance Analyst Italy ,Other,Non-Tech,Rossella Petrillo,2025-03-20,2025-06-18,2025-05-15,34,56,90,1,1,0,0,No,"2025-04,2025-05"
+1742943309278x828271549473095700,Glovo,E Commerce Specialist II Partner Operations Global HQ,Other,Non-Tech,Aleksandra Vistac,2025-03-25,2025-05-12,2025-03-28,45,3,48,1,1,0,0,No,"2025-03,2025-04"
+1742943523746x918998447142469600,Glovo,Jr Catalog Analyst Portugal,Other,Non-Tech,Aleksandra Vistac,2025-03-25,2025-05-08,2025-04-11,27,17,44,1,1,0,0,No,"2025-03,2025-04"
+1743081877118x343692743980613600,Glovo,Category Management Analyst - Ukraine,Other,Non-Tech,Renata Kokhan,2025-03-27,2025-04-01,2025-03-27,5,0,5,1,1,0,0,No,"2025-03,2025-04,2025-05,2025-07,2025-08,2025-09,2025-10"
+1743081989656x888461472287948800,Glovo,Sr. Sales Executive - Ukraine,Sales,Sales Manager,Renata Kokhan,2025-03-27,2025-04-17,2025-03-27,21,0,21,1,1,0,0,No,"2025-03,2025-04,2025-05,2025-06"
+1743082079055x370600970148118500,Glovo,Sr. Finance Operations Analyst - Ukraine,Finance,Not apply,Renata Kokhan,2025-03-27,2025-05-06,2025-04-30,6,34,40,1,1,0,0,No,"2025-03,2025-04,2025-05"
+1743082158474x825488571625635800,Glovo,Sr. Account Manager - Ukraine,Sales,Account Manager,Renata Kokhan,2025-03-27,2025-04-01,2025-03-27,5,0,5,1,1,0,0,No,"2025-03,2025-04,2025-05,2025-06,2025-07,2025-08,2025-09,2025-10"
+1743083079147x104576377237798910,Glovo,Marketing and Growth Analyst - Ukraine,Marketing,Not apply,Renata Kokhan,2025-03-27,2025-04-10,2025-03-27,14,0,14,0,1,0,0,No,2025-03
+1743083134781x342500278324166660,Glovo,Account Manager (Longtail) - Ukraine,Sales,Account Manager,Renata Kokhan,2025-03-27,2025-03-27,2025-03-27,0,0,0,1,1,0,0,No,"2025-03,2025-05,2025-06,2025-07,2025-08,2025-09"
+1743159252741x926218204976250900,Glovo,CRM I Glover Experience Global HQ,Marketing,Not apply,Agustina Tamagnini,2025-03-28,2025-05-08,2025-04-11,27,14,41,1,1,0,0,No,2025-04
+1743180383062x870852096045875200,Glovo,Area Manager ,Operations,Operations Manager,Etienne Sargenton,2025-03-28,2025-07-10,2025-07-10,0,104,104,1,1,0,0,No,"2025-03,2025-04,2025-05,2025-06,2025-07"
+1743426807493x528172807168983040,Glovo,Regional Content Lead ,Marketing,Not apply,Etienne Sargenton,2025-03-31,2025-07-01,2025-05-16,46,46,92,1,1,0,0,No,"2025-03,2025-04,2025-05,2025-06"
+1743605801071x525179510374006800,Glovo,Account Manager Longtail Italy,Other,Non-Tech,Aleksandra Vistac,2025-04-02,2025-04-11,2025-04-08,3,6,9,1,1,0,0,No,2025-04
+1743690936363x867780886261137400,Glovo,Account Manager Groceries - Ukraine,Sales,Account Manager,Renata Kokhan,2025-04-03,2025-08-29,2025-08-08,21,127,148,1,1,0,0,No,"2025-04,2025-07,2025-08,2025-10"
+1743691073232x121168271635644420,Glovo,Assistant Q-Commerce - Ukraine,Other,Non-Tech,Renata Kokhan,2025-04-03,2025-05-01,2025-04-25,6,22,28,1,1,0,0,No,"2025-04,2025-07"
+1744051179714x159415748617043970,Glovo,Assortment Project Manager,Other,Non-Tech,Aleksandra Vistac,2025-04-07,2025-06-12,2025-05-23,20,46,66,1,1,0,0,No,"2025-04,2025-05"
+1744139018880x692241060321034200,Glovo,Business Analyst II Live Operations,Data Analytics,Business Analyst,Aleksandra Vistac,2025-04-08,2025-09-19,2025-08-17,33,131,164,1,1,0,0,Yes,"2025-04,2025-05,2025-06,2025-07,2025-08,2025-09"
+1744357935381x734999131692728300,Glovo,Sales Executive- Kenya,Sales,Sales Development Rep,Etienne Sargenton,2025-04-11,2025-06-13,2025-04-15,59,4,63,1,1,0,0,No,"2025-04,2025-06,2025-07,2025-08"
+1744645718142x296577944332533760,Glovo,Sr Analyst Supply Operations Italy,Operations,Not apply,Agustina Tamagnini,2025-04-14,2025-06-03,2025-04-30,34,16,50,1,1,0,0,No,"2025-04,2025-05"
+1744708536908x778175580450324500,Glovo,Media Solutions & Insights Manager,Marketing,Performance Marketing Manager,Meho Saracevic,2025-04-15,2025-05-07,2025-05-07,0,22,22,1,1,0,0,No,"2025-04,2025-05"
+1744739903571x662019503627173900,Glovo,Growth Analyst Tunisia,Marketing,Not apply,Etienne Sargenton,2025-04-15,2025-08-08,2025-06-26,43,72,115,1,1,0,0,No,"2025-04,2025-05,2025-06,2025-07,2025-08"
+1772029930895x654799206548504600,Glovo,Android Engineer - IC2,Software Engineering,Mobile,Samantha Nel,2026-02-25,2026-04-02,2026-04-02,0,36,36,0,0,1,1,Yes,"2026-02,2026-03,2026-04"
+1772187860944x479761207964205060,Glovo,Platform Engineer,DevOps,DevOps,Chené Elliot,2026-02-27,2026-04-16,2026-03-09,38,10,48,0,0,1,1,Yes,"2026-03,2026-04"
+1774301750022x707231172489642000,Glovo,Cloud Security Engineer,Software Engineering,Security,Chené Elliot,2026-03-23,2026-04-21,2026-04-02,19,10,29,0,0,1,1,Yes,"2026-03,2026-04"
+1775139786221x517847899092287500,Glovo,Data Internship,Data Analytics,Data Analyst,Samantha Nel,2026-04-02,2026-04-02,2026-04-02,0,0,0,0,0,0,0,Yes,2026-04
+1763643015806x970054598966378500,Grover,(Senior) Backend Engineer,Software Engineering,Backend,Eduardo Moral,2025-11-20,2026-04-06,2026-01-26,70,67,137,0,0,1,1,Yes,"2025-11,2025-12,2026-01,2026-02,2026-03,2026-04"
+1765335322683x911615628190941200,Grover,Principal Product Manager,Product Manager,Product Manager,Eduardo Moral,2025-12-10,2026-02-13,2025-12-29,46,19,65,0,0,1,1,Yes,"2025-12,2026-01,2026-02"
+1731425340927x273597413436948480,Kranus Health,Accountant (m/f/d),Other,Non-Tech,Aleksandra Markovic,2024-11-12,2025-02-27,2025-01-20,38,69,107,1,1,0,0,No,"2025-01,2025-02"
+1762789740435x572978907716780000,Nexi,SME F2F sales specialist- Toscana - Pool creation,Sales,Sales Development Rep,Maria Desiree Gerbore,2025-11-10,2025-12-11,2025-11-10,31,0,31,1,1,1,1,No,"2025-11,2025-12,2026-01,2026-02"
+1763390536678x727781136812474400,Nexi,Sales field manager (Swiss French part),Sales,Sales Development Rep,Andreas Weins,2025-11-17,2026-01-29,2025-11-20,70,3,73,1,1,1,1,No,"2025-11,2025-12,2026-01"
+1763714625549x458868871004160000,Nexi,Field Sales Manager (Austria),Sales,Sales Operations,Andreas Weins,2025-11-21,2025-12-14,2025-12-05,9,14,23,1,1,0,0,No,"2025-11,2025-12"
+1768292793387x706934213874548700,Nexi,ISV_Lazio_Software Sales Expert,Sales,Sales Development Rep,Maria Desiree Gerbore,2026-01-13,2026-01-26,2026-01-13,13,0,13,0,0,1,1,No,"2026-01,2026-02,2026-03,2026-04"
+1768292984253x251486398297407500,Nexi,ISV_Veneto_Software Sales Expert,Sales,Sales Development Rep,Maria Desiree Gerbore,2026-01-13,2026-03-13,2026-01-13,59,0,59,0,0,1,1,No,"2026-01,2026-02,2026-03"
+1771251513686x897995405733658600,Nexi,Sales Specialist _ Suisse Romande,Sales,Not apply,Maria Desiree Gerbore,2026-02-16,2026-02-27,2026-02-19,8,3,11,0,0,1,1,No,2026-02
+1771251573032x103276104768028670,Nexi,Sales Specialist_Suisse Allemande,Sales,Not apply,Maria Desiree Gerbore,2026-02-16,2026-02-27,2026-02-23,4,7,11,0,0,1,1,No,"2026-02,2026-03,2026-04"
+1771943913516x592452979469058000,Nexi,Valais_Field Sales Manager,Sales,Sales Manager,Maria Desiree Gerbore,2026-02-24,2026-04-17,2026-02-26,50,2,52,0,0,1,1,No,"2026-02,2026-03,2026-04"
+1774951297567x459138412548980740,Nexi,Member of Operations,Operations,Operations Specialist,Maria Desiree Gerbore,2026-03-31,2026-04-08,2026-03-31,8,0,8,0,0,0,1,No,2026-03
+1776162119822x238969524091617280,Nexi,"Key Account Manager Value Added Services (DCC, Dynamic Currency Conversion)",Sales,Account Manager,Adis Prepoljac,2026-04-14,2026-04-14,2026-04-14,0,0,0,0,0,0,0,No,2026-04
+1777014203637x968959109743247400,Nexi,Field Sales Manager - Luzern,Sales,Sales Manager,Adis Prepoljac,2026-04-24,2026-04-24,2026-04-24,0,0,0,0,0,0,0,No,2026-04
+1777014522014x134354524406808580,Nexi,Field Sales Manager - Zurich,Sales,Sales Manager,Adis Prepoljac,2026-04-24,2026-04-24,2026-04-24,0,0,0,0,0,0,0,No,2026-04
+1756971373099x571693685546680300,Parloa,Accountant - Filip,Operations,Operations Associate,Filip Nogowski,2025-09-04,2025-11-06,2025-10-29,8,55,63,1,1,0,0,No,"2025-09,2025-10"
+1758529227458x187488425396142080,Parloa,Principal Engineer,Software Engineering,Backend,Filip Nogowski,2025-09-22,2025-11-21,2025-10-23,29,31,60,1,1,1,1,Yes,"2025-09,2025-10,2025-11,2025-12,2026-01,2026-02,2026-03,2026-04"
+1761291747444x562242579106365440,Parloa,Engineering Manager,Engineering Management,Not apply,Filip Nogowski,2025-10-24,2025-12-01,2025-12-01,0,38,38,1,1,0,0,Yes,"2025-10,2025-11,2025-12"
+1762430736834x652629641794682900,Parloa,"Forward Deployed Engineer, DevOps - Filip",DevOps,DevOps,Filip Nogowski,2025-11-06,2025-12-12,2025-11-06,36,0,36,1,1,0,0,Yes,"2025-11,2025-12"
+1763393512767x549692745513173000,Parloa,Forward Deployed Engineer,Software Engineering,Backend,Jonaed Iqbal,2025-11-17,2026-03-07,2025-12-06,91,19,110,1,1,1,0,Yes,"2025-11,2025-12,2026-01,2026-02,2026-03,2026-04"
+1763570910895x864137189411520500,Parloa,US Lead Agent Architect,Information Technology,Solutions Architect,Jonaed Iqbal,2025-11-19,2026-01-30,2025-11-28,63,9,72,1,1,1,0,Yes,"2025-11,2025-12,2026-03"
+1764003439596x569664640849281000,Parloa,Head of Technical Program Management (TPM) - Agentic AI Services,Project Manager,Technical Program Manager,Jonaed Iqbal,2025-11-24,2026-04-09,2025-12-14,116,20,136,1,1,0,0,Yes,"2025-11,2025-12"
+1764003500672x436193351698743300,Parloa,Technical Project Manager – Agentic AI Deployments,Project Manager,Project Manager,Jonaed Iqbal,2025-11-24,2026-02-28,2025-12-04,86,10,96,1,1,1,0,No,"2025-11,2025-12,2026-01,2026-02,2026-03"
+1768922081874x442583847236796400,Parloa,"Lead Solution Engineer, US West/Central",Sales,Presales Engineer,Jonaed Iqbal,2026-01-20,2026-02-28,2026-02-28,0,39,39,0,0,1,1,No,"2026-01,2026-02"
+1771567208893x131440246628810750,Parloa,Technical Support Engineer,Information Technology,Technical Support Engineer,Jonaed Iqbal,2026-02-20,2026-04-09,2026-02-26,42,6,48,0,0,1,1,Yes,"2026-02,2026-03"
+1732286369389x767585248700006400,PhantomBuster,Data Analyst,Data Analytics,Business Analyst,Lukáš Takáč,2024-11-22,2025-01-31,2025-01-07,24,46,70,1,1,0,0,Yes,2025-01
+1770926699231x341904417161216000,PhantomBuster,Growth Marketer,Marketing,Not apply,Mateja Jokovic,2026-02-12,2026-04-17,2026-02-14,62,2,64,0,0,1,1,No,"2026-02,2026-03"
+1771283051167x687073118752342000,PhantomBuster,Senior Recruiter,HR,TA Generalist,Mateja Jokovic,2026-02-16,2026-03-25,2026-03-25,0,37,37,0,0,1,1,No,"2026-02,2026-03"
+1771283284938x228192158190665730,PhantomBuster,Client Growth Partner,Sales,Customer Success,Mateja Jokovic,2026-02-16,2026-03-25,2026-02-25,28,9,37,0,0,1,1,No,"2026-02,2026-03"
+1771385210122x422785704766472200,PhantomBuster,Analytics Engineer,Data Analytics,Data Analyst,Mateja Jokovic,2026-02-18,2026-04-13,2026-04-03,10,44,54,0,0,1,1,Yes,"2026-02,2026-03,2026-04"
+1776129142247x694600564780302300,PhantomBuster,Head of Marketing,Marketing,Head of Marketing,Mateja Jokovic,2026-04-14,2026-04-14,2026-04-14,0,0,0,0,0,0,0,No,2026-04
+1756807215018x321280600282234900,Scorewarrior,Senior Client C++ Developer,Software Engineering,Backend,Ekaterina Boyprav,2025-09-02,2025-11-30,2025-10-08,53,36,89,1,1,1,0,Yes,"2025-09,2025-10,2025-11,2025-12,2026-01,2026-02,2026-03,2026-04"
+1761291767717x907488293158649900,Scorewarrior,Senior Backend C++ Engineer (Framework),Software Engineering,Backend,Ekaterina Boyprav,2025-10-24,2025-12-21,2025-11-27,24,34,58,1,1,1,0,Yes,"2025-10,2025-11,2025-12,2026-01,2026-02,2026-03"
+1764775587521x211852992445677570,Scorewarrior,Senior 2D Artist,Design,Brand/Graphic Designer,Mark Kandaurov,2025-12-03,2026-03-04,2026-01-09,54,37,91,1,0,1,1,Yes,"2025-12,2026-01,2026-02"
+1765184607275x404972844064440300,Scorewarrior,UI Designer,Design,Visual/UI Designer,Mark Kandaurov,2025-12-08,2026-03-04,2026-01-15,48,38,86,1,0,1,1,Yes,"2025-12,2026-01"
+1757593045815x380825256184774660,SevenRooms,Mid Software Engineer - Backend,Software Engineering,Backend,Zelimir Stajcic,2025-09-11,2026-02-19,2026-01-15,35,126,161,1,0,1,1,Yes,"2025-09,2025-10,2025-11,2025-12,2026-01,2026-02,2026-03,2026-04"
+1758532641689x528201487811608600,SevenRooms,Senior Software Engineer - Backend,Software Engineering,Backend,Zelimir Stajcic,2025-09-22,2025-12-10,2025-11-27,13,66,79,1,1,1,0,Yes,"2025-09,2025-10,2025-11,2025-12,2026-01"
+1736847374488x343161318471893000,Sirius,UX/UI Product Designer,Design,Product Designer,Marina Nikolic,2025-01-14,2025-02-28,2025-01-27,32,13,45,1,1,0,0,Yes,"2025-01,2025-02"
+1739269902047x380564180484751360,Sumitomo,Senior Sales Manager ,Sales,Sales Manager,Elena Gjorgieva,2025-02-11,2025-04-29,2025-03-26,34,43,77,1,1,0,0,No,"2025-02,2025-03,2025-04"
+1743582936883x435538457740705800,Sumitomo,Technical Services Lead – Network & Infrastructure,Information Technology,Network Administrator,Elena Gjorgieva,2025-04-02,2025-06-26,2025-04-16,71,14,85,1,1,0,0,Yes,"2025-04,2025-05"
+1747292827231x715173202370756600,Sumitomo,Controller ,Finance,Financial Controller,Elena Gjorgieva,2025-05-15,2025-08-18,2025-05-20,90,5,95,1,1,0,0,No,"2025-05,2025-06,2025-07"
+1710256803527x525796461094371300,Taxfix,Connfidential Project 3,Information Technology,Solutions Architect,Alexandra Felea,2024-03-12,2025-02-18,2025-02-18,0,343,343,1,1,0,0,Yes,2025-02
+1722605605895x399552686443200500,Taxfix,Engineering Manager,Engineering Management,Applications,Alexandra Felea,2024-08-02,2024-12-06,2024-11-01,35,91,126,1,1,0,0,Yes,"2025-05,2025-06"
+1724424973530x479357508562190340,Taxfix,Senior Data Engineer,Software Engineering,Data,Alexandra Felea,2024-08-23,2024-10-25,2024-08-30,56,7,63,1,0,0,0,Yes,2025-06
+1728056499279x730290806804971500,Taxfix,Senior SRE,DevOps,Site Reliability Engineer (SRE),Alexandra Felea,2024-10-04,2024-11-15,2024-11-15,0,42,42,1,0,0,0,Yes,2025-01
+1733124977983x466701364044234750,Taxfix,Head of Product (DEI),Product Manager,Product Manager,Alexandra Felea,2024-12-02,2025-02-21,2024-12-13,70,11,81,1,0,0,0,Yes,"2025-01,2025-02"
+1733503487936x455102742389063700,Taxfix,.net developer,Software Engineering,Full Stack,Salem Mansuri,2024-12-06,2025-01-24,2025-01-24,0,49,49,1,1,0,0,Yes,2025-01
+1735052958524x884058480269328400,Taxfix,Senior SRE,DevOps,Site Reliability Engineer (SRE),Alexandra Felea,2024-12-24,2025-02-21,2025-01-10,42,17,59,1,1,0,0,Yes,"2025-01,2025-02"
+1736110185603x243660380598698000,Taxfix,Legal Counsel,Legal,Not apply,Salem Mansuri,2025-01-05,2025-02-02,2025-01-24,9,19,28,1,1,0,0,No,2025-01
+1736110338021x108540635646525440,Taxfix,Pricing & Monetisation Manager,Operations,Not apply,Salem Mansuri,2025-01-05,2025-05-29,2025-01-23,126,18,144,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04"
+1736334275065x422037438926684160,Taxfix,Senior Technical Product Manager,Product Manager,Product Manager,Wladyslaw Gadomski,2025-01-08,2025-04-22,2025-01-10,102,2,104,1,1,0,0,Yes,"2025-01,2025-02,2025-03"
+1736334406605x849163223620911100,Taxfix,Senior Content Designer,Design,UX Copywriter,Wladyslaw Gadomski,2025-01-08,2025-04-01,2025-03-28,4,79,83,1,1,0,0,Yes,"2025-01,2025-02,2025-03"
+1736856111794x837750614862594000,Taxfix,Director of AI ,Software Engineering,Machine Learning,Alexandra Felea,2025-01-14,2025-03-19,2025-02-03,44,20,64,1,1,0,0,Yes,"2025-01,2025-02,2025-03"
+1737043176917x584325700322590700,Taxfix,AI Engineer ,Software Engineering,Machine Learning,Alexandra Felea,2025-01-16,2025-05-16,2025-05-08,8,112,120,1,1,0,0,Yes,"2025-01,2025-02,2025-03,2025-04,2025-05"
+1737652104797x785980432776429600,Taxfix,Senior MLOps,DevOps,Site Reliability Engineer (SRE),Alexandra Felea,2025-01-23,2025-04-25,2025-03-27,29,63,92,1,1,0,0,Yes,"2025-01,2025-03,2025-04"
+1737724278441x651297072792207400,Taxfix,Strategy Intern,Other,Non-Tech,Salem Mansuri,2025-01-24,2025-02-27,2025-02-27,0,34,34,1,1,0,0,No,2025-02
+1737982692392x391658610520490000,Taxfix,Head of Product DIFM,Product Manager,Product Manager,Alexandra Felea,2025-01-27,2025-04-04,2025-01-27,67,0,67,1,1,0,0,Yes,"2025-01,2025-02"
+1738315970923x924528524022251500,Taxfix,Senior Data Engineer - Data Platform,Data Analytics,Data Analyst,Wladyslaw Gadomski,2025-01-31,2025-07-15,2025-04-30,76,89,165,1,1,0,0,Yes,"2025-01,2025-02,2025-03,2025-04,2025-05,2025-06,2025-07"
+1738316089411x933905871079997400,Taxfix,Senior Analytics Engineer - Marketing,Data Analytics,Data Analyst,Wladyslaw Gadomski,2025-01-31,2025-04-01,2025-02-06,54,6,60,1,1,0,0,Yes,"2025-02,2025-03"
+1739733175456x269562390162964480,Taxfix,Accounts Payable Specialist,Finance,Accountant,Salem Mansuri,2025-02-16,2025-03-28,2025-02-16,40,0,40,1,1,0,0,No,"2025-02,2025-03"
+1740668063021x201637139082379260,Taxfix,Product Design UK,Design,Product Designer,Alexandra Felea,2025-02-27,2025-08-04,2025-04-10,116,42,158,1,1,0,0,Yes,"2025-02,2025-03,2025-04"
+1740682257730x539450318276526100,Taxfix,Senior Full-Stack Engineer (Self-Employed Team),Software Engineering,Full Stack,Wladyslaw Gadomski,2025-02-27,2025-06-04,2025-04-17,48,49,97,1,1,0,0,Yes,"2025-02,2025-03,2025-04,2025-05"
+1741689785377x441323876296949760,Taxfix,Staff Software Engineer - FullStack ,Software Engineering,Full Stack,Wladyslaw Gadomski,2025-03-11,2025-07-17,2025-06-12,35,93,128,1,1,0,0,Yes,"2025-03,2025-04,2025-05,2025-06,2025-07"
+1741689838701x988837595774189600,Taxfix,Senior FrontEnd Developer - React (TaxScouts),Software Engineering,Frontend ,Wladyslaw Gadomski,2025-03-11,2025-05-20,2025-04-17,33,37,70,1,1,0,0,Yes,"2025-03,2025-04,2025-05"
+1742508820183x680085648585785300,Taxfix,Senior FP&A Analyst,Finance,Not apply,Salem Mansuri,2025-03-20,2025-04-08,2025-04-06,2,17,19,1,1,0,0,No,"2025-03,2025-04,2025-05,2025-06"
+1742542764925x238192725218820100,Taxfix,C# / .NET Software Engineer (TaxScouts),Software Engineering,Backend,Wladyslaw Gadomski,2025-03-21,2025-05-22,2025-04-24,28,34,62,1,1,0,0,Yes,"2025-03,2025-04,2025-05"
+1744300534834x243448360084439040,Taxfix,Senior Product Manager,Product Manager,Product Manager,Alexandra Felea,2025-04-10,2025-05-30,2025-04-18,42,8,50,1,1,0,0,Yes,"2025-04,2025-05,2025-06,2025-07"
+1747904496155x280227879280967680,Taxfix,Senior Platform Engineer - Product Security,Software Engineering,Security,Wladyslaw Gadomski,2025-05-22,2025-10-27,2025-09-24,33,125,158,1,1,0,0,Yes,"2025-05,2025-06,2025-07,2025-08,2025-09,2025-10"
+1753957811565x231990379666735100,Taxfix,Senior Product Manager Document Data Automation,Product Manager,Product Manager,Wladyslaw Gadomski,2025-07-31,2025-10-17,2025-09-26,21,57,78,1,1,0,0,Yes,"2025-07,2025-08,2025-09,2025-10"
+1756202319727x750261122570911700,Taxfix,Growth Marketing Manager - Paid Search,Marketing,Performance Marketing Manager,Marina Nikolic,2025-08-26,2025-11-14,2025-10-10,35,45,80,1,1,0,0,No,"2025-08,2025-09,2025-10,2025-11"
+1756202387938x773602096008921100,Taxfix,Growth Marketing Lead Expert,Marketing,Performance Marketing Manager,Marina Nikolic,2025-08-26,2026-02-19,2026-01-12,38,139,177,1,0,1,1,No,"2025-08,2025-09,2025-10,2025-11,2025-12,2026-01"
+1756804932779x214990908586721300,Taxfix,AI Product Manager,Product Manager,Product Manager,Wladyslaw Gadomski,2025-09-02,2025-12-01,2025-09-05,87,3,90,1,1,0,0,Yes,"2025-09,2025-10"
+1756992730420x887221830074236900,Taxfix,AI Engineering  Intern ,Software Engineering,NLP,Alexandra Felea,2025-09-04,2025-10-10,2025-09-25,15,21,36,1,1,0,0,Yes,2025-09
+1757331173629x895080266564894700,Taxfix,Head of CRM,Marketing,Performance Marketing Manager,Marina Nikolic,2025-09-08,2025-11-26,2025-10-14,43,36,79,1,1,0,0,No,"2025-09,2025-10,2025-11"
+1757684186661x262262495295569900,Taxfix,AI Confidential,Software Engineering,NLP,Alexandra Felea,2025-09-12,2025-11-13,2025-10-02,42,20,62,1,1,0,0,Yes,"2025-09,2025-10"
+1758139084411x581904979158630400,Taxfix,Senior Backend Engineer,Software Engineering,Backend,Wladyslaw Gadomski,2025-09-17,2025-10-31,2025-10-09,22,22,44,1,1,0,0,Yes,"2025-09,2025-10"
+1758539837304x695204648702181400,Taxfix,Senior Product Manager Payments Platform - Taxfix,Product Manager,Product Manager,Wladyslaw Gadomski,2025-09-22,2025-11-12,2025-10-09,34,17,51,1,1,0,0,Yes,"2025-09,2025-10,2025-11"
+1759386636739x404983734472540160,Taxfix,Customer Support Intern,Other,Non-Tech,Marina Nikolic,2025-10-02,2025-10-15,2025-10-10,5,8,13,1,1,0,0,No,2025-10
+1761296330086x390172703384141800,Taxfix,Head of Marketing UK,Marketing,Head of Marketing,Marina Nikolic,2025-10-24,2025-12-04,2025-11-06,28,13,41,1,1,0,0,No,"2025-10,2025-11,2025-12"
+1762163373504x698758535012417500,Taxfix,Senior Video Producer,Marketing,Not apply,Marina Nikolic,2025-11-03,2026-02-25,2025-11-06,111,3,114,1,1,0,0,No,"2025-11,2025-12"
+1763455334935x160434342905774080,Taxfix,CRM Manager,Marketing,Not apply,Marina Nikolic,2025-11-18,2026-01-07,2025-11-18,50,0,50,1,1,0,0,No,"2025-11,2025-12"
+1766482931626x136617947441397760,Taxfix,Marketing and Social Media,Marketing,Performance Marketing Manager,Marina Nikolic,2025-12-23,2026-03-13,2026-02-18,23,57,80,0,0,1,1,No,"2025-12,2026-01,2026-02,2026-03"
+1768289893881x772052075978162200,Taxfix,Senior Operations Tooling Manager,Operations,Operations Specialist,Marina Nikolic,2026-01-13,2026-02-03,2026-01-13,21,0,21,0,0,1,1,No,"2026-01,2026-02"
+1768289960370x636499826073141200,Taxfix,Influencer Marketing Manager,Marketing,Not apply,Marina Nikolic,2026-01-13,2026-02-06,2026-01-20,17,7,24,0,0,1,1,No,"2026-01,2026-02"
+1768290037054x321141033548382200,Taxfix,Junior TaxOps Manager,Other,Non-Tech,Marina Nikolic,2026-01-13,2026-02-18,2026-01-16,33,3,36,0,0,1,1,No,"2026-01,2026-02"
+1768915509500x685040792108007400,Taxfix,Senior PR & Communications Manager ,Marketing,Not apply,Marina Nikolic,2026-01-20,2026-04-01,2026-02-18,42,29,71,0,0,1,1,No,"2026-01,2026-02,2026-03,2026-04"
+1770968317423x931779878534774800,Taxfix,Senior Financial Analyst - Business Partnering/Controlling,Finance,Financial Controller,Marina Nikolic,2026-02-13,2026-04-14,2026-03-02,43,17,60,0,0,1,1,No,"2026-02,2026-03,2026-04"
+1768306565902x724842074782040000,Tribe.xyz (IR),Senior Tech TA (US East Coast Hours) - Immediate Start,HR,Tech TA,Ella Darie,2026-01-13,2026-01-27,2026-01-21,6,8,14,0,0,1,1,No,"2026-01,2026-02"
+1770728747086x464603093874769900,Tribe.xyz (IR),Talent Acquisition Partner (Enterprise Sales) - Immediate Start,HR,Commercial TA,Ella Darie,2026-02-10,2026-03-06,2026-02-11,23,1,24,0,0,1,1,No,2026-02
+1771584578545x240061323429806080,Tribe.xyz (IR),Talent Acquisition Partner (German speaker) - Feb '26,HR,TA Generalist,Ella Darie,2026-02-20,2026-03-04,2026-02-25,7,5,12,0,0,1,1,No,2026-02
+1739349165675x486328479255625700,Wemolo,Engineering Manager,Engineering Management,Not apply,Andrea Akovic,2025-02-12,2025-04-22,2025-02-12,69,0,69,1,1,0,0,Yes,"2025-02,2025-03,2025-04,2025-08,2025-09,2025-10"
+1739349219562x437304834781610000,Wemolo,Software Engineer,Software Engineering,Not apply,Andrea Akovic,2025-02-12,2025-04-23,2025-02-28,54,16,70,1,1,0,0,Yes,"2025-02,2025-03,2025-04,2025-05,2025-06,2025-08"
+1740037616212x643558625724858400,Wemolo,Senior Product Designer,Design,Product Designer,Andrea Akovic,2025-02-20,2025-06-13,2025-05-05,39,74,113,1,1,0,0,Yes,"2025-02,2025-03,2025-04,2025-05,2025-06"
+1698746010747x789366750002544600,Wolt,Retail Partnership Manager - Prague,Sales,Business Development,Hana Langerová,2023-10-31,2023-12-22,2023-11-14,38,14,52,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04,2025-05"
+1700038773702x880033169571577900,Wolt,"Sales specialist - Almaty, Kazakhstan",Sales,Sales Manager,Anna Golubeva,2023-11-15,2024-04-19,2024-01-17,93,63,156,1,1,0,0,No,"2025-01,2025-02"
+1707229677682x828263432549040100,Wolt,Account Specialist Sweden - Samantha ,Sales,Not apply,Samantha Schlappinger,2024-02-06,2024-04-28,2024-04-07,21,61,82,1,0,0,0,No,2025-01
+1707762335189x833259387598143500,Wolt,Sales Specialist SW - Samantha ,Sales,Not apply,Samantha Schlappinger,2024-02-12,2024-04-07,2024-03-22,16,39,55,1,0,0,0,No,2025-01
+1707820279930x762146610961449000,Wolt,Grocery Associate Novi Sad - Wolt,Operations,Not apply,Dolores Palotas,2024-02-13,2024-02-29,2024-02-13,16,0,16,1,1,1,1,No,"2025-01,2025-02,2025-03,2025-06,2025-10,2026-02"
+1707820408012x103296194272296960,Wolt,Grocery Associate Belgrade - Wolt,Operations,Not apply,Dolores Palotas,2024-02-13,2024-03-05,2024-02-28,6,15,21,1,1,1,1,No,"2025-01,2025-02,2025-03,2025-04,2025-05,2025-07,2025-08,2025-10,2025-11,2025-12,2026-01,2026-02,2026-03"
+1707909829138x236972295934443500,Wolt,Store Operations Associate - Marousi,Operations,Operations Associate,Christina Skordili,2024-02-14,2024-02-28,2024-02-21,7,7,14,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04,2025-05,2025-06"
+1707910474781x188685201118330900,Wolt,Store Operations Associate - Piraeus ,Operations,Not apply,Christina Skordili,2024-02-14,2024-03-04,2024-03-04,0,19,19,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04,2025-05,2025-06"
+1708417599127x416809117173678100,Wolt,Store Operations Associate - Ampelokipoi,Operations,Not apply,Christina Skordili,2024-02-20,2024-03-04,2024-02-20,13,0,13,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04,2025-05,2025-06"
+1708609881653x948596627899678700,Wolt,Store Operations Associate - Neos Kosmos,Operations,Not apply,Christina Skordili,2024-02-22,2024-03-28,2024-03-21,7,28,35,1,1,0,0,No,"2025-01,2025-02,2025-04,2025-05,2025-06"
+1709198128950x687788093116252200,Wolt,Support Associate Kragujevac (Full-time),Other,Non-Tech,Dolores Palotas,2024-02-29,2024-03-26,2024-03-01,25,1,26,1,1,1,1,No,"2025-01,2025-08,2025-09,2025-10,2025-11,2026-01,2026-02,2026-03"
+1709198203645x763063089164189700,Wolt,Support Associate Kragujevac (Part-time),Other,Non-Tech,Dolores Palotas,2024-02-29,2024-04-02,2024-03-01,32,1,33,1,1,1,1,No,"2025-01,2025-08,2025-09,2025-10,2025-11,2025-12,2026-02,2026-03"
+1709801511120x673595589524193300,Wolt,Support Associate Belgrade (Full-time),Other,Non-Tech,Dolores Palotas,2024-03-07,2024-03-22,2024-03-08,14,1,15,1,1,1,1,No,"2025-01,2025-08,2025-10,2025-11,2025-12,2026-01,2026-02,2026-03"
+1709801577805x203510516790329340,Wolt,Support Associate Belgrade (Part-time),Other,Non-Tech,Dolores Palotas,2024-03-07,2024-04-02,2024-03-07,26,0,26,1,1,1,1,No,"2025-08,2025-09,2025-10,2025-11,2025-12,2026-02,2026-03,2026-04"
+1712650843643x119872639562678270,Wolt,Grocery Associate - Nis,Other,Non-Tech,Milica Mladzic,2024-04-09,2024-04-09,2024-04-09,0,0,0,1,1,0,0,No,"2025-01,2025-02,2025-04,2025-08"
+1713358684034x847293025451507700,Wolt,Store Operations Associate - Thessaloniki (Kalou),Operations,Not apply,Christina Skordili,2024-04-17,2024-05-13,2024-04-17,26,0,26,1,1,0,0,No,2025-01
+1714132526073x919105220334321700,Wolt,Store Operations Associate - Peristeri,Operations,Not apply,Christina Skordili,2024-04-26,2024-05-03,2024-05-02,1,6,7,1,1,0,0,No,"2025-01,2025-02,2025-06"
+1715946681637x162808065903034370,Wolt,Store Operations Associate - Glyfada,Operations,Not apply,Christina Skordili,2024-05-17,2024-05-21,2024-05-20,1,3,4,1,1,0,0,No,"2025-01,2025-02,2025-04,2025-05,2025-06"
+1715946768598x297992730829127700,Wolt,Store Operations Associate - Nea Ionia,Operations,Not apply,Christina Skordili,2024-05-17,2024-05-31,2024-05-17,14,0,14,1,1,0,0,No,"2025-01,2025-02,2025-04"
+1717576464407x429507796032815100,Wolt,Grocery Associate - Ljubljana,Other,Non-Tech,Dolores Palotas,2024-06-05,2024-06-18,2024-06-18,0,13,13,1,1,1,0,No,"2025-02,2025-05,2025-12,2026-03,2026-04"
+1717576597344x299385460921729000,Wolt,Support Associate - Ljubljana,Other,Non-Tech,Dolores Palotas,2024-06-05,2024-06-17,2024-06-17,0,12,12,1,1,1,0,No,"2025-01,2025-02,2025-03,2025-04,2025-05,2025-06,2025-07,2025-10,2025-12,2026-02,2026-03"
+1717745707331x505295204542840800,Wolt,Partner Sales Manager - Almaty,Sales,Sales Manager,Anna Golubeva,2024-06-07,2024-08-12,2024-07-22,21,45,66,1,1,0,0,No,"2025-01,2025-02"
+1719586081192x364627786303275000,Wolt,Sales Associate Norway 2024 June,Sales,Sales Manager,Jelena  Lacmanovic,2024-06-28,2024-09-10,2024-08-02,39,35,74,1,0,0,0,No,"2025-02,2025-03"
+1719844413151x546266199525687300,Wolt,Marketing Manager LVA - Rx and Partnerships,Marketing,Not apply,Laura Ilioaea,2024-07-01,2025-01-28,2024-12-22,37,174,211,1,0,0,0,No,2025-01
+1723534860226x737715179186552800,Wolt,Business Development Lead - Wolt for Work - Latvia,Sales,Business Development,Vladimir Stankovic,2024-08-13,2025-01-15,2024-12-19,27,128,155,1,0,0,0,No,2025-01
+1723994340489x284282423146184700,Wolt,Promotion Specialist,Sales,Sales Operations,Hana Langerová,2024-08-18,2024-09-26,2024-09-09,17,22,39,1,0,0,0,No,2025-01
+1725612295614x521153293318094850,Wolt,Commercial Financial Specialist - WM - CYP,Finance,Not apply,Joanna Bober,2024-09-06,2025-02-28,2025-01-09,50,125,175,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04,2025-05,2025-06,2025-07,2025-08"
+1725971872639x704226596972658700,Wolt,Field Sales Rep. SE - Sam,Sales,Sales Manager,Samantha Schlappinger,2024-09-10,2024-11-01,2024-10-11,21,31,52,1,1,0,0,No,"2025-01,2025-02"
+1726037410239x768753056693616600,Wolt,Restaurant Development Specialist - Almaty,Sales,Account Manager,Anna Golubeva,2024-09-11,2024-11-12,2024-09-24,49,13,62,1,0,0,0,No,"2025-01,2025-02"
+1726257249247x465073819123974140,Wolt,Support Manager,Other,Non-Tech,Samantha Schlappinger,2024-09-13,2024-09-20,2024-09-13,7,0,7,1,1,0,0,No,2025-03
+1726523044374x795198294382346200,Wolt,"Manager, Strategy & Planning, F&S",Operations,Operations Manager,Chené Elliot,2024-09-16,2025-02-07,2025-01-17,21,123,144,1,1,0,0,No,2025-01
+1726599613735x173116915925647360,Wolt,Merchant Associate,Sales,Sales Operations,Hana Langerová,2024-09-17,2024-10-01,2024-10-01,0,14,14,1,1,0,0,No,2025-01
+1727163855361x633683554473607200,Wolt,Support Manager - Almaty,Sales,Customer Success,Anna Golubeva,2024-09-24,2024-10-16,2024-09-24,22,0,22,1,0,0,0,No,"2025-01,2025-02,2025-03"
+1727448081556x422028265973350400,Wolt,Retail Enterprise Account Manager (Grocery/ Retail) Norway Sept 2024,Sales,Account Manager,Jelena  Lacmanovic,2024-09-27,2024-12-20,2024-11-06,44,40,84,1,1,0,0,No,"2025-01,2025-02,2025-03"
+1727597926857x951507352986058800,Wolt,"Senior Backend Engineer, Consumer Pricing Team, Japan - Wolt",Software Engineering,Backend,Simon  Siew,2024-09-29,2024-10-08,2024-10-05,3,6,9,1,1,0,0,Yes,2025-01
+1728029203064x307239805525426200,Wolt,"Manager, Logistics Development",Operations,Operations Manager,Alexandra Richiteanu,2024-10-04,2025-02-13,2024-12-30,45,87,132,1,0,0,0,No,2025-01
+1728237577896x873359731364200400,Wolt,Operations Specialist Platform Efficiency,Operations,Operations Specialist,Laura Ilioaea,2024-10-06,2024-11-26,2024-11-26,0,51,51,1,0,0,0,No,2025-02
+1728372386894x410802016967983100,Wolt,Head of New Commerce Platform Products,Operations,Not apply,Chené Elliot,2024-10-08,2025-02-07,2025-02-07,0,122,122,1,1,0,0,No,2025-02
+1728398651247x162501011360972800,Wolt,"Support Team Lead - Tashkent,UZB",Operations,Not apply,Iryna Dyda,2024-10-08,2025-01-23,2024-12-17,37,70,107,1,1,0,0,No,"2025-01,2025-02"
+1728892526698x134916599973937150,Wolt,Store manager - WM - CYP - Nicosia,Other,Non-Tech,Joanna Bober,2024-10-14,2024-11-05,2024-10-14,22,0,22,1,0,0,0,No,"2025-01,2025-02"
+1728907086747x456932344348540900,Wolt,Marketing Manager AUT Rx & Partnerships,Marketing,Not apply,Laura Ilioaea,2024-10-14,2025-01-07,2025-01-06,1,84,85,1,1,0,0,No,2025-01
+1729000140791x250961570551562240,Wolt,English and Georgian Speaking Support Associate,Other,Non-Tech,Tinatini Karaulashvili,2024-10-15,2024-10-31,2024-10-25,6,10,16,1,1,1,1,No,"2025-01,2025-02,2025-03,2025-04,2025-05,2025-06,2025-07,2025-08,2025-09,2025-10,2025-11,2026-01,2026-02,2026-03"
+1729070529286x633384138131374100,Wolt,Key Account Manager - Tashkent - Anna G,Sales,Account Manager,Anna Golubeva,2024-10-16,2025-01-27,2024-12-18,40,63,103,1,0,0,0,No,"2025-01,2025-02,2025-03"
+1729081592662x479534814803787800,Wolt,Restaurant Development ManageR - Warsaw,Sales,Account Manager,Kristina Colovic,2024-10-16,2025-01-28,2024-12-20,39,65,104,1,1,0,0,No,"2025-01,2025-02"
+1729166498867x963493315228729300,Wolt,"Support Associate - Tashkent, UZB",Other,Non-Tech,Iryna Dyda,2024-10-17,2024-10-23,2024-10-17,6,0,6,1,1,0,0,No,"2025-01,2025-02"
+1729186771490x435873019592704000,Wolt,Restaurant Partnership Manager,Sales,Business Development,Hana Langerová,2024-10-17,2024-10-22,2024-10-17,5,0,5,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04,2025-05"
+1729239001105x189495572351680500,Wolt,"Support Associate- Astana, Kz",Other,Non-Tech,Iryna Shumik,2024-10-18,2024-10-22,2024-10-18,4,0,4,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04"
+1729457460390x490293775342239740,Wolt,"Senior Technical Accountant, Non-Revenue",Finance,Not apply,Rafael Rosa,2024-10-20,2024-12-06,2024-10-20,47,0,47,1,0,0,0,No,"2025-02,2025-03,2025-05"
+1729512275291x385283416339513340,Wolt,Regional Buyer SEE,Operations,Not apply,Chené Elliot,2024-10-21,2025-02-23,2025-01-14,40,85,125,1,1,0,0,No,2025-01
+1729628029445x551547329035894800,Wolt,"Support Associate- Almaty, Kazakhstan",Other,Non-Tech,Iryna Shumik,2024-10-22,2024-10-29,2024-10-28,1,6,7,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-07,2025-09,2025-12"
+1729768586118x848624603069939700,Wolt,Retail Account Manager - Bratislava ,Sales,Account Manager,Fuad Safarov,2024-10-24,2025-03-26,2025-03-04,22,131,153,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04,2025-05,2025-06"
+1730057180029x167134614111387650,Wolt,"General Ledger, Finance Specialist",Finance,Accounts Receivable,Rafael Rosa,2024-10-27,2024-12-02,2024-11-10,22,14,36,1,1,0,0,No,"2025-02,2025-03,2025-04,2025-05,2025-06"
+1730107822756x290798821553209340,Wolt,"Key Account Manager, Retail (m/f/x) - Berlin",Sales,Account Manager,Nemanja Erdevički,2024-10-28,2025-01-16,2024-11-22,55,25,80,1,1,0,0,No,"2025-01,2025-02"
+1730107871558x880873075696730100,Wolt,Account Manager (m/f/x) - Munich,Sales,Account Manager,Nemanja Erdevički,2024-10-28,2025-01-16,2024-12-17,30,50,80,1,1,0,0,No,"2025-01,2025-02,2025-03"
+1730669907984x770336860259221500,Wolt,"Intercompany Accountant, Team Lead",Finance,Not apply,Rafael Rosa,2024-11-03,2025-02-26,2025-01-26,31,84,115,1,1,0,0,No,2025-01
+1730670852155x270870172156035070,Wolt,Head of PMO,Finance,Not apply,Rafael Rosa,2024-11-03,2025-01-28,2024-11-19,70,16,86,1,0,0,0,No,2025-01
+1731498416499x546482682195869700,Wolt,Sales Manager - Bulgaria,Sales,Sales Manager,Jan Dokulil,2024-11-13,2025-02-18,2024-11-13,97,0,97,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04,2025-05,2025-06"
+1731623462516x305370515874250750,Wolt,Support Associate - Poland (remote),Other,Non-Tech,Iryna Dyda,2024-11-14,2024-11-15,2024-11-14,1,0,1,1,1,0,0,No,"2025-01,2025-02"
+1732025836923x778865411552706600,Wolt,Enterprise Account Manager (Restuarant) Norway November 2024,Sales,Account Manager,Jelena  Lacmanovic,2024-11-19,2025-06-24,2025-06-24,0,217,217,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04,2025-05,2025-06"
+1732026088039x777358489746407400,Wolt,Account Manager Restaurant Norway November 2024,Sales,Account Manager,Jelena  Lacmanovic,2024-11-19,2025-01-24,2025-01-24,0,66,66,1,1,0,0,No,2025-01
+1732115491105x943555548772040700,Wolt,Merchant Operations Associate - Denmark,Sales,Merchant Acquisition,Jelena  Lacmanovic,2024-11-20,2024-12-17,2024-12-05,12,15,27,1,0,0,0,No,2025-01
+1732178922844x262366655727534080,Wolt,Store Manager - WM - SE: Soderort,Other,Non-Tech,Joanna Bober,2024-11-21,2025-01-15,2024-12-03,43,12,55,1,0,0,0,No,2025-01
+1732542222070x831834419969392600,Wolt,Onboarding Specialist - Bulgaria,Sales,Not apply,Jan Dokulil,2024-11-25,2025-02-25,2025-02-04,21,71,92,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04,2025-05,2025-06,2025-07"
+1732614258944x833865434406584300,Wolt,Restaurant Partnership Manager,Sales,Business Development,Hana Langerová,2024-11-26,2025-04-04,2025-04-02,2,127,129,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04,2025-05"
+1732614295483x709490338192162800,Wolt,Merchant Associate - CZ,Other,Non-Tech,Hana Langerová,2024-11-26,2024-11-27,2024-11-27,0,1,1,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04"
+1732629440436x575422874333741060,Wolt,Support Associate GRC/ Alexandra,Other,Non-Tech,Alexandra Constantinide,2024-11-26,2024-12-03,2024-11-26,7,0,7,1,1,0,0,No,2025-01
+1732632137981x916616727540006900,Wolt,"Workforce Management Specialist, Georgia",Other,Non-Tech,Laura Ilioaea,2024-11-26,2025-01-30,2024-11-26,65,0,65,1,0,0,0,No,"2025-01,2025-02"
+1732632220445x961760372609515500,Wolt,"Workforce Management Team Lead, Georgia",Other,Non-Tech,Laura Ilioaea,2024-11-26,2025-05-06,2024-12-29,128,33,161,1,0,0,0,No,2025-01
+1732632884450x275564142309408770,Wolt,Support Team Lead - Serbia,Other,Non-Tech,Milica Mladzic,2024-11-26,2024-12-17,2024-11-26,21,0,21,1,0,0,0,No,2025-01
+1732695946275x814851105157546000,Wolt,Workforce Management Specialist - Serbia,Other,Non-Tech,Milica Mladzic,2024-11-27,2025-02-11,2024-12-16,57,19,76,1,1,0,0,No,"2025-01,2025-02"
+1732707795949x968428356962877400,Wolt,Operations Specialist - Bulgaria,Operations,Operations Specialist,Jan Dokulil,2024-11-27,2025-03-07,2025-02-12,23,77,100,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04"
+1732716679235x135696424955543550,Wolt,"Associate, Finance & Strategy, Wolt+",Finance,Not apply,Chené Elliot,2024-11-27,2025-02-20,2024-12-03,79,6,85,1,0,0,0,No,2025-01
+1732876447581x154983556720623600,Wolt,Merchant Onboarding Team Lead,Sales,Customer Success,Jelena  Lacmanovic,2024-11-29,2025-03-04,2025-03-04,0,95,95,1,1,0,0,No,"2025-01,2025-02,2025-03"
+1733134545840x667582807955996700,Wolt,Content Associate - Bulgaria,Marketing,Not apply,Kathleen Dongo,2024-12-02,2025-04-15,2025-03-19,27,107,134,1,1,0,0,No,"2025-01,2025-02,2025-03"
+1733134605645x113041524468482050,Wolt,Support Team Lead - Bulgaria,Other,Non-Tech,Jan Dokulil,2024-12-02,2025-03-13,2024-12-05,98,3,101,1,0,0,0,No,"2025-01,2025-02,2025-03"
+1733137458232x463827203779985400,Wolt,"Regional WFM Scheduling Lead - Shared Services, Georgia",Other,Non-Tech,Laura Ilioaea,2024-12-02,2025-05-06,2025-05-06,0,155,155,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04,2025-05"
+1733145318871x738232789796126700,Wolt,"Workforce Management Regional Scheduling Lead, South",Operations,Operations Specialist,Alexandra Richiteanu,2024-12-02,2025-07-15,2025-05-19,57,168,225,1,1,0,0,No,"2025-01,2025-02,2025-04,2025-05,2025-06,2025-07"
+1733145376130x490040818626461700,Wolt,"Workforce Management Regional Scheduling Lead, Central",Operations,Operations Specialist,Alexandra Richiteanu,2024-12-02,2025-02-26,2025-01-31,26,60,86,1,1,0,0,No,"2025-01,2025-02"
+1733347654428x920393373793386500,Wolt,Integration Associate - UZB,Sales,Sales Operations,Fuad Safarov,2024-12-04,2025-02-26,2024-12-13,75,9,84,1,0,0,0,No,2025-01
+1733388869630x439716098480537600,Wolt,"Performance Analyst (m,f,x)",Operations,Operations Manager,Nemanja Erdevički,2024-12-05,2025-01-31,2024-12-26,36,21,57,1,0,0,0,No,2025-01
+1733757503369x633693769160982500,Wolt,Shift Leads Team Lead,Other,Non-Tech,Iryna Shumik,2024-12-09,2025-02-26,2025-02-26,0,79,79,1,1,0,0,No,"2025-01,2025-02"
+1733819805461x105389573169479680,Wolt,"Enterprise Sales Manager - Wolt for Work, Norway",Sales,Sales Manager,Tina Aramouni,2024-12-10,2025-03-04,2025-03-04,0,84,84,1,1,0,0,No,"2025-02,2025-03"
+1733819849828x219318859749916670,Wolt,"Sales Manager - Wolt for Work, Norway",Sales,Sales Manager,Tina Aramouni,2024-12-10,2025-02-27,2025-02-14,13,66,79,1,1,0,0,No,2025-02
+1733820641582x273376478999085060,Wolt,Wolt Drive Manager - Almaty ,Sales,Sales Manager,Anna Golubeva,2024-12-10,2025-02-27,2025-01-14,44,35,79,1,1,0,0,No,"2025-01,2025-02"
+1733820723054x762855122831671300,Wolt,"Onboarding & Merchant Services Lead, Almaty",Other,Non-Tech,Anna Golubeva,2024-12-10,2025-02-24,2024-12-11,75,1,76,1,0,0,0,No,2025-01
+1733831043945x292702226492948500,Wolt,"Operations Associate - Courier Community, Slovenia",Operations,Operations Associate,Laura Ilioaea,2024-12-10,2025-01-24,2025-01-24,0,45,45,1,1,0,0,No,2025-01
+1733831096657x477069922021146600,Wolt,"Operations Associate - Courier Communications, Austria",Operations,Operations Associate,Laura Ilioaea,2024-12-10,2025-01-24,2025-01-02,22,23,45,1,1,0,0,No,2025-01
+1733844980139x848598656460783600,Wolt,Onboarding Lead - Bulgaria,Sales,Not apply,Jan Dokulil,2024-12-10,2025-03-06,2025-01-21,44,42,86,1,1,0,0,No,"2025-01,2025-02"
+1733922563573x636227275800707100,Wolt,Sales Support Associate ATH,Sales,Sales Operations,Georgia Vasilaki,2024-12-11,2024-12-11,2024-12-11,0,0,0,1,1,0,0,No,"2025-01,2025-02"
+1733922793881x709404485719425000,Wolt,SSC Support Team Manager GEO,Operations,Operations Manager,Georgia Vasilaki,2024-12-11,2025-04-01,2025-02-21,39,72,111,1,1,0,0,No,"2025-01,2025-02"
+1734027246885x314200167523811300,Wolt,Merchant Services Associate - Lithuania,Sales,Account Manager,Vladimir Stankovic,2024-12-12,2025-01-15,2025-01-15,0,34,34,1,1,0,0,No,2025-01
+1734027326818x781562450146492400,Wolt,Key Account Manager - Lithuania,Sales,Account Manager,Tina Aramouni,2024-12-12,2025-02-27,2025-02-06,21,56,77,1,1,0,0,No,2025-02
+1734434684823x448861229183139840,Wolt,Workforce Management Global Intraday Lead,Operations,Operations Manager,Alexandra Richiteanu,2024-12-17,2025-02-20,2024-12-17,65,0,65,1,0,0,0,No,2025-01
+1734434990739x895482212591075300,Wolt,Grocery Associate - Maribor,Other,Non-Tech,Milica Mladzic,2024-12-17,2024-12-17,2024-12-17,0,0,0,1,1,0,0,No,"2025-01,2025-07,2025-10"
+1734595781070x603147119982280700,Wolt,Account Manager - Brno,Sales,Account Manager,Fuad Safarov,2024-12-19,2025-01-13,2025-01-13,0,25,25,1,1,0,0,No,2025-01
+1734607690584x426195056110600200,Wolt,CFS - WM - FIN,Other,Non-Tech,Joanna Bober,2024-12-19,2025-02-17,2025-02-17,0,60,60,1,1,0,0,No,"2025-01,2025-02"
+1734700917096x288989705901965300,Wolt,Support Associate - Skopje,Other,Non-Tech,Milica Mladzic,2024-12-20,2024-12-26,2024-12-25,1,5,6,1,1,0,0,No,"2025-01,2025-02,2025-04,2025-05"
+1734893123487x546667986848317440,Wolt,Operation Associate Courier Acquisition,Operations,Operations Associate,Laura Ilioaea,2024-12-22,2025-01-24,2024-12-22,33,0,33,1,1,0,0,No,2025-01
+1734945217793x559102559813107700,Wolt,Department Manager - Support,Other,Non-Tech,Nemanja Erdevički,2024-12-23,2025-01-16,2025-01-16,0,24,24,1,1,0,0,No,2025-01
+1734949392647x794164380383838200,Wolt,Merchant Onboarding Associate,Sales,Sales Operations,Tina Aramouni,2024-12-23,2025-02-11,2025-01-14,28,22,50,1,1,0,0,No,2025-01
+1735240509587x878289758689689600,Wolt,Merchant Services Associate - Estonia,Sales,Customer Success,Vladimir Stankovic,2024-12-26,2025-02-05,2025-02-05,0,41,41,1,1,0,0,No,2025-02
+1735305093280x162540082390368260,Wolt,Support Team Lead (Almaty),Other,Non-Tech,Iryna Shumik,2024-12-27,2025-01-24,2025-01-24,0,28,28,1,1,0,0,No,"2025-01,2025-03"
+1735565635704x841495336760115200,Wolt,"Workforce Management Planner, Germany",Operations,Operations Specialist,Alexandra Richiteanu,2024-12-30,2025-02-26,2025-01-31,26,32,58,1,1,0,0,No,2025-01
+1735565703041x913380124906225700,Wolt,"Workforce Management Planner, Greece",Operations,Operations Specialist,Alexandra Richiteanu,2024-12-30,2025-04-15,2025-02-06,68,38,106,1,1,0,0,No,"2025-01,2025-02,2025-03"
+1735570282189x265372880962846720,Wolt,Operations Associate - Courier Supply GR NEW,Operations,Operations Associate,Alexandra Richiteanu,2024-12-30,2025-07-17,2025-07-03,14,185,199,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04,2025-05,2025-06,2025-07"
+1735570322303x436607367097614340,Wolt,"Senior Operations Specialist, Courier Supply ",Operations,Operations Specialist,Alexandra Richiteanu,2024-12-30,2025-01-17,2025-01-17,0,18,18,1,1,0,0,No,2025-01
+1736253013394x318902338914353150,Wolt,Account Specialist Stockholm - Sam ,Sales,Account Manager,Samantha Schlappinger,2025-01-07,2025-02-25,2025-01-24,32,17,49,1,1,0,0,No,"2025-01,2025-02"
+1736320322205x555389747660587000,Wolt,Retail Specialist,Sales,Account Manager,Fuad Safarov,2025-01-08,2025-05-05,2025-04-09,26,91,117,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04"
+1736320503512x690821130394009600,Wolt,Onboarding Associate,Sales,Customer Success,Fuad Safarov,2025-01-08,2025-03-14,2025-03-14,0,65,65,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04,2025-05,2025-06,2025-07"
+1736338951295x154016685310869500,Wolt,Store Manager - WM - Serbia: Belgrade,Other,Non-Tech,Joanna Bober,2025-01-08,2025-02-28,2025-01-13,46,5,51,1,1,0,0,No,"2025-01,2025-02"
+1736408330915x769111042741502000,Wolt,Category Associate,Operations,Operations Specialist,Tina Aramouni,2025-01-09,2025-02-27,2025-01-20,38,11,49,1,1,0,0,No,2025-01
+1736418979513x901919660257574900,Wolt,Campaigns and Activation Associate CY ,Operations,Operations Specialist,Georgia Vasilaki,2025-01-09,2025-04-11,2025-04-01,10,82,92,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04"
+1736420161295x535700761372262400,Wolt,"Team Lead, Account Management, Mass Accounts",Sales,Business Development,Nemanja Erdevički,2025-01-09,2025-01-16,2025-01-16,0,7,7,1,1,0,0,No,2025-01
+1736420216412x685595187048349700,Wolt,"Team Lead, Merchant Services",Operations,Operations Manager,Nemanja Erdevički,2025-01-09,2025-02-24,2025-01-21,34,12,46,1,1,0,0,No,"2025-01,2025-02"
+1736420309412x527996755196772350,Wolt,"Junior Account Manager, Retail (m,f,x)",Sales,Business Development,Nemanja Erdevički,2025-01-09,2025-02-24,2025-01-27,28,18,46,1,1,0,0,No,2025-01
+1736437372603x660263314668388400,Wolt,"Operations Associate, Fleets Compliance POL",Operations,Operations Associate,Alexandra Richiteanu,2025-01-09,2025-02-06,2025-01-15,22,6,28,1,1,0,0,No,2025-01
+1736437493476x789360479261687800,Wolt,"Operations Associate, Fleets Compliance CZ",Operations,Operations Associate,Alexandra Richiteanu,2025-01-09,2025-02-20,2025-01-31,20,22,42,1,1,0,0,No,"2025-01,2025-02"
+1736508856865x170827227507458050,Wolt,Sales Manager WfW ,Sales,Sales Manager,Georgia Vasilaki,2025-01-10,2025-04-14,2025-03-26,19,75,94,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04"
+1736519673613x211105707762909200,Wolt,"Support Associate,Georgia",Other,Non-Tech,Tinatini Karaulashvili,2025-01-10,2025-01-14,2025-01-10,4,0,4,1,1,0,0,No,2025-01
+1736549384555x397986848861323260,Wolt,Merchant Promotions Associate ,Sales,Account Manager,Samantha Schlappinger,2025-01-10,2025-01-25,2025-01-10,15,0,15,1,1,0,0,No,2025-01
+1736770778171x141365576581775360,Wolt,Support Associate - Czechia ,Other,Non-Tech,Iryna Dyda,2025-01-13,2025-01-17,2025-01-14,3,1,4,1,1,0,0,No,2025-01
+1736772746224x679692625243013100,Wolt,WFM Planner North region,Other,Non-Tech,Laura Ilioaea,2025-01-13,2025-04-01,2025-02-18,42,36,78,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04"
+1736772783917x583312500414480400,Wolt,WFM Planner Central region,Other,Non-Tech,Nenad Skoko,2025-01-13,2025-06-17,2025-06-02,15,140,155,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04,2025-06"
+1736776585512x379451648185729000,Wolt,CPG Partnerships Manager,Sales,Not apply,Fuad Safarov,2025-01-13,2025-04-14,2025-04-11,3,88,91,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04"
+1736777626299x638988026821214200,Wolt,SMB Sales Manager Zagreb ,Sales,Merchant Acquisition,Kristina Colovic,2025-01-13,2025-03-05,2025-02-03,30,21,51,1,1,0,0,No,"2025-01,2025-02"
+1736853345041x792536585551216600,Wolt,Account Management Team Lead CY,Sales,Account Manager,Georgia Vasilaki,2025-01-14,2025-05-30,2025-03-17,74,62,136,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04"
+1737024607105x196538424272355330,Wolt,Regional WFM Scheduling Lead - North Region,Other,Non-Tech,Laura Ilioaea,2025-01-16,2025-05-05,2025-02-04,90,19,109,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04"
+1737104176019x449198918620938240,Wolt,SM - WM - GR: Thessaloniki,Sales,Not apply,Joanna Bober,2025-01-17,2025-02-14,2025-01-17,28,0,28,1,1,0,0,No,"2025-01,2025-02"
+1737105880067x767236387353133000,Wolt,Merchant Services Associate ZagreB,Other,Non-Tech,Kristina Colovic,2025-01-17,2025-02-05,2025-01-21,15,4,19,1,1,0,0,No,2025-01
+1737108653176x236219831907254270,Wolt,SM - WM - GER: Cologne,Sales,Not apply,Joanna Bober,2025-01-17,2025-04-15,2025-02-21,53,35,88,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04"
+1737318844772x101530607819685890,Wolt,"Country Controller, DACH",Finance,Financial Controller,Rafael Rosa,2025-01-19,2025-04-30,2025-04-06,24,77,101,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04"
+1737319239460x395178301930864640,Wolt,"IT Specialist, Hungary",Information Technology,Technical Support Engineer,Rafael Rosa,2025-01-19,2025-04-15,2025-02-16,58,28,86,1,1,0,0,Yes,"2025-01,2025-02"
+1737319283121x658873747524288500,Wolt,"IT Specialist, Denmark",Information Technology,Technical Support Engineer,Rafael Rosa,2025-01-19,2025-02-23,2025-01-19,35,0,35,0,1,0,0,Yes,2025-01
+1737364669662x420820703979503600,Wolt,Support Associate - Maribor,Other,Non-Tech,Milica Mladzic,2025-01-20,2025-01-20,2025-01-20,0,0,0,1,1,0,0,No,"2025-01,2025-02,2025-03"
+1737381835066x373534783742935040,Wolt,"Finance & Strategy Manager, Business Control (Berlin)",Finance,Finance Manager,Chené Elliot,2025-01-20,2025-03-12,2025-01-31,40,11,51,1,1,0,0,No,"2025-01,2025-02"
+1737449699553x266905790470160400,Wolt,Restaurant Partnership Manager - Bohemia,Sales,Business Development,Hana Langerová,2025-01-21,2025-02-20,2025-02-19,1,29,30,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04"
+1737544621348x863789044335116300,Wolt,CPG Partnership Manager BelgradE,Sales,Merchant Acquisition,Kristina Colovic,2025-01-22,2025-02-13,2025-01-22,22,0,22,1,1,0,0,No,"2025-01,2025-02"
+1737544694418x573888934709035000,Wolt,Ads and Promotions Operations Specialist - ZagreB,Sales,Sales Operations,Kristina Colovic,2025-01-22,2025-02-27,2025-02-11,16,20,36,1,1,0,0,No,"2025-01,2025-02"
+1737555731376x556572185553535000,Wolt,Support Team Lead( Astana),Other,Non-Tech,Iryna Shumik,2025-01-22,2025-01-24,2025-01-22,2,0,2,1,1,0,0,No,"2025-01,2025-02"
+1737619769445x698529302629580800,Wolt,Wolt For Work- Account Manager,Sales,Account Manager,Tina Aramouni,2025-01-23,2025-02-27,2025-01-30,28,7,35,1,1,0,0,No,"2025-01,2025-02"
+1737627348839x369456021130444800,Wolt,Account Specialist (ATH) Wolt Drive,Sales,Account Manager,Kristina Colovic,2025-01-23,2025-03-19,2025-02-28,19,36,55,1,1,0,0,No,"2025-01,2025-02,2025-03"
+1737627396219x474712818084741100,Wolt,Account Specialist (SGK) Wolt Drive,Sales,Account Manager,Kristina Colovic,2025-01-23,2025-03-18,2025-02-24,22,32,54,1,1,0,0,No,"2025-02,2025-03"
+1737729496474x420664650105356300,Wolt,"Operations Associate, Fleets Compliance HRV",Operations,Operations Associate,Alexandra Richiteanu,2025-01-24,2025-03-04,2025-02-17,15,24,39,1,1,0,0,No,"2025-01,2025-02"
+1737908396518x173668717971374080,Wolt,Supply & Demand Planning Intern,Other,Non-Tech,Chené Elliot,2025-01-26,2025-01-29,2025-01-26,3,0,3,0,1,0,0,No,2025-01
+1737975168339x892319338023616500,Wolt,iOS Engineer | Support Comms,Software Engineering,Mobile,Paulina Wojtan,2025-01-27,2025-03-07,2025-01-31,35,4,39,1,1,0,0,Yes,"2025-01,2025-02"
+1737982716391x508687156313325600,Wolt,SMB Sales Specialist - ZagreB,Sales,Merchant Acquisition,Kristina Colovic,2025-01-27,2025-03-24,2025-03-19,5,51,56,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04,2025-05"
+1738015565706x506645586994790400,Wolt,"Business Manager, B2B Wholesale",Other,Non-Tech,Chené Elliot,2025-01-27,2025-03-27,2025-02-12,43,16,59,1,1,0,0,No,"2025-02,2025-03"
+1738064885888x255787824125837300,Wolt,Merchant Services Associate - Luxembourg,Sales,Not apply,Jelena  Lacmanovic,2025-01-28,2025-03-13,2025-02-18,23,21,44,1,1,0,0,No,"2025-02,2025-03"
+1738069961540x847508102127812600,Wolt,Associate Operations Manager - Strategy & Operations,Other,Non-Tech,Laura Ilioaea,2025-01-28,2025-03-07,2025-02-27,8,30,38,1,1,0,0,No,"2025-01,2025-02"
+1738078243833x928891690323279900,Wolt,"Strategy & Operations Manager, Logistics Development DE",Operations,Operations Manager,Alexandra Richiteanu,2025-01-28,2025-03-03,2025-02-06,25,9,34,1,1,0,0,No,2025-02
+1738097994877x924675815533969400,Wolt,Portfolio Lease Administrator,Operations,Not apply,Chené Elliot,2025-01-28,2025-04-16,2025-04-11,5,73,78,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04"
+1738150606312x836748408895832000,Wolt,Sales Specialist - Norway,Sales,Sales Manager,Jelena  Lacmanovic,2025-01-29,2025-03-21,2025-02-12,37,14,51,1,1,0,0,No,"2025-02,2025-03,2025-04"
+1738165131708x286830586445168640,Wolt,"Operations Specialist, Platform Quality",Operations,Operations Specialist,Alexandra Richiteanu,2025-01-29,2025-04-15,2025-02-11,63,13,76,1,1,0,0,No,"2025-02,2025-03"
+1738222700338x906185998201258000,Wolt,"Finance & Strategy Manager, Consumer Business",Finance,Finance Manager,Chené Elliot,2025-01-30,2025-07-22,2025-07-22,0,173,173,1,1,0,0,No,"2025-02,2025-03,2025-04,2025-05,2025-06,2025-07"
+1738246847010x120634255468920830,Wolt,Alexandra_GA_SKG,Other,Non-Tech,Alexandra Constantinide,2025-01-30,2025-02-06,2025-02-05,1,6,7,1,1,0,0,No,"2025-01,2025-02,2025-03,2025-04,2025-05,2025-06,2025-07,2025-08,2025-10"
+1738311726820x287931864401838080,Wolt,Operations Associate - Courier Supply AL,Operations,Operations Associate,Alexandra Richiteanu,2025-01-31,2025-02-21,2025-02-12,9,12,21,1,1,0,0,No,2025-02
+1738323531813x860687261222305800,Wolt,Supply Chain Lead,Operations,Not apply,Chené Elliot,2025-01-31,2025-04-11,2025-03-23,19,51,70,1,1,0,0,No,"2025-02,2025-03"
+1738331176974x610182837350432800,Wolt,"Operations Specialist, Supply Activation",Other,Non-Tech,Laura Ilioaea,2025-01-31,2025-03-18,2025-02-23,23,23,46,1,1,0,0,No,"2025-02,2025-04"
+1738331304188x592292851752632300,Wolt,"Operations Specialist, Platform Quality",Other,Non-Tech,Laura Ilioaea,2025-01-31,2025-03-18,2025-02-07,39,7,46,1,1,0,0,No,2025-02
+1738480592074x601219426650161200,Wolt,Staff Mobile Android Engineer,Software Engineering,Mobile,Simon  Siew,2025-02-02,2025-05-19,2025-04-27,22,84,106,1,1,0,0,Yes,"2025-02,2025-04,2025-05"
+1738655210329x437425630774296600,Wolt,Training Specialist ( CS Almaty),Other,Non-Tech,Iryna Shumik,2025-02-04,2025-02-05,2025-02-04,1,0,1,0,1,0,0,No,2025-02
+1738667437284x201374217782951940,Wolt,Retail Account Manager - Prague (Frantisek Cmunt),Sales,Account Manager,Fuad Safarov,2025-02-04,2025-05-16,2025-05-16,0,101,101,1,1,0,0,No,"2025-02,2025-03,2025-04,2025-05"
+1738667519362x242942105487933440,Wolt,Retail Account Manager - Prague (Michael Aster),Sales,Account Manager,Fuad Safarov,2025-02-04,2025-05-16,2025-05-16,0,101,101,1,1,0,0,No,"2025-02,2025-03,2025-04,2025-05"
+1738844767481x572466700886474750,Wolt,Sales SpecialisT - Belgrade,Sales,Sales Manager,Kristina Colovic,2025-02-06,2025-04-08,2025-02-13,54,7,61,1,1,0,0,No,"2025-02,2025-03"
+1738854339824x929813261284802600,Wolt,"Sales Manager, Cologne (m,f,x)",Sales,Sales Manager,Nemanja Erdevički,2025-02-06,2025-04-01,2025-03-12,20,34,54,1,1,0,0,No,"2025-02,2025-03,2025-04"
+1738854465750x375272952389173250,Wolt,"Sales Manager, Dresden (m,f,x)",Sales,Sales Manager,Nemanja Erdevički,2025-02-06,2025-03-12,2025-02-07,33,1,34,1,1,0,0,No,"2025-02,2025-03"
+1738868222588x151783352883216400,Wolt,Key Account Manager- Estonia,Sales,Account Manager,Tina Aramouni,2025-02-06,2025-03-19,2025-02-18,29,12,41,1,1,0,0,No,2025-02
+1738932886963x576896939005050900,Wolt,(Senior) Kotlin Backend Engineer - Consumer Group - Germany,Software Engineering,Backend,Vladimir Stankovic,2025-02-07,2025-03-21,2025-02-19,30,12,42,1,1,1,1,Yes,"2025-02,2025-03,2025-04,2025-05,2025-07,2025-08,2025-09,2025-10,2025-11,2026-01,2026-02"
+1738932938860x547200228259266600,Wolt,Finland - (Senior) Kotlin Backend Engineer - Consumer Group,Software Engineering,Backend,Vladimir Stankovic,2025-02-07,2025-04-15,2025-02-24,50,17,67,1,1,1,1,Yes,"2025-02,2025-03,2025-04,2025-05,2025-06,2025-07,2025-08,2025-09,2025-10,2025-11,2025-12,2026-01,2026-02"
+1738933134914x915651980827557900,Wolt,(Senior) Kotlin Backend Engineer - FinTech group - Sweden,Software Engineering,Backend,Vladimir Stankovic,2025-02-07,2025-05-02,2025-03-28,35,49,84,1,1,0,0,Yes,"2025-02,2025-03,2025-04,2025-05,2025-06,2025-07,2025-08"
+1738933182769x752612293570723800,Wolt,(Senior) Kotlin Backend Engineer - FinTech Group - Finland,Software Engineering,Backend,Vladimir Stankovic,2025-02-07,2025-03-14,2025-02-27,15,20,35,1,1,0,0,Yes,"2025-02,2025-03,2025-04,2025-05,2025-06,2025-07,2025-08,2025-09"
+1739184849172x889973802370334700,Wolt,SM - WM - GER: Munich,Sales,Not apply,Joanna Bober,2025-02-10,2025-04-03,2025-02-14,48,4,52,1,1,0,0,No,"2025-02,2025-03"
+1739290135548x122458002333106180,Wolt,CRM Intern,Marketing,Not apply,Anna Tyulpanova,2025-02-11,2025-06-25,2025-02-18,127,7,134,1,1,0,0,No,2025-02
+1739353665560x304873225066119200,Wolt,"Global Personal and Road Safety Manager, Berlin",Other,Non-Tech,Nenad Skoko,2025-02-12,2025-05-23,2025-04-10,43,57,100,1,1,0,0,No,"2025-02,2025-03,2025-04"
+1739357855794x799016188337193000,Wolt,Category Manager - WM - HUN,Other,Non-Tech,Joanna Bober,2025-02-12,2025-04-15,2025-02-28,46,16,62,1,1,0,0,No,"2025-02,2025-03,2025-04"
+1739358409546x334963614444945400,Wolt,Field Sales Representative ,Sales,Sales Development Rep,Anna Tyulpanova,2025-02-12,2025-04-16,2025-03-28,19,44,63,1,1,0,0,No,"2025-02,2025-03,2025-04"
+1739375814172x321944465779195900,Wolt,Sales Manager  -  Wolt for Work,Sales,Sales Manager,Anna Tyulpanova,2025-02-12,2025-06-25,2025-02-18,127,6,133,1,1,0,0,No,"2025-02,2025-03"
+1739376594631x832869555282116600,Wolt,Sales Specialist,Sales,Sales Operations,Anna Tyulpanova,2025-02-12,2025-03-13,2025-03-13,0,29,29,1,1,0,0,No,2025-03
+1739439837996x307949381193564160,Wolt,Restaurant Partnership Marketing Manager,Marketing,Not apply,Kristina Colovic,2025-02-13,2025-03-21,2025-02-26,23,13,36,1,1,0,0,No,"2025-02,2025-03"
+1739444024897x882649787073298400,Wolt,Country Support Manager,Operations,Operations Manager,Fuad Safarov,2025-02-13,2025-08-01,2025-07-25,7,162,169,1,1,0,0,No,"2025-03,2025-04,2025-06,2025-07"
+1739445941732x487454550222438400,Wolt,Category Specialist - WM - HUN,Other,Non-Tech,Joanna Bober,2025-02-13,2025-04-15,2025-03-17,29,32,61,1,1,0,0,No,"2025-02,2025-03"
+1739448453020x409904913277255700,Wolt,Sales Support Associate (Menu) CY,Sales,Sales Operations,Georgia Vasilaki,2025-02-13,2025-04-09,2025-03-31,9,46,55,1,1,0,0,No,"2025-02,2025-03,2025-04,2025-05"
+1739452054977x379489126794395650,Wolt,SM - WM - GER: Hamburg,Other,Non-Tech,Joanna Bober,2025-02-13,2025-03-28,2025-02-20,36,7,43,1,1,0,0,No,"2025-02,2025-03"
+1739521225031x166480465415372800,Wolt,Account Associate Norway,Sales,Not apply,Jelena  Lacmanovic,2025-02-14,2025-03-03,2025-02-18,13,4,17,1,1,0,0,No,2025-02
+1739522468878x880723460957667300,Wolt,"Operations Specialist, Platform Efficiency x2 HC",Operations,Operations Specialist,Alexandra Richiteanu,2025-02-14,2025-06-18,2025-04-25,54,70,124,1,1,0,0,No,"2025-02,2025-04,2025-05"
+1739527234172x498337242025295900,Wolt,SM - WM - GR: Athens,Other,Non-Tech,Joanna Bober,2025-02-14,2025-04-03,2025-03-28,6,42,48,1,1,0,0,No,"2025-02,2025-03,2025-04,2025-05,2025-06,2025-07,2025-08,2025-09,2025-10,2025-11"
+1739527801340x518311492123099140,Wolt,Workplace Manager,Other,Non-Tech,Chené Elliot,2025-02-14,2025-03-31,2025-02-21,38,7,45,1,1,0,0,No,"2025-02,2025-03"
+1739690160214x377083892972126200,Wolt,"Frontend Engineer, (i4), Merchant CRM Integrations",Software Engineering,Frontend ,Simon  Siew,2025-02-16,2025-05-19,2025-03-23,57,35,92,1,1,0,0,Yes,"2025-03,2025-04,2025-05"
+1739872899645x994271393882570800,Wolt,Account Manager - Kosovo,Sales,Account Manager,Anna Golubeva,2025-02-18,2025-03-26,2025-03-03,23,13,36,1,1,0,0,No,"2025-02,2025-03"
+1739881738607x856468005604556800,Wolt,Support Shift Lead ( Almaty),Other,Non-Tech,Iryna Shumik,2025-02-18,2025-02-18,2025-02-18,0,0,0,1,1,0,0,No,"2025-02,2025-03"
+1739890843267x568488209567449100,Wolt,Regional Trust & Safety Manager - Germany,Other,Non-Tech,Laura Ilioaea,2025-02-18,2025-05-14,2025-05-14,0,85,85,1,1,0,0,No,"2025-02,2025-03,2025-04,2025-05"
+1739890900906x170331077030969340,Wolt,Regional Trust & Safety Manager - North,Other,Non-Tech,Laura Ilioaea,2025-02-18,2025-05-06,2025-03-23,44,33,77,1,1,0,0,No,"2025-02,2025-03,2025-04"
+1739943425421x625045909269643300,Wolt,Key Account Management Team Lead,Sales,Account Manager,Tina Aramouni,2025-02-19,2025-02-27,2025-02-19,8,0,8,0,1,0,0,No,2025-02
+1739943998745x142858131527696380,Wolt,Partnerships Manager,Sales,Not apply,Tina Aramouni,2025-02-19,2025-03-17,2025-02-19,26,0,26,0,1,0,0,No,2025-02
+1739944457263x210900334713765900,Wolt,Merchant Services Team Lead,Sales,Merchant Acquisition,Tina Aramouni,2025-02-19,2025-02-27,2025-02-19,8,0,8,0,1,0,0,No,2025-02
+1739944726064x436527856762748900,Wolt,Key Account Manager-Latvia,Sales,Account Manager,Tina Aramouni,2025-02-19,2025-03-24,2025-02-19,33,0,33,0,1,0,0,No,2025-02
+1739951464841x165858635194040320,Wolt,Sales Associate- Finland,Sales,Sales Manager,Tina Aramouni,2025-02-19,2025-04-10,2025-03-11,30,20,50,1,1,0,0,No,2025-03
+1739969691581x978899118289059800,Wolt,"Sales Manager, Essen (m,f,x)",Sales,Sales Manager,Nemanja Erdevički,2025-02-19,2025-03-19,2025-02-21,26,2,28,1,1,0,0,No,"2025-02,2025-03,2025-04"
+1739969812349x506427720073216000,Wolt,Grocery Shift Lead,Operations,Operations Manager,Nemanja Erdevički,2025-02-19,2025-04-01,2025-02-28,32,9,41,1,1,0,0,No,"2025-02,2025-03"
+1740049852104x557544469616656400,Wolt,Content Specialist Serbia,Other,Non-Tech,Milica Mladzic,2025-02-20,2025-03-18,2025-02-20,26,0,26,1,1,0,0,No,2025-02
+1740049985297x986006747455160300,Wolt,Content Specilaist Slovenia,Other,Non-Tech,Milica Mladzic,2025-02-20,2025-02-21,2025-02-20,1,0,1,0,1,0,0,No,2025-02
+1740050052959x400916744320319500,Wolt,Quality Development Specialist - Serbia,Other,Non-Tech,Milica Mladzic,2025-02-20,2025-03-18,2025-02-27,19,7,26,1,1,0,0,No,2025-02
+1740050117255x351573215902433300,Wolt,Quality Development Specialist - Slovenia,Other,Non-Tech,Milica Mladzic,2025-02-20,2025-03-19,2025-03-14,5,22,27,1,1,0,0,No,"2025-02,2025-03"
+1740064130222x581582112775995400,Wolt,Sales Activation Associate ATH,Sales,Sales Operations,Georgia Vasilaki,2025-02-20,2025-03-21,2025-02-25,24,5,29,1,1,0,0,No,2025-02
+1740073169741x871749917655957500,Wolt,"Strategy and Operations Manager, Global Support",Operations,Operations Manager,Alexandra Richiteanu,2025-02-20,2025-04-17,2025-03-18,30,26,56,1,1,0,0,No,"2025-03,2025-04,2025-06"
+1740319537575x624559499702960100,Wolt,Head of Financial Services,Finance,Not apply,Chené Elliot,2025-02-23,2025-05-30,2025-05-29,1,95,96,1,1,0,0,No,"2025-02,2025-03,2025-04,2025-05"
+1740350979234x357673653707735040,Wolt,"Assistant Country Controller, AL & XK",Finance,Financial Controller,Rafael Rosa,2025-02-23,2025-04-15,2025-03-16,30,21,51,1,1,0,0,No,"2025-02,2025-03"
+1740376292473x803211127873339400,Wolt,Account Manager- Sweden,Sales,Account Manager,Tina Aramouni,2025-02-24,2025-05-23,2025-04-15,38,50,88,1,1,0,0,No,"2025-02,2025-03,2025-04,2025-05"
+1740376393500x186138442805018620,Wolt,Restaurant Account Manager- Luxembourg,Sales,Account Manager,Tina Aramouni,2025-02-24,2025-04-11,2025-03-25,17,29,46,1,1,0,0,No,2025-03
+1740399183195x661157340527984600,Wolt,Imaging Associate-Sweden,Product Manager,Not apply,Tina Aramouni,2025-02-24,2025-03-26,2025-03-10,16,14,30,1,1,0,0,Yes,"2025-03,2025-04"
+1740474151222x958179525260738600,Wolt,Global Product Compliance Specialist,Other,Non-Tech,Chené Elliot,2025-02-25,2025-05-15,2025-05-09,6,73,79,1,1,0,0,No,"2025-02,2025-03,2025-04,2025-05"
+1740574009843x812940230729400300,Wolt,Wolt Senior iOS helsinki ,Software Engineering,Mobile,Paulina Wojtan,2025-02-26,2025-04-28,2025-03-10,49,12,61,1,1,0,0,Yes,"2025-02,2025-03,2025-04,2025-05,2025-06"
+1740592714266x242165327047163900,Wolt,"Quality Development Specialist - Tashkent, UZB",Other,Non-Tech,Iryna Dyda,2025-02-26,2025-03-18,2025-03-04,14,6,20,1,1,0,0,No,2025-03
+1740749957259x844167636688306200,Wolt,"Pricing Analyst - Region North, Global Delivery Operations",Operations,Operations Manager,Alexandra Richiteanu,2025-02-28,2025-06-02,2025-05-16,17,77,94,1,1,0,0,No,"2025-03,2025-04,2025-05"
+1740999099492x698679370946969600,Wolt,"Manager, Merchant Operations",Operations,Not apply,Laura Ilioaea,2025-03-03,2025-05-02,2025-04-10,22,38,60,1,1,0,0,No,"2025-03,2025-04"
+1741002617491x925439908685807600,Wolt,Ads Operations Associate - Greece ,Marketing,Affiliate Marketing Manager,Kristina Colovic,2025-03-03,2025-07-11,2025-05-13,59,71,130,1,1,0,0,No,"2025-03,2025-04,2025-05"
+1741022340657x930318902341664800,Wolt,Operations Associate - Courier Onboarding CZ,Operations,Operations Associate,Alexandra Richiteanu,2025-03-03,2025-04-15,2025-03-27,19,24,43,1,1,0,0,No,2025-03
+1741094519853x458669527307649000,Wolt,Account Manager,Sales,Account Manager,Hana Langerová,2025-03-04,2025-03-04,2025-03-04,0,0,0,1,1,0,0,No,2025-03
+1741095189359x405005792410075140,Wolt,Senior Android Engineer | Wolt ,Software Engineering,Mobile,Paulina Wojtan,2025-03-04,2025-03-14,2025-03-14,0,10,10,1,1,0,0,Yes,"2025-03,2025-04,2025-05,2025-06"
+1741176228834x559036927014338560,Wolt,Account Management Team Lead (Köln),Sales,Account Manager,Nemanja Erdevički,2025-03-05,2025-04-30,2025-04-11,19,37,56,1,1,0,0,No,"2025-03,2025-04"
+1741176485425x274856404163493900,Wolt,Account Management Team Lead (Hamburg),Sales,Account Manager,Nemanja Erdevički,2025-03-05,2025-05-15,2025-04-16,29,42,71,1,1,0,0,No,"2025-03,2025-04,2025-05"
+1741355768298x362454734628454400,Wolt,Category Manager - WM - PL: Warsaw,Other,Non-Tech,Joanna Bober,2025-03-07,2025-04-10,2025-03-07,34,0,34,1,1,0,0,No,"2025-03,2025-04,2025-05"
+1741681060210x132392562038669310,Wolt,Key Account Manager (Restaurants),Sales,Account Manager,Jelena  Lacmanovic,2025-03-11,2025-04-29,2025-04-25,4,45,49,1,1,0,0,No,"2025-03,2025-04"
+1741681177685x755018979233235000,Wolt,Senior Key Account Manager - Iceland ,Sales,Account Manager,Jelena  Lacmanovic,2025-03-11,2025-04-29,2025-03-12,48,1,49,1,1,0,0,No,"2025-03,2025-04,2025-05,2025-06,2025-07,2025-08,2025-09,2025-10"
+1741703384204x724424681303572500,Wolt,"Support Team Lead - Poland, Warsaw",Other,Non-Tech,Iryna Dyda,2025-03-11,2025-04-11,2025-03-14,28,3,31,1,1,0,0,No,"2025-03,2025-04"
+1741801404763x517966215637893100,Wolt,Full-stack Engineer - Fintech Group - Berlin,Software Engineering,Full Stack,Vladimir Stankovic,2025-03-12,2025-03-14,2025-03-12,2,0,2,1,1,0,0,Yes,"2025-03,2025-04,2025-07,2025-08"
+1741812057386x215144952023220220,Wolt,"Strategy & Operations Manager, Global Delivery Operations",Operations,Operations Manager,Alexandra Richiteanu,2025-03-12,2025-05-23,2025-04-16,37,35,72,1,1,0,0,No,"2025-04,2025-05"
+1741865848646x810650539434967000,Wolt,Account Specialist Sweeden,Sales,Account Manager,Anna Tyulpanova,2025-03-13,2025-06-25,2025-06-25,0,104,104,1,1,0,0,No,2025-06
+1741869981315x320141641924739100,Wolt,Merchant Ondoarding Associate Finland,Operations,Operations Associate,Anna Tyulpanova,2025-03-13,2025-06-25,2025-03-13,104,0,104,0,1,0,0,No,2025-03
+1741946184631x686192811278073900,Wolt,Onboarding Associate - Luxembourg,Sales,Not apply,Jelena  Lacmanovic,2025-03-14,2025-03-22,2025-03-14,8,0,8,1,1,0,0,No,"2025-03,2025-04"
+1741960229455x896306937444958200,Wolt,SSC Support Associate Serbia,Other,Non-Tech,Dolores Palotas,2025-03-14,2025-04-11,2025-03-14,28,0,28,1,1,1,1,No,"2025-03,2025-04,2025-05,2025-06,2025-07,2025-08,2025-10,2025-11,2025-12,2026-02,2026-03,2026-04"
+1741960299481x733738316107350000,Wolt,SSC Support Team Lead Serbia,Other,Non-Tech,Dolores Palotas,2025-03-14,2025-04-16,2025-03-24,23,10,33,1,1,1,0,No,"2025-03,2025-04,2025-07,2025-08,2026-02,2026-03"
+1741960462847x395530465994604540,Wolt,Regional Training Specialist,Other,Non-Tech,Milica Mladzic,2025-03-14,2025-04-28,2025-04-01,27,18,45,1,1,0,0,No,"2025-03,2025-04"
+1741963382796x667448303215181800,Wolt,GA-Pata,Other,Non-Tech,Alexandra Constantinide,2025-03-14,2025-04-01,2025-03-28,4,14,18,1,1,0,0,No,"2025-03,2025-06"
+1742053965927x926088186991476700,Wolt,Onboarding Associate - Bulgaria,Sales,Not apply,Jan Dokulil,2025-03-15,2025-03-15,2025-03-15,0,0,0,1,0,0,0,No,2025-03
+1742132669474x497715500340740100,Wolt,"Web Engineer, Storefront Team Japan",Software Engineering,Frontend ,Simon  Siew,2025-03-16,2025-04-27,2025-03-16,42,0,42,1,1,0,0,Yes,"2025-03,2025-04,2025-05"
+1742151356473x171453677693566980,Wolt,Senior Operations Specialist - Logistics & Pricing,Operations,Operations Specialist,Laura Ilioaea,2025-03-16,2025-04-16,2025-03-23,24,7,31,1,1,0,0,No,2025-03
+1742223370769x765618478397784000,Wolt,Technical Program Manager I5 (Data + CRM integrations teams) | Berlin,Project Manager,Program Manager,Eduardo Moral,2025-03-17,2025-05-26,2025-04-02,54,16,70,1,1,0,0,No,"2025-03,2025-04,2025-05"
+1742297043716x883510372370219000,Wolt,"Retail Sales Manager, Frankfurt (m,f,x)",Sales,Merchant Acquisition,Nemanja Erdevički,2025-03-18,2025-04-24,2025-04-11,13,24,37,1,1,0,0,No,"2025-03,2025-04,2025-05,2025-06"
+1742300894035x181922007512252400,Wolt,Menu Editor (Associate) - Sam ,Other,Non-Tech,Samantha Schlappinger,2025-03-18,2025-04-08,2025-03-21,18,3,21,1,1,0,0,No,"2025-03,2025-04"
+1742309100643x374260307512524800,Wolt,iOS Engineer Wolt 3+ Helsinki,Software Engineering,Mobile,Paulina Wojtan,2025-03-18,2025-06-09,2025-05-15,25,58,83,1,1,0,0,Yes,"2025-03,2025-04,2025-05"
+1742384809500x322703877495062500,Wolt,Global Workplace & Facilities Manager,Other,Non-Tech,Chené Elliot,2025-03-19,2025-06-03,2025-03-19,76,0,76,1,1,0,0,No,"2025-03,2025-04,2025-05,2025-06"
+1742480433997x853308953075384300,Wolt,"GA - Crete, Heraklion",Other,Non-Tech,Alexandra Constantinide,2025-03-20,2025-03-21,2025-03-21,0,1,1,1,1,0,0,No,"2025-03,2025-04"
+1742492197231x700689521531945000,Wolt,Commercial Business Developer - Drive Global,Sales,Business Development,Anna Tyulpanova,2025-03-20,2025-05-23,2025-05-23,0,64,64,1,1,0,0,No,"2025-03,2025-04,2025-05"
+1742551471078x683950608256335900,Wolt,Sales Intern - AZE,Sales,Business Development,Fuad Safarov,2025-03-21,2025-04-16,2025-03-30,17,9,26,1,1,0,0,No,2025-03
+1742552645311x269274223926837250,Wolt,Head of Drive - Norway,Sales,Business Development,Jelena  Lacmanovic,2025-03-21,2025-04-25,2025-04-25,0,35,35,1,1,0,0,No,"2025-03,2025-04"
+1742562807256x892816195244261400,Wolt,Inbound Sales - Filip,Sales,Sales Development Rep,Filip Nogowski,2025-03-21,2025-04-04,2025-03-28,7,7,14,1,1,0,0,No,"2025-03,2025-04,2025-05"
+1742563510545x517500174386855940,Wolt,Sales Team Lead North - Filip,Sales,Sales Manager,Filip Nogowski,2025-03-21,2025-05-30,2025-04-04,56,14,70,1,1,0,0,No,"2025-03,2025-04,2025-05"
+1742581277422x845850275857301500,Wolt,Vendor Manager - Berlin ,Operations,Operations Manager,Samantha Schlappinger,2025-03-21,2025-04-22,2025-03-21,32,0,32,1,1,0,0,No,2025-03
+1742816731268x970989243119697900,Wolt,Merchant Account Development Manager - BelgradE,Sales,Sales Development Rep,Kristina Colovic,2025-03-24,2025-04-24,2025-03-24,31,0,31,1,1,0,0,No,"2025-03,2025-04"
+1742816772841x660702828620152800,Wolt,Restaurant Onboarding Associate - BelgradE,Sales,Sales Operations,Kristina Colovic,2025-03-24,2025-04-09,2025-04-09,0,16,16,1,1,0,0,No,"2025-03,2025-04"
+1742816873379x934068562629754900,Wolt,Head of Sales - ZagreB,Sales,Head of Sales,Kristina Colovic,2025-03-24,2025-04-16,2025-04-03,13,10,23,1,1,0,0,No,2025-04
+1742975271027x601548768872759300,Wolt,"Sales Manager, Kosovo - Anna G",Sales,Sales Manager,Anna Golubeva,2025-03-26,2025-03-28,2025-03-26,2,0,2,0,1,0,0,No,2025-03
+1743370955642x437612992581599200,Wolt,"Operations Specialist, Courier Gear",Operations,Operations Specialist,Laura Ilioaea,2025-03-30,2025-04-17,2025-03-30,18,0,18,1,1,0,0,No,"2025-03,2025-04"
+1743400251659x263548826007896060,Wolt,SMB Team Lead,Sales,Merchant Acquisition,Tina Aramouni,2025-03-31,2025-05-23,2025-04-01,52,1,53,1,1,0,0,No,"2025-04,2025-05"
+1743533156453x217842065553489920,Wolt,Account Management Team Lead Kosovo (GEO),Sales,Account Manager,Georgia Vasilaki,2025-04-01,2025-05-02,2025-04-23,9,22,31,1,1,0,0,No,2025-04
+1743533645954x851195238430801900,Wolt,Sales Support Associate Athens,Sales,Sales Operations,Georgia Vasilaki,2025-04-01,2025-04-23,2025-04-15,8,14,22,1,1,0,0,No,"2025-04,2025-05"
+1743534232337x643218380716769300,Wolt,Merchant Services Associate ALB,Sales,Sales Operations,Georgia Vasilaki,2025-04-01,2025-05-12,2025-04-16,26,15,41,1,1,0,0,No,"2025-04,2025-05"
+1743589398671x804178913950433300,Wolt,VAT Manager,Finance,Not apply,Chené Elliot,2025-04-02,2025-06-02,2025-04-09,54,7,61,1,1,0,0,No,2025-04
+1743757210735x929746674379391000,Wolt,"Senior Manager, F&S Wolt+",Finance,Not apply,Chené Elliot,2025-04-04,2025-05-25,2025-05-15,10,41,51,1,1,0,0,No,"2025-04,2025-05"
+1743768126357x947454607897395200,Wolt,Mid Android ,Software Engineering,Mobile,Paulina Wojtan,2025-04-04,2025-05-15,2025-04-08,37,4,41,1,1,0,0,Yes,2025-04
+1743770433516x730693219483910100,Wolt,GA-Cyprus,Other,Non-Tech,Alexandra Constantinide,2025-04-04,2025-05-09,2025-05-09,0,35,35,1,1,1,1,No,"2025-04,2025-05,2026-03"
+1743854391385x881639391366742000,Wolt,Key Account Manager - Tashkent,Sales,Account Manager,Fuad Safarov,2025-04-05,2025-04-18,2025-04-18,0,13,13,1,1,0,0,No,2025-04
+1743965913505x624534996171096000,Wolt,IT Specialist,Information Technology,Technical Support Engineer,Rafael Rosa,2025-04-06,2025-05-25,2025-05-25,0,49,49,1,1,0,0,Yes,"2025-04,2025-05"
+1744023231332x279769563147010050,Wolt,Account Manager - SpliT,Sales,Account Manager,Kristina Colovic,2025-04-07,2025-04-24,2025-04-14,10,7,17,1,1,0,0,No,"2025-04,2025-06"
+1744121944687x572518487049633800,Wolt,Android Software Engineer,Software Engineering,Mobile,Eduardo Moral,2025-04-08,2025-04-15,2025-04-08,7,0,7,0,1,0,0,Yes,2025-04
+1744203639431x513661005121454100,Wolt,Sales Associate April 2025,Sales,Not apply,Jelena  Lacmanovic,2025-04-09,2025-06-11,2025-06-02,9,54,63,1,1,0,0,No,"2025-04,2025-05,2025-06"
+1744293571870x312795691360976900,Wolt,Key Account Manager - UZB,Sales,Account Manager,Fuad Safarov,2025-04-10,2025-04-15,2025-04-10,5,0,5,1,1,0,0,No,2025-04
+1744306710779x893397511515144200,Wolt,Account Manager CZK,Sales,Account Manager,Hana Langerová,2025-04-10,2025-05-16,2025-05-16,0,36,36,1,1,0,0,No,"2025-04,2025-05"
+1744355416120x875815022170996700,Wolt,Merchant Services Associate- Lithuania,Other,Non-Tech,Tina Aramouni,2025-04-11,2025-05-30,2025-04-15,45,4,49,1,1,0,0,No,2025-04
+1744355628959x882258209756151800,Wolt,Key Account Manager-Estonia,Sales,Account Manager,Tina Aramouni,2025-04-11,2025-05-30,2025-05-21,9,40,49,1,1,0,0,No,"2025-04,2025-05"
+1744619505926x708002424013717500,Wolt,"Backend Engineer, Storefront Team ",Software Engineering,Backend,Simon  Siew,2025-04-14,2025-04-27,2025-04-14,13,0,13,1,1,0,0,Yes,"2025-04,2025-05"
+1744622918271x960293491668156400,Wolt,Operations Specialist - Platform Quality KAZ,Operations,Operations Specialist,Alexandra Richiteanu,2025-04-14,2025-04-23,2025-04-15,8,1,9,1,1,0,0,No,2025-04
+1744622955684x151336097324728320,Wolt,"Operations Associate, Fleets Compliance CZ",Operations,Operations Specialist,Alexandra Richiteanu,2025-04-14,2025-04-29,2025-04-16,13,2,15,1,1,0,0,No,2025-04
+1744623013852x176907083742183420,Wolt,Operations Associate - Courier Community GEO,Operations,Operations Associate,Alexandra Richiteanu,2025-04-14,2025-05-14,2025-04-16,28,2,30,1,1,0,0,No,2025-04
+1744623068799x672390387551961100,Wolt,"Operations Specialist, Platform Quality GR",Operations,Operations Specialist,Alexandra Richiteanu,2025-04-14,2025-06-05,2025-04-23,43,9,52,1,1,0,0,No,"2025-04,2025-05"
+1744635799334x523442316928614400,Wolt,Account Manager Restaurant team CY,Sales,Account Manager,Georgia Vasilaki,2025-04-14,2025-05-02,2025-04-14,18,0,18,0,1,0,0,No,2025-04
+1744705738759x153930291557695500,Wolt,"Sales Manager, Bergen",Sales,Sales Manager,Jelena  Lacmanovic,2025-04-15,2025-06-04,2025-04-15,50,0,50,1,1,0,0,No,"2025-04,2025-05"
+1744719395879x518979358273830900,Wolt,Regional Workplace Manager,Other,Non-Tech,Chené Elliot,2025-04-15,2025-10-14,2025-10-14,0,182,182,1,1,0,0,No,"2025-04,2025-05,2025-06,2025-07,2025-08,2025-09,2025-10"
+1744732321972x547338634895294460,Wolt,Integration Specialist - KZ  ,Sales,Sales Operations,Fuad Safarov,2025-04-15,2025-04-17,2025-04-15,2,0,2,0,1,0,0,No,2025-04
+1744791404026x513061439327436800,Wolt,Integration Specialist - Nicosia and Limasol Cyprus,Other,Non-Tech,Kristina Colovic,2025-04-16,2025-07-22,2025-05-12,71,26,97,1,1,0,0,No,"2025-04,2025-05"
+1744793864489x895105997462831100,Wolt,Sales Manager-Luxembourg,Sales,Sales Manager,Tina Aramouni,2025-04-16,2025-05-12,2025-04-24,18,8,26,1,1,0,0,No,2025-04
+1744805736054x798877456628187100,Wolt,SM - WM - FIN: Joensuu,Other,Non-Tech,Joanna Bober,2025-04-16,2025-06-10,2025-06-06,4,51,55,1,1,0,0,No,"2025-04,2025-05,2025-06"
+1744885944262x886747920329605100,Wolt,STL - WM - EST: Tartu,Other,Non-Tech,Joanna Bober,2025-04-17,2025-05-16,2025-04-17,29,0,29,1,1,0,0,No,"2025-04,2025-05"
+1745403301155x238581452259983360,Wolt,SM - WM - GEOR: Tiblisi,Other,Non-Tech,Joanna Bober,2025-04-23,2025-06-04,2025-05-05,30,12,42,1,1,0,0,No,"2025-04,2025-05"
+1745407416650x576190688376127500,Wolt,Cross-Mobile Engineer I5 (Merchant Promotions) | Japan,Software Engineering,Mobile,Eduardo Moral,2025-04-23,2025-04-24,2025-04-23,1,0,1,1,1,0,0,Yes,"2025-04,2025-05,2025-06,2025-07,2025-08,2025-09"
+1745526026747x419726909751951360,Wolt,Head of Platform Efficiency,Operations,Not apply,Nenad Skoko,2025-04-24,2025-06-19,2025-04-24,56,0,56,1,1,0,0,No,"2025-04,2025-05"
+1745588525980x889279034087440400,Wolt,GA-Malta,Other,Non-Tech,Alexandra Constantinide,2025-04-25,2025-04-25,2025-04-25,0,0,0,1,1,1,1,No,"2025-04,2025-05,2025-06,2026-03"
+1745593703419x796305627600388100,Wolt,Business Development Manager - Iceland,Sales,Business Development,Jelena  Lacmanovic,2025-04-25,2025-04-29,2025-04-25,4,0,4,0,1,0,0,No,2025-04
+1745786727550x733522931100680200,Wolt,Finance Systems Developer ,Information Technology,Systems Admin,Rafael Rosa,2025-04-27,2025-07-13,2025-04-27,77,0,77,1,1,0,0,Yes,"2025-04,2025-05,2025-06"
+1745920400874x370826419161006100,Wolt,Store Operations Associate - Cholargos,Other,Non-Tech,Christina Skordili,2025-04-29,2025-05-19,2025-05-08,11,9,20,1,1,0,0,No,"2025-04,2025-05"
+1746014325789x382358976413302800,Wolt,"Financial Country Controller, Tel Aviv",Finance,Financial Controller,Rafael Rosa,2025-04-30,2025-10-09,2025-06-15,116,46,162,1,1,0,0,No,"2025-04,2025-05,2025-06,2025-07,2025-10"
+1746014394183x958990419612139500,Wolt,"Financial Country Controller, Sofia",Finance,Financial Controller,Rafael Rosa,2025-04-30,2025-07-31,2025-04-30,92,0,92,1,1,0,0,No,"2025-04,2025-05,2025-06,2025-07"
+1746027609348x593494650626244600,Wolt,"Operations Specialist, Courier Strategy & Innovation",Operations,Operations Specialist,Alexandra Richiteanu,2025-04-30,2025-06-06,2025-05-02,35,2,37,1,1,0,0,No,2025-05
+1746027723147x130087498140352510,Wolt,Operations Associate - Courier Supply GR,Operations,Operations Specialist,Alexandra Richiteanu,2025-04-30,2025-06-05,2025-05-20,16,20,36,1,1,0,0,No,"2025-05,2025-06"
+1746027764559x880430807900487700,Wolt,"Operations Associate, Courier Community KZ",Operations,Operations Associate,Alexandra Richiteanu,2025-04-30,2025-06-12,2025-05-15,28,15,43,1,1,0,0,No,2025-05
+1746113386707x388728004784422900,Wolt,Junior Data Scientist | BizOps,Data Analytics,Data Scientist,Jaksa Marojevic,2025-05-01,2025-08-08,2025-05-08,92,7,99,1,1,0,0,Yes,"2025-05,2025-06,2025-07"
+1746447174539x237044278477455360,Wolt,Restaurant Development Specialist ,Sales,Business Development,Anna Tyulpanova,2025-05-05,2025-05-09,2025-05-09,0,4,4,1,1,0,0,No,2025-05
+1746456925547x349307144717205500,Wolt,Senior Compliance Specialist,Legal,Not apply,Nemanja Erdevički,2025-05-05,2025-05-09,2025-05-09,0,4,4,1,1,0,0,No,2025-05
+1746457018112x814092700631695400,Wolt,"Deals Associate / Promotions Coordinator (m,f,x)",Operations,Operations Manager,Nemanja Erdevički,2025-05-05,2025-05-29,2025-05-29,0,24,24,1,1,0,0,No,2025-05
+1746521845857x172118591432032260,Wolt,Senior Account Manager,Sales,Account Manager,Kristina Colovic,2025-05-06,2025-05-19,2025-05-06,13,0,13,0,1,0,0,No,2025-05
+1746726702066x952003488035110900,Wolt,Global Head of Quality Development,Quality Assurance (QA) ,Not apply,Nenad Skoko,2025-05-08,2025-08-06,2025-06-26,41,49,90,1,1,0,0,No,"2025-05,2025-06,2025-07"
+1746778779538x861236053128773600,Wolt,"Account Manager, Retail (m,f,x)",Sales,Business Development,Nemanja Erdevički,2025-05-09,2025-05-23,2025-05-09,14,0,14,1,1,0,0,No,2025-05
+1746795222699x230002314097197060,Wolt,"Project Manager, Payment Institution ",Finance,Not apply,Chené Elliot,2025-05-09,2025-05-30,2025-05-09,21,0,21,0,1,0,0,No,2025-05
+1746985931758x307830233941147650,Wolt,Senior Operations Specialist - Growth & Expansion,Operations,Operations Specialist,Nenad Skoko,2025-05-11,2025-06-05,2025-05-11,25,0,25,1,1,0,0,No,2025-05
+1747053451096x497665802756423700,Wolt,Merchant Services Associate - ZAGREB ,Other,Non-Tech,Kristina Colovic,2025-05-12,2025-05-29,2025-05-12,17,0,17,0,1,0,0,No,2025-05
+1747063512768x651309288587001900,Wolt,Warehouse Associate,Operations,Operations Associate,Alexandra Richiteanu,2025-05-12,2025-06-05,2025-05-28,8,16,24,1,1,0,0,No,2025-05
+1747120738174x758293781220163600,Wolt,Construction Project Manager,Operations,Not apply,Chené Elliot,2025-05-13,2025-08-07,2025-07-13,25,61,86,1,1,0,0,No,"2025-05,2025-06,2025-07"
+1747330553510x366258254743339000,Wolt,Technical Program Manager I5 (Data Group) | Berlin,Project Manager,Technical Program Manager,Eduardo Moral,2025-05-15,2025-05-27,2025-05-15,12,0,12,0,1,0,0,Yes,2025-05
+1747338450422x241393259793874940,Wolt,Backend Engineer - Merchant - Finland,Software Engineering,Backend,Vladimir Stankovic,2025-05-15,2025-06-06,2025-06-05,1,21,22,1,1,0,0,Yes,"2025-05,2025-06,2025-07"
+1747388154195x906994233247793200,Wolt,Health & Safety Specialist,Other,Non-Tech,Nenad Skoko,2025-05-16,2025-06-20,2025-05-30,21,14,35,1,1,0,0,No,"2025-05,2025-06"
+1747388513616x572127481957974000,Wolt,WFM Tooling Lead,Operations,Not apply,Nenad Skoko,2025-05-16,2025-08-07,2025-07-14,24,59,83,1,1,0,0,No,"2025-05,2025-06,2025-07"
+1747389957431x461598606142734340,Wolt,Regional Training Manager,Operations,Not apply,Nenad Skoko,2025-05-16,2025-05-23,2025-05-16,7,0,7,0,1,0,0,No,2025-05
+1747399682775x806330101556838400,Wolt,Support Associate - Sofia,Other,Non-Tech,Milica Mladzic,2025-05-16,2025-05-19,2025-05-16,3,0,3,0,1,0,0,No,2025-05
+1747552032252x989546253872529400,Wolt,"Senior Backend  Engineer, Rewards Team (May '25) ",Software Engineering,Backend,Simon  Siew,2025-05-18,2025-07-11,2025-07-04,7,47,54,1,1,0,0,Yes,"2025-05,2025-07,2025-08"
+1747552313505x451524155492270100,Wolt,"Senior IOS Engineer (i5), Rewards Team, Japan (May'25) ",Software Engineering,Mobile,Simon  Siew,2025-05-18,2025-07-11,2025-05-18,54,0,54,1,1,0,0,Yes,"2025-05,2025-06,2025-07,2025-08"
+1747573847084x890118693508350000,Wolt,Regional Head of Key Account Management - Wolt,Sales,Account Executive,Jan Dokulil,2025-05-18,2025-06-06,2025-05-24,13,6,19,1,1,0,0,No,2025-05
+1747588943572x512747965296148500,Wolt,"Account Manager Executive - Berlin (m,f,x)",Sales,Sales Development Rep,Nemanja Erdevički,2025-05-18,2025-06-25,2025-06-25,0,38,38,1,1,0,0,No,"2025-05,2025-06,2025-07"
+1747589019245x110150256505651200,Wolt,"Team Lead Operations - Berlin (m,f,x)",Operations,Operations Associate,Nemanja Erdevički,2025-05-18,2025-06-25,2025-05-30,26,12,38,1,1,0,0,No,"2025-05,2025-06"
+1747589083543x108280500782891000,Wolt,"Team Lead - Mass Account Management - Berlin (m,f,x)",Operations,Operations Specialist,Nemanja Erdevički,2025-05-18,2025-07-31,2025-06-23,38,36,74,1,1,0,0,No,"2025-05,2025-06,2025-07"
+1747601954433x145939809968848900,Wolt,"Senior Data Scientist, Core Experience",Data Analytics,Data Scientist,Jaksa Marojevic,2025-05-18,2025-08-20,2025-07-11,40,54,94,1,1,1,0,Yes,"2025-05,2025-06,2025-07,2025-08,2025-12,2026-02,2026-03,2026-04"
+1747640661423x140807235442573310,Wolt,"Senior Data Scientist, Mx Selection",Data Analytics,Data Scientist,Jaksa Marojevic,2025-05-19,2025-05-28,2025-05-28,0,9,9,1,1,0,0,Yes,2025-05
+1747676403246x433337328773103600,Wolt,Expansion Specialit - WM,Other,Non-Tech,Jan Dokulil,2025-05-19,2025-08-21,2025-05-19,94,0,94,1,1,0,0,No,"2025-05,2025-06,2025-07,2025-08"
+1747920156166x248449631166398460,Wolt,Head of Supply Chain and Expansion - Germany,Operations,Not apply,Jan Dokulil,2025-05-22,2025-06-30,2025-06-08,22,17,39,1,1,0,0,No,"2025-05,2025-06,2025-07,2025-08"
+1748198520130x238813379853549570,Wolt,Risk & Compliance Manager,Finance,Not apply,Chené Elliot,2025-05-25,2025-08-01,2025-06-09,53,15,68,1,1,0,0,No,"2025-05,2025-06,2025-07"
+1748427496722x202453632494862340,Wolt,Supply Chain Analyst - Finland,Operations,Not apply,Jan Dokulil,2025-05-28,2025-07-30,2025-05-28,63,0,63,0,1,0,0,No,2025-05
+1748511151646x810376032646594600,Wolt,"Territory Sales Manager - Berlin/East (m,f,x)",Sales,Sales Manager,Nemanja Erdevički,2025-05-29,2025-06-25,2025-06-25,0,27,27,1,1,0,0,No,"2025-05,2025-06"
+1748609689126x248085754728939520,Wolt,Store Manager - Romania,Other,Non-Tech,Jan Dokulil,2025-05-30,2025-08-15,2025-07-11,35,42,77,1,1,0,0,No,"2025-05,2025-06,2025-07"
+1749110700976x294902432769507300,Wolt,GA-Athens-Alexandra,Other,Non-Tech,Alexandra Constantinide,2025-06-05,2025-07-11,2025-07-04,7,29,36,1,1,0,0,No,"2025-06,2025-07,2025-08,2025-09,2025-10"
+1749126763937x405836320886489100,Wolt,"Operations Associate, Courier Community AZE",Operations,Operations Associate,Alexandra Richiteanu,2025-06-05,2025-07-04,2025-06-09,25,4,29,1,1,0,0,No,2025-06
+1749201698151x365600283174633500,Wolt,Payments Back Office Analyst,Finance,Not apply,Chené Elliot,2025-06-06,2025-08-06,2025-06-06,61,0,61,1,1,0,0,No,"2025-06,2025-07"
+1749460619380x492930914305703940,Wolt,"Program Manager, Account Management, S&O",Operations,Not apply,Alexandra Richiteanu,2025-06-09,2025-07-29,2025-06-23,36,14,50,1,1,0,0,No,"2025-06,2025-07"
+1749460921209x603775703872176100,Wolt,"Sales Planning and Compensation Strategy, Sr. Associate",Operations,Operations Associate,Nenad Skoko,2025-06-09,2025-07-15,2025-06-19,26,10,36,1,1,0,0,No,"2025-06,2025-07"
+1749461031692x578730770380881900,Wolt,Global Enterprise Account Manager,Sales,Account Manager,Nenad Skoko,2025-06-09,2025-08-29,2025-06-09,81,0,81,1,1,0,0,No,"2025-06,2025-07,2025-08,2025-09"
+1749476547984x583748980769554400,Wolt,Supply Chain Manager - Romania,Other,Non-Tech,Jan Dokulil,2025-06-09,2025-08-21,2025-06-10,72,1,73,1,1,0,0,No,"2025-06,2025-07,2025-08"
+1749628609990x792015619903717400,Wolt,Key Account Manager-Latvia,Sales,Account Manager,Tina Aramouni,2025-06-11,2025-07-11,2025-07-09,2,28,30,1,1,0,0,No,"2025-06,2025-07"
+1749628705410x518228069889343500,Wolt,Key Account Manager TL-Estonia,Sales,Account Manager,Jelena  Lacmanovic,2025-06-11,2025-10-02,2025-07-21,73,40,113,1,1,0,0,No,"2025-06,2025-07,2025-08,2025-09"
+1749725229905x790456393484992500,Wolt,Content Specialist - Romania,Other,Non-Tech,Jan Dokulil,2025-06-12,2025-07-22,2025-06-12,40,0,40,1,1,0,0,No,"2025-06,2025-07"
+1749729886393x134396206478786560,Wolt,S&O (NV Selection) Manager,Operations,Operations Manager,Nenad Skoko,2025-06-12,2025-06-13,2025-06-12,1,0,1,0,1,0,0,No,2025-06
+1750071036341x536323539376275460,Wolt,Operations Manager - Romania,Operations,Operations Manager,Jan Dokulil,2025-06-16,2025-10-06,2025-07-25,73,39,112,1,1,0,0,No,"2025-06,2025-07,2025-08,2025-09"
+1750149175984x579399076411867100,Wolt,Marousi-GA-Alexandra,Other,Non-Tech,Alexandra Constantinide,2025-06-17,2025-07-11,2025-07-03,8,16,24,1,1,0,0,No,"2025-06,2025-07,2025-08,2025-09"
+1750156904181x411655807877775400,Wolt,Onboarding Associate - KZ,Sales,Customer Success,Fuad Safarov,2025-06-17,2025-08-11,2025-06-30,42,13,55,1,1,0,0,No,"2025-06,2025-07,2025-08"
+1750421278521x989069294744633300,Wolt,Glyfada-GA-Alexandra,Other,Non-Tech,Alexandra Constantinide,2025-06-20,2025-06-20,2025-06-20,0,0,0,1,1,0,0,No,"2025-06,2025-07"
+1750921207391x810067015603060700,Wolt,Merchant Operations Associate - Denmark ,Sales,Not apply,Jelena  Lacmanovic,2025-06-26,2025-07-21,2025-07-16,5,20,25,1,1,0,0,No,2025-07
+1751014346666x675590344742535200,Wolt,Merchant Services Associate Luxembourg,Other,Non-Tech,Jelena  Lacmanovic,2025-06-27,2025-08-27,2025-08-20,7,54,61,1,1,0,0,No,"2025-07,2025-08"
+1751026172499x340823824358440960,Wolt,Akexandra-neo kosmo-GA,Other,Non-Tech,Alexandra Constantinide,2025-06-27,2025-07-04,2025-06-27,7,0,7,0,1,0,0,No,2025-06
+1751289700548x391548921781420000,Wolt,"Territory Sales Manager - West (m,f,x)",Sales,Account Manager,Nemanja Erdevički,2025-06-30,2025-07-31,2025-07-02,29,2,31,1,1,0,0,No,2025-07
+1751289813630x252993857842839550,Wolt,"Mass Account Manager - Berlin (m,f,x)",Sales,Account Manager,Nemanja Erdevički,2025-06-30,2025-07-11,2025-07-11,0,11,11,1,1,0,0,No,2025-07
+1751381766475x163117712302931970,Wolt,"Operations Specialist, Platform Efficiency, Central",Operations,Operations Specialist,Nenad Skoko,2025-07-01,2025-08-28,2025-07-04,55,3,58,1,1,0,0,No,"2025-07,2025-08"
+1751460722452x728445565841178600,Wolt,Support Shift Lead Serbia,Other,Non-Tech,Milica Mladzic,2025-07-02,2025-07-04,2025-07-02,2,0,2,0,1,0,0,No,2025-07
+1751618021532x964959918535737300,Wolt,Merchant Services Associate - Sweden,Sales,Not apply,Jelena  Lacmanovic,2025-07-04,2025-07-21,2025-07-21,0,17,17,1,1,0,0,No,2025-07
+1751970615343x901959439300952000,Wolt,"Store Manager (St Paul's Bay, Malta)",Other,Non-Tech,Joanna Bober,2025-07-08,2025-10-17,2025-08-04,74,27,101,1,1,0,0,No,"2025-07,2025-08,2025-09,2025-10,2025-11"
+1752045230608x273371724547358720,Wolt,"Android Engineer, i4, Wolt+ Team Japan (July'25) ",Software Engineering,Mobile,Simon  Siew,2025-07-09,2025-07-20,2025-07-11,9,2,11,1,1,0,0,Yes,2025-07
+1752082814042x490411155276693500,Wolt,"Senior Manager Revenue, Strategy & Operations",Other,Non-Tech,Alexandra Richiteanu,2025-07-09,2025-07-15,2025-07-09,6,0,6,0,1,0,0,No,2025-07
+1752159923761x482181463177953300,Wolt,Grocery Associate Almaty,Other,Non-Tech,Iryna Shumik,2025-07-10,2025-07-15,2025-07-11,4,1,5,1,1,0,0,No,"2025-07,2025-08"
+1752658258736x263717246143561730,Wolt, Compliance & Systems Enablement Senior Manager ,Other,Non-Tech,Alexandra Richiteanu,2025-07-16,2025-11-24,2025-10-19,36,95,131,1,1,0,0,No,"2025-07,2025-08,2025-09,2025-10,2025-11"
+1752658372914x474251962300497900,Wolt,"Operations Associate, Courier Community GR [Internal]",Operations,Operations Associate,Alexandra Richiteanu,2025-07-16,2025-08-25,2025-08-07,18,22,40,1,1,0,0,No,"2025-07,2025-08"
+1752658480598x532188604509454340,Wolt,"Operations Associate, Courier Community GEO [Internal]",Operations,Operations Associate,Alexandra Richiteanu,2025-07-16,2025-07-25,2025-07-22,3,6,9,1,1,0,0,No,2025-07
+1752658552453x877984480686768100,Wolt,Operations Payments Specialist [Internal],Operations,Operations Specialist,Alexandra Richiteanu,2025-07-16,2025-08-05,2025-07-22,14,6,20,1,1,0,0,No,2025-07
+1752664973677x683516781104988200,Wolt,Onboarding Team Lead - KZ,Sales,Sales Development Rep,Fuad Safarov,2025-07-16,2025-08-22,2025-08-22,0,37,37,1,1,0,0,No,"2025-07,2025-08"
+1752670618401x856381242276839400,Wolt,Merchant Services Associate - Latvia,Sales,Not apply,Jelena  Lacmanovic,2025-07-16,2025-08-18,2025-08-15,3,30,33,1,1,0,0,No,2025-08
+1752744628138x733420275352731600,Wolt,"Operations Associate, Courier Onboarding ",Operations,Operations Associate,Alexandra Richiteanu,2025-07-17,2025-08-12,2025-07-22,21,5,26,1,1,0,0,No,"2025-07,2025-08"
+1752846081493x914675036694511600,Wolt,Customer Support Representative ,Other,Tech,Tawfik Shadafna,2025-07-18,2025-08-01,2025-07-18,14,0,14,1,1,0,0,No,"2025-07,2025-08"
+1753014215379x311455798129590300,Wolt,"Fullstack Engineer (i3), Storefront Team, Japan ",Software Engineering,Full Stack,Simon  Siew,2025-07-20,2025-10-19,2025-09-07,42,49,91,1,1,0,0,Yes,"2025-07,2025-08,2025-09"
+1753016557876x545551905767030800,Wolt,"Country Controller, Denmark",Finance,Financial Controller,Rafael Rosa,2025-07-20,2025-08-31,2025-07-20,42,0,42,1,1,0,0,No,"2025-07,2025-08"
+1753016639189x708208347495792600,Wolt,"Manager, PMO",Finance,Not apply,Rafael Rosa,2025-07-20,2025-10-09,2025-09-21,18,63,81,1,1,0,0,No,"2025-07,2025-08,2025-09,2025-10"
+1753167819688x907250224609886200,Wolt,Digital Chat Customer Support,Other,Non-Tech,Tawfik Shadafna,2025-07-22,2025-08-01,2025-08-01,0,10,10,1,1,0,0,No,"2025-07,2025-08"
+1753167902279x622607049750216700,Wolt,Digital Chat Customer Support,Other,Non-Tech,Tawfik Shadafna,2025-07-22,2025-08-01,2025-07-22,10,0,10,1,1,0,0,No,"2025-07,2025-08"
+1753194646383x110020359216955400,Wolt,"Senior Finance & Strategy Manager, Marketing",Finance,Finance Manager,Chené Elliot,2025-07-22,2025-08-26,2025-07-22,35,0,35,0,1,0,0,No,2025-07
+1753273944957x776123191126917100,Wolt,Merchant Associate,Sales,Merchant Acquisition,Niki Vokalkova,2025-07-23,2025-08-01,2025-07-23,9,0,9,1,1,0,0,No,"2025-07,2025-08,2025-09"
+1753350461308x143345148871311360,Wolt,"Ad Operations Specialist, Croatia",Marketing,Not apply,Milica Veselinovic,2025-07-24,2025-11-07,2025-10-09,29,77,106,1,1,0,0,No,"2025-07,2025-08,2025-09,2025-10"
+1753787451730x620280346892304400,Wolt,Content Associate - WM - Lithuania,Operations,Not apply,Joanna Bober,2025-07-29,2025-10-08,2025-08-19,50,21,71,1,1,0,0,No,"2025-07,2025-08,2025-09,2025-10"
+1754060560644x713446350422540300,Wolt,"Manager, Merchant Finance & Strategy",Finance,Not apply,Rafael Rosa,2025-08-01,2025-10-09,2025-09-14,25,44,69,1,1,0,0,No,"2025-08,2025-09,2025-10"
+1754060638757x732996423922483200,Wolt,"Sr Associate, Finance & Strategy, North",Finance,Not apply,Rafael Rosa,2025-08-01,2025-11-02,2025-09-21,42,51,93,1,1,1,0,No,"2025-08,2025-09,2025-12,2026-03"
+1754313938237x461928130491449340,Wolt,Berlin (Senior) Golang Backend Engineer - Consumer Group - Wolt,Software Engineering,Backend,Vladimir Stankovic,2025-08-04,2025-10-24,2025-08-14,71,10,81,1,1,0,0,Yes,2025-08
+1754980805111x421583577747030000,Wolt,Associate Manager retail strategy & Ops,Sales,Account Manager,Tina Aramouni,2025-08-12,2025-10-01,2025-08-18,44,6,50,1,1,0,0,No,"2025-08,2025-09"
+1755074857156x902659411344883700,Wolt,Workplace Manager - Kaz,Operations,Not apply,Chené Elliot,2025-08-13,2025-10-02,2025-08-22,41,9,50,1,1,0,0,No,"2025-08,2025-09"
+1755086255488x802610526989844500,Wolt,"Operations Associate, Courier Onboarding Greece",Operations,Operations Associate,Alexandra Richiteanu,2025-08-13,2025-10-09,2025-09-02,37,20,57,1,1,0,0,No,"2025-08,2025-09"
+1755162198865x877240470135373800,Wolt,"WFM Regional Scheduling Lead - Central, FTC",Operations,Operations Manager,Nenad Skoko,2025-08-14,2025-10-08,2025-09-03,35,20,55,1,1,0,0,No,"2025-08,2025-09"
+1755172684882x695353987344629800,Wolt,Onboarding Associate - Estonia,Sales,Not apply,Jelena  Lacmanovic,2025-08-14,2025-10-02,2025-09-01,31,18,49,1,1,0,0,No,"2025-08,2025-09"
+1755247778232x918121909987573800,Wolt,Global Quality Compliance Lead,Finance,Not apply,Chené Elliot,2025-08-15,2025-11-15,2025-08-22,85,7,92,1,1,0,0,No,"2025-08,2025-09,2025-10"
+1755271461596x914072335130296300,Wolt,Support Assosiate SSC Hungary,Other,Non-Tech,Iryna Shumik,2025-08-15,2025-08-15,2025-08-15,0,0,0,1,1,1,1,No,"2025-08,2025-09,2026-03"
+1755612384565x870974039741956100,Wolt,Performance Analyst Lead,Operations,Operations Manager,Nenad Skoko,2025-08-19,2025-10-22,2025-08-22,61,3,64,1,1,0,0,No,"2025-08,2025-09"
+1755861222998x483796373787639800,Wolt,Grocery Associate Lithuania,Other,Non-Tech,Iryna Shumik,2025-08-22,2025-08-22,2025-08-22,0,0,0,1,1,0,0,No,"2025-08,2025-09"
+1756186934065x785066188332335100,Wolt,"Associate Manager, CS - 7 Rooms",Sales,Customer Success,Jan Dokulil,2025-08-26,2025-10-17,2025-08-27,51,1,52,1,1,0,0,No,2025-08
+1756211593359x622464109346816000,Wolt,Grocery Associate Malta,Other,Non-Tech,Iryna Shumik,2025-08-26,2025-08-26,2025-08-26,0,0,0,1,1,0,0,No,"2025-08,2025-09,2025-10"
+1756380111195x629568303019327500,Wolt,Category Specialist,Other,Non-Tech,Jan Dokulil,2025-08-28,2025-11-12,2025-10-12,31,45,76,1,1,0,0,No,"2025-08,2025-09,2025-10"
+1757071628441x264788972532400130,Wolt,"Support Associate, Almaty",Other,Non-Tech,Zarina Amanbekova,2025-09-05,2025-09-05,2025-09-05,0,0,0,0,0,1,1,No,"2025-09,2025-10,2025-11,2025-12,2026-01,2026-02,2026-03"
+1757084719393x337395911254605800,Wolt,"Support Associate, Astana",Other,Non-Tech,Zarina Amanbekova,2025-09-05,2025-09-18,2025-09-18,0,13,13,0,0,1,1,No,"2025-09,2025-10,2025-12,2026-01,2026-02"
+1757248859976x625703326188568600,Wolt,Global Category Manager,Other,Non-Tech,Jan Dokulil,2025-09-07,2025-10-02,2025-09-20,12,13,25,1,1,0,0,No,2025-09
+1757408627402x209298199494524930,Wolt,Store Manager - Oslo ,Other,Non-Tech,Jan Dokulil,2025-09-09,2025-10-13,2025-09-12,31,3,34,1,1,0,0,No,2025-09
+1757516138142x835082918424739800,Wolt,"Operations Specialist, Platform Quality - North",Operations,Operations Specialist,Alexandra Richiteanu,2025-09-10,2025-10-15,2025-09-28,17,18,35,1,1,0,0,No,2025-09
+1757917609585x382915463431061500,Wolt,Implementation Specialist - 7Rooms,Other,Non-Tech,Jan Dokulil,2025-09-15,2025-10-16,2025-09-15,31,0,31,1,1,0,0,No,"2025-09,2025-10"
+1757931341480x981078599870447600,Wolt,Ads Telesales Associate - Finland,Sales,Not apply,Jelena  Lacmanovic,2025-09-15,2025-10-21,2025-10-14,7,29,36,1,1,0,0,No,"2025-09,2025-10"
+1757938931993x286676813650853900,Wolt,Account Management Team Lead - Czechia,Sales,Account Manager,Niki Vokalkova,2025-09-15,2025-10-24,2025-09-25,29,10,39,1,1,0,0,No,"2025-09,2025-10"
+1758124639885x987544071796686800,Wolt,"Global Senior Specialist, Food Safety",Operations,Operations Specialist,Alexandra Richiteanu,2025-09-17,2025-11-17,2025-10-09,39,22,61,1,1,0,0,No,"2025-10,2025-11"
+1758177865087x788474937836830700,Wolt,Onboarding associate-Sweden,Operations,Operations Associate,Tina Aramouni,2025-09-18,2025-10-17,2025-09-22,25,4,29,1,1,0,0,No,"2025-09,2025-10"
+1758193345186x841249391744385000,Wolt,SMB Telesales Associate - Finland ,Sales,Not apply,Jelena  Lacmanovic,2025-09-18,2025-10-20,2025-09-19,31,1,32,1,1,0,0,No,"2025-09,2025-10"
+1758275389876x889770834029969400,Wolt,Support Shift Lead,Other,Non-Tech,Zarina Amanbekova,2025-09-19,2025-09-19,2025-09-19,0,0,0,0,0,1,1,No,"2026-01,2026-02"
+1758477767796x656636799958646800,Wolt,Tax Manager,Finance,Not apply,Rafael Rosa,2025-09-21,2026-02-01,2025-12-07,56,77,133,0,0,1,0,No,"2025-09,2025-10,2025-11,2025-12,2026-01"
+1758620413721x643463158525329400,Wolt,Supply Chain Manager (Romania),Other,Non-Tech,Joanna Bober,2025-09-23,2025-11-13,2025-10-16,28,23,51,1,1,0,0,No,"2025-09,2025-10"
+1759060051617x967061604400365600,Wolt,"Data Scientist, South, BizOps",Operations,Not apply,Simon  Siew,2025-09-28,2025-11-02,2025-11-02,0,35,35,1,1,0,0,No,"2025-09,2025-10,2025-11"
+1759077341783x991709333656174600,Wolt,Workplace Manager - Germany ( Temp) ,Operations,Not apply,Chené Elliot,2025-09-28,2025-11-07,2025-10-01,37,3,40,1,1,0,0,No,"2025-09,2025-10,2025-11"
+1759089347266x876459872078004200,Wolt,Senior Finance Specialist - GL Accounting,Finance,Accountant,Rafael Rosa,2025-09-28,2025-10-31,2025-10-19,12,21,33,1,1,1,1,No,"2025-09,2025-10,2025-11,2025-12,2026-01"
+1759209149764x605241845281980400,Wolt,Team Lead Merchant Services- Nicosia,Sales,Merchant Acquisition,Tina Aramouni,2025-09-30,2025-12-08,2025-12-08,0,69,69,1,1,0,0,No,"2025-10,2025-11,2025-12"
+1759212869651x790678614122168300,Wolt,Workplace Safety Manager - KZ,Other,Non-Tech,Adelya Khakimova,2025-09-30,2025-10-23,2025-09-30,23,0,23,1,1,0,0,No,"2025-09,2025-10"
+1759235998623x431009154748645400,Wolt,Grocery Associate Denmark (Odense),Other,Non-Tech,Chantal Bozkurt,2025-09-30,2025-09-30,2025-09-30,0,0,0,0,0,1,1,No,"2026-02,2026-03"
+1759236323615x126237561580158980,Wolt,Grocery Associate Denmark (Copenhagen),Other,Non-Tech,Chantal Bozkurt,2025-09-30,2025-09-30,2025-09-30,0,0,0,0,0,1,1,No,"2026-01,2026-02,2026-03"
+1759236982158x599110726735888400,Wolt,Grocery Associate Denmark Youth Worker,Other,Non-Tech,Chantal Bozkurt,2025-09-30,2025-09-30,2025-09-30,0,0,0,0,0,1,1,No,"2025-09,2025-10,2025-11,2025-12,2026-01,2026-02,2026-03"
+1759237400216x276231492364664830,Wolt,Grocery Associate Denmark (Aarhus),Other,Non-Tech,Chantal Bozkurt,2025-09-30,2025-09-30,2025-09-30,0,0,0,0,0,1,1,No,2026-02
+1759237683949x890909181980180500,Wolt,Grocery Associate Denmark (Soborg),Other,Non-Tech,Chantal Bozkurt,2025-09-30,2025-09-30,2025-09-30,0,0,0,0,0,1,1,No,2026-02
+1759238067499x436164624751525900,Wolt,Support Associate Norway,Other,Non-Tech,Chantal Bozkurt,2025-09-30,2025-09-30,2025-09-30,0,0,0,0,0,1,1,No,"2026-02,2026-03"
+1759303358911x861124600793399300,Wolt,Ads&Promotion Specialist Albania,Marketing,Not apply,Jelena  Lacmanovic,2025-10-01,2026-01-12,2026-01-12,0,103,103,0,0,1,1,No,"2025-10,2025-11,2025-12,2026-01"
+1759327334712x987159002678034400,Wolt,Implementation Partner - Dubai Sevenrooms,Other,Non-Tech,Jan Dokulil,2025-10-01,2025-11-12,2025-10-13,30,12,42,1,1,0,0,No,2025-10
+1759389648572x698837388656902100,Wolt,Sales Representative-Finland,Sales,Sales Development Rep,Tina Aramouni,2025-10-02,2025-11-10,2025-10-02,39,0,39,1,1,0,0,No,2025-10
+1759408658527x293353445895962600,Wolt,Workplace Design Project Manager,Operations,Not apply,Chené Elliot,2025-10-02,2025-11-28,2025-10-15,44,13,57,1,1,0,0,No,"2025-10,2025-11"
+1759475471549x753843173350441000,Wolt,Grocery Associate Denmark (Aalborg),Other,Non-Tech,Chantal Bozkurt,2025-10-03,2025-10-03,2025-10-03,0,0,0,1,1,1,1,No,"2025-10,2026-02"
+1759475705264x485360003369402400,Wolt,Support Associate Iceland,Other,Non-Tech,Chantal Bozkurt,2025-10-03,2025-10-03,2025-10-03,0,0,0,1,1,0,0,No,2025-10
+1759476412931x196898844397797380,Wolt,Grocery Associate Norway (Oslo),Other,Non-Tech,Chantal Bozkurt,2025-10-03,2025-10-03,2025-10-03,0,0,0,1,1,1,1,No,"2025-10,2025-11,2026-02,2026-03"
+1759664588802x242181091890561020,Wolt,"Senior Backend Engineer (i5), Wolt+ Japan (Oct'26) ",Software Engineering,Backend,Simon  Siew,2025-10-05,2025-10-19,2025-10-05,14,0,14,0,1,0,0,Yes,2025-10
+1759698565035x790241057043906600,Wolt,"Assistant Country Controller, Boltics - 18 Months, FTC",Finance,Financial Controller,Rafael Rosa,2025-10-05,2025-11-16,2025-10-10,37,5,42,1,1,1,0,No,"2025-10,2025-11,2026-01"
+1759820760791x226249128611938300,Wolt,Account Management Specialist,Sales,Merchant Acquisition,Niki Vokalkova,2025-10-07,2025-12-12,2025-12-10,2,64,66,1,1,0,0,No,"2025-10,2025-11,2025-12"
+1759833813697x822255247188033500,Wolt,Sales Manager-Kosovo,Sales,Sales Manager,Tina Aramouni,2025-10-07,2025-11-27,2025-11-26,1,50,51,1,1,0,0,No,"2025-10,2025-11"
+1759833890044x930035712747110400,Wolt,Sales Manager-Albania,Sales,Sales Manager,Tina Aramouni,2025-10-07,2026-03-27,2026-02-12,43,128,171,0,0,1,1,No,"2025-10,2025-11,2025-12,2026-01,2026-02,2026-03"
+1759906723611x567042130212552700,Wolt,Partnership Manager WfW - Azerbaijan,Sales,Sales Manager,Adelya Khakimova,2025-10-08,2025-11-20,2025-10-21,30,13,43,1,1,0,0,No,"2025-10,2025-11"
+1759916600359x990896386052194300,Wolt,Onboarding Associate - Lithuania,Other,Non-Tech,Jelena  Lacmanovic,2025-10-08,2025-10-20,2025-10-08,12,0,12,0,1,0,0,No,2025-10
+1759917223764x396579857356816400,Wolt,STL - WM - HUN (2 HCs),Other,Non-Tech,Joanna Bober,2025-10-08,2025-10-17,2025-10-10,7,2,9,1,1,0,0,No,2025-10
+1760079450111x162185183269486600,Wolt,"Lead, Merchant Strategy & Operations",Operations,Operations Manager,Alexandra Richiteanu,2025-10-10,2025-12-19,2025-11-03,46,24,70,1,1,0,0,No,"2025-10,2025-11,2025-12"
+1760105305787x673626877015621600,Wolt,"Grocery Associate, Volume, Estonia",Other,Non-Tech,Alisa Liddell,2025-10-10,2025-10-10,2025-10-10,0,0,0,1,1,1,1,No,"2025-10,2026-01,2026-02,2026-03"
+1760105509112x573188684436733950,Wolt,"Grocery Associate, Volume, Lithuania ",Other,Non-Tech,Alisa Liddell,2025-10-10,2025-10-10,2025-10-10,0,0,0,1,1,1,1,No,"2025-10,2025-11,2025-12,2026-01"
+1760105762439x342693964201852900,Wolt,"Grocery Associate, Volume, Cyprus",Other,Non-Tech,Alisa Liddell,2025-10-10,2025-10-10,2025-10-10,0,0,0,1,1,1,1,No,"2025-10,2025-11,2025-12,2026-01,2026-02,2026-03"
+1760280648434x237085278703976450,Wolt,"Team Lead, Account Management - West",Sales,Head of Sales,Lisa Gargulinska,2025-10-12,2025-10-29,2025-10-26,3,14,17,1,1,0,0,No,"2025-10,2025-11,2025-12"
+1760280747405x760789267914424300,Wolt,Territory Sales Manager - Gera/Jena/Erfurt,Sales,Sales Manager,Lisa Gargulinska,2025-10-12,2025-12-04,2025-10-29,36,17,53,0,0,1,0,No,"2026-01,2026-02,2026-04"
+1760281065538x811562236048310300,Wolt,"Account Manager (2025.03914) München, Germany",Sales,Account Manager,Lisa Gargulinska,2025-10-12,2025-12-04,2025-11-07,27,26,53,0,0,1,1,No,"2025-11,2025-12,2026-01,2026-02,2026-03,2026-04"
+1760283063838x995553699417555000,Wolt,Territory Sales Manager - Bayern/Munich,Sales,Sales Manager,Lisa Gargulinska,2025-10-12,2025-11-13,2025-10-17,27,5,32,1,1,1,1,No,"2025-10,2025-11,2025-12,2026-01,2026-02,2026-03,2026-04"
+1760345485949x767544060954542000,Wolt,Store Operations Associate Chania [Evagelina],Other,Non-Tech,Evagelina Rapanaki,2025-10-13,2025-10-13,2025-10-13,0,0,0,1,1,0,0,No,2025-10
+1760350600106x813639208111702000,Wolt,Automations & Operations Manager,Operations,Operations Specialist,Alexandra Richiteanu,2025-10-13,2025-10-16,2025-10-13,3,0,3,0,1,0,0,No,2025-10
+1760439998909x282714782196039680,Wolt,Category Specialist (Czech Republic),Other,Non-Tech,Nenad Skoko,2025-10-14,2026-01-23,2025-12-09,45,56,101,0,0,1,0,No,"2025-10,2025-11,2025-12,2026-01"
+1760440057440x482686630029426700,Wolt,Category Specialist (Croatia),Other,Non-Tech,Nenad Skoko,2025-10-14,2025-12-02,2025-10-15,48,1,49,1,1,0,0,No,"2025-10,2025-11"
+1760441649328x246809715325009900,Wolt,"Specialist, Identity and Account Integrity",Operations,Operations Associate,Nenad Skoko,2025-10-14,2025-11-18,2025-10-24,25,10,35,1,1,0,0,No,"2025-10,2025-11"
+1760519147048x130925287439335420,Wolt,Merchant Services Associate - Romanian sprint ,Sales,Not apply,Jelena  Lacmanovic,2025-10-15,2025-10-24,2025-10-16,8,1,9,1,1,0,0,No,"2025-10,2025-11"
+1760524173747x671194034615877600,Wolt,Sales Representative-Athens Greece,Sales,Sales Development Rep,Tina Aramouni,2025-10-15,2025-11-13,2025-10-20,24,5,29,1,1,0,0,No,2025-10
+1760524380447x603301710509375500,Wolt,Sales Specialist- Novi Sad Serbia,Sales,Sales Development Rep,Tina Aramouni,2025-10-15,2026-01-06,2025-12-03,34,49,83,1,1,0,0,No,"2025-10,2025-11,2025-12"
+1760535523326x321490987868749800,Wolt,Kotlin Backend Engineer (i4+i5) - Merchant Group,Software Engineering,Backend,Simon  Siew,2025-10-15,2025-12-21,2025-12-02,19,48,67,0,0,1,1,Yes,"2025-10,2025-11,2025-12,2026-01"
+1760536147247x889731586193358800,Wolt,Data Science (i4) | Payments Fraud Team | Nordics ,Data Analytics,Data Scientist,Simon  Siew,2025-10-15,2025-11-16,2025-11-16,0,32,32,1,1,0,0,Yes,"2025-10,2025-11"
+1760622851682x383264704166101000,Wolt,"Operations Lead, Fleet Account Management",Operations,Not apply,Nenad Skoko,2025-10-16,2025-11-24,2025-10-23,32,7,39,1,1,0,0,No,"2025-10,2025-11"
+1760622898329x839934814849597400,Wolt,"Operations Specialist, Fleet Account Management",Operations,Operations Specialist,Nenad Skoko,2025-10-16,2025-11-11,2025-10-23,19,7,26,1,1,0,0,No,"2025-10,2025-11"
+1760705123186x156483284041465860,Wolt,"Operations Associate, Strategy & Innovation",Operations,Operations Associate,Kathleen Dongo,2025-10-17,2025-10-29,2025-10-17,12,0,12,1,1,0,0,No,"2025-10,2025-11"
+1760713537373x704406402013331500,Wolt,Store Operations Associate - Ampelokipoi [Evagelina],Other,Non-Tech,Evagelina Rapanaki,2025-10-17,2025-10-17,2025-10-17,0,0,0,1,1,1,1,No,"2025-10,2025-12,2026-01,2026-02"
+1760953316593x500187053740523500,Wolt,"Program Manager, Merchant Onboarding",Operations,Operations Manager,Alexandra Richiteanu,2025-10-20,2026-01-27,2025-11-17,71,28,99,1,1,0,0,No,"2025-11,2025-12"
+1761034624372x706854951388446700,Wolt,Merchant Services Specialist - Romanian sprint,Sales,Not apply,Jelena  Lacmanovic,2025-10-21,2025-10-24,2025-10-21,3,0,3,1,1,0,0,No,2025-10
+1761043818744x325493199021277200,Wolt,"Operations Associate, Fleet",Operations,Operations Associate,Nenad Skoko,2025-10-21,2025-11-17,2025-10-29,19,8,27,1,1,0,0,No,"2025-10,2025-11"
+1761043974790x643350435440361500,Wolt,"Analyst, Fleet Management",Data Analytics,Business Operations,Nenad Skoko,2025-10-21,2025-12-11,2025-12-02,9,42,51,1,1,0,0,Yes,"2025-10,2025-11,2025-12"
+1761116024104x491318497355497500,Wolt,Data & Business Systems Analyst,Operations,Operations Manager,Alexandra Richiteanu,2025-10-22,2026-01-12,2025-11-20,53,29,82,1,1,0,0,No,"2025-10,2025-11,2025-12"
+1761210413697x212805827988291600,Wolt,Store Operations Associate - Pireus [Evagelina],Operations,Operations Associate,Evagelina Rapanaki,2025-10-23,2025-10-23,2025-10-23,0,0,0,1,1,1,1,No,"2025-10,2026-02,2026-03"
+1761219503998x816374397525295100,Wolt,Store Operations Associate - Neos Kosmos [Evagelina],Operations,Operations Associate,Evagelina Rapanaki,2025-10-23,2025-10-23,2025-10-23,0,0,0,1,1,1,1,No,"2025-10,2025-11,2026-01,2026-02,2026-03"
+1761226014376x738348771115270100,Wolt,Store Operations Associate - Thessaloniki [Evagelina],Operations,Operations Associate,Evagelina Rapanaki,2025-10-23,2025-10-23,2025-10-23,0,0,0,1,1,0,0,No,"2025-10,2025-11"
+1761292931079x473513427817725950,Wolt,Store Operations Associate - Glyfada [Evagelina],Operations,Operations Associate,Evagelina Rapanaki,2025-10-24,2025-10-24,2025-10-24,0,0,0,1,1,1,1,No,"2025-10,2025-11,2025-12,2026-01"
+1761314025153x927572004352557000,Wolt,English and Georgian Speaking SA,Other,Non-Tech,Dora Vrbanić,2025-10-24,2025-10-27,2025-10-27,0,3,3,1,1,1,1,No,"2025-10,2025-11,2025-12,2026-01"
+1761320993371x378369833550217200,Wolt,Store Operations Associate - Marousi [Evagelina],Operations,Operations Associate,Evagelina Rapanaki,2025-10-24,2025-10-24,2025-10-24,0,0,0,1,1,1,1,No,"2025-10,2025-11,2025-12,2026-01,2026-02"
+1761548383579x530549920004571140,Wolt,Sales Support Associate- Nicosi Cyprus,Sales,Sales Operations,Tina Aramouni,2025-10-27,2025-11-13,2025-10-29,15,2,17,1,1,0,0,No,2025-10
+1761566918893x767766274399535100,Wolt,"Grocery Associate, Volume - Malta",Other,Non-Tech,Alisa Liddell,2025-10-27,2025-10-27,2025-10-27,0,0,0,1,1,1,1,No,"2025-10,2025-12,2026-01,2026-03"
+1761572696217x661641418633379800,Wolt,Category Associate (Analyst) - WM - Slovakia,Other,Non-Tech,Nenad Skoko,2025-10-27,2025-12-10,2025-11-13,27,17,44,1,1,0,0,No,"2025-10,2025-11,2025-12"
+1761646791675x140991170557771780,Wolt,Team Lead Merchant Onboarding,Other,Non-Tech,Tina Aramouni,2025-10-28,2025-12-08,2025-12-08,0,41,41,1,1,0,0,No,"2025-10,2025-11,2025-12"
+1761650691936x328900927371870200,Wolt,Head of Country Merchant Operations - North        ,Operations,Operations Manager,Alexandra Richiteanu,2025-10-28,2025-11-18,2025-10-31,18,3,21,1,1,0,0,No,2025-10
+1761650735922x956237569996095500,Wolt,Head of Country Merchant Operations - South,Operations,Operations Manager,Alexandra Richiteanu,2025-10-28,2025-11-12,2025-10-29,14,1,15,1,1,0,0,No,"2025-10,2025-11"
+1761727573047x620595660820316200,Wolt,"Grocery Associate, Volume, Latvia",Other,Non-Tech,Alisa Liddell,2025-10-29,2025-11-19,2025-11-18,1,20,21,1,1,1,1,No,"2025-11,2025-12,2026-01,2026-02,2026-03"
+1761737306267x967896837890506800,Wolt,Retail KAM/ Ops Team Lead,Sales,Account Manager,Niki Vokalkova,2025-10-29,2025-12-15,2025-11-04,41,6,47,1,1,0,0,No,"2025-10,2025-11,2025-12"
+1761748933442x708685536508772400,Wolt,AML & Fraud Lead,Other,Non-Tech,Chené Elliot,2025-10-29,2025-12-19,2025-10-29,51,0,51,0,0,1,0,No,2026-01
+1761902564608x298412660464287740,Wolt,Account Manager (Severni Cechy),Sales,Account Manager,Niki Vokalkova,2025-10-31,2026-01-05,2025-10-31,66,0,66,1,1,0,0,No,"2025-10,2025-11,2025-12"
+1762163648773x813572417710981100,Wolt,Merchant Associate,Sales,Merchant Acquisition,Niki Vokalkova,2025-11-03,2026-01-15,2025-11-26,50,23,73,0,0,1,1,No,"2025-11,2025-12,2026-01,2026-02,2026-03"
+1762167824784x222963017491152900,Wolt,Senior Technical Program Manager (Engg Ops),Engineering Management,Applications,Akash Singh,2025-11-03,2026-02-12,2025-11-27,77,24,101,1,1,1,0,Yes,"2025-11,2025-12,2026-02"
+1762252120988x575823447911301100,Wolt,WM Shift Lead - Athens [Evagelina],Operations,Operations Specialist,Evagelina Rapanaki,2025-11-04,2025-11-04,2025-11-04,0,0,0,1,1,1,1,No,"2025-11,2026-01"
+1762319532396x864588410687324200,Wolt,Restaurant Development Manager - KZ,Sales,Business Development,Adelya Khakimova,2025-11-05,2026-01-16,2025-11-07,70,2,72,1,1,0,0,No,"2025-11,2025-12"
+1762411572293x210163314271453200,Wolt,Partnership Associate,Sales,Merchant Acquisition,Adelya Khakimova,2025-11-06,2026-01-27,2025-11-14,74,8,82,0,0,1,0,No,"2025-11,2025-12,2026-01"
+1762505562305x839801504617726000,Wolt,Enterprise Key Account Manager Iceland,Sales,Account Manager,Jelena  Lacmanovic,2025-11-07,2026-03-16,2025-12-09,97,32,129,0,0,1,0,No,"2025-11,2025-12,2026-01"
+1762530696591x511515178720296960,Wolt,Key Account Manager Estonia,Sales,Account Manager,Jelena  Lacmanovic,2025-11-07,2025-12-18,2025-12-15,3,38,41,0,0,1,1,No,"2025-11,2025-12,2026-01,2026-02,2026-03,2026-04"
+1762784847632x878981653021851600,Wolt,"Store Manager (WM), Serbia, 2025",Other,Non-Tech,Nenad Skoko,2025-11-10,2026-02-16,2025-11-17,91,7,98,0,0,1,0,No,"2025-11,2025-12,2026-01,2026-02"
+1762786954641x198374404359979000,Wolt,People Associate Wolt Romania,HR,Not apply,Jovana Drakula,2025-11-10,2025-12-11,2025-11-13,28,3,31,1,1,0,0,No,"2025-11,2025-12"
+1762857268529x442663948357468160,Wolt,Support Associate- Geo HQ,Operations,Operations Associate,Tinatini Karaulashvili,2025-11-11,2025-11-11,2025-11-11,0,0,0,1,1,1,1,No,"2025-11,2025-12,2026-01,2026-02,2026-03"
+1762943671502x870278496041042000,Wolt,Store Manager - Athens,Other,Non-Tech,Jan Dokulil,2025-11-12,2026-01-06,2025-11-30,37,18,55,0,0,1,0,No,"2025-11,2025-12,2026-01,2026-03,2026-04"
+1762960259891x984074020393844700,Wolt,Merchant Services Specialist - KAZ,Sales,Sales Operations,Adelya Khakimova,2025-11-12,2025-12-18,2025-11-20,28,8,36,0,0,1,0,No,2026-01
+1762960947781x993372702578311200,Wolt,"Support Associate, Volume, Lithuania",Other,Non-Tech,Alisa Liddell,2025-11-12,2025-11-12,2025-11-12,0,0,0,1,1,1,1,No,"2025-11,2026-02,2026-03"
+1763135484281x998842934951149600,Wolt,Store Manager - Malta,Other,Non-Tech,Jan Dokulil,2025-11-14,2025-12-15,2025-12-06,9,22,31,1,1,0,0,No,"2025-11,2025-12"
+1763201272759x111282917265113090,Wolt,Wolt Capital Manager,Finance,Not apply,Chené Elliot,2025-11-15,2025-12-05,2025-12-04,1,19,20,1,1,0,0,No,"2025-11,2025-12"
+1763206069619x669583410020220900,Wolt,Finance & Strategy Manager,Finance,Finance Manager,Chené Elliot,2025-11-15,2025-12-19,2025-12-04,15,19,34,1,1,0,0,No,"2025-11,2025-12"
+1763370468139x167574670811856900,Wolt,Store Operations Associate - Cholargos [Evagelina],Operations,Operations Associate,Evagelina Rapanaki,2025-11-17,2025-11-17,2025-11-17,0,0,0,1,1,1,1,No,"2025-11,2025-12,2026-01,2026-02"
+1763444893376x418413443035430900,Wolt,Merchant Services Associate ,Sales,Merchant Acquisition,Adelya Khakimova,2025-11-18,2025-12-18,2025-11-26,22,8,30,0,0,1,0,No,"2025-11,2025-12,2026-01,2026-02"
+1763473402386x252331512514478100,Wolt,Country Head of Merchant Operations [Internal],Operations,Operations Manager,Alexandra Richiteanu,2025-11-18,2025-11-27,2025-11-20,7,2,9,1,1,0,0,No,2025-11
+1763490674815x327511964084076540,Wolt,Commercial Finance Operations Specialist - Romania,Other,Non-Tech,Jan Dokulil,2025-11-18,2026-01-09,2026-01-08,1,51,52,0,0,1,1,No,"2025-11,2025-12,2026-01"
+1763588080692x537345876791656450,Wolt,Category Manager - Berlin,Other,Non-Tech,Jan Dokulil,2025-11-19,2026-01-15,2025-11-20,56,1,57,1,1,0,0,No,"2025-11,2025-12"
+1763735559706x695521449525641200,Wolt,Grocery Associate Malmo (Sweden),Other,Non-Tech,Chantal Bozkurt,2025-11-21,2025-11-21,2025-11-21,0,0,0,1,1,1,1,No,"2025-11,2026-01"
+1763735699204x490577880536842200,Wolt,Grocery Associate Youth Worker (Sweden),Other,Non-Tech,Chantal Bozkurt,2025-11-21,2025-11-21,2025-11-21,0,0,0,0,0,1,1,No,"2025-11,2026-03"
+1763963412443x667726169628213200,Wolt,Entreprise Account Manager,Sales,Account Manager,Tina Aramouni,2025-11-24,2026-03-16,2025-12-10,96,16,112,0,0,1,0,No,"2025-11,2025-12,2026-01"
+1763973635379x439034900740833300,Wolt,Sales Activation Specialist ,Sales,Not apply,Jelena  Lacmanovic,2025-11-24,2025-11-28,2025-11-27,1,3,4,1,1,0,0,No,2025-11
+1763976958735x708603402722213900,Wolt,Store Operations Associate - Heraklion (Crete) [Evagelina],Operations,Operations Associate,Evagelina Rapanaki,2025-11-24,2025-11-24,2025-11-24,0,0,0,0,0,1,1,No,"2025-11,2026-02"
+1763999099759x617485781696512000,Wolt,Onboarding Specialist North Macedonia,Sales,Not apply,Jelena  Lacmanovic,2025-11-24,2026-01-20,2026-01-12,8,49,57,0,0,1,1,No,"2025-12,2026-01,2026-02,2026-03"
+1764138431756x115594070303440900,Wolt,Account Manager-Albania,Sales,Account Manager,Tina Aramouni,2025-11-26,2025-11-27,2025-11-26,1,0,1,0,1,0,0,No,2025-11
+1764257652910x325674457863028740,Wolt,"Merchant Onboarding Associate, Poland",Sales,Merchant Acquisition,Niki Vokalkova,2025-11-27,2025-12-22,2025-12-10,12,13,25,1,1,0,0,No,"2025-11,2025-12"
+1764343430592x781215404585123800,Wolt,"Category Manager, Hungary",Other,Non-Tech,Nenad Skoko,2025-11-28,2026-01-13,2025-11-30,44,2,46,1,1,0,0,No,"2025-11,2025-12"
+1764613922185x973196556201099300,Wolt,Store Manager - Tbilisi,Other,Non-Tech,Jan Dokulil,2025-12-01,2025-12-20,2025-12-01,19,0,19,0,0,1,0,No,"2025-12,2026-04"
+1764653541290x705128690803277800,Wolt,Ads Operations Specialist - Georgia ,Sales,Sales Operations,Adelya Khakimova,2025-12-02,2026-02-03,2025-12-02,63,0,63,0,0,1,0,No,"2025-12,2026-01"
+1764653641333x795992159993462800,Wolt,Restaurant Development Specialist - KAZ (Internal) ,Sales,Account Manager,Adelya Khakimova,2025-12-02,2026-01-16,2025-12-04,43,2,45,0,0,1,0,No,"2025-12,2026-01"
+1764678221103x752660447945293800,Wolt,Account Associate Norway,Sales,Not apply,Jelena  Lacmanovic,2025-12-02,2025-12-19,2025-12-02,17,0,17,1,1,0,0,No,2025-12
+1764688105201x609468025551454200,Wolt,Category Manager - Athens,Other,Non-Tech,Jan Dokulil,2025-12-02,2026-03-24,2026-01-18,65,47,112,0,0,1,1,No,"2025-12,2026-01,2026-02"
+1764742851535x106365557389393920,Wolt,Ads&Promos Specialist - Azerbaijan ,Sales,Sales Operations,Adelya Khakimova,2025-12-03,2026-03-20,2026-02-18,30,77,107,0,0,1,1,No,"2025-12,2026-01,2026-02"
+1764742916286x895706157151682600,Wolt,Enterprise Ads Sales Manager - Azerbaijan ,Sales,Sales Manager,Adelya Khakimova,2025-12-03,2026-01-16,2025-12-10,37,7,44,0,0,1,0,No,"2025-12,2026-01"
+1764834476041x769795967427018800,Wolt,"Analyst, Finance and Strategy",Finance,Not apply,Chené Elliot,2025-12-04,2026-02-01,2025-12-12,51,8,59,1,1,0,0,No,2025-12
+1764842214274x760758700418793500,Wolt,Sales Support Associate-Malta,Sales,Sales Operations,Tina Aramouni,2025-12-04,2026-03-04,2026-01-23,40,50,90,0,0,1,1,No,"2025-12,2026-01,2026-02"
+1764845358563x620189454627504100,Wolt,Merchant Services Specialist (Almaty) ,Sales,Merchant Acquisition,Adelya Khakimova,2025-12-04,2026-01-16,2025-12-04,43,0,43,0,1,0,0,No,2025-12
+1764857758741x664907103720177700,Wolt,"Support Associate, Kazakhstan, Volume, Alisa ",Other,Non-Tech,Alisa Liddell,2025-12-04,2025-12-04,2025-12-04,0,0,0,0,0,1,1,No,"2025-12,2026-01,2026-02"
+1764953609126x557529957519327200,Wolt,Grocery Shift Lead Norway,Other,Non-Tech,Chantal Bozkurt,2025-12-05,2025-12-05,2025-12-05,0,0,0,0,0,1,1,No,"2025-12,2026-01"
+1765103550711x381382910264213500,Wolt,Senior Backend Engineer (i5) |Kotlin | Germany (Dec'25) ,Software Engineering,Backend,Simon  Siew,2025-12-07,2025-12-07,2025-12-07,0,0,0,0,0,0,0,Yes,2025-12
+1765197531994x894038757239423000,Wolt,Store Operations Associate - Peristeri [Evagelina],Operations,Operations Associate,Evagelina Rapanaki,2025-12-08,2025-12-08,2025-12-08,0,0,0,0,0,0,0,No,2025-12
+1765277865484x817897032379269100,Wolt,Onboarding Associate Latvia,Sales,Not apply,Jelena  Lacmanovic,2025-12-09,2026-01-28,2025-12-19,40,10,50,1,1,0,0,No,2025-12
+1765457609488x262514621371121660,Wolt,"Category Specialist, Hungary",Other,Non-Tech,Nenad Skoko,2025-12-11,2026-03-04,2026-01-20,43,40,83,0,0,1,1,No,"2025-12,2026-01,2026-02"
+1765471333969x135539997847584770,Wolt,"Support Associate - Almaty, Kazakhstan",Other,Non-Tech,Iryna Dyda,2025-12-11,2025-12-18,2025-12-15,3,4,7,1,1,1,0,No,"2025-12,2026-03"
+1765551053261x191787351475748860,Wolt,Support Associate (Sweden),Other,Non-Tech,Chantal Bozkurt,2025-12-12,2025-12-12,2025-12-12,0,0,0,1,1,0,0,No,2025-12
+1765554206499x476548818528108540,Wolt,Grocery Associate Stockholm (Sweden),Other,Non-Tech,Chantal Bozkurt,2025-12-12,2025-12-12,2025-12-12,0,0,0,0,0,1,1,No,"2025-12,2026-01"
+1765554472175x471756823375904800,Wolt,Grocery Associate Bergen (Norway),Other,Non-Tech,Chantal Bozkurt,2025-12-12,2025-12-12,2025-12-12,0,0,0,1,1,0,0,No,2025-12
+1765785069309x340223413853356000,Wolt,Retail Account Specialist,Sales,Account Manager,Niki Vokalkova,2025-12-15,2026-01-08,2025-12-15,24,0,24,0,1,0,0,No,2025-12
+1765964544602x935500253115973600,Wolt,Merchant Manager,Sales,Merchant Acquisition,Niki Vokalkova,2025-12-17,2026-01-14,2025-12-17,28,0,28,0,1,0,0,No,2025-12
+1765965784354x580361412323049500,Wolt,Interim Store Team Lead,Other,Non-Tech,Alisa Liddell,2025-12-17,2025-12-19,2025-12-17,2,0,2,0,1,0,0,No,2025-12
+1766029954763x393444492042829800,Wolt,"Staff Engineer, Data group",Software Engineering,Backend,Akash Singh,2025-12-18,2026-02-24,2026-01-31,24,44,68,0,0,1,1,Yes,"2025-12,2026-01,2026-02"
+1766063616847x373919165871030300,Wolt,"Account Manager (Resto, CZ)",Sales,Account Manager,Niki Vokalkova,2025-12-18,2026-03-25,2026-03-25,0,97,97,0,0,1,1,No,"2025-12,2026-01,2026-02,2026-03"
+1766140975115x369558654623416300,Wolt,Onboarding Associate Sweden,Sales,Not apply,Jelena  Lacmanovic,2025-12-19,2026-03-17,2026-02-23,22,66,88,0,0,1,1,No,"2025-12,2026-01,2026-02,2026-03"
+1766157137586x197380244578500600,Wolt,Grocery Associate Orebro,Other,Non-Tech,Chantal Bozkurt,2025-12-19,2025-12-19,2025-12-19,0,0,0,0,0,0,0,No,2025-12
+1766491776973x990073586951127000,Wolt,Merchant Services Associate Sweden,Sales,Not apply,Jelena  Lacmanovic,2025-12-23,2026-01-12,2026-01-12,0,20,20,0,0,1,1,No,2026-01
+1766491924492x548561448549482500,Wolt,Merchant Services Associate Estonia,Sales,Not apply,Jelena  Lacmanovic,2025-12-23,2026-03-04,2026-03-04,0,71,71,0,0,1,1,No,"2026-01,2026-02,2026-03"
+1766491988541x198821386058727420,Wolt,Merchant Services Associate Norway,Sales,Not apply,Jelena  Lacmanovic,2025-12-23,2026-03-04,2026-01-22,41,30,71,0,0,1,1,No,2026-01
+1766504090036x401562054331465700,Wolt,"Store Manager (WM), Budapest, Q1 '26",Other,Non-Tech,Nenad Skoko,2025-12-23,2026-03-23,2026-02-10,41,49,90,0,0,1,1,No,"2025-12,2026-01,2026-02,2026-03"
+1766504126690x389245850631798800,Wolt,"Store Manager (WM), Zagreb, Q1 '26",Other,Non-Tech,Nenad Skoko,2025-12-23,2026-02-16,2026-01-23,24,31,55,0,0,1,1,No,"2025-12,2026-01,2026-02"
+1766585148915x515552998796296200,Wolt,"Grocery Shift Lead, Latvia ",Other,Non-Tech,Alisa Liddell,2025-12-24,2025-12-24,2025-12-24,0,0,0,0,0,1,0,No,"2025-12,2026-02"
+1766667939306x140760695436738560,Wolt,English and Georgian Support Associate - Ketevan - Full Time & Part Time,Operations,Operations Associate,Ketevan Khorava,2025-12-25,2025-12-25,2025-12-25,0,0,0,0,0,1,1,No,"2025-12,2026-01,2026-02,2026-03"
+1766986982382x824403752898003000,Wolt,Support Associate - Greece [Evagelina],Operations,Operations Associate,Evagelina Rapanaki,2025-12-29,2025-12-29,2025-12-29,0,0,0,0,0,0,0,No,2025-12
+1767021750691x422056541426024450,Wolt,Delivery Courier (Employed),Other,Non-Tech,Chantal Bozkurt,2025-12-29,2025-12-29,2025-12-29,0,0,0,0,0,1,1,No,"2025-12,2026-01,2026-02,2026-03"
+1767174268097x543133653435940860,Wolt,Support Associate (Volume) English Speaker - Budapest PT,Other,Non-Tech,Fuad Safarov,2025-12-31,2025-12-31,2025-12-31,0,0,0,0,0,1,1,No,"2025-12,2026-01,2026-02"
+1767174924550x877946111147900900,Wolt,Support Associate (Volume) English Speaker - Budapest FT,Other,Non-Tech,Fuad Safarov,2025-12-31,2025-12-31,2025-12-31,0,0,0,0,0,1,1,No,"2025-12,2026-01,2026-02"
+1767621266472x428297455735668740,Wolt,"Support Associate (Volume) - Tashkent, UZB",Other,Non-Tech,Iryna Dyda,2026-01-05,2026-01-05,2026-01-05,0,0,0,0,0,1,1,No,2026-01
+1767621798607x956608697254281200,Wolt,"Grocery Associate (Volume) - Almaty, KAZ",Other,Non-Tech,Iryna Dyda,2026-01-05,2026-01-05,2026-01-05,0,0,0,0,0,1,1,No,2026-01
+1767675755404x917962040101044200,Wolt,Country Head of Merchant Operations - AZE ,Sales,Sales Operations,Adelya Khakimova,2026-01-06,2026-03-17,2026-01-30,46,24,70,0,0,1,1,No,"2026-01,2026-02"
+1767713595713x165740410548518900,Wolt,Retail Account Manager I5,Sales,Account Manager,Niki Vokalkova,2026-01-06,2026-03-04,2026-01-08,55,2,57,0,0,1,1,No,2026-01
+1767786691374x595165427720781800,Wolt,Sales Manager-Kosovo,Sales,Sales Manager,Tina Aramouni,2026-01-07,2026-01-30,2026-01-07,23,0,23,0,0,1,1,No,"2026-01,2026-02,2026-03,2026-04"
+1768213332956x528393423333359600,Wolt,Merchant Services Associate Lithuania,Sales,Not apply,Jelena  Lacmanovic,2026-01-12,2026-03-20,2026-02-09,39,28,67,0,0,1,1,No,"2026-01,2026-02,2026-03"
+1768378790097x202503348029227000,Wolt,Account Management Specialist,Sales,Account Manager,Niki Vokalkova,2026-01-14,2026-01-14,2026-01-14,0,0,0,0,0,0,0,No,2026-01
+1768565745211x318510957896138750,Wolt,Account Manager - Albania,Sales,Account Manager,Jelena  Lacmanovic,2026-01-16,2026-03-24,2026-03-16,8,59,67,0,0,1,1,No,"2026-01,2026-02,2026-03"
+1768567274233x744058753526530000,Wolt,Sales Activation Specialist,Sales,Sales Manager,Jelena  Lacmanovic,2026-01-16,2026-03-24,2026-02-03,49,18,67,0,0,1,1,No,"2026-01,2026-02,2026-03"
+1768805517088x858701515938857000,Wolt,Merchant Services Associate KAZ (Internal) ,Sales,Merchant Acquisition,Adelya Khakimova,2026-01-19,2026-02-05,2026-01-25,11,6,17,0,0,1,1,No,2026-01
+1768980743242x265135202009350140,Wolt,Sales support Associate-Cyprus,Sales,Sales Operations,Tina Aramouni,2026-01-21,2026-03-31,2026-03-31,0,69,69,0,0,1,1,No,"2026-01,2026-02,2026-03"
+1769098481317x378812501440856060,Wolt,Senior Category Manager - Almaty,Other,Non-Tech,Jan Dokulil,2026-01-22,2026-03-26,2026-01-22,63,0,63,0,0,1,1,No,"2026-01,2026-02,2026-03"
+1769168011394x908489243964211200,Wolt,Support Shift Lead Denmark,Other,Non-Tech,Chantal Bozkurt,2026-01-23,2026-01-23,2026-01-23,0,0,0,0,0,0,0,No,2026-01
+1769169412044x823192598469935100,Wolt,Delivery Courier Norway,Other,Non-Tech,Chantal Bozkurt,2026-01-23,2026-01-23,2026-01-23,0,0,0,0,0,1,1,No,"2026-01,2026-02"
+1769981851834x322731975783219200,Wolt,Store Manager - Germany,Other,Non-Tech,Jan Dokulil,2026-02-01,2026-03-23,2026-03-23,0,50,50,0,0,1,1,No,"2026-02,2026-03"
+1770040562833x794297057542668300,Wolt,Store Team Lead - Tartu,Other,Non-Tech,Jan Dokulil,2026-02-02,2026-03-23,2026-03-23,0,49,49,0,0,1,1,No,"2026-02,2026-03"
+1770185363333x623686331173437400,Wolt,Merchant Onboarding Associate-Kosovo,Operations,Operations Associate,Tina Aramouni,2026-02-04,2026-03-31,2026-03-12,19,36,55,0,0,1,1,No,"2026-02,2026-03,2026-04"
+1770206150948x892765417504505900,Wolt,Key Account Manager - Lithuania,Sales,Account Manager,Jelena  Lacmanovic,2026-02-04,2026-03-09,2026-03-04,5,28,33,0,0,1,1,No,"2026-02,2026-03"
+1770378942910x625501068122652700,Wolt,Store Operations Associate - Nea Ionia [Evagelina],Operations,Operations Associate,Evagelina Rapanaki,2026-02-06,2026-02-06,2026-02-06,0,0,0,0,0,1,1,No,"2026-02,2026-03"
+1770801796940x425620521738043400,Wolt,Mx Onboarding Team Lead,Operations,Operations Manager,Niki Vokalkova,2026-02-11,2026-03-25,2026-02-11,42,0,42,0,0,0,1,No,2026-02
+1770818039020x685779221544960000,Wolt,Support Shift Lead-HQ,Other,Non-Tech,Tinatini Karaulashvili,2026-02-11,2026-02-23,2026-02-23,0,12,12,0,0,1,1,No,2026-02
+1770818202343x768840661550235600,Wolt,Support Shift Lead-SSC,Other,Non-Tech,Tinatini Karaulashvili,2026-02-11,2026-02-20,2026-02-20,0,9,9,0,0,1,1,No,2026-02
+1770883995206x567409820126674940,Wolt,Retail Operations Manager,Operations,Operations Manager,Niki Vokalkova,2026-02-12,2026-03-23,2026-02-12,39,0,39,0,0,1,1,No,"2026-02,2026-03"
+1770895741827x848372173169229800,Wolt,"Integration Specialist, Retail-Greece",Operations,Operations Specialist,Tina Aramouni,2026-02-12,2026-03-23,2026-03-04,19,20,39,0,0,1,1,No,"2026-02,2026-03"
+1770981667719x694328296739962900,Wolt,Senior Category Manager - Germany,Other,Non-Tech,Jan Dokulil,2026-02-13,2026-02-13,2026-02-13,0,0,0,0,0,0,0,No,2026-02
+1770983795307x773816109849116700,Wolt,"Store Team Lead, Latvia, Fixed-term",Other,Non-Tech,Nenad Skoko,2026-02-13,2026-04-10,2026-02-17,52,4,56,0,0,1,1,No,"2026-02,2026-03,2026-04"
+1771222981603x583196503150166000,Wolt,Support Associate Denmark,Other,Non-Tech,Chantal Bozkurt,2026-02-16,2026-02-16,2026-02-16,0,0,0,0,0,1,1,No,2026-02
+1771235082188x203591510786572300,Wolt,Workforce Manager (WM),Operations,Operations Manager,Nenad Skoko,2026-02-16,2026-02-16,2026-02-16,0,0,0,0,0,0,0,No,2026-02
+1771318519228x842259851193614300,Wolt,"Grocery Shift Lead, Cyprus, volume",Other,Non-Tech,Alisa Liddell,2026-02-17,2026-02-17,2026-02-17,0,0,0,0,0,0,0,No,2026-02
+1771404138802x813167543718510600,Wolt,Merchant Services Associate - AZE,Sales,Sales Operations,Adelya Khakimova,2026-02-18,2026-03-20,2026-02-27,21,9,30,0,0,1,1,No,"2026-02,2026-03"
+1771594439498x659665988139876400,Wolt,"Russian Speaking Support Associate, Volume, Latvia",Other,Non-Tech,Alisa Liddell,2026-02-20,2026-02-20,2026-02-20,0,0,0,0,0,1,1,No,"2026-02,2026-03"
+1772106953529x151512253670883330,Wolt,Grocery Shift Lead - Cyprus,Sales,Sales Operations,Fuad Safarov,2026-02-26,2026-02-26,2026-02-26,0,0,0,0,0,0,0,No,2026-02
+1772113417850x781928030718656500,Wolt,"Grocery Shift Lead, Cyprus, Volume",Other,Non-Tech,Alisa Liddell,2026-02-26,2026-02-26,2026-02-26,0,0,0,0,0,1,1,No,"2026-02,2026-03"
+1772797740165x677739617400913900,Wolt,Courier Deliver (employed),Other,Non-Tech,Fuad Safarov,2026-03-06,2026-03-06,2026-03-06,0,0,0,0,0,0,0,No,2026-03
+1772802693317x643077145620381700,Wolt,Latvian Speaking Support Associate,Other,Non-Tech,Alisa Liddell,2026-03-06,2026-03-06,2026-03-06,0,0,0,0,0,1,1,No,2026-03
+1773054750304x165099444290191360,Wolt,Store Manager - Cyprus,Other,Non-Tech,Jan Dokulil,2026-03-09,2026-04-02,2026-03-09,24,0,24,0,0,1,1,No,2026-03
+1774023019478x818745779943112700,Wolt,GA - CYPRUS,Other,Non-Tech,Fuad Safarov,2026-03-20,2026-03-20,2026-03-20,0,0,0,0,0,0,0,No,2026-03
+1774023134055x629061544645230600,Wolt,GSA - Malta,Other,Non-Tech,Fuad Safarov,2026-03-20,2026-03-20,2026-03-20,0,0,0,0,0,0,0,No,2026-03
+1774212042998x887972193019625500,Wolt,Business System Analyst Talent Solutions,Other,Non-Tech,Akash Singh,2026-03-22,2026-03-24,2026-03-22,2,0,2,0,0,0,1,No,2026-03
+1774290225510x707383052624461800,Wolt,Operations Team Lead,Operations,Not apply,Jan Dokulil,2026-03-23,2026-03-23,2026-03-23,0,0,0,0,0,0,0,No,2026-03
+1774538424889x170536098856960000,Wolt,Merchant Services Specialist,Operations,Operations Associate,Niki Vokalkova,2026-03-26,2026-04-17,2026-03-26,22,0,22,0,0,1,1,No,2026-03

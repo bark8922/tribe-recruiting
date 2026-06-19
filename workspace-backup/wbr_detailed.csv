@@ -1,0 +1,1630 @@
+section,client,ta,week,metric,live,snow,delta,status
+WBR,Aiven,Fuad Safarov,w15,contacted,56,55,-1,SMALL
+WBR,Aiven,Fuad Safarov,w15,screened,15,15,0,MATCH
+WBR,Aiven,Fuad Safarov,w15,actual_screens,12,12,0,MATCH
+WBR,Aiven,Fuad Safarov,w15,ats,8,8,0,MATCH
+WBR,Aiven,Vladimir Stankovic,w15,contacted,51,51,0,MATCH
+WBR,Aiven,Vladimir Stankovic,w15,screened,11,11,0,MATCH
+WBR,Aiven,Vladimir Stankovic,w15,actual_screens,7,7,0,MATCH
+WBR,Aiven,Vladimir Stankovic,w15,ats,3,3,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w5,contacted,140,140,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w5,screened,2,2,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w6,contacted,83,83,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w6,screened,17,17,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w6,actual_screens,17,17,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w6,ats,8,8,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w7,contacted,118,118,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w7,screened,17,17,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w7,actual_screens,17,17,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w7,ats,6,6,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w8,contacted,128,128,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w8,screened,33,33,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w8,actual_screens,24,24,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w8,ats,9,9,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w8,offers,1,1,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w9,contacted,109,109,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w9,screened,23,23,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w9,actual_screens,28,28,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w9,ats,13,13,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w10,contacted,101,101,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w10,screened,13,13,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w10,actual_screens,14,14,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w10,ats,8,8,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w10,offers,2,2,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w11,contacted,52,52,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w11,screened,21,21,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w11,actual_screens,14,14,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w11,ats,2,2,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w11,offers,2,2,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w11,hires,2,2,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w12,contacted,30,30,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w12,screened,5,5,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w12,actual_screens,4,4,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w13,contacted,5,5,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w13,screened,10,10,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w13,actual_screens,11,11,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w13,ats,4,4,0,MATCH
+WBR,Aviv,Alexandra Richiteanu,w14,contacted,2,2,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w5,contacted,143,143,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w5,screened,21,21,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w5,actual_screens,9,9,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w5,ats,2,2,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w6,contacted,103,103,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w6,screened,33,33,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w6,actual_screens,20,20,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w6,ats,10,10,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w7,contacted,104,104,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w7,screened,18,18,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w7,actual_screens,15,15,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w7,ats,6,6,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w8,contacted,79,79,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w8,screened,36,36,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w8,actual_screens,26,26,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w8,ats,15,15,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w8,offers,2,2,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w8,hires,1,1,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w9,contacted,1,1,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w9,screened,21,21,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w9,actual_screens,13,13,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w9,ats,7,7,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w9,hires,1,1,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w10,contacted,91,91,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w10,screened,19,19,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w10,actual_screens,16,16,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w10,ats,13,13,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w11,contacted,162,162,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w11,screened,24,24,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w11,actual_screens,15,15,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w11,ats,10,10,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w12,screened,5,5,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w12,actual_screens,7,7,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w12,ats,5,5,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w14,contacted,104,104,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w14,screened,32,32,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w14,actual_screens,11,11,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w14,ats,8,8,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w15,contacted,102,102,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w15,screened,11,11,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w15,actual_screens,13,13,0,MATCH
+WBR,Aviv,Anna Tyulpanova,w15,ats,11,11,0,MATCH
+WBR,Aviv,Jovana Drakula,w6,contacted,131,131,0,MATCH
+WBR,Aviv,Jovana Drakula,w6,screened,18,18,0,MATCH
+WBR,Aviv,Jovana Drakula,w7,contacted,48,48,0,MATCH
+WBR,Aviv,Jovana Drakula,w7,screened,25,25,0,MATCH
+WBR,Aviv,Jovana Drakula,w8,contacted,97,97,0,MATCH
+WBR,Aviv,Jovana Drakula,w8,screened,16,16,0,MATCH
+WBR,Aviv,Jovana Drakula,w8,actual_screens,2,2,0,MATCH
+WBR,Aviv,Jovana Drakula,w8,ats,2,2,0,MATCH
+WBR,Aviv,Jovana Drakula,w9,contacted,129,129,0,MATCH
+WBR,Aviv,Jovana Drakula,w9,screened,36,36,0,MATCH
+WBR,Aviv,Jovana Drakula,w9,actual_screens,9,9,0,MATCH
+WBR,Aviv,Jovana Drakula,w9,ats,9,9,0,MATCH
+WBR,Aviv,Jovana Drakula,w10,contacted,110,110,0,MATCH
+WBR,Aviv,Jovana Drakula,w10,screened,33,33,0,MATCH
+WBR,Aviv,Jovana Drakula,w10,actual_screens,8,8,0,MATCH
+WBR,Aviv,Jovana Drakula,w10,ats,8,8,0,MATCH
+WBR,Aviv,Jovana Drakula,w11,contacted,72,72,0,MATCH
+WBR,Aviv,Jovana Drakula,w11,screened,12,12,0,MATCH
+WBR,Aviv,Jovana Drakula,w11,actual_screens,5,5,0,MATCH
+WBR,Aviv,Jovana Drakula,w11,ats,5,5,0,MATCH
+WBR,Aviv,Jovana Drakula,w12,contacted,18,18,0,MATCH
+WBR,Aviv,Jovana Drakula,w12,screened,7,7,0,MATCH
+WBR,Aviv,Jovana Drakula,w12,actual_screens,4,4,0,MATCH
+WBR,Aviv,Jovana Drakula,w12,ats,4,4,0,MATCH
+WBR,Aviv,Jovana Drakula,w13,contacted,49,49,0,MATCH
+WBR,Aviv,Jovana Drakula,w13,screened,10,10,0,MATCH
+WBR,Aviv,Jovana Drakula,w13,actual_screens,9,9,0,MATCH
+WBR,Aviv,Jovana Drakula,w13,ats,10,10,0,MATCH
+WBR,Aviv,Jovana Drakula,w14,contacted,102,102,0,MATCH
+WBR,Aviv,Jovana Drakula,w14,screened,15,15,0,MATCH
+WBR,Aviv,Jovana Drakula,w15,contacted,110,110,0,MATCH
+WBR,Aviv,Jovana Drakula,w15,screened,12,12,0,MATCH
+WBR,Aviv,Jovana Drakula,w15,actual_screens,11,10,-1,SMALL
+WBR,Aviv,Jovana Drakula,w15,ats,2,2,0,MATCH
+WBR,Aviv,Kristina Colovic,w5,contacted,216,216,0,MATCH
+WBR,Aviv,Kristina Colovic,w5,screened,17,17,0,MATCH
+WBR,Aviv,Kristina Colovic,w5,actual_screens,4,4,0,MATCH
+WBR,Aviv,Kristina Colovic,w5,ats,2,2,0,MATCH
+WBR,Aviv,Kristina Colovic,w6,contacted,193,193,0,MATCH
+WBR,Aviv,Kristina Colovic,w6,screened,20,20,0,MATCH
+WBR,Aviv,Kristina Colovic,w6,actual_screens,15,15,0,MATCH
+WBR,Aviv,Kristina Colovic,w6,ats,6,6,0,MATCH
+WBR,Aviv,Kristina Colovic,w7,contacted,155,155,0,MATCH
+WBR,Aviv,Kristina Colovic,w7,screened,15,15,0,MATCH
+WBR,Aviv,Kristina Colovic,w7,actual_screens,15,15,0,MATCH
+WBR,Aviv,Kristina Colovic,w7,ats,9,9,0,MATCH
+WBR,Aviv,Kristina Colovic,w7,offers,1,1,0,MATCH
+WBR,Aviv,Kristina Colovic,w8,contacted,139,139,0,MATCH
+WBR,Aviv,Kristina Colovic,w8,screened,12,12,0,MATCH
+WBR,Aviv,Kristina Colovic,w8,actual_screens,14,14,0,MATCH
+WBR,Aviv,Kristina Colovic,w8,ats,9,9,0,MATCH
+WBR,Aviv,Kristina Colovic,w9,contacted,360,360,0,MATCH
+WBR,Aviv,Kristina Colovic,w9,screened,21,21,0,MATCH
+WBR,Aviv,Kristina Colovic,w9,actual_screens,10,10,0,MATCH
+WBR,Aviv,Kristina Colovic,w9,ats,3,3,0,MATCH
+WBR,Aviv,Kristina Colovic,w10,contacted,274,274,0,MATCH
+WBR,Aviv,Kristina Colovic,w10,screened,34,34,0,MATCH
+WBR,Aviv,Kristina Colovic,w10,actual_screens,15,15,0,MATCH
+WBR,Aviv,Kristina Colovic,w10,ats,9,9,0,MATCH
+WBR,Aviv,Kristina Colovic,w11,contacted,144,144,0,MATCH
+WBR,Aviv,Kristina Colovic,w11,screened,28,28,0,MATCH
+WBR,Aviv,Kristina Colovic,w11,actual_screens,18,18,0,MATCH
+WBR,Aviv,Kristina Colovic,w11,ats,10,10,0,MATCH
+WBR,Aviv,Kristina Colovic,w11,offers,2,2,0,MATCH
+WBR,Aviv,Kristina Colovic,w11,hires,1,1,0,MATCH
+WBR,Aviv,Kristina Colovic,w12,contacted,85,85,0,MATCH
+WBR,Aviv,Kristina Colovic,w12,screened,8,8,0,MATCH
+WBR,Aviv,Kristina Colovic,w12,actual_screens,12,12,0,MATCH
+WBR,Aviv,Kristina Colovic,w12,ats,10,10,0,MATCH
+WBR,Aviv,Kristina Colovic,w12,offers,2,2,0,MATCH
+WBR,Aviv,Kristina Colovic,w12,hires,2,2,0,MATCH
+WBR,Aviv,Kristina Colovic,w13,screened,1,1,0,MATCH
+WBR,Aviv,Kristina Colovic,w13,actual_screens,1,1,0,MATCH
+WBR,Aviv,Kristina Colovic,w14,contacted,51,51,0,MATCH
+WBR,Aviv,Kristina Colovic,w14,screened,2,2,0,MATCH
+WBR,Aviv,Kristina Colovic,w15,contacted,48,48,0,MATCH
+WBR,Aviv,Kristina Colovic,w15,screened,17,17,0,MATCH
+WBR,Aviv,Kristina Colovic,w15,actual_screens,11,11,0,MATCH
+WBR,Aviv,Kristina Colovic,w15,ats,8,8,0,MATCH
+WBR,Aviv,Lejla Silva,w5,contacted,100,100,0,MATCH
+WBR,Aviv,Lejla Silva,w5,screened,17,17,0,MATCH
+WBR,Aviv,Lejla Silva,w5,actual_screens,7,7,0,MATCH
+WBR,Aviv,Lejla Silva,w5,ats,5,5,0,MATCH
+WBR,Aviv,Lejla Silva,w6,contacted,22,22,0,MATCH
+WBR,Aviv,Lejla Silva,w6,screened,7,7,0,MATCH
+WBR,Aviv,Lejla Silva,w6,actual_screens,14,14,0,MATCH
+WBR,Aviv,Lejla Silva,w6,ats,11,11,0,MATCH
+WBR,Aviv,Lejla Silva,w7,contacted,15,15,0,MATCH
+WBR,Aviv,Lejla Silva,w7,screened,3,3,0,MATCH
+WBR,Aviv,Lejla Silva,w7,actual_screens,2,2,0,MATCH
+WBR,Aviv,Lejla Silva,w7,ats,2,2,0,MATCH
+WBR,Aviv,Lejla Silva,w7,offers,1,1,0,MATCH
+WBR,Aviv,Lejla Silva,w7,hires,1,1,0,MATCH
+WBR,Aviv,Lejla Silva,w8,contacted,23,23,0,MATCH
+WBR,Aviv,Lejla Silva,w8,screened,8,8,0,MATCH
+WBR,Aviv,Lejla Silva,w8,actual_screens,5,5,0,MATCH
+WBR,Aviv,Lejla Silva,w8,ats,2,2,0,MATCH
+WBR,Aviv,Lejla Silva,w9,contacted,158,158,0,MATCH
+WBR,Aviv,Lejla Silva,w9,screened,7,7,0,MATCH
+WBR,Aviv,Lejla Silva,w9,actual_screens,5,5,0,MATCH
+WBR,Aviv,Lejla Silva,w9,ats,2,2,0,MATCH
+WBR,Aviv,Lejla Silva,w9,offers,1,1,0,MATCH
+WBR,Aviv,Lejla Silva,w9,hires,1,1,0,MATCH
+WBR,Aviv,Lejla Silva,w10,contacted,38,38,0,MATCH
+WBR,Aviv,Lejla Silva,w10,screened,14,14,0,MATCH
+WBR,Aviv,Lejla Silva,w10,actual_screens,14,14,0,MATCH
+WBR,Aviv,Lejla Silva,w10,ats,7,7,0,MATCH
+WBR,Aviv,Lejla Silva,w11,contacted,1,1,0,MATCH
+WBR,Aviv,Lejla Silva,w11,screened,4,4,0,MATCH
+WBR,Aviv,Lejla Silva,w11,actual_screens,5,5,0,MATCH
+WBR,Aviv,Lejla Silva,w11,ats,3,3,0,MATCH
+WBR,Aviv,Lejla Silva,w12,contacted,42,41,-1,SMALL
+WBR,Aviv,Lejla Silva,w13,contacted,74,74,0,MATCH
+WBR,Aviv,Lejla Silva,w13,screened,19,18,-1,SMALL
+WBR,Aviv,Lejla Silva,w13,actual_screens,11,11,0,MATCH
+WBR,Aviv,Lejla Silva,w13,ats,6,6,0,MATCH
+WBR,Aviv,Lejla Silva,w14,contacted,303,301,-2,SMALL
+WBR,Aviv,Lejla Silva,w14,screened,32,31,-1,SMALL
+WBR,Aviv,Lejla Silva,w14,actual_screens,20,20,0,MATCH
+WBR,Aviv,Lejla Silva,w14,ats,14,14,0,MATCH
+WBR,Aviv,Lejla Silva,w15,contacted,204,204,0,MATCH
+WBR,Aviv,Lejla Silva,w15,screened,35,35,0,MATCH
+WBR,Aviv,Lejla Silva,w15,actual_screens,23,23,0,MATCH
+WBR,Aviv,Lejla Silva,w15,ats,16,16,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w5,contacted,125,125,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w5,screened,6,6,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w5,actual_screens,4,4,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w6,contacted,104,104,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w6,screened,16,16,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w6,actual_screens,10,10,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w6,ats,6,6,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w7,contacted,188,188,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w7,screened,16,16,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w7,actual_screens,9,9,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w7,ats,3,3,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w8,contacted,139,139,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w8,screened,23,23,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w8,actual_screens,14,14,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w8,ats,7,7,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w9,contacted,19,19,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w9,screened,24,24,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w9,actual_screens,15,15,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w9,ats,6,6,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w10,contacted,141,141,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w10,screened,20,20,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w10,actual_screens,21,21,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w10,ats,16,16,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w11,contacted,16,16,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w11,screened,29,29,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w11,actual_screens,17,17,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w11,ats,10,10,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w12,contacted,30,30,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w12,screened,8,8,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w12,actual_screens,12,12,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w12,ats,6,6,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w13,contacted,56,56,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w13,screened,20,20,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w13,actual_screens,14,14,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w13,ats,6,6,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w14,contacted,30,30,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w14,screened,9,9,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w14,actual_screens,4,4,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w14,ats,1,1,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w15,contacted,125,125,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w15,screened,18,18,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w15,actual_screens,11,11,0,MATCH
+WBR,Aviv,Wladyslaw Gadomski,w15,ats,7,7,0,MATCH
+WBR,DoorDash,Akash Singh,w2,contacted,12,12,0,MATCH
+WBR,DoorDash,Akash Singh,w2,screened,13,13,0,MATCH
+WBR,DoorDash,Akash Singh,w2,actual_screens,14,14,0,MATCH
+WBR,DoorDash,Akash Singh,w2,ats,12,12,0,MATCH
+WBR,DoorDash,Akash Singh,w3,contacted,18,18,0,MATCH
+WBR,DoorDash,Akash Singh,w3,screened,16,16,0,MATCH
+WBR,DoorDash,Akash Singh,w3,actual_screens,16,16,0,MATCH
+WBR,DoorDash,Akash Singh,w3,ats,10,10,0,MATCH
+WBR,DoorDash,Akash Singh,w3,offers,1,1,0,MATCH
+WBR,DoorDash,Akash Singh,w4,contacted,28,28,0,MATCH
+WBR,DoorDash,Akash Singh,w4,screened,27,27,0,MATCH
+WBR,DoorDash,Akash Singh,w4,actual_screens,27,27,0,MATCH
+WBR,DoorDash,Akash Singh,w4,ats,21,21,0,MATCH
+WBR,DoorDash,Akash Singh,w5,contacted,12,12,0,MATCH
+WBR,DoorDash,Akash Singh,w5,screened,13,13,0,MATCH
+WBR,DoorDash,Akash Singh,w5,actual_screens,13,13,0,MATCH
+WBR,DoorDash,Akash Singh,w5,ats,9,9,0,MATCH
+WBR,DoorDash,Akash Singh,w5,offers,1,1,0,MATCH
+WBR,DoorDash,Akash Singh,w6,contacted,28,28,0,MATCH
+WBR,DoorDash,Akash Singh,w6,screened,28,28,0,MATCH
+WBR,DoorDash,Akash Singh,w6,actual_screens,28,28,0,MATCH
+WBR,DoorDash,Akash Singh,w6,ats,18,18,0,MATCH
+WBR,DoorDash,Akash Singh,w6,hires,1,1,0,MATCH
+WBR,DoorDash,Akash Singh,w7,contacted,18,18,0,MATCH
+WBR,DoorDash,Akash Singh,w7,screened,18,18,0,MATCH
+WBR,DoorDash,Akash Singh,w7,actual_screens,18,18,0,MATCH
+WBR,DoorDash,Akash Singh,w7,ats,14,14,0,MATCH
+WBR,DoorDash,Akash Singh,w7,offers,2,2,0,MATCH
+WBR,DoorDash,Akash Singh,w8,contacted,21,21,0,MATCH
+WBR,DoorDash,Akash Singh,w8,screened,21,21,0,MATCH
+WBR,DoorDash,Akash Singh,w8,actual_screens,21,21,0,MATCH
+WBR,DoorDash,Akash Singh,w8,ats,16,16,0,MATCH
+WBR,DoorDash,Akash Singh,w8,offers,1,1,0,MATCH
+WBR,DoorDash,Akash Singh,w8,hires,1,1,0,MATCH
+WBR,DoorDash,Akash Singh,w9,contacted,20,20,0,MATCH
+WBR,DoorDash,Akash Singh,w9,screened,19,19,0,MATCH
+WBR,DoorDash,Akash Singh,w9,actual_screens,19,19,0,MATCH
+WBR,DoorDash,Akash Singh,w9,ats,14,14,0,MATCH
+WBR,DoorDash,Akash Singh,w9,hires,1,1,0,MATCH
+WBR,DoorDash,Akash Singh,w10,contacted,8,8,0,MATCH
+WBR,DoorDash,Akash Singh,w10,screened,8,8,0,MATCH
+WBR,DoorDash,Akash Singh,w10,actual_screens,8,8,0,MATCH
+WBR,DoorDash,Akash Singh,w10,ats,3,3,0,MATCH
+WBR,DoorDash,Akash Singh,w10,offers,1,1,0,MATCH
+WBR,DoorDash,Akash Singh,w10,hires,1,1,0,MATCH
+WBR,DoorDash,Akash Singh,w12,contacted,4,4,0,MATCH
+WBR,DoorDash,Akash Singh,w12,screened,4,4,0,MATCH
+WBR,DoorDash,Akash Singh,w12,actual_screens,4,4,0,MATCH
+WBR,DoorDash,Akash Singh,w12,ats,3,3,0,MATCH
+WBR,DoorDash,Akash Singh,w12,offers,7,7,0,MATCH
+WBR,DoorDash,Akash Singh,w12,hires,2,2,0,MATCH
+WBR,DoorDash,Akash Singh,w13,contacted,2,2,0,MATCH
+WBR,DoorDash,Akash Singh,w13,screened,2,2,0,MATCH
+WBR,DoorDash,Akash Singh,w13,actual_screens,2,2,0,MATCH
+WBR,DoorDash,Akash Singh,w13,ats,2,2,0,MATCH
+WBR,DoorDash,Akash Singh,w13,offers,1,1,0,MATCH
+WBR,DoorDash,Akash Singh,w13,hires,4,4,0,MATCH
+WBR,DoorDash,Akash Singh,w14,offers,1,1,0,MATCH
+WBR,DoorDash,Danish Shams,w2,contacted,17,17,0,MATCH
+WBR,DoorDash,Danish Shams,w2,screened,17,17,0,MATCH
+WBR,DoorDash,Danish Shams,w2,actual_screens,16,16,0,MATCH
+WBR,DoorDash,Danish Shams,w2,ats,14,14,0,MATCH
+WBR,DoorDash,Danish Shams,w3,contacted,13,13,0,MATCH
+WBR,DoorDash,Danish Shams,w3,screened,13,13,0,MATCH
+WBR,DoorDash,Danish Shams,w3,actual_screens,13,13,0,MATCH
+WBR,DoorDash,Danish Shams,w3,ats,10,10,0,MATCH
+WBR,DoorDash,Danish Shams,w4,contacted,16,16,0,MATCH
+WBR,DoorDash,Danish Shams,w4,screened,16,16,0,MATCH
+WBR,DoorDash,Danish Shams,w4,actual_screens,16,16,0,MATCH
+WBR,DoorDash,Danish Shams,w4,ats,7,7,0,MATCH
+WBR,DoorDash,Danish Shams,w5,contacted,13,13,0,MATCH
+WBR,DoorDash,Danish Shams,w5,screened,13,13,0,MATCH
+WBR,DoorDash,Danish Shams,w5,actual_screens,11,11,0,MATCH
+WBR,DoorDash,Danish Shams,w5,ats,8,8,0,MATCH
+WBR,DoorDash,Danish Shams,w6,contacted,15,15,0,MATCH
+WBR,DoorDash,Danish Shams,w6,screened,15,15,0,MATCH
+WBR,DoorDash,Danish Shams,w6,actual_screens,14,14,0,MATCH
+WBR,DoorDash,Danish Shams,w6,ats,9,9,0,MATCH
+WBR,DoorDash,Danish Shams,w7,contacted,11,11,0,MATCH
+WBR,DoorDash,Danish Shams,w7,screened,11,11,0,MATCH
+WBR,DoorDash,Danish Shams,w7,actual_screens,11,11,0,MATCH
+WBR,DoorDash,Danish Shams,w7,ats,10,10,0,MATCH
+WBR,DoorDash,Danish Shams,w8,contacted,14,14,0,MATCH
+WBR,DoorDash,Danish Shams,w8,screened,14,14,0,MATCH
+WBR,DoorDash,Danish Shams,w8,actual_screens,14,14,0,MATCH
+WBR,DoorDash,Danish Shams,w8,ats,12,12,0,MATCH
+WBR,DoorDash,Danish Shams,w8,offers,1,1,0,MATCH
+WBR,DoorDash,Danish Shams,w8,hires,1,1,0,MATCH
+WBR,DoorDash,Danish Shams,w9,contacted,1,1,0,MATCH
+WBR,DoorDash,Danish Shams,w10,contacted,13,13,0,MATCH
+WBR,DoorDash,Danish Shams,w10,screened,14,14,0,MATCH
+WBR,DoorDash,Danish Shams,w10,actual_screens,14,14,0,MATCH
+WBR,DoorDash,Danish Shams,w10,ats,10,10,0,MATCH
+WBR,DoorDash,Danish Shams,w11,contacted,11,11,0,MATCH
+WBR,DoorDash,Danish Shams,w11,screened,11,11,0,MATCH
+WBR,DoorDash,Danish Shams,w11,actual_screens,11,11,0,MATCH
+WBR,DoorDash,Danish Shams,w11,ats,6,6,0,MATCH
+WBR,DoorDash,Nidhi Raina,w5,contacted,3,3,0,MATCH
+WBR,DoorDash,Nidhi Raina,w5,screened,3,3,0,MATCH
+WBR,DoorDash,Nidhi Raina,w5,actual_screens,3,3,0,MATCH
+WBR,DoorDash,Nidhi Raina,w5,ats,3,3,0,MATCH
+WBR,DoorDash,Nidhi Raina,w6,contacted,29,29,0,MATCH
+WBR,DoorDash,Nidhi Raina,w6,screened,27,27,0,MATCH
+WBR,DoorDash,Nidhi Raina,w6,actual_screens,8,8,0,MATCH
+WBR,DoorDash,Nidhi Raina,w6,ats,4,4,0,MATCH
+WBR,DoorDash,Nidhi Raina,w7,contacted,13,13,0,MATCH
+WBR,DoorDash,Nidhi Raina,w7,screened,12,12,0,MATCH
+WBR,DoorDash,Nidhi Raina,w7,actual_screens,7,7,0,MATCH
+WBR,DoorDash,Nidhi Raina,w7,ats,5,5,0,MATCH
+WBR,DoorDash,Nidhi Raina,w8,contacted,28,28,0,MATCH
+WBR,DoorDash,Nidhi Raina,w8,screened,30,30,0,MATCH
+WBR,DoorDash,Nidhi Raina,w8,actual_screens,40,40,0,MATCH
+WBR,DoorDash,Nidhi Raina,w8,ats,38,38,0,MATCH
+WBR,DoorDash,Nidhi Raina,w9,contacted,44,44,0,MATCH
+WBR,DoorDash,Nidhi Raina,w9,screened,42,42,0,MATCH
+WBR,DoorDash,Nidhi Raina,w9,actual_screens,39,39,0,MATCH
+WBR,DoorDash,Nidhi Raina,w9,ats,32,32,0,MATCH
+WBR,DoorDash,Nidhi Raina,w10,contacted,18,18,0,MATCH
+WBR,DoorDash,Nidhi Raina,w10,screened,18,18,0,MATCH
+WBR,DoorDash,Nidhi Raina,w10,actual_screens,16,16,0,MATCH
+WBR,DoorDash,Nidhi Raina,w10,ats,16,16,0,MATCH
+WBR,DoorDash,Nidhi Raina,w12,contacted,73,73,0,MATCH
+WBR,DoorDash,Nidhi Raina,w12,screened,22,22,0,MATCH
+WBR,DoorDash,Nidhi Raina,w12,actual_screens,11,11,0,MATCH
+WBR,DoorDash,Nidhi Raina,w12,ats,10,10,0,MATCH
+WBR,DoorDash,Nidhi Raina,w14,contacted,61,61,0,MATCH
+WBR,DoorDash,Nidhi Raina,w14,screened,12,12,0,MATCH
+WBR,DoorDash,Nidhi Raina,w14,actual_screens,2,2,0,MATCH
+WBR,DoorDash,Nidhi Raina,w14,ats,2,2,0,MATCH
+WBR,Enam,Aleksandra Vistac,w1,contacted,0,18,18,BIG
+WBR,Enam,Aleksandra Vistac,w1,screened,0,4,4,BIG
+WBR,Enam,Aleksandra Vistac,w1,actual_screens,0,3,3,SMALL
+WBR,Enam,Aleksandra Vistac,w2,contacted,70,70,0,MATCH
+WBR,Enam,Aleksandra Vistac,w2,screened,12,12,0,MATCH
+WBR,Enam,Aleksandra Vistac,w3,contacted,166,166,0,MATCH
+WBR,Enam,Aleksandra Vistac,w3,screened,53,53,0,MATCH
+WBR,Enam,Aleksandra Vistac,w3,actual_screens,14,14,0,MATCH
+WBR,Enam,Aleksandra Vistac,w3,ats,4,4,0,MATCH
+WBR,Enam,Aleksandra Vistac,w3,offers,1,1,0,MATCH
+WBR,Enam,Aleksandra Vistac,w4,contacted,156,156,0,MATCH
+WBR,Enam,Aleksandra Vistac,w4,screened,20,20,0,MATCH
+WBR,Enam,Aleksandra Vistac,w4,actual_screens,17,17,0,MATCH
+WBR,Enam,Aleksandra Vistac,w4,ats,4,4,0,MATCH
+WBR,Enam,Aleksandra Vistac,w4,hires,1,1,0,MATCH
+WBR,Enam,Aleksandra Vistac,w5,screened,35,35,0,MATCH
+WBR,Enam,Aleksandra Vistac,w5,actual_screens,12,12,0,MATCH
+WBR,Enam,Aleksandra Vistac,w5,ats,6,6,0,MATCH
+WBR,Enam,Aleksandra Vistac,w6,contacted,41,41,0,MATCH
+WBR,Enam,Aleksandra Vistac,w6,screened,4,4,0,MATCH
+WBR,Enam,Aleksandra Vistac,w6,actual_screens,18,18,0,MATCH
+WBR,Enam,Aleksandra Vistac,w6,ats,7,7,0,MATCH
+WBR,Enam,Aleksandra Vistac,w7,contacted,56,56,0,MATCH
+WBR,Enam,Aleksandra Vistac,w7,screened,8,8,0,MATCH
+WBR,Enam,Aleksandra Vistac,w7,actual_screens,18,18,0,MATCH
+WBR,Enam,Aleksandra Vistac,w7,ats,5,5,0,MATCH
+WBR,Enam,Aleksandra Vistac,w8,contacted,35,35,0,MATCH
+WBR,Enam,Aleksandra Vistac,w8,screened,15,15,0,MATCH
+WBR,Enam,Aleksandra Vistac,w8,actual_screens,16,16,0,MATCH
+WBR,Enam,Aleksandra Vistac,w8,ats,7,7,0,MATCH
+WBR,Enam,Aleksandra Vistac,w9,contacted,55,55,0,MATCH
+WBR,Enam,Aleksandra Vistac,w9,screened,21,21,0,MATCH
+WBR,Enam,Aleksandra Vistac,w9,actual_screens,10,10,0,MATCH
+WBR,Enam,Aleksandra Vistac,w9,ats,6,6,0,MATCH
+WBR,Enam,Aleksandra Vistac,w9,offers,1,1,0,MATCH
+WBR,Enam,Aleksandra Vistac,w10,contacted,71,71,0,MATCH
+WBR,Enam,Aleksandra Vistac,w10,screened,5,5,0,MATCH
+WBR,Enam,Aleksandra Vistac,w10,actual_screens,11,11,0,MATCH
+WBR,Enam,Aleksandra Vistac,w10,ats,6,6,0,MATCH
+WBR,Enam,Aleksandra Vistac,w10,hires,1,1,0,MATCH
+WBR,Enam,Aleksandra Vistac,w11,contacted,80,80,0,MATCH
+WBR,Enam,Aleksandra Vistac,w11,screened,17,17,0,MATCH
+WBR,Enam,Aleksandra Vistac,w11,actual_screens,13,13,0,MATCH
+WBR,Enam,Aleksandra Vistac,w11,ats,5,5,0,MATCH
+WBR,Enam,Aleksandra Vistac,w12,contacted,73,73,0,MATCH
+WBR,Enam,Aleksandra Vistac,w12,screened,12,12,0,MATCH
+WBR,Enam,Aleksandra Vistac,w12,actual_screens,12,12,0,MATCH
+WBR,Enam,Aleksandra Vistac,w12,ats,8,8,0,MATCH
+WBR,Enam,Aleksandra Vistac,w13,contacted,47,47,0,MATCH
+WBR,Enam,Aleksandra Vistac,w13,screened,4,4,0,MATCH
+WBR,Enam,Aleksandra Vistac,w13,actual_screens,7,7,0,MATCH
+WBR,Enam,Aleksandra Vistac,w13,ats,2,2,0,MATCH
+WBR,Enam,Aleksandra Vistac,w14,contacted,38,38,0,MATCH
+WBR,Enam,Aleksandra Vistac,w14,screened,5,5,0,MATCH
+WBR,Enam,Aleksandra Vistac,w14,actual_screens,6,6,0,MATCH
+WBR,Enam,Aleksandra Vistac,w14,ats,3,3,0,MATCH
+WBR,Enam,Aleksandra Vistac,w15,contacted,62,62,0,MATCH
+WBR,Enam,Aleksandra Vistac,w15,screened,13,13,0,MATCH
+WBR,Enam,Aleksandra Vistac,w15,actual_screens,9,9,0,MATCH
+WBR,Enam,Aleksandra Vistac,w15,ats,3,3,0,MATCH
+WBR,Eucalyptus,Alisa Liddell,w15,contacted,85,85,0,MATCH
+WBR,Eucalyptus,Alisa Liddell,w15,screened,6,6,0,MATCH
+WBR,Eucalyptus,Alisa Liddell,w15,actual_screens,4,3,-1,SMALL
+WBR,Eucalyptus,Alisa Liddell,w15,ats,2,2,0,MATCH
+WBR,Eucalyptus,Dušan Špica,w14,contacted,50,50,0,MATCH
+WBR,Eucalyptus,Dušan Špica,w15,contacted,108,108,0,MATCH
+WBR,Eucalyptus,Dušan Špica,w15,screened,19,19,0,MATCH
+WBR,Eucalyptus,Dušan Špica,w15,actual_screens,19,19,0,MATCH
+WBR,Eucalyptus,Dušan Špica,w15,ats,7,7,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w2,contacted,7,7,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w2,screened,9,9,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w2,actual_screens,10,10,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w2,ats,5,5,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w2,hires,1,1,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w3,contacted,22,22,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w3,screened,22,22,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w3,actual_screens,26,26,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w3,ats,15,15,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w3,offers,3,3,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w3,hires,1,1,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w4,contacted,68,68,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w4,screened,39,39,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w4,actual_screens,21,21,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w4,ats,14,14,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w4,offers,1,1,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w4,hires,2,2,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w5,contacted,56,56,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w5,screened,41,41,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w5,actual_screens,25,25,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w5,ats,11,11,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w6,contacted,8,8,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w6,screened,13,13,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w6,actual_screens,24,24,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w6,ats,10,10,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w7,contacted,110,110,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w7,screened,55,55,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w7,actual_screens,17,17,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w7,ats,8,8,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w8,contacted,15,15,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w8,screened,17,17,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w8,actual_screens,24,24,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w8,ats,8,8,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w8,offers,1,1,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w9,contacted,9,9,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w9,screened,13,13,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w9,actual_screens,21,21,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w9,ats,10,10,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w9,offers,2,2,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w9,hires,1,1,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w10,contacted,175,175,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w10,screened,10,10,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w10,actual_screens,12,12,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w10,ats,5,5,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w11,contacted,113,113,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w11,screened,57,57,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w11,actual_screens,14,14,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w11,ats,2,2,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w11,offers,1,1,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w11,hires,2,2,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w12,contacted,8,8,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w12,screened,12,12,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w12,actual_screens,12,12,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w12,ats,8,8,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w13,contacted,210,209,-1,SMALL
+WBR,Eucalyptus,Meho Saracevic,w13,screened,9,9,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w13,actual_screens,13,13,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w13,ats,9,9,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w13,offers,1,1,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w14,contacted,40,39,-1,SMALL
+WBR,Eucalyptus,Meho Saracevic,w14,screened,23,23,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w14,actual_screens,16,16,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w14,ats,10,10,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w14,hires,1,1,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w15,contacted,23,23,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w15,screened,22,22,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w15,actual_screens,20,20,0,MATCH
+WBR,Eucalyptus,Meho Saracevic,w15,ats,10,10,0,MATCH
+WBR,Fever,Andrea Akovic,w2,contacted,65,65,0,MATCH
+WBR,Fever,Andrea Akovic,w2,screened,21,21,0,MATCH
+WBR,Fever,Andrea Akovic,w2,actual_screens,12,12,0,MATCH
+WBR,Fever,Andrea Akovic,w2,ats,7,7,0,MATCH
+WBR,Fever,Andrea Akovic,w3,contacted,68,68,0,MATCH
+WBR,Fever,Andrea Akovic,w3,screened,27,27,0,MATCH
+WBR,Fever,Andrea Akovic,w3,actual_screens,23,23,0,MATCH
+WBR,Fever,Andrea Akovic,w3,ats,15,15,0,MATCH
+WBR,Fever,Andrea Akovic,w4,contacted,88,88,0,MATCH
+WBR,Fever,Andrea Akovic,w4,screened,11,11,0,MATCH
+WBR,Fever,Andrea Akovic,w4,actual_screens,16,16,0,MATCH
+WBR,Fever,Andrea Akovic,w4,ats,11,11,0,MATCH
+WBR,Fever,Andrea Akovic,w5,contacted,121,121,0,MATCH
+WBR,Fever,Andrea Akovic,w5,screened,20,20,0,MATCH
+WBR,Fever,Andrea Akovic,w5,actual_screens,21,21,0,MATCH
+WBR,Fever,Andrea Akovic,w5,ats,3,3,0,MATCH
+WBR,Glovo,Chené Elliot,w10,contacted,95,95,0,MATCH
+WBR,Glovo,Chené Elliot,w10,screened,9,9,0,MATCH
+WBR,Glovo,Chené Elliot,w10,actual_screens,2,2,0,MATCH
+WBR,Glovo,Chené Elliot,w11,contacted,132,132,0,MATCH
+WBR,Glovo,Chené Elliot,w11,screened,22,22,0,MATCH
+WBR,Glovo,Chené Elliot,w11,actual_screens,19,19,0,MATCH
+WBR,Glovo,Chené Elliot,w11,ats,11,11,0,MATCH
+WBR,Glovo,Chené Elliot,w12,contacted,56,56,0,MATCH
+WBR,Glovo,Chené Elliot,w12,screened,19,19,0,MATCH
+WBR,Glovo,Chené Elliot,w12,actual_screens,8,8,0,MATCH
+WBR,Glovo,Chené Elliot,w12,ats,4,4,0,MATCH
+WBR,Glovo,Chené Elliot,w13,contacted,124,124,0,MATCH
+WBR,Glovo,Chené Elliot,w13,screened,5,5,0,MATCH
+WBR,Glovo,Chené Elliot,w13,actual_screens,3,3,0,MATCH
+WBR,Glovo,Chené Elliot,w13,ats,1,1,0,MATCH
+WBR,Glovo,Chené Elliot,w14,contacted,87,87,0,MATCH
+WBR,Glovo,Chené Elliot,w14,screened,18,18,0,MATCH
+WBR,Glovo,Chené Elliot,w14,actual_screens,16,16,0,MATCH
+WBR,Glovo,Chené Elliot,w14,ats,9,9,0,MATCH
+WBR,Glovo,Chené Elliot,w15,contacted,92,92,0,MATCH
+WBR,Glovo,Chené Elliot,w15,screened,27,27,0,MATCH
+WBR,Glovo,Chené Elliot,w15,actual_screens,28,28,0,MATCH
+WBR,Glovo,Chené Elliot,w15,ats,13,13,0,MATCH
+WBR,Glovo,Samantha Nel,w9,contacted,7,7,0,MATCH
+WBR,Glovo,Samantha Nel,w10,contacted,83,83,0,MATCH
+WBR,Glovo,Samantha Nel,w10,screened,4,4,0,MATCH
+WBR,Glovo,Samantha Nel,w10,actual_screens,1,1,0,MATCH
+WBR,Glovo,Samantha Nel,w10,ats,1,1,0,MATCH
+WBR,Glovo,Samantha Nel,w11,contacted,96,96,0,MATCH
+WBR,Glovo,Samantha Nel,w11,screened,13,13,0,MATCH
+WBR,Glovo,Samantha Nel,w11,actual_screens,12,12,0,MATCH
+WBR,Glovo,Samantha Nel,w11,ats,8,8,0,MATCH
+WBR,Glovo,Samantha Nel,w12,contacted,53,53,0,MATCH
+WBR,Glovo,Samantha Nel,w12,screened,18,18,0,MATCH
+WBR,Glovo,Samantha Nel,w12,actual_screens,9,9,0,MATCH
+WBR,Glovo,Samantha Nel,w12,ats,3,3,0,MATCH
+WBR,Glovo,Samantha Nel,w13,contacted,48,48,0,MATCH
+WBR,Glovo,Samantha Nel,w13,screened,7,7,0,MATCH
+WBR,Glovo,Samantha Nel,w14,contacted,66,66,0,MATCH
+WBR,Glovo,Samantha Nel,w14,screened,9,9,0,MATCH
+WBR,Glovo,Samantha Nel,w14,actual_screens,6,6,0,MATCH
+WBR,Glovo,Samantha Nel,w14,ats,4,4,0,MATCH
+WBR,Glovo,Samantha Nel,w14,offers,2,2,0,MATCH
+WBR,Glovo,Samantha Nel,w14,hires,2,2,0,MATCH
+WBR,Glovo,Samantha Nel,w15,contacted,75,75,0,MATCH
+WBR,Glovo,Samantha Nel,w15,screened,14,14,0,MATCH
+WBR,Glovo,Samantha Nel,w15,actual_screens,18,18,0,MATCH
+WBR,Glovo,Samantha Nel,w15,ats,6,6,0,MATCH
+WBR,Grover,Eduardo Moral,w1,contacted,19,74,55,BIG
+WBR,Grover,Eduardo Moral,w1,screened,6,15,9,BIG
+WBR,Grover,Eduardo Moral,w1,actual_screens,2,9,7,BIG
+WBR,Grover,Eduardo Moral,w1,ats,2,8,6,BIG
+WBR,Grover,Eduardo Moral,w2,contacted,100,100,0,MATCH
+WBR,Grover,Eduardo Moral,w2,screened,12,12,0,MATCH
+WBR,Grover,Eduardo Moral,w2,actual_screens,8,8,0,MATCH
+WBR,Grover,Eduardo Moral,w2,ats,3,3,0,MATCH
+WBR,Grover,Eduardo Moral,w3,contacted,108,108,0,MATCH
+WBR,Grover,Eduardo Moral,w3,screened,29,29,0,MATCH
+WBR,Grover,Eduardo Moral,w3,actual_screens,19,19,0,MATCH
+WBR,Grover,Eduardo Moral,w3,ats,8,8,0,MATCH
+WBR,Grover,Eduardo Moral,w4,contacted,100,100,0,MATCH
+WBR,Grover,Eduardo Moral,w4,screened,19,19,0,MATCH
+WBR,Grover,Eduardo Moral,w4,actual_screens,10,10,0,MATCH
+WBR,Grover,Eduardo Moral,w4,ats,4,4,0,MATCH
+WBR,Grover,Eduardo Moral,w5,contacted,125,125,0,MATCH
+WBR,Grover,Eduardo Moral,w5,screened,19,19,0,MATCH
+WBR,Grover,Eduardo Moral,w5,actual_screens,13,13,0,MATCH
+WBR,Grover,Eduardo Moral,w5,ats,8,8,0,MATCH
+WBR,Grover,Eduardo Moral,w6,contacted,105,105,0,MATCH
+WBR,Grover,Eduardo Moral,w6,screened,10,10,0,MATCH
+WBR,Grover,Eduardo Moral,w6,actual_screens,12,12,0,MATCH
+WBR,Grover,Eduardo Moral,w6,ats,3,3,0,MATCH
+WBR,Grover,Eduardo Moral,w7,contacted,103,103,0,MATCH
+WBR,Grover,Eduardo Moral,w7,screened,9,9,0,MATCH
+WBR,Grover,Eduardo Moral,w7,actual_screens,11,11,0,MATCH
+WBR,Grover,Eduardo Moral,w7,ats,4,4,0,MATCH
+WBR,Grover,Eduardo Moral,w7,offers,1,1,0,MATCH
+WBR,Grover,Eduardo Moral,w7,hires,1,1,0,MATCH
+WBR,Grover,Eduardo Moral,w8,contacted,92,92,0,MATCH
+WBR,Grover,Eduardo Moral,w8,screened,6,6,0,MATCH
+WBR,Grover,Eduardo Moral,w8,actual_screens,6,6,0,MATCH
+WBR,Grover,Eduardo Moral,w8,ats,4,4,0,MATCH
+WBR,Grover,Eduardo Moral,w9,contacted,77,77,0,MATCH
+WBR,Grover,Eduardo Moral,w9,screened,5,5,0,MATCH
+WBR,Grover,Eduardo Moral,w9,actual_screens,3,3,0,MATCH
+WBR,Grover,Eduardo Moral,w9,ats,2,2,0,MATCH
+WBR,Grover,Eduardo Moral,w10,contacted,71,71,0,MATCH
+WBR,Grover,Eduardo Moral,w10,screened,3,3,0,MATCH
+WBR,Grover,Eduardo Moral,w10,actual_screens,3,3,0,MATCH
+WBR,Grover,Eduardo Moral,w10,ats,2,2,0,MATCH
+WBR,Grover,Eduardo Moral,w11,contacted,65,65,0,MATCH
+WBR,Grover,Eduardo Moral,w11,screened,4,4,0,MATCH
+WBR,Grover,Eduardo Moral,w11,actual_screens,4,4,0,MATCH
+WBR,Grover,Eduardo Moral,w11,ats,2,2,0,MATCH
+WBR,Grover,Eduardo Moral,w11,offers,2,2,0,MATCH
+WBR,Grover,Eduardo Moral,w15,offers,1,1,0,MATCH
+WBR,Grover,Eduardo Moral,w15,hires,1,1,0,MATCH
+WBR,Grover,Rodrigo Gomes,w8,contacted,10,10,0,MATCH
+WBR,Grover,Rodrigo Gomes,w9,contacted,26,26,0,MATCH
+WBR,Grover,Rodrigo Gomes,w9,screened,2,2,0,MATCH
+WBR,Grover,Rodrigo Gomes,w10,contacted,12,12,0,MATCH
+WBR,Grover,Rodrigo Gomes,w10,screened,2,2,0,MATCH
+WBR,Grover,Rodrigo Gomes,w11,contacted,12,12,0,MATCH
+WBR,Grover,Rodrigo Gomes,w11,screened,2,2,0,MATCH
+WBR,Grover,Rodrigo Gomes,w12,contacted,4,4,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w2,contacted,2,2,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w2,screened,2,2,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w2,actual_screens,2,2,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w2,ats,2,2,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w2,offers,1,1,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w3,contacted,145,145,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w3,screened,21,21,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w3,actual_screens,21,21,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w3,ats,9,9,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w4,contacted,146,146,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w4,screened,21,21,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w4,actual_screens,21,21,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w4,ats,12,12,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w4,offers,2,2,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w4,hires,1,1,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w5,contacted,45,45,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w5,screened,22,22,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w5,actual_screens,22,22,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w5,ats,6,6,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w5,hires,2,2,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w6,contacted,15,15,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w6,screened,20,20,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w6,actual_screens,20,20,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w6,ats,7,7,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w7,contacted,46,46,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w7,screened,21,21,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w7,actual_screens,21,21,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w7,ats,10,10,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w8,contacted,121,121,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w8,screened,20,20,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w8,actual_screens,20,20,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w8,ats,8,8,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w9,contacted,136,136,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w9,screened,21,21,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w9,actual_screens,21,21,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w9,ats,11,11,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w9,offers,3,3,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w9,hires,3,3,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w10,contacted,85,85,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w10,screened,18,18,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w10,actual_screens,18,18,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w10,ats,7,7,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w10,offers,1,1,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w11,contacted,129,129,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w11,screened,23,23,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w11,actual_screens,22,22,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w11,ats,9,9,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w11,hires,1,1,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w12,contacted,38,38,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w13,contacted,255,255,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w13,screened,20,20,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w13,actual_screens,20,20,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w13,ats,12,12,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w13,offers,2,2,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w14,contacted,103,103,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w14,screened,14,14,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w14,actual_screens,12,12,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w14,ats,8,8,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w14,offers,1,1,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w14,hires,1,1,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w15,contacted,119,119,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w15,screened,21,21,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w15,actual_screens,20,20,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w15,ats,11,11,0,MATCH
+WBR,Nexi,Maria Desiree Gerbore,w15,hires,1,1,0,MATCH
+WBR,Parloa,Filip Nogowski,w2,screened,2,2,0,MATCH
+WBR,Parloa,Filip Nogowski,w2,actual_screens,2,2,0,MATCH
+WBR,Parloa,Filip Nogowski,w2,ats,2,2,0,MATCH
+WBR,Parloa,Filip Nogowski,w3,contacted,49,49,0,MATCH
+WBR,Parloa,Filip Nogowski,w3,screened,11,11,0,MATCH
+WBR,Parloa,Filip Nogowski,w3,actual_screens,11,11,0,MATCH
+WBR,Parloa,Filip Nogowski,w3,ats,7,7,0,MATCH
+WBR,Parloa,Filip Nogowski,w3,offers,2,2,0,MATCH
+WBR,Parloa,Filip Nogowski,w3,hires,2,2,0,MATCH
+WBR,Parloa,Filip Nogowski,w4,contacted,186,186,0,MATCH
+WBR,Parloa,Filip Nogowski,w4,screened,24,24,0,MATCH
+WBR,Parloa,Filip Nogowski,w4,actual_screens,15,15,0,MATCH
+WBR,Parloa,Filip Nogowski,w4,ats,11,11,0,MATCH
+WBR,Parloa,Filip Nogowski,w5,contacted,104,104,0,MATCH
+WBR,Parloa,Filip Nogowski,w5,screened,27,27,0,MATCH
+WBR,Parloa,Filip Nogowski,w5,actual_screens,14,14,0,MATCH
+WBR,Parloa,Filip Nogowski,w5,ats,6,6,0,MATCH
+WBR,Parloa,Filip Nogowski,w6,contacted,138,138,0,MATCH
+WBR,Parloa,Filip Nogowski,w6,screened,24,24,0,MATCH
+WBR,Parloa,Filip Nogowski,w6,actual_screens,13,13,0,MATCH
+WBR,Parloa,Filip Nogowski,w6,ats,6,6,0,MATCH
+WBR,Parloa,Filip Nogowski,w6,offers,1,1,0,MATCH
+WBR,Parloa,Filip Nogowski,w6,hires,1,1,0,MATCH
+WBR,Parloa,Filip Nogowski,w7,contacted,31,31,0,MATCH
+WBR,Parloa,Filip Nogowski,w7,screened,27,27,0,MATCH
+WBR,Parloa,Filip Nogowski,w7,actual_screens,14,14,0,MATCH
+WBR,Parloa,Filip Nogowski,w7,ats,7,7,0,MATCH
+WBR,Parloa,Filip Nogowski,w8,contacted,11,11,0,MATCH
+WBR,Parloa,Filip Nogowski,w8,screened,15,15,0,MATCH
+WBR,Parloa,Filip Nogowski,w8,actual_screens,17,17,0,MATCH
+WBR,Parloa,Filip Nogowski,w8,ats,8,8,0,MATCH
+WBR,Parloa,Filip Nogowski,w8,offers,1,1,0,MATCH
+WBR,Parloa,Filip Nogowski,w8,hires,1,1,0,MATCH
+WBR,Parloa,Filip Nogowski,w9,contacted,5,5,0,MATCH
+WBR,Parloa,Filip Nogowski,w9,screened,10,10,0,MATCH
+WBR,Parloa,Filip Nogowski,w9,actual_screens,17,17,0,MATCH
+WBR,Parloa,Filip Nogowski,w9,ats,8,8,0,MATCH
+WBR,Parloa,Filip Nogowski,w10,screened,2,2,0,MATCH
+WBR,Parloa,Filip Nogowski,w10,ats,1,1,0,MATCH
+WBR,Parloa,Filip Nogowski,w10,offers,1,1,0,MATCH
+WBR,Parloa,Filip Nogowski,w10,hires,1,1,0,MATCH
+WBR,Parloa,Filip Nogowski,w11,contacted,7,7,0,MATCH
+WBR,Parloa,Filip Nogowski,w11,screened,7,7,0,MATCH
+WBR,Parloa,Filip Nogowski,w11,actual_screens,12,12,0,MATCH
+WBR,Parloa,Filip Nogowski,w11,ats,7,7,0,MATCH
+WBR,Parloa,Filip Nogowski,w11,offers,3,3,0,MATCH
+WBR,Parloa,Filip Nogowski,w11,hires,1,1,0,MATCH
+WBR,Parloa,Filip Nogowski,w12,contacted,10,10,0,MATCH
+WBR,Parloa,Filip Nogowski,w12,screened,12,12,0,MATCH
+WBR,Parloa,Filip Nogowski,w12,actual_screens,10,10,0,MATCH
+WBR,Parloa,Filip Nogowski,w12,ats,7,7,0,MATCH
+WBR,Parloa,Filip Nogowski,w12,offers,1,1,0,MATCH
+WBR,Parloa,Filip Nogowski,w12,hires,1,1,0,MATCH
+WBR,Parloa,Filip Nogowski,w13,contacted,33,33,0,MATCH
+WBR,Parloa,Filip Nogowski,w13,screened,3,3,0,MATCH
+WBR,Parloa,Filip Nogowski,w13,actual_screens,9,9,0,MATCH
+WBR,Parloa,Filip Nogowski,w13,ats,13,13,0,MATCH
+WBR,Parloa,Filip Nogowski,w14,contacted,31,31,0,MATCH
+WBR,Parloa,Filip Nogowski,w14,screened,7,7,0,MATCH
+WBR,Parloa,Filip Nogowski,w14,actual_screens,4,4,0,MATCH
+WBR,Parloa,Filip Nogowski,w14,ats,3,3,0,MATCH
+WBR,Parloa,Filip Nogowski,w15,contacted,5,5,0,MATCH
+WBR,Parloa,Filip Nogowski,w15,screened,11,11,0,MATCH
+WBR,Parloa,Filip Nogowski,w15,actual_screens,5,5,0,MATCH
+WBR,Parloa,Filip Nogowski,w15,ats,4,4,0,MATCH
+WBR,Parloa,Filip Nogowski,w15,offers,1,1,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w1,contacted,4,5,1,SMALL
+WBR,Parloa,Jonaed Iqbal,w1,screened,8,11,3,SMALL
+WBR,Parloa,Jonaed Iqbal,w2,contacted,5,5,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w2,screened,17,17,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w2,actual_screens,17,17,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w2,ats,2,2,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w3,contacted,51,51,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w3,screened,14,14,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w3,actual_screens,1,1,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w4,contacted,83,83,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w4,screened,11,11,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w4,actual_screens,11,11,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w5,contacted,10,10,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w5,screened,18,18,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w5,actual_screens,18,18,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w5,ats,7,7,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w5,offers,2,2,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w5,hires,1,1,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w6,contacted,100,100,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w6,screened,1,1,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w6,ats,1,1,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w7,contacted,10,10,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w7,screened,36,36,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w7,actual_screens,37,37,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w7,ats,13,13,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w8,contacted,8,8,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w8,screened,14,14,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w8,actual_screens,14,14,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w8,ats,10,10,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w9,contacted,13,13,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w9,screened,15,15,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w9,actual_screens,13,13,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w9,ats,12,12,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w9,offers,5,5,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w9,hires,5,5,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w10,contacted,15,15,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w10,screened,15,15,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w10,actual_screens,15,15,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w10,ats,11,11,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w10,offers,4,4,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w10,hires,1,1,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w11,contacted,15,15,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w11,screened,14,14,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w11,actual_screens,14,14,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w11,ats,6,6,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w12,contacted,3,3,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w12,screened,3,3,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w12,actual_screens,3,3,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w12,ats,2,2,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w13,contacted,19,19,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w13,screened,19,19,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w13,actual_screens,19,19,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w13,ats,8,8,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w14,contacted,13,13,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w14,screened,13,13,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w14,actual_screens,13,13,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w14,ats,6,6,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w15,contacted,56,56,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w15,screened,19,19,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w15,actual_screens,13,13,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w15,ats,13,13,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w15,offers,3,3,0,MATCH
+WBR,Parloa,Jonaed Iqbal,w15,hires,3,3,0,MATCH
+WBR,PhantomBuster,Mateja Jokovic,w7,contacted,23,23,0,MATCH
+WBR,PhantomBuster,Mateja Jokovic,w7,screened,1,1,0,MATCH
+WBR,PhantomBuster,Mateja Jokovic,w7,actual_screens,1,1,0,MATCH
+WBR,PhantomBuster,Mateja Jokovic,w7,ats,1,1,0,MATCH
+WBR,PhantomBuster,Mateja Jokovic,w8,contacted,118,118,0,MATCH
+WBR,PhantomBuster,Mateja Jokovic,w8,screened,17,17,0,MATCH
+WBR,PhantomBuster,Mateja Jokovic,w8,actual_screens,17,17,0,MATCH
+WBR,PhantomBuster,Mateja Jokovic,w8,ats,9,9,0,MATCH
+WBR,PhantomBuster,Mateja Jokovic,w9,contacted,27,27,0,MATCH
+WBR,PhantomBuster,Mateja Jokovic,w9,screened,17,17,0,MATCH
+WBR,PhantomBuster,Mateja Jokovic,w9,actual_screens,17,17,0,MATCH
+WBR,PhantomBuster,Mateja Jokovic,w9,ats,11,11,0,MATCH
+WBR,PhantomBuster,Mateja Jokovic,w10,contacted,57,57,0,MATCH
+WBR,PhantomBuster,Mateja Jokovic,w10,screened,5,5,0,MATCH
+WBR,PhantomBuster,Mateja Jokovic,w10,actual_screens,5,5,0,MATCH
+WBR,PhantomBuster,Mateja Jokovic,w10,ats,4,4,0,MATCH
+WBR,PhantomBuster,Mateja Jokovic,w11,contacted,27,27,0,MATCH
+WBR,PhantomBuster,Mateja Jokovic,w11,screened,1,1,0,MATCH
+WBR,PhantomBuster,Mateja Jokovic,w13,contacted,38,38,0,MATCH
+WBR,PhantomBuster,Mateja Jokovic,w13,screened,8,8,0,MATCH
+WBR,PhantomBuster,Mateja Jokovic,w13,actual_screens,8,8,0,MATCH
+WBR,PhantomBuster,Mateja Jokovic,w13,ats,5,5,0,MATCH
+WBR,PhantomBuster,Mateja Jokovic,w13,offers,2,2,0,MATCH
+WBR,PhantomBuster,Mateja Jokovic,w13,hires,2,2,0,MATCH
+WBR,PhantomBuster,Mateja Jokovic,w14,contacted,46,46,0,MATCH
+WBR,PhantomBuster,Mateja Jokovic,w14,screened,13,13,0,MATCH
+WBR,PhantomBuster,Mateja Jokovic,w14,actual_screens,13,13,0,MATCH
+WBR,PhantomBuster,Mateja Jokovic,w14,ats,9,9,0,MATCH
+WBR,PhantomBuster,Mateja Jokovic,w14,offers,1,1,0,MATCH
+WBR,PhantomBuster,Mateja Jokovic,w15,contacted,5,5,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w2,contacted,1,1,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w2,screened,1,1,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w2,actual_screens,3,3,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w2,ats,2,2,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w3,contacted,15,15,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w4,contacted,70,70,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w4,screened,9,9,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w4,actual_screens,9,9,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w4,ats,5,5,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w4,offers,1,1,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w4,hires,1,1,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w5,contacted,7,7,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w5,screened,3,3,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w5,actual_screens,4,4,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w5,ats,2,2,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w6,contacted,30,30,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w6,screened,7,7,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w6,actual_screens,6,6,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w6,ats,4,4,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w7,contacted,9,9,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w7,screened,4,4,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w7,actual_screens,4,4,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w7,ats,2,2,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w8,contacted,4,4,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w8,screened,3,3,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w8,actual_screens,2,2,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w9,contacted,2,2,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w9,screened,3,3,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w9,actual_screens,3,3,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w9,ats,1,1,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w10,contacted,1,1,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w10,screened,1,1,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w10,actual_screens,1,1,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w11,contacted,17,17,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w11,screened,6,6,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w11,actual_screens,6,6,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w11,ats,3,3,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w12,contacted,76,76,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w12,screened,7,7,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w12,actual_screens,7,7,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w12,ats,1,1,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w13,contacted,29,29,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w13,screened,5,5,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w13,actual_screens,5,5,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w13,ats,2,2,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w14,contacted,2,2,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w14,screened,4,4,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w14,actual_screens,4,4,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w14,ats,4,4,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w15,contacted,3,3,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w15,screened,3,3,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w15,actual_screens,3,3,0,MATCH
+WBR,Scorewarrior,Ekaterina Boyprav,w15,ats,1,1,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w2,contacted,102,102,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w2,screened,9,9,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w2,actual_screens,6,6,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w2,ats,5,5,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w3,contacted,119,119,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w3,screened,4,4,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w3,actual_screens,6,6,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w3,ats,4,4,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w4,contacted,151,151,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w4,screened,14,14,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w4,actual_screens,7,7,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w4,ats,6,6,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w5,contacted,153,153,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w5,screened,7,7,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w5,actual_screens,6,6,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w5,ats,6,6,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w6,contacted,148,148,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w6,screened,8,8,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w6,actual_screens,7,7,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w6,ats,7,7,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w7,contacted,114,114,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w7,screened,9,9,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w7,actual_screens,9,9,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w7,ats,4,4,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w8,contacted,46,46,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w8,screened,8,8,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w8,actual_screens,8,8,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w8,ats,3,3,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w8,offers,1,1,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w8,hires,1,1,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w9,contacted,96,96,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w9,screened,5,5,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w9,actual_screens,5,5,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w9,ats,3,3,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w10,screened,11,11,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w10,actual_screens,9,9,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w10,ats,5,5,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w11,contacted,121,121,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w11,screened,3,3,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w11,actual_screens,3,3,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w11,ats,2,2,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w12,contacted,151,151,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w12,screened,3,3,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w12,actual_screens,3,3,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w12,ats,3,3,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w13,contacted,35,35,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w13,screened,9,9,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w13,actual_screens,9,9,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w13,ats,5,5,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w14,contacted,116,116,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w14,screened,4,4,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w14,actual_screens,4,4,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w14,ats,1,1,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w15,contacted,152,152,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w15,screened,3,3,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w15,actual_screens,3,3,0,MATCH
+WBR,SevenRooms,Zelimir Stajcic,w15,ats,2,2,0,MATCH
+WBR,Taxfix,Marina Nikolic,w2,contacted,31,31,0,MATCH
+WBR,Taxfix,Marina Nikolic,w2,offers,1,1,0,MATCH
+WBR,Taxfix,Marina Nikolic,w2,hires,1,1,0,MATCH
+WBR,Taxfix,Marina Nikolic,w3,contacted,166,166,0,MATCH
+WBR,Taxfix,Marina Nikolic,w3,screened,14,14,0,MATCH
+WBR,Taxfix,Marina Nikolic,w3,actual_screens,15,15,0,MATCH
+WBR,Taxfix,Marina Nikolic,w3,ats,13,13,0,MATCH
+WBR,Taxfix,Marina Nikolic,w4,contacted,115,115,0,MATCH
+WBR,Taxfix,Marina Nikolic,w4,screened,25,25,0,MATCH
+WBR,Taxfix,Marina Nikolic,w4,actual_screens,18,18,0,MATCH
+WBR,Taxfix,Marina Nikolic,w4,ats,13,13,0,MATCH
+WBR,Taxfix,Marina Nikolic,w5,contacted,70,70,0,MATCH
+WBR,Taxfix,Marina Nikolic,w5,screened,14,14,0,MATCH
+WBR,Taxfix,Marina Nikolic,w5,actual_screens,16,16,0,MATCH
+WBR,Taxfix,Marina Nikolic,w5,ats,13,13,0,MATCH
+WBR,Taxfix,Marina Nikolic,w6,contacted,53,53,0,MATCH
+WBR,Taxfix,Marina Nikolic,w6,screened,16,16,0,MATCH
+WBR,Taxfix,Marina Nikolic,w6,actual_screens,15,15,0,MATCH
+WBR,Taxfix,Marina Nikolic,w6,ats,14,14,0,MATCH
+WBR,Taxfix,Marina Nikolic,w6,offers,2,2,0,MATCH
+WBR,Taxfix,Marina Nikolic,w6,hires,2,2,0,MATCH
+WBR,Taxfix,Marina Nikolic,w7,contacted,47,47,0,MATCH
+WBR,Taxfix,Marina Nikolic,w7,screened,13,13,0,MATCH
+WBR,Taxfix,Marina Nikolic,w7,actual_screens,15,15,0,MATCH
+WBR,Taxfix,Marina Nikolic,w7,ats,12,12,0,MATCH
+WBR,Taxfix,Marina Nikolic,w8,contacted,25,25,0,MATCH
+WBR,Taxfix,Marina Nikolic,w8,screened,14,14,0,MATCH
+WBR,Taxfix,Marina Nikolic,w8,actual_screens,10,10,0,MATCH
+WBR,Taxfix,Marina Nikolic,w8,ats,9,9,0,MATCH
+WBR,Taxfix,Marina Nikolic,w8,offers,2,2,0,MATCH
+WBR,Taxfix,Marina Nikolic,w8,hires,2,2,0,MATCH
+WBR,Taxfix,Marina Nikolic,w9,contacted,33,33,0,MATCH
+WBR,Taxfix,Marina Nikolic,w9,screened,22,22,0,MATCH
+WBR,Taxfix,Marina Nikolic,w9,actual_screens,20,20,0,MATCH
+WBR,Taxfix,Marina Nikolic,w9,ats,14,14,0,MATCH
+WBR,Taxfix,Marina Nikolic,w9,offers,1,1,0,MATCH
+WBR,Taxfix,Marina Nikolic,w9,hires,1,1,0,MATCH
+WBR,Taxfix,Marina Nikolic,w10,contacted,49,49,0,MATCH
+WBR,Taxfix,Marina Nikolic,w10,screened,33,33,0,MATCH
+WBR,Taxfix,Marina Nikolic,w10,actual_screens,32,32,0,MATCH
+WBR,Taxfix,Marina Nikolic,w10,ats,23,23,0,MATCH
+WBR,Taxfix,Marina Nikolic,w11,contacted,33,33,0,MATCH
+WBR,Taxfix,Marina Nikolic,w11,screened,18,18,0,MATCH
+WBR,Taxfix,Marina Nikolic,w11,actual_screens,16,16,0,MATCH
+WBR,Taxfix,Marina Nikolic,w11,ats,15,15,0,MATCH
+WBR,Taxfix,Marina Nikolic,w11,offers,1,1,0,MATCH
+WBR,Taxfix,Marina Nikolic,w11,hires,1,1,0,MATCH
+WBR,Taxfix,Marina Nikolic,w12,contacted,61,61,0,MATCH
+WBR,Taxfix,Marina Nikolic,w12,screened,2,2,0,MATCH
+WBR,Taxfix,Marina Nikolic,w12,actual_screens,6,6,0,MATCH
+WBR,Taxfix,Marina Nikolic,w12,ats,5,5,0,MATCH
+WBR,Taxfix,Marina Nikolic,w13,contacted,10,10,0,MATCH
+WBR,Taxfix,Marina Nikolic,w13,screened,12,12,0,MATCH
+WBR,Taxfix,Marina Nikolic,w13,actual_screens,13,13,0,MATCH
+WBR,Taxfix,Marina Nikolic,w13,ats,12,12,0,MATCH
+WBR,Taxfix,Marina Nikolic,w14,contacted,143,143,0,MATCH
+WBR,Taxfix,Marina Nikolic,w14,screened,5,5,0,MATCH
+WBR,Taxfix,Marina Nikolic,w14,actual_screens,6,6,0,MATCH
+WBR,Taxfix,Marina Nikolic,w14,ats,6,6,0,MATCH
+WBR,Taxfix,Marina Nikolic,w14,offers,1,1,0,MATCH
+WBR,Taxfix,Marina Nikolic,w14,hires,1,1,0,MATCH
+WBR,Taxfix,Marina Nikolic,w15,contacted,130,130,0,MATCH
+WBR,Taxfix,Marina Nikolic,w15,screened,15,15,0,MATCH
+WBR,Taxfix,Marina Nikolic,w15,actual_screens,9,9,0,MATCH
+WBR,Taxfix,Marina Nikolic,w15,ats,8,8,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w2,contacted,33,33,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w2,screened,18,18,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w2,actual_screens,11,11,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w2,ats,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w2,offers,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w3,contacted,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w3,screened,7,7,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w3,actual_screens,13,13,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w3,ats,6,6,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w3,offers,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w3,hires,4,4,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w4,contacted,41,41,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w4,screened,8,8,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w4,actual_screens,7,7,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w4,ats,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w4,offers,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w5,contacted,28,28,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w5,screened,16,16,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w5,actual_screens,13,13,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w5,ats,4,4,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w5,hires,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w6,contacted,32,32,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w6,screened,4,4,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w6,actual_screens,7,7,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w6,ats,4,4,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w6,offers,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w6,hires,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w7,contacted,41,41,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w7,screened,17,17,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w7,actual_screens,15,15,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w7,ats,11,11,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w7,offers,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w8,contacted,12,12,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w8,screened,12,12,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w8,actual_screens,12,12,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w8,ats,6,6,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w9,contacted,4,4,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w9,screened,4,4,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w9,actual_screens,4,4,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w9,ats,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w10,contacted,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w10,screened,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w10,actual_screens,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w10,offers,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w12,offers,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Adelya Khakimova,w12,hires,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w3,contacted,79,79,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w3,screened,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w3,ats,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w4,contacted,136,136,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w4,screened,11,11,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w4,actual_screens,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w4,ats,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w5,contacted,71,71,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w5,screened,12,12,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w5,actual_screens,7,7,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w5,ats,5,5,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w6,contacted,59,59,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w6,screened,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w6,actual_screens,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w6,ats,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w7,contacted,288,288,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w7,screened,41,41,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w7,actual_screens,20,20,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w7,ats,19,19,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w8,contacted,180,180,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w8,screened,21,21,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w8,actual_screens,17,17,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w8,ats,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w9,contacted,156,156,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w9,screened,8,8,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w9,actual_screens,13,13,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w9,ats,5,5,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w10,contacted,237,237,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w10,screened,29,29,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w10,actual_screens,17,17,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w10,ats,7,7,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w11,contacted,166,166,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w11,screened,24,24,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w11,actual_screens,19,19,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w11,ats,8,8,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w12,contacted,48,48,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w12,screened,8,8,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w12,actual_screens,6,6,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w12,ats,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w13,contacted,134,134,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w13,screened,22,22,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w13,actual_screens,12,12,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w13,ats,6,6,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w13,offers,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w13,hires,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w14,contacted,66,66,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w14,screened,18,18,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w14,actual_screens,15,15,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w14,ats,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w15,contacted,121,121,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w15,screened,16,16,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w15,actual_screens,6,6,0,MATCH
+WBR,Wolt (all sub-BUs),Ejla Suljcic,w15,ats,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w3,contacted,175,175,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w3,screened,6,6,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w4,contacted,165,165,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w4,screened,11,11,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w4,actual_screens,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w5,contacted,175,175,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w5,screened,10,10,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w5,actual_screens,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w5,ats,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w6,contacted,264,264,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w6,screened,16,16,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w6,actual_screens,12,12,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w6,ats,6,6,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w7,contacted,165,165,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w7,screened,11,11,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w7,actual_screens,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w7,ats,6,6,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w8,contacted,154,154,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w8,screened,12,12,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w8,actual_screens,10,10,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w8,ats,5,5,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w9,contacted,65,65,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w9,screened,13,13,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w9,actual_screens,7,7,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w9,ats,5,5,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w10,contacted,150,150,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w10,screened,10,10,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w10,actual_screens,6,6,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w10,ats,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w11,contacted,71,71,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w11,screened,4,4,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w11,actual_screens,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w11,ats,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w12,contacted,65,65,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w12,screened,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w12,actual_screens,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w12,ats,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w13,contacted,123,123,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w13,screened,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w13,actual_screens,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w13,ats,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w13,offers,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w13,hires,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w14,contacted,154,154,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w14,screened,11,11,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w14,actual_screens,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w14,ats,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w15,contacted,154,154,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w15,screened,12,12,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w15,actual_screens,6,6,0,MATCH
+WBR,Wolt (all sub-BUs),Elena Petrovska,w15,ats,6,6,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w2,contacted,22,22,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w2,screened,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w2,actual_screens,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w2,ats,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w2,offers,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w2,hires,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w3,contacted,27,27,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w3,screened,10,10,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w3,actual_screens,10,10,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w3,ats,5,5,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w3,offers,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w3,hires,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w4,contacted,112,112,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w4,screened,7,7,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w4,actual_screens,7,7,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w4,ats,5,5,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w5,contacted,101,101,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w5,screened,18,18,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w5,actual_screens,18,18,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w5,ats,8,8,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w6,contacted,63,63,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w6,screened,13,13,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w6,actual_screens,13,13,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w6,ats,8,8,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w7,contacted,80,80,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w7,screened,6,6,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w7,actual_screens,5,5,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w7,ats,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w7,offers,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w7,hires,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w8,contacted,34,34,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w8,screened,6,6,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w8,actual_screens,6,6,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w8,ats,4,4,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w9,contacted,27,27,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w9,screened,5,5,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w9,actual_screens,5,5,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w9,ats,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w10,contacted,78,78,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w10,screened,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w10,actual_screens,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w11,contacted,74,74,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w11,screened,4,4,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w11,actual_screens,4,4,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w11,ats,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w12,contacted,10,10,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w13,contacted,65,65,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w13,screened,10,10,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w13,actual_screens,10,10,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w13,ats,7,7,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w13,offers,6,6,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w13,hires,6,6,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w14,contacted,77,77,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w14,screened,6,6,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w14,actual_screens,6,6,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w14,ats,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w14,offers,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w14,hires,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w15,contacted,76,76,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w15,screened,16,16,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w15,actual_screens,16,16,0,MATCH
+WBR,Wolt (all sub-BUs),Jan Dokulil,w15,ats,8,8,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w1,contacted,0,4,4,BIG
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w2,contacted,33,33,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w3,contacted,118,118,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w3,screened,26,26,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w3,actual_screens,22,22,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w3,ats,10,10,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w3,offers,4,4,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w3,hires,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w4,contacted,129,129,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w4,screened,26,26,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w4,actual_screens,24,24,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w4,ats,13,13,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w4,hires,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w5,contacted,200,200,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w5,screened,36,36,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w5,actual_screens,26,26,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w5,ats,16,16,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w5,offers,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w5,hires,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w6,contacted,127,127,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w6,screened,27,27,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w6,actual_screens,26,26,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w6,ats,13,13,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w6,offers,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w7,contacted,131,131,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w7,screened,32,32,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w7,actual_screens,30,30,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w7,ats,11,11,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w8,contacted,91,91,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w8,screened,25,25,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w8,actual_screens,23,23,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w8,ats,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w9,contacted,40,40,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w9,screened,12,12,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w9,actual_screens,14,14,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w9,ats,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w10,contacted,37,37,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w10,screened,12,12,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w10,actual_screens,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w10,ats,5,5,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w10,offers,7,7,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w10,hires,5,5,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w11,contacted,64,64,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w11,screened,23,23,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w11,actual_screens,28,28,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w11,ats,12,12,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w11,offers,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w11,hires,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w12,contacted,18,18,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w12,screened,7,7,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w12,actual_screens,8,8,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w12,ats,6,6,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w12,offers,4,4,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w12,hires,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w13,contacted,38,38,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w13,screened,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w13,actual_screens,6,6,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w13,ats,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w13,offers,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w13,hires,5,5,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w14,contacted,39,39,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w14,screened,21,21,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w14,actual_screens,11,11,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w14,ats,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w15,contacted,49,49,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w15,screened,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w15,actual_screens,6,6,0,MATCH
+WBR,Wolt (all sub-BUs),Jelena Lacmanovic,w15,ats,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w1,screened,2,5,3,SMALL
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w1,actual_screens,4,4,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w1,ats,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w2,contacted,8,8,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w2,screened,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w2,actual_screens,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w2,ats,5,5,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w3,contacted,199,199,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w3,screened,10,10,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w3,actual_screens,10,10,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w3,ats,8,8,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w4,contacted,90,90,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w4,screened,18,18,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w4,actual_screens,15,15,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w4,ats,8,8,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w5,contacted,164,164,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w5,screened,13,13,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w5,actual_screens,15,15,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w5,ats,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w6,contacted,128,128,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w6,screened,15,15,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w6,actual_screens,15,15,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w6,ats,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w7,contacted,202,202,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w7,screened,18,18,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w7,actual_screens,17,17,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w7,ats,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w7,offers,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w7,hires,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w8,contacted,65,65,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w8,screened,17,17,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w8,actual_screens,17,17,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w8,ats,10,10,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w9,contacted,10,10,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w9,screened,17,17,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w9,actual_screens,17,17,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w9,ats,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w9,offers,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w9,hires,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w11,contacted,11,11,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w11,screened,12,12,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w11,actual_screens,12,12,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w11,ats,8,8,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w12,contacted,18,18,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w12,screened,18,18,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w12,actual_screens,18,18,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w12,ats,11,11,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w12,offers,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w13,contacted,18,18,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w13,screened,16,16,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w13,actual_screens,16,16,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w13,ats,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w14,contacted,5,5,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w14,screened,5,5,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w14,actual_screens,5,5,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w14,ats,4,4,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w14,offers,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w14,hires,4,4,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w15,contacted,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w15,screened,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Lisa Gargulinska,w15,actual_screens,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w3,contacted,117,117,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w3,screened,16,16,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w3,actual_screens,5,5,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w3,ats,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w3,offers,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w3,hires,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w4,contacted,104,104,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w4,screened,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w4,actual_screens,6,6,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w4,ats,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w4,offers,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w5,contacted,67,67,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w5,screened,6,6,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w6,contacted,103,103,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w6,screened,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w6,actual_screens,6,6,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w6,ats,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w7,contacted,44,44,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w7,screened,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w7,actual_screens,7,7,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w7,ats,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w8,contacted,50,50,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w8,actual_screens,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w8,ats,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w9,contacted,44,44,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w10,screened,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w11,contacted,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w11,screened,4,4,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w11,actual_screens,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w11,ats,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w12,contacted,21,21,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w12,screened,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w12,actual_screens,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w12,ats,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w12,offers,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w12,hires,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w13,screened,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w13,actual_screens,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w14,contacted,65,65,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w14,actual_screens,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w14,ats,4,4,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w15,contacted,94,94,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w15,screened,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w15,actual_screens,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Milica Veselinovic,w15,ats,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w1,contacted,0,270,270,BIG
+WBR,Wolt (all sub-BUs),Nenad Skoko,w1,screened,0,1,1,SMALL
+WBR,Wolt (all sub-BUs),Nenad Skoko,w2,contacted,49,49,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w3,contacted,50,50,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w3,screened,35,35,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w3,actual_screens,18,18,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w3,ats,13,13,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w3,offers,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w3,hires,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w4,contacted,83,83,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w4,screened,14,14,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w4,actual_screens,12,12,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w4,ats,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w4,offers,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w4,hires,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w5,contacted,76,76,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w5,screened,8,8,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w5,actual_screens,17,17,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w5,ats,8,8,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w6,contacted,26,26,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w6,screened,6,6,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w6,actual_screens,8,8,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w6,ats,7,7,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w7,contacted,49,49,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w7,screened,10,10,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w7,actual_screens,7,7,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w7,ats,5,5,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w7,offers,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w8,contacted,76,76,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w8,screened,15,15,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w8,actual_screens,10,10,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w8,ats,8,8,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w8,offers,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w8,hires,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w9,contacted,93,93,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w9,screened,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w9,actual_screens,14,14,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w9,ats,12,12,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w9,offers,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w10,contacted,53,53,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w10,screened,10,10,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w10,actual_screens,11,11,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w10,ats,8,8,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w10,offers,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w10,hires,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w11,contacted,49,49,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w11,screened,8,8,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w11,actual_screens,7,7,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w11,ats,5,5,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w12,contacted,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w12,screened,12,12,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w12,actual_screens,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w12,ats,5,5,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w13,contacted,41,41,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w13,screened,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w13,actual_screens,5,5,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w13,ats,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w13,offers,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w13,hires,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w14,contacted,13,13,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w14,screened,13,13,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w14,actual_screens,17,17,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w14,ats,8,8,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w14,offers,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w15,contacted,7,7,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w15,screened,7,7,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w15,actual_screens,7,7,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w15,ats,5,5,0,MATCH
+WBR,Wolt (all sub-BUs),Nenad Skoko,w15,hires,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w2,contacted,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w2,screened,14,14,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w2,actual_screens,11,11,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w2,ats,7,7,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w2,offers,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w2,hires,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w3,contacted,13,13,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w3,screened,15,15,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w3,actual_screens,15,15,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w3,ats,10,10,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w3,offers,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w3,hires,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w4,contacted,13,13,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w4,screened,13,13,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w4,actual_screens,15,15,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w4,ats,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w4,offers,4,4,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w4,hires,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w5,contacted,10,10,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w5,screened,14,14,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w5,actual_screens,15,15,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w5,ats,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w6,contacted,41,41,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w6,screened,16,16,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w6,actual_screens,15,15,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w6,ats,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w6,hires,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w7,contacted,22,22,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w7,screened,16,16,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w7,actual_screens,15,15,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w7,ats,8,8,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w7,offers,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w8,contacted,24,24,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w8,screened,11,11,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w8,actual_screens,11,11,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w8,ats,6,6,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w8,offers,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w9,contacted,14,14,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w9,screened,14,14,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w9,actual_screens,13,13,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w9,ats,7,7,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w9,offers,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w10,contacted,13,13,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w10,screened,14,14,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w10,actual_screens,14,14,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w10,ats,7,7,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w10,hires,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w11,contacted,19,19,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w11,screened,21,21,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w11,actual_screens,20,20,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w11,ats,12,12,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w13,contacted,11,11,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w13,screened,11,11,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w13,actual_screens,11,11,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w13,ats,7,7,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w13,offers,4,4,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w13,hires,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w14,contacted,5,5,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w14,screened,5,5,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w14,actual_screens,5,5,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w14,ats,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w15,contacted,7,7,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w15,screened,7,7,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w15,actual_screens,8,8,0,MATCH
+WBR,Wolt (all sub-BUs),Niki Vokalkova,w15,ats,5,5,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w2,contacted,8,8,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w2,screened,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w2,actual_screens,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w2,ats,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w2,offers,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w2,hires,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w3,contacted,13,13,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w3,screened,13,13,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w3,actual_screens,13,13,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w3,ats,13,13,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w4,contacted,15,15,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w4,screened,15,15,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w4,actual_screens,15,15,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w4,ats,14,14,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w4,offers,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w5,contacted,8,8,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w5,screened,8,8,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w5,actual_screens,8,8,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w5,ats,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w5,hires,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w6,contacted,10,10,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w6,screened,10,10,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w6,actual_screens,10,10,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w6,ats,10,10,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w6,offers,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w7,contacted,12,12,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w7,screened,12,12,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w7,actual_screens,12,12,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w7,ats,12,12,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w7,offers,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w8,contacted,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w8,screened,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w8,actual_screens,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w8,ats,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w9,contacted,14,14,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w9,screened,14,14,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w9,actual_screens,14,14,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w9,ats,14,14,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w10,contacted,11,11,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w10,screened,11,11,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w10,actual_screens,11,11,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w10,ats,11,11,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w10,hires,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w11,contacted,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w11,screened,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w11,actual_screens,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w11,ats,9,9,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w12,contacted,4,4,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w12,screened,4,4,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w12,actual_screens,4,4,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w12,ats,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w12,hires,1,1,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w13,contacted,4,4,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w13,screened,4,4,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w13,actual_screens,4,4,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w13,ats,4,4,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w13,offers,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w13,hires,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w14,contacted,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w14,screened,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w14,actual_screens,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w14,ats,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w14,offers,2,2,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w14,hires,3,3,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w15,contacted,8,8,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w15,screened,8,8,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w15,actual_screens,8,8,0,MATCH
+WBR,Wolt (all sub-BUs),Tina Aramouni,w15,ats,7,7,0,MATCH

@@ -1,0 +1,19 @@
+[2026-04-10T11:38:09.364809+00:00] Connecting to Google Sheets...
+
+  [export] TA Target -> wbr_ta_target.csv
+     OK: 1540 data rows exported
+
+  [export] TA Weekly Note -> wbr_ta_weekly_note.csv
+     OK: 5908 data rows exported
+
+  [export] TS Weekly Note -> wbr_ts_weekly.csv
+     OK: 2983 data rows exported
+
+  [export] IR -> wbr_ir.csv
+     OK: 45 data rows exported
+
+  [export] Reasoning Guidance -> wbr_reasoning_guidance.csv
+     OK: 21 data rows exported
+
+DONE: Done. 10497 total rows exported to C:\Users\blake\Documents\Claude\Projects\Recruiting Dashboard\wbr_static/
+   Sync metadata saved to C:\Users\blake\Documents\Claude\Projects\Recruiting Dashboard\wbr_static\google_sheet_sync.json

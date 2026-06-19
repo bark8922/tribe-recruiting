@@ -1,0 +1,122 @@
+# Live vs Snowflake Diff — Core Metric Columns
+
+**What this compares:** the 6 core Client + TA tables (WBR Client Summary, WBR TA Dolphins/Ponies for w14 & w15, MBR Client Target, MBR TA Dolphins/Ponies). Only the core actuals columns (Contacted / Screens / ATS / Offers / Hires) are compared.
+
+**Wolt handling:** live Wolt sub-BU rows are summed to a single `Wolt (all sub-BUs)` row to match Snowflake (which only has `Wolt` in the `client` table).
+
+
+## Per-table summary
+
+| Table | Keys (clients/TAs) | Cells compared | Mismatches | Big (>3) | Small (±1-3) | Match % |
+|---|---|---|---|---|---|---|
+| WBR Client Summary w14 | 13 | 65 | 5 | 3 | 2 | 92.3% |
+| WBR Client Summary w15 | 13 | 65 | 6 | 1 | 5 | 90.8% |
+| WBR TA Dolphins w14 | 20 | 80 | 9 | 6 | 3 | 88.8% |
+| WBR TA Dolphins w15 | 20 | 80 | 5 | 1 | 4 | 93.8% |
+| WBR TA Ponies w14 | 18 | 72 | 1 | 0 | 1 | 98.6% |
+| WBR TA Ponies w15 | 18 | 72 | 2 | 0 | 2 | 97.2% |
+| MBR Client Target | 19 | 95 | 44 | 27 | 17 | 53.7% |
+| MBR TA Dolphins | 21 | 84 | 22 | 17 | 5 | 73.8% |
+| MBR TA Ponies | 18 | 72 | 3 | 0 | 3 | 95.8% |
+
+## All mismatch cells
+
+| Table | Client | TA | Column | Live | Snow | Δ |
+|---|---|---|---|---|---|---|
+| WBR Client Summary w14 | Aviv | - | Contacted | 592 | 590 | -2 |
+| WBR Client Summary w14 | Eucalyptus | - | Contacted | 90 | 89 | -1 |
+| WBR Client Summary w14 | Wolt (all sub-BUs) | - | Contacted | 603 | 676 | +73 |
+| WBR Client Summary w14 | Wolt (all sub-BUs) | - | Screens | 71 | 82 | +11 |
+| WBR Client Summary w14 | Wolt (all sub-BUs) | - | ATS | 39 | 46 | +7 |
+| WBR Client Summary w15 | Aiven | - | Contacted | 107 | 106 | -1 |
+| WBR Client Summary w15 | Aviv | - | Screens | 69 | 68 | -1 |
+| WBR Client Summary w15 | Eucalyptus | - | Screens | 43 | 42 | -1 |
+| WBR Client Summary w15 | Wolt (all sub-BUs) | - | Contacted | 669 | 671 | +2 |
+| WBR Client Summary w15 | Wolt (all sub-BUs) | - | Screens | 62 | 67 | +5 |
+| WBR Client Summary w15 | Wolt (all sub-BUs) | - | ATS | 39 | 42 | +3 |
+| WBR TA Dolphins w14 | Aviv | Lejla Silva | Contacted | 303 | 301 | -2 |
+| WBR TA Dolphins w14 | Wolt (all sub-BUs) | Adelya Khakimova | Contacted | 0 | 14 | +14 |
+| WBR TA Dolphins w14 | Wolt (all sub-BUs) | Adelya Khakimova | Screens | 0 | 6 | +6 |
+| WBR TA Dolphins w14 | Wolt (all sub-BUs) | Adelya Khakimova | ATS | 0 | 4 | +4 |
+| WBR TA Dolphins w14 | Wolt (all sub-BUs) | Milica Veselinovic | Contacted | 65 | 118 | +53 |
+| WBR TA Dolphins w14 | Wolt (all sub-BUs) | Milica Veselinovic | Screens | 3 | 4 | +1 |
+| WBR TA Dolphins w14 | Wolt (all sub-BUs) | Zelimir Stajcic | Contacted | 116 | 122 | +6 |
+| WBR TA Dolphins w14 | Wolt (all sub-BUs) | Zelimir Stajcic | Screens | 4 | 8 | +4 |
+| WBR TA Dolphins w14 | Wolt (all sub-BUs) | Zelimir Stajcic | ATS | 1 | 4 | +3 |
+| WBR TA Dolphins w15 | Aviv | Jovana Drakula | Screens | 11 | 10 | -1 |
+| WBR TA Dolphins w15 | Wolt (all sub-BUs) | Adelya Khakimova | Contacted | 0 | 2 | +2 |
+| WBR TA Dolphins w15 | Wolt (all sub-BUs) | Adelya Khakimova | Screens | 0 | 1 | +1 |
+| WBR TA Dolphins w15 | Wolt (all sub-BUs) | Zelimir Stajcic | Screens | 3 | 7 | +4 |
+| WBR TA Dolphins w15 | Wolt (all sub-BUs) | Zelimir Stajcic | ATS | 2 | 5 | +3 |
+| WBR TA Ponies w14 | Eucalyptus | Meho Saracevic | Contacted | 40 | 39 | -1 |
+| WBR TA Ponies w15 | Aiven | Fuad Safarov | Contacted | 56 | 55 | -1 |
+| WBR TA Ponies w15 | Eucalyptus | Alisa Liddell | Screens | 4 | 3 | -1 |
+| MBR Client Target | ABOUT YOU | - | Actual_Screens | 1 | 0 | -1 |
+| MBR Client Target | ABOUT YOU | - | ATS | 1 | 0 | -1 |
+| MBR Client Target | Aiven | - | Contacted | 107 | 106 | -1 |
+| MBR Client Target | Aviv | - | Contacted | 1570 | 1567 | -3 |
+| MBR Client Target | Aviv | - | Actual_Screens | 189 | 188 | -1 |
+| MBR Client Target | Eucalyptus | - | Contacted | 523 | 522 | -1 |
+| MBR Client Target | Eucalyptus | - | Actual_Screens | 84 | 83 | -1 |
+| MBR Client Target | FTAPI | - | Contacted | 503 | 0 | -503 |
+| MBR Client Target | FTAPI | - | Actual_Screens | 3 | 0 | -3 |
+| MBR Client Target | FTAPI | - | ATS | 2 | 0 | -2 |
+| MBR Client Target | Grover | - | Contacted | 4 | 0 | -4 |
+| MBR Client Target | Nexi | - | Contacted | 517 | 515 | -2 |
+| MBR Client Target | Nexi | - | Actual_Screens | 54 | 52 | -2 |
+| MBR Client Target | Nexi | - | ATS | 32 | 31 | -1 |
+| MBR Client Target | Parloa | - | Hires | 5 | 4 | -1 |
+| MBR Client Target | Parloa | - | Contacted | 363 | 170 | -193 |
+| MBR Client Target | Parloa | - | Actual_Screens | 87 | 76 | -11 |
+| MBR Client Target | Parloa | - | ATS | 64 | 56 | -8 |
+| MBR Client Target | Parloa | - | Offers | 6 | 5 | -1 |
+| MBR Client Target | Scorewarrior | - | Contacted | 128 | 110 | -18 |
+| MBR Client Target | Scorewarrior | - | Actual_Screens | 42 | 19 | -23 |
+| MBR Client Target | Scorewarrior | - | ATS | 16 | 8 | -8 |
+| MBR Client Target | Taxfix | - | Actual_Screens | 35 | 34 | -1 |
+| MBR Client Target | Wolt (all sub-BUs) | - | Hires | 24 | 44 | +20 |
+| MBR Client Target | Wolt (all sub-BUs) | - | Contacted | 2258 | 2442 | +184 |
+| MBR Client Target | Wolt (all sub-BUs) | - | Actual_Screens | 244 | 317 | +73 |
+| MBR Client Target | Wolt (all sub-BUs) | - | ATS | 152 | 196 | +44 |
+| MBR Client Target | Wolt (all sub-BUs) | - | Offers | 29 | 47 | +18 |
+| MBR Client Target | Wolt Business | - | ATS | 1 | 0 | -1 |
+| MBR Client Target | Wolt C&S | - | Hires | 3 | 0 | -3 |
+| MBR Client Target | Wolt C&S | - | Contacted | 23 | 0 | -23 |
+| MBR Client Target | Wolt C&S | - | Actual_Screens | 24 | 0 | -24 |
+| MBR Client Target | Wolt C&S | - | ATS | 15 | 0 | -15 |
+| MBR Client Target | Wolt C&S | - | Offers | 4 | 0 | -4 |
+| MBR Client Target | Wolt NBB | - | Hires | 17 | 0 | -17 |
+| MBR Client Target | Wolt NBB | - | Contacted | 162 | 0 | -162 |
+| MBR Client Target | Wolt NBB | - | Actual_Screens | 49 | 0 | -49 |
+| MBR Client Target | Wolt NBB | - | ATS | 29 | 0 | -29 |
+| MBR Client Target | Wolt NBB | - | Offers | 14 | 0 | -14 |
+| MBR Client Target | Wolt Volume | - | Hires | 72 | 0 | -72 |
+| MBR Client Target | Wolt Volume | - | Contacted | 78 | 0 | -78 |
+| MBR Client Target | Wolt Volume | - | Actual_Screens | 77 | 0 | -77 |
+| MBR Client Target | Wolt Volume | - | ATS | 73 | 0 | -73 |
+| MBR Client Target | Wolt Volume | - | Offers | 72 | 0 | -72 |
+| MBR TA Dolphins | Aviv | Jovana Drakula | Actual_Screens | 24 | 23 | -1 |
+| MBR TA Dolphins | Aviv | Lejla Silva | Contacted | 623 | 620 | -3 |
+| MBR TA Dolphins | Wolt (all sub-BUs) | Adelya Khakimova | Hires | 0 | 3 | +3 |
+| MBR TA Dolphins | Wolt (all sub-BUs) | Adelya Khakimova | Contacted | 0 | 28 | +28 |
+| MBR TA Dolphins | Wolt (all sub-BUs) | Adelya Khakimova | Actual_Screens | 0 | 11 | +11 |
+| MBR TA Dolphins | Wolt (all sub-BUs) | Adelya Khakimova | ATS | 0 | 6 | +6 |
+| MBR TA Dolphins | Wolt (all sub-BUs) | Jelena Lacmanovic | Hires | 0 | 8 | +8 |
+| MBR TA Dolphins | Wolt (all sub-BUs) | Jelena Lacmanovic | Contacted | 0 | 144 | +144 |
+| MBR TA Dolphins | Wolt (all sub-BUs) | Jelena Lacmanovic | Actual_Screens | 0 | 31 | +31 |
+| MBR TA Dolphins | Wolt (all sub-BUs) | Jelena Lacmanovic | ATS | 0 | 14 | +14 |
+| MBR TA Dolphins | Wolt (all sub-BUs) | Niki Vokalkova | Hires | 0 | 3 | +3 |
+| MBR TA Dolphins | Wolt (all sub-BUs) | Niki Vokalkova | Contacted | 0 | 23 | +23 |
+| MBR TA Dolphins | Wolt (all sub-BUs) | Niki Vokalkova | Actual_Screens | 0 | 24 | +24 |
+| MBR TA Dolphins | Wolt (all sub-BUs) | Niki Vokalkova | ATS | 0 | 15 | +15 |
+| MBR TA Dolphins | Wolt (all sub-BUs) | Tina Aramouni | Hires | 0 | 6 | +6 |
+| MBR TA Dolphins | Wolt (all sub-BUs) | Tina Aramouni | Contacted | 0 | 18 | +18 |
+| MBR TA Dolphins | Wolt (all sub-BUs) | Tina Aramouni | Actual_Screens | 0 | 18 | +18 |
+| MBR TA Dolphins | Wolt (all sub-BUs) | Tina Aramouni | ATS | 0 | 15 | +15 |
+| MBR TA Dolphins | Wolt C&S | Niki Vokalkova | Hires | 3 | 0 | -3 |
+| MBR TA Dolphins | Wolt C&S | Niki Vokalkova | Contacted | 23 | 0 | -23 |
+| MBR TA Dolphins | Wolt C&S | Niki Vokalkova | Actual_Screens | 24 | 0 | -24 |
+| MBR TA Dolphins | Wolt C&S | Niki Vokalkova | ATS | 15 | 0 | -15 |
+| MBR TA Ponies | Aiven | Fuad Safarov | Contacted | 56 | 55 | -1 |
+| MBR TA Ponies | Eucalyptus | Alisa Liddell | Actual_Screens | 4 | 3 | -1 |
+| MBR TA Ponies | Eucalyptus | Meho Saracevic | Contacted | 280 | 279 | -1 |

@@ -1,0 +1,76 @@
+employee_id,name,job_title,department,division,location,email,supervisor
+306,Tina Abdul-Karim,Talent Acquisition Partner L3,Talent Acquisition,Wolt,Remote,tinaaramouni@tribe.xyz,Chené Elliot
+156,Andrea Akovic,Sourcing Lead,Leadership,Bench,Remote,andrea@tribe.xyz,Jacopo Lupo Ferrari
+185,Rachele Alvarado,Performance Marketeer,Performance Marketing,Wolt,Remote,rachele@tribe.xyz,Kristjana Thorarinsdottir
+211,Nare Avetisyan,Sourcer L2,Sourcing,Bench,Remote,nare@tribe.xyz,Gustavo Loureiro Castro
+118,Blake Barkley,Executive Assistant,General & Administrative,Core Tribe,Remote,blake@tribe.xyz,Martin Bernard
+120,Martin Bernard,CEO,Senior Leadership,Core Tribe,Remote,martin@tribe.xyz,
+332,Ekaterina Boyprav,Talent Acquisition Partner L3,Talent Acquisition,Scorewarrior,Remote,ekaterina@tribe.xyz,Meho Saracevic
+325,Chantal Bozkurt,Sourcer L3,Talent Acquisition,Bench,Remote,chantal@tribe.xyz,Simon Siew
+355,Mariam Chkhikvadze,Talent Acquisition Partner L2,Talent Acquisition,Bench,Remote,,Meho Saracevic
+126,Kristina Colovic,Team Lead,Leadership,Aviv,Remote,kristina@tribe.xyz,Salem Mansuri
+291,Andrea Darabašić,People Operations Manager,People Operations,Core Tribe,Remote,andreadarabasic@tribe.xyz,Ella Darie
+117,Ella Darie,Head of People,Senior Leadership,Core Tribe,Remote,ella@tribe.xyz,Martin Bernard
+137,Lejla Dizdarevic,Team Lead,Leadership,Aviv,Remote,lejla@tribe.xyz,Salem Mansuri
+176,Jan Dokulil,Talent Acquisition Partner L2,Talent Acquisition,Wolt,Remote,jandokulil@tribe.xyz,Vladimir Stankovic
+133,Kathleen Dongo,Talent Coordinator,Recruitment Ops,Wolt,Remote,kathleen@tribe.xyz,Katarina Matić
+153,Jovana Drakula,Talent Acquisition Partner L1,Talent Acquisition,Aviv,Remote,jovana@tribe.xyz,Chené Elliot
+121,Anastasija Dugalic,Senior Manager,Leadership,Bench,Remote,anastasija@tribe.xyz,Tijana Lazovic
+218,Iryna Dyda,Talent Acquisition Partner L1,Talent Acquisition,Internal,Remote,irynadyda@tribe.xyz,Sanja Pavlovikj
+167,Chené Elliot,Senior Manager,Leadership,Glovo,Remote,chene@tribe.xyz,Kristjana Thorarinsdottir
+184,Nemanja Erdevički,Talent Acquisition Partner L3,Talent Acquisition,Bench,Remote,nemanja@tribe.xyz,Vladimir Stankovic
+122,Jacopo Lupo Ferrari,Head of Delivery,Senior Leadership,Nexi,Remote,jacopo@tribe.xyz,Martin Bernard
+202,Wladyslaw Gadomski,Talent Acquisition Partner L3,Talent Acquisition,Aviv,Remote,wladyslaw@tribe.xyz,Kristina Colovic
+324,Lisa Gargulinska,Talent Acquisition Partner L3,Talent Acquisition,Wolt,Remote,lisa@tribe.xyz,Vladimir Stankovic
+288,Maria Gerbore,Talent Acquisition Partner L3,Talent Acquisition,Nexi,Spain,maria.gerbore@tribe.xyz,Lejla Dizdarevic
+141,Rodrigo Gomes,Sourcer L3,Sourcing,Bench,Remote,rodrigo@tribe.xyz,Gustavo Loureiro Castro
+183,Andy Hsu,Data Analyst,Product,Core Tribe,Remote,andy@tribe.xyz,Martin Bernard
+345,Jonaed Iqbal,Talent Acquisition Partner L3,Talent Acquisition,Parloa Gmbh,US,jonaed@tribe.xyz,Meho Saracevic
+353,Mateja Joković,Talent Acquisition Partner L2,Talent Acquisition,Phantom Buster,Remote,mateja@tribe.xyz,Meho Saracevic
+336,Adelya Khakimova,Talent Acquisition Partner L2,Talent Acquisition,Wolt,Remote,adelya@tribe.xyz,Chené Elliot
+312,Damla Kocek,Data Recruitment Specialist,Recruitment Ops,Wolt,Czech Republic,damla@tribe.xyz,Niki Vokalkova
+127,Mikhail Kuzmin,Sr Bubble,Product,Core Tribe,Remote,mikhail@tribe.xyz,Martin Bernard
+162,Jelena Lacmanović,Talent Acquisition Partner L2,Talent Acquisition,Wolt,Remote,jelenalacmanovic@tribe.xyz,Chené Elliot
+338,Marina Lazarević,Sourcer L3,Sourcing,Internal,Remote,marina@tribe.xyz,Andrea Akovic
+123,Tijana Lazovic,Talent Director,Senior Leadership,Core Tribe,Remote,tijana@tribe.xyz,Jacopo Lupo Ferrari
+337,Alisa Liddell,Talent Acquisition Partner L1,Talent Acquisition,Eucalyptus,Remote,alisa@tribe.xyz,Niki Vokalkova
+143,Gustavo Loureiro Castro,Sourcing Manager,Leadership,Parloa Gmbh,Remote,gustavo@tribe.xyz,Jacopo Lupo Ferrari
+311,Erzana Maliqi,Data Recruitment Specialist,Recruitment Ops,Wolt,Remote,erzana@tribe.xyz,Niki Vokalkova
+148,Salem Mansuri,Talent Director,Senior Leadership,Core Tribe,Spain,salem@tribe.xyz,Martin Bernard
+161,Katarina Matić,Coordinator Lead,Leadership,Wolt,Remote,katarina@tribe.xyz,Chené Elliot
+125,Milica Mladzic,Talent Acquisition Partner L2,Talent Acquisition,Bench,Remote,milica@tribe.xyz,Vladimir Stankovic
+310,Eduardo Moral Casimiro,Talent Acquisition Partner L3,Talent Acquisition,Bench,Spain,eduardo@tribe.xyz,Kristina Colovic
+351,Caroline Murphy,Principal of Marketing,Leadership,Core Tribe,Remote,carolinemurphy@tribe.xyz,Martin Bernard
+205,Hana Mutka,Talent Coordinator,Recruitment Ops,Wolt,Remote,hanamutka@tribe.xyz,Katarina Matić
+309,Samantha Nel,Talent Acquisition Partner L3,Talent Acquisition,Glovo,Remote,samanthanel@tribe.xyz,Kristina Colovic
+203,Naledi Ngwenya,Sourcer L3,Sourcing,FTAPI,Remote,naledi@tribe.xyz,Andrea Akovic
+290,Marina Nikolic,Talent Acquisition Partner L2,Talent Acquisition,Taxfix,Remote,marinanikolic@tribe.xyz,Lejla Dizdarevic
+174,Filip Nogowski,Talent Acquisition Partner L3,Talent Acquisition,Parloa Gmbh,Remote,filip@tribe.xyz,Meho Saracevic
+165,Dolores Palotas,Sourcer L2,Talent Acquisition,Bench,Remote,dolores@tribe.xyz,Simon Siew
+224,Sanja Pavlovikj,Sourcing Lead,Leadership,Internal,Remote,sanja@tribe.xyz,Ella Darie
+171,Rossella Petrillo,Manager,Leadership,Bench,Spain,rossella@tribe.xyz,Anastasija Dugalic
+323,Elena Petrovska,Sourcer L1,Sourcing,Wolt,Remote,elenapetrovska@tribe.xyz,Chené Elliot
+349,Adis Prepoljac,Sourcer L1,Sourcing,Nexi,Remote,adis@tribe.xyz,Sanja Pavlovikj
+347,Nidhi Raina,Talent Acquisition Partner L2,Talent Acquisition,Wolt,Remote,nidhi@tribe.xyz,Vladimir Stankovic
+289,Alexandra Richiteanu,Talent Acquisition Partner L3,Talent Acquisition,Aviv,Spain,alexandra.richiteanu@tribe.xyz,Chené Elliot
+216,Fuad Safarov,Talent Acquisition Partner L2,Talent Acquisition,Aiven,Remote,fuad@tribe.xyz,Niki Vokalkova
+131,Meho Saracevic,Team Lead,Leadership,Eucalyptus,Remote,meho@tribe.xyz,Salem Mansuri
+180,Sashka Sarafinovska,Talent Coordinator,Recruitment Ops,Wolt,Remote,sashka@tribe.xyz,Katarina Matić
+346,Priya Sen,Talent Acquisition Partner L3,Talent Acquisition,Wolt,Remote,,Kristjana Thorarinsdottir
+342,Danish Shams,Talent Acquisition Partner L2,Talent Acquisition,Wolt,Remote,danish@tribe.xyz,Vladimir Stankovic
+296,Simon Siew,Staff TA,Talent Acquisition,Bench,Remote,simon@tribe.xyz,Kristjana Thorarinsdottir
+341,Akash Singh,Talent Acquisition Partner L2,Talent Acquisition,Wolt,Remote,asingh@tribe.xyz,Vladimir Stankovic
+199,Nenad Skoko,Talent Acquisition Partner L2,Talent Acquisition,Wolt,Remote,nenad@tribe.xyz,Chené Elliot
+354,Dušan Špica,Talent Acquisition Partner L2,Talent Acquisition,Eucalyptus,Remote,dushan@tribe.xyz,Lejla Dizdarevic
+318,Želimir Stajčić,Sourcer L3,Sourcing,Wolt,Remote,zelimir@tribe.xyz,Chené Elliot
+134,Vladimir Stankovic,Manager,Leadership,Aiven,Remote,vladimir@tribe.xyz,Kristjana Thorarinsdottir
+302,Ejla Suljčić,Sourcer L2,Sourcing,Wolt,Remote,ejla@tribe.xyz,Vladimir Stankovic
+327,Natalie Tal Prowse,Data Recruitment Specialist,Recruitment Ops,Wolt,UK,natalie@tribe.xyz,Niki Vokalkova
+140,Kristjana Thorarinsdottir,Talent Director,Senior Leadership,Core Tribe,Remote,kristjana@tribe.xyz,Jacopo Lupo Ferrari
+155,Anna Tyulpanova,Talent Acquisition Partner L3,Talent Acquisition,Aviv,Remote,annatyulpanova@tribe.xyz,Kristina Colovic
+334,Jelle van Schaick,Director of Marketing,Marketing,Core Tribe,Remote,jelle@tribe.xyz,Martin Bernard
+178,Milica Veselinovic,Sourcer L3,Sourcing,Wolt,Remote,milicaveselinovic@tribe.xyz,Chené Elliot
+157,Aleksandra Vistac,Talent Acquisition Partner L1,Talent Acquisition,Enam,Remote,aleksandra@tribe.xyz,Lejla Dizdarevic
+316,Niki Vokalkova,Interim Team Lead,Leadership,Wolt,Remote,niki@tribe.xyz,Vladimir Stankovic
+144,Dora Vrbanić,Talent Acquisition Partner L1,Talent Acquisition,Bench,,dora@tribe.xyz,Niki Vokalkova
+209,Valeriia Yurikova,Sourcer L2,Sourcing,Bench,Remote,valeriia@tribe.xyz,Gustavo Loureiro Castro

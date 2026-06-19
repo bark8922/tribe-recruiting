@@ -1,0 +1,299 @@
+{
+  "name": "WBR Google Sheet Sync",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "days",
+              "daysInterval": 1,
+              "triggerAtHour": 7,
+              "triggerAtMinute": 0
+            }
+          ]
+        }
+      },
+      "id": "schedule-trigger",
+      "name": "Daily 7AM UTC",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "resource": "sheet",
+        "operation": "read",
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1Hyb5M244bkh9ygxnssq_wppWxrT0KtGeVFEYvHVoouc"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "TA Target"
+        },
+        "options": {}
+      },
+      "id": "read-ta-target",
+      "name": "Read TA Target",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [500, 100],
+      "credentials": {
+        "googleApi": {
+          "id": "",
+          "name": "Google Sheets Service Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const items = $input.all();\nif (!items.length) return [{ json: { csv: '' } }];\nconst keys = Object.keys(items[0].json);\nconst header = keys.join(',');\nconst rows = items.map(item => keys.map(k => {\n  let v = String(item.json[k] == null ? '' : item.json[k]);\n  if (v.includes(',') || v.includes('\"') || v.includes('\\n')) v = '\"' + v.replace(/\"/g, '\"\"') + '\"';\n  return v;\n}).join(',')).join('\\n');\nreturn [{ json: { csv: header + '\\n' + rows } }];"
+      },
+      "id": "csv-ta-target",
+      "name": "CSV TA Target",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [760, 100]
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "edit",
+        "authentication": "accessToken",
+        "owner": {
+          "__rl": true,
+          "mode": "name",
+          "value": "bark8922"
+        },
+        "repository": {
+          "__rl": true,
+          "mode": "name",
+          "value": "tribe-recruiting"
+        },
+        "filePath": "wbr_static/wbr_ta_target.csv",
+        "fileContent": "={{ $json.csv }}",
+        "commitMessage": "={{ \"chore: sync TA Target \" + $now.format(\"yyyy-MM-dd\") }}"
+      },
+      "id": "push-ta-target",
+      "name": "Push TA Target",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [1020, 100],
+      "credentials": {
+        "githubApi": {
+          "id": "",
+          "name": "GitHub PAT"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "sheet",
+        "operation": "read",
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1Hyb5M244bkh9ygxnssq_wppWxrT0KtGeVFEYvHVoouc"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "TA Weekly Note"
+        },
+        "options": {}
+      },
+      "id": "read-ta-note",
+      "name": "Read TA Weekly Note",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [500, 300],
+      "credentials": {
+        "googleApi": {
+          "id": "",
+          "name": "Google Sheets Service Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const items = $input.all();\nif (!items.length) return [{ json: { csv: '' } }];\nconst keys = Object.keys(items[0].json);\nconst header = keys.join(',');\nconst rows = items.map(item => keys.map(k => {\n  let v = String(item.json[k] == null ? '' : item.json[k]);\n  if (v.includes(',') || v.includes('\"') || v.includes('\\n')) v = '\"' + v.replace(/\"/g, '\"\"') + '\"';\n  return v;\n}).join(',')).join('\\n');\nreturn [{ json: { csv: header + '\\n' + rows } }];"
+      },
+      "id": "csv-ta-note",
+      "name": "CSV TA Weekly Note",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [760, 300]
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "edit",
+        "authentication": "accessToken",
+        "owner": {
+          "__rl": true,
+          "mode": "name",
+          "value": "bark8922"
+        },
+        "repository": {
+          "__rl": true,
+          "mode": "name",
+          "value": "tribe-recruiting"
+        },
+        "filePath": "wbr_static/wbr_ta_weekly_note.csv",
+        "fileContent": "={{ $json.csv }}",
+        "commitMessage": "={{ \"chore: sync TA Weekly Note \" + $now.format(\"yyyy-MM-dd\") }}"
+      },
+      "id": "push-ta-note",
+      "name": "Push TA Weekly Note",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [1020, 300],
+      "credentials": {
+        "githubApi": {
+          "id": "",
+          "name": "GitHub PAT"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "sheet",
+        "operation": "read",
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1Hyb5M244bkh9ygxnssq_wppWxrT0KtGeVFEYvHVoouc"
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "name",
+          "value": "TS Weekly Note"
+        },
+        "options": {}
+      },
+      "id": "read-ts-weekly",
+      "name": "Read TS Weekly",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [500, 500],
+      "credentials": {
+        "googleApi": {
+          "id": "",
+          "name": "Google Sheets Service Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "language": "javaScript",
+        "jsCode": "const items = $input.all();\nif (!items.length) return [{ json: { csv: '' } }];\nconst keys = Object.keys(items[0].json);\nconst header = keys.join(',');\nconst rows = items.map(item => keys.map(k => {\n  let v = String(item.json[k] == null ? '' : item.json[k]);\n  if (v.includes(',') || v.includes('\"') || v.includes('\\n')) v = '\"' + v.replace(/\"/g, '\"\"') + '\"';\n  return v;\n}).join(',')).join('\\n');\nreturn [{ json: { csv: header + '\\n' + rows } }];"
+      },
+      "id": "csv-ts-weekly",
+      "name": "CSV TS Weekly",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [760, 500]
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "edit",
+        "authentication": "accessToken",
+        "owner": {
+          "__rl": true,
+          "mode": "name",
+          "value": "bark8922"
+        },
+        "repository": {
+          "__rl": true,
+          "mode": "name",
+          "value": "tribe-recruiting"
+        },
+        "filePath": "wbr_static/wbr_ts_weekly.csv",
+        "fileContent": "={{ $json.csv }}",
+        "commitMessage": "={{ \"chore: sync TS Weekly \" + $now.format(\"yyyy-MM-dd\") }}"
+      },
+      "id": "push-ts-weekly",
+      "name": "Push TS Weekly",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [1020, 500],
+      "credentials": {
+        "githubApi": {
+          "id": "",
+          "name": "GitHub PAT"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Daily 7AM UTC": {
+      "main": [
+        [
+          { "node": "Read TA Target", "type": "main", "index": 0 },
+          { "node": "Read TA Weekly Note", "type": "main", "index": 0 },
+          { "node": "Read TS Weekly", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Read TA Target": {
+      "main": [
+        [
+          { "node": "CSV TA Target", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "CSV TA Target": {
+      "main": [
+        [
+          { "node": "Push TA Target", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Read TA Weekly Note": {
+      "main": [
+        [
+          { "node": "CSV TA Weekly Note", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "CSV TA Weekly Note": {
+      "main": [
+        [
+          { "node": "Push TA Weekly Note", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Read TS Weekly": {
+      "main": [
+        [
+          { "node": "CSV TS Weekly", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "CSV TS Weekly": {
+      "main": [
+        [
+          { "node": "Push TS Weekly", "type": "main", "index": 0 }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": false
+  }
+}

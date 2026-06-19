@@ -1,0 +1,117 @@
+client,job_title,date_opened,days_open,candidates_active_90d,candidates_moved_90d,last_event,external_recruiter
+Wolt,Grocery Associate - Nis,2024-04-09,743,1,0,2026-04-22,False
+Wolt,English and Georgian Speaking Support Associate,2024-10-15,554,27,27,2026-03-12,False
+Enam,Fullstack Engineer (Sequence),2025-01-15,462,53,30,2026-04-22,False
+Enam,Fullstack Engineer,2025-01-15,462,233,232,2026-04-22,False
+Parloa,Senior Backend Engineer,2025-03-19,399,1,0,2026-02-11,True
+Wolt,GA-Cyprus,2025-04-04,383,6,6,2026-03-20,False
+Wolt,GA-Malta,2025-04-25,362,2,2,2026-03-20,False
+Wolt,"Senior Backend Engineer, Rewards Team (May '25)",2025-05-18,339,1,0,2026-03-19,False
+Wolt,"Senior Data Scientist, Core Experience",2025-05-18,339,11,10,2026-04-22,False
+Wolt,"Sr Associate, Finance & Strategy, North",2025-08-01,264,2,1,2026-03-23,False
+Wolt,Support Assosiate SSC Hungary,2025-08-15,250,1,1,2026-03-20,False
+Scorewarrior,Senior Client C++ Developer,2025-09-02,232,122,115,2026-04-10,False
+Wolt,"Support Associate, Astana",2025-09-05,229,5,5,2026-02-20,False
+Wolt,"Support Associate, Almaty",2025-09-05,229,60,59,2026-03-13,False
+SevenRooms,Mid Software Engineer - Backend,2025-09-11,223,1125,1118,2026-04-21,False
+Wolt,Implementation Lead - London,2025-09-15,219,1,0,2026-04-16,False
+Wolt,Support Shift Lead,2025-09-19,215,4,4,2026-02-27,False
+Wolt,Tax Manager,2025-09-21,213,1,1,2026-02-01,False
+Wolt,"CPG Partnership Manager, Germany",2025-09-22,212,1,0,2026-04-15,True
+SevenRooms,Senior Software Engineer - Backend,2025-09-22,212,7,4,2026-02-03,False
+Parloa,Principal Engineer,2025-09-22,212,552,442,2026-04-20,False
+Cohere,Regional,2025-09-26,208,1,0,2026-02-19,False
+Wolt,Senior Finance Specialist - GL Accounting,2025-09-28,206,1,1,2026-02-01,False
+Wolt,Grocery Associate Denmark (Soborg),2025-09-30,204,2,2,2026-02-16,False
+Wolt,Support Associate Norway,2025-09-30,204,16,16,2026-03-06,False
+Wolt,Grocery Associate Denmark Youth Worker,2025-09-30,204,17,17,2026-03-19,False
+Wolt,Grocery Associate Denmark (Aarhus),2025-09-30,204,4,4,2026-02-27,False
+Wolt,Grocery Associate Denmark (Copenhagen),2025-09-30,204,30,30,2026-03-19,False
+Wolt,Grocery Associate Denmark (Odense),2025-09-30,204,7,6,2026-04-15,False
+Wolt,Workplace Safety Manager - KZ,2025-09-30,204,1,0,2026-04-22,False
+Wolt,Grocery Associate Norway (Oslo),2025-10-03,201,8,8,2026-03-19,False
+Wolt,Grocery Associate Denmark (Aalborg),2025-10-03,201,1,1,2026-02-16,False
+Eucalyptus,"Launcher, UK",2025-10-03,201,284,283,2026-04-22,False
+Wolt,"Assistant Country Controller, Boltics - 18 Months, FTC",2025-10-05,199,1,0,2026-01-25,False
+Wolt,"Grocery Associate, Volume, Estonia",2025-10-10,194,5,5,2026-03-26,False
+Wolt,"Grocery Associate, Volume, Cyprus",2025-10-10,194,21,21,2026-03-30,False
+Wolt,"Country Controller, AL/KOS - 12 Months",2025-10-10,194,2,1,2026-02-08,False
+Wolt,"Mass Account Management Executive (m,f,x) Munich",2025-10-12,192,28,27,2026-04-16,False
+Wolt,Territory Sales Manager - Gera/Jena/Erfurt,2025-10-12,192,215,193,2026-04-16,False
+Wolt,"Account Manager (2025.03914) Munchen, Germany",2025-10-12,192,40,39,2026-04-16,False
+Wolt,Territory Sales Manager - Bayern/Munich,2025-10-12,192,76,66,2026-04-16,False
+Wolt,"Team Lead, Account Management - West",2025-10-12,192,1,0,2026-04-21,False
+Wolt,Territory Sales Manager - Nuremberg,2025-10-12,192,1,1,2026-02-20,False
+Wolt,Store Operations Associate Chania [Evagelina],2025-10-13,191,1,0,2026-03-26,False
+Wolt,Kotlin Backend Engineer (i4+i5) - Merchant Group,2025-10-15,189,9,8,2026-03-31,False
+Wolt,Store Operations Associate - Ampelokipoi [Evagelina],2025-10-17,187,4,4,2026-02-04,False
+Wolt,Store Operations Associate - Pireus [Evagelina],2025-10-23,181,3,3,2026-03-05,False
+Wolt,Store Operations Associate - Neos Kosmos [Evagelina],2025-10-23,181,4,4,2026-03-05,False
+Wolt,Store Operations Associate - Marousi [Evagelina],2025-10-24,180,1,1,2026-02-09,False
+Scorewarrior,Senior Backend C++ Engineer (Framework),2025-10-24,180,95,82,2026-04-10,False
+Wolt,"Grocery Associate, Volume - Malta",2025-10-27,177,5,5,2026-03-30,False
+Wolt,"Grocery Associate, Volume, Latvia",2025-10-29,175,18,18,2026-03-27,False
+Wolt,Sales Manager - Uzbekistan,2025-10-29,175,12,10,2026-04-02,False
+Wolt,"CPG Partnerships Manager - Wolt Ads, Norway",2025-11-03,170,11,8,2026-04-01,True
+Wolt,WM Shift Lead - Athens [Evagelina],2025-11-04,169,1,1,2026-01-27,False
+Parloa,"Forward Deployed Engineer, DevOps - Filip",2025-11-06,167,1,1,2026-02-06,False
+Wolt,Partnership Associate,2025-11-06,167,1,1,2026-01-27,False
+Wolt,Support Associate- Geo HQ,2025-11-11,162,27,27,2026-03-13,False
+Wolt,"Support Associate, Volume, Lithuania",2025-11-12,161,9,9,2026-03-30,False
+Wolt,Store Manager - Athens,2025-11-12,161,166,165,2026-04-17,False
+Doordash,"Software Engineer, Backend - India",2025-11-17,156,142,141,2026-04-20,False
+Doordash,Analytics Engineer,2025-11-17,156,15,14,2026-03-09,False
+Wolt,Store Operations Associate - Cholargos [Evagelina],2025-11-17,156,1,1,2026-02-24,False
+Doordash,"Software Engineer, Proactive Security",2025-11-17,156,16,15,2026-04-22,False
+Nexi,Field Sales Manager (Swiss German part),2025-11-17,156,11,10,2026-04-22,False
+Nexi,Sales field manager (Swiss French part),2025-11-17,156,22,22,2026-01-29,False
+Parloa,Forward Deployed Engineer,2025-11-17,156,242,239,2026-04-20,False
+Parloa,"Forward Deployed Engineer, DevOps",2025-11-17,156,12,11,2026-04-20,False
+Wolt,Merchant Services Associate,2025-11-18,155,2,2,2026-03-19,False
+Parloa,US Lead Agent Architect,2025-11-19,154,6,3,2026-03-09,False
+Eucalyptus,"Operations Associate, CA",2025-11-21,152,47,32,2026-04-21,False
+Wolt,Grocery Associate Youth Worker (Sweden),2025-11-21,152,4,4,2026-03-19,False
+Wolt,Store Operations Associate - Heraklion (Crete) [Evagelina],2025-11-24,149,1,1,2026-02-20,False
+Parloa,Technical Project Manager - Agentic AI Deployments,2025-11-24,149,10,6,2026-03-28,False
+Parloa,Head of Technical Program Management (TPM) - Agentic AI Services,2025-11-24,149,2,1,2026-04-09,False
+Wolt,Store Manager - Tbilisi,2025-12-01,142,3,3,2026-04-17,False
+Wolt,Category Manager - Athens,2025-12-02,141,12,12,2026-03-24,False
+Wolt,Ads Operations Specialist - Georgia,2025-12-02,141,1,1,2026-02-03,False
+Scorewarrior,Senior Technical Artist,2025-12-03,140,116,114,2026-04-08,False
+Wolt,Ads&Promos Specialist - Azerbaijan,2025-12-03,140,33,32,2026-03-20,False
+Wolt,"Support Associate, Kazakhstan, Volume, Alisa",2025-12-04,139,21,21,2026-02-12,False
+Eucalyptus,"Patient Operations Lead, CA",2025-12-04,139,189,183,2026-03-23,False
+Wolt,Grocery Shift Lead Norway,2025-12-05,138,1,1,2026-01-23,False
+Wolt,Territory Sales Manager - Nurnberg,2025-12-09,134,268,266,2026-03-13,False
+Wolt,Grocery Associate Stockholm (Sweden),2025-12-12,131,1,1,2026-01-23,False
+Wolt,"Marekting Manager, Bulgaria",2025-12-14,129,13,12,2026-02-13,False
+Nexi,Head of Tax,2025-12-15,128,2,1,2026-02-11,False
+Wolt,Sales Manager Luxembourg,2025-12-19,124,117,110,2026-04-22,False
+Enam,Machine Learning Engineer,2025-12-23,120,321,307,2026-04-21,False
+Wolt,"Grocery Shift Lead, Latvia",2025-12-24,119,1,1,2026-02-05,False
+Wolt,English and Georgian Support Associate - Ketevan - Full Time & Part Time,2025-12-25,118,198,197,2026-03-25,False
+Wolt,Delivery Courier (Employed),2025-12-29,114,53,53,2026-03-15,False
+Wolt,"Category Manager, Slovakia, Q1 '26",2025-12-30,113,98,87,2026-04-21,False
+Wolt,Country Head of Merchant Operations - AZE,2026-01-06,106,24,23,2026-03-17,False
+Wolt,Sales Manager-Kosovo,2026-01-07,105,20,19,2026-04-14,False
+Eucalyptus,"Growth Marketing Manager, CA",2026-01-08,104,209,208,2026-04-21,False
+Doordash,Data Engineer,2026-01-08,104,55,54,2026-03-06,False
+Nexi,Accounting Manager DACH,2026-01-08,104,24,23,2026-02-11,False
+Wolt,"Finance & Strategy Manager, Israel",2026-01-11,101,3,3,2026-01-25,False
+Nexi,ISV_Lombardia_Software Sales Expert,2026-01-13,99,359,358,2026-04-22,False
+Wolt,Regional Restaurant Marketing Manager - West,2026-01-13,99,436,425,2026-04-13,True
+Wolt,DevOps Observability Engineer,2026-01-13,99,43,42,2026-02-22,True
+Nexi,ISV_Lazio_Software Sales Expert,2026-01-13,99,105,104,2026-04-22,False
+Wolt,Senior Staff Engineer Fintech I7,2026-01-13,99,234,229,2026-04-19,True
+Wolt,Senior Backend Engineer Fintech I5,2026-01-13,99,304,298,2026-04-19,True
+Enam,Fullstack Engineer - recontacting InMail,2026-01-15,97,151,143,2026-04-16,False
+Wolt,Account Manager - Kosovo,2026-01-16,96,208,207,2026-04-21,False
+Wolt,Partnership Specialist - AZE,2026-01-19,93,32,31,2026-02-19,False
+Wolt,Merchant Services Associate KAZ (Internal),2026-01-19,93,5,4,2026-02-05,False
+Parloa,"Lead Solution Engineer, US West/Central",2026-01-20,92,16,15,2026-03-07,False
+Wolt,Content Associate - Tallinn,2026-01-20,92,25,24,2026-03-01,False
+Parloa,Senior Value Consultant west/Central U.S.,2026-01-20,92,14,13,2026-02-26,False
+Wolt,Store Manager - Cyprus,2026-01-20,92,35,34,2026-04-17,False
+Wolt,Senior Category Manager - Almaty,2026-01-22,90,43,42,2026-03-26,False
+Wolt,Restaurant Development Specialist - Astana,2026-01-22,90,45,44,2026-02-13,False
+Nexi,Accounting Associate,2026-01-22,90,85,84,2026-02-12,False

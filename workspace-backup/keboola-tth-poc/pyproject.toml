@@ -1,0 +1,11 @@
+[project]
+name = "tribe-tth-app"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "flask>=3.0.0",
+    "kai-client",
+]
+
+[tool.uv]
+# App is flat scripts (app.py, kai_chat.py), not an install

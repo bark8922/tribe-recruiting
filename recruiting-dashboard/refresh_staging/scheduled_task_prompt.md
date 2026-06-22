@@ -1,3 +1,16 @@
+> **⚠️ SUPERSEDED / RETIRED (2026-06-22).** This Cowork scheduled task no longer
+> exists — it was replaced by the Keboola component `kds-team.app-custom-python`
+> (`01kpr863ypqr5pt74wms8fdj67`, "Dashboard refresh — render_json + GitHub push"),
+> which renders inside the Keboola Flow and commits the data itself.
+>
+> The procedure below is OBSOLETE in two ways: (1) the pipeline now commits a
+> GZIPPED `recruiting-dashboard/public/dashboard_data_snowflake.json.gz`, NOT the
+> uncompressed `src/dashboard_data_snowflake.json` described here (that path is
+> gitignored/transient); (2) success is no longer "a commit changing only the src
+> json". Kept for historical reference only — do not register or follow it.
+
+---
+
 # Scheduled-task prompt: tribe-recruiting-dashboard-refresh
 
 This is the exact prompt registered with `create_scheduled_task`. Keep it

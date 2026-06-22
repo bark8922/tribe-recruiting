@@ -55,6 +55,7 @@ CLI
 from __future__ import annotations
 
 import json
+import gzip
 import os
 import sys
 import unicodedata
@@ -195,15 +196,21 @@ def derive_team_leads(
 
 def main() -> int:
     repo_root = Path(os.environ.get("REPO_ROOT") or Path(__file__).resolve().parents[1])
-    data_path = repo_root / "recruiting-dashboard" / "src" / "dashboard_data_snowflake.json"
+    gz_path = repo_root / "recruiting-dashboard" / "public" / "dashboard_data_snowflake.json.gz"
+    legacy_path = repo_root / "recruiting-dashboard" / "src" / "dashboard_data_snowflake.json"
     out_path = repo_root / "recruiting-dashboard" / "src" / "team_leads.json"
 
-    if not data_path.exists():
-        print(f"FAIL: dashboard data not found at {data_path}", file=sys.stderr)
+    if gz_path.exists():
+        data_path = gz_path
+    elif legacy_path.exists():
+        data_path = legacy_path
+    else:
+        print(f"FAIL: dashboard data not found at {gz_path} or {legacy_path}", file=sys.stderr)
         return 1
 
     print(f"Reading dashboard data from {data_path}")
-    with data_path.open() as f:
+    _open = gzip.open if data_path.suffix == ".gz" else open
+    with _open(data_path, "rt", encoding="utf-8") as f:
         dashboard_data = json.load(f)
     funnel_ta, funnel_ts = extract_funnel_names(dashboard_data)
     print(f"  funnel TAs: {len(funnel_ta)}, TSs: {len(funnel_ts)} "

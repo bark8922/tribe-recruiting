@@ -10,6 +10,7 @@ import sys
 print("=== keboola_entry.py loaded ===", flush=True)
 
 import base64
+import gzip
 import json
 import logging
 import os
@@ -28,7 +29,7 @@ from keboola.component import CommonInterface
 print("=== keboola.component imported ===", flush=True)
 
 REPO = "bark8922/tribe-recruiting"
-TARGET_FILE = "recruiting-dashboard/src/dashboard_data_snowflake.json"
+TARGET_FILE = "recruiting-dashboard/public/dashboard_data_snowflake.json.gz"
 DQ_TARGET_FILE = "recruiting-dashboard/public/dq_reasons.json"
 
 
@@ -168,9 +169,9 @@ def push_to_github(token, content, dq_content=None):
 
     target = repo_dir / TARGET_FILE
     target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(content, encoding="utf-8")
+    target.write_bytes(gzip.compress(content.encode("utf-8"), 9))
     size_kb = target.stat().st_size // 1024
-    print("[push_to_github] wrote " + TARGET_FILE + " (" + str(size_kb) + " KB)", flush=True)
+    print("[push_to_github] wrote " + TARGET_FILE + " (" + str(size_kb) + " KB gzipped)", flush=True)
 
     tracked = [TARGET_FILE]
     if dq_content is not None:

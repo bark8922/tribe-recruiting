@@ -44,15 +44,8 @@ Tribe.xyz recruiting/staffing analytics stack that replaced Power BI + Keboola/S
 
 ## Backup
 
-- This folder is git-tracked and pushed to GitHub for off-machine safety (repo: TBD — see Task 3).
-- Daily auto-push scheduled (TBD).
+- Working files are backed up to GitHub `bark8922/tribe-recruiting` under `workspace-backup/` (off-machine copy).
+- Daily auto-push at 18:00 local via scheduled task `backup-recruiting-dashboard-folder`.
+- Backup excludes node_modules, build output, large data dumps, legacy binary archives (powerbi_export, legacy-pbix), and any files containing secrets.
 - Conversations themselves are NOT auto-saved. Anything important from a chat must be written into this log to survive.
-
----
-
-## Session history
-
-### 2026-06-19
-- Reconstructed project status after Blake reinstalled Claude desktop (chat history lost, files survived).
-- Set up durability: this PROJECT_LOG.md, project memory, and GitHub folder backup.
-- Note: `Lejla_week25_screens.csv` added today — ad-hoc week-25 screen-credit tally for Lejla Silva (AVIV QA Automation roles), not dashboard code.
+- SECURITY: local folder contains plaintext credentials (Google service account key in wbr_static/, GitHub PAT + Google API keys in n8n/sheet files). These are ex

@@ -4941,8 +4941,13 @@ const ProfitabilityTab = () => {
     (D.ea || []).filter(e => e.p === pf).forEach(e => {
       if (!agg[e.d]) agg[e.d] = { client: e.d, bu: e.bu || '', rev: 0, directCost: 0, sourcingCost: 0 };
       const a = agg[e.d];
-      // Same rule as finance dashboard: rev>0 → Direct Cost, rev=0 → Sourcing Cost.
-      if ((e.rev || 0) > 0) a.directCost += (e.pr || 0);
+      // Same rule as finance dashboard (changed 2026-06-23): Direct Cost = anyone
+      // assigned to this client — alloc_type 'default' (BambooHR division IS the client),
+      // 'sourcer_client' (job history shows them on it), or 'ta' (assigned via the TA tab
+      // for holiday cover / notice-period) — or anyone billing it (rev>0, safety net).
+      // Sourcing Cost = bench sourcers ('sourcer_bench') with no revenue, spread by %.
+      const at = e.alloc_type;
+      if (at === 'default' || at === 'sourcer_client' || at === 'ta' || (e.rev || 0) > 0) a.directCost += (e.pr || 0);
       else a.sourcingCost += (e.pr || 0);
       if (e.bu) a.bu = e.bu;
     });
@@ -4975,7 +4980,6 @@ const ProfitabilityTab = () => {
     return { rows: rowList, totals: tot };
   }, [selectedPeriod, sort]);
 
-  const mColor = (m) => m > 30 ? 'text-green-400' : m > 15 ? 'text-yellow-400' : m > 0 ? 'text-orange-400' : 'text-red-400';
   const directMarginColor = (m) => m >= 60 ? 'text-green-400' : m >= 55 ? 'text-yellow-400' : 'text-red-400';
 
   const cols = [
@@ -5065,7 +5069,7 @@ const ProfitabilityTab = () => {
                   <td className={`py-1.5 px-2 text-right font-medium ${r.directProfit >= 0 ? 'text-green-400' : 'text-red-400'}`}>{fmtEUR(r.directProfit)}</td>
                   <td className={`py-1.5 px-2 text-right ${directMarginColor(r.directMargin)}`}>{r.directMargin}%</td>
                   <td className="py-1.5 px-2 text-right text-orange-400">{fmtEUR(r.sourcingCost)}</td>
-                  <td className={`py-1.5 px-2 text-right ${mColor(r.netMargin)}`}>{r.netMargin}%</td>
+                  <td className={`py-1.5 px-2 text-right ${directMarginColor(r.netMargin)}`}>{r.netMargin}%</td>
                 </tr>
               ))}
               {computed.totals && (
@@ -5077,14 +5081,14 @@ const ProfitabilityTab = () => {
                   <td className={`py-2 px-2 text-right ${computed.totals.directProfit >= 0 ? 'text-green-400' : 'text-red-400'}`}>{fmtEUR(computed.totals.directProfit)}</td>
                   <td className={`py-2 px-2 text-right ${directMarginColor(computed.totals.directMargin)}`}>{computed.totals.directMargin}%</td>
                   <td className="py-2 px-2 text-right text-orange-400">{fmtEUR(computed.totals.sourcingCost)}</td>
-                  <td className={`py-2 px-2 text-right ${mColor(computed.totals.netMargin)}`}>{computed.totals.netMargin}%</td>
+                  <td className={`py-2 px-2 text-right ${directMarginColor(computed.totals.netMargin)}`}>{computed.totals.netMargin}%</td>
                 </tr>
               )}
             </tbody>
           </table>
         </div>
         <p className="text-gray-500 text-xs mt-2">
-          Direct Cost = staff working on the project. Direct Profit = Revenue − Direct Cost. Sourcing Cost = sourcer + TA time allocated to the project. Net Margin = (Direct Profit − Sourcing Cost) ÷ Revenue. Overhead is excluded.
+          Direct Cost = everyone assigned to the client (placed staff, holiday cover, notice-period wind-down, or anyone billing) even before revenue starts. Direct Profit = Revenue − Direct Cost. Sourcing Cost = bench sourcers whose spare time is spread across clients. Net Margin = (Direct Profit − Sourcing Cost) ÷ Revenue. Overhead is excluded.
         </p>
       </div>
     </div>

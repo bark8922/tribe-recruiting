@@ -1,11 +1,13 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
   LineChart, Line, AreaChart, Area, FunnelChart, Funnel, LabelList,
-  CartesianGrid, Legend
+  CartesianGrid, Legend, PieChart, Pie, Cell
 } from 'recharts';
 import { Search } from 'lucide-react';
-import dashboardDataSnowflake from './dashboard_data_snowflake.json';
+// dashboard_data_snowflake.json is loaded at runtime (gzipped) by RecruitingDashboard
+// instead of being imported here. Inlining the ~50MB JSON pushed the JS bundle past
+// Cloudflare Pages' 25 MiB per-file limit and broke every deploy from 2026-06-15.
 import clientProfitabilityData from './client_profitability.json';
 import teamLeadsData from './team_leads.json';
 
@@ -101,6 +103,41 @@ const allTargetsMet = (pairs) => {
 };
 
 // WBR Tab
+
+// --- CSV export (DOM-based: serializes the rendered table, so it cannot diverge from screen) ---
+const csvCell = (s) => {
+  const v = String(s ?? '').replace(/\u00A0/g, ' ').replace(/\s+/g, ' ').trim();
+  return /[",\n;]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
+};
+const CsvBtn = ({ fname }) => {
+  const ref = React.useRef(null);
+  const onClick = () => {
+    const sib = ref.current?.nextElementSibling;
+    const table = sib && sib.tagName === 'TABLE' ? sib : ref.current?.parentElement?.querySelector('table');
+    if (!table) return;
+    const lines = Array.from(table.querySelectorAll('tr')).map((tr) =>
+      Array.from(tr.querySelectorAll('th,td')).map((c) => csvCell(c.textContent)).join(',')
+    );
+    const blob = new Blob(['\uFEFF' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fname + '_' + new Date().toISOString().slice(0, 10) + '.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+  return (
+    <div ref={ref} className="flex justify-end mb-1">
+      <button type="button" onClick={onClick} title="Download this table as CSV"
+        className="text-xs px-2 py-1 rounded border border-gray-600 bg-gray-700 text-gray-300 hover:bg-gray-600">
+        ⤓ CSV
+      </button>
+    </div>
+  );
+};
+
 const WBRTab = ({ data }) => {
   // Derive week list from the weekly roster (keys like "w15", "w16"). This
   // auto-advances as Andy adds new weeks to the TA Weekly Note sheet.
@@ -720,7 +757,8 @@ const WBRTab = ({ data }) => {
                 ? drillTaComments(drillDown.taName)
                 : drillDown.kind === 'ts' ? drillTsComments(drillDown.tsName)
                 : {};
-              return (
+              return (<>
+            <CsvBtn fname="wbr_drilldown_weekly" />
             <table className="text-sm" style={{ width: '100%', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
               <colgroup>
                 <col style={{ width: '70px' }} />
@@ -804,7 +842,7 @@ const WBRTab = ({ data }) => {
                   {showComment && <td className="text-left px-3 py-2 text-gray-400">—</td>}
                 </tr>
               </tbody>
-            </table>
+            </table></>
               );
             })()}
             <p className="text-xs text-gray-500 mt-4">Click outside this panel or press ✕ to close.</p>
@@ -862,6 +900,7 @@ const WBRTab = ({ data }) => {
       <div className="bg-gray-800 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-white mb-4">Client Summary — Week {selectedWeek}</h3>
         <div style={{ overflowX: 'auto' }}>
+          <CsvBtn fname="wbr_client_summary" />
           <table className="text-sm" style={{ width: '780px', maxWidth: '100%', margin: '0 auto', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
             <colgroup>
               <col style={{ width: '180px' }} />
@@ -929,6 +968,7 @@ const WBRTab = ({ data }) => {
       <div className="bg-gray-800 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-white mb-4">TA Weekly Detail — Week {selectedWeek}</h3>
         <div>
+          <CsvBtn fname="wbr_ta_weekly_detail" />
           <table className="text-sm" style={{ width: '100%', tableLayout: 'fixed', borderCollapse: 'separate', borderSpacing: 0 }}>
             <colgroup>
               <col style={{ width: '120px' }} />
@@ -1088,6 +1128,7 @@ const WBRTab = ({ data }) => {
       <div className="bg-gray-800 rounded-lg p-4">
           <h3 className="text-lg font-semibold text-white mb-4">TS (Sourcer) Weekly — Week {selectedWeek}</h3>
           <div>
+            <CsvBtn fname="wbr_ts_weekly" />
             <table className="text-sm" style={{ width: '100%', tableLayout: 'fixed', borderCollapse: 'separate', borderSpacing: 0 }}>
               <colgroup>
                 <col style={{ width: '150px' }} />
@@ -1174,6 +1215,7 @@ const WBRTab = ({ data }) => {
           Funnel metrics count candidates on those pipelines only.
         </p>
         <div style={{ overflowX: 'auto' }}>
+          <CsvBtn fname="wbr_ts_conversion" />
           <table className="text-sm" style={{ width: '900px', maxWidth: '100%', margin: '0 auto', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
             <colgroup>
               <col style={{ width: '150px' }} />
@@ -1483,6 +1525,7 @@ const MBRTab = ({ data }) => {
       <div className="bg-gray-800 rounded-lg p-4" key={group}>
         <h3 className="text-lg font-semibold text-white mb-4">{label} — TAs (Last 4 Weeks)</h3>
         <div className="overflow-x-auto">
+          <CsvBtn fname={'mbr_tas_' + group} />
           <table className="text-sm" style={{ width: '1500px', maxWidth: '100%', margin: '0 auto', tableLayout: 'fixed' }}>
             <colgroup>
               <col style={{ width: '100px' }} />
@@ -1583,6 +1626,7 @@ const MBRTab = ({ data }) => {
       <div className="bg-gray-800 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-white mb-4">Client's Target — Last 4 Weeks</h3>
         <div style={{ overflowX: 'auto' }}>
+          <CsvBtn fname="mbr_client_targets_last4w" />
           <table className="text-sm" style={{ width: '780px', maxWidth: '100%', margin: '0 auto', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
             <colgroup>
               <col style={{ width: '130px' }} />
@@ -1640,6 +1684,7 @@ const MBRTab = ({ data }) => {
       <div className="bg-gray-800 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-white mb-4">TS's Target — Last 4 Weeks</h3>
         <div style={{ overflowX: 'auto' }}>
+          <CsvBtn fname="mbr_ts_targets_last4w" />
           <table className="text-sm" style={{ width: '1300px', maxWidth: '100%', margin: '0 auto', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
             <colgroup>
               <col style={{ width: '150px' }} />
@@ -1775,7 +1820,223 @@ const normalizeClientPD = (client) => {
   return trimmed;
 };
 
+// Non-real PD clients: always excluded from Project Dashboard (Tribe.xyz (IR) is kept).
+const PD_EXCLUDED_CLIENTS = new Set(['Tribe.xyz', 'Tribe: Talent Pools']);
+
 const pdPct = (v) => v == null ? '—' : `${(v * 100).toFixed(0)}%`;
+
+// ---------- PD Disqualified Reasons section ----------
+// Filterable port of the PBI Overview "Disqualified Reason" pie. Data comes
+// from public/dq_reasons.json (lazy-fetched on first expand), dictionary-
+// encoded rows: [clientIdx, jobIdx, taIdx, weekIdx, reasonIdx, n], weekIdx -1
+// = candidate has no Disqualified event (included only in All time).
+const DQ_COLORS = ['#60a5fa', '#34d399', '#fbbf24', '#a78bfa', '#f472b6', '#fb923c', '#93c5fd', '#a3e635', '#fca5a5', '#5eead4', '#c4b5fd', '#fdba74', '#86efac', '#f9a8d4', '#cbd5e1'];
+const DQ_PERIODS = [['all', 'All time'], ['ytd', 'This year'], ['12w', 'Last 12 weeks'], ['4w', 'Last 4 weeks']];
+
+const DQReasonsSection = () => {
+  const [open, setOpen] = useState(true);
+  const [dq, setDq] = useState(null);
+  const [err, setErr] = useState(null);
+  const [client, setClient] = useState('');
+  const [job, setJob] = useState('');
+  const [ta, setTa] = useState('');
+  const [period, setPeriod] = useState('all');
+  const [customStart, setCustomStart] = useState('');
+  const [customEnd, setCustomEnd] = useState('');
+  const [showAll, setShowAll] = useState(false);
+
+  React.useEffect(() => {
+    if (!open || dq || err) return;
+    fetch('dq_reasons.json')
+      .then((r) => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(setDq)
+      .catch((e) => setErr(String(e && e.message ? e.message : e)));
+  }, [open, dq, err]);
+
+  const usingCustom = customStart !== '' || customEnd !== '';
+  const range = useMemo(() => {
+    if (usingCustom) return [customStart || '0000-01-01', customEnd || '9999-12-31'];
+    if (period === 'all') return null;
+    const now = new Date();
+    if (period === 'ytd') return [now.getFullYear() + '-01-01', '9999-12-31'];
+    const weeks = period === '4w' ? 4 : 12;
+    const d = new Date(now); d.setDate(d.getDate() - weeks * 7);
+    return [d.toISOString().slice(0, 10), '9999-12-31'];
+  }, [period, usingCustom, customStart, customEnd]);
+
+  // Shared filter predicates. Each dropdown's option list applies every OTHER
+  // active filter plus the time range, so picking a TA narrows jobs/clients,
+  // picking "Last 4 weeks" hides clients/jobs/TAs with no DQs in the window, etc.
+  const filt = useMemo(() => {
+    if (!dq) return null;
+    const ci = client === '' ? -1 : dq.clients.indexOf(client);
+    const ji = job === '' ? -1 : dq.jobs.indexOf(job);
+    const ti = ta === '' ? -1 : dq.tas.indexOf(ta);
+    const inRange = (r) => {
+      if (!range) return true;
+      if (r[3] < 0) return false;
+      const w = dq.weeks[r[3]];
+      return w >= range[0] && w <= range[1];
+    };
+    return { ci, ji, ti, inRange };
+  }, [dq, client, job, ta, range]);
+  const clientOptions = useMemo(() => {
+    if (!dq) return [];
+    const { ji, ti, inRange } = filt;
+    return [...new Set(dq.rows.filter((r) => (ji < 0 || r[1] === ji) && (ti < 0 || r[2] === ti) && inRange(r)).map((r) => dq.clients[r[0]]))].sort();
+  }, [dq, filt]);
+  const jobOptions = useMemo(() => {
+    if (!dq) return [];
+    const { ci, ti, inRange } = filt;
+    return [...new Set(dq.rows.filter((r) => (ci < 0 || r[0] === ci) && (ti < 0 || r[2] === ti) && inRange(r)).map((r) => dq.jobs[r[1]]))].sort();
+  }, [dq, filt]);
+  const taOptions = useMemo(() => {
+    if (!dq) return [];
+    const { ci, ji, inRange } = filt;
+    return [...new Set(dq.rows.filter((r) => (ci < 0 || r[0] === ci) && (ji < 0 || r[1] === ji) && inRange(r)).map((r) => dq.tas[r[2]]))].sort();
+  }, [dq, filt]);
+  // Auto-clear a selection that fell out of its (now narrower) option list.
+  React.useEffect(() => { if (dq && client && !clientOptions.includes(client)) setClient(''); }, [dq, client, clientOptions]);
+  React.useEffect(() => { if (dq && job && !jobOptions.includes(job)) setJob(''); }, [dq, job, jobOptions]);
+  React.useEffect(() => { if (dq && ta && !taOptions.includes(ta)) setTa(''); }, [dq, ta, taOptions]);
+
+  const byReason = useMemo(() => {
+    if (!dq) return [];
+    const { ci, ji, ti, inRange } = filt;
+    const m = new Map();
+    for (const r of dq.rows) {
+      if (ci >= 0 && r[0] !== ci) continue;
+      if (ji >= 0 && r[1] !== ji) continue;
+      if (ti >= 0 && r[2] !== ti) continue;
+      if (!inRange(r)) continue;
+      m.set(r[4], (m.get(r[4]) || 0) + r[5]);
+    }
+    return [...m.entries()].map(([ri, n]) => ({ reason: dq.reasons[ri], n })).sort((a, b) => b.n - a.n);
+  }, [dq, filt]);
+
+  const total = byReason.reduce((s, r) => s + r.n, 0);
+  const shown = showAll ? byReason : byReason.slice(0, 10);
+  const maxN = byReason.length ? byReason[0].n : 1;
+  const donutData = useMemo(() => {
+    const top = byReason.slice(0, 10);
+    const rest = byReason.slice(10).reduce((s, r) => s + r.n, 0);
+    return rest > 0 ? [...top, { reason: 'Rest', n: rest }] : top;
+  }, [byReason]);
+
+  return (
+    <div className="bg-gray-800 rounded-lg p-4">
+      <button type="button" onClick={() => setOpen(!open)} className="w-full flex items-center justify-between text-left">
+        <h3 className="text-lg font-semibold text-white">
+          Disqualified Reasons{open && total > 0 ? ` · ${total.toLocaleString()}` : ''}
+        </h3>
+        <span className="text-gray-400 text-sm">{open ? '▾ hide' : '▸ show'}</span>
+      </button>
+      {open && err && (
+        <div className="text-sm text-gray-400 mt-3">
+          Data not available yet — dq_reasons.json populates on the next scheduled refresh. ({err})
+        </div>
+      )}
+      {open && !err && !dq && <div className="text-sm text-gray-400 mt-3">Loading…</div>}
+      {open && dq && (
+        <div className="mt-3">
+          <div className="flex flex-wrap gap-2 items-center mb-3">
+            <select value={client} onChange={(e) => setClient(e.target.value)}
+              className="px-2 py-1 bg-gray-700 text-white rounded border border-gray-600 text-xs" style={{ maxWidth: 180 }}>
+              <option value="">All clients</option>
+              {clientOptions.map((c) => <option key={c} value={c}>{c}</option>)}
+            </select>
+            <select value={job} onChange={(e) => setJob(e.target.value)}
+              className="px-2 py-1 bg-gray-700 text-white rounded border border-gray-600 text-xs" style={{ maxWidth: 220 }}>
+              <option value="">All jobs</option>
+              {jobOptions.map((j) => <option key={j} value={j}>{j}</option>)}
+            </select>
+            <select value={ta} onChange={(e) => setTa(e.target.value)}
+              className="px-2 py-1 bg-gray-700 text-white rounded border border-gray-600 text-xs" style={{ maxWidth: 160 }}>
+              <option value="">All TAs</option>
+              {taOptions.map((t) => <option key={t} value={t}>{t}</option>)}
+            </select>
+            <select value={period} disabled={usingCustom}
+              onChange={(e) => setPeriod(e.target.value)}
+              className="px-2 py-1 bg-gray-700 text-white rounded border border-gray-600 text-xs">
+              {DQ_PERIODS.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+            </select>
+            <div className="flex items-center gap-1 text-xs text-gray-400">
+              <span>or custom:</span>
+              <input type="date" value={customStart} onChange={(e) => setCustomStart(e.target.value)}
+                className="px-1 py-1 bg-gray-700 text-white rounded border border-gray-600 text-xs" />
+              <span>→</span>
+              <input type="date" value={customEnd} onChange={(e) => setCustomEnd(e.target.value)}
+                className="px-1 py-1 bg-gray-700 text-white rounded border border-gray-600 text-xs" />
+              {usingCustom && (
+                <button onClick={() => { setCustomStart(''); setCustomEnd(''); }}
+                  className="ml-1 px-1 text-xs text-gray-300 hover:text-white">clear</button>
+              )}
+            </div>
+            <span className="ml-auto text-xs text-gray-400">{total.toLocaleString()} disqualified</span>
+          </div>
+          {byReason.length === 0 ? (
+            <div className="text-sm text-gray-400">No disqualifications match the current filters.</div>
+          ) : (
+            <div className="flex flex-wrap gap-6 items-start">
+              <div style={{ width: 230, height: 230 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie data={donutData} dataKey="n" nameKey="reason" innerRadius={58} outerRadius={92} stroke="none" isAnimationActive={false}>
+                      {donutData.map((e, i) => (
+                        <Cell key={i} fill={e.reason === 'Rest' ? '#4b5563' : DQ_COLORS[i % DQ_COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      formatter={(v, name) => [v.toLocaleString() + ' (' + (total ? (100 * v / total).toFixed(1) : 0) + '%)', name]}
+                      contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #4b5563', borderRadius: 6, fontSize: 12 }}
+                      itemStyle={{ color: '#e5e7eb' }} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="flex-1" style={{ minWidth: 320 }}>
+                <CsvBtn fname="pd_dq_reasons" />
+                <table className="w-full text-xs">
+                  <thead>
+                    <tr className="text-gray-300 border-b border-gray-700">
+                      <th className="text-left px-2 py-1">Reason</th>
+                      <th className="text-right px-2 py-1">#</th>
+                      <th className="text-right px-2 py-1">%</th>
+                      <th className="px-2 py-1" style={{ width: '30%' }}></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {shown.map((r, i) => (
+                      <tr key={r.reason} className="border-b border-gray-700">
+                        <td className="px-2 py-1 text-gray-200">
+                          <span className="inline-block rounded-sm mr-2" style={{ width: 8, height: 8, backgroundColor: i < 10 ? DQ_COLORS[i % DQ_COLORS.length] : '#4b5563' }}></span>
+                          {r.reason}
+                        </td>
+                        <td className="px-2 py-1 text-right text-white">{r.n.toLocaleString()}</td>
+                        <td className="px-2 py-1 text-right text-gray-400">{total ? (100 * r.n / total).toFixed(1) : '0.0'}%</td>
+                        <td className="px-2 py-1">
+                          <div className="bg-gray-700 rounded-sm" style={{ height: 6 }}>
+                            <div className="rounded-sm" style={{ height: 6, width: Math.max(2, Math.round(100 * r.n / maxN)) + '%', backgroundColor: i < 10 ? DQ_COLORS[i % DQ_COLORS.length] : '#4b5563' }}></div>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                {byReason.length > 10 && (
+                  <button type="button" onClick={() => setShowAll(!showAll)}
+                    className="mt-2 text-xs text-gray-400 hover:text-white">
+                    {showAll ? '▴ show top 10' : `▾ show all ${byReason.length} reasons`}
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
 
 const ProjectDashboardTab = ({ data }) => {
   const [period, setPeriod] = useState('last_week');
@@ -1820,7 +2081,7 @@ const ProjectDashboardTab = ({ data }) => {
       const wk = `${r.iso_year}-W${String(r.iso_week).padStart(2, '0')}`;
       if (!weekSet.has(wk)) return false;
       if (!showExternal && r.is_external_recruiter) return false;
-      if (!showInternal && (r.client === 'Tribe.xyz' || r.client === 'Tribe.xyz (IR)')) return false;
+      if (PD_EXCLUDED_CLIENTS.has(r.client)) return false;
       if (filterClient && normalizeClientPD(r.client) !== filterClient) return false;
       if (filterTa && r.ta !== filterTa) return false;
       if (filterTs && r.ts !== filterTs) return false;
@@ -1980,7 +2241,7 @@ const ProjectDashboardTab = ({ data }) => {
   }, [filtered]);
 
   // Filter dropdown options
-  const uniqueClients    = useMemo(() => Array.from(new Set(pdRows.map((r) => normalizeClientPD(r.client)))).sort(), [pdRows]);
+  const uniqueClients    = useMemo(() => Array.from(new Set(pdRows.filter((r) => !PD_EXCLUDED_CLIENTS.has(r.client)).map((r) => normalizeClientPD(r.client)))).sort(), [pdRows]);
   const uniqueTas        = useMemo(() => Array.from(new Set(pdRows.map((r) => r.ta).filter(Boolean))).sort(), [pdRows]);
   const uniqueTses       = useMemo(() => Array.from(new Set(pdRows.map((r) => r.ts).filter(Boolean))).sort(), [pdRows]);
   const uniqueCategories = useMemo(() => Array.from(new Set(pdRows.map((r) => r.job_category).filter(Boolean))).sort(), [pdRows]);
@@ -1992,7 +2253,7 @@ const ProjectDashboardTab = ({ data }) => {
       if (!h.date_hired) return false;
       if (h.date_hired < startStr || h.date_hired > endStr) return false;
       if (!showExternal && h.is_external_recruiter) return false;
-      if (!showInternal && (h.client === 'Tribe.xyz' || h.client === 'Tribe.xyz (IR)')) return false;
+      if (PD_EXCLUDED_CLIENTS.has(h.client)) return false;
       if (filterClient && normalizeClientPD(h.client) !== filterClient) return false;
       if (filterTa && h.ta !== filterTa) return false;
       if (filterTs && h.ts !== filterTs) return false;
@@ -2111,10 +2372,6 @@ const ProjectDashboardTab = ({ data }) => {
             <input type="checkbox" checked={showExternal} onChange={(e) => setShowExternal(e.target.checked)} />
             Include external recruiters
           </label>
-          <label className="flex items-center gap-2 text-sm text-gray-300">
-            <input type="checkbox" checked={showInternal} onChange={(e) => setShowInternal(e.target.checked)} />
-            Include Tribe internal roles
-          </label>
         </div>
       </div>
 
@@ -2145,6 +2402,7 @@ const ProjectDashboardTab = ({ data }) => {
           </div>
         </div>
         <div className="overflow-x-auto">
+          <CsvBtn fname="pd_job_performance_by_client" />
           <table className="w-full text-sm">
             <thead>
               <tr className="text-gray-300 border-b border-gray-700 text-xs">
@@ -2245,6 +2503,7 @@ const ProjectDashboardTab = ({ data }) => {
           </div>
         </div>
         <div className="overflow-x-auto">
+          <CsvBtn fname="pd_ta_overview_by_client" />
           <table className="w-full text-sm">
             <thead>
               <tr className="text-gray-300 border-b border-gray-700 text-xs">
@@ -2317,6 +2576,7 @@ const ProjectDashboardTab = ({ data }) => {
           </div>
         </div>
         <div className="overflow-x-auto">
+          <CsvBtn fname="pd_ts_overview_by_client" />
           <table className="w-full text-sm">
             <thead>
               <tr className="text-gray-300 border-b border-gray-700 text-xs">
@@ -2370,6 +2630,7 @@ const ProjectDashboardTab = ({ data }) => {
         </button>
         {hiresOpen && (
           <div className="overflow-x-auto mt-3">
+            <CsvBtn fname="pd_hires_in_period" />
             <table className="w-full text-sm">
               <thead>
                 <tr className="text-gray-300 border-b border-gray-700">
@@ -2398,6 +2659,8 @@ const ProjectDashboardTab = ({ data }) => {
           </div>
         )}
       </div>
+
+      <DQReasonsSection />
     </div>
   );
 };
@@ -2666,6 +2929,7 @@ const TTHTab = ({ data }) => {
           First Hired per Job by Client / Job Title
         </div>
         <div className="overflow-x-auto">
+          <CsvBtn fname="tth_first_hired_by_client_job" />
           <table className="min-w-full text-sm">
             <thead className="bg-gray-900 text-gray-300">
               <tr>
@@ -2712,6 +2976,7 @@ const TTHTab = ({ data }) => {
           First Hired per Job by Job Category / Subcategory
         </div>
         <div className="overflow-x-auto">
+          <CsvBtn fname="tth_first_hired_by_category" />
           <table className="min-w-full text-sm">
             <thead className="bg-gray-900 text-gray-300">
               <tr>
@@ -2836,6 +3101,15 @@ const TSSummaryTab = ({ data }) => {
   const [techRoleFilter, setTechRoleFilter] = useState('All');
   const [includeExternal, setIncludeExternal] = useState(false);
   const [includeArchived, setIncludeArchived] = useState(true);
+  // Per-sourcer drill-down expansion. Click a sourcer row in the Per-Sourcer
+  // table to reveal that sourcer's breakdown by role. Stored as a Set so
+  // multiple sourcers can be expanded simultaneously.
+  const [expandedSourcers, setExpandedSourcers] = useState(() => new Set());
+  const toggleSourcer = (ts) => setExpandedSourcers(prev => {
+    const next = new Set(prev);
+    if (next.has(ts)) next.delete(ts); else next.add(ts);
+    return next;
+  });
 
   // Set of archived job_ids — drives the "Include archived jobs" toggle.
   const archivedJobIds = useMemo(() => {
@@ -3080,6 +3354,60 @@ const TSSummaryTab = ({ data }) => {
       .filter(x => x.contacted + x.actual_screens + x.hires > 0)
       .sort((a, b) => a.sourcer.localeCompare(b.sourcer));
   }, [tsSummary, useTsSummary, filteredRows, filteredHires, year, quarter, month, sourcer]);
+
+  // Per-(sourcer, job) breakdown for the drill-down rows in the Per-Sourcer
+  // table. Sums weekly PD rows by (ts, job_id), attaches hire counts and the
+  // archived flag, and groups them under each sourcer sorted by actual_screens
+  // desc. Same attribution + filters as `perSourcer` above. Answers Gustavo's
+  // 2026-06-04 question — "on which roles is Andrea's pipeline actually
+  // happening, and which of them got archived?".
+  const perSourcerJobs = useMemo(() => {
+    const byTs = {}; // ts -> { job_id -> agg }
+    filteredRows.forEach(r => {
+      if (!r.ts || !TS_SUMMARY_ROSTER.has(r.ts)) return;
+      if (!r.job_id) return;
+      if (!byTs[r.ts]) byTs[r.ts] = {};
+      const bucket = byTs[r.ts];
+      if (!bucket[r.job_id]) bucket[r.job_id] = {
+        job_id: r.job_id,
+        job_title: r.job_title || '(untitled)',
+        client: r.client || '',
+        archived: archivedJobIds.has(r.job_id),
+        viewed: 0, contacted: 0, positive_response: 0, screens: 0,
+        actual_screens: 0, ats: 0, offered: 0, hires: 0,
+      };
+      const a = bucket[r.job_id];
+      a.viewed += r.viewed || 0;
+      a.contacted += r.contacted || 0;
+      a.positive_response += r.positive_response || 0;
+      a.screens += r.screens || 0;
+      a.actual_screens += r.actual_screens || 0;
+      a.ats += r.ats || 0;
+      a.offered += r.offered || 0;
+    });
+    filteredHires.forEach(h => {
+      if (!h.ts || !TS_SUMMARY_ROSTER.has(h.ts)) return;
+      if (!h.job_id) return;
+      if (!byTs[h.ts]) byTs[h.ts] = {};
+      const bucket = byTs[h.ts];
+      if (!bucket[h.job_id]) bucket[h.job_id] = {
+        job_id: h.job_id,
+        job_title: h.job_title || '(untitled)',
+        client: h.client || '',
+        archived: archivedJobIds.has(h.job_id),
+        viewed: 0, contacted: 0, positive_response: 0, screens: 0,
+        actual_screens: 0, ats: 0, offered: 0, hires: 0,
+      };
+      bucket[h.job_id].hires += 1;
+    });
+    const out = {};
+    Object.keys(byTs).forEach(ts => {
+      out[ts] = Object.values(byTs[ts])
+        .filter(j => j.contacted + j.actual_screens + j.hires > 0)
+        .sort((a, b) => b.actual_screens - a.actual_screens || b.contacted - a.contacted);
+    });
+    return out;
+  }, [filteredRows, filteredHires, archivedJobIds]);
 
   // Funnel — 8 PBI stages in order:
   // Viewed -> Contacted -> Reacted -> Positive Response -> Actual Screens -> Move to ATS -> Offers -> Hired
@@ -3419,10 +3747,12 @@ const TSSummaryTab = ({ data }) => {
             <span className="text-xs text-gray-400 font-normal">{perSourcer.length} sourcers</span>
           </div>
           <div className="overflow-x-auto">
+            <CsvBtn fname="ts_summary_per_sourcer" />
             <table className="min-w-full text-xs">
               <thead className="bg-gray-900 text-gray-300">
                 <tr>
-                  <th className="text-left px-3 py-2 font-medium sticky left-0 bg-gray-900">Sourcer</th>
+                  <th className="text-left px-2 py-2 font-medium sticky left-0 bg-gray-900 w-6"></th>
+                  <th className="text-left px-3 py-2 font-medium sticky left-6 bg-gray-900">Sourcer</th>
                   <th className="text-right px-2 py-2 font-medium">% Cont&rarr;PR</th>
                   <th className="text-right px-2 py-2 font-medium">% Scr&rarr;Actual</th>
                   <th className="text-right px-2 py-2 font-medium">% Actual&rarr;ATS</th>
@@ -3437,24 +3767,65 @@ const TSSummaryTab = ({ data }) => {
                 </tr>
               </thead>
               <tbody>
-                {perSourcer.map(r => (
-                  <tr key={r.sourcer} className="border-t border-gray-700 hover:bg-gray-700">
-                    <td className="px-3 py-1.5 text-white sticky left-0 bg-gray-800">{r.sourcer}</td>
-                    <td className="px-2 py-1.5 text-right font-semibold" style={cellStyle(r.pctContPR, 'pctContPR')}>{fmtPct(r.pctContPR)}</td>
-                    <td className="px-2 py-1.5 text-right font-semibold" style={cellStyle(r.pctScrActual, 'pctScrActual')}>{fmtPct(r.pctScrActual)}</td>
-                    <td className="px-2 py-1.5 text-right font-semibold" style={cellStyle(r.pctActualATS, 'pctActualATS')}>{fmtPct(r.pctActualATS)}</td>
-                    <td className="px-2 py-1.5 text-right text-gray-300">{r.contacted.toLocaleString()}</td>
-                    <td className="px-2 py-1.5 text-right text-gray-300">{r.positive_response.toLocaleString()}</td>
-                    <td className="px-2 py-1.5 text-right text-gray-300">{r.screens.toLocaleString()}</td>
-                    <td className="px-2 py-1.5 text-right text-gray-300">{r.actual_screens.toLocaleString()}</td>
-                    <td className="px-2 py-1.5 text-right text-gray-300">{r.ats.toLocaleString()}</td>
-                    <td className="px-2 py-1.5 text-right text-gray-300">{r.offered.toLocaleString()}</td>
-                    <td className="px-2 py-1.5 text-right text-green-300 font-semibold">{r.hires.toLocaleString()}</td>
-                    <td className="px-2 py-1.5 text-right text-gray-400">{r.jobs}</td>
-                  </tr>
-                ))}
+                {perSourcer.map(r => {
+                  const isOpen = expandedSourcers.has(r.sourcer);
+                  const drilldown = perSourcerJobs[r.sourcer] || [];
+                  return (
+                    <React.Fragment key={r.sourcer}>
+                      <tr
+                        className="border-t border-gray-700 hover:bg-gray-700 cursor-pointer"
+                        onClick={() => toggleSourcer(r.sourcer)}
+                        title="Click to see this sourcer's breakdown by role"
+                      >
+                        <td className="px-2 py-1.5 text-gray-400 sticky left-0 bg-gray-800 text-center select-none">{isOpen ? '▼' : '▶'}</td>
+                        <td className="px-3 py-1.5 text-white sticky left-6 bg-gray-800">{r.sourcer}</td>
+                        <td className="px-2 py-1.5 text-right font-semibold" style={cellStyle(r.pctContPR, 'pctContPR')}>{fmtPct(r.pctContPR)}</td>
+                        <td className="px-2 py-1.5 text-right font-semibold" style={cellStyle(r.pctScrActual, 'pctScrActual')}>{fmtPct(r.pctScrActual)}</td>
+                        <td className="px-2 py-1.5 text-right font-semibold" style={cellStyle(r.pctActualATS, 'pctActualATS')}>{fmtPct(r.pctActualATS)}</td>
+                        <td className="px-2 py-1.5 text-right text-gray-300">{r.contacted.toLocaleString()}</td>
+                        <td className="px-2 py-1.5 text-right text-gray-300">{r.positive_response.toLocaleString()}</td>
+                        <td className="px-2 py-1.5 text-right text-gray-300">{r.screens.toLocaleString()}</td>
+                        <td className="px-2 py-1.5 text-right text-gray-300">{r.actual_screens.toLocaleString()}</td>
+                        <td className="px-2 py-1.5 text-right text-gray-300">{r.ats.toLocaleString()}</td>
+                        <td className="px-2 py-1.5 text-right text-gray-300">{r.offered.toLocaleString()}</td>
+                        <td className="px-2 py-1.5 text-right text-green-300 font-semibold">{r.hires.toLocaleString()}</td>
+                        <td className="px-2 py-1.5 text-right text-gray-400">{r.jobs}</td>
+                      </tr>
+                      {isOpen && drilldown.length > 0 && drilldown.map(j => {
+                        const pctContPR = j.contacted ? Math.min(1, j.positive_response / j.contacted) : null;
+                        const pctScrActual = j.screens ? Math.min(1, j.actual_screens / j.screens) : null;
+                        const pctActualATS = j.actual_screens ? Math.min(1, j.ats / j.actual_screens) : null;
+                        return (
+                          <tr key={r.sourcer + '::' + j.job_id} className="border-t border-gray-800 bg-gray-900/40 text-[11px]">
+                            <td className="px-2 py-1 sticky left-0 bg-gray-900/40"></td>
+                            <td className="px-3 py-1 sticky left-6 bg-gray-900/40 text-gray-300 max-w-[260px] truncate" title={`${j.client} — ${j.job_title}${j.archived ? ' (archived)' : ''}`}>
+                              <span className="text-gray-500">↳</span> {j.client ? <span className="text-gray-500">{j.client} · </span> : null}{j.job_title}
+                              {j.archived && <span className="ml-1 px-1 py-0.5 text-[9px] rounded bg-gray-700 text-gray-400 align-middle">archived</span>}
+                            </td>
+                            <td className="px-2 py-1 text-right text-gray-400" style={cellStyle(pctContPR, 'pctContPR')}>{fmtPct(pctContPR)}</td>
+                            <td className="px-2 py-1 text-right text-gray-400" style={cellStyle(pctScrActual, 'pctScrActual')}>{fmtPct(pctScrActual)}</td>
+                            <td className="px-2 py-1 text-right text-gray-400" style={cellStyle(pctActualATS, 'pctActualATS')}>{fmtPct(pctActualATS)}</td>
+                            <td className="px-2 py-1 text-right text-gray-400">{j.contacted.toLocaleString()}</td>
+                            <td className="px-2 py-1 text-right text-gray-400">{j.positive_response.toLocaleString()}</td>
+                            <td className="px-2 py-1 text-right text-gray-400">{j.screens.toLocaleString()}</td>
+                            <td className="px-2 py-1 text-right text-gray-400">{j.actual_screens.toLocaleString()}</td>
+                            <td className="px-2 py-1 text-right text-gray-400">{j.ats.toLocaleString()}</td>
+                            <td className="px-2 py-1 text-right text-gray-400">{j.offered.toLocaleString()}</td>
+                            <td className="px-2 py-1 text-right text-green-400/80">{j.hires ? j.hires.toLocaleString() : ''}</td>
+                            <td className="px-2 py-1 text-right text-gray-500"></td>
+                          </tr>
+                        );
+                      })}
+                      {isOpen && drilldown.length === 0 && (
+                        <tr className="border-t border-gray-800 bg-gray-900/40">
+                          <td colSpan={13} className="px-6 py-2 text-[11px] text-gray-500 italic">No per-role activity for {r.sourcer} in current filter.</td>
+                        </tr>
+                      )}
+                    </React.Fragment>
+                  );
+                })}
                 {perSourcer.length === 0 && (
-                  <tr><td colSpan={12} className="px-3 py-6 text-center text-gray-500">No sourcer activity in current filter.</td></tr>
+                  <tr><td colSpan={13} className="px-3 py-6 text-center text-gray-500">No sourcer activity in current filter.</td></tr>
                 )}
               </tbody>
             </table>
@@ -3472,6 +3843,7 @@ const TSSummaryTab = ({ data }) => {
             <span className="text-xs text-gray-400 font-normal">{noHireBySourcer.length} sourcers</span>
           </div>
           <div className="overflow-x-auto max-h-[500px]">
+            <CsvBtn fname="ts_pipelines_no_hires_by_sourcer" />
             <table className="min-w-full text-xs">
               <thead className="bg-gray-900 text-gray-300 sticky top-0">
                 <tr>
@@ -3505,6 +3877,7 @@ const TSSummaryTab = ({ data }) => {
             <span className="text-xs text-gray-400 font-normal">{pipelinesNoHire.length} jobs</span>
           </div>
           <div className="overflow-x-auto max-h-[500px]">
+            <CsvBtn fname="ts_pipelines_no_hires_job_detail" />
             <table className="min-w-full text-xs">
               <thead className="bg-gray-900 text-gray-300 sticky top-0">
                 <tr>
@@ -3695,7 +4068,7 @@ const WeeklySummaryTab = ({ data }) => {
             {WSUM_WINDOWS.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
           </select>
         </div>
-        <div className="overflow-x-auto"><table className="w-full text-sm">{header('Week')}
+        <div className="overflow-x-auto"><CsvBtn fname="weekly_performance" /><table className="w-full text-sm">{header('Week')}
           <tbody>{weekly.map((w) => renderRow(weekLabel(w.year, w.week), w))}{weekly.length > 0 && renderRow('Total', wTot, { total: true })}</tbody>
         </table></div>
         {weekly.length === 0 && <div className="text-sm text-gray-500 py-4 text-center">No data for this selection.</div>}
@@ -3703,7 +4076,7 @@ const WeeklySummaryTab = ({ data }) => {
 
       <div className="bg-gray-800 rounded-lg p-4">
         <h3 className="text-lg font-semibold text-white mb-3">Monthly Performance</h3>
-        <div className="overflow-x-auto"><table className="w-full text-sm">{header('Month')}
+        <div className="overflow-x-auto"><CsvBtn fname="monthly_performance" /><table className="w-full text-sm">{header('Month')}
           <tbody>{monthly.map((mo) => renderRow(monthLabel(mo.key), mo))}{monthly.length > 0 && renderRow('Total', mTot, { total: true })}</tbody>
         </table></div>
         {monthly.length === 0 && <div className="text-sm text-gray-500 py-4 text-center">No data for this selection.</div>}
@@ -3711,6 +4084,250 @@ const WeeklySummaryTab = ({ data }) => {
 
       <div className="text-xs text-gray-500">
         Source: data.weekly_summary{drilled ? ' / weekly_summary_byjob' : ''} — PBI "Weekly Progress" port, includes archived jobs. Sourcer = who_created_event_first; TA = who_event_created_for. Conversion rates capped at 100%, blank when denominator is 0.
+      </div>
+    </div>
+  );
+};
+
+
+// ---------- New Project Health Tab ----------
+// Gated (Blake + Jacopo). Q2 OKR tracking for new client roles.
+//   KR2: first move to ATS within 4 business days on 90% of new projects.
+//   KR3: Actual Screen -> ATS conversion above 60% by week 4.
+// Top = OKR scorecard over the current-quarter cohort (roles started in the
+// quarter, never dropped — a Q2 role maturing in Q3 stays in Q2). Bottom = live
+// operational list of roles open <=30 days. Data: data.new_project_health.
+const nphPillStyles = {
+  green: { background: 'rgba(34,197,94,0.18)',  color: '#4ade80' },
+  amber: { background: 'rgba(245,158,11,0.18)', color: '#fbbf24' },
+  red:   { background: 'rgba(239,68,68,0.18)',  color: '#f87171' },
+  gray:  { background: 'rgba(148,163,184,0.15)', color: '#94a3b8' },
+};
+const NphPill = ({ text, kind }) => (
+  <span style={{ ...nphPillStyles[kind], padding: '2px 9px', borderRadius: '6px', fontWeight: 500, fontSize: '12px', display: 'inline-block', minWidth: '54px', textAlign: 'center' }}>{text}</span>
+);
+const nphConvKind = (v) => (v == null ? 'gray' : v >= 60 ? 'green' : v >= 40 ? 'amber' : 'red');
+const nphSortRows = (rows, key, dir) => {
+  const mul = dir === 'desc' ? -1 : 1;
+  return [...rows].sort((a, b) => {
+    const av = a[key], bv = b[key];
+    const an = (av == null), bn = (bv == null);
+    if (an && bn) return 0;
+    if (an) return 1;
+    if (bn) return -1;
+    if (typeof av === 'string') return mul * av.localeCompare(bv);
+    return mul * (av - bv);
+  });
+};
+const NphTh = ({ label, k, sort, setSort, align }) => (
+  <th
+    onClick={() => setSort((sp) => ({ key: k, dir: sp.key === k && sp.dir === 'asc' ? 'desc' : 'asc' }))}
+    className={`px-3 py-2 font-medium cursor-pointer select-none hover:text-white ${align === 'right' ? 'text-right' : 'text-left'}`}
+  >
+    {label}{sort.key === k ? (sort.dir === 'asc' ? ' ▲' : ' ▼') : ''}
+  </th>
+);
+// Business days strictly after `a` up to and including `b` (weekends excluded).
+const nphBizDays = (a, b) => {
+  if (!a || !b) return null;
+  if (b <= a) return 0;
+  let n = 0; const cur = new Date(a);
+  while (cur < b) { cur.setDate(cur.getDate() + 1); const d = cur.getDay(); if (d !== 0 && d !== 6) n += 1; }
+  return n;
+};
+const nphQuarterKey = (d) => `${d.getFullYear()}-Q${Math.floor(d.getMonth() / 3) + 1}`;
+
+const NewProjectHealthTab = ({ data }) => {
+  const [expanded, setExpanded] = useState(null);
+  const [sort, setSort] = useState({ key: 'client', dir: 'asc' });
+  const [roleSort, setRoleSort] = useState({ key: 'daysOpen', dir: 'asc' });
+
+  const Kpi = ({ label, value }) => (
+    <div className="bg-blue-100 text-blue-900 rounded-lg px-4 py-3 min-w-[120px] flex-1">
+      <div className="text-2xl font-bold">{value == null ? '-' : value}</div>
+      <div className="text-xs text-blue-800 mt-1">{label}</div>
+    </div>
+  );
+
+  const today = new Date();
+  const MS = 86400000;
+
+  const roles = useMemo(() => {
+    return (data.new_project_health || []).map((r) => {
+      const dc = new Date(r.date_created);
+      const daysOpen = Math.floor((today - dc) / MS);
+      const dfa = r.date_first_ats ? new Date(r.date_first_ats) : null;
+      const bd = dfa ? nphBizDays(dc, dfa) : null;                 // business days to first ATS (KR2)
+      const bizElapsed = nphBizDays(dc, today);
+      const conv = r.w4_actual_screens > 0 ? Math.round((100 * r.w4_ats) / r.w4_actual_screens) : null;
+      const mature = daysOpen >= 28;                               // reached week 4
+      const weekNum = Math.min(4, Math.floor(daysOpen / 7) + 1);
+      return { ...r, dc, daysOpen, dfa, bd, bizElapsed, conv, mature, weekNum, qkey: nphQuarterKey(dc) };
+    });
+  }, [data]);
+
+  // ---- OKR scorecard: current-quarter cohort ----
+  const score = useMemo(() => {
+    const qk = nphQuarterKey(today);
+    const cohort = roles.filter((r) => r.qkey === qk);
+    // KR2 — decidable once the role got an ATS OR the 4-business-day window has closed.
+    const kr2Decidable = cohort.filter((r) => r.dfa || r.bizElapsed > 4);
+    const kr2Within = kr2Decidable.filter((r) => r.dfa && r.bd <= 4);
+    const gotAts = cohort.filter((r) => r.dfa);
+    const kr2Pct = kr2Decidable.length ? Math.round((100 * kr2Within.length) / kr2Decidable.length) : null;
+    const kr2AvgBd = gotAts.length ? (gotAts.reduce((s, r) => s + r.bd, 0) / gotAts.length).toFixed(1) : null;
+    // KR3 — mature roles with >0 actual screens (0-screen roles excluded: usually a named/direct hire).
+    const kr3Pool = cohort.filter((r) => r.mature && r.w4_actual_screens > 0);
+    const kr3Hit = kr3Pool.filter((r) => r.conv >= 60);
+    const kr3Pct = kr3Pool.length ? Math.round((100 * kr3Hit.length) / kr3Pool.length) : null;
+    const sAs = kr3Pool.reduce((s, r) => s + r.w4_actual_screens, 0);
+    const sAts = kr3Pool.reduce((s, r) => s + r.w4_ats, 0);
+    const kr3Blend = sAs > 0 ? Math.round((100 * sAts) / sAs) : null;
+    return { qk, cohortN: cohort.length, kr2Pct, kr2AvgBd, kr2Den: kr2Decidable.length, kr3Pct, kr3Blend, kr3Den: kr3Pool.length };
+  }, [roles]);
+
+  // ---- Operational list: roles open <=30 days, grouped by client ----
+  const activeRoles = useMemo(() => roles.filter((r) => r.daysOpen >= 0 && r.daysOpen <= 30), [roles]);
+  const clients = useMemo(() => {
+    const m = {};
+    activeRoles.forEach((r) => { (m[r.client] = m[r.client] || []).push(r); });
+    return Object.entries(m).map(([client, rs]) => {
+      const conv = rs.filter((r) => r.conv != null);
+      const as = rs.reduce((a, r) => a + r.w4_actual_screens, 0);
+      const ats = rs.reduce((a, r) => a + r.w4_ats, 0);
+      return {
+        client, rolesList: rs, n: rs.length,
+        avgOpen: Math.round(rs.reduce((a, r) => a + r.daysOpen, 0) / rs.length),
+        convNow: as > 0 ? Math.round((100 * ats) / as) : null,
+      };
+    });
+  }, [activeRoles]);
+  const sortedClients = useMemo(() => nphSortRows(clients, sort.key, sort.dir), [clients, sort]);
+
+  const firstAtsPill = (r) => {
+    if (r.dfa) { const k = r.bd <= 4 ? 'green' : r.bd <= 8 ? 'amber' : 'red'; return <NphPill text={`${r.bd} bd${r.bd <= 4 ? ' ✓' : ''}`} kind={k} />; }
+    if (r.bizElapsed > 4) return <NphPill text="not yet" kind="red" />;
+    return <NphPill text="pending" kind="gray" />;
+  };
+  const week4Pill = (r) => {
+    if (!r.mature) return <NphPill text={`wk ${r.weekNum} of 4`} kind="gray" />;
+    if (r.conv == null) return <NphPill text="no screens" kind="gray" />;
+    const ok = r.conv >= 60;
+    return <NphPill text={`${r.conv}% ${ok ? '✓' : '✗'}`} kind={ok ? 'green' : 'red'} />;
+  };
+
+  return (
+    <div>
+      <div className="flex items-start justify-between mb-1">
+        <h2 className="text-2xl font-bold text-white">New Project Health</h2>
+        <div className="text-xs text-gray-500 text-right mt-1">Leadership only &middot; client delivery &middot; new roles since Q2 start (1 Apr 2026)</div>
+      </div>
+
+      {/* OKR scorecard */}
+      <div className="text-sm font-medium text-gray-300 mt-4 mb-1">{score.qk} OKR scorecard</div>
+      <div className="text-xs text-gray-500 mb-3">{score.cohortN} new projects this quarter &middot; {score.kr3Den} have reached week 4</div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-7">
+        <div className="bg-gray-800 border border-gray-700 rounded-lg px-5 py-4">
+          <div className="text-sm font-medium text-white">KR2 &middot; First move to ATS</div>
+          <div className="text-xs text-gray-500 mb-3">Goal: 90% of projects within 4 business days</div>
+          <div className="flex gap-8">
+            <div>
+              <div className="text-3xl font-bold" style={{ color: (score.kr2Pct ?? 0) >= 90 ? '#4ade80' : '#fbbf24' }}>{score.kr2Pct == null ? '—' : score.kr2Pct + '%'}</div>
+              <div className="text-xs text-gray-400 mt-1">within 4 business days</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-white">{score.kr2AvgBd == null ? '—' : score.kr2AvgBd}</div>
+              <div className="text-xs text-gray-400 mt-1">avg business days to ATS</div>
+            </div>
+          </div>
+        </div>
+        <div className="bg-gray-800 border border-gray-700 rounded-lg px-5 py-4">
+          <div className="text-sm font-medium text-white">KR3 &middot; Actual Screen &rarr; ATS by week 4</div>
+          <div className="text-xs text-gray-500 mb-3">Goal: conversion above 60% by week 4</div>
+          <div className="flex gap-8">
+            <div>
+              <div className="text-3xl font-bold" style={{ color: (score.kr3Pct ?? 0) >= 60 ? '#4ade80' : '#fbbf24' }}>{score.kr3Pct == null ? '—' : score.kr3Pct + '%'}</div>
+              <div className="text-xs text-gray-400 mt-1">of roles hit &ge;60%</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold" style={{ color: (score.kr3Blend ?? 0) >= 60 ? '#4ade80' : '#fbbf24' }}>{score.kr3Blend == null ? '—' : score.kr3Blend + '%'}</div>
+              <div className="text-xs text-gray-400 mt-1">blended conversion</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Operational list */}
+      <div className="text-sm font-medium text-gray-300 mb-1">Active new roles</div>
+      <div className="text-xs text-gray-500 mb-3">Open &le;30 days &middot; live tracker &middot; click a client to drill into its roles</div>
+      {sortedClients.length === 0 ? (
+        <div className="bg-gray-800 rounded-lg p-8 text-center text-gray-400">No roles opened in the last 30 days.</div>
+      ) : (
+        <div className="bg-gray-800 rounded-lg overflow-hidden">
+          <CsvBtn fname="project_health_kr2_first_ats" />
+          <table className="w-full text-sm">
+            <thead className="text-gray-400 border-b border-gray-700">
+              <tr>
+                <NphTh label="Client" k="client" sort={sort} setSort={setSort} />
+                <NphTh label="Roles" k="n" sort={sort} setSort={setSort} align="right" />
+                <NphTh label="Avg days open" k="avgOpen" sort={sort} setSort={setSort} align="right" />
+                <NphTh label="Actual Screen &rarr; ATS now" k="convNow" sort={sort} setSort={setSort} align="right" />
+              </tr>
+            </thead>
+            <tbody>
+              {sortedClients.map((c) => {
+                const open = expanded === c.client;
+                const sortedRoles = nphSortRows(c.rolesList, roleSort.key, roleSort.dir);
+                return (
+                  <React.Fragment key={c.client}>
+                    <tr onClick={() => setExpanded(open ? null : c.client)} className="border-b border-gray-700 hover:bg-gray-700 cursor-pointer" style={{ backgroundColor: open ? 'rgba(255,255,255,0.03)' : undefined }}>
+                      <td className="px-3 py-3 font-medium text-white">
+                        <span className="inline-block text-gray-500 mr-2" style={{ transform: open ? 'rotate(90deg)' : 'none', transition: 'transform .15s' }}>{'▶'}</span>
+                        {c.client}
+                      </td>
+                      <td className="px-3 py-3 text-right text-gray-300">{c.n}</td>
+                      <td className="px-3 py-3 text-right text-gray-300">{c.avgOpen}d</td>
+                      <td className="px-3 py-3 text-right"><NphPill text={c.convNow == null ? '—' : c.convNow + '%'} kind={nphConvKind(c.convNow)} /></td>
+                    </tr>
+                    {open && (
+                      <tr className="bg-gray-900">
+                        <td colSpan={4} className="px-3 py-3">
+                          <CsvBtn fname="project_health_kr3_as_to_ats" />
+                          <table className="w-full text-sm">
+                            <thead className="text-gray-500 border-b border-gray-800">
+                              <tr>
+                                <NphTh label="Role" k="job_title" sort={roleSort} setSort={setRoleSort} />
+                                <NphTh label="Days open" k="daysOpen" sort={roleSort} setSort={setRoleSort} align="right" />
+                                <NphTh label="First ATS" k="bd" sort={roleSort} setSort={setRoleSort} align="right" />
+                                <NphTh label="AS &rarr; ATS now" k="conv" sort={roleSort} setSort={setRoleSort} align="right" />
+                                <NphTh label="Week 4" k="daysOpen" sort={roleSort} setSort={setRoleSort} align="right" />
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {sortedRoles.map((r) => (
+                                <tr key={r.job_id} className="border-b border-gray-800">
+                                  <td className="px-3 py-2 text-gray-200">{r.job_title}<div className="text-xs text-gray-500">{r.ta}{r.is_external ? ' · ext' : ''}</div></td>
+                                  <td className="px-3 py-2 text-right text-gray-300">{r.daysOpen}d</td>
+                                  <td className="px-3 py-2 text-right">{firstAtsPill(r)}</td>
+                                  <td className="px-3 py-2 text-right"><NphPill text={r.conv == null ? '—' : r.conv + '%'} kind={nphConvKind(r.conv)} /></td>
+                                  <td className="px-3 py-2 text-right">{week4Pill(r)}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    )}
+                  </React.Fragment>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      <div className="text-xs text-gray-500 mt-4 leading-relaxed">
+        First ATS = business days from role creation to first candidate reaching ATS (green &le;4). Week 4 stays &ldquo;wk N of 4&rdquo; until a role is 28 days old, then locks to its final Actual Screen&rarr;ATS result vs 60%. Roles with no actual screens by week 4 are excluded from KR3 (typically a named/direct hire). Mature roles keep feeding the scorecard after they leave this list at 30 days.
       </div>
     </div>
   );
@@ -4088,6 +4705,7 @@ const IRTab = ({ data }) => {
 
         <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
           <div className="text-sm font-medium text-white mb-3">Active jobs ({jobOptions.length})</div>
+          <CsvBtn fname="ir_active_jobs" />
           <table className="w-full text-xs">
             <thead><tr className="text-gray-400 text-left">
               <th className="pb-2 font-normal">Job</th>
@@ -4119,6 +4737,7 @@ const IRTab = ({ data }) => {
             <div className="text-sm font-medium text-white">Sourced by ({sourcedAgg.length})</div>
             <div className="text-xs text-gray-500">Click row to highlight in funnel</div>
           </div>
+          <CsvBtn fname="ir_sourced_by" />
           <table className="w-full text-xs">
             <thead><tr className="text-gray-400">
               <th className="pb-2 font-normal text-left">Sourcer</th>
@@ -4153,6 +4772,7 @@ const IRTab = ({ data }) => {
             <div className="text-sm font-medium text-white">Interviewed by &middot; Actual Screens</div>
             <div className="text-xs text-gray-500">Click to highlight</div>
           </div>
+          <CsvBtn fname="ir_interviewed_by" />
           <table className="w-full text-xs">
             <thead><tr className="text-gray-400">
               <th className="pb-2 font-normal text-left">TA</th>
@@ -4180,7 +4800,8 @@ const IRTab = ({ data }) => {
         <div className="text-sm font-medium text-white mb-3">Weekly performance ({weeklyAgg.length} weeks shown)</div>
         {weeklyAgg.length === 0 ? (
           <div className="text-xs text-gray-500 italic">No data for the selected filter.</div>
-        ) : (
+        ) : (<>
+          <CsvBtn fname="ir_weekly_performance" />
           <table className="w-full text-xs">
             <thead><tr className="text-gray-400">
               <th className="pb-2 font-normal text-left">Week</th>
@@ -4205,7 +4826,7 @@ const IRTab = ({ data }) => {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table></>
         )}
       </div>
 
@@ -4214,7 +4835,8 @@ const IRTab = ({ data }) => {
         <div className="text-sm font-medium text-white mb-3">Disqualified by stage (per job) &middot; total {f_dqByStage.reduce((s, r) => s + r.total, 0)}</div>
         {f_dqByStage.length === 0 ? (
           <div className="text-xs text-gray-500 italic">No DQs logged for the selected filter.</div>
-        ) : (
+        ) : (<>
+          <CsvBtn fname="ir_dq_by_stage" />
           <table className="w-full text-xs">
             <thead><tr className="text-gray-400">
               <th className="pb-2 font-normal text-left">Job</th>
@@ -4240,7 +4862,7 @@ const IRTab = ({ data }) => {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table></>
         )}
       </div>
 
@@ -4319,8 +4941,13 @@ const ProfitabilityTab = () => {
     (D.ea || []).filter(e => e.p === pf).forEach(e => {
       if (!agg[e.d]) agg[e.d] = { client: e.d, bu: e.bu || '', rev: 0, directCost: 0, sourcingCost: 0 };
       const a = agg[e.d];
-      // Same rule as finance dashboard: rev>0 → Direct Cost, rev=0 → Sourcing Cost.
-      if ((e.rev || 0) > 0) a.directCost += (e.pr || 0);
+      // Same rule as finance dashboard (changed 2026-06-23): Direct Cost = anyone
+      // assigned to this client — alloc_type 'default' (BambooHR division IS the client),
+      // 'sourcer_client' (job history shows them on it), or 'ta' (assigned via the TA tab
+      // for holiday cover / notice-period) — or anyone billing it (rev>0, safety net).
+      // Sourcing Cost = bench sourcers ('sourcer_bench') with no revenue, spread by %.
+      const at = e.alloc_type;
+      if (at === 'default' || at === 'sourcer_client' || at === 'ta' || (e.rev || 0) > 0) a.directCost += (e.pr || 0);
       else a.sourcingCost += (e.pr || 0);
       if (e.bu) a.bu = e.bu;
     });
@@ -4353,7 +4980,6 @@ const ProfitabilityTab = () => {
     return { rows: rowList, totals: tot };
   }, [selectedPeriod, sort]);
 
-  const mColor = (m) => m > 30 ? 'text-green-400' : m > 15 ? 'text-yellow-400' : m > 0 ? 'text-orange-400' : 'text-red-400';
   const directMarginColor = (m) => m >= 60 ? 'text-green-400' : m >= 55 ? 'text-yellow-400' : 'text-red-400';
 
   const cols = [
@@ -4406,6 +5032,7 @@ const ProfitabilityTab = () => {
         </div>
 
         <div className="overflow-x-auto max-h-[640px] overflow-y-auto">
+          <CsvBtn fname="profitability_by_client" />
           <table className="w-full text-xs">
             <thead className="sticky top-0 bg-gray-800 z-10">
               <tr className="text-gray-400 border-b border-gray-700">
@@ -4422,7 +5049,7 @@ const ProfitabilityTab = () => {
             </thead>
             <tbody>
               {computed.rows.map((r, i) => (
-                <tr key={i} className="border-b border-gray-800 hover:bg-gray-750">
+                <tr key={i} className="border-b border-gray-800 hover:bg-gray-700">
                   <td className="py-1.5 px-2 font-medium text-white">{r.client}</td>
                   <td className="py-1.5 px-2">
                     {r.bu && (
@@ -4442,7 +5069,7 @@ const ProfitabilityTab = () => {
                   <td className={`py-1.5 px-2 text-right font-medium ${r.directProfit >= 0 ? 'text-green-400' : 'text-red-400'}`}>{fmtEUR(r.directProfit)}</td>
                   <td className={`py-1.5 px-2 text-right ${directMarginColor(r.directMargin)}`}>{r.directMargin}%</td>
                   <td className="py-1.5 px-2 text-right text-orange-400">{fmtEUR(r.sourcingCost)}</td>
-                  <td className={`py-1.5 px-2 text-right ${mColor(r.netMargin)}`}>{r.netMargin}%</td>
+                  <td className={`py-1.5 px-2 text-right ${directMarginColor(r.netMargin)}`}>{r.netMargin}%</td>
                 </tr>
               ))}
               {computed.totals && (
@@ -4454,14 +5081,14 @@ const ProfitabilityTab = () => {
                   <td className={`py-2 px-2 text-right ${computed.totals.directProfit >= 0 ? 'text-green-400' : 'text-red-400'}`}>{fmtEUR(computed.totals.directProfit)}</td>
                   <td className={`py-2 px-2 text-right ${directMarginColor(computed.totals.directMargin)}`}>{computed.totals.directMargin}%</td>
                   <td className="py-2 px-2 text-right text-orange-400">{fmtEUR(computed.totals.sourcingCost)}</td>
-                  <td className={`py-2 px-2 text-right ${mColor(computed.totals.netMargin)}`}>{computed.totals.netMargin}%</td>
+                  <td className={`py-2 px-2 text-right ${directMarginColor(computed.totals.netMargin)}`}>{computed.totals.netMargin}%</td>
                 </tr>
               )}
             </tbody>
           </table>
         </div>
         <p className="text-gray-500 text-xs mt-2">
-          Direct Cost = staff working on the project. Direct Profit = Revenue − Direct Cost. Sourcing Cost = sourcer + TA time allocated to the project. Net Margin = (Direct Profit − Sourcing Cost) ÷ Revenue. Overhead is excluded.
+          Direct Cost = everyone assigned to the client (placed staff, holiday cover, notice-period wind-down, or anyone billing) even before revenue starts. Direct Profit = Revenue − Direct Cost. Sourcing Cost = bench sourcers whose spare time is spread across clients. Net Margin = (Direct Profit − Sourcing Cost) ÷ Revenue. Overhead is excluded.
         </p>
       </div>
     </div>
@@ -4493,26 +5120,91 @@ const RecruitingDashboard = () => {
   })();
   const isDirector = role === 'director';
   const isLeadership = isDirector || role === 'leadership';
-  const visibleTabs = isDirector
+  // New Project Health tab — strictly Blake + Jacopo via tribe_ph=1 cookie
+  // (set by /functions/api/login.ts). ?ph=1 URL param kept as a test fallback.
+  const canProjectHealth = (() => {
+    try {
+      if (typeof document !== 'undefined') {
+        const c = document.cookie.split(';').map((x) => x.trim()).find((x) => x.startsWith('tribe_ph='));
+        if (c && c.split('=')[1] === '1') return true;
+      }
+      if (typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('ph') === '1') return true;
+      return false;
+    } catch (_) { return false; }
+  })();
+  let visibleTabs = isDirector
     ? ['project', 'weekly', 'wbr', 'mbr', 'profitability', 'tth', 'ts_summary', 'ir']
     : isLeadership
       ? ['project', 'weekly', 'wbr', 'mbr', 'tth', 'ts_summary', 'ir']
       : ['project', 'weekly', 'tth', 'ts_summary', 'ir'];
+  if (canProjectHealth) visibleTabs = [...visibleTabs, 'project_health'];
   const [activeTab, setActiveTab] = useState('project');
+  // Load the heavy Snowflake data file at runtime from a gzipped /public asset
+  // (see scripts/gzip-data.mjs). Keeps it out of the JS bundle so deploys stay
+  // under Cloudflare's 25 MiB limit and the initial download is ~5MB not ~32MB.
+  const [dashboardData, setDashboardData] = useState(null);
+  const [dataError, setDataError] = useState(null);
+  const [dataUpdatedAt, setDataUpdatedAt] = useState(null);
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch('dashboard_data_snowflake.json.gz', { cache: 'no-cache' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const lastMod = res.headers.get('last-modified');
+        const buf = await res.arrayBuffer();
+        let text;
+        try {
+          if (typeof DecompressionStream === 'undefined') throw new Error('no DecompressionStream');
+          const stream = new Response(buf).body.pipeThrough(new DecompressionStream('gzip'));
+          text = await new Response(stream).text();
+        } catch (_) {
+          // Fallback: CDN may have transparently decompressed the asset.
+          text = new TextDecoder().decode(buf);
+        }
+        const obj = JSON.parse(text);
+        if (!cancelled) { setDashboardData(obj); if (lastMod) setDataUpdatedAt(lastMod); }
+      } catch (e) {
+        if (!cancelled) setDataError(String(e && e.message ? e.message : e));
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
   // Snap-back: if state lands on a tab the current role doesn't see, fall back
   // to Project Dashboard. Covers both leadership-only and director-only tabs.
   const safeActiveTab =
     (!isLeadership && LEADERSHIP_TABS.has(activeTab)) ||
-    (!isDirector && DIRECTOR_TABS.has(activeTab))
+    (!isDirector && DIRECTOR_TABS.has(activeTab)) ||
+    (!canProjectHealth && activeTab === 'project_health')
       ? 'project'
       : activeTab;
-  const dashboardData = dashboardDataSnowflake;
+  if (dataError) {
+    return (
+      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-lg mb-2">Couldn't load dashboard data</div>
+          <div className="text-sm text-gray-400 font-mono">{dataError}</div>
+        </div>
+      </div>
+    );
+  }
+  if (!dashboardData) {
+    return (
+      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+        <div className="text-gray-400">Loading dashboard data…</div>
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <div className="bg-gray-800 border-b border-gray-700 px-6 py-6 flex items-start justify-between">
         <div>
           <h1 className="text-3xl font-bold text-white">Tribe.xyz Recruiting Dashboard</h1>
           <p className="text-sm text-gray-400 mt-1">Snowflake pipeline</p>
+          <p className="text-xs text-gray-500 mt-1">
+            Refreshes ~4×/day · data fresh by 09:00, 11:00, 14:00 &amp; 16:30 CET
+            {dataUpdatedAt ? ` · last updated ${new Date(dataUpdatedAt).toLocaleString('en-GB', { timeZone: 'Europe/Berlin', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })} CET` : ''}
+          </p>
         </div>
       </div>
       <div className="bg-gray-800 border-b border-gray-700 px-6">
@@ -4520,7 +5212,7 @@ const RecruitingDashboard = () => {
           {visibleTabs.map((tab) => (
             <button key={tab} onClick={() => setActiveTab(tab)}
               className={`py-4 px-2 font-medium border-b-2 transition-colors ${safeActiveTab === tab ? 'text-white border-white' : 'text-gray-400 border-transparent hover:text-gray-300'}`}>
-              {tab === 'wbr' ? 'WBR' : tab === 'mbr' ? 'MBR' : tab === 'profitability' ? 'Profitability' : tab === 'project' ? 'Project Dashboard' : tab === 'weekly' ? 'Weekly Summary' : tab === 'tth' ? 'Time to Hire' : tab === 'ts_summary' ? 'KPI - TS Summary' : 'Internal Recruiting'}
+              {tab === 'wbr' ? 'WBR' : tab === 'mbr' ? 'MBR' : tab === 'profitability' ? 'Profitability' : tab === 'project' ? 'Project Dashboard' : tab === 'weekly' ? 'Weekly Summary' : tab === 'tth' ? 'Time to Hire' : tab === 'ts_summary' ? 'KPI - TS Summary' : tab === 'ir' ? 'Internal Recruiting' : 'New Project Health'}
             </button>
           ))}
         </div>
@@ -4534,6 +5226,7 @@ const RecruitingDashboard = () => {
         {safeActiveTab === 'tth' && <TTHTab data={dashboardData} />}
         {safeActiveTab === 'ts_summary' && <TSSummaryTab data={dashboardData} />}
         {safeActiveTab === 'ir' && <IRTab data={dashboardData} />}
+        {safeActiveTab === 'project_health' && canProjectHealth && <NewProjectHealthTab data={dashboardData} />}
       </div>
     </div>
   );

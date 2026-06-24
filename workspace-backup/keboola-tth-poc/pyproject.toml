@@ -8,4 +8,6 @@ dependencies = [
 ]
 
 [tool.uv]
-# App is flat scripts (app.py, kai_chat.py), not an install
+# App is flat scripts (app.py, kai_chat.py), not an installable package.
+# package=false: install dependencies only, skip building the project.
+package = false

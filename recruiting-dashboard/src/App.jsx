@@ -5144,12 +5144,14 @@ const RecruitingDashboard = () => {
   // under Cloudflare's 25 MiB limit and the initial download is ~5MB not ~32MB.
   const [dashboardData, setDashboardData] = useState(null);
   const [dataError, setDataError] = useState(null);
+  const [dataUpdatedAt, setDataUpdatedAt] = useState(null);
   useEffect(() => {
     let cancelled = false;
     (async () => {
       try {
         const res = await fetch('dashboard_data_snowflake.json.gz', { cache: 'no-cache' });
         if (!res.ok) throw new Error('HTTP ' + res.status);
+        const lastMod = res.headers.get('last-modified');
         const buf = await res.arrayBuffer();
         let text;
         try {
@@ -5161,7 +5163,7 @@ const RecruitingDashboard = () => {
           text = new TextDecoder().decode(buf);
         }
         const obj = JSON.parse(text);
-        if (!cancelled) setDashboardData(obj);
+        if (!cancelled) { setDashboardData(obj); if (lastMod) setDataUpdatedAt(lastMod); }
       } catch (e) {
         if (!cancelled) setDataError(String(e && e.message ? e.message : e));
       }
@@ -5199,6 +5201,10 @@ const RecruitingDashboard = () => {
         <div>
           <h1 className="text-3xl font-bold text-white">Tribe.xyz Recruiting Dashboard</h1>
           <p className="text-sm text-gray-400 mt-1">Snowflake pipeline</p>
+          <p className="text-xs text-gray-500 mt-1">
+            Refreshes ~4×/day · data fresh by 09:00, 11:00, 14:00 &amp; 16:30 CET
+            {dataUpdatedAt ? ` · last updated ${new Date(dataUpdatedAt).toLocaleString('en-GB', { timeZone: 'Europe/Berlin', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })} CET` : ''}
+          </p>
         </div>
       </div>
       <div className="bg-gray-800 border-b border-gray-700 px-6">

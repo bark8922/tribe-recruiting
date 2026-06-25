@@ -5096,6 +5096,139 @@ const ProfitabilityTab = () => {
 };
 
 // Main Dashboard
+
+// ── Candidate Finder ─────────────────────────────────────────────────────────
+// Lazy-loads /finder_data.json.gz (engaged candidates, ~92k) only when the tab
+// opens. Cascading filters + searchable table. Data built by the candidate_finder
+// Snowflake transform -> render_json (build_finder) -> finder_data.json.gz.
+const FINDER_KEYS = ['function', 'role_type', 'client', 'country', 'stage', 'reason'];
+const finderStageClass = (s) => ({
+  'Recruiter Screen': 'bg-blue-900 text-blue-200',
+  'Offsite': 'bg-teal-900 text-teal-200',
+  'Final Interview': 'bg-purple-900 text-purple-200',
+  'Offer': 'bg-amber-900 text-amber-200',
+  'Hired': 'bg-green-900 text-green-200',
+}[s] || 'bg-gray-700 text-gray-200');
+
+const CandidateFinderTab = () => {
+  const [rows, setRows] = useState(null);
+  const [err, setErr] = useState(null);
+  const [sel, setSel] = useState({ function: '', role_type: '', client: '', country: '', stage: '', reason: '' });
+  const [q, setQ] = useState('');
+  const [onlyLi, setOnlyLi] = useState(false);
+  const [limit, setLimit] = useState(300);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch('finder_data.json.gz', { cache: 'no-cache' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const buf = await res.arrayBuffer();
+        let text;
+        try {
+          if (typeof DecompressionStream === 'undefined') throw new Error('no DecompressionStream');
+          const stream = new Response(buf).body.pipeThrough(new DecompressionStream('gzip'));
+          text = await new Response(stream).text();
+        } catch (_) {
+          text = new TextDecoder().decode(buf);
+        }
+        const obj = JSON.parse(text);
+        if (!cancelled) setRows(obj.candidates || []);
+      } catch (e) {
+        if (!cancelled) setErr(String(e && e.message ? e.message : e));
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
+  if (err) return <div className="text-gray-400">Couldn't load finder data: <span className="font-mono text-gray-500">{err}</span></div>;
+  if (!rows) return <div className="text-gray-400">Loading candidates…</div>;
+
+  const set1 = (k, v) => setSel(prev => ({ ...prev, [k]: v }));
+  const matchExcept = (r, skip) => FINDER_KEYS.every(k => k === skip || !sel[k] || r[k] === sel[k]);
+  const optsFor = (k) => [...new Set(rows.filter(r => matchExcept(r, k)).map(r => r[k]).filter(Boolean))].sort();
+
+  const out = rows.filter(r => {
+    if (!FINDER_KEYS.every(k => !sel[k] || r[k] === sel[k])) return false;
+    if (onlyLi && !r.linkedin) return false;
+    if (q) {
+      const blob = ((r.name || '') + ' ' + (r.current_title || '') + ' ' + (r.company || '') + ' ' + (r.sourced_role || '') + ' ' + (r.role_type || '')).toLowerCase();
+      if (!blob.includes(q.toLowerCase())) return false;
+    }
+    return true;
+  });
+  const shown = out.slice(0, limit);
+  const withLi = out.filter(r => r.linkedin).length;
+
+  const Dropdown = ({ k, label }) => (
+    <select value={sel[k]} onChange={e => set1(k, e.target.value)}
+      className="bg-gray-800 border border-gray-700 text-white text-sm rounded px-2 py-1.5 w-full">
+      <option value="">{label}</option>
+      {optsFor(k).map(o => <option key={o} value={o}>{o}</option>)}
+    </select>
+  );
+
+  return (
+    <div>
+      <p className="text-sm text-gray-400 mb-4">Candidates we have engaged (reached a recruiter screen or further). Filter by function then role type, client, country, stage reached or why they dropped. Names link to LinkedIn.</p>
+      <div className="grid grid-cols-2 md:grid-cols-6 gap-3 mb-3">
+        <Dropdown k="function" label="All functions" />
+        <Dropdown k="role_type" label="All role types" />
+        <Dropdown k="client" label="All clients" />
+        <Dropdown k="country" label="All countries" />
+        <Dropdown k="stage" label="All stages" />
+        <Dropdown k="reason" label="Any reason" />
+      </div>
+      <div className="flex flex-wrap gap-4 items-center mb-3">
+        <input value={q} onChange={e => setQ(e.target.value)} placeholder="Search name, title, company…"
+          className="bg-gray-800 border border-gray-700 text-white text-sm rounded px-3 py-1.5 w-72" />
+        <label className="flex items-center gap-2 text-sm text-gray-300">
+          <input type="checkbox" checked={onlyLi} onChange={e => setOnlyLi(e.target.checked)} /> Only with LinkedIn
+        </label>
+        <div className="text-sm text-gray-400 ml-auto">
+          <span className="text-white font-semibold">{out.length.toLocaleString()}</span> candidates · {withLi.toLocaleString()} with LinkedIn{out.length > limit ? ` · showing first ${limit}` : ''}
+        </div>
+      </div>
+      <div className="overflow-x-auto border border-gray-800 rounded-lg">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="text-gray-400 text-xs uppercase border-b border-gray-800 bg-gray-800/40">
+              <th className="text-left px-3 py-2">Candidate</th>
+              <th className="text-left px-3 py-2">Current title</th>
+              <th className="text-left px-3 py-2">Company</th>
+              <th className="text-left px-3 py-2">Location</th>
+              <th className="text-left px-3 py-2">Client</th>
+              <th className="text-left px-3 py-2">Role (sourced for)</th>
+              <th className="text-left px-3 py-2">Stage</th>
+              <th className="text-left px-3 py-2">Reason</th>
+            </tr>
+          </thead>
+          <tbody>
+            {shown.map((r, i) => (
+              <tr key={i} className="border-b border-gray-800 hover:bg-gray-800/50">
+                <td className="px-3 py-2 font-medium">
+                  {r.linkedin ? <a href={'https://' + r.linkedin} target="_blank" rel="noreferrer" className="text-blue-400 hover:underline">{r.name}</a> : <span>{r.name}</span>}
+                </td>
+                <td className="px-3 py-2">{r.current_title || <span className="text-gray-600">—</span>}</td>
+                <td className="px-3 py-2">{r.company || <span className="text-gray-600">—</span>}</td>
+                <td className="px-3 py-2">{r.location || <span className="text-gray-600">unknown</span>}</td>
+                <td className="px-3 py-2">{r.client || '—'}{r.role_type ? <div className="text-xs text-gray-500">{r.role_type}</div> : null}</td>
+                <td className="px-3 py-2 text-gray-300">{r.sourced_role || '—'}</td>
+                <td className="px-3 py-2"><span className={'px-2 py-0.5 rounded text-xs font-medium ' + finderStageClass(r.stage)}>{r.stage}</span></td>
+                <td className="px-3 py-2 text-red-300 text-xs">{r.reason || ''}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {out.length > limit && (
+        <button onClick={() => setLimit(limit + 500)} className="mt-3 text-sm text-blue-400 hover:underline">Show more ({(out.length - limit).toLocaleString()} hidden)</button>
+      )}
+    </div>
+  );
+};
+
 const RecruitingDashboard = () => {
   // Leadership tabs (WBR/MBR) are gated by the Pages Functions auth flow:
   // /functions/api/login.ts sets a non-HttpOnly `tribe_role=leadership` cookie
@@ -5133,10 +5266,10 @@ const RecruitingDashboard = () => {
     } catch (_) { return false; }
   })();
   let visibleTabs = isDirector
-    ? ['project', 'weekly', 'wbr', 'mbr', 'profitability', 'tth', 'ts_summary', 'ir']
+    ? ['project', 'weekly', 'wbr', 'mbr', 'profitability', 'tth', 'ts_summary', 'ir', 'finder']
     : isLeadership
-      ? ['project', 'weekly', 'wbr', 'mbr', 'tth', 'ts_summary', 'ir']
-      : ['project', 'weekly', 'tth', 'ts_summary', 'ir'];
+      ? ['project', 'weekly', 'wbr', 'mbr', 'tth', 'ts_summary', 'ir', 'finder']
+      : ['project', 'weekly', 'tth', 'ts_summary', 'ir', 'finder'];
   if (canProjectHealth) visibleTabs = [...visibleTabs, 'project_health'];
   const [activeTab, setActiveTab] = useState('project');
   // Load the heavy Snowflake data file at runtime from a gzipped /public asset
@@ -5212,7 +5345,7 @@ const RecruitingDashboard = () => {
           {visibleTabs.map((tab) => (
             <button key={tab} onClick={() => setActiveTab(tab)}
               className={`py-4 px-2 font-medium border-b-2 transition-colors ${safeActiveTab === tab ? 'text-white border-white' : 'text-gray-400 border-transparent hover:text-gray-300'}`}>
-              {tab === 'wbr' ? 'WBR' : tab === 'mbr' ? 'MBR' : tab === 'profitability' ? 'Profitability' : tab === 'project' ? 'Project Dashboard' : tab === 'weekly' ? 'Weekly Summary' : tab === 'tth' ? 'Time to Hire' : tab === 'ts_summary' ? 'KPI - TS Summary' : tab === 'ir' ? 'Internal Recruiting' : 'New Project Health'}
+              {tab === 'wbr' ? 'WBR' : tab === 'mbr' ? 'MBR' : tab === 'profitability' ? 'Profitability' : tab === 'project' ? 'Project Dashboard' : tab === 'weekly' ? 'Weekly Summary' : tab === 'tth' ? 'Time to Hire' : tab === 'ts_summary' ? 'KPI - TS Summary' : tab === 'ir' ? 'Internal Recruiting' : tab === 'finder' ? 'Candidate Finder' : 'New Project Health'}
             </button>
           ))}
         </div>
@@ -5227,6 +5360,7 @@ const RecruitingDashboard = () => {
         {safeActiveTab === 'ts_summary' && <TSSummaryTab data={dashboardData} />}
         {safeActiveTab === 'ir' && <IRTab data={dashboardData} />}
         {safeActiveTab === 'project_health' && canProjectHealth && <NewProjectHealthTab data={dashboardData} />}
+        {safeActiveTab === 'finder' && <CandidateFinderTab />}
       </div>
     </div>
   );

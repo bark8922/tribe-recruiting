@@ -31,6 +31,7 @@ print("=== keboola.component imported ===", flush=True)
 REPO = "bark8922/tribe-recruiting"
 TARGET_FILE = "recruiting-dashboard/public/dashboard_data_snowflake.json.gz"
 DQ_TARGET_FILE = "recruiting-dashboard/public/dq_reasons.json"
+FINDER_TARGET_FILE = "recruiting-dashboard/public/finder_data.json.gz"
 
 
 def stage_inputs(ci, flat):
@@ -147,7 +148,28 @@ def get_dq_artifact(flat):
     return None
 
 
-def push_to_github(token, content, dq_content=None):
+def build_finder(flat):
+    """Render the candidate_finder table (staged as snowflake_candidate_finder.csv)
+    into a lean JSON array for the Candidate Finder tab. Best-effort: if the CSV
+    is not staged (input mapping missing or transform skipped), returns None and
+    the finder file is simply not updated this run."""
+    import csv as _csv
+    src = flat / "refresh_staging" / "snowflake_candidate_finder.csv"
+    if not src.exists():
+        print("[build_finder] snowflake_candidate_finder.csv not staged - skipping", flush=True)
+        return None
+    cols = ["name", "current_title", "company", "location", "country", "function",
+            "role_type", "client", "sourced_role", "stage", "reason", "linkedin"]
+    rows = []
+    _csv.field_size_limit(10 * 1024 * 1024)
+    with open(src, newline="", encoding="utf-8") as fh:
+        for row in _csv.DictReader(fh):
+            rows.append({k: (row.get(k) or "") for k in cols})
+    print("[build_finder] " + str(len(rows)) + " finder rows", flush=True)
+    return json.dumps({"generated_at": datetime.now(timezone.utc).isoformat(), "candidates": rows}, ensure_ascii=False)
+
+
+def push_to_github(token, content, dq_content=None, finder_content=None):
     """Push content to GitHub via git CLI (not Contents API).
 
     The container clones bark8922/tribe-recruiting at /code/repo_clone before
@@ -180,6 +202,13 @@ def push_to_github(token, content, dq_content=None):
         dq_target.write_text(dq_content, encoding="utf-8")
         tracked.append(DQ_TARGET_FILE)
         print("[push_to_github] wrote " + DQ_TARGET_FILE + " (" + str(dq_target.stat().st_size // 1024) + " KB)", flush=True)
+
+    if finder_content is not None:
+        finder_target = repo_dir / FINDER_TARGET_FILE
+        finder_target.parent.mkdir(parents=True, exist_ok=True)
+        finder_target.write_bytes(gzip.compress(finder_content.encode("utf-8"), 9))
+        tracked.append(FINDER_TARGET_FILE)
+        print("[push_to_github] wrote " + FINDER_TARGET_FILE + " (" + str(finder_target.stat().st_size // 1024) + " KB gzipped)", flush=True)
 
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     env = os.environ.copy()
@@ -269,8 +298,13 @@ def main():
     content = out_path.read_text(encoding="utf-8")
     dq_path = get_dq_artifact(flat)
     dq_content = dq_path.read_text(encoding="utf-8") if dq_path else None
+    try:
+        finder_content = build_finder(flat)
+    except Exception as e:
+        print("[build_finder] WARN failed: " + type(e).__name__ + ": " + str(e), flush=True)
+        finder_content = None
 
-    sha = push_to_github(github_token, content, dq_content)
+    sha = push_to_github(github_token, content, dq_content, finder_content)
     notify_circle(github_token)
     print("=== done: commit=" + sha[:10] + " size=" + str(len(content) // 1024) + "KB ===", flush=True)
     return 0

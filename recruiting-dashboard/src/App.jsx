@@ -5102,6 +5102,8 @@ const ProfitabilityTab = () => {
 // opens. Cascading filters + searchable table. Data built by the candidate_finder
 // Snowflake transform -> render_json (build_finder) -> finder_data.json.gz.
 const FINDER_KEYS = ['function', 'role_type', 'client', 'country', 'stage', 'reason'];
+const FINDER_FILTERS = [['function', 'Function'], ['role_type', 'Role type'], ['client', 'Client'], ['country', 'Country'], ['stage', 'Stage'], ['reason', 'Reason']];
+const FINDER_CSV_CAP = 5000;
 const finderStageClass = (s) => ({
   'Recruiter Screen': 'bg-blue-900 text-blue-200',
   'Offsite': 'bg-teal-900 text-teal-200',
@@ -5110,13 +5112,52 @@ const finderStageClass = (s) => ({
   'Hired': 'bg-green-900 text-green-200',
 }[s] || 'bg-gray-700 text-gray-200');
 
+const finderCsvCell = (v) => {
+  const t = (v == null ? '' : String(v));
+  return /[",\n]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t;
+};
+
+const FinderMultiSelect = ({ fkey, label, options, selected, onToggle, onClear, isOpen, onOpen }) => {
+  const [q, setQ] = useState('');
+  const shown = q ? options.filter((o) => o.toLowerCase().includes(q.toLowerCase())) : options;
+  const btnText = selected.length === 0 ? label : selected.length === 1 ? selected[0] : `${label}: ${selected.length}`;
+  return (
+    <div className="relative" data-ms={fkey}>
+      <button type="button" onClick={onOpen}
+        className="w-full text-left bg-gray-800 border border-gray-700 text-sm rounded px-2 py-1.5 flex items-center justify-between">
+        <span className={`truncate ${selected.length ? 'text-white' : 'text-gray-400'}`}>{btnText}</span>
+        <span className="text-gray-500 ml-2 shrink-0">▾</span>
+      </button>
+      {isOpen && (
+        <div className="absolute z-30 mt-1 w-full bg-gray-800 border border-gray-700 rounded shadow-xl max-h-72 overflow-hidden flex flex-col">
+          <div className="p-2 border-b border-gray-700 flex gap-2 items-center">
+            <input autoFocus value={q} onChange={(e) => setQ(e.target.value)} placeholder="Filter…"
+              className="flex-1 bg-gray-900 border border-gray-700 text-white text-xs rounded px-2 py-1" />
+            {selected.length > 0 && <button type="button" onClick={onClear} className="text-xs text-blue-400 hover:underline shrink-0">Clear</button>}
+          </div>
+          <div className="overflow-y-auto">
+            {shown.length === 0 && <div className="px-3 py-2 text-xs text-gray-500">No matches</div>}
+            {shown.map((o) => (
+              <label key={o} className="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-200 hover:bg-gray-700/50 cursor-pointer">
+                <input type="checkbox" checked={selected.includes(o)} onChange={() => onToggle(o)} />
+                <span className="truncate">{o}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const CandidateFinderTab = () => {
   const [rows, setRows] = useState(null);
   const [err, setErr] = useState(null);
-  const [sel, setSel] = useState({ function: '', role_type: '', client: '', country: '', stage: '', reason: '' });
+  const [sel, setSel] = useState({ function: [], role_type: [], client: [], country: [], stage: [], reason: [] });
   const [q, setQ] = useState('');
   const [onlyLi, setOnlyLi] = useState(false);
   const [limit, setLimit] = useState(300);
+  const [openKey, setOpenKey] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -5142,15 +5183,23 @@ const CandidateFinderTab = () => {
     return () => { cancelled = true; };
   }, []);
 
+  useEffect(() => {
+    const onDoc = (e) => { if (!e.target || !e.target.closest || !e.target.closest('[data-ms]')) setOpenKey(null); };
+    document.addEventListener('mousedown', onDoc);
+    return () => document.removeEventListener('mousedown', onDoc);
+  }, []);
+
   if (err) return <div className="text-gray-400">Couldn't load finder data: <span className="font-mono text-gray-500">{err}</span></div>;
   if (!rows) return <div className="text-gray-400">Loading candidates…</div>;
 
-  const set1 = (k, v) => setSel(prev => ({ ...prev, [k]: v }));
-  const matchExcept = (r, skip) => FINDER_KEYS.every(k => k === skip || !sel[k] || r[k] === sel[k]);
-  const optsFor = (k) => [...new Set(rows.filter(r => matchExcept(r, k)).map(r => r[k]).filter(Boolean))].sort();
+  const toggleVal = (k, v) => setSel((prev) => ({ ...prev, [k]: prev[k].includes(v) ? prev[k].filter((x) => x !== v) : [...prev[k], v] }));
+  const clearKey = (k) => setSel((prev) => ({ ...prev, [k]: [] }));
+  const clearAll = () => { setSel({ function: [], role_type: [], client: [], country: [], stage: [], reason: [] }); setQ(''); setOnlyLi(false); };
+  const matchExcept = (r, skip) => FINDER_KEYS.every((k) => k === skip || sel[k].length === 0 || sel[k].includes(r[k]));
+  const optsFor = (k) => [...new Set(rows.filter((r) => matchExcept(r, k)).map((r) => r[k]).filter(Boolean))].sort();
 
-  const out = rows.filter(r => {
-    if (!FINDER_KEYS.every(k => !sel[k] || r[k] === sel[k])) return false;
+  const out = rows.filter((r) => {
+    if (!FINDER_KEYS.every((k) => sel[k].length === 0 || sel[k].includes(r[k]))) return false;
     if (onlyLi && !r.linkedin) return false;
     if (q) {
       const blob = ((r.name || '') + ' ' + (r.current_title || '') + ' ' + (r.company || '') + ' ' + (r.sourced_role || '') + ' ' + (r.role_type || '')).toLowerCase();
@@ -5159,35 +5208,51 @@ const CandidateFinderTab = () => {
     return true;
   });
   const shown = out.slice(0, limit);
-  const withLi = out.filter(r => r.linkedin).length;
+  const withLi = out.filter((r) => r.linkedin).length;
+  const anyFilter = FINDER_KEYS.some((k) => sel[k].length) || q || onlyLi;
+  const canExport = out.length > 0 && out.length <= FINDER_CSV_CAP;
 
-  const Dropdown = ({ k, label }) => (
-    <select value={sel[k]} onChange={e => set1(k, e.target.value)}
-      className="bg-gray-800 border border-gray-700 text-white text-sm rounded px-2 py-1.5 w-full">
-      <option value="">{label}</option>
-      {optsFor(k).map(o => <option key={o} value={o}>{o}</option>)}
-    </select>
-  );
+  const exportCsv = () => {
+    if (!canExport) return;
+    const cols = ['name', 'current_title', 'company', 'location', 'country', 'function', 'role_type', 'client', 'sourced_role', 'stage', 'reason', 'linkedin'];
+    const csv = [cols.join(','), ...out.map((r) => cols.map((c) => finderCsvCell(r[c])).join(','))].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'candidate_finder_' + new Date().toISOString().slice(0, 10) + '.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <div>
-      <p className="text-sm text-gray-400 mb-4">Candidates we have engaged (reached a recruiter screen or further). Filter by function then role type, client, country, stage reached or why they dropped. Names link to LinkedIn.</p>
+      <p className="text-sm text-gray-400 mb-4">Candidates we have engaged (reached a recruiter screen or further). Filters are multi-select; pick several values in any of them. Names link to LinkedIn.</p>
       <div className="grid grid-cols-2 md:grid-cols-6 gap-3 mb-3">
-        <Dropdown k="function" label="All functions" />
-        <Dropdown k="role_type" label="All role types" />
-        <Dropdown k="client" label="All clients" />
-        <Dropdown k="country" label="All countries" />
-        <Dropdown k="stage" label="All stages" />
-        <Dropdown k="reason" label="Any reason" />
+        {FINDER_FILTERS.map(([k, label]) => (
+          <FinderMultiSelect key={k} fkey={k} label={label} options={optsFor(k)} selected={sel[k]}
+            onToggle={(v) => toggleVal(k, v)} onClear={() => clearKey(k)}
+            isOpen={openKey === k} onOpen={() => setOpenKey(openKey === k ? null : k)} />
+        ))}
       </div>
       <div className="flex flex-wrap gap-4 items-center mb-3">
-        <input value={q} onChange={e => setQ(e.target.value)} placeholder="Search name, title, company…"
+        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search name, title, company…"
           className="bg-gray-800 border border-gray-700 text-white text-sm rounded px-3 py-1.5 w-72" />
         <label className="flex items-center gap-2 text-sm text-gray-300">
-          <input type="checkbox" checked={onlyLi} onChange={e => setOnlyLi(e.target.checked)} /> Only with LinkedIn
+          <input type="checkbox" checked={onlyLi} onChange={(e) => setOnlyLi(e.target.checked)} /> Only with LinkedIn
         </label>
-        <div className="text-sm text-gray-400 ml-auto">
-          <span className="text-white font-semibold">{out.length.toLocaleString()}</span> candidates · {withLi.toLocaleString()} with LinkedIn{out.length > limit ? ` · showing first ${limit}` : ''}
+        {anyFilter && <button type="button" onClick={clearAll} className="text-sm text-blue-400 hover:underline">Clear all</button>}
+        <div className="flex items-center gap-3 ml-auto">
+          {!canExport && out.length > FINDER_CSV_CAP && <span className="text-xs text-gray-500">Filter to ≤{FINDER_CSV_CAP.toLocaleString()} to export ({out.length.toLocaleString()})</span>}
+          <button type="button" onClick={exportCsv} disabled={!canExport}
+            className={`text-sm rounded px-3 py-1.5 border ${canExport ? 'border-gray-600 text-white hover:bg-gray-800' : 'border-gray-800 text-gray-600 cursor-not-allowed'}`}>
+            Export CSV
+          </button>
+          <div className="text-sm text-gray-400">
+            <span className="text-white font-semibold">{out.length.toLocaleString()}</span> candidates · {withLi.toLocaleString()} with LinkedIn{out.length > limit ? ` · showing first ${limit}` : ''}
+          </div>
         </div>
       </div>
       <div className="overflow-x-auto border border-gray-800 rounded-lg">

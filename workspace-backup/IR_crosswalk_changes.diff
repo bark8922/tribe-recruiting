@@ -1,0 +1,200 @@
+diff --git a/recruiting-dashboard/refresh_staging/ashby_extract.py b/recruiting-dashboard/refresh_staging/ashby_extract.py
+index fa8fe9f..9a7dceb 100755
+--- a/recruiting-dashboard/refresh_staging/ashby_extract.py
++++ b/recruiting-dashboard/refresh_staging/ashby_extract.py
+@@ -108,6 +108,8 @@ def _trim_job(j: dict) -> dict:
+         "closedAt": j.get("closedAt"),
+         "brandId": j.get("brandId"),
+         "hiringTeam": j.get("hiringTeam") or [],
++        "customRequisitionId": j.get("customRequisitionId"),
++        "customFields": j.get("customFields") or [],
+     }
+ 
+ 
+diff --git a/recruiting-dashboard/refresh_staging/ir_crosswalk.csv b/recruiting-dashboard/refresh_staging/ir_crosswalk.csv
+new file mode 100644
+index 0000000..7f07827
+--- /dev/null
++++ b/recruiting-dashboard/refresh_staging/ir_crosswalk.csv
+@@ -0,0 +1,18 @@
++bubble_job_id,bubble_title,bubble_created,ashby_ref
++1768306734822x675449727333433300,TC (Global & High-Velocity) - Immediate Start,2026-01-13,6dc865ee-f8b5-4a88-8cca-cd1390a9cf52
++1768306565902x724842074782040000,Senior Tech TA (US East Coast Hours) - Immediate Start,2026-01-13,4d56606d-625b-4794-9545-36c1dec6bd66
++1769763000086x563212577333575700,Talent Acquisition Partner (Internal Recruitment),2026-01-30,29fa9991-63e9-4b6b-8544-3c796ad5766d
++1770201984452x484427760080519200,TAP (German speaker),2026-02-04,615be379-7e1f-4fc3-bf09-54c021e3c406
++1770287224379x341584373642166300,Senior Tech TA (EMEA/CET Hours) - Immediate Start,2026-02-05,4d56606d-625b-4794-9545-36c1dec6bd66
++1770631916672x291420469021638660,DH - Executive Search Talent Partner (APAC focus),2026-02-09,f43853b5-ee06-4d34-afd9-5ee034b0fd4e
++1770728747086x464603093874769900,Talent Acquisition Partner (Enterprise Sales) - Immediate Start,2026-02-10,c79fb7e1-a527-496f-9ab8-375da1eeab46
++1771257786943x368258027107123200,Talent Sourcer (German speaker) - Feb '26,2026-02-16,8548333e-881e-4f5b-8f88-04251b0a8dc5
++1771584578545x240061323429806080,Talent Acquisition Partner (German speaker) - Feb '26,2026-02-20,615be379-7e1f-4fc3-bf09-54c021e3c406
++1774438158210x293659973868847100,Talent Acquisition Partner (Deeptech & Scientific Hiring) - Immediate Start,2026-03-25,990cff4e-be85-4ecf-b2d4-f6b61f9e8aed
++1774438224107x261502970568376320,(Generalist) Talent Acquisition Partner - Immediate Start,2026-03-25,508648c3-c1dd-4c07-ab46-ae4554e50913
++1774613979789x325982928044294140,Tech Talent Acquisition Partner (APAC),2026-03-27,039dca36-4bbe-4ad4-b0c4-a78104227a90
++1776243815411x739667639709990900,Tech Talent Sourcer,2026-04-15,71defd22-cc1d-4854-a767-4fa584eb64ff
++1777294001849x171347644691513340,Talent Acquisition Partner (UK),2026-04-27,97cfea87-5979-4767-a3de-1a9bf60117d1
++1779368342428x874602515472056300,Senior TA (High Volume) - Dutch,2026-05-21,429cba94-0b76-492c-b9df-dd77a4ff3635
++1779975417411x145223316330774530,Senior Talent Aquisition Partner (Polish speaker) - Immediate Start,2026-05-28,bfaa2f18-ff2f-4202-b50d-3dd92915830e
++1780994896815x966398833240834000,Generalist TA (French speaker),2026-06-09,0b6def41-cfca-43f1-9299-4867ef0be4db
+diff --git a/recruiting-dashboard/refresh_staging/keboola_entry.py b/recruiting-dashboard/refresh_staging/keboola_entry.py
+index 5afcc19..89dde31 100755
+--- a/recruiting-dashboard/refresh_staging/keboola_entry.py
++++ b/recruiting-dashboard/refresh_staging/keboola_entry.py
+@@ -50,7 +50,7 @@ def stage_inputs(ci, flat):
+         # (other .json files in src_dir are not relevant to render_json).
+         if p.suffix in (".py", ".sql", ".md") or (
+             p.suffix == ".json" and p.name.startswith("ashby_")
+-        ) or p.name == "snowflake_new_project_health.csv":
++        ) or p.name in ("snowflake_new_project_health.csv", "ir_crosswalk.csv"):
+             # snowflake_new_project_health.csv is a committed SEED for the New
+             # Project Health tab. Copied here so render_json finds it even before
+             # a Keboola input table exists. If/when that table is mapped as an
+diff --git a/recruiting-dashboard/refresh_staging/render_json.py b/recruiting-dashboard/refresh_staging/render_json.py
+index 7e45b44..8de9ba8 100755
+--- a/recruiting-dashboard/refresh_staging/render_json.py
++++ b/recruiting-dashboard/refresh_staging/render_json.py
+@@ -959,6 +959,7 @@ def load_ir_ashby_jobs_all():
+         "openedAt":         j.get("openedAt") or j.get("createdAt") or "",
+         "closedAt":         j.get("closedAt") or "",
+         "createdAt":        j.get("createdAt") or "",
++        "custom_requisition_id": j.get("customRequisitionId") or "",
+     } for j in jobs]
+ 
+ 
+@@ -1106,6 +1107,62 @@ def load_ir_jobs_active():
+     return rows
+ 
+ 
++def attach_bubble_job_ids(out):
++    """Cross-system join linking each Ashby req to its Bubble IR job.
++
++    Link candidates come from TWO sources, unified and de-duped:
++      1. refresh_staging/ir_crosswalk.csv  - committed backfill of historical reqs.
++      2. snowflake_job.csv (job_ats_id)    - Bubble's `atsID` field, if staged. Lets
++         the team self-link NEW reqs by typing the Ashby UUID or TXYZ tag into Bubble
++         going forward, with zero code/CSV edits. Harmless if not staged.
++
++    Each candidate's `ref` is resolved to an ashby_job_id by UUID (direct) or by
++    Ashby customRequisitionId / TXYZ-N tag. Many-to-one (two Bubble projects sharing
++    one Ashby req) de-dupes to the most-recently-created Bubble job so the funnel is
++    never double-counted.
++    """
++    jobs_all = out.get("ir_ashby_jobs_all") or []
++    ashby_ids = {j.get("ashby_job_id") for j in jobs_all}
++    reqid_to_ashby = {(j.get("custom_requisition_id") or "").strip(): j.get("ashby_job_id")
++                      for j in jobs_all if (j.get("custom_requisition_id") or "").strip()}
++    candidates = []  # (bubble_job_id, created, ref)
++    xw = HERE / "ir_crosswalk.csv"
++    if xw.exists():
++        with xw.open() as f:
++            for row in csv.DictReader(f):
++                candidates.append(((row.get("bubble_job_id") or "").strip(),
++                                   (row.get("bubble_created") or "").strip(),
++                                   (row.get("ashby_ref") or "").strip()))
++    jp = HERE / "snowflake_job.csv"
++    if jp.exists():
++        with jp.open() as f:
++            for row in csv.DictReader(f):
++                ats = (row.get("job_ats_id") or row.get("JOB_ATS_ID") or "").strip()
++                if not ats:
++                    continue
++                candidates.append(((row.get("job_id") or row.get("JOB_ID") or "").strip(),
++                                   (row.get("date_created") or row.get("DATE_CREATED") or "").strip(),
++                                   ats))
++    owner_by_ashby = {}  # ashby_job_id -> (bubble_job_id, created)
++    for bjid, created, ref in candidates:
++        if not bjid or not ref:
++            continue
++        aid = ref if ref in ashby_ids else reqid_to_ashby.get(ref)
++        if not aid:
++            continue
++        cur = owner_by_ashby.get(aid)
++        if cur is None or created > cur[1]:
++            owner_by_ashby[aid] = (bjid, created)
++    owners = {aid: bc[0] for aid, bc in owner_by_ashby.items()}
++    mapped = set(owners.values())
++    for b in (out.get("ir_jobs_active") or []):
++        b["in_ashby"] = b.get("job_id") in mapped
++    for key in ("ir_ashby_funnel_jobweek", "ir_ashby_hires", "ir_ashby_active_pipeline"):
++        for r in (out.get(key) or []):
++            r["bubble_job_id"] = owners.get(r.get("ashby_job_id"), "")
++    return out
++
++
+ def load_new_project_health():
+     """Per-role health for roles opened in the last ~45 days (gated NPH tab).
+ 
+@@ -2084,6 +2141,7 @@ def main():
+     out["ir_ashby_funnel_jobweek"]  = _ir_load(load_ir_ashby_funnel_jobweek,  "ir_ashby_funnel_jobweek")
+     out["ir_ashby_hires"]           = _ir_load(load_ir_ashby_hires,           "ir_ashby_hires")
+     out["ir_ashby_jobs_all"]        = _ir_load(load_ir_ashby_jobs_all,        "ir_ashby_jobs_all")
++    attach_bubble_job_ids(out)
+     if out["ir_funnel_jobweek"]:
+         print(f"  ir_funnel_jobweek: {len(out['ir_funnel_jobweek'])} (job,week) rows  "
+               f"sourced_jobweek: {len(out['ir_sourced_jobweek'])}  "
+diff --git a/recruiting-dashboard/src/App.jsx b/recruiting-dashboard/src/App.jsx
+index 25316c6..45893bb 100755
+--- a/recruiting-dashboard/src/App.jsx
++++ b/recruiting-dashboard/src/App.jsx
+@@ -4349,6 +4349,14 @@ const IRTab = ({ data }) => {
+   const ashbyDQReasons  = data.ir_ashby_dq_reasons      || [];
+   const ashbyHires      = data.ir_ashby_hires           || [];
+   const hasAshby        = ashbyFunnel.length > 0 || ashbyHires.length > 0;
++  // Set of Bubble job_ids that have linked Ashby data (via the atsID crosswalk).
++  const ashbyJobIdSet = useMemo(() => {
++    const s = new Set();
++    for (const r of ashbyFunnel) if (r.bubble_job_id) s.add(r.bubble_job_id);
++    for (const r of ashbyHires)  if (r.bubble_job_id) s.add(r.bubble_job_id);
++    for (const r of ashbyActive) if (r.bubble_job_id) s.add(r.bubble_job_id);
++    return s;
++  }, [ashbyFunnel, ashbyHires, ashbyActive]);
+ 
+   const [jobFilter, setJobFilter]     = useState('all');
+   const [windowFilter, setWindowFilter] = useState('last4');
+@@ -4525,10 +4533,10 @@ const IRTab = ({ data }) => {
+         job_recruiter: bj?.job_recruiter || '—',
+         job_sourcer: bj?.job_sourcer || '—',
+         in_bubble: !!bj,
+-        in_ashby: false,
++        in_ashby: ashbyJobIdSet.has(jid),
+       };
+     }).sort((a, b) => (b.days_open || 0) - (a.days_open || 0));
+-  }, [funnelRows, sourcedRows, interviewedRows, jobsActive, windowFilter, thisWeek]);
++  }, [funnelRows, sourcedRows, interviewedRows, jobsActive, windowFilter, thisWeek, ashbyJobIdSet]);
+   const selectedJob = jobsActive.find(j => j.job_id === jobFilter);
+ 
+   // Sourced hired count for KPI
+@@ -4540,11 +4548,12 @@ const IRTab = ({ data }) => {
+   // (case-insensitive, includes substring match for variants like "Final Interview - Onsite")
+   const ashbyStageMap = useMemo(() => {
+     if (!ashbyFunnel.length) return null;
++    if (jobFilter !== 'all' && !ashbyJobIdSet.has(jobFilter)) return null;
+     const matches = (stage, target) => {
+       const s = (stage || '').toLowerCase();
+       return s.includes(target.toLowerCase());
+     };
+-    const inJob = (r) => jobFilter === 'all' || /* TODO: cross-system job match */ true;
++    const inJob = (r) => jobFilter === 'all' || r.bubble_job_id === jobFilter;
+     const inWk = (r) => inWindow(r.iso_week);
+     const sumIf = (pred) => ashbyFunnel.filter(r => inJob(r) && inWk(r) && pred(r.stage)).reduce((s, r) => s + r.count, 0);
+     return {
+@@ -4552,9 +4561,9 @@ const IRTab = ({ data }) => {
+       culture:       sumIf(s => matches(s, 'culture')),
+       call_w_client: sumIf(s => matches(s, 'call with client') || matches(s, 'client prep')),
+       offered:       sumIf(s => matches(s, 'offer')),
+-      hired:         ashbyHires.filter(r => inWindow(r.iso_week)).reduce((s, r) => s + r.count, 0),
++      hired:         ashbyHires.filter(r => inJob(r) && inWindow(r.iso_week)).reduce((s, r) => s + r.count, 0),
+     };
+-  }, [ashbyFunnel, ashbyHires, jobFilter, windowFilter, maxWeek]);
++  }, [ashbyFunnel, ashbyHires, ashbyActive, ashbyJobIdSet, jobFilter, windowFilter, maxWeek]);
+ 
+   const funnelStages = [
+     { label: 'Contacted',          n: totals.contacted,                           color: 'bg-blue-300', source: 'bubble' },
+@@ -4588,7 +4597,7 @@ const IRTab = ({ data }) => {
+         <div>
+           <h2 className="text-2xl font-bold text-white">Internal Recruiting</h2>
+           <p className="text-sm text-gray-400 mt-1">
+-          Tribe.xyz (IR) jobs &middot; left side from Bubble, right side {hasAshby ? <span className="text-teal-400">live from Ashby ✓</span> : <span className="text-gray-500">awaiting Ashby (v2)</span>}
++          Tribe.xyz (IR) jobs &middot; left side from Bubble, right side {(jobFilter === 'all' ? hasAshby : ashbyJobIdSet.has(jobFilter)) ? <span className="text-teal-400">live from Ashby ✓</span> : <span className="text-gray-500">not linked to Ashby</span>}
+         </p>
+         </div>
+         <div className="flex gap-2 flex-wrap items-center">

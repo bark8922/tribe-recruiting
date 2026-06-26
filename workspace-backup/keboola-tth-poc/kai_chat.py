@@ -16,7 +16,8 @@ missing, the app still runs and the chat box reports "not configured".
 
 import os
 
-STORAGE_API_TOKEN = os.environ.get("STORAGE_API_TOKEN")  # MASTER token (secret)
+# Keboola injects a `#`-prefixed secret decrypted at runtime; accept either env var name.
+STORAGE_API_TOKEN = os.environ.get("STORAGE_API_TOKEN") or os.environ.get("#STORAGE_API_TOKEN")  # MASTER token (secret)
 STORAGE_API_URL = os.environ.get("STORAGE_API_URL", "https://connection.eu-central-1.keboola.com")
 
 
@@ -33,10 +34,14 @@ def is_configured():
 
 def ask(question: str) -> str:
     """Send one question to Kai and return the full text answer (blocking)."""
+    import asyncio, traceback
+
+    token_names = [k for k in os.environ if "TOKEN" in k.upper() or "STORAGE" in k.upper()]
+    print(f"[kai] token env names seen={token_names} configured={is_configured()}", flush=True)
+
     if not is_configured():
         return "Kai is not configured. Set the STORAGE_API_TOKEN (master token) secret."
 
-    import asyncio
     from kai_client import KaiClient
 
     async def _run():
@@ -47,14 +52,7 @@ def ask(question: str) -> str:
         async with client:
             chat_id = client.new_chat_id()
             out = ""
-            async for event in client.send_message(chat_id, question):
-                if event.type == "text":
-                    out += event.text
-                elif event.type == "finish":
-                    break
-            return out or "(no answer)"
-
-    try:
-        return asyncio.run(_run())
-    except Exception as e:  # keep the PoC resilient; surface a short message
-        return f"Kai error: {e}"
+            counts = {}
+            # Kai runs an agent loop (tool calls between turns). Consume the WHOLE stream
+            # so we capture the final answer after the tool calls, not just the preamble.
+            

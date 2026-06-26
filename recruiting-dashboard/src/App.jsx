@@ -4556,28 +4556,40 @@ const IRTab = ({ data }) => {
     const inJob = (r) => jobFilter === 'all' || r.bubble_job_id === jobFilter;
     const inWk = (r) => inWindow(r.iso_week);
     const sumIf = (pred) => ashbyFunnel.filter(r => inJob(r) && inWk(r) && pred(r.stage)).reduce((s, r) => s + r.count, 0);
+    const L = (x) => (x || '').toLowerCase();
     return {
-      onsite:        sumIf(s => matches(s, 'onsite')),
-      culture:       sumIf(s => matches(s, 'culture')),
-      call_w_client: sumIf(s => matches(s, 'call with client') || matches(s, 'client prep')),
-      offered:       sumIf(s => matches(s, 'offer')),
-      hired:         ashbyHires.filter(r => inJob(r) && inWindow(r.iso_week)).reduce((s, r) => s + r.count, 0),
+      application_review: sumIf(x => L(x) === 'application review'),
+      initial_screen:     sumIf(x => L(x) === 'initial screen' || L(x) === 'recruiter screen'),
+      who:                sumIf(x => L(x).startsWith('who')),
+      case_study:         sumIf(x => L(x).includes('case study')),
+      onsite:             sumIf(x => L(x).includes('final interview') || L(x).includes('call with martin') || L(x) === 'onsite'),
+      culture:            sumIf(x => L(x).includes('culture')),
+      call_w_client:      sumIf(x => L(x).includes('call with client') || L(x).includes('client prep') || L(x).includes('presented to client')),
+      offered:            sumIf(x => L(x).includes('offer')),
+      hired:              ashbyHires.filter(r => inJob(r) && inWindow(r.iso_week)).reduce((s, r) => s + r.count, 0),
     };
   }, [ashbyFunnel, ashbyHires, ashbyActive, ashbyJobIdSet, jobFilter, windowFilter, maxWeek]);
 
-  const funnelStages = [
-    { label: 'Contacted',          n: totals.contacted,                           color: 'bg-blue-300', source: 'bubble' },
-    { label: 'Positive response',  n: totals.pos_response,                        color: 'bg-blue-400', source: 'bubble' },
-    { label: 'Recruiter screens',  n: totals.rec_screens,                         color: 'bg-blue-500', source: 'bubble' },
-    { label: 'Actual screens',     n: totals.actual_screens,                      color: 'bg-blue-600', source: 'bubble' },
-    { label: 'Moved to ATS',       n: totals.ats,                                 color: 'bg-blue-700', source: 'bubble' },
-    { label: 'Onsite',             n: ashbyStageMap?.onsite        ?? totals.onsite,        color: 'bg-teal-500', source: ashbyStageMap ? 'ashby' : 'bubble' },
-    { label: 'Culture interview',  n: ashbyStageMap?.culture       ?? totals.culture,       color: 'bg-teal-600', source: ashbyStageMap ? 'ashby' : 'bubble' },
-    { label: 'Call with client',   n: ashbyStageMap?.call_w_client ?? totals.call_w_client, color: 'bg-teal-700', source: ashbyStageMap ? 'ashby' : 'bubble' },
-    { label: 'Offered',            n: ashbyStageMap?.offered       ?? totals.offered,       color: 'bg-teal-700', source: ashbyStageMap ? 'ashby' : 'bubble' },
-    { label: 'Hired',              n: ashbyStageMap?.hired         ?? totals.hired,         color: 'bg-teal-700', source: ashbyStageMap ? 'ashby' : 'bubble' },
+  const sourcingStages = [
+    { label: 'Contacted',         n: totals.contacted },
+    { label: 'Positive response', n: totals.pos_response },
+    { label: 'Recruiter screens', n: totals.rec_screens },
+    { label: 'Actual screens',    n: totals.actual_screens },
+    { label: 'Moved to ATS',      n: totals.ats },
   ];
+  const ashbyStages = ashbyStageMap ? [
+    { label: 'Application Review', n: ashbyStageMap.application_review },
+    { label: 'Initial Screen',     n: ashbyStageMap.initial_screen },
+    { label: 'WHO',                n: ashbyStageMap.who },
+    { label: 'Case Study',         n: ashbyStageMap.case_study },
+    { label: 'Onsite',             n: ashbyStageMap.onsite },
+    { label: 'Culture interview',  n: ashbyStageMap.culture },
+    { label: 'Call with client',   n: ashbyStageMap.call_w_client },
+    { label: 'Offer',              n: ashbyStageMap.offered },
+    { label: 'Hired',              n: ashbyStageMap.hired },
+  ] : [];
   const maxN = Math.max(1, totals.contacted);
+  const ashbyMax = Math.max(1, ...ashbyStages.map(s => s.n));
   const dqTotal = dqReasonAgg.reduce((s, r) => s + r.count, 0);
   const dqMax = Math.max(1, ...dqReasonAgg.map(r => r.count));
 
@@ -4597,7 +4609,7 @@ const IRTab = ({ data }) => {
         <div>
           <h2 className="text-2xl font-bold text-white">Internal Recruiting</h2>
           <p className="text-sm text-gray-400 mt-1">
-          Tribe.xyz (IR) jobs &middot; left side from Bubble, right side {(jobFilter === 'all' ? hasAshby : ashbyJobIdSet.has(jobFilter)) ? <span className="text-teal-400">live from Ashby ✓</span> : <span className="text-gray-500">not linked to Ashby</span>}
+          Tribe.xyz (IR) jobs &middot; Sourcing funnel (Bubble) + Ashby funnel {(jobFilter === 'all' ? hasAshby : ashbyJobIdSet.has(jobFilter)) ? <span className="text-teal-400">linked ✓</span> : <span className="text-gray-500">— not linked to Ashby</span>}
         </p>
         </div>
         <div className="flex gap-2 flex-wrap items-center">
@@ -4677,31 +4689,28 @@ const IRTab = ({ data }) => {
 
       <div className="grid gap-3" style={{gridTemplateColumns: '1.6fr 1fr'}}>
         <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
-          <div className="text-sm font-medium text-white mb-3">Total progress funnel</div>
+          <div className="text-sm font-medium text-white mb-1">Sourcing funnel <span className="text-xs text-gray-500 font-normal">· Bubble (outbound)</span></div>
           <div className="space-y-1">
-            {funnelStages.map((s, i) => {
-              const pct = maxN > 0 ? Math.max(0.04, s.n / maxN) : 0.04;
-              const pctOfTop = totals.contacted > 0 ? (s.n / totals.contacted * 100) : 0;
-              // Highlight overlay: portion of this stage that comes from highlighted sourcer
+            {sourcingStages.map((st, i) => {
+              const pct = maxN > 0 ? Math.max(0.04, st.n / maxN) : 0.04;
+              const pctOfTop = totals.contacted > 0 ? (st.n / totals.contacted * 100) : 0;
               let overlay = 0;
               if (highlightSourcerData) {
-                if (s.label === 'Contacted')         overlay = highlightSourcerData.contacted;
-                else if (s.label === 'Positive response') overlay = highlightSourcerData.pos_response;
-                else if (s.label === 'Hired')        overlay = highlightSourcerData.hired;
-              } else if (highlightTAData && s.label === 'Actual screens') {
+                if (st.label === 'Contacted')              overlay = highlightSourcerData.contacted;
+                else if (st.label === 'Positive response') overlay = highlightSourcerData.pos_response;
+              } else if (highlightTAData && st.label === 'Actual screens') {
                 overlay = highlightTAData.actual_screens;
               }
-              const overlayPct = s.n > 0 ? Math.max(0, Math.min(1, overlay / s.n)) : 0;
+              const overlayPct = st.n > 0 ? Math.max(0, Math.min(1, overlay / st.n)) : 0;
+              const colors = ['bg-blue-300','bg-blue-400','bg-blue-500','bg-blue-600','bg-blue-700'];
               return (
-                <div key={i} className="grid items-center gap-2" style={{gridTemplateColumns: '110px 1fr 50px'}}>
-                  <span className="text-xs text-gray-400 text-right">{s.label}</span>
+                <div key={i} className="grid items-center gap-2" style={{gridTemplateColumns: '120px 1fr 50px'}}>
+                  <span className="text-xs text-gray-400 text-right">{st.label}</span>
                   <div className="flex justify-center">
-                    <div className={`${s.n === 0 ? 'bg-gray-700' : s.color} rounded relative`}
+                    <div className={`${st.n === 0 ? 'bg-gray-700' : colors[i]} rounded relative`}
                          style={{height: '20px', width: `${(pct * 100).toFixed(1)}%`, minWidth: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                      <span className={`text-xs font-medium ${s.n === 0 ? 'text-gray-500' : 'text-white'} relative z-10`}>{s.n.toLocaleString()}</span>
-                      {overlay > 0 && (
-                        <div className="absolute left-0 top-0 h-full bg-amber-400 rounded" style={{width: `${(overlayPct * 100).toFixed(1)}%`, opacity: 0.5}} />
-                      )}
+                      <span className={`text-xs font-medium ${st.n === 0 ? 'text-gray-500' : 'text-white'} relative z-10`}>{st.n.toLocaleString()}</span>
+                      {overlay > 0 && (<div className="absolute left-0 top-0 h-full bg-amber-400 rounded" style={{width: `${(overlayPct * 100).toFixed(1)}%`, opacity: 0.5}} />)}
                     </div>
                   </div>
                   <span className="text-xs text-gray-500">{pctOfTop < 1 ? pctOfTop.toFixed(1) : pctOfTop.toFixed(0)}%</span>
@@ -4709,7 +4718,32 @@ const IRTab = ({ data }) => {
               );
             })}
           </div>
-          <div className="text-xs text-gray-500 mt-3">Blue = Bubble (sourcing) &middot; teal = Ashby will enrich (v2) &middot; amber overlay = highlighted sourcer/TA contribution</div>
+
+          <div className="text-sm font-medium text-white mt-5 mb-1">Ashby funnel <span className="text-xs text-gray-500 font-normal">· interviews · all sources</span></div>
+          {ashbyStages.length === 0 ? (
+            <div className="text-xs text-gray-500 italic py-2">No Ashby data for this selection{jobFilter === 'all' ? '' : ' (job not linked to Ashby)'}.</div>
+          ) : (
+          <div className="space-y-1">
+            {ashbyStages.map((st, i) => {
+              const top = ashbyStages[0] ? ashbyStages[0].n : 0;
+              const pct = ashbyMax > 0 ? Math.max(0.04, st.n / ashbyMax) : 0.04;
+              const pctOfTop = top > 0 ? (st.n / top * 100) : 0;
+              return (
+                <div key={i} className="grid items-center gap-2" style={{gridTemplateColumns: '120px 1fr 50px'}}>
+                  <span className="text-xs text-gray-400 text-right">{st.label}</span>
+                  <div className="flex justify-center">
+                    <div className={`${st.n === 0 ? 'bg-gray-700' : 'bg-teal-600'} rounded relative`}
+                         style={{height: '20px', width: `${(pct * 100).toFixed(1)}%`, minWidth: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                      <span className={`text-xs font-medium ${st.n === 0 ? 'text-gray-500' : 'text-white'} relative z-10`}>{st.n.toLocaleString()}</span>
+                    </div>
+                  </div>
+                  <span className="text-xs text-gray-500">{pctOfTop < 1 ? pctOfTop.toFixed(1) : pctOfTop.toFixed(0)}%</span>
+                </div>
+              );
+            })}
+          </div>
+          )}
+          <div className="text-xs text-gray-500 mt-3"><span className="text-blue-300">Sourcing</span> = outbound effort (Bubble) · <span className="text-teal-400">Ashby</span> = interview funnel from all sources. These track largely different candidates — don\'t sum across them.</div>
         </div>
 
         <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">

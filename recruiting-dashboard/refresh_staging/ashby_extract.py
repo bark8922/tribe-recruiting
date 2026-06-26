@@ -108,6 +108,8 @@ def _trim_job(j: dict) -> dict:
         "closedAt": j.get("closedAt"),
         "brandId": j.get("brandId"),
         "hiringTeam": j.get("hiringTeam") or [],
+        "customRequisitionId": j.get("customRequisitionId"),
+        "customFields": j.get("customFields") or [],
     }
 
 

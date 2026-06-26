@@ -4349,6 +4349,14 @@ const IRTab = ({ data }) => {
   const ashbyDQReasons  = data.ir_ashby_dq_reasons      || [];
   const ashbyHires      = data.ir_ashby_hires           || [];
   const hasAshby        = ashbyFunnel.length > 0 || ashbyHires.length > 0;
+  // Set of Bubble job_ids that have linked Ashby data (via the atsID crosswalk).
+  const ashbyJobIdSet = useMemo(() => {
+    const s = new Set();
+    for (const r of ashbyFunnel) if (r.bubble_job_id) s.add(r.bubble_job_id);
+    for (const r of ashbyHires)  if (r.bubble_job_id) s.add(r.bubble_job_id);
+    for (const r of ashbyActive) if (r.bubble_job_id) s.add(r.bubble_job_id);
+    return s;
+  }, [ashbyFunnel, ashbyHires, ashbyActive]);
 
   const [jobFilter, setJobFilter]     = useState('all');
   const [windowFilter, setWindowFilter] = useState('last4');
@@ -4525,10 +4533,10 @@ const IRTab = ({ data }) => {
         job_recruiter: bj?.job_recruiter || '—',
         job_sourcer: bj?.job_sourcer || '—',
         in_bubble: !!bj,
-        in_ashby: false,
+        in_ashby: ashbyJobIdSet.has(jid),
       };
     }).sort((a, b) => (b.days_open || 0) - (a.days_open || 0));
-  }, [funnelRows, sourcedRows, interviewedRows, jobsActive, windowFilter, thisWeek]);
+  }, [funnelRows, sourcedRows, interviewedRows, jobsActive, windowFilter, thisWeek, ashbyJobIdSet]);
   const selectedJob = jobsActive.find(j => j.job_id === jobFilter);
 
   // Sourced hired count for KPI
@@ -4540,11 +4548,12 @@ const IRTab = ({ data }) => {
   // (case-insensitive, includes substring match for variants like "Final Interview - Onsite")
   const ashbyStageMap = useMemo(() => {
     if (!ashbyFunnel.length) return null;
+    if (jobFilter !== 'all' && !ashbyJobIdSet.has(jobFilter)) return null;
     const matches = (stage, target) => {
       const s = (stage || '').toLowerCase();
       return s.includes(target.toLowerCase());
     };
-    const inJob = (r) => jobFilter === 'all' || /* TODO: cross-system job match */ true;
+    const inJob = (r) => jobFilter === 'all' || r.bubble_job_id === jobFilter;
     const inWk = (r) => inWindow(r.iso_week);
     const sumIf = (pred) => ashbyFunnel.filter(r => inJob(r) && inWk(r) && pred(r.stage)).reduce((s, r) => s + r.count, 0);
     return {
@@ -4552,9 +4561,9 @@ const IRTab = ({ data }) => {
       culture:       sumIf(s => matches(s, 'culture')),
       call_w_client: sumIf(s => matches(s, 'call with client') || matches(s, 'client prep')),
       offered:       sumIf(s => matches(s, 'offer')),
-      hired:         ashbyHires.filter(r => inWindow(r.iso_week)).reduce((s, r) => s + r.count, 0),
+      hired:         ashbyHires.filter(r => inJob(r) && inWindow(r.iso_week)).reduce((s, r) => s + r.count, 0),
     };
-  }, [ashbyFunnel, ashbyHires, jobFilter, windowFilter, maxWeek]);
+  }, [ashbyFunnel, ashbyHires, ashbyActive, ashbyJobIdSet, jobFilter, windowFilter, maxWeek]);
 
   const funnelStages = [
     { label: 'Contacted',          n: totals.contacted,                           color: 'bg-blue-300', source: 'bubble' },
@@ -4588,7 +4597,7 @@ const IRTab = ({ data }) => {
         <div>
           <h2 className="text-2xl font-bold text-white">Internal Recruiting</h2>
           <p className="text-sm text-gray-400 mt-1">
-          Tribe.xyz (IR) jobs &middot; left side from Bubble, right side {hasAshby ? <span className="text-teal-400">live from Ashby ✓</span> : <span className="text-gray-500">awaiting Ashby (v2)</span>}
+          Tribe.xyz (IR) jobs &middot; left side from Bubble, right side {(jobFilter === 'all' ? hasAshby : ashbyJobIdSet.has(jobFilter)) ? <span className="text-teal-400">live from Ashby ✓</span> : <span className="text-gray-500">not linked to Ashby</span>}
         </p>
         </div>
         <div className="flex gap-2 flex-wrap items-center">

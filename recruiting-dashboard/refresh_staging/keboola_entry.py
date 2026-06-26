@@ -50,7 +50,7 @@ def stage_inputs(ci, flat):
         # (other .json files in src_dir are not relevant to render_json).
         if p.suffix in (".py", ".sql", ".md") or (
             p.suffix == ".json" and p.name.startswith("ashby_")
-        ) or p.name == "snowflake_new_project_health.csv":
+        ) or p.name in ("snowflake_new_project_health.csv", "ir_crosswalk.csv"):
             # snowflake_new_project_health.csv is a committed SEED for the New
             # Project Health tab. Copied here so render_json finds it even before
             # a Keboola input table exists. If/when that table is mapped as an

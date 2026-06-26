@@ -959,6 +959,7 @@ def load_ir_ashby_jobs_all():
         "openedAt":         j.get("openedAt") or j.get("createdAt") or "",
         "closedAt":         j.get("closedAt") or "",
         "createdAt":        j.get("createdAt") or "",
+        "custom_requisition_id": j.get("customRequisitionId") or "",
     } for j in jobs]
 
 
@@ -1104,6 +1105,62 @@ def load_ir_jobs_active():
                 "hires_total":   int(row.get("HIRES_TOTAL") or 0),
             })
     return rows
+
+
+def attach_bubble_job_ids(out):
+    """Cross-system join linking each Ashby req to its Bubble IR job.
+
+    Link candidates come from TWO sources, unified and de-duped:
+      1. refresh_staging/ir_crosswalk.csv  - committed backfill of historical reqs.
+      2. snowflake_job.csv (job_ats_id)    - Bubble's `atsID` field, if staged. Lets
+         the team self-link NEW reqs by typing the Ashby UUID or TXYZ tag into Bubble
+         going forward, with zero code/CSV edits. Harmless if not staged.
+
+    Each candidate's `ref` is resolved to an ashby_job_id by UUID (direct) or by
+    Ashby customRequisitionId / TXYZ-N tag. Many-to-one (two Bubble projects sharing
+    one Ashby req) de-dupes to the most-recently-created Bubble job so the funnel is
+    never double-counted.
+    """
+    jobs_all = out.get("ir_ashby_jobs_all") or []
+    ashby_ids = {j.get("ashby_job_id") for j in jobs_all}
+    reqid_to_ashby = {(j.get("custom_requisition_id") or "").strip(): j.get("ashby_job_id")
+                      for j in jobs_all if (j.get("custom_requisition_id") or "").strip()}
+    candidates = []  # (bubble_job_id, created, ref)
+    xw = HERE / "ir_crosswalk.csv"
+    if xw.exists():
+        with xw.open() as f:
+            for row in csv.DictReader(f):
+                candidates.append(((row.get("bubble_job_id") or "").strip(),
+                                   (row.get("bubble_created") or "").strip(),
+                                   (row.get("ashby_ref") or "").strip()))
+    jp = HERE / "snowflake_job.csv"
+    if jp.exists():
+        with jp.open() as f:
+            for row in csv.DictReader(f):
+                ats = (row.get("job_ats_id") or row.get("JOB_ATS_ID") or "").strip()
+                if not ats:
+                    continue
+                candidates.append(((row.get("job_id") or row.get("JOB_ID") or "").strip(),
+                                   (row.get("date_created") or row.get("DATE_CREATED") or "").strip(),
+                                   ats))
+    owner_by_ashby = {}  # ashby_job_id -> (bubble_job_id, created)
+    for bjid, created, ref in candidates:
+        if not bjid or not ref:
+            continue
+        aid = ref if ref in ashby_ids else reqid_to_ashby.get(ref)
+        if not aid:
+            continue
+        cur = owner_by_ashby.get(aid)
+        if cur is None or created > cur[1]:
+            owner_by_ashby[aid] = (bjid, created)
+    owners = {aid: bc[0] for aid, bc in owner_by_ashby.items()}
+    mapped = set(owners.values())
+    for b in (out.get("ir_jobs_active") or []):
+        b["in_ashby"] = b.get("job_id") in mapped
+    for key in ("ir_ashby_funnel_jobweek", "ir_ashby_hires", "ir_ashby_active_pipeline"):
+        for r in (out.get(key) or []):
+            r["bubble_job_id"] = owners.get(r.get("ashby_job_id"), "")
+    return out
 
 
 def load_new_project_health():
@@ -2084,6 +2141,7 @@ def main():
     out["ir_ashby_funnel_jobweek"]  = _ir_load(load_ir_ashby_funnel_jobweek,  "ir_ashby_funnel_jobweek")
     out["ir_ashby_hires"]           = _ir_load(load_ir_ashby_hires,           "ir_ashby_hires")
     out["ir_ashby_jobs_all"]        = _ir_load(load_ir_ashby_jobs_all,        "ir_ashby_jobs_all")
+    attach_bubble_job_ids(out)
     if out["ir_funnel_jobweek"]:
         print(f"  ir_funnel_jobweek: {len(out['ir_funnel_jobweek'])} (job,week) rows  "
               f"sourced_jobweek: {len(out['ir_sourced_jobweek'])}  "

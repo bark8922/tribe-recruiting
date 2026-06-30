@@ -55,4 +55,18 @@ def ask(question: str) -> str:
             counts = {}
             # Kai runs an agent loop (tool calls between turns). Consume the WHOLE stream
             # so we capture the final answer after the tool calls, not just the preamble.
-            
+            async for event in client.send_message(chat_id, question):
+                et = getattr(event, "type", "?")
+                counts[et] = counts.get(et, 0) + 1
+                if et == "text":
+                    out += getattr(event, "text", "")
+            print(f"[kai] stream event counts={counts} text_len={len(out)}", flush=True)
+            return out.strip() or "(no answer)"
+
+    try:
+        ans = asyncio.run(_run())
+        print(f"[kai] final answer_len={len(ans)} preview={ans[:160]!r}", flush=True)
+        return ans
+    except Exception as e:  # keep the PoC resilient; surface a short message
+        print("[kai] EXCEPTION:\n" + traceback.format_exc(), flush=True)
+        return f"Kai error: {type(e).__name__}: {e}"

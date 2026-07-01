@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-30T10:06:54Z",
+  "generated_at": "2026-07-01T10:30:00Z",
   "source": "bamboohr_directory",
   "leads": [
     {
@@ -17,8 +17,7 @@
         "Elena Petrovska",
         "Jelena Lacmanovic",
         "Jovana Drakula",
-        "Nenad Skoko",
-        "Zelimir Stajcic"
+        "Nenad Skoko"
       ]
     },
     {
@@ -39,7 +38,6 @@
     {
       "name": "Kristina Colovic",
       "reports": [
-        "Anna Tyulpanova",
         "Samantha Nel",
         "Wladyslaw Gadomski"
       ]
@@ -64,7 +62,6 @@
     {
       "name": "Meho Saracevic",
       "reports": [
-        "Jonaed Iqbal",
         "Mateja Jokovic"
       ]
     },
@@ -113,10 +110,12 @@
     "Akash Singh",
     "Aleksandra Markovic",
     "Andreas Weins",
+    "Anna Tyulpanova",
     "Danish Shams",
     "Ekaterina Boyprav",
     "Evagelina Rapanaki",
     "Filip Nogowski",
+    "Jonaed Iqbal",
     "Ketevan Khorava",
     "Mark Kandaurov",
     "Mia Gjorgievska",
@@ -125,7 +124,8 @@
     "Rafael Rosa",
     "Tina Aramouni",
     "Tinatini Karaulashvili",
-    "Zarina Amanbekova"
+    "Zarina Amanbekova",
+    "Zelimir Stajcic"
   ],
   "name_overrides_applied": {
     "Lejla Silva": "Lejla Dizdarevic",

@@ -50,18 +50,12 @@ def ask(question: str) -> str:
             storage_api_url=STORAGE_API_URL,
         )
         async with client:
-            chat_id = client.new_chat_id()
-            out = ""
-            counts = {}
-            # Kai runs an agent loop (tool calls between turns). Consume the WHOLE stream
-            # so we capture the final answer after the tool calls, not just the preamble.
-            async for event in client.send_message(chat_id, question):
-                et = getattr(event, "type", "?")
-                counts[et] = counts.get(et, 0) + 1
-                if et == "text":
-                    out += getattr(event, "text", "")
-            print(f"[kai] stream event counts={counts} text_len={len(out)}", flush=True)
-            return out.strip() or "(no answer)"
+            # High-level call: runs the FULL agent loop — it executes Kai's tool/SQL
+            # calls and returns (chat_id, final_answer). The low-level send_message
+            # stream only emits the tool *requests* and waits for the caller to service
+            # them, which is why hand-iterating it hung with no answer.
+            chat_id, answer = await client.chat(question)
+            return (answer or "").strip() or "(no answer)"
 
     try:
         ans = asyncio.run(_run())

@@ -1413,6 +1413,31 @@ const MBRTab = ({ data }) => {
         _last_week_activity: lastWeekActivity,
       });
     });
+
+    // TEMP MANUAL ADD (2026-07-06, Blake): Milica Mladzic is on approved BambooHR
+    // leave (weeks 26-27), so she has no last-week activity AND her Glovo target
+    // did not render into mbr_ta_targets, so the target-driven loop above never
+    // creates her row. Inject it from mbr_ta_actuals so her in-window (w24-w25)
+    // numbers show. REMOVE once the leave-aware MBR gate lands (BambooHR time_off
+    // feed: tribe-dashboard/pipeline/clients/bamboohr.py).
+    {
+      const _mk = 'Glovo|Milica Mladzic';
+      const _ma = data.mbr_ta_actuals?.[_mk];
+      const _exists = result.some((r) => `${r.client}|${normalizeTa(r.ta)}` === _mk);
+      if (_ma && !_exists) {
+        result.push({
+          client: 'Glovo', ta: 'Milica Mladzic', team_group: getBuGroup('Glovo'),
+          contacted: _ma.contacted || 0, actual_screens: _ma.actual_screens || 0,
+          ats: _ma.ats || 0, offers: _ma.offers || 0, hires: _ma.hires || 0,
+          hires_12w: _ma.hires_12w || 0, ats_12w: _ma.ats_12w || 0,
+          screens_12w: _ma.screens_12w || 0, jobs_60d: _ma.jobs_60d || 0,
+          contacted_target: 70 * weekCount, actual_screens_target: 15 * weekCount,
+          ats_target: 10 * weekCount, hires_target: 0,
+          pct_screens_to_hires: _ma.screens_12w > 0 ? Math.round((_ma.hires_12w || 0) / _ma.screens_12w * 100) : null,
+          comment: 'On approved leave (wk 26-27) \u2014 manually shown', _last_week_activity: 1,
+        });
+      }
+    }
     const groupOrder = { 'Dolphins/Whales': 0, 'Ponies/Unicorns': 1 };
     // Activity filter (Blake 2026-06-01): mirror the WBR rule — if a TA has zero
     // activity in the most recent (last) week of the MBR window, drop them. WBR

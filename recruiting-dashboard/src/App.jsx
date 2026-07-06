@@ -1373,7 +1373,7 @@ const MBRTab = ({ data }) => {
       Object.keys(data.wbr_actuals || {}).forEach((wkey) => {
         const [rawClient, rawTa] = wkey.split('|');
         if (
-          kebolaClientMatches(rawClient, displayClient) &&
+          (kebolaClientMatches(rawClient, displayClient) || mbrAbbrevClient(normalizeClient(rawClient)) === displayClient) &&
           normalizeTa(rawTa) === normalizeTa(t.ta)
         ) {
           const wk = data.wbr_actuals[wkey]?.[lastMbrWeek];
@@ -1413,6 +1413,71 @@ const MBRTab = ({ data }) => {
         _last_week_activity: lastWeekActivity,
       });
     });
+
+    // ROSTER-COMPLETENESS FIX (2026-07-06, Blake): the MBR TA table was purely
+    // target-driven, so a TA with real actuals but NO row in mbr_ta_targets
+    // (e.g. Iryna Dyda / Aviv) silently vanished from the breakdown while their
+    // hires still counted in the client total — so the client hires no longer
+    // matched the sum of the visible TA rows. Add any active-client TA that has
+    // actuals in the MBR window but isn't already present, with zero targets.
+    // Mirrors WBR's roster-driven completeness. Milica (below) has her own leave
+    // block, so skip her key here to avoid a duplicate / losing her forced flag.
+    {
+      const activeSet = new Set(data.mbr_active_clients || []);
+      const excludeSet = new Set(data.mbr_active_excludes || []);
+      const present = new Set(result.map((r) => `${r.client}|${normalizeTa(r.ta)}`));
+      Object.entries(data.mbr_ta_actuals || {}).forEach(([key, a]) => {
+        if (key === 'Glovo|Milica Mladzic') return; // leave block owns her
+        const [rawC, rawT] = key.split('|');
+        const displayClient = (rawC || '').trim();
+        const taName = rawT || '';
+        const nkey = `${displayClient}|${normalizeTa(taName)}`;
+        if (present.has(nkey)) return;
+        if (!activeSet.has(displayClient) || excludeSet.has(displayClient)) return;
+
+        let lastWeekActivity = 0;
+        Object.keys(data.wbr_actuals || {}).forEach((wkey) => {
+          const [rawClient, rawTa] = wkey.split('|');
+          if (
+            (kebolaClientMatches(rawClient, displayClient) || mbrAbbrevClient(normalizeClient(rawClient)) === displayClient) &&
+            normalizeTa(rawTa) === normalizeTa(taName)
+          ) {
+            const wk = data.wbr_actuals[wkey]?.[lastMbrWeek];
+            if (wk) {
+              lastWeekActivity +=
+                (wk.contacted || 0) +
+                (wk.actual_screens || wk.screened || 0) +
+                (wk.ats || 0) +
+                (wk.offers || 0) +
+                (wk.hires || 0);
+            }
+          }
+        });
+
+        const note = latestNote[normalizeTa(taName)];
+        result.push({
+          client: displayClient,
+          ta: taName,
+          team_group: getBuGroup(displayClient),
+          contacted: a.contacted || 0,
+          actual_screens: a.actual_screens || 0,
+          ats: a.ats || 0,
+          offers: a.offers || 0,
+          hires: a.hires || 0,
+          hires_12w: a.hires_12w || 0,
+          ats_12w: a.ats_12w || 0,
+          screens_12w: a.screens_12w || 0,
+          jobs_60d: a.jobs_60d || 0,
+          contacted_target: 0,
+          actual_screens_target: 0,
+          ats_target: 0,
+          hires_target: 0,
+          pct_screens_to_hires: a.screens_12w > 0 ? Math.round((a.hires_12w || 0) / a.screens_12w * 100) : null,
+          comment: note?.comment || note?.reasoning || '',
+          _last_week_activity: lastWeekActivity,
+        });
+      });
+    }
 
     // TEMP MANUAL ADD (2026-07-06, Blake): Milica Mladzic is on approved BambooHR
     // leave (weeks 26-27), so she has no last-week activity AND her Glovo target

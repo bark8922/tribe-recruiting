@@ -420,6 +420,92 @@ def load_ta_targets_from_csv(preserve_from_live: list[dict] | None = None) -> li
     return out
 
 
+def load_mbr_ta_targets_from_csv(ta_weekly_roster, mbr_weeks,
+                                 active_clients=None,
+                                 preserve_from_live=None):
+    """Rebuild mbr_ta_targets from wbr_ta_target.csv every run (the MBR analogue
+    of load_ta_targets_from_csv, which already does this for the WBR `targets`
+    field). Previously mbr_ta_targets was carried forward verbatim from the live
+    JSON, so the MBR target list froze months ago: TAs added to the sheet
+    mid-period (e.g. Iryna Dyda on Aviv) never appeared, Wolt sub-BU TAs stored
+    under long-form client names ("Wolt North, Baltics & Benelux") silently
+    mismatched the ABBREV-keyed actuals ("Wolt NBB") and dropped, and rolled-off
+    TAs (e.g. Anna Tyulpanova) lingered as stale rows.
+
+    Scope (option 1, sheet INTERSECT current roster): keep only (client, TA)
+    pairs that are on Andy's weekly roster for the MBR window, ABBREV-normalized
+    so Wolt sub-BUs line up with mbr_ta_actuals. Picks the newest 2026 month per
+    (abbrev_client, fold_ta). team_group is best-effort preserved from live but
+    is not used for MBR grouping (the frontend derives BU group from the client).
+    """
+    active_set = set(active_clients or [])
+    mbr_week_set = set(mbr_weeks or [])
+
+    # (abbrev_client, fold_ta) pairs on the roster for the MBR-window weeks.
+    roster_pairs = set()
+    for wk, pairs in (ta_weekly_roster or {}).items():
+        if wk not in mbr_week_set:
+            continue
+        for pair in pairs:
+            parts = pair.split("|", 1)
+            if len(parts) != 2:
+                continue
+            disp_c = mbr_normalize_client(parts[0])
+            ta_f = fold_name(parts[1])
+            if disp_c and ta_f:
+                roster_pairs.add((disp_c, ta_f))
+
+    live_tg = {}
+    for row in (preserve_from_live or []):
+        k = (fold_name(row.get("client", "")), fold_name(row.get("ta", "")))
+        live_tg.setdefault(k, (row.get("team_group") or "").strip())
+
+    def _num(v):
+        try:
+            return float(v) if v not in (None, "", " ") else 0.0
+        except ValueError:
+            return 0.0
+
+    try:
+        f = WBR_TA_TARGET_CSV.open()
+    except FileNotFoundError:
+        return list(preserve_from_live or [])
+
+    latest: dict[tuple[str, str], tuple[int, dict]] = {}
+    with f:
+        for row in csv.DictReader(f):
+            try:
+                y = int(row["Year"]); m_ = int(row["Month"])
+            except (ValueError, KeyError):
+                continue
+            if y != 2026:
+                continue
+            raw_c = (row.get("Client") or "").strip()
+            ta = (row.get("TA") or "").strip()
+            if not raw_c or not ta:
+                continue
+            disp_c = mbr_normalize_client(raw_c)
+            ta_f = fold_name(ta)
+            if (disp_c, ta_f) not in roster_pairs:
+                continue
+            if active_set and disp_c not in active_set and ABBREV.get(disp_c) not in active_set:
+                continue
+            entry = {
+                "client": disp_c,
+                "ta": ta,
+                "contacted":      _num(row.get("Contacted") or ""),
+                "actual_screens": _num(row.get("Actual Screens") or row.get("Actual_Screens") or ""),
+                "moved_to_ats":   _num(row.get("Moved to ATS") or row.get("Moved_to_ATS") or ""),
+                "hires":          _num(row.get("Hires") or ""),
+                "team_group":     live_tg.get((fold_name(disp_c), ta_f), ""),
+            }
+            key = (disp_c, ta_f)
+            cur = latest.get(key)
+            if cur is None or m_ > cur[0]:
+                latest[key] = (m_, entry)
+    return [v[1] for v in latest.values()]
+
+
 def load_ta_weekly_notes() -> list[dict]:
     """Parse wbr_ta_weekly_note.csv → list of {client, ta, year, week, reasoning, comment}
     rows, one per Client/TA/Week. Matches the shape App.jsx's taDetail lookup
@@ -1800,6 +1886,18 @@ def main():
         mbr_weeks = [f"w{n}" for n in _last4]
     else:
         mbr_weeks = (live.get("mbr_window") or {}).get("weeks", ["w12", "w13", "w14", "w15"])
+
+    # ROOT FIX (2026-07-06, Blake): rebuild mbr_ta_targets from the target sheet
+    # every run instead of freezing the stale list carried forward from live.
+    # Scoped to (client, TA) pairs on the weekly roster for the MBR window
+    # (sheet INTERSECT roster) and ABBREV-normalized so Wolt sub-BUs match the
+    # mbr_ta_actuals keys. Fixes new TAs never appearing (Iryna Dyda), long-form
+    # Wolt names silently dropping (Adelya/Niki), and rolled-off TAs lingering.
+    live["mbr_ta_targets"] = load_mbr_ta_targets_from_csv(
+        ta_weekly_roster, mbr_weeks,
+        active_clients=live.get("mbr_active_clients") or [],
+        preserve_from_live=live.get("mbr_ta_targets") or [],
+    )
 
     # Computed surfaces (roster-filtered)
     wbr_actuals = build_wbr_actuals(raw_wbr, wbr_wolt, ta_roster=ta_roster)

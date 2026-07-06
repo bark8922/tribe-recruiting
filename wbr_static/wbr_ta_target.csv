@@ -1608,21 +1608,19 @@ row_number,Client,TA,Year,Month,Contacted,Actual Screens,Moved to ATS,Hires
 1608,Eucalyptus,Meho Saracevic,2026,7,100,15,7,
 1609,Eucalyptus,Dušan Špica,2026,7,100,15,7,
 1610,Glovo,Chené Elliot,2026,7,70,15,10,
-1611,Glovo,Milica Mladzic ,2026,7,20,15,10,
-1612,Glovo,Samantha Nel,2026,7,70,15,,
-1613,Glovo,Milica Mladzic,2026,7,70,15,10,
-1614,Nexi,Maria Desiree Gerbore,2026,7,60,10,6,
-1615,Parloa,Filip Nogowski,2026,7,50,15,8,
-1616,Parloa,Jonaed Iqbal,2026,7,60,8,5,
-1617,Reaktor,Simon Siew,2026,7,50,10,5,
-1618,SevenRooms,Zelimir Stajcic,2026,7,100,5,3,
-1619,Taxfix,Marina Nikolic,2026,7,40,15,5,
-1620,Wolt Central & South,Niki Vokalkova,2026,7,0,15,8,1.25
-1621,Wolt Germany ,Lisa Gargulinska,2026,7,100,15,8,1.25
-1622,Wolt HQ,Nenad Skoko,2026,7,60,15,8,1
-1623,Wolt HQ,Elena Petrovska,2026,7,100,4,3,
-1624,Wolt Market,Jan Dokulil,2026,7,120,19,10,1.25
-1625,"Wolt North, Baltics & Benelux",Jelena Lacmanovic,2026,7,70,15,8,1.25
-1626,"Wolt North, Baltics & Benelux",Tina Aramouni ,2026,7,20,10,8,1.25
-1627,"Wolt North, Baltics & Benelux",Adelya Khakimova,2026,7,50,15,8,1.25
-1628,Wolt Tech,Ejla Suljcic,2026,7,100,,,
+1611,Glovo,Samantha Nel,2026,7,70,15,10,
+1612,Glovo,Milica Mladzic,2026,7,70,15,10,
+1613,Parloa,Filip Nogowski,2026,7,50,15,8,
+1614,Parloa,Jonaed Iqbal,2026,7,60,8,5,
+1615,Reaktor,Simon Siew,2026,7,50,10,5,
+1616,SevenRooms,Zelimir Stajcic,2026,7,100,5,3,
+1617,Taxfix,Marina Nikolic,2026,7,40,15,5,
+1618,Wolt Central & South,Niki Vokalkova,2026,7,0,15,8,1.25
+1619,Wolt Germany ,Lisa Gargulinska,2026,7,100,15,8,1.25
+1620,Wolt HQ,Nenad Skoko,2026,7,60,15,8,1
+1621,Wolt HQ,Elena Petrovska,2026,7,100,4,3,
+1622,Wolt Market,Jan Dokulil,2026,7,120,19,10,1.25
+1623,"Wolt North, Baltics & Benelux",Jelena Lacmanovic,2026,7,70,15,8,1.25
+1624,"Wolt North, Baltics & Benelux",Tina Aramouni ,2026,7,20,10,8,1.25
+1625,"Wolt North, Baltics & Benelux",Adelya Khakimova,2026,7,50,15,8,1.25
+1626,Wolt Tech,Ejla Suljcic,2026,7,100,,,

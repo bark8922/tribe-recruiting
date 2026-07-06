@@ -1357,6 +1357,7 @@ const MBRTab = ({ data }) => {
     // Most-recent week in the MBR window — used for the "previous-week" activity
     // check (mirrors WBR's hide-if-no-activity-in-selected-week rule).
     const lastMbrWeek = MBR_WEEKS[MBR_WEEKS.length - 1];
+    const lastMbrWeekNum = parseInt(String(lastMbrWeek).replace(/^w/, ''), 10);
 
     const result = [];
     targets.forEach(t => {
@@ -1388,6 +1389,17 @@ const MBRTab = ({ data }) => {
         }
       });
 
+      // WBR-parity visibility: a TA also shows if there is a comment/reasoning
+      // for the LAST MBR week even with zero activity that week (e.g. someone on
+      // leave whose lead still left a note). Mirrors WBRTab's hasNote rule.
+      const lwNote = (data.ta_weekly_notes || []).find((n) =>
+        normalizeTa(n.ta) === normalizeTa(t.ta) && n.week === lastMbrWeekNum &&
+        (kebolaClientMatches(n.client || '', displayClient) ||
+         mbrAbbrevClient(normalizeClient(n.client || '')) === displayClient)
+      );
+      const hasLastWeekNote = !!((lwNote?.comment && lwNote.comment.trim()) ||
+                                 (lwNote?.reasoning && lwNote.reasoning.trim()));
+
       result.push({
         client: displayClient,
         ta: t.ta,
@@ -1411,111 +1423,18 @@ const MBRTab = ({ data }) => {
         pct_screens_to_hires: a.screens_12w > 0 ? Math.round((a.hires_12w || 0) / a.screens_12w * 100) : null,
         comment: note?.comment || note?.reasoning || '',
         _last_week_activity: lastWeekActivity,
+        _last_week_note: hasLastWeekNote,
       });
     });
 
-    // ROSTER-COMPLETENESS FIX (2026-07-06, Blake): the MBR TA table was purely
-    // target-driven, so a TA with real actuals but NO row in mbr_ta_targets
-    // (e.g. Iryna Dyda / Aviv) silently vanished from the breakdown while their
-    // hires still counted in the client total — so the client hires no longer
-    // matched the sum of the visible TA rows. Add any active-client TA that has
-    // actuals in the MBR window but isn't already present, with zero targets.
-    // Mirrors WBR's roster-driven completeness. Milica (below) has her own leave
-    // block, so skip her key here to avoid a duplicate / losing her forced flag.
-    {
-      const activeSet = new Set(data.mbr_active_clients || []);
-      const excludeSet = new Set(data.mbr_active_excludes || []);
-      const present = new Set(result.map((r) => `${r.client}|${normalizeTa(r.ta)}`));
-      Object.entries(data.mbr_ta_actuals || {}).forEach(([key, a]) => {
-        if (key === 'Glovo|Milica Mladzic') return; // leave block owns her
-        const [rawC, rawT] = key.split('|');
-        const displayClient = (rawC || '').trim();
-        const taName = rawT || '';
-        const nkey = `${displayClient}|${normalizeTa(taName)}`;
-        if (present.has(nkey)) return;
-        if (!activeSet.has(displayClient) || excludeSet.has(displayClient)) return;
-
-        let lastWeekActivity = 0;
-        Object.keys(data.wbr_actuals || {}).forEach((wkey) => {
-          const [rawClient, rawTa] = wkey.split('|');
-          if (
-            (kebolaClientMatches(rawClient, displayClient) || mbrAbbrevClient(normalizeClient(rawClient)) === displayClient) &&
-            normalizeTa(rawTa) === normalizeTa(taName)
-          ) {
-            const wk = data.wbr_actuals[wkey]?.[lastMbrWeek];
-            if (wk) {
-              lastWeekActivity +=
-                (wk.contacted || 0) +
-                (wk.actual_screens || wk.screened || 0) +
-                (wk.ats || 0) +
-                (wk.offers || 0) +
-                (wk.hires || 0);
-            }
-          }
-        });
-
-        const note = latestNote[normalizeTa(taName)];
-        result.push({
-          client: displayClient,
-          ta: taName,
-          team_group: getBuGroup(displayClient),
-          contacted: a.contacted || 0,
-          actual_screens: a.actual_screens || 0,
-          ats: a.ats || 0,
-          offers: a.offers || 0,
-          hires: a.hires || 0,
-          hires_12w: a.hires_12w || 0,
-          ats_12w: a.ats_12w || 0,
-          screens_12w: a.screens_12w || 0,
-          jobs_60d: a.jobs_60d || 0,
-          contacted_target: 0,
-          actual_screens_target: 0,
-          ats_target: 0,
-          hires_target: 0,
-          pct_screens_to_hires: a.screens_12w > 0 ? Math.round((a.hires_12w || 0) / a.screens_12w * 100) : null,
-          comment: note?.comment || note?.reasoning || '',
-          _last_week_activity: lastWeekActivity,
-        });
-      });
-    }
-
-    // TEMP MANUAL ADD (2026-07-06, Blake): Milica Mladzic is on approved BambooHR
-    // leave (weeks 26-27), so she has no last-week activity AND her Glovo target
-    // did not render into mbr_ta_targets, so the target-driven loop above never
-    // creates her row. Inject it from mbr_ta_actuals so her in-window (w24-w25)
-    // numbers show. REMOVE once the leave-aware MBR gate lands (BambooHR time_off
-    // feed: tribe-dashboard/pipeline/clients/bamboohr.py).
-    {
-      const _mk = 'Glovo|Milica Mladzic';
-      const _ma = data.mbr_ta_actuals?.[_mk];
-      const _exists = result.some((r) => `${r.client}|${normalizeTa(r.ta)}` === _mk);
-      if (_ma && !_exists) {
-        result.push({
-          client: 'Glovo', ta: 'Milica Mladzic', team_group: getBuGroup('Glovo'),
-          contacted: _ma.contacted || 0, actual_screens: _ma.actual_screens || 0,
-          ats: _ma.ats || 0, offers: _ma.offers || 0, hires: _ma.hires || 0,
-          hires_12w: _ma.hires_12w || 0, ats_12w: _ma.ats_12w || 0,
-          screens_12w: _ma.screens_12w || 0, jobs_60d: _ma.jobs_60d || 0,
-          contacted_target: 70 * weekCount, actual_screens_target: 15 * weekCount,
-          ats_target: 10 * weekCount, hires_target: 0,
-          pct_screens_to_hires: _ma.screens_12w > 0 ? Math.round((_ma.hires_12w || 0) / _ma.screens_12w * 100) : null,
-          comment: 'On approved leave (wk 26-27) \u2014 manually shown', _last_week_activity: 1,
-        });
-      }
-    }
     const groupOrder = { 'Dolphins/Whales': 0, 'Ponies/Unicorns': 1 };
-    // Activity filter (Blake 2026-06-01): mirror the WBR rule — if a TA has zero
-    // activity in the most recent (last) week of the MBR window, drop them. WBR
-    // already hides Ekaterin Boyprav and Mateja on this basis; the MBR should too.
-    // We still require *some* MBR-window or 12w activity (keeps the prior filter
-    // floor) so a target alone (or a stale comment) can't keep a row alive.
+    // Visibility filter (Blake 2026-07-06): mirror the WBR rule exactly — show a
+    // TA if they had activity in the last MBR week OR have a comment/reasoning
+    // for that week. The comment path keeps people like Milica Mladzic (on leave
+    // with a lead note but zero week-27 activity) visible, matching WBR. TAs with
+    // neither activity nor a note for the last week drop off.
     const filtered = result.filter((r) =>
-      (r._last_week_activity > 0) &&
-      (
-        (r.contacted > 0) || (r.actual_screens > 0) || (r.ats > 0) || (r.hires > 0) ||
-        (r.hires_12w > 0) || (r.screens_12w > 0) || (r.ats_12w > 0) ||
-        (r.jobs_60d > 0)
-      )
+      (r._last_week_activity > 0) || r._last_week_note
     );
     return filtered.sort((a, b) => {
       const ga = groupOrder[a.team_group] ?? 2;

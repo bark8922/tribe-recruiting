@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-10T09:59:56Z",
+  "generated_at": "2026-07-11T08:19:20Z",
   "source": "bamboohr_directory",
   "leads": [
     {
@@ -12,7 +12,6 @@
     {
       "name": "Chené Elliot",
       "reports": [
-        "Adelya Khakimova",
         "Alexandra Richiteanu",
         "Elena Petrovska",
         "Jelena Lacmanovic",
@@ -68,7 +67,6 @@
     {
       "name": "Niki Vokalkova",
       "reports": [
-        "Alisa Liddell",
         "Dora Vrbanić",
         "Fuad Safarov"
       ]
@@ -106,9 +104,11 @@
     }
   ],
   "unmatched_funnel_names": [
+    "Adelya Khakimova",
     "Adis Prepoljac",
     "Akash Singh",
     "Aleksandra Markovic",
+    "Alisa Liddell",
     "Andreas Weins",
     "Anna Tyulpanova",
     "Danish Shams",

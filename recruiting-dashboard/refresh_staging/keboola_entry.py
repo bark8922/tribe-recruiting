@@ -30,6 +30,13 @@ print("=== keboola.component imported ===", flush=True)
 
 REPO = "bark8922/tribe-recruiting"
 TARGET_FILE = "recruiting-dashboard/public/dashboard_data_snowflake.json.gz"
+
+# Finance actual_spend export (contains the 'BU Client' tab: client -> BU lead
+# per month). Written by the n8n "Actual Spend Export" workflow each finance
+# refresh. render_json.load_bu_groups() reads it from staging to derive the
+# Dolphins/Ponies BU group. Best-effort — see fetch_spend_csv().
+FINANCE_REPO = "bark8922/tribe-dashboard"
+FINANCE_SPEND_PATH = "data-next/spend/actual_spend_all_tabs.csv"
 DQ_TARGET_FILE = "recruiting-dashboard/public/dq_reasons.json"
 FINDER_TARGET_FILE = "recruiting-dashboard/public/finder_data.json.gz"
 
@@ -269,6 +276,32 @@ def notify_circle(token):
         print("[notify_circle] WARNING: dispatch failed (non-fatal): " + repr(exc), flush=True)
 
 
+def fetch_spend_csv(token, flat):
+    """Fetch the finance actual_spend export (contains the 'BU Client' tab) from
+    tribe-dashboard and drop it into staging so render_json.load_bu_groups() can
+    derive the Dolphins/Ponies BU group from Leadership's single source of truth.
+
+    Best-effort: any failure logs WARN and is swallowed. render_json then bakes an
+    empty bu_group_by_key and App.jsx falls back to its legacy client-name rule,
+    so the flow never breaks. Requires the token to have read access to
+    bark8922/tribe-dashboard (same org as the push target)."""
+    dst = flat / "refresh_staging" / "actual_spend_all_tabs.csv"
+    url = ("https://api.github.com/repos/" + FINANCE_REPO + "/contents/"
+           + FINANCE_SPEND_PATH + "?ref=main")
+    try:
+        req = urllib.request.Request(url)
+        req.add_header("Authorization", "token " + token)
+        req.add_header("Accept", "application/vnd.github.raw")
+        req.add_header("User-Agent", "tribe-recruiting-refresh")
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            body = resp.read()
+        dst.write_bytes(body)
+        print("[fetch_spend_csv] wrote " + str(len(body) // 1024) + " KB from "
+              + FINANCE_SPEND_PATH, flush=True)
+    except Exception as e:
+        print("[fetch_spend_csv] WARN failed: " + type(e).__name__ + ": " + str(e), flush=True)
+
+
 def main():
     print("=== main() called ===", flush=True)
     ci = CommonInterface()
@@ -293,6 +326,7 @@ def main():
     flat.mkdir(parents=True)
 
     stage_inputs(ci, flat)
+    fetch_spend_csv(github_token, flat)  # finance BU Client tab → staging (best-effort)
     run_ashby(flat, ashby_key)  # v2 lean+incremental, 180s deadline, best-effort
     out_path = run_render(flat)
     content = out_path.read_text(encoding="utf-8")

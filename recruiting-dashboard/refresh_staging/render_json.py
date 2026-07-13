@@ -52,6 +52,7 @@ from __future__ import annotations
 
 import csv
 import datetime
+import io
 import json
 import os
 import re
@@ -112,6 +113,14 @@ SNOW_WEEKLY_SUMMARY_BYJOB = HERE / "snowflake_weekly_summary_byjob.csv"  # perso
 WBR_TA_TARGET_CSV = ROOT / "wbr_static" / "wbr_ta_target.csv"
 WBR_TS_WEEKLY_CSV = ROOT / "wbr_static" / "wbr_ts_weekly.csv"
 WBR_TA_WEEKLY_NOTE_CSV = ROOT / "wbr_static" / "wbr_ta_weekly_note.csv"
+
+# Finance BU Client mapping — the actual_spend "BU Client" tab (client → BU lead
+# per month), exported by the same n8n workflow as the other finance tabs and
+# committed to bark8922/tribe-dashboard/data-next/spend/actual_spend_all_tabs.csv.
+# keboola_entry.py fetches it into staging each run. Single source of truth for
+# the Dolphins/Ponies split (Leadership-owned). Missing file → App.jsx falls back
+# to the legacy client-name rule, so this is best-effort.
+SPEND_CSV = HERE / "actual_spend_all_tabs.csv"
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Normalization helpers
@@ -1822,6 +1831,64 @@ def build_dq_reasons_artifact():
     return len(rows)
 
 
+def load_bu_groups() -> dict:
+    """Parse the 'BU Client' tab from the finance actual_spend export and return
+    {normalized_client_key: 'Dolphins/Whales'|'Ponies/Unicorns'} using the newest
+    Period per client.
+
+    Business-unit assignment is owned by Leadership in the actual_spend sheet's
+    'BU Client' tab (BU lead per client per month). This makes the recruiting
+    dashboard's Dolphins/Ponies split follow that single source of truth instead
+    of a hardcoded client-name rule, so new / re-assigned clients follow
+    automatically. Mapping: BU lead 'Kristjana ...' -> Dolphins/Whales, everyone
+    else -> Ponies/Unicorns. Wolt sub-BUs / DoorDash / SevenRooms collapse to the
+    single finance 'Wolt' row. Clients absent from the sheet get no entry (App.jsx
+    defaults them to Ponies/Unicorns). Returns {} if the export is missing so the
+    frontend keeps its built-in fallback (no regression)."""
+    try:
+        text = SPEND_CSV.read_text(encoding="utf-8")
+    except (FileNotFoundError, OSError):
+        return {}
+
+    def _key(name: str) -> str:
+        k = (name or "").strip().lower()
+        if k.startswith("wolt") or k in ("doordash", "sevenrooms"):
+            return "wolt"
+        return k
+
+    lines = text.splitlines()
+    start = None
+    for i, ln in enumerate(lines):
+        if ln.strip() == "### TAB: BU Client ###":
+            start = i + 1
+            break
+    if start is None:
+        return {}
+    section = []
+    for ln in lines[start:]:
+        if ln.startswith("### TAB:"):
+            break
+        section.append(ln)
+    if len(section) < 2:
+        return {}
+
+    latest: dict[str, tuple[str, str]] = {}  # key -> (period, lead)
+    for row in csv.DictReader(io.StringIO("\n".join(section))):
+        client = (row.get("Client Name") or "").strip()
+        period = (row.get("Period") or "").strip()
+        lead = (row.get("BU") or "").strip()
+        if not client:
+            continue
+        k = _key(client)
+        if k not in latest or period > latest[k][0]:
+            latest[k] = (period, lead)
+
+    groups = {}
+    for k, (period, lead) in latest.items():
+        groups[k] = "Dolphins/Whales" if lead.startswith("Kristjana") else "Ponies/Unicorns"
+    return groups
+
+
 def main():
     live = load_live()
     raw_wbr = load_wbr()
@@ -1893,9 +1960,13 @@ def main():
     # (sheet INTERSECT roster) and ABBREV-normalized so Wolt sub-BUs match the
     # mbr_ta_actuals keys. Fixes new TAs never appearing (Iryna Dyda), long-form
     # Wolt names silently dropping (Adelya/Niki), and rolled-off TAs lingering.
+    # active_clients=None (2026-07-13, Blake): the mbr_active_clients allowlist is
+    # removed. The MBR target list is scoped to (client, TA) pairs on the weekly
+    # roster only (sheet INTERSECT roster) — identical to WBR — so any client Andy
+    # puts on the roster shows in MBR too. See the removed final-filter block below.
     live["mbr_ta_targets"] = load_mbr_ta_targets_from_csv(
         ta_weekly_roster, mbr_weeks,
-        active_clients=live.get("mbr_active_clients") or [],
+        active_clients=None,
         preserve_from_live=live.get("mbr_ta_targets") or [],
     )
 
@@ -1989,31 +2060,14 @@ def main():
     mbr_ts_actuals = build_mbr_ts_actuals(raw_ts, aux, mbr_weeks, ts_roster=ts_roster)
     mbr_client_totals = build_mbr_client_totals(mbr_ta_actuals)
 
-    # Filter MBR output to clients Andy marks active. Without this, non-MBR
-    # clients like DualEntry (which has some candidate activity) and Fever
-    # (which has a dangling target row) leak into the MBR tables. Uses
-    # live["mbr_active_clients"] as the authoritative list.
-    active_clients = set(live.get("mbr_active_clients") or [])
-    if active_clients:
-        # Allow the long-form Wolt client names in targets to resolve against
-        # the ABBREV-form active list (target rows arrive as e.g.
-        # "Wolt North, Baltics & Benelux" but the active list is "Wolt NBB").
-        def _client_is_active(c):
-            if c in active_clients:
-                return True
-            abbrev = ABBREV.get((c or "").strip())
-            return abbrev in active_clients if abbrev else False
-        mbr_ta_actuals = {k: v for k, v in mbr_ta_actuals.items()
-                          if k.split("|", 1)[0] in active_clients}
-        mbr_client_totals = {k: v for k, v in mbr_client_totals.items()
-                             if k in active_clients}
-        # Scope the target list too — otherwise Fever/Grover dangling target
-        # rows show up as empty-data rows in the MBR TA table.
-        live_targets = live.get("mbr_ta_targets") or []
-        filtered_targets = [t for t in live_targets if _client_is_active(t.get("client"))]
-        live["mbr_ta_targets"] = filtered_targets
-        print(f"  mbr filtered to {len(active_clients)} active clients "
-              f"(targets {len(live_targets)} -> {len(filtered_targets)})")
+    # mbr_active_clients allowlist REMOVED 2026-07-13 (Blake). Previously a frozen
+    # 18-client list (carried forward from the live JSON) filtered the MBR tables,
+    # which silently hid clients that were genuinely on the weekly roster — e.g.
+    # DualEntry and Reaktor — even though they showed in WBR. MBR now scopes to the
+    # weekly roster exactly like WBR: mbr_ta_actuals, mbr_client_totals and
+    # mbr_ta_targets are already (sheet INTERSECT roster)-scoped above, so no
+    # allowlist is needed. Add a client to Andy's WBR Target sheet and it appears
+    # in both WBR and MBR; drop it and it disappears from both.
 
     # ts_conversion — static snapshot (lifetime scoped to Active Pipelines).
     ts_conversion = [
@@ -2166,6 +2220,15 @@ def main():
     out["mbr_ta_actuals"] = mbr_ta_actuals
     out["mbr_ts_actuals"] = mbr_ts_actuals
     out["mbr_client_totals"] = mbr_client_totals
+
+    # BU group per client (Dolphins/Whales vs Ponies/Unicorns), derived from the
+    # finance 'BU Client' tab. App.jsx reads this map for both WBR and MBR
+    # grouping; if it's empty (export missing) the frontend uses its legacy rule.
+    out["bu_group_by_key"] = load_bu_groups()
+    if out["bu_group_by_key"]:
+        print(f"  bu_group_by_key: {len(out['bu_group_by_key'])} clients from finance BU Client tab")
+    else:
+        print("  bu_group_by_key: EMPTY — finance BU Client export missing; App.jsx will use legacy fallback")
     # Overwrite mbr_window so the frontend sees the same weeks the MBR tables
     # were actually computed from. Dates are ISO Mon-Sun for each week in 2026.
     from datetime import date, timedelta

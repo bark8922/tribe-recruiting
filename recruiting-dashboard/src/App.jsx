@@ -65,8 +65,24 @@ const MBR_WOLT_ABBREV = {
   'Wolt North, Baltics & Benelux': 'Wolt NBB',
 };
 const mbrAbbrevClient = (c) => MBR_WOLT_ABBREV[(c || '').trim()] || c;
-const getBuGroup = (displayClient) => {
+// Normalize a display client to the finance BU Client key (Wolt sub-BUs,
+// DoorDash and SevenRooms all collapse to the single finance 'Wolt' row).
+const buGroupKey = (displayClient) => {
+  const k = (displayClient || '').trim().toLowerCase();
+  if (k.startsWith('wolt') || k === 'doordash' || k === 'sevenrooms') return 'wolt';
+  return k;
+};
+// Business unit group. Primary source = data.bu_group_by_key, baked by
+// render_json from the finance 'BU Client' tab (BU lead Kristjana -> Dolphins &
+// Whales, everyone else -> Ponies & Unicorns). That sheet is the single source
+// of truth (Leadership-owned, refreshed every run), so new / re-assigned clients
+// follow automatically. The legacy Aviv/Aiven/Wolt name rule is kept ONLY as a
+// fallback for when the map is absent (e.g. an older cached data.json).
+const getBuGroup = (displayClient, buGroupByKey) => {
   if (!displayClient) return 'Ponies/Unicorns';
+  if (buGroupByKey && Object.keys(buGroupByKey).length) {
+    return buGroupByKey[buGroupKey(displayClient)] || 'Ponies/Unicorns';
+  }
   if (DOLPHINS_WHALES_CLIENTS.has(displayClient) || displayClient.startsWith('Wolt')) {
     return 'Dolphins/Whales';
   }
@@ -572,7 +588,7 @@ const WBRTab = ({ data }) => {
       details.push({
         client: display,
         ta: t.ta,
-        team_group: getBuGroup(display),
+        team_group: getBuGroup(display, data.bu_group_by_key),
         contacted: actual.contacted,
         screened: actual.screened,
         ats: actual.ats,
@@ -1406,7 +1422,7 @@ const MBRTab = ({ data }) => {
         // Derive BU group from the client (matches WBR). Overrides per-TA
         // team_group set in Andy's target sheet so e.g. Aiven TAs tagged
         // Ponies/Unicorns still roll up to Dolphins/Whales at the BU level.
-        team_group: getBuGroup(displayClient),
+        team_group: getBuGroup(displayClient, data.bu_group_by_key),
         contacted: a.contacted || 0,
         actual_screens: a.actual_screens || 0,
         ats: a.ats || 0,

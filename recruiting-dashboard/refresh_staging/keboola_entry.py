@@ -292,12 +292,11 @@ def fetch_spend_csv(token, flat):
     # runner) rather than the REST Contents API, which the runner may not reach.
     clone_url = "https://x-access-token:" + token + "@github.com/" + FINANCE_REPO + ".git"
     try:
+        # Plain shallow clone (repo is ~6 MB; the runner's git is too old for
+        # --sparse / partial-clone flags — verified 2026-07-13 job log).
         subprocess.run(
-            ["git", "clone", "--depth", "1", "--filter=blob:none", "--sparse", clone_url, str(tmp)],
+            ["git", "clone", "--depth", "1", clone_url, str(tmp)],
             check=True, capture_output=True, text=True, timeout=120)
-        subprocess.run(
-            ["git", "sparse-checkout", "set", "data-next/spend"],
-            cwd=str(tmp), check=True, capture_output=True, text=True, timeout=60)
         src = tmp / FINANCE_SPEND_PATH
         shutil.copy(src, dst)
         print("[fetch_spend_csv] fetched " + str(src.stat().st_size // 1024)

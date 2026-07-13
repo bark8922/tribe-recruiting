@@ -286,20 +286,28 @@ def fetch_spend_csv(token, flat):
     so the flow never breaks. Requires the token to have read access to
     bark8922/tribe-dashboard (same org as the push target)."""
     dst = flat / "refresh_staging" / "actual_spend_all_tabs.csv"
-    url = ("https://api.github.com/repos/" + FINANCE_REPO + "/contents/"
-           + FINANCE_SPEND_PATH + "?ref=main")
+    tmp = Path("/tmp/_spend_fetch")
+    shutil.rmtree(tmp, ignore_errors=True)
+    # Use the same git transport as push_to_github (known to work from the Keboola
+    # runner) rather than the REST Contents API, which the runner may not reach.
+    clone_url = "https://x-access-token:" + token + "@github.com/" + FINANCE_REPO + ".git"
     try:
-        req = urllib.request.Request(url)
-        req.add_header("Authorization", "token " + token)
-        req.add_header("Accept", "application/vnd.github.raw")
-        req.add_header("User-Agent", "tribe-recruiting-refresh")
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            body = resp.read()
-        dst.write_bytes(body)
-        print("[fetch_spend_csv] wrote " + str(len(body) // 1024) + " KB from "
-              + FINANCE_SPEND_PATH, flush=True)
+        subprocess.run(
+            ["git", "clone", "--depth", "1", "--filter=blob:none", "--sparse", clone_url, str(tmp)],
+            check=True, capture_output=True, text=True, timeout=120)
+        subprocess.run(
+            ["git", "sparse-checkout", "set", "data-next/spend"],
+            cwd=str(tmp), check=True, capture_output=True, text=True, timeout=60)
+        src = tmp / FINANCE_SPEND_PATH
+        shutil.copy(src, dst)
+        print("[fetch_spend_csv] fetched " + str(src.stat().st_size // 1024)
+              + " KB via git from " + FINANCE_SPEND_PATH, flush=True)
+    except subprocess.CalledProcessError as e:
+        print("[fetch_spend_csv] WARN git failed: " + ((e.stderr or str(e))[:300]), flush=True)
     except Exception as e:
         print("[fetch_spend_csv] WARN failed: " + type(e).__name__ + ": " + str(e), flush=True)
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
 
 
 def main():

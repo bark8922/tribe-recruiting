@@ -322,6 +322,14 @@ def main():
         raise RuntimeError("Missing #github_token in configuration parameters.")
     print("=== github_token loaded (len=" + str(len(github_token)) + ") ===", flush=True)
 
+    # Separate token for reading the finance repo (tribe-dashboard). The main
+    # #github_token is scoped to tribe-recruiting only and cannot clone the
+    # finance BU Client export. Falls back to #github_token if not configured.
+    finance_token = (params.get("#finance_github_token")
+                     or params.get("user_properties", {}).get("#finance_github_token")
+                     or github_token)
+    print("=== finance_token loaded (len=" + str(len(finance_token)) + ") ===", flush=True)
+
     ashby_key = params.get("#ashby_api_key")
     if not ashby_key:
         ashby_key = params.get("user_properties", {}).get("#ashby_api_key")
@@ -333,7 +341,7 @@ def main():
     flat.mkdir(parents=True)
 
     stage_inputs(ci, flat)
-    fetch_spend_csv(github_token, flat)  # finance BU Client tab → staging (best-effort)
+    fetch_spend_csv(finance_token, flat)  # finance BU Client tab → staging (best-effort)
     run_ashby(flat, ashby_key)  # v2 lean+incremental, 180s deadline, best-effort
     out_path = run_render(flat)
     content = out_path.read_text(encoding="utf-8")

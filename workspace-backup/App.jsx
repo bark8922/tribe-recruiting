@@ -65,8 +65,24 @@ const MBR_WOLT_ABBREV = {
   'Wolt North, Baltics & Benelux': 'Wolt NBB',
 };
 const mbrAbbrevClient = (c) => MBR_WOLT_ABBREV[(c || '').trim()] || c;
-const getBuGroup = (displayClient) => {
+// Normalize a display client to the finance BU Client key (Wolt sub-BUs,
+// DoorDash and SevenRooms all collapse to the single finance 'Wolt' row).
+const buGroupKey = (displayClient) => {
+  const k = (displayClient || '').trim().toLowerCase();
+  if (k.startsWith('wolt') || k === 'doordash' || k === 'sevenrooms') return 'wolt';
+  return k;
+};
+// Business unit group. Primary source = data.bu_group_by_key, baked by
+// render_json from the finance 'BU Client' tab (BU lead Kristjana -> Dolphins &
+// Whales, everyone else -> Ponies & Unicorns). That sheet is the single source
+// of truth (Leadership-owned, refreshed every run), so new / re-assigned clients
+// follow automatically. The legacy Aviv/Aiven/Wolt name rule is kept ONLY as a
+// fallback for when the map is absent (e.g. an older cached data.json).
+const getBuGroup = (displayClient, buGroupByKey) => {
   if (!displayClient) return 'Ponies/Unicorns';
+  if (buGroupByKey && Object.keys(buGroupByKey).length) {
+    return buGroupByKey[buGroupKey(displayClient)] || 'Ponies/Unicorns';
+  }
   if (DOLPHINS_WHALES_CLIENTS.has(displayClient) || displayClient.startsWith('Wolt')) {
     return 'Dolphins/Whales';
   }
@@ -572,7 +588,7 @@ const WBRTab = ({ data }) => {
       details.push({
         client: display,
         ta: t.ta,
-        team_group: getBuGroup(display),
+        team_group: getBuGroup(display, data.bu_group_by_key),
         contacted: actual.contacted,
         screened: actual.screened,
         ats: actual.ats,
@@ -1357,6 +1373,7 @@ const MBRTab = ({ data }) => {
     // Most-recent week in the MBR window — used for the "previous-week" activity
     // check (mirrors WBR's hide-if-no-activity-in-selected-week rule).
     const lastMbrWeek = MBR_WEEKS[MBR_WEEKS.length - 1];
+    const lastMbrWeekNum = parseInt(String(lastMbrWeek).replace(/^w/, ''), 10);
 
     const result = [];
     targets.forEach(t => {
@@ -1373,7 +1390,7 @@ const MBRTab = ({ data }) => {
       Object.keys(data.wbr_actuals || {}).forEach((wkey) => {
         const [rawClient, rawTa] = wkey.split('|');
         if (
-          kebolaClientMatches(rawClient, displayClient) &&
+          (kebolaClientMatches(rawClient, displayClient) || mbrAbbrevClient(normalizeClient(rawClient)) === displayClient) &&
           normalizeTa(rawTa) === normalizeTa(t.ta)
         ) {
           const wk = data.wbr_actuals[wkey]?.[lastMbrWeek];
@@ -1388,13 +1405,24 @@ const MBRTab = ({ data }) => {
         }
       });
 
+      // WBR-parity visibility: a TA also shows if there is a comment/reasoning
+      // for the LAST MBR week even with zero activity that week (e.g. someone on
+      // leave whose lead still left a note). Mirrors WBRTab's hasNote rule.
+      const lwNote = (data.ta_weekly_notes || []).find((n) =>
+        normalizeTa(n.ta) === normalizeTa(t.ta) && n.week === lastMbrWeekNum &&
+        (kebolaClientMatches(n.client || '', displayClient) ||
+         mbrAbbrevClient(normalizeClient(n.client || '')) === displayClient)
+      );
+      const hasLastWeekNote = !!((lwNote?.comment && lwNote.comment.trim()) ||
+                                 (lwNote?.reasoning && lwNote.reasoning.trim()));
+
       result.push({
         client: displayClient,
         ta: t.ta,
         // Derive BU group from the client (matches WBR). Overrides per-TA
         // team_group set in Andy's target sheet so e.g. Aiven TAs tagged
         // Ponies/Unicorns still roll up to Dolphins/Whales at the BU level.
-        team_group: getBuGroup(displayClient),
+        team_group: getBuGroup(displayClient, data.bu_group_by_key),
         contacted: a.contacted || 0,
         actual_screens: a.actual_screens || 0,
         ats: a.ats || 0,
@@ -1411,21 +1439,18 @@ const MBRTab = ({ data }) => {
         pct_screens_to_hires: a.screens_12w > 0 ? Math.round((a.hires_12w || 0) / a.screens_12w * 100) : null,
         comment: note?.comment || note?.reasoning || '',
         _last_week_activity: lastWeekActivity,
+        _last_week_note: hasLastWeekNote,
       });
     });
+
     const groupOrder = { 'Dolphins/Whales': 0, 'Ponies/Unicorns': 1 };
-    // Activity filter (Blake 2026-06-01): mirror the WBR rule — if a TA has zero
-    // activity in the most recent (last) week of the MBR window, drop them. WBR
-    // already hides Ekaterin Boyprav and Mateja on this basis; the MBR should too.
-    // We still require *some* MBR-window or 12w activity (keeps the prior filter
-    // floor) so a target alone (or a stale comment) can't keep a row alive.
+    // Visibility filter (Blake 2026-07-06): mirror the WBR rule exactly — show a
+    // TA if they had activity in the last MBR week OR have a comment/reasoning
+    // for that week. The comment path keeps people like Milica Mladzic (on leave
+    // with a lead note but zero week-27 activity) visible, matching WBR. TAs with
+    // neither activity nor a note for the last week drop off.
     const filtered = result.filter((r) =>
-      (r._last_week_activity > 0) &&
-      (
-        (r.contacted > 0) || (r.actual_screens > 0) || (r.ats > 0) || (r.hires > 0) ||
-        (r.hires_12w > 0) || (r.screens_12w > 0) || (r.ats_12w > 0) ||
-        (r.jobs_60d > 0)
-      )
+      (r._last_week_activity > 0) || r._last_week_note
     );
     return filtered.sort((a, b) => {
       const ga = groupOrder[a.team_group] ?? 2;
@@ -4349,6 +4374,14 @@ const IRTab = ({ data }) => {
   const ashbyDQReasons  = data.ir_ashby_dq_reasons      || [];
   const ashbyHires      = data.ir_ashby_hires           || [];
   const hasAshby        = ashbyFunnel.length > 0 || ashbyHires.length > 0;
+  // Set of Bubble job_ids that have linked Ashby data (via the atsID crosswalk).
+  const ashbyJobIdSet = useMemo(() => {
+    const s = new Set();
+    for (const r of ashbyFunnel) if (r.bubble_job_id) s.add(r.bubble_job_id);
+    for (const r of ashbyHires)  if (r.bubble_job_id) s.add(r.bubble_job_id);
+    for (const r of ashbyActive) if (r.bubble_job_id) s.add(r.bubble_job_id);
+    return s;
+  }, [ashbyFunnel, ashbyHires, ashbyActive]);
 
   const [jobFilter, setJobFilter]     = useState('all');
   const [windowFilter, setWindowFilter] = useState('last4');
@@ -4525,10 +4558,10 @@ const IRTab = ({ data }) => {
         job_recruiter: bj?.job_recruiter || '—',
         job_sourcer: bj?.job_sourcer || '—',
         in_bubble: !!bj,
-        in_ashby: false,
+        in_ashby: ashbyJobIdSet.has(jid),
       };
     }).sort((a, b) => (b.days_open || 0) - (a.days_open || 0));
-  }, [funnelRows, sourcedRows, interviewedRows, jobsActive, windowFilter, thisWeek]);
+  }, [funnelRows, sourcedRows, interviewedRows, jobsActive, windowFilter, thisWeek, ashbyJobIdSet]);
   const selectedJob = jobsActive.find(j => j.job_id === jobFilter);
 
   // Sourced hired count for KPI
@@ -4540,35 +4573,48 @@ const IRTab = ({ data }) => {
   // (case-insensitive, includes substring match for variants like "Final Interview - Onsite")
   const ashbyStageMap = useMemo(() => {
     if (!ashbyFunnel.length) return null;
+    if (jobFilter !== 'all' && !ashbyJobIdSet.has(jobFilter)) return null;
     const matches = (stage, target) => {
       const s = (stage || '').toLowerCase();
       return s.includes(target.toLowerCase());
     };
-    const inJob = (r) => jobFilter === 'all' || /* TODO: cross-system job match */ true;
+    const inJob = (r) => jobFilter === 'all' || r.bubble_job_id === jobFilter;
     const inWk = (r) => inWindow(r.iso_week);
     const sumIf = (pred) => ashbyFunnel.filter(r => inJob(r) && inWk(r) && pred(r.stage)).reduce((s, r) => s + r.count, 0);
+    const L = (x) => (x || '').toLowerCase();
     return {
-      onsite:        sumIf(s => matches(s, 'onsite')),
-      culture:       sumIf(s => matches(s, 'culture')),
-      call_w_client: sumIf(s => matches(s, 'call with client') || matches(s, 'client prep')),
-      offered:       sumIf(s => matches(s, 'offer')),
-      hired:         ashbyHires.filter(r => inWindow(r.iso_week)).reduce((s, r) => s + r.count, 0),
+      application_review: sumIf(x => L(x) === 'application review'),
+      initial_screen:     sumIf(x => L(x) === 'initial screen' || L(x) === 'recruiter screen'),
+      who:                sumIf(x => L(x).startsWith('who')),
+      case_study:         sumIf(x => L(x).includes('case study')),
+      onsite:             sumIf(x => L(x).includes('final interview') || L(x).includes('call with martin') || L(x) === 'onsite'),
+      culture:            sumIf(x => L(x).includes('culture')),
+      call_w_client:      sumIf(x => L(x).includes('call with client') || L(x).includes('client prep') || L(x).includes('presented to client')),
+      offered:            sumIf(x => L(x).includes('offer')),
+      hired:              ashbyHires.filter(r => inJob(r) && inWindow(r.iso_week)).reduce((s, r) => s + r.count, 0),
     };
-  }, [ashbyFunnel, ashbyHires, jobFilter, windowFilter, maxWeek]);
+  }, [ashbyFunnel, ashbyHires, ashbyActive, ashbyJobIdSet, jobFilter, windowFilter, maxWeek]);
 
-  const funnelStages = [
-    { label: 'Contacted',          n: totals.contacted,                           color: 'bg-blue-300', source: 'bubble' },
-    { label: 'Positive response',  n: totals.pos_response,                        color: 'bg-blue-400', source: 'bubble' },
-    { label: 'Recruiter screens',  n: totals.rec_screens,                         color: 'bg-blue-500', source: 'bubble' },
-    { label: 'Actual screens',     n: totals.actual_screens,                      color: 'bg-blue-600', source: 'bubble' },
-    { label: 'Moved to ATS',       n: totals.ats,                                 color: 'bg-blue-700', source: 'bubble' },
-    { label: 'Onsite',             n: ashbyStageMap?.onsite        ?? totals.onsite,        color: 'bg-teal-500', source: ashbyStageMap ? 'ashby' : 'bubble' },
-    { label: 'Culture interview',  n: ashbyStageMap?.culture       ?? totals.culture,       color: 'bg-teal-600', source: ashbyStageMap ? 'ashby' : 'bubble' },
-    { label: 'Call with client',   n: ashbyStageMap?.call_w_client ?? totals.call_w_client, color: 'bg-teal-700', source: ashbyStageMap ? 'ashby' : 'bubble' },
-    { label: 'Offered',            n: ashbyStageMap?.offered       ?? totals.offered,       color: 'bg-teal-700', source: ashbyStageMap ? 'ashby' : 'bubble' },
-    { label: 'Hired',              n: ashbyStageMap?.hired         ?? totals.hired,         color: 'bg-teal-700', source: ashbyStageMap ? 'ashby' : 'bubble' },
+  const sourcingStages = [
+    { label: 'Contacted',         n: totals.contacted },
+    { label: 'Positive response', n: totals.pos_response },
+    { label: 'Recruiter screens', n: totals.rec_screens },
+    { label: 'Actual screens',    n: totals.actual_screens },
+    { label: 'Moved to ATS',      n: totals.ats },
   ];
+  const ashbyStages = ashbyStageMap ? [
+    { label: 'Application Review', n: ashbyStageMap.application_review },
+    { label: 'Initial Screen',     n: ashbyStageMap.initial_screen },
+    { label: 'WHO',                n: ashbyStageMap.who },
+    { label: 'Case Study',         n: ashbyStageMap.case_study },
+    { label: 'Onsite',             n: ashbyStageMap.onsite },
+    { label: 'Culture interview',  n: ashbyStageMap.culture },
+    { label: 'Call with client',   n: ashbyStageMap.call_w_client },
+    { label: 'Offer',              n: ashbyStageMap.offered },
+    { label: 'Hired',              n: ashbyStageMap.hired },
+  ] : [];
   const maxN = Math.max(1, totals.contacted);
+  const ashbyMax = Math.max(1, ...ashbyStages.map(s => s.n));
   const dqTotal = dqReasonAgg.reduce((s, r) => s + r.count, 0);
   const dqMax = Math.max(1, ...dqReasonAgg.map(r => r.count));
 
@@ -4588,7 +4634,7 @@ const IRTab = ({ data }) => {
         <div>
           <h2 className="text-2xl font-bold text-white">Internal Recruiting</h2>
           <p className="text-sm text-gray-400 mt-1">
-          Tribe.xyz (IR) jobs &middot; left side from Bubble, right side {hasAshby ? <span className="text-teal-400">live from Ashby ✓</span> : <span className="text-gray-500">awaiting Ashby (v2)</span>}
+          Tribe.xyz (IR) jobs &middot; Sourcing funnel (Bubble) + Ashby funnel {(jobFilter === 'all' ? hasAshby : ashbyJobIdSet.has(jobFilter)) ? <span className="text-teal-400">linked ✓</span> : <span className="text-gray-500">— not linked to Ashby</span>}
         </p>
         </div>
         <div className="flex gap-2 flex-wrap items-center">
@@ -4668,31 +4714,28 @@ const IRTab = ({ data }) => {
 
       <div className="grid gap-3" style={{gridTemplateColumns: '1.6fr 1fr'}}>
         <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
-          <div className="text-sm font-medium text-white mb-3">Total progress funnel</div>
+          <div className="text-sm font-medium text-white mb-1">Sourcing funnel <span className="text-xs text-gray-500 font-normal">· Bubble (outbound)</span></div>
           <div className="space-y-1">
-            {funnelStages.map((s, i) => {
-              const pct = maxN > 0 ? Math.max(0.04, s.n / maxN) : 0.04;
-              const pctOfTop = totals.contacted > 0 ? (s.n / totals.contacted * 100) : 0;
-              // Highlight overlay: portion of this stage that comes from highlighted sourcer
+            {sourcingStages.map((st, i) => {
+              const pct = maxN > 0 ? Math.max(0.04, st.n / maxN) : 0.04;
+              const pctOfTop = totals.contacted > 0 ? (st.n / totals.contacted * 100) : 0;
               let overlay = 0;
               if (highlightSourcerData) {
-                if (s.label === 'Contacted')         overlay = highlightSourcerData.contacted;
-                else if (s.label === 'Positive response') overlay = highlightSourcerData.pos_response;
-                else if (s.label === 'Hired')        overlay = highlightSourcerData.hired;
-              } else if (highlightTAData && s.label === 'Actual screens') {
+                if (st.label === 'Contacted')              overlay = highlightSourcerData.contacted;
+                else if (st.label === 'Positive response') overlay = highlightSourcerData.pos_response;
+              } else if (highlightTAData && st.label === 'Actual screens') {
                 overlay = highlightTAData.actual_screens;
               }
-              const overlayPct = s.n > 0 ? Math.max(0, Math.min(1, overlay / s.n)) : 0;
+              const overlayPct = st.n > 0 ? Math.max(0, Math.min(1, overlay / st.n)) : 0;
+              const colors = ['bg-blue-300','bg-blue-400','bg-blue-500','bg-blue-600','bg-blue-700'];
               return (
-                <div key={i} className="grid items-center gap-2" style={{gridTemplateColumns: '110px 1fr 50px'}}>
-                  <span className="text-xs text-gray-400 text-right">{s.label}</span>
+                <div key={i} className="grid items-center gap-2" style={{gridTemplateColumns: '120px 1fr 50px'}}>
+                  <span className="text-xs text-gray-400 text-right">{st.label}</span>
                   <div className="flex justify-center">
-                    <div className={`${s.n === 0 ? 'bg-gray-700' : s.color} rounded relative`}
+                    <div className={`${st.n === 0 ? 'bg-gray-700' : colors[i]} rounded relative`}
                          style={{height: '20px', width: `${(pct * 100).toFixed(1)}%`, minWidth: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                      <span className={`text-xs font-medium ${s.n === 0 ? 'text-gray-500' : 'text-white'} relative z-10`}>{s.n.toLocaleString()}</span>
-                      {overlay > 0 && (
-                        <div className="absolute left-0 top-0 h-full bg-amber-400 rounded" style={{width: `${(overlayPct * 100).toFixed(1)}%`, opacity: 0.5}} />
-                      )}
+                      <span className={`text-xs font-medium ${st.n === 0 ? 'text-gray-500' : 'text-white'} relative z-10`}>{st.n.toLocaleString()}</span>
+                      {overlay > 0 && (<div className="absolute left-0 top-0 h-full bg-amber-400 rounded" style={{width: `${(overlayPct * 100).toFixed(1)}%`, opacity: 0.5}} />)}
                     </div>
                   </div>
                   <span className="text-xs text-gray-500">{pctOfTop < 1 ? pctOfTop.toFixed(1) : pctOfTop.toFixed(0)}%</span>
@@ -4700,7 +4743,32 @@ const IRTab = ({ data }) => {
               );
             })}
           </div>
-          <div className="text-xs text-gray-500 mt-3">Blue = Bubble (sourcing) &middot; teal = Ashby will enrich (v2) &middot; amber overlay = highlighted sourcer/TA contribution</div>
+
+          <div className="text-sm font-medium text-white mt-5 mb-1">Ashby funnel <span className="text-xs text-gray-500 font-normal">· interviews · all sources</span></div>
+          {ashbyStages.length === 0 ? (
+            <div className="text-xs text-gray-500 italic py-2">No Ashby data for this selection{jobFilter === 'all' ? '' : ' (job not linked to Ashby)'}.</div>
+          ) : (
+          <div className="space-y-1">
+            {ashbyStages.map((st, i) => {
+              const top = ashbyStages[0] ? ashbyStages[0].n : 0;
+              const pct = ashbyMax > 0 ? Math.max(0.04, st.n / ashbyMax) : 0.04;
+              const pctOfTop = top > 0 ? (st.n / top * 100) : 0;
+              return (
+                <div key={i} className="grid items-center gap-2" style={{gridTemplateColumns: '120px 1fr 50px'}}>
+                  <span className="text-xs text-gray-400 text-right">{st.label}</span>
+                  <div className="flex justify-center">
+                    <div className={`${st.n === 0 ? 'bg-gray-700' : 'bg-teal-600'} rounded relative`}
+                         style={{height: '20px', width: `${(pct * 100).toFixed(1)}%`, minWidth: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                      <span className={`text-xs font-medium ${st.n === 0 ? 'text-gray-500' : 'text-white'} relative z-10`}>{st.n.toLocaleString()}</span>
+                    </div>
+                  </div>
+                  <span className="text-xs text-gray-500">{pctOfTop < 1 ? pctOfTop.toFixed(1) : pctOfTop.toFixed(0)}%</span>
+                </div>
+              );
+            })}
+          </div>
+          )}
+          <div className="text-xs text-gray-500 mt-3"><span className="text-blue-300">Sourcing</span> = outbound effort (Bubble) · <span className="text-teal-400">Ashby</span> = interview funnel from all sources. These track largely different candidates — don\'t sum across them.</div>
         </div>
 
         <div className="bg-gray-800 rounded-lg border border-gray-700 p-4">
@@ -5096,140 +5164,46 @@ const ProfitabilityTab = () => {
 };
 
 // Main Dashboard
-const RecruitingDashboard = () => {
-  // Leadership tabs (WBR/MBR) are gated by the Pages Functions auth flow:
-  // /functions/api/login.ts sets a non-HttpOnly `tribe_role=leadership` cookie
-  // for the 23 leadership emails. We also keep the legacy ?role=leadership URL
-  // param as a fallback for direct testing.
-  // Cookie-based role detection. Director > leadership > member.
-  // Director cookie unlocks the Profitability tab in addition to WBR/MBR.
-  const role = (() => {
-    try {
-      if (typeof document !== 'undefined') {
-        const roleCookie = document.cookie
-          .split(';')
-          .map(c => c.trim())
-          .find(c => c.startsWith('tribe_role='));
-        if (roleCookie) return roleCookie.split('=')[1];
-      }
-      if (typeof window !== 'undefined') {
-        return new URLSearchParams(window.location.search).get('role') || 'member';
-      }
-      return 'member';
-    } catch (_) { return 'member'; }
-  })();
-  const isDirector = role === 'director';
-  const isLeadership = isDirector || role === 'leadership';
-  // New Project Health tab — strictly Blake + Jacopo via tribe_ph=1 cookie
-  // (set by /functions/api/login.ts). ?ph=1 URL param kept as a test fallback.
-  const canProjectHealth = (() => {
-    try {
-      if (typeof document !== 'undefined') {
-        const c = document.cookie.split(';').map((x) => x.trim()).find((x) => x.startsWith('tribe_ph='));
-        if (c && c.split('=')[1] === '1') return true;
-      }
-      if (typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('ph') === '1') return true;
-      return false;
-    } catch (_) { return false; }
-  })();
-  let visibleTabs = isDirector
-    ? ['project', 'weekly', 'wbr', 'mbr', 'profitability', 'tth', 'ts_summary', 'ir']
-    : isLeadership
-      ? ['project', 'weekly', 'wbr', 'mbr', 'tth', 'ts_summary', 'ir']
-      : ['project', 'weekly', 'tth', 'ts_summary', 'ir'];
-  if (canProjectHealth) visibleTabs = [...visibleTabs, 'project_health'];
-  const [activeTab, setActiveTab] = useState('project');
-  // Load the heavy Snowflake data file at runtime from a gzipped /public asset
-  // (see scripts/gzip-data.mjs). Keeps it out of the JS bundle so deploys stay
-  // under Cloudflare's 25 MiB limit and the initial download is ~5MB not ~32MB.
-  const [dashboardData, setDashboardData] = useState(null);
-  const [dataError, setDataError] = useState(null);
-  const [dataUpdatedAt, setDataUpdatedAt] = useState(null);
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        const res = await fetch('dashboard_data_snowflake.json.gz', { cache: 'no-cache' });
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        const lastMod = res.headers.get('last-modified');
-        const buf = await res.arrayBuffer();
-        let text;
-        try {
-          if (typeof DecompressionStream === 'undefined') throw new Error('no DecompressionStream');
-          const stream = new Response(buf).body.pipeThrough(new DecompressionStream('gzip'));
-          text = await new Response(stream).text();
-        } catch (_) {
-          // Fallback: CDN may have transparently decompressed the asset.
-          text = new TextDecoder().decode(buf);
-        }
-        const obj = JSON.parse(text);
-        if (!cancelled) { setDashboardData(obj); if (lastMod) setDataUpdatedAt(lastMod); }
-      } catch (e) {
-        if (!cancelled) setDataError(String(e && e.message ? e.message : e));
-      }
-    })();
-    return () => { cancelled = true; };
-  }, []);
-  // Snap-back: if state lands on a tab the current role doesn't see, fall back
-  // to Project Dashboard. Covers both leadership-only and director-only tabs.
-  const safeActiveTab =
-    (!isLeadership && LEADERSHIP_TABS.has(activeTab)) ||
-    (!isDirector && DIRECTOR_TABS.has(activeTab)) ||
-    (!canProjectHealth && activeTab === 'project_health')
-      ? 'project'
-      : activeTab;
-  if (dataError) {
-    return (
-      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-lg mb-2">Couldn't load dashboard data</div>
-          <div className="text-sm text-gray-400 font-mono">{dataError}</div>
-        </div>
-      </div>
-    );
-  }
-  if (!dashboardData) {
-    return (
-      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
-        <div className="text-gray-400">Loading dashboard data…</div>
-      </div>
-    );
-  }
-  return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <div className="bg-gray-800 border-b border-gray-700 px-6 py-6 flex items-start justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-white">Tribe.xyz Recruiting Dashboard</h1>
-          <p className="text-sm text-gray-400 mt-1">Snowflake pipeline</p>
-          <p className="text-xs text-gray-500 mt-1">
-            Refreshes ~4×/day · data fresh by 09:00, 11:00, 14:00 &amp; 16:30 CET
-            {dataUpdatedAt ? ` · last updated ${new Date(dataUpdatedAt).toLocaleString('en-GB', { timeZone: 'Europe/Berlin', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })} CET` : ''}
-          </p>
-        </div>
-      </div>
-      <div className="bg-gray-800 border-b border-gray-700 px-6">
-        <div className="flex gap-8">
-          {visibleTabs.map((tab) => (
-            <button key={tab} onClick={() => setActiveTab(tab)}
-              className={`py-4 px-2 font-medium border-b-2 transition-colors ${safeActiveTab === tab ? 'text-white border-white' : 'text-gray-400 border-transparent hover:text-gray-300'}`}>
-              {tab === 'wbr' ? 'WBR' : tab === 'mbr' ? 'MBR' : tab === 'profitability' ? 'Profitability' : tab === 'project' ? 'Project Dashboard' : tab === 'weekly' ? 'Weekly Summary' : tab === 'tth' ? 'Time to Hire' : tab === 'ts_summary' ? 'KPI - TS Summary' : tab === 'ir' ? 'Internal Recruiting' : 'New Project Health'}
-            </button>
-          ))}
-        </div>
-      </div>
-      <div className="px-6 py-6">
-        {safeActiveTab === 'wbr' && isLeadership && <WBRTab data={dashboardData} />}
-        {safeActiveTab === 'mbr' && isLeadership && <MBRTab data={dashboardData} />}
-        {safeActiveTab === 'profitability' && isDirector && <ProfitabilityTab />}
-        {safeActiveTab === 'project' && <ProjectDashboardTab data={dashboardData} />}
-        {safeActiveTab === 'weekly' && <WeeklySummaryTab data={dashboardData} />}
-        {safeActiveTab === 'tth' && <TTHTab data={dashboardData} />}
-        {safeActiveTab === 'ts_summary' && <TSSummaryTab data={dashboardData} />}
-        {safeActiveTab === 'ir' && <IRTab data={dashboardData} />}
-        {safeActiveTab === 'project_health' && canProjectHealth && <NewProjectHealthTab data={dashboardData} />}
-      </div>
-    </div>
-  );
+
+// ── Candidate Finder ─────────────────────────────────────────────────────────
+// Lazy-loads /finder_data.json.gz (engaged candidates, ~92k) only when the tab
+// opens. Cascading filters + searchable table. Data built by the candidate_finder
+// Snowflake transform -> render_json (build_finder) -> finder_data.json.gz.
+const FINDER_KEYS = ['function', 'role_type', 'client', 'country', 'stage', 'reason'];
+const FINDER_FILTERS = [['function', 'Function'], ['role_type', 'Role type'], ['client', 'Client'], ['country', 'Country'], ['stage', 'Stage'], ['reason', 'Reason']];
+const FINDER_CSV_CAP = 5000;
+const finderStageClass = (s) => ({
+  'Recruiter Screen': 'bg-blue-900 text-blue-200',
+  'Offsite': 'bg-teal-900 text-teal-200',
+  'Final Interview': 'bg-purple-900 text-purple-200',
+  'Offer': 'bg-amber-900 text-amber-200',
+  'Hired': 'bg-green-900 text-green-200',
+}[s] || 'bg-gray-700 text-gray-200');
+
+const finderCsvCell = (v) => {
+  const t = (v == null ? '' : String(v));
+  return /[",\n]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t;
 };
 
-export default RecruitingDashboard;
+const FinderMultiSelect = ({ fkey, label, options, selected, onToggle, onClear, isOpen, onOpen }) => {
+  const [q, setQ] = useState('');
+  const shown = q ? options.filter((o) => o.toLowerCase().includes(q.toLowerCase())) : options;
+  const btnText = selected.length === 0 ? label : selected.length === 1 ? selected[0] : `${label}: ${selected.length}`;
+  return (
+    <div className="relative" data-ms={fkey}>
+      <button type="button" onClick={onOpen}
+        className="w-full text-left bg-gray-800 border border-gray-700 text-sm rounded px-2 py-1.5 flex items-center justify-between">
+        <span className={`truncate ${selected.length ? 'text-white' : 'text-gray-400'}`}>{btnText}</span>
+        <span className="text-gray-500 ml-2 shrink-0">▾</span>
+      </button>
+      {isOpen && (
+        <div className="absolute z-30 mt-1 w-full bg-gray-800 border border-gray-700 rounded shadow-xl max-h-72 overflow-hidden flex flex-col">
+          <div className="p-2 border-b border-gray-700 flex gap-2 items-center">
+            <input autoFocus value={q} onChange={(e) => setQ(e.target.value)} placeholder="Filter…"
+              className="flex-1 bg-gray-900 border border-gray-700 text-white text-xs rounded px-2 py-1" />
+            {selected.length > 0 && <button type="button" onClick={onClear} className="text-xs text-blue-400 hover:underline shrink-0">Clear</button>}
+          </div>
+          <div className="overflow-y-auto">
+            {shown.length === 0 && <div className="px-3 py-2 text-xs text-gray-500">No matches</div>}
+            {shown.map((o) => (
+              <l

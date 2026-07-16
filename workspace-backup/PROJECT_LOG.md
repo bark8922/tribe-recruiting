@@ -2,7 +2,7 @@
 
 Single source of truth for status, decisions, and open items. Survives Cowork resets because it lives in this folder (on Blake's computer) and is backed up to GitHub. Claude updates this at the end of any session where real work happened. Blake can also say "update the log" anytime.
 
-Last updated: 2026-07-06
+Last updated: 2026-07-16
 
 ---
 
@@ -33,6 +33,7 @@ Orchestration = **Keboola Flows** (Flow B 3x/day `5 7,10,16` CET; Flow A 4x/day)
 
 | Item | Status | Blocked on |
 |---|---|---|
+| Role Pipeline tab (per-role candidate deep-dive) | Scoped + all decisions locked 2026-07-15, see `ROLE_PIPELINE_SCOPE.md`, nothing built | Blake: green-light / schedule the ~1.5-day build |
 | Cortex Analyst pilot | Scoped 2026-06-12, not started | Blake go/no-go: green-light free Snowflake trial, pick 2-3 pilot users, confirm aggregates-only data |
 | CSV export buttons | Scoped 2026-06-11, nothing built | Blake decision: which tables in Phase 1 vs all 25 at once |
 | Sourcing dashboard polish | Live, minor items | Validate post-Zelimir-fix refresh; ask Gustavo to sanity-check Phase 2 cost numbers |
@@ -64,6 +65,28 @@ Orchestration = **Keboola Flows** (Flow B 3x/day `5 7,10,16` CET; Flow A 4x/day)
 ---
 
 ## Session history
+
+### 2026-07-16
+- **CHANGED (production Keboola, Blake-approved): Candidate Finder transform cadence 4x/day → 1x/day.** Rationale: the Finder is a historical search tool and doesn't need constant refreshes; the upcoming Role Pipeline tab (live view) will stay at 4x/day.
+- New flow **"Candidate Finder — daily refresh"** (`01kxn10awrwf4pda3kz42zhqp6`): single task running transform `01kvzgpgwh38awepha7eey08pe`, schedule `20 10 * * *` Europe/Prague (schedule id `01kxn1ygdrvajwbsbw2x5rc9wp`) — after the ~8:35 morning data pull, before the 10:40 build, so finder_data.json.gz ships same-morning data once daily.
+- Main build flow `01kpqyq1pz6qpmk7m9s4qx8gmg` bumped to **v10**: candidate-finder task removed from the transformations phase. Verified post-change: all 10 remaining tasks intact, both schedules (`40 8,10,13` + `10 16` Prague) untouched.
+- **Validation run:** manual run of the new flow, job `1005520807`, success in 48s; transform wrote 93,416 rows to `out.c-Candidate-Finder.candidate_finder`. Render step is unaffected by design (it stages the table every build regardless of when it last refreshed). Watch item: confirm the 13:40 build + render succeed (self-check scheduled for ~14:00 Prague today).
+- **Rollback if needed:** re-add the candidate-finder task to the build flow (config is in v9 history) and disable the new flow's schedule.
+- Credit effect: ~6 credits/month saved; net after Role Pipeline ships at 4x/day: roughly +4/month vs before.
+- **Role Pipeline UI designed + data validated via interactive board (`role_pipeline_validation.html` in this folder — treat it as the design spec for the real tab).** Iterated live with Blake from CSV → table → kanban board. Four real roles embedded (snapshot 2026-07-16): Glovo Backend Engineer II (Chené), Glovo Data Internship (Samantha Nel), AVIV Senior Android Germany (Alexandra), Eucalyptus Senior SWE UK Fullstack (Dušan). Shareable by dropping the file in Slack (self-contained, opens in browser; do NOT host publicly — candidate PII).
+- **UI locked:** stage-column board with compact cards; dropped/declined/archived collapsed per column (dimmed, reason chips); stale badge ◷ Nd on active cards idle 30+ days; recruiter→client→role cascading selectors (not tabs — must scale to ~870 roles); "Check a week's numbers" panel (ISO week + metric chips → per-sourcer breakdown + exact candidates, WBR-compatible windows) — designed off Samantha's real WBR-discrepancy question, plus planned "all my roles" mode; hired-but-DQ-flagged records shown as review items.
+- **Duplicate taxonomy (validated in Snowflake):** same-talent-same-job dup rows reliably carry `is_candidate_duplicated=true` on exactly one row (7/7 live pairs) → production transform drops flagged rows (NB: the unflagged row is canonical even when the flagged one is further progressed). Same-human-different-talent dups (accents/suffixes/second profiles: Picchio, Yumna, Rakshith, Magalhães, Zeeshan+PhD) have NO flags — talent-level dedupe fields unused in Bubble — so they only get a ⚠ near-dup badge, never auto-merge.
+- **Data hygiene findings for the team:** Glovo BE II has 63 of 75 "active" candidates with no movement in 30+ days (Bubble cleanup needed, Chené); Ahmed Jamal (Glovo BE II) is Hired (2026-06-29) AND disqualified with reason "Location" — contradictory record, ask Chené which is true; archived flag barely used (2 records on that whole role).
+- **Cross-check vs live dashboards:** board hires per role match Project Dashboard hires drill-down exactly (Glovo BE II 5, Data Internship 4, AVIV/Euca roles 0). Same reporting-v2 source as all dashboard tabs; WBR/MBR aggregates use weekly windows + own attribution so they don't compare card-for-card by design.
+- Scope doc updated with the locked UI + dup/archived rules; frontend estimate now ~1d (total ~2d) since the board replaces the simple table.
+
+### 2026-07-15
+- **SCOPED (nothing built): "Role Pipeline" tab — per-role candidate deep-dive with CSV export.** Blake relayed recruiter requests (Sam et al.) for the old PBI "Data Download"-style view: pick a role, see its candidates, stages, dates, export. This is the item CSV_EXPORT_SCOPE.md parked in June ("Rodrigo's PBI Data Download tab... separate 1-2 day build if/when approved"), now approved for scoping. Full spec in `ROLE_PIPELINE_SCOPE.md` (this folder).
+- **Decisions locked with Blake:** (1) candidate floor = positive response or beyond (is_candidate_reacted OR any screen+ date) — contacted-no-reply people appear only in a per-role aggregate funnel strip, not as rows; (2) role window = open roles + roles CLOSED in the last 6 months (Blake rejected the activity-only window: recently archived roles must stay visible even if their pipeline went quiet earlier); (3) visible to all employees behind the normal login, like the Candidate Finder (confirmed the Finder is not role-gated); (4) standalone tab.
+- **Archive-date finding (matters for anything else that ever needs "when did a role close"):** Bubble has NO archive date — only the `archived` flag and `Modified_Date`, which changes on ANY edit. Validated live: ~580 archived roles with last activity in 2020-2024 were "modified" within the last 6 months (bulk edits), so Modified_Date alone is a broken close-date proxy (would have given 1,446 in-scope jobs / 84k rows of zombies). Agreed rule: backfill = last activity within 6 months OR Modified_Date within 6 months AND within 90 days of last activity; going forward = the transform snapshots the archived flag each run into `role_pipeline_archive_log` (job_id, first date seen archived), giving exact close dates from ship date onward.
+- **Live sizing (Snowflake, 2026-07-15, final hybrid rule):** 866 jobs in scope; positive-response+ = 40,996 rows (~2.5-3MB gz, lighter than finder_data.json.gz); all-contacted would have been ~117k (rejected); screen+ only ~23k (rejected — hides in-conversation pipeline). Full history for context: ~1.38M candidate rows, which is why the window matters.
+- **Build shape (est. ~1.5 days, no new infra):** new Snowflake transform (clone the Candidate Finder pattern, two outputs: role_pipeline_candidates ~40k rows + role_pipeline_jobs ~833 rows with aggregate funnel counts) → input-mapping + `build_role_pipeline()` in keboola_entry.py → `role_pipeline.json.gz` (best-effort, can't break the main refresh) → new lazy-loaded App.jsx tab (client → role cascading pickers, stage-grouped table with stage dates, funnel header strip, Export CSV 5k cap + UTF-8 BOM) → `role-pipeline` task in the build flow's transformations phase.
+- Read-only session otherwise: only writes were `ROLE_PIPELINE_SCOPE.md` (new) + this log entry. Next step: Blake green-lights the build.
 
 ### 2026-07-06
 - **FIXED: Milica Mladzic (on leave) wasn't showing in MBR.** WBR shows a TA in a week if they have activity OR a comment/reasoning for that week; the MBR gate only checked activity, so Milica (zero week-27 activity but a real week-27 lead note, "OOO 2 days and came back from her 2 week holidays…") was dropped. Added a last-week-note check to `taRows` in `App.jsx` mirroring WBRTab's `hasNote` rule; the filter is now `(_last_week_activity > 0) || _last_week_note`. While here, removed two now-obsolete blocks: the manual Milica leave hack (she gets a proper target row + comment from the pipeline rebuild now) and the actuals "union" completeness block (a verified no-op after the rebuild gives every rostered TA a target row). Frontend-only, commit `64c424b`; live once Cloudflare rebuilds (no Keboola run needed — data already has her target row + comment). Note: a TA active on a client they have no target row for still won't appear (pre-existing target-driven limitation), but that didn't affect anyone real this window.

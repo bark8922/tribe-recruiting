@@ -883,6 +883,64 @@ def load_tth_jobs():
     }
 
 
+def load_jobs_list():
+    """Rebuild the top-level `jobs` list from snowflake_job.csv + snowflake_client.csv.
+
+    Historically `jobs` was carried forward verbatim from the static PBI-era
+    dashboard_data.json snapshot (via the dict(live) shallow copy), so it froze
+    at 2026-04-12: no job created after that date ever appeared in the export.
+    That silently broke every consumer keyed on job_id — the Supabase jobs sync
+    (and with it the intake_records linkage), the UI's archived-flag/category
+    lookups for new jobs, and the WBR fallback job counts.
+
+    Rebuilt fresh each run: all non-test jobs created since 2025-01-01 (matches
+    the UI's "Jan 2025-present" history window), keeping the exact field names
+    and string-flag shape of the legacy list. Archived and external-recruiter
+    jobs ARE included — consumers filter on the flags themselves, and the UI's
+    "Include archived jobs" toggle depends on seeing them.
+
+    Opt-in: returns None (caller keeps the carried-forward list) when the CSVs
+    are missing or snowflake_job.csv predates the widened column mapping (it
+    used to carry only job_id/job_ats_id/date_created)."""
+    jp = HERE / "snowflake_job.csv"
+    cp = HERE / "snowflake_client.csv"
+    if not jp.exists() or not cp.exists():
+        return None
+    client_name = {}
+    with cp.open() as f:
+        for row in csv.DictReader(f):
+            cid = (row.get("client_id") or row.get("CLIENT_ID") or "").strip()
+            if cid:
+                client_name[cid] = (row.get("client_name") or row.get("CLIENT_NAME") or "").strip()
+    jobs = []
+    with jp.open() as f:
+        rdr = csv.DictReader(f)
+        fields = {c.lower() for c in (rdr.fieldnames or [])}
+        if "job_title" not in fields or "client_id" not in fields:
+            return None  # old narrow staging — keep carried-forward list
+        def _s(row, k):
+            return (row.get(k) or row.get(k.upper()) or "").strip()
+        def _flag(row, k):
+            return "true" if _s(row, k).lower() == "true" else "false"
+        for row in rdr:
+            created = _s(row, "date_created")[:10]
+            if created < "2025-01-01":
+                continue
+            if _s(row, "test").lower() == "true":
+                continue
+            jobs.append({
+                "job_id":                _s(row, "job_id"),
+                "client_name":           client_name.get(_s(row, "client_id"), ""),
+                "job_title":             _s(row, "job_title"),
+                "job_recruiter":         _s(row, "job_recruiter"),
+                "job_sourcer":           _s(row, "job_sourcer"),
+                "date_created":          created,
+                "is_job_archived":       _flag(row, "is_job_archived"),
+                "is_external_recruiter": _flag(row, "is_external_recruiter"),
+            })
+    jobs.sort(key=lambda j: j["date_created"])
+    return jobs or None
+
 
 def load_wbr_jobs():
     """Return jobs[f"w{n}"][f"{raw_client}|{raw_ta}"] = int, ISO 2026 only.
@@ -2188,6 +2246,14 @@ def main():
     # Per-week TS Jobs / TAs / TA names from wbr_ts_jobs_weekly.sql.
     # Replaces the stale static `ts_jobs` for the TS Weekly tab.
     out["ts_jobs_weekly"] = load_ts_jobs_weekly()
+    # Top-level `jobs` — rebuilt fresh from out.c-reporting-v2.job (+ client
+    # names) every run instead of carrying the frozen 2026-04-12 snapshot
+    # forward. Opt-in: None keeps the legacy carried-forward list.
+    _jobs_list = load_jobs_list()
+    if _jobs_list:
+        print(f"  jobs rebuilt from snowflake_job.csv: {len(_jobs_list)} rows "
+              f"(carried-forward list had {len(live.get('jobs') or [])})")
+        out["jobs"] = _jobs_list
     # Project Dashboard — per-day per-(client, job, TA, TS, source, external) funnel
     # counts + line-level hires. Both opt-in (load_project_* gracefully return
     # empty when the CSV is missing). Frontend filters/aggregates client-side.

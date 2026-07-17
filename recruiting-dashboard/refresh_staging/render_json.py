@@ -907,11 +907,15 @@ def load_jobs_list():
     if not jp.exists() or not cp.exists():
         return None
     client_name = {}
+    test_clients = set()
     with cp.open() as f:
         for row in csv.DictReader(f):
             cid = (row.get("client_id") or row.get("CLIENT_ID") or "").strip()
-            if cid:
-                client_name[cid] = (row.get("client_name") or row.get("CLIENT_NAME") or "").strip()
+            if not cid:
+                continue
+            client_name[cid] = (row.get("client_name") or row.get("CLIENT_NAME") or "").strip()
+            if (row.get("test") or row.get("TEST") or "").strip().lower() == "true":
+                test_clients.add(cid)
     jobs = []
     with jp.open() as f:
         rdr = csv.DictReader(f)
@@ -928,6 +932,8 @@ def load_jobs_list():
                 continue
             if _s(row, "test").lower() == "true":
                 continue
+            if _s(row, "client_id") in test_clients:
+                continue  # test client (e.g. "Bubble test") — exclude its jobs too
             jobs.append({
                 "job_id":                _s(row, "job_id"),
                 "client_name":           client_name.get(_s(row, "client_id"), ""),

@@ -48,6 +48,14 @@ const kebolaClientMatches = (rawKeboolaClient, displayClient) => {
 // Normalize TA name — Keboola has double spaces for some names
 const normalizeTa = (name) => (name || '').replace(/\s+/g, ' ').trim();
 
+// A target row counts toward WBR rollups if it has a real (non-zero) target
+// for any metric. Replaces the old `team_group` (BU-label) gate, which silently
+// dropped officially-targeted TAs that simply lacked a BU label (e.g. Reaktor /
+// Simon Siew), making the Client Summary disagree with the TA Detail rows.
+const hasRealTarget = (t) =>
+  ((Number(t.contacted) || 0) + (Number(t.actual_screens) || 0) +
+   (Number(t.moved_to_ats) || 0) + (Number(t.hires) || 0)) > 0;
+
 // Business unit group — driven ENTIRELY by the display client name, not per-TA
 // team_group. Some Aviv TAs are tagged 'Ponies/Unicorns' in the target sheet
 // (internal team-management labels) even though Aviv the client belongs to
@@ -234,7 +242,7 @@ const WBRTab = ({ data }) => {
   // Client Summary rollup logic with Wolt sub-BU routing via kebolaClientMatches).
   const drillClientWeekly = (displayClient) => {
     const out = {};
-    const targetsByTa = (data.targets || []).filter(t => t.team_group && normalizeClient(t.client) === displayClient);
+    const targetsByTa = (data.targets || []).filter(t => hasRealTarget(t) && normalizeClient(t.client) === displayClient);
     for (const t of targetsByTa) {
       const targetTaNorm = normalizeTa(t.ta);
       for (const [key, byWeek] of Object.entries(data.wbr_actuals || {})) {
@@ -260,7 +268,7 @@ const WBRTab = ({ data }) => {
   const drillTaTargets = (taName) => {
     const normalized = normalizeTa(taName);
     return (data.targets || [])
-      .filter(t => t.team_group && normalizeTa(t.ta) === normalized)
+      .filter(t => hasRealTarget(t) && normalizeTa(t.ta) === normalized)
       .reduce((a, r) => ({
         contacted:      a.contacted      + (Number(r.contacted) || 0),
         actual_screens: a.actual_screens + (Number(r.actual_screens) || 0),
@@ -272,7 +280,7 @@ const WBRTab = ({ data }) => {
   // Weekly targets for a DISPLAY client (sum of rostered TAs' targets).
   const drillClientTargets = (displayClient) =>
     (data.targets || [])
-      .filter(t => t.team_group && normalizeClient(t.client) === displayClient)
+      .filter(t => hasRealTarget(t) && normalizeClient(t.client) === displayClient)
       .reduce((a, r) => ({
         contacted:      a.contacted      + (Number(r.contacted) || 0),
         actual_screens: a.actual_screens + (Number(r.actual_screens) || 0),
@@ -353,7 +361,7 @@ const WBRTab = ({ data }) => {
     // under Aviv with 101 contacted, inflating Aviv from 549 (PBI) to 652. Filtering
     // team_group='' brings Aviv to 551 (+2 vs PBI), screens 95 exact, ATS 47 exact.
     data.targets.forEach((t) => {
-      if (!t.team_group) return;  // skip roster-only placeholder TAs
+      if (!hasRealTarget(t)) return;  // skip roster-only placeholder TAs
       const display = normalizeClient(t.client);
       // Find matching actuals for this TA across all matching raw client keys
       Object.keys(data.wbr_actuals).forEach((key) => {
@@ -393,7 +401,7 @@ const WBRTab = ({ data }) => {
     // hires from raw-'Wolt' rows where those TAs are job_recruiter.
     const recruiterToWoltSubBu = new Map();
     data.targets.forEach((t) => {
-      if (!t.team_group) return;
+      if (!hasRealTarget(t)) return;
       const ta = normalizeTa(t.ta);
       const cl = normalizeClient(t.client);
       if (ta && cl && cl.startsWith('Wolt') && !recruiterToWoltSubBu.has(ta)) {
@@ -409,7 +417,7 @@ const WBRTab = ({ data }) => {
     // relationship filter.
     const targetRosterPairs = new Set();
     data.targets.forEach((t) => {
-      if (!t.team_group) return;
+      if (!hasRealTarget(t)) return;
       targetRosterPairs.add(`${normalizeClient(t.client)}|${normalizeTa(t.ta)}`);
     });
 

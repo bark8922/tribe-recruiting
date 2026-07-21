@@ -2,7 +2,7 @@
 
 Single source of truth for status, decisions, and open items. Survives Cowork resets because it lives in this folder (on Blake's computer) and is backed up to GitHub. Claude updates this at the end of any session where real work happened. Blake can also say "update the log" anytime.
 
-Last updated: 2026-07-17
+Last updated: 2026-07-20
 
 ---
 
@@ -66,6 +66,16 @@ Orchestration = **Keboola Flows** (Flow B 3x/day `5 7,10,16` CET; Flow A 4x/day)
 ---
 
 ## Session history
+
+### 2026-07-20 — WBR Client Summary now reconciles with TA Detail (team_group gate fix)
+
+Blake flagged: WBR TA section showed Simon Siew activity at Reaktor but the Client section showed Reaktor 0 across the board; also a few clients where TA-level numbers didn't sum to the client total.
+
+Root cause (verified on the LIVE gz pulled from GitHub, weeks w28/w29): `App.jsx` WBR Client Summary + drill-downs gated on `t.team_group` (the BU label = Dolphins/Whales vs Ponies/Unicorns). `team_group` is NOT set from the target sheet — `render_json.load_ta_targets_from_csv` only carries it forward from the prior published JSON with no fallback (its docstring claims a client-level BU default that was never coded). So officially-targeted TAs that never got a BU label render with `team_group=''` and were dropped from the client rollup while still appearing in TA Detail. 25 of 32 blank-`team_group` rows had REAL targets, incl. Reaktor/Simon Siew, Aviv/Iryna Dyda, Glovo/Milica Mladzic. Earlier "off-plan / roster-only" framing was wrong.
+
+Fix (commit `6d0b95c`, pushed to `main` → Cloudflare auto-deploy): added `hasRealTarget(t)` helper and swapped all 6 `team_group` gates in the WBR tab to it (gate on a real non-zero target, not the BU label). After the change, every client's Client Summary total == sum of its TA Detail rows (verified w28 + w29, all clients). Only 3 clients move: Reaktor 0→58 / 0→96 contacted (w28/w29), Aviv 328→539 / 279→407, Glovo 124→141 / 112→134; #Jobs shifts on the same 3 (Aviv 29→37, Glovo 9→18/10→17, Reaktor 0→2/0→3). This intentionally walks away from the old PBI baseline for Aviv/Glovo in favour of internal consistency (Blake's explicit call). BU grouping unaffected — TA Detail already groups via `bu_group_by_key` / `getBuGroup`.
+
+Open follow-ups: (1) implement the client-level BU default in `render_json` so `team_group` actually gets populated (would also fix any future MBR-side reliance). (2) The local working-copy `App.jsx` in this folder is now 1 commit BEHIND the repo — pull/sync before editing locally or it could revert this fix on next push.
 
 ### 2026-07-17 — New-role briefing spec + jobs-export freeze FIXED
 - **New initiative (Blake + Gustavo): "similar roles briefing" Slack bot.** When a new job opens, the TA/sourcer gets an auto-DM with benchmarks from similar historical roles. Spec written and iterated: `NEW_ROLE_BRIEFING_SPEC.md` (this folder). Locked decisions: v1 = deterministic stats only (tth benchmarks, drop reasons, who's-done-it-before); week-4 health benchmark OUT; ta_weekly_notes OUT (hit and miss, client-level not job-level); funnel math deferred (survivorship bias — tth_jobs only has hired jobs); similarity must be location-aware (Berlin != Japan) — use raw Bubble Jobs `Location_address`; exclude tth < 3 days from medians (quick duplicate postings for 2nd hires); subcategory mis-tags accepted as is. Test-run on "Backend Engineer, Berlin" validated format + real numbers (64 backend roles, 26d median tth). call_record = future Phase 2 narrative feeder once its DB matures.

@@ -1,6 +1,6 @@
 # New Role Briefing ("Similar Roles" Slack Bot) — v1 Spec
 
-**Status:** v1.2 — concept validated + team feedback positive (2026-07-17). Trigger/filter design added below. Still NOT green-lit to build.
+**Status:** v1.3 — BUILT and running in DRY-RUN to Blake (2026-07-22). Edge fns `new-role-briefing` + `scheduled-new-role-briefing` live in tribe-job-intel; cron `new-role-briefing-dryrun` 09/13/17 CET weekdays. See reference-new-role-briefing-bot memory for ops. Go-wide = flip wrapper/cron to {dry_run:false}.
 **Owner:** Blake (idea: Blake + Gustavo)
 **Depends on:** tribe-job-intel Supabase project, Keboola project 855 (raw Bubble tables + dashboard export), existing Slack bot infra (roles weekly bot)
 

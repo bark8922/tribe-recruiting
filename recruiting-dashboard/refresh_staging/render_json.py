@@ -951,6 +951,48 @@ def load_jobs_list():
     return jobs or None
 
 
+def load_job_meta():
+    """Return {job_id: {"cat","subcat","loc"}} for ALL non-test jobs, any year.
+
+    Powers the new-role briefing bot's region-aware matching: tth_jobs carries
+    category/subcategory but NOT location, and the top-level `jobs` list only
+    covers 2025+ roles. This compact map lets the bot resolve the location (and
+    category/subcategory) of ANY historical similar role by job_id, so
+    region rungs work across the full history, not just recent roles.
+
+    Opt-in: returns None when the widened snowflake_job.csv isn't staged."""
+    jp = HERE / "snowflake_job.csv"
+    cp = HERE / "snowflake_client.csv"
+    if not jp.exists() or not cp.exists():
+        return None
+    test_clients = set()
+    with cp.open() as f:
+        for row in csv.DictReader(f):
+            cid = (row.get("client_id") or row.get("CLIENT_ID") or "").strip()
+            if cid and (row.get("test") or row.get("TEST") or "").strip().lower() == "true":
+                test_clients.add(cid)
+    meta = {}
+    with jp.open() as f:
+        rdr = csv.DictReader(f)
+        fields = {c.lower() for c in (rdr.fieldnames or [])}
+        if "job_location" not in fields:
+            return None
+        def _s(row, k):
+            return (row.get(k) or row.get(k.upper()) or "").strip()
+        for row in rdr:
+            if _s(row, "test").lower() == "true":
+                continue
+            jid = _s(row, "job_id")
+            if not jid:
+                continue
+            meta[jid] = {
+                "cat":    _s(row, "job_category"),
+                "subcat": _s(row, "job_subcategory"),
+                "loc":    _s(row, "job_location"),
+            }
+    return meta or None
+
+
 def load_wbr_jobs():
     """Return jobs[f"w{n}"][f"{raw_client}|{raw_ta}"] = int, ISO 2026 only.
 
@@ -2263,6 +2305,10 @@ def main():
         print(f"  jobs rebuilt from snowflake_job.csv: {len(_jobs_list)} rows "
               f"(carried-forward list had {len(live.get('jobs') or [])})")
         out["jobs"] = _jobs_list
+    _job_meta = load_job_meta()
+    if _job_meta:
+        print(f"  job_meta (cat/subcat/loc, all years): {len(_job_meta)} jobs")
+        out["job_meta"] = _job_meta
     # Project Dashboard — per-day per-(client, job, TA, TS, source, external) funnel
     # counts + line-level hires. Both opt-in (load_project_* gracefully return
     # empty when the CSV is missing). Frontend filters/aggregates client-side.

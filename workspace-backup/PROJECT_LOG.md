@@ -2,7 +2,7 @@
 
 Single source of truth for status, decisions, and open items. Survives Cowork resets because it lives in this folder (on Blake's computer) and is backed up to GitHub. Claude updates this at the end of any session where real work happened. Blake can also say "update the log" anytime.
 
-Last updated: 2026-07-17
+Last updated: 2026-07-23
 
 ---
 
@@ -66,6 +66,14 @@ Orchestration = **Keboola Flows** (Flow B 3x/day `5 7,10,16` CET; Flow A 4x/day)
 ---
 
 ## Session history
+
+### 2026-07-23 — Candidate Finder fixes (stage label + geocoded location) shipped
+- Two fixes from the data-dashboard meeting feedback, both live.
+- **Stage was mislabeled.** The finder's "Offsite" stage was really the raw stage "Moved to ATS" for 99.7% of rows (candidate submitted to the client's ATS, not an onsite interview). The reporting layer's `stage_current_type` buckets "Moved to ATS" under a type it calls "Offsite"; genuine onsites live in the "Final Interview" bucket (raw stage "Onsite"). Fix: `candidate_finder` transform now renames the stage 'Offsite' → 'Moved to ATS'. App.jsx stage color key updated to match.
+- **Location/country cleaned via the existing geocoder.** Instead of string-parsing, the transform now LEFT JOINs `in.c-stage-data.talent_locations_processed` (the `keboola.ag-geocoding` output, refreshed daily) on the raw location string. Gives canonical country (merges UK/United Kingdom and USA/United States, resolves zip-only and region-only strings) + clean "City, Country" display; falls back to the raw string for the ~1.7% the geocoder can't resolve. Result: zip-prefixed locations 3,731→131, UK/USA duplicate labels ~2,249→59. Filter design (confirmed with Blake): one Country dropdown, city via the search box (App.jsx search blob now includes `location`; placeholder updated).
+- **No schema change** to `candidate_finder` (same 13 cols, just cleaner contents) so `keboola_entry.py`/`build_finder` untouched. Transform config `01kvzgpgwh38awepha7eey08pe` v4; App.jsx commit `799b6a3`; render regenerated `finder_data.json.gz` + pushed `533a4e839b`. Cloudflare auto-deploys. Residual: the `candidate_finder` transform now depends on the geocoder table being fresh upstream (it is, part of daily data prep). role_type categorization left as-is per earlier decision (both subcategory and title inference noisy; job title shown in table as ground truth).
+- **Follow-up same day (meeting feedback round 2):** country dropdown was still polluted by the geocoder-fallback (junk like "4064 Hungary", "UK", "USA", bare zips). Fixed by making `country` geocoded-only (no raw fallback) — unresolved ~1.7% get blank country instead of leaking junk (0 junk values now, 120 clean countries). And made city obvious with a dedicated **City** search box (placeholder "City (e.g. Berlin)") next to the general search, plus a one-line filter hint. Transform v5; App.jsx commit `6fde898`; render pushed `83afc3b`. Verified live App.jsx has the City field.
+- **call_record is NOW live and rich (big deal).** The interview/screening-call table `in.c-kds-team-ex-bubble-io-*.call_record` started flowing 2026-07-16 (751 rows, newest 07-22, growing daily). Columns include a template-structured AI **summary** (443/751 filled, avg ~1,200 chars: Logistics & Availability / Professional Profile / Interview Highlights), captured **salary** (445), **rejection_reason** (81), plus links to candidate, job, linkedinUrl. Quality is genuinely good (comp, location, availability, skills, fit read per candidate). This is the unstructured corpus the original AI-first working-group idea (Tribot/Onyx indexing) needed and never had. **Decision (Blake): do NOT wire into the finder yet** (too thin, only covers recent candidates going forward, not the 92k back catalog). Let it compound; revisit in a few weeks for (a) finder enrichment — expandable screening summary + salary per candidate that has a call, and (b) the Tribot/Onyx indexing prong. No action needed meanwhile; it accumulates automatically.
 
 ### 2026-07-22 — New-role briefing bot BUILT (dry-run to Blake)
 - **Built + deployed the "similar roles" briefing bot** (spec: `NEW_ROLE_BRIEFING_SPEC.md`, now v1.3). Lives in the tribe-job-intel Supabase project (same as the roles weekly bot), NOT Cowork. Reads ONE gz snapshot and does everything from it.

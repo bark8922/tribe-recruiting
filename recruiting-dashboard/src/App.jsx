@@ -5182,7 +5182,7 @@ const FINDER_FILTERS = [['function', 'Function'], ['role_type', 'Role type'], ['
 const FINDER_CSV_CAP = 5000;
 const finderStageClass = (s) => ({
   'Recruiter Screen': 'bg-blue-900 text-blue-200',
-  'Offsite': 'bg-teal-900 text-teal-200',
+  'Moved to ATS': 'bg-teal-900 text-teal-200',
   'Final Interview': 'bg-purple-900 text-purple-200',
   'Offer': 'bg-amber-900 text-amber-200',
   'Hired': 'bg-green-900 text-green-200',
@@ -5278,7 +5278,7 @@ const CandidateFinderTab = () => {
     if (!FINDER_KEYS.every((k) => sel[k].length === 0 || sel[k].includes(r[k]))) return false;
     if (onlyLi && !r.linkedin) return false;
     if (q) {
-      const blob = ((r.name || '') + ' ' + (r.current_title || '') + ' ' + (r.company || '') + ' ' + (r.sourced_role || '') + ' ' + (r.role_type || '')).toLowerCase();
+      const blob = ((r.name || '') + ' ' + (r.current_title || '') + ' ' + (r.company || '') + ' ' + (r.location || '') + ' ' + (r.sourced_role || '') + ' ' + (r.role_type || '')).toLowerCase();
       if (!blob.includes(q.toLowerCase())) return false;
     }
     return true;
@@ -5314,7 +5314,7 @@ const CandidateFinderTab = () => {
         ))}
       </div>
       <div className="flex flex-wrap gap-4 items-center mb-3">
-        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search name, title, company…"
+        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search name, title, company, city…"
           className="bg-gray-800 border border-gray-700 text-white text-sm rounded px-3 py-1.5 w-72" />
         <label className="flex items-center gap-2 text-sm text-gray-300">
           <input type="checkbox" checked={onlyLi} onChange={(e) => setOnlyLi(e.target.checked)} /> Only with LinkedIn

@@ -5232,6 +5232,7 @@ const CandidateFinderTab = () => {
   const [sel, setSel] = useState({ function: [], role_type: [], client: [], country: [], stage: [], reason: [] });
   const [q, setQ] = useState('');
   const [onlyLi, setOnlyLi] = useState(false);
+  const [fCity, setFCity] = useState('');
   const [limit, setLimit] = useState(300);
   const [openKey, setOpenKey] = useState(null);
 
@@ -5270,12 +5271,13 @@ const CandidateFinderTab = () => {
 
   const toggleVal = (k, v) => setSel((prev) => ({ ...prev, [k]: prev[k].includes(v) ? prev[k].filter((x) => x !== v) : [...prev[k], v] }));
   const clearKey = (k) => setSel((prev) => ({ ...prev, [k]: [] }));
-  const clearAll = () => { setSel({ function: [], role_type: [], client: [], country: [], stage: [], reason: [] }); setQ(''); setOnlyLi(false); };
+  const clearAll = () => { setSel({ function: [], role_type: [], client: [], country: [], stage: [], reason: [] }); setQ(''); setFCity(''); setOnlyLi(false); };
   const matchExcept = (r, skip) => FINDER_KEYS.every((k) => k === skip || sel[k].length === 0 || sel[k].includes(r[k]));
   const optsFor = (k) => [...new Set(rows.filter((r) => matchExcept(r, k)).map((r) => r[k]).filter(Boolean))].sort();
 
   const out = rows.filter((r) => {
     if (!FINDER_KEYS.every((k) => sel[k].length === 0 || sel[k].includes(r[k]))) return false;
+    if (fCity && !((r.location || '').toLowerCase().includes(fCity.toLowerCase()))) return false;
     if (onlyLi && !r.linkedin) return false;
     if (q) {
       const blob = ((r.name || '') + ' ' + (r.current_title || '') + ' ' + (r.company || '') + ' ' + (r.location || '') + ' ' + (r.sourced_role || '') + ' ' + (r.role_type || '')).toLowerCase();
@@ -5285,7 +5287,7 @@ const CandidateFinderTab = () => {
   });
   const shown = out.slice(0, limit);
   const withLi = out.filter((r) => r.linkedin).length;
-  const anyFilter = FINDER_KEYS.some((k) => sel[k].length) || q || onlyLi;
+  const anyFilter = FINDER_KEYS.some((k) => sel[k].length) || q || fCity || onlyLi;
   const canExport = out.length > 0 && out.length <= FINDER_CSV_CAP;
 
   const exportCsv = () => {
@@ -5305,7 +5307,7 @@ const CandidateFinderTab = () => {
 
   return (
     <div>
-      <p className="text-sm text-gray-400 mb-4">Candidates we have engaged (reached a recruiter screen or further). Filters are multi-select; pick several values in any of them. Names link to LinkedIn.</p>
+      <p className="text-sm text-gray-400 mb-4">Candidates we have engaged (reached a recruiter screen or further). Pick Country and the other filters from the dropdowns (each is multi-select), type a city in the City box, or search by name, title or company. Names link to LinkedIn.</p>
       <div className="grid grid-cols-2 md:grid-cols-6 gap-3 mb-3">
         {FINDER_FILTERS.map(([k, label]) => (
           <FinderMultiSelect key={k} fkey={k} label={label} options={optsFor(k)} selected={sel[k]}
@@ -5314,7 +5316,9 @@ const CandidateFinderTab = () => {
         ))}
       </div>
       <div className="flex flex-wrap gap-4 items-center mb-3">
-        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search name, title, company, city…"
+        <input value={fCity} onChange={(e) => setFCity(e.target.value)} placeholder="City (e.g. Berlin)"
+          className="bg-gray-800 border border-gray-700 text-white text-sm rounded px-3 py-1.5 w-44" />
+        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search name, title, company…"
           className="bg-gray-800 border border-gray-700 text-white text-sm rounded px-3 py-1.5 w-72" />
         <label className="flex items-center gap-2 text-sm text-gray-300">
           <input type="checkbox" checked={onlyLi} onChange={(e) => setOnlyLi(e.target.checked)} /> Only with LinkedIn

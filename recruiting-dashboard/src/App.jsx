@@ -1857,6 +1857,20 @@ const normalizeClientPD = (client) => {
 const PD_EXCLUDED_CLIENTS = new Set(['Tribe.xyz', 'Tribe: Talent Pools']);
 
 const pdPct = (v) => v == null ? '—' : `${(v * 100).toFixed(0)}%`;
+// RAG heatmap for Project Overview conversion cells. Thresholds match the
+// TS Summary tab's cellStyle exactly where the metric overlaps (cpr=pctContPR,
+// sas=pctScrActual, asats=pctActualATS); the non-overlapping metrics (vc, atsoff,
+// ch) use TS Summary's same default band so the two tabs color-agree. Colours are
+// the dark-tinted variant (readable in the dense table); null values stay unstyled.
+const PD_HEAT_TH = { vc:[0.30,0.60], cpr:[0.10,0.20], sas:[0.50,0.75], asats:[0.50,0.65], atsoff:[0.30,0.60], ch:[0.30,0.60] };
+const pdHeat = (v, metric) => {
+  if (v == null) return {};
+  const t = PD_HEAT_TH[metric] || [0.30, 0.60];
+  const base = { borderRadius: '4px', fontWeight: 600 };
+  if (v < t[0]) return { ...base, backgroundColor: '#4c1d1d', color: '#fca5a5' };
+  if (v < t[1]) return { ...base, backgroundColor: '#4a3410', color: '#fcd34d' };
+  return { ...base, backgroundColor: '#14351f', color: '#86efac' };
+};
 
 // ---------- PD Disqualified Reasons section ----------
 // Filterable port of the PBI Overview "Disqualified Reason" pie. Data comes
@@ -2129,13 +2143,14 @@ const ProjectDashboardTab = ({ data }) => {
   }, [pdRows, weekSet, searchText, filterClient, filterTa, filterTs, filterCategory, filterSource, showExternal, showInternal]);
 
   const kpis = useMemo(() => filtered.reduce((a, r) => ({
+    viewed: a.viewed + (r.viewed || 0),
     contacted: a.contacted + r.contacted,
     positive_response: a.positive_response + r.positive_response,
     actual_screens: a.actual_screens + r.actual_screens,
     ats: a.ats + r.ats,
     offered: a.offered + r.offered,
     hired: a.hired + r.hired,
-  }), { contacted: 0, positive_response: 0, actual_screens: 0, ats: 0, offered: 0, hired: 0 }), [filtered]);
+  }), { viewed: 0, contacted: 0, positive_response: 0, actual_screens: 0, ats: 0, offered: 0, hired: 0 }), [filtered]);
 
   // ── Client summary (for section headers) ──
   const byClient = useMemo(() => {
@@ -2369,6 +2384,11 @@ const ProjectDashboardTab = ({ data }) => {
 
   return (
     <div className="space-y-4">
+      {/* Page header */}
+      <div>
+        <h2 className="text-2xl font-bold text-white">Project Overview</h2>
+        <div className="text-sm text-gray-400 mt-1">Contacted → positive response → screens → ATS → offers → hires for the selected period. Filter to a TA or client to see just those numbers.</div>
+      </div>
       {/* Filter bar */}
       <div className="bg-gray-800 rounded-lg p-4">
         <div className="flex flex-wrap gap-3 items-center">
@@ -2450,19 +2470,24 @@ const ProjectDashboardTab = ({ data }) => {
 
       {/* KPI cards */}
       <div className="grid grid-cols-6 gap-4">
-        {[
-          ['Contacted', kpis.contacted],
-          ['Positive Response', kpis.positive_response],
-          ['Actual Screens', kpis.actual_screens],
-          ['ATS', kpis.ats],
-          ['Offered', kpis.offered],
-          ['Hired', kpis.hired],
-        ].map(([label, val]) => (
-          <div key={label} className="bg-gray-800 rounded-lg p-4 border border-gray-700">
-            <div className="text-gray-400 text-xs uppercase tracking-wide">{label}</div>
-            <div className="text-3xl font-bold text-white mt-2">{val.toLocaleString()}</div>
-          </div>
-        ))}
+        {(() => {
+          const rel = (n, d, dec = 0) => d ? `${(100 * n / d).toFixed(dec)}%` : '—';
+          return [
+            ['Contacted', kpis.contacted, `${rel(kpis.contacted, kpis.viewed)} of ${kpis.viewed.toLocaleString()} viewed`, '#3b82f6'],
+            ['Positive Response', kpis.positive_response, `${rel(kpis.positive_response, kpis.contacted)} of contacted`, '#22d3ee'],
+            ['Actual Screens', kpis.actual_screens, `${rel(kpis.actual_screens, kpis.positive_response)} of pos. resp.`, '#14b8a6'],
+            ['ATS', kpis.ats, `${rel(kpis.ats, kpis.actual_screens)} of screens`, '#10b981'],
+            ['Offered', kpis.offered, `${rel(kpis.offered, kpis.ats)} of ATS`, '#f59e0b'],
+            ['Hired', kpis.hired, `${rel(kpis.hired, kpis.contacted, 1)} of contacted`, '#22c55e'],
+          ].map(([label, val, sub, accent]) => (
+            <div key={label} className="relative overflow-hidden rounded-lg p-4 bg-gradient-to-br from-blue-900 to-blue-800 border border-blue-700">
+              <div className="absolute top-0 left-0 right-0" style={{ height: 4, backgroundColor: accent }}></div>
+              <div className="text-blue-200 text-xs uppercase tracking-wide font-semibold">{label}</div>
+              <div className="text-3xl font-bold text-white mt-2">{val.toLocaleString()}</div>
+              <div className="text-blue-300 text-xs mt-2">{sub}</div>
+            </div>
+          ));
+        })()}
       </div>
 
       {/* Section 1: Job Performance (grouped by client, collapsible) */}
@@ -2524,12 +2549,12 @@ const ProjectDashboardTab = ({ data }) => {
                       <td className="text-center px-1 py-1 text-gray-200">{c.ats}</td>
                       <td className="text-center px-1 py-1 text-gray-200">{c.offered}</td>
                       <td className="text-center px-1 py-1 text-gray-200 font-medium">{c.hired}</td>
-                      <td className="text-center px-1 py-1 text-gray-400">{pdPct(pctVC)}</td>
-                      <td className="text-center px-1 py-1 text-gray-400">{pdPct(pctCPR)}</td>
-                      <td className="text-center px-1 py-1 text-gray-400">{pdPct(pctSAS)}</td>
-                      <td className="text-center px-1 py-1 text-gray-400">{pdPct(pctASATS)}</td>
-                      <td className="text-center px-1 py-1 text-gray-400">{pdPct(pctATSOFF)}</td>
-                      <td className="text-center px-1 py-1 text-gray-400">{pdPct(pctCH)}</td>
+                      <td className="text-center px-1 py-1 text-gray-500" style={pdHeat(pctVC, 'vc')}>{pdPct(pctVC)}</td>
+                      <td className="text-center px-1 py-1 text-gray-500" style={pdHeat(pctCPR, 'cpr')}>{pdPct(pctCPR)}</td>
+                      <td className="text-center px-1 py-1 text-gray-500" style={pdHeat(pctSAS, 'sas')}>{pdPct(pctSAS)}</td>
+                      <td className="text-center px-1 py-1 text-gray-500" style={pdHeat(pctASATS, 'asats')}>{pdPct(pctASATS)}</td>
+                      <td className="text-center px-1 py-1 text-gray-500" style={pdHeat(pctATSOFF, 'atsoff')}>{pdPct(pctATSOFF)}</td>
+                      <td className="text-center px-1 py-1 text-gray-500" style={pdHeat(pctCH, 'ch')}>{pdPct(pctCH)}</td>
                     </tr>
                     {open && jobRows.map((r, i) => (
                       <tr key={`${c.client}|${r.job_id}`}
@@ -2549,12 +2574,12 @@ const ProjectDashboardTab = ({ data }) => {
                         <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.ats}</td>
                         <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.offered}</td>
                         <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.hired}</td>
-                        <td className="text-center px-1 py-0.5 text-gray-500 text-xs">{pdPct(r.pct_v_c)}</td>
-                        <td className="text-center px-1 py-0.5 text-gray-500 text-xs">{pdPct(r.pct_c_pr)}</td>
-                        <td className="text-center px-1 py-0.5 text-gray-500 text-xs">{pdPct(r.pct_s_as)}</td>
-                        <td className="text-center px-1 py-0.5 text-gray-500 text-xs">{pdPct(r.pct_as_ats)}</td>
-                        <td className="text-center px-1 py-0.5 text-gray-500 text-xs">{pdPct(r.pct_ats_off)}</td>
-                        <td className="text-center px-1 py-0.5 text-gray-500 text-xs">{pdPct(r.pct_c_hire)}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-500 text-xs" style={pdHeat(r.pct_v_c, 'vc')}>{pdPct(r.pct_v_c)}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-500 text-xs" style={pdHeat(r.pct_c_pr, 'cpr')}>{pdPct(r.pct_c_pr)}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-500 text-xs" style={pdHeat(r.pct_s_as, 'sas')}>{pdPct(r.pct_s_as)}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-500 text-xs" style={pdHeat(r.pct_as_ats, 'asats')}>{pdPct(r.pct_as_ats)}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-500 text-xs" style={pdHeat(r.pct_ats_off, 'atsoff')}>{pdPct(r.pct_ats_off)}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-500 text-xs" style={pdHeat(r.pct_c_hire, 'ch')}>{pdPct(r.pct_c_hire)}</td>
                       </tr>
                     ))}
                   </React.Fragment>

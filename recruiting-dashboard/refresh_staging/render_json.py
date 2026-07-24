@@ -84,6 +84,7 @@ SNOW_TS_JOBS = HERE / "snowflake_ts_jobs.csv"
 SNOW_AUX = HERE / "snowflake_aux_12w.csv"
 SNOW_TS_SUMMARY = HERE / "snowflake_ts_summary.csv"  # per-sourcer x per-week (KPI-TS Summary tab)
 SNOW_TS_SUMMARY_BY_CLIENT = HERE / "snowflake_ts_summary_by_client.csv"  # per-(sourcer, client, week) — feeds client-filtered viewed/reacted on PD + TS Summary
+SNOW_VIEWS_BY_JOB = HERE / "snowflake_views_by_job.csv"  # per-(viewer, job, week) LinkedIn views — feeds per-job viewed attributed to the actual viewer on PD
 SNOW_DROPS_BY_SOURCER = HERE / "snowflake_drops_by_sourcer.csv"  # per-(sourcer, job, week, reason) drop counts — feeds Circle's rejection-reasons pie
 SNOW_DROPS_BY_RECRUITER = HERE / "snowflake_drops_by_recruiter.csv"  # per-(recruiter, job, week, reason) drop counts, who_event_created_for attribution — feeds Circle's rejection-reasons pie for TAs
 SNOW_DQ_REASONS = HERE / "snowflake_dq_reasons.csv"  # (client, job_title, TA, dq_week, reason, n) — PD tab DQ section, PBI Overview pie parity
@@ -1479,6 +1480,36 @@ def load_ts_summary_by_client():
     return rows
 
 
+def load_views_by_job():
+    """Return [{person, job_id, client, iso_year, iso_week, viewed}] from
+    snowflake_views_by_job.csv. Per-(viewer, job, week) LinkedIn profile-view
+    counts, keyed by who_created_event (the person who actually did the viewing,
+    TA or sourcer alike). Feeds the Project Dashboard's per-job viewed column so
+    each job row shows the selected person's own views. Same size-safe pattern as
+    ts_summary_by_client (per-job instead of per-client): ~12k rows.
+
+    Returns [] if CSV missing (Flow may not have run yet for the new transform).
+    """
+    if not SNOW_VIEWS_BY_JOB.exists():
+        return []
+    rows = []
+    with SNOW_VIEWS_BY_JOB.open() as f:
+        for row in csv.DictReader(f):
+            try:
+                viewed = int(float(_ci(row, "viewed") or 0))
+            except (TypeError, ValueError):
+                viewed = 0
+            rows.append({
+                "person": _ci(row, "person"),
+                "job_id": _ci(row, "job_id"),
+                "client": _ci(row, "client"),
+                "iso_year": int(_ci(row, "iso_year")),
+                "iso_week": int(_ci(row, "iso_week")),
+                "viewed": viewed,
+            })
+    return rows
+
+
 def load_drops_by_sourcer():
     """Return [{ts, job_id, client, job_title, iso_year, iso_week, reason, drops}]
     from snowflake_drops_by_sourcer.csv. Powers the Circle rejection-reasons pie.
@@ -2380,6 +2411,12 @@ def main():
     out["ts_summary_by_client"] = load_ts_summary_by_client()
     if out["ts_summary_by_client"]:
         print(f"  ts_summary_by_client: {len(out['ts_summary_by_client'])} (sourcer, client, week) rows")
+
+    # views_by_job - per-(viewer, job, week) LinkedIn views, keyed to who_created_event.
+    # Powers per-job viewed on the Project Dashboard, attributed to the actual viewer.
+    out["views_by_job"] = load_views_by_job()
+    if out["views_by_job"]:
+        print(f"  views_by_job: {len(out['views_by_job'])} (viewer, job, week) rows")
 
     # drops_by_sourcer - per-(sourcer, job, week, reason) drop counts.
     # Powers Circle's rejection-reasons pie.

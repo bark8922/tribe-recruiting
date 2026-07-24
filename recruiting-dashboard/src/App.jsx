@@ -2156,9 +2156,14 @@ const ProjectDashboardTab = ({ data }) => {
     // TA attribution only). Surface client-level viewed totals from ts_summary_by_client.
     // Includes view-only clients (sourcer viewed candidates but hasn't contacted/screened
     // anyone there yet) — those become new rows in the per-client rollup.
-    if (filterTs) {
+    // 2026-07-24: viewer-attributed views. When a person is selected (sourcer OR TA),
+    // client-level viewed = THAT person's own LinkedIn views (who_created_event), from
+    // ts_summary_by_client. A view belongs to whoever did the clicking.
+    const personView = filterTs || filterTa;
+    if (personView) {
+      const nm = (s) => (s || '').replace(/\s+/g, ' ').trim();
       const tsByClient = (data.ts_summary_by_client || []).filter(r => {
-        if (r.ts !== filterTs) return false;
+        if (nm(r.ts) !== nm(personView)) return false;
         const wk = `${r.iso_year}-W${String(r.iso_week).padStart(2, '0')}`;
         return weekSet.has(wk);
       });
@@ -2169,12 +2174,13 @@ const ProjectDashboardTab = ({ data }) => {
       });
       // Overwrite viewed on existing rows + add new rows for view-only clients.
       for (const row of m.values()) {
-        if (viewedByClient[row.client] != null) row.viewed = viewedByClient[row.client];
+        row.viewed = viewedByClient[row.client] || 0;
       }
       Object.entries(viewedByClient).forEach(([c, v]) => {
+        if (filterClient && c !== filterClient) return;
         if (!m.has(c) && v > 0) {
           m.set(c, {
-            client: c, jobIds: new Set(), tas: new Set(), tses: new Set([filterTs]),
+            client: c, jobIds: new Set(), tas: new Set(), tses: new Set([personView]),
             viewed: v, contacted: 0, positive_response: 0,
             screens: 0, actual_screens: 0, ats: 0, offered: 0, hired: 0,
           });
@@ -2182,7 +2188,7 @@ const ProjectDashboardTab = ({ data }) => {
       });
     }
     return Array.from(m.values()).sort((a, b) => a.client.localeCompare(b.client));
-  }, [filtered, filterTs, weekSet, data]);
+  }, [filtered, filterTs, filterTa, filterClient, weekSet, data]);
 
   // ── Per-client job rollup ──
   const jobsByClient = useMemo(() => {
@@ -2202,6 +2208,40 @@ const ProjectDashboardTab = ({ data }) => {
       row.screens += (r.screens || 0); row.actual_screens += r.actual_screens; row.ats += r.ats;
       row.offered += r.offered; row.hired += r.hired;
     }
+    // 2026-07-24: per-JOB viewed attributed to the actual viewer (who_created_event),
+    // from views_by_job. When a person is selected (sourcer OR TA), each job row shows
+    // THAT person's own views on that job — mirrors the client-level overwrite in byClient.
+    // Job-level totals (no person selected) keep the project_dashboard view count.
+    const personViewJob = filterTs || filterTa;
+    if (personViewJob && (data.views_by_job || []).length) {
+      const nm = (s) => (s || '').replace(/\s+/g, ' ').trim();
+      const jobTitleById = {};
+      (data.jobs || []).forEach(j => { if (j.job_id) jobTitleById[j.job_id] = j.job_title; });
+      const viewedByJob = {}, clientByJob = {};
+      (data.views_by_job || []).forEach(r => {
+        if (nm(r.person) !== nm(personViewJob)) return;
+        const wk = `${r.iso_year}-W${String(r.iso_week).padStart(2, '0')}`;
+        if (!weekSet.has(wk)) return;
+        viewedByJob[r.job_id] = (viewedByJob[r.job_id] || 0) + (r.viewed || 0);
+        clientByJob[r.job_id] = normalizeClientPD(r.client);
+      });
+      for (const row of m.values()) {
+        row.viewed = viewedByJob[row.job_id] || 0;
+      }
+      Object.keys(viewedByJob).forEach((jid) => {
+        const c = clientByJob[jid];
+        if (filterClient && c !== filterClient) return;
+        const key = `${c}|${jid}`;
+        if (!m.has(key) && viewedByJob[jid] > 0) {
+          m.set(key, {
+            client: c, job_id: jid, job_title: jobTitleById[jid] || `(job ${jid})`,
+            job_category: '', is_external_recruiter: false, tas: new Set(), tses: new Set([personViewJob]),
+            viewed: viewedByJob[jid], contacted: 0, positive_response: 0, screens: 0,
+            actual_screens: 0, ats: 0, offered: 0, hired: 0,
+          });
+        }
+      });
+    }
     const by = {};
     for (const row of m.values()) {
       const ex = row.is_external_recruiter;
@@ -2218,7 +2258,7 @@ const ProjectDashboardTab = ({ data }) => {
     // Jobs sorted A-Z by title within each client (Blake's preference)
     for (const c in by) by[c].sort((a, b) => (a.job_title || '').localeCompare(b.job_title || ''));
     return by;
-  }, [filtered]);
+  }, [filtered, filterTs, filterTa, filterClient, weekSet, data]);
 
   // ── Per-client TA rollup ──
   const tasByClient = useMemo(() => {

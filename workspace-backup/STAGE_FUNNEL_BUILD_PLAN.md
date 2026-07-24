@@ -6,6 +6,21 @@ Owner: Blake · Backend: Mikhail · Process/rollout: Jacopo · Last updated: 202
 
 ---
 
+## 1a. Update (2026-07-24)
+
+First candidate movement observed: one candidate moved through Interview 1/2/3 on 2026-07-22 on a real job (Sales Executive Brands, recruiter Milica Mladzic), still on default stage names. Reads like a first trial rather than organic volume. Pipeline adoption is growing: 9 jobs now have the new stages configured (up from 2). Not enough volume yet to build/validate conversion metrics.
+
+Action taken: transform build kicked off. Live SQL pulled from Keboola ([PROD] Data preparation V2, config 375145203). Proposed changes drafted in `stage_transform_changes_DRAFT.sql`, continuity-preserving.
+
+Read-only proof run against live data (2026-07-24) found and fixed three things before any code touched the pipeline:
+1. Snowflake syntax: LATERAL FLATTEN can't sit left of a JOIN; the Jobs."stages" explode now lives in a CTE (validated working).
+2. Per-rung population works: the test candidate's Interview 1/2/3 dates resolve correctly.
+3. Backfill rule refined to a GUARDED backfill (not "no backfill"): rungs are backfilled from offer/hire only when (a) the candidate reached offer/hire, (b) that offer/hire is on/after the 2026-07-14 go-live, and (c) the job defines that rung. This matches how the legacy stages already behave, excludes the 563 pre-go-live candidates from fabricated history, and keeps mid-funnel drop-offs visible (they have no offer/hire, so nothing backfills for them). Legacy cascade untouched.
+
+Also noted: all 24 rung-configured jobs currently carry all three rungs (default template), so the pipeline-aware/variable-round logic is correct but a no-op until recruiters trim rungs.
+
+BUILT + SCHEDULED (2026-07-24): rather than edit the fragile core transform (no dev branch available via MCP), implemented the rung logic as an additive, isolated transformation "Recruiting - candidate stage rungs (Interview 1/2/3)" (config 01ky9xkbr9fzswz7meddr73agn). It reads only published tables (out.c-reporting-v2 event + candidate_stage, Bubble Jobs/stages/stagesType) and writes out.c-Recruiting---candidate-stage-rungs-Interview-123.candidate_stage_rungs (candidate_id, job_id, has_int1/2/3, date_interview_1/2/3). Ran successfully (565 rows); validated: only the 1 real candidate has rung dates, all 564 pre-go-live hires correctly blank, 0 wrongly backfilled. Wired into the "4x daily - NEW" flow (118392817) as a new phase after PROD V2, continueOnFailure=true. Nothing existing was modified. Note for the dashboard phase: Keboola stores NULLs as empty strings, so treat '' as no-date. Dashboard + aggregation layer still held until real volume arrives.
+
 ## 1. Where things stand (as of 2026-07-15)
 
 - New stage types are live. Mikhail created `Interview 1`, `Interview 2`, `Interview 3` on 2026-07-14, positioned at 6/7/8, with `Offer` and `Hired` repositioned to 9/10 so they sit after the new rungs.

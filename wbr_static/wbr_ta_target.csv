@@ -1605,18 +1605,19 @@ row_number,Client,TA,Year,Month,Contacted,Actual Screens,Moved to ATS,Hires
 1605,Aviv ,Alexandra Richiteanu,2026,7,70,15,10,
 1606,Aviv ,Jovana Drakula,2026,7,100,,,
 1607,Enam,Aleksandra Vistac,2026,7,70,17,7,
-1608,Eucalyptus,Meho Saracevic,2026,7,100,15,7,
+1608,Eucalyptus,Jan Dokulil,2026,7,100,15,7,
 1609,Eucalyptus,Dušan Špica,2026,7,100,15,7,
 1610,Glovo,Chené Elliot,2026,7,70,15,10,
 1611,Glovo,Samantha Nel,2026,7,70,15,10,
 1612,Glovo,Milica Mladzic,2026,7,70,15,10,
 1613,Parloa,Filip Nogowski,2026,7,50,15,8,
-1614,Reaktor,Simon Siew,2026,7,50,10,5,
-1615,Taxfix,Marina Nikolic,2026,7,40,15,5,
-1616,Wolt Central & South,Niki Vokalkova,2026,7,0,15,8,1.25
-1617,Wolt Germany ,Lisa Gargulinska,2026,7,100,15,8,1.25
-1618,Wolt HQ,Nenad Skoko,2026,7,60,15,8,1
-1619,Wolt HQ,Elena Petrovska,2026,7,100,4,3,
-1620,Wolt Market,Jan Dokulil,2026,7,120,19,10,1.25
-1621,"Wolt North, Baltics & Benelux",Adelya Khakimova,2026,7,50,15,8,1.25
-1622,Wolt Tech,Ejla Suljcic,2026,7,100,,,
+1614,Pliant,Mateja Jokovic,2026,7,100,10,5,
+1615,Reaktor,Simon Siew,2026,7,50,10,5,
+1616,Taxfix,Marina Nikolic,2026,7,40,15,5,
+1617,Wolt Central & South,Niki Vokalkova,2026,7,0,15,8,1.25
+1618,Wolt Germany ,Lisa Gargulinska,2026,7,100,15,8,1.25
+1619,Wolt HQ,Nenad Skoko,2026,7,60,15,8,1
+1620,Wolt HQ,Elena Petrovska,2026,7,100,4,3,
+1621,Wolt Market,Jan Dokulil,2026,7,120,19,10,1.25
+1622,"Wolt North, Baltics & Benelux",Adelya Khakimova,2026,7,50,15,8,1.25
+1623,Wolt Tech,Ejla Suljcic,2026,7,100,,,

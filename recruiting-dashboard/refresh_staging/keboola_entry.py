@@ -166,7 +166,7 @@ def build_finder(flat):
         print("[build_finder] snowflake_candidate_finder.csv not staged - skipping", flush=True)
         return None
     cols = ["name", "current_title", "company", "location", "country", "function",
-            "role_type", "client", "sourced_role", "stage", "reason", "linkedin"]
+            "role_type", "client", "sourced_role", "stage", "reason", "linkedin", "last_activity"]
     rows = []
     _csv.field_size_limit(10 * 1024 * 1024)
     with open(src, newline="", encoding="utf-8") as fh:

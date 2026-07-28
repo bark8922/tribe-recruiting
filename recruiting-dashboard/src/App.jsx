@@ -5245,6 +5245,9 @@ const ProfitabilityTab = () => {
 const FINDER_KEYS = ['function', 'role_type', 'client', 'country', 'stage', 'reason'];
 const FINDER_FILTERS = [['function', 'Function'], ['role_type', 'Role type'], ['client', 'Client'], ['country', 'Country'], ['stage', 'Stage'], ['reason', 'Reason']];
 const FINDER_CSV_CAP = 5000;
+const FINDER_RECENCY = [['d30','Active last 30 days'],['d90','Active last 90 days'],['m6','Active last 6 months'],['m12','Active last 12 months'],['older','Older than 12 months']];
+const fmtFinderDate = (s) => { if (!s) return ''; const d = new Date(s + 'T00:00:00'); return isNaN(d) ? s : d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }); };
+const finderRecencyCut = (key) => { const d = new Date(); if (key === 'd30') d.setDate(d.getDate() - 30); else if (key === 'd90') d.setDate(d.getDate() - 90); else if (key === 'm6') d.setMonth(d.getMonth() - 6); else if (key === 'm12') d.setMonth(d.getMonth() - 12); else return null; return d.toISOString().slice(0, 10); };
 const finderStageClass = (s) => ({
   'Recruiter Screen': 'bg-blue-900 text-blue-200',
   'Moved to ATS': 'bg-teal-900 text-teal-200',
@@ -5298,6 +5301,7 @@ const CandidateFinderTab = () => {
   const [q, setQ] = useState('');
   const [onlyLi, setOnlyLi] = useState(false);
   const [fCity, setFCity] = useState('');
+  const [fRecency, setFRecency] = useState('');
   const [limit, setLimit] = useState(300);
   const [openKey, setOpenKey] = useState(null);
 
@@ -5336,13 +5340,16 @@ const CandidateFinderTab = () => {
 
   const toggleVal = (k, v) => setSel((prev) => ({ ...prev, [k]: prev[k].includes(v) ? prev[k].filter((x) => x !== v) : [...prev[k], v] }));
   const clearKey = (k) => setSel((prev) => ({ ...prev, [k]: [] }));
-  const clearAll = () => { setSel({ function: [], role_type: [], client: [], country: [], stage: [], reason: [] }); setQ(''); setFCity(''); setOnlyLi(false); };
+  const clearAll = () => { setSel({ function: [], role_type: [], client: [], country: [], stage: [], reason: [] }); setQ(''); setFCity(''); setFRecency(''); setOnlyLi(false); };
   const matchExcept = (r, skip) => FINDER_KEYS.every((k) => k === skip || sel[k].length === 0 || sel[k].includes(r[k]));
   const optsFor = (k) => [...new Set(rows.filter((r) => matchExcept(r, k)).map((r) => r[k]).filter(Boolean))].sort();
 
+  const recCut = fRecency ? finderRecencyCut(fRecency === 'older' ? 'm12' : fRecency) : null;
+  const d90cut = finderRecencyCut('d90');
   const out = rows.filter((r) => {
     if (!FINDER_KEYS.every((k) => sel[k].length === 0 || sel[k].includes(r[k]))) return false;
     if (fCity && !((r.location || '').toLowerCase().includes(fCity.toLowerCase()))) return false;
+    if (fRecency === 'older') { if (!r.last_activity || (recCut && r.last_activity >= recCut)) return false; } else if (recCut) { if (!r.last_activity || r.last_activity < recCut) return false; }
     if (onlyLi && !r.linkedin) return false;
     if (q) {
       const blob = ((r.name || '') + ' ' + (r.current_title || '') + ' ' + (r.company || '') + ' ' + (r.location || '') + ' ' + (r.sourced_role || '') + ' ' + (r.role_type || '')).toLowerCase();
@@ -5350,9 +5357,10 @@ const CandidateFinderTab = () => {
     }
     return true;
   });
+  out.sort((a, b) => (b.last_activity || '').localeCompare(a.last_activity || ''));
   const shown = out.slice(0, limit);
   const withLi = out.filter((r) => r.linkedin).length;
-  const anyFilter = FINDER_KEYS.some((k) => sel[k].length) || q || fCity || onlyLi;
+  const anyFilter = FINDER_KEYS.some((k) => sel[k].length) || q || fCity || fRecency || onlyLi;
   const canExport = out.length > 0 && out.length <= FINDER_CSV_CAP;
 
   const exportCsv = () => {
@@ -5383,6 +5391,10 @@ const CandidateFinderTab = () => {
       <div className="flex flex-wrap gap-4 items-center mb-3">
         <input value={fCity} onChange={(e) => setFCity(e.target.value)} placeholder="City (e.g. Berlin)"
           className="bg-gray-800 border border-gray-700 text-white text-sm rounded px-3 py-1.5 w-44" />
+        <select value={fRecency} onChange={(e) => setFRecency(e.target.value)} className="bg-gray-800 border border-gray-700 text-white text-sm rounded px-2 py-1.5">
+          <option value="">Any activity</option>
+          {FINDER_RECENCY.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+        </select>
         <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search name, title, company…"
           className="bg-gray-800 border border-gray-700 text-white text-sm rounded px-3 py-1.5 w-72" />
         <label className="flex items-center gap-2 text-sm text-gray-300">
@@ -5412,6 +5424,7 @@ const CandidateFinderTab = () => {
               <th className="text-left px-3 py-2">Role (sourced for)</th>
               <th className="text-left px-3 py-2">Stage</th>
               <th className="text-left px-3 py-2">Reason</th>
+              <th className="text-left px-3 py-2">Last activity</th>
             </tr>
           </thead>
           <tbody>
@@ -5427,6 +5440,7 @@ const CandidateFinderTab = () => {
                 <td className="px-3 py-2 text-gray-300">{r.sourced_role || '—'}</td>
                 <td className="px-3 py-2"><span className={'px-2 py-0.5 rounded text-xs font-medium ' + finderStageClass(r.stage)}>{r.stage}</span></td>
                 <td className="px-3 py-2 text-red-300 text-xs">{r.reason || ''}</td>
+                <td className={'px-3 py-2 text-xs whitespace-nowrap ' + (r.last_activity && r.last_activity >= d90cut ? 'text-green-300' : 'text-gray-400')}>{fmtFinderDate(r.last_activity)}</td>
               </tr>
             ))}
           </tbody>

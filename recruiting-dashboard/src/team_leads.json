@@ -1,11 +1,10 @@
 {
-  "generated_at": "2026-08-02T08:43:04Z",
+  "generated_at": "2026-08-03T10:12:18Z",
   "source": "bamboohr_directory",
   "leads": [
     {
       "name": "Andrea Akovic",
       "reports": [
-        "Marina Lazarevic",
         "Naledi Ngwenya"
       ]
     },
@@ -35,6 +34,7 @@
     {
       "name": "Kristina Colovic",
       "reports": [
+        "Marina Lazarevic",
         "Samantha Nel",
         "Wladyslaw Gadomski"
       ]

@@ -2,7 +2,7 @@
 
 Single source of truth for status, decisions, and open items. Survives Cowork resets because it lives in this folder (on Blake's computer) and is backed up to GitHub. Claude updates this at the end of any session where real work happened. Blake can also say "update the log" anytime.
 
-Last updated: 2026-07-24
+Last updated: 2026-08-03
 
 ---
 
@@ -67,6 +67,40 @@ Orchestration = **Keboola Flows** (Flow B 3x/day `5 7,10,16` CET; Flow A 4x/day)
 ---
 
 ## Session history
+
+### 2026-08-03 — Screen attribution REVERSED to role owner (Vladimir's MBR complaint)
+
+**Trigger:** Vladimir Stankovic told Blake his MBR numbers were wrong — contacted showed 489 when he thought ~800, and screens were "way off". Both claims investigated.
+
+**Finding 1 — Contacted is NOT a bug. He was reading a calendar month into a rolling window.**
+- The MBR window is the **last 4 complete ISO weeks** (set in `render_json.py` from Andy's TA weekly roster, dropping the in-progress week). Right now that's W28–W31 = Jul 6 → Aug 2. It is not, and never was, a calendar month.
+- Vladimir's actual calendar July, straight from `event`: **752 contacted**. That's his "closer to 800".
+- The entire gap is ISO week 27 (Jun 29 – Jul 5) = **296 contacted**, his biggest week of the year by ~3x, driven by Jul 1/2/3 (86/92/86 per day). The window cuts off exactly that push. Data correct, framing misleading.
+- Also explained the 489 (Weekly Summary) vs 488 (MBR) split: by design. MBR overrides Contacted with the event-attributed `mbr_contacted_ev` table (`who_event_created_for`); Weekly Summary uses `wbr_weekly.CONTACTED` (job_recruiter). One W29 candidate differs. Left alone.
+
+**Finding 2 — Screens WERE wrong. Real bug, team-wide, now fixed.**
+- Weekly Summary showed Vladimir 46 rec screens for the same 4 weeks; MBR showed 41. Root cause: the two surfaces credit screens to different people.
+  - `weekly_summary` (May, PBI port) → `who_event_created_for` = the role owner.
+  - `wbr_weekly` (June, the doer spec) → `who_created_event` = whoever clicked.
+- In W28, **Rodrigo Gomes logged 5 Evaluations for Vladimir's candidates** (all Aiven, all `job_recruiter` = Vladimir). Those 5 screens moved off Vladimir onto Rodrigo. 10 − 5 = the 41 he saw. His other 3 weeks matched exactly, so it was entirely this.
+- Not Vladimir-specific. Across W26–31 the doer rule reassigned ~130 screens (Jelena Lacmanovic → Kristina Colovic 23 in W28 alone, Gustavo ↔ Filip both directions, Mariam → Ella, etc.).
+- **Blake's key insight:** `who_created_event` conflates two different things — Jelena *actually ran* screens covering for Kristina and Iryna on holiday, whereas Rodrigo *just typed in* what Vladimir ran. The data cannot tell them apart: both write an identical row. Verified there is no other signal — `screen.user_recruiter` is `-not available-` on **100%** of screens since June, there is no `call_record` table in reporting-v2, and `user.role_current` in Bubble is stale (it lists Kristina Colovic as "Sourcer / Sr. Sourcer"; BambooHR says **Team Lead, Leadership, Aviv**). **Do not build anything on `user.role_current` — use BambooHR.**
+
+**DECISION (Jacopo, 2026-08-03): the ROLE OWNER always gets the recruiter screen.** Irrespective of holiday cover, coordinator data entry, or who physically ran it. This **voids `SPEC_screen_attribution_by_doer.md` (2026-06-19)**, whose whole premise was the opposite ("credit whoever ran it"). That spec should be treated as dead.
+
+**Also noted:** the June spec's Section 7 promised "MBR tables: stays exactly the same". It didn't — MBR is built from `wbr_weekly` via `mbr_ta_actuals`, so the doer change leaked straight into MBR. Spec/impact-analysis miss, worth remembering next time.
+
+**IMPLEMENTED.** Keboola `keboola.snowflake-transformation` config `01kpr0tr0dt5ryf96a5zk85bx7` ("WBR/MBR weekly aggregations"), block `b0`, code `b0.c0` (Build wbr_weekly). The `eval_doer` CTE now reads `who_event_created_for` instead of `who_created_event` (two spots: the `doer_ta` SELECT and the `IS NOT NULL` filter). Comment header rewritten to describe the new rule. **Config v47 → v49.** Job `1009783744` ran clean (241s, all 27 tables, `wbr_weekly` 1187 rows).
+- Chose `who_event_created_for` over a plain revert to `job.job_recruiter` deliberately. `job_recruiter` is a *current snapshot*, so a req changing hands retroactively drags months-old screens to the new owner. Identical output for W28–31, but across full-year 2026 they diverge on reassigned reqs (Ella Darie 540 vs 481 — she'd inherit 59 screens Anna/Iryna/Wladyslaw/Kristina did in April on the Tribe.xyz IR reqs before she took them over). It's also the same field `weekly_summary` uses, so WBR/MBR and Weekly Summary now agree.
+
+**Verified live in `wbr_weekly` after the run (W28–31 SCREENED, before → after):** Vladimir Stankovic 41 → **46** (matches Weekly Summary exactly), Iryna Dyda 57 → 72, Ella Darie 42 → 53, Kristina Colovic 48 → 58, Wladyslaw Gadomski 21 → 26, Mia Gjorgievska 0 → 1, Filip Nogowski 57 → 56, Rodrigo Gomes 6 → 0, Mariam Chkhikvadze 11 → 0, Jelena Lacmanovic 29 → 0. Totals conserved; CONTACTED untouched (Vladimir still 489).
+
+**Open follow-ups from this session:**
+- **Tell Jelena, Mariam and Rodrigo** their screen counts drop to zero. Intended under Jacopo's rule, but they shouldn't discover it in the WBR.
+- **The dashboard won't show this until the next render+push** (Flow build ~16:10 Prague). Only the Snowflake table was rebuilt here.
+- **Consider relabelling the MBR window** with its date range on the tab, so the calendar-month misread doesn't recur.
+- **A req literally named "Tribe.xyz / Test Job" has 73 Evaluations in 2026 and is NOT being filtered out** (its `test` flag isn't `true`). Polluting totals. Separate cleanup.
+- Minor, verified immaterial: `wbr_weekly` / `mbr_contacted_ev` filter jobs with `LOWER(NULLIF(j."test",'')) <> 'true'`, which in Snowflake silently drops the 1,761 jobs whose `test` is blank. Real, but only 210 candidates of 70,033 in 2026 (0.3%). `weekly_summary` uses the correct `(... OR test IS NULL)` form.
 
 ### 2026-07-24 — Intake Eligibility Tracker BUILT (Google Sheet + n8n daily feed)
 - **Context / why:** supports the Q3 OKR "80% of eligible roles have their intake form completed via the autofill tool in the final 6 consecutive weeks of Q3" (Q3 ends 2026-09-30). Before chasing a TA to run an intake call, we want evidence the role actually deserves one. This tracker is that evidence layer. Kept entirely separate from the live new-role briefing bot (Supabase) so it can't disturb it.

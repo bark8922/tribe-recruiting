@@ -1632,17 +1632,16 @@ row_number,Client,TA,Year,Month,Contacted,Actual Screens,Moved to ATS,Hires
 1632,Enam,Aleksandra Vistac,2026,8,70,17,7,
 1633,Eucalyptus,Jan Dokulil,2026,8,100,15,7,
 1634,Eucalyptus,Dušan Špica,2026,8,100,15,7,
-1635,Glovo,Chené Elliot,2026,8,70,15,10,
-1636,Glovo,Samantha Nel,2026,8,70,15,10,
-1637,Glovo,Milica Mladzic,2026,8,70,15,10,
-1638,Parloa,Filip Nogowski,2026,8,50,15,8,
-1639,Pliant,Mateja Jokovic,2026,8,100,10,5,
-1640,Reaktor,Simon Siew,2026,8,50,10,5,
-1641,Taxfix,Marina Nikolic,2026,8,40,15,5,
-1642,Wolt Central & South,Niki Vokalkova,2026,8,0,15,8,1.25
-1643,Wolt Germany ,Lisa Gargulinska,2026,8,100,15,8,1.25
-1644,Wolt HQ,Nenad Skoko,2026,8,60,15,8,1
-1645,Wolt HQ,Elena Petrovska,2026,8,100,4,3,
-1646,Wolt Market,Jan Dokulil,2026,8,120,19,10,1.25
-1647,"Wolt North, Baltics & Benelux",Adelya Khakimova,2026,8,50,15,8,1.25
-1648,Wolt Tech,Ejla Suljcic,2026,8,100,,,
+1635,Glovo,Samantha Nel,2026,8,70,15,10,
+1636,Parloa,Filip Nogowski,2026,8,50,15,8,
+1637,Pliant,Mateja Jokovic,2026,8,100,10,5,
+1638,Reaktor,Simon Siew,2026,8,50,10,5,
+1639,Taxfix,Marina Nikolic,2026,8,40,15,5,
+1640,Taxfix,Chené Elliot,2026,8,40,15,5,
+1641,Wolt Central & South,Niki Vokalkova,2026,8,0,15,8,1.25
+1642,Wolt Germany ,Lisa Gargulinska,2026,8,100,15,8,1.25
+1643,Wolt HQ,Nenad Skoko,2026,8,60,15,8,1
+1644,Wolt HQ,Elena Petrovska,2026,8,100,4,3,
+1645,Wolt Market,Jan Dokulil,2026,8,120,19,10,1.25
+1646,"Wolt North, Baltics & Benelux",Adelya Khakimova,2026,8,50,15,8,1.25
+1647,Wolt Tech,Ejla Suljcic,2026,8,100,,,

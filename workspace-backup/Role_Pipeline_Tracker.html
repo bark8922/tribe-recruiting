@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Role Pipeline Tracker</title>
+<style>
+  :root{
+    --bg:#0f1420; --panel:#161d2b; --line:#263145; --text:#e7edf5; --muted:#8fa0b6;
+    --red:#ef4444; --amber:#f59e0b; --green:#22c55e; --grey:#64748b; --accent:#3b82f6;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font:14px/1.4 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+  .wrap{max-width:1680px;margin:0 auto;padding:20px 24px}
+  h1{font-size:20px;margin:0 0 2px}
+  .sub{color:var(--muted);font-size:13px;margin-bottom:18px}
+  .cards{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 16px;min-width:150px}
+  .card .n{font-size:24px;font-weight:700}
+  .card .l{color:var(--muted);font-size:12px;margin-top:2px}
+  .card.warn .n{color:var(--red)}
+  .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+  select,input[type=text]{background:var(--panel);border:1px solid var(--line);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px}
+  table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  th,td{padding:7px 9px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+  th{font-size:11px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);cursor:pointer;user-select:none;position:sticky;top:0;background:var(--panel)}
+  th.num,td.num{text-align:right;font-variant-numeric:tabular-nums}
+  .ivh{color:#86efac}
+  tr:hover td{background:#1b2434}
+  .role{font-weight:600}
+  .owner{color:#cdd8e6}
+  .muted{color:var(--muted)}
+  .stagecell{color:#c3cfdd}
+  .ivcell{color:#86efac;font-weight:600}
+  .zero{color:#3d4a5e}
+  .badge{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:600}
+  .b-stalled{background:rgba(239,68,68,.15);color:#fca5a5;border:1px solid rgba(239,68,68,.35)}
+  .b-slow{background:rgba(245,158,11,.15);color:#fcd34d;border:1px solid rgba(245,158,11,.35)}
+  .b-moving{background:rgba(34,197,94,.15);color:#86efac;border:1px solid rgba(34,197,94,.35)}
+  .b-new{background:rgba(100,116,139,.18);color:#b6c2d2;border:1px solid rgba(100,116,139,.4)}
+  .foot{color:var(--muted);font-size:12px;margin-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Role Pipeline Tracker</h1>
+  <div class="sub">Are candidates actually moving through the stages? Snapshot as of 2026-08-05. Internal sourcing pools excluded.</div>
+
+  <div class="cards" id="cards"></div>
+
+  <div class="controls">
+    <select id="fOwner"><option value="">All owners</option></select>
+    <select id="fClient"><option value="">All clients</option></select>
+    <select id="fStatus"><option value="">All statuses</option><option value="stalled">Stalled</option><option value="slow">Slow</option><option value="moving">Moving</option><option value="new">Filling</option></select>
+    <input type="text" id="fSearch" placeholder="Search role...">
+  </div>
+
+  <div style="overflow-x:auto">
+  <table id="tbl">
+    <thead><tr>
+      <th data-k="role">Role</th>
+      <th data-k="client">Client</th>
+      <th data-k="owner">Owner</th>
+      <th data-k="opened">Opened</th>
+      <th data-k="days" class="num">Days</th>
+      <th data-k="total" class="num">Total</th>
+      <th data-k="contacted" class="num">Contacted</th>
+      <th data-k="pos_resp" class="num">Pos Resp</th>
+      <th data-k="screen" class="num">Screen</th>
+      <th data-k="ats" class="num">Move to ATS</th>
+      <th data-k="int1" class="num ivh">Int 1</th>
+      <th data-k="int2" class="num ivh">Int 2</th>
+      <th data-k="int3" class="num ivh">Int 3</th>
+      <th data-k="offer" class="num">Offer</th>
+      <th data-k="hired" class="num">Hired</th>
+      <th data-k="statusRank">Status</th>
+    </tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+  </div>
+  <div class="foot">Status: <b>Moving</b> = at least one candidate in an interview stage or beyond. <b>Stalled</b> = open &gt;10 days, 15+ candidates, nobody past Move to ATS. <b>Slow</b> = some progress but nobody in interviews yet. <b>Filling</b> = opened in the last 10 days, still sourcing.</div>
+</div>
+
+<script>
+const TODAY = new Date('2026-08-05');
+const DATA = [
+  {role:"Security Engineer",client:"Pliant",owner:"Mateja Jokovic",opened:"2026-07-28",total:191,contacted:158,pos_resp:22,screen:6,ats:5,int1:0,int2:0,int3:0,offer:0,hired:0},
+  {role:"QA Automation Contractor",client:"AVIV",owner:"Lejla Silva",opened:"2026-07-15",total:108,contacted:80,pos_resp:4,screen:12,ats:10,int1:0,int2:1,int3:0,offer:1,hired:0},
+  {role:"Mobile Engineer",client:"Pliant",owner:"Mateja Jokovic",opened:"2026-08-03",total:62,contacted:55,pos_resp:6,screen:0,ats:0,int1:0,int2:0,int3:0,offer:0,hired:0},
+  {role:"Finops Engineer",client:"AVIV",owner:"Jovana Drakula",opened:"2026-07-15",total:54,contacted:37,pos_resp:7,screen:8,ats:2,int1:0,int2:0,int3:0,offer:0,hired:0},
+  {role:"TA - US",client:"Parloa",owner:"Gustavo Loureiro Castro",opened:"2026-07-23",total:47,contacted:37,pos_resp:2,screen:7,ats:0,int1:0,int2:0,int3:1,offer:0,hired:0},
+  {role:"Program Manager",client:"Wolt",owner:"Elena Petrovska",opened:"2026-07-20",total:47,contacted:46,pos_resp:0,screen:1,ats:0,int1:0,int2:0,int3:0,offer:0,hired:0},
+  {role:"SSC Operational excellence team manager",client:"Wolt",owner:"Elena Petrovska",opened:"2026-07-24",total:46,contacted:46,pos_resp:0,screen:0,ats:0,int1:0,int2:0,int3:0,offer:0,hired:0},
+  {role:"Support Manager Georgia",client:"Wolt",owner:"Elena Petrovska",opened:"2026-07-15",total:33,contacted:22,pos_resp:1,screen:6,ats:4,int1:0,int2:0,int3:0,offer:0,hired:0},
+  {role:"Platform Engineer, Event Streaming",client:"Wolt",owner:"Ejla Suljcic",opened:"2026-08-02",total:33,contacted:30,pos_resp:1,screen:2,ats:0,int1:0,int2:0,int3:0,offer:0,hired:0},
+  {role:"Category Manager",client:"Wolt",owner:"Elena Petrovska",opened:"2026-07-29",total:29,contacted:29,pos_resp:0,screen:0,ats:0,int1:0,int2:0,int3:0,offer:0,hired:0},
+  {role:"SAP Integration Architect EMEA",client:"Parloa",owner:"Gustavo Loureiro Castro",opened:"2026-07-29",total:28,contacted:27,pos_resp:0,screen:1,ats:0,int1:0,int2:0,int3:0,offer:0,hired:0},
+  {role:"Staff Mobile engineer",client:"Wolt",owner:"Ejla Suljcic",opened:"2026-08-02",total:22,contacted:22,pos_resp:0,screen:0,ats:0,int1:0,int2:0,int3:0,offer:0,hired:0},
+  {role:"Account Manager - London",client:"No Isolation",owner:"Jelena Lacmanovic",opened:"2026-08-03",total:22,contacted:21,pos_resp:1,screen:0,ats:0,int1:0,int2:0,int3:0,offer:0,hired:0},
+  {role:"Product Manager – Growth Enablement",client:"Eucalyptus",owner:"Dušan Špica",opened:"2026-07-20",total:19,contacted:14,pos_resp:0,screen:0,ats:4,int1:0,int2:1,int3:0,offer:0,hired:0},
+  {role:"Senior UX Manager",client:"Glovo",owner:"Samantha Nel",opened:"2026-07-23",total:17,contacted:11,pos_resp:2,screen:3,ats:1,int1:0,int2:0,int3:0,offer:0,hired:0},
+  {role:"Account Manager - UK (South)",client:"No Isolation",owner:"Jelena Lacmanovic",opened:"2026-08-03",total:12,contacted:12,pos_resp:0,screen:0,ats:0,int1:0,int2:0,int3:0,offer:0,hired:0},
+  {role:"Account Manager - Dusseldorf",client:"No Isolation",owner:"Jelena Lacmanovic",opened:"2026-08-03",total:9,contacted:9,pos_resp:0,screen:0,ats:0,int1:0,int2:0,int3:0,offer:0,hired:0},
+  {role:"L1 Tech Support",client:"Glovo",owner:"Samantha Nel",opened:"2026-07-23",total:7,contacted:0,pos_resp:0,screen:5,ats:2,int1:0,int2:0,int3:0,offer:0,hired:0},
+  {role:"Senior Financial Analyst",client:"Taxfix",owner:"Chené Elliot",opened:"2026-07-29",total:6,contacted:5,pos_resp:0,screen:0,ats:1,int1:0,int2:0,int3:0,offer:0,hired:0},
+  {role:"Account Executive - India",client:"Aiven",owner:"Fuad Safarov",opened:"2026-07-24",total:5,contacted:0,pos_resp:0,screen:3,ats:2,int1:0,int2:0,int3:0,offer:0,hired:0},
+  {role:"Sales Executive - Zagreb",client:"Glovo",owner:"Milica Mladzic",opened:"2026-07-20",total:4,contacted:0,pos_resp:0,screen:3,ats:1,int1:0,int2:0,int3:0,offer:0,hired:0},
+  {role:"Technical Product Manager",client:"Taxfix",owner:"Chené Elliot",opened:"2026-07-29",total:3,contacted:2,pos_resp:0,screen:0,ats:1,int1:0,int2:0,int3:0,offer:0,hired:0},
+  {role:"Technical Support Engineer - P1 India",client:"Aiven",owner:"Fuad Safarov",opened:"2026-07-23",total:3,contacted:0,pos_resp:0,screen:1,ats:2,int1:0,int2:0,int3:0,offer:0,hired:0},
+  {role:"Engineering Manager - Context Intelligence Team",client:"Parloa",owner:"Gustavo Loureiro Castro",opened:"2026-07-29",total:2,contacted:1,pos_resp:0,screen:0,ats:0,int1:0,int2:0,int3:0,offer:1,hired:0},
+  {role:"Sales Executive Brands",client:"Glovo",owner:"Milica Mladzic",opened:"2026-07-22",total:1,contacted:0,pos_resp:0,screen:0,ats:0,int1:0,int2:0,int3:0,offer:0,hired:1},
+  {role:"IT System Admin/Engineer",client:"Taxfix",owner:"Chené Elliot",opened:"2026-07-29",total:1,contacted:0,pos_resp:0,screen:0,ats:1,int1:0,int2:0,int3:0,offer:0,hired:0},
+  {role:"Cyber Defense & Incident Response Engineer",client:"Glovo",owner:"Samantha Nel",opened:"2026-07-27",total:1,contacted:0,pos_resp:0,screen:0,ats:1,int1:0,int2:0,int3:0,offer:0,hired:0}
+];
+
+function days(d){return Math.round((TODAY-new Date(d))/86400000);}
+function statusOf(r){
+  const atsPlus=r.ats+r.interview+r.offer+r.hired;
+  const intPlus=r.interview+r.offer+r.hired;
+  const d=days(r.opened);
+  if(intPlus>0) return {k:'moving',t:'Moving',rank:0};
+  if(d<=10) return {k:'new',t:'Filling',rank:1};
+  if(atsPlus===0 && r.total>=15) return {k:'stalled',t:'Stalled',rank:3};
+  return {k:'slow',t:'Slow',rank:2};
+}
+DATA.forEach(r=>{r.interview=r.int1+r.int2+r.int3;r.days=days(r.opened);const s=statusOf(r);r._s=s;r.statusRank=s.rank;});
+
+const owners=[...new Set(DATA.map(r=>r.owner))].sort();
+const clients=[...new Set(DATA.map(r=>r.client))].sort();
+const selO=document.getElementById('fOwner'),selC=document.getElementById('fClient');
+owners.forEach(o=>selO.add(new Option(o,o)));
+clients.forEach(c=>selC.add(new Option(c,c)));
+
+let sortK='statusRank',sortDir=-1;
+document.querySelectorAll('th').forEach(th=>th.addEventListener('click',()=>{
+  const k=th.dataset.k; if(sortK===k) sortDir*=-1; else{sortK=k;sortDir=(k==='role'||k==='owner'||k==='client'||k==='opened')?1:-1;} render();
+}));
+['fOwner','fClient','fStatus','fSearch'].forEach(id=>document.getElementById(id).addEventListener('input',render));
+
+function cell(v){return v>0?`<span class="stagecell">${v}</span>`:`<span class="zero">0</span>`;}
+function iv(v){return v>0?`<span class="ivcell">${v}</span>`:`<span class="zero">0</span>`;}
+
+function render(){
+  const o=selO.value,c=selC.value,st=document.getElementById('fStatus').value,q=document.getElementById('fSearch').value.toLowerCase();
+  let rows=DATA.filter(r=>(!o||r.owner===o)&&(!c||r.client===c)&&(!st||r._s.k===st)&&(!q||r.role.toLowerCase().includes(q)));
+  rows.sort((a,b)=>{let x=a[sortK],y=b[sortK];if(typeof x==='string'){x=x.toLowerCase();y=y.toLowerCase();}return x<y?-1*sortDir:x>y?1*sortDir:0;});
+
+  const roles=rows.length;
+  const inInt=rows.reduce((s,r)=>s+r.interview,0);
+  const reachedInt=rows.reduce((s,r)=>s+r.interview+r.offer+r.hired,0);
+  const stalled=rows.filter(r=>r._s.k==='stalled').length;
+  document.getElementById('cards').innerHTML=`
+    <div class="card"><div class="n">${roles}</div><div class="l">Roles tracked</div></div>
+    <div class="card"><div class="n">${inInt}</div><div class="l">Candidates in an interview stage now</div></div>
+    <div class="card"><div class="n">${reachedInt}</div><div class="l">Ever reached interview or beyond</div></div>
+    <div class="card warn"><div class="n">${stalled}</div><div class="l">Stalled roles</div></div>`;
+
+  document.getElementById('rows').innerHTML=rows.map(r=>`<tr>
+    <td class="role">${r.role}</td>
+    <td class="muted">${r.client}</td>
+    <td class="owner">${r.owner}</td>
+    <td class="muted">${r.opened}</td>
+    <td class="num">${r.days}</td>
+    <td class="num"><b>${r.total}</b></td>
+    <td class="num">${cell(r.contacted)}</td>
+    <td class="num">${cell(r.pos_resp)}</td>
+    <td class="num">${cell(r.screen)}</td>
+    <td class="num">${cell(r.ats)}</td>
+    <td class="num">${iv(r.int1)}</td>
+    <td class="num">${iv(r.int2)}</td>
+    <td class="num">${iv(r.int3)}</td>
+    <td class="num">${cell(r.offer)}</td>
+    <td class="num">${cell(r.hired)}</td>
+    <td><span class="badge b-${r._s.k}">${r._s.t}</span></td>
+  </tr>`).join('');
+}
+render();
+</script>
+</body>
+</html>

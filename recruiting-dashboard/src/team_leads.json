@@ -1,13 +1,7 @@
 {
-  "generated_at": "2026-08-06T09:21:11Z",
+  "generated_at": "2026-08-07T07:51:55Z",
   "source": "bamboohr_directory",
   "leads": [
-    {
-      "name": "Andrea Akovic",
-      "reports": [
-        "Naledi Ngwenya"
-      ]
-    },
     {
       "name": "Chené Elliot",
       "reports": [
@@ -75,7 +69,8 @@
     {
       "name": "Sanja Pavlovikj",
       "reports": [
-        "Iryna Dyda"
+        "Iryna Dyda",
+        "Naledi Ngwenya"
       ]
     },
     {

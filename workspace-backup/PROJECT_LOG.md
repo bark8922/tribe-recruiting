@@ -68,6 +68,19 @@ Orchestration = **Keboola Flows** (Flow B 3x/day `5 7,10,16` CET; Flow A 4x/day)
 
 ## Session history
 
+### 2026-08-10 — New client (No Isolation) pushed live on demand — the 2-step "sheet → dashboard now" runbook
+
+Blake added **No Isolation** (TA: Jelena Lacmanovic, Aug 2026 targets 150 contacted / 12 actual screens / 5 to ATS) to the WBR target sheet and needed it on the dashboard within 15 min. No code change needed — the structure already handles new clients dynamically (no allowlist since 2026-07-13). It's purely a **staleness** problem: the sheet syncs on a schedule, so a mid-day addition waits for the next cycle.
+
+**Runbook to force it through (~5 min end to end):**
+
+1. **n8n `WBR Google Sheet Sync`** (workflow `j5QsaTUpk4Nk1xhn`, active, runs 02:00 + 07:00 UTC). Execute manually. Reads Google Sheet `1Hyb5M244bkh9ygxnssq_wppWxrT0KtGeVFEYvHVoouc` (tabs incl. "TA Target") → commits `wbr_static/*.csv` to `bark8922/tribe-recruiting`. Takes ~13s.
+2. **Keboola render + push** — `run_job` on `kds-team.app-custom-python` / `01kpr863ypqr5pt74wms8fdj67`. ~230s (plus queue time if a scheduled build is already running). Clones the repo fresh, so it picks up whatever step 1 just committed, then pushes the rebuilt `public/dashboard_data_snowflake.json.gz`. Cloudflare auto-deploys.
+
+**Order matters:** the 08:46 scheduled render started ~1 min *before* the n8n sync committed, so it missed the new client. Always run the sheet sync first, confirm it succeeded, *then* fire the render.
+
+**Verification done:** `in.c-wbr-sheet.wbr_ta_target` in Keboola has the row; the deployed gz (commit `45af2bd`, job `1011460688`) carries No Isolation in `targets`, `wbr_actuals`, `mbr_ta_targets`, `mbr_ta_actuals`, `mbr_client_totals` and `wbr_ta_weekly_roster`. Note the Hires target is blank in the sheet — if that column should be populated, it's a sheet edit, not a pipeline fix.
+
 ### 2026-08-03 — Screen attribution REVERSED to role owner (Vladimir's MBR complaint)
 
 **Trigger:** Vladimir Stankovic told Blake his MBR numbers were wrong — contacted showed 489 when he thought ~800, and screens were "way off". Both claims investigated.

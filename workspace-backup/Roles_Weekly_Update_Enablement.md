@@ -28,24 +28,26 @@ Full field-by-field guide below. Shout if anything's unclear 🙏
 
 ## Part 2 — How to fill it out (field-by-field)
 
-When you tap a role, a short form opens. Here's what each part means.
+When you tap a role, a short form opens. It's split into two parts: role setup you fill once, and the weekly tracker you fill every week.
+
+### Part 1 — Role setup (fill once, saved for future weeks)
+
+**🧭 Your overall sourcing strategy & plan** — As an expert sourcer, what's your strategy to find this candidate? Include target companies/industries, search filters, keywords, channels, etc. Please fill this in the first time you open the role. It then saves to the role, stays there every week, and you can edit it whenever your approach changes. You don't have to rewrite it each week.
+
+### Part 2 — This week (fill every week)
 
 **Status this week** — pick one:
-- 🟢 **On track** — no major issues. Keeps the blocker and risk fields optional.
-- 🟡 **Some friction** — you want to flag something. Makes blocker + risk required.
-- 🔴 **Blocked** — you need help. Makes blocker + risk required.
+- 🟢 **On track** — no major issues. Keeps the friction and risk fields optional.
+- 🟡 **Some friction** — you want to flag something. Makes friction + risk required.
+- 🔴 **Blocked** — you need help. Makes friction + risk required.
 
-New roles open on 🟢 by default, so if it's on track you can just write your update and submit.
+Roles open on 🟢 by default, so if it's on track you can just write what you tried and submit.
 
-**🎯 Sourcing direction for this role** _(optional)_ — where you're focusing your search. Saved to the role, so you don't have to retype it each week.
+**What did you try this week?** — the main field, please always fill this in. What specific approach/focus did you try this week? What did you try (A), why (B), what were the results (C), and what will you adjust next (D)? Include specific search filters, Booleans, companies, etc.
 
-**🏁 Target outcome** _(optional)_ — what success looks like for this role.
+**Where are you seeing the most friction/issues for this role & why?** — required if status is 🟡 or 🔴. For example: tech stack, seniority, industry, response rate, location.
 
-**Where are candidates dropping off / biggest blocker?** — required if status is 🟡 or 🔴. Where in the funnel you're losing people, or what's holding the role up.
-
-**What's the risk if this continues, and what would you change?** — required if 🟡 or 🔴. Looking ahead: what could derail this, and your recommendation.
-
-**What did you try this week?** — the main field, please always fill this in. Walk through the chain, e.g. _"This week I tried A because of B, which resulted in C, and next I'll try D."_
+**If this continues, what's the risk to the search and what do you recommend to fix it?** — required if 🟡 or 🔴. Looking ahead: what could derail the search, and the change or strategy you'd recommend.
 
 **What do you want to do?**
 - 📤 **Submit** (default) — locks it in for the week; sends to the TA where there is one.

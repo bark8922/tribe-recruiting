@@ -1,19 +1,23 @@
 {
-  "generated_at": "2026-08-09T07:31:18Z",
+  "generated_at": "2026-08-10T08:13:18Z",
   "source": "bamboohr_directory",
   "leads": [
     {
       "name": "Chené Elliot",
       "reports": [
-        "Alexandra Richiteanu",
+        "Aleksandra Vistac",
         "Jelena Lacmanovic",
-        "Jovana Drakula",
-        "Nenad Skoko"
+        "Maria Desiree Gerbore",
+        "Marina Nikolic",
+        "Milica Mladzic",
+        "Niki Vokalkova",
+        "Samantha Nel"
       ]
     },
     {
       "name": "Gustavo Loureiro Castro",
       "reports": [
+        "Dolores Palotas",
         "Rodrigo Gomes",
         "Valeriia Yurykova"
       ]
@@ -28,15 +32,18 @@
     {
       "name": "Kristina Colovic",
       "reports": [
+        "Alexandra Richiteanu",
+        "Iryna Dyda",
+        "Jovana Drakula",
         "Marina Lazarevic",
-        "Samantha Nel",
         "Wladyslaw Gadomski"
       ]
     },
     {
       "name": "Kristjana Thorarinsdottir",
       "reports": [
-        "Chené Elliot",
+        "Kristina Colovic",
+        "Lejla Silva",
         "Simon Siew",
         "Vladimir Stankovic"
       ]
@@ -44,50 +51,38 @@
     {
       "name": "Lejla Dizdarevic",
       "reports": [
-        "Aleksandra Vistac",
-        "Dušan Špica",
-        "Maria Desiree Gerbore",
-        "Marina Nikolic"
+        "Nenad Skoko"
       ]
     },
     {
       "name": "Niki Vokalkova",
       "reports": [
+        "Chantal Bozkurt",
         "Dora Vrbanić",
-        "Fuad Safarov",
+        "Dušan Špica",
+        "Jan Dokulil",
         "Mateja Jokovic"
       ]
     },
     {
       "name": "Salem Mansuri",
       "reports": [
-        "Kristina Colovic",
-        "Lejla Silva",
+        "Chené Elliot",
         "Meho Saracevic"
       ]
     },
     {
       "name": "Sanja Pavlovikj",
       "reports": [
-        "Iryna Dyda",
         "Naledi Ngwenya"
-      ]
-    },
-    {
-      "name": "Simon Siew",
-      "reports": [
-        "Chantal Bozkurt",
-        "Dolores Palotas"
       ]
     },
     {
       "name": "Vladimir Stankovic",
       "reports": [
         "Ejla Suljcic",
-        "Jan Dokulil",
-        "Lisa Gargulinska",
-        "Milica Mladzic",
-        "Niki Vokalkova"
+        "Fuad Safarov",
+        "Lisa Gargulinska"
       ]
     }
   ],

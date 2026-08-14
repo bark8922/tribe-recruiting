@@ -2805,103 +2805,95 @@ const TTHTab = ({ data }) => {
   const jobs = data.tth_jobs || [];
   const monthly = data.tth_monthly || [];
 
-  // Filters — period (Year/Quarter/Month), client, TA, tech role
-  const [year, setYear] = useState('2026');
-  const [quarter, setQuarter] = useState('All');
-  const [month, setMonth] = useState('All');
-  const [client, setClient] = useState('All');
-  const [ta, setTa] = useState('All');
-  const [techRole, setTechRole] = useState('All');
-  const [category, setCategory] = useState('All');
-  const [subcategory, setSubcategory] = useState('All');
+  // Filters — all eight are multi-select. An empty array means "no constraint" (All).
+  // OR within a filter, AND across filters — same semantics as the Candidate Finder tab.
+  // Year seeds to the current year so the tab opens on the same view it used to.
+  const EMPTY_SEL = { year: [], quarter: [], month: [], client: [], ta: [], techRole: [], category: [], subcategory: [] };
+  const [sel, setSel] = useState(() => ({ ...EMPTY_SEL, year: [String(new Date().getFullYear())] }));
+  const [openKey, setOpenKey] = useState(null);
+  const toggleSel = (k, v) => setSel(p => ({ ...p, [k]: p[k].includes(v) ? p[k].filter(x => x !== v) : [...p[k], v] }));
+  const clearSel = (k) => setSel(p => ({ ...p, [k]: [] }));
+  const clearAllSel = () => setSel({ ...EMPTY_SEL });
+  // Close the open dropdown on any click outside a multi-select.
+  useEffect(() => {
+    const onDoc = (e) => { if (!e.target || !e.target.closest || !e.target.closest('[data-ms]')) setOpenKey(null); };
+    document.addEventListener('mousedown', onDoc);
+    return () => document.removeEventListener('mousedown', onDoc);
+  }, []);
   const [drillClient, setDrillClient] = useState(null);      // expanded row in table 1
   const [drillCategory, setDrillCategory] = useState(null);  // expanded row in table 2
 
   // Available filter options — derive from hire_months (ANY hire, matching PBI)
-  const years = useMemo(() => {
+  const allYears = useMemo(() => {
     const ys = new Set();
-    jobs.forEach(j => (j.hire_months || []).forEach(m => { if (m) ys.add(m.slice(0,4)); }));
-    return ['All', ...Array.from(ys).sort().reverse()];
+    jobs.forEach(j => (j.hire_months || []).forEach(m => { if (m) ys.add(m.slice(0, 4)); }));
+    return Array.from(ys).sort().reverse();
   }, [jobs]);
-  const months = useMemo(() => {
-    if (year === 'All') return ['All'];
+  const monthOptions = useMemo(() => {
     const ms = new Set();
     jobs.forEach(j => (j.hire_months || []).forEach(m => {
-      if (m && m.slice(0,4) === year) ms.add(m);
+      if (m && (sel.year.length === 0 || sel.year.includes(m.slice(0, 4)))) ms.add(m);
     }));
-    return ['All', ...Array.from(ms).sort()];
-  }, [jobs, year]);
-  const clients = useMemo(() => {
-    const cs = new Set(jobs.map(j => j.client).filter(Boolean));
-    return ['All', ...Array.from(cs).sort()];
-  }, [jobs]);
-  const tas = useMemo(() => {
-    const ts = new Set(jobs.map(j => j.ta).filter(Boolean));
-    return ['All', ...Array.from(ts).sort()];
-  }, [jobs]);
-  // Job Category / Subcategory. Subcategory cascades off the selected category so the
-  // list stays short and can't produce an empty intersection.
-  const categories = useMemo(() => {
-    const cs = new Set(jobs.map(j => j.job_category).filter(Boolean));
-    return ['All', ...Array.from(cs).sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }))];
-  }, [jobs]);
-  const subcategories = useMemo(() => {
-    const pool = category === 'All' ? jobs : jobs.filter(j => j.job_category === category);
-    const ss = new Set(pool.map(j => j.job_subcategory).filter(Boolean));
-    return ['All', ...Array.from(ss).sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }))];
-  }, [jobs, category]);
+    return Array.from(ms).sort();
+  }, [jobs, sel.year]);
 
-  // A period-match predicate: does this job have any hire falling in the selected year/quarter/month?
+  // Does a YYYY-MM fall inside the selected period? An empty list doesn't constrain.
+  const monthInPeriod = (m) => {
+    if (!m) return false;
+    if (sel.year.length && !sel.year.includes(m.slice(0, 4))) return false;
+    if (sel.quarter.length && !sel.quarter.includes('Q' + Math.ceil(Number(m.slice(5, 7)) / 3))) return false;
+    if (sel.month.length && !sel.month.includes(m)) return false;
+    return true;
+  };
+  const periodActive = sel.year.length > 0 || sel.quarter.length > 0 || sel.month.length > 0;
+
+  // A period-match predicate: does this job have any hire falling in the selected period?
   const jobMatchesPeriod = (j) => {
-    if (year === 'All') return true;
+    if (!periodActive) return true;
     const hms = j.hire_months || [];
     if (!hms.length) return false;
-    if (month !== 'All') return hms.includes(month);
-    if (quarter !== 'All') {
-      // quarter format: "Q1".."Q4", months Q1=01-03, Q2=04-06, Q3=07-09, Q4=10-12
-      const qNum = Number(quarter.replace('Q',''));
-      const qMonths = [qNum*3-2, qNum*3-1, qNum*3].map(n => String(n).padStart(2,'0'));
-      return hms.some(m => m.slice(0,4) === year && qMonths.includes(m.slice(5,7)));
-    }
-    return hms.some(m => m.slice(0,4) === year);
+    return hms.some(monthInPeriod);
   };
 
-  // Year-specific flag keys — fallback for legacy data without t2f_months.
-  const t2fFlag = year === 'All' ? 'has_t2f' : `has_t2f_${year}`;
-  const t2fiFlag = year === 'All' ? 'has_t2fi' : `has_t2fi_${year}`;
-  // Set of YYYY-MM strings matching the current year/quarter/month filter.
-  // Used with avgByMonths for PBI-accurate month-level T2F/T2Fi filtering.
+  // Dimension filters. Options cascade: each list offers only values still reachable given
+  // the period plus the OTHER dimension selections, so no combination can come back empty.
+  const DIMS = [['client', 'client'], ['ta', 'ta'], ['techRole', 'tech_role'],
+                ['category', 'job_category'], ['subcategory', 'job_subcategory']];
+  const matchesDimsExcept = (j, skip) =>
+    DIMS.every(([k, f]) => k === skip || sel[k].length === 0 || sel[k].includes(j[f]));
+  const optsFor = (key) => {
+    const field = (DIMS.find(([k]) => k === key) || [])[1];
+    const vals = new Set();
+    jobs.forEach(j => {
+      if (!jobMatchesPeriod(j) || !matchesDimsExcept(j, key)) return;
+      if (j[field]) vals.add(j[field]);
+    });
+    return Array.from(vals).sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+  };
+
+  // Year-specific flag keys — fallback for legacy rows without t2f_months. Only meaningful
+  // for exactly one selected year; a multi-year (or unconstrained) selection falls back to
+  // the all-years OR flag.
+  const t2fFlag = sel.year.length === 1 ? `has_t2f_${sel.year[0]}` : 'has_t2f';
+  const t2fiFlag = sel.year.length === 1 ? `has_t2fi_${sel.year[0]}` : 'has_t2fi';
+  // Set of YYYY-MM strings matching the current period, used by avgByMonths for PBI-accurate
+  // month-level T2F/T2Fi filtering. An explicit month pick wins; otherwise enumerate the
+  // selected years crossed with the selected quarters.
   const periodMonths = useMemo(() => {
     const set = new Set();
-    if (year === 'All') {
-      jobs.forEach(j => (j.hire_months || []).forEach(m => { if (m) set.add(m); }));
-      return set;
-    }
-    if (month !== 'All') { set.add(month); return set; }
-    if (quarter !== 'All') {
-      const qn = Number(quarter.replace('Q', ''));
-      for (let i = 0; i < 3; i++) {
-        const mm = String(qn * 3 - 2 + i).padStart(2, '0');
-        set.add(`${year}-${mm}`);
-      }
-      return set;
-    }
-    for (let i = 1; i <= 12; i++) set.add(`${year}-${String(i).padStart(2, '0')}`);
+    if (sel.month.length) { sel.month.forEach(m => set.add(m)); return set; }
+    const qs = sel.quarter.length ? sel.quarter.map(q => Number(q.slice(1))) : [1, 2, 3, 4];
+    (sel.year.length ? sel.year : allYears).forEach(y => qs.forEach(q => {
+      for (let i = 0; i < 3; i++) set.add(`${y}-${String(q * 3 - 2 + i).padStart(2, '0')}`);
+    }));
     return set;
-  }, [jobs, year, quarter, month]);
+  }, [allYears, sel.year, sel.quarter, sel.month]);
 
   // Apply filters to get working set
   const filtered = useMemo(() => {
-    return jobs.filter(j => {
-      if (!jobMatchesPeriod(j)) return false;
-      if (client !== 'All' && j.client !== client) return false;
-      if (ta !== 'All' && j.ta !== ta) return false;
-      if (techRole !== 'All' && j.tech_role !== techRole) return false;
-      if (category !== 'All' && j.job_category !== category) return false;
-      if (subcategory !== 'All' && j.job_subcategory !== subcategory) return false;
-      return true;
-    });
-  }, [jobs, year, quarter, month, client, ta, techRole, category, subcategory]);
+    return jobs.filter(j => jobMatchesPeriod(j)
+      && DIMS.every(([k, f]) => sel[k].length === 0 || sel[k].includes(j[f])));
+  }, [jobs, sel]);
 
   // KPI totals
   const kpis = useMemo(() => ({
@@ -2955,7 +2947,7 @@ const TTHTab = ({ data }) => {
     filtered.forEach(j => {
       (j.hire_months || []).forEach(mo => {
         if (!mo) return;
-        if (year !== 'All' && mo.slice(0,4) !== year) return;
+        if (!monthInPeriod(mo)) return;
         (groups[mo] = groups[mo] || []).push(j);
       });
     });
@@ -2970,7 +2962,7 @@ const TTHTab = ({ data }) => {
         t2fill: avgByMonths(js, 't2fill', 't2fi_months', moSet, `has_t2fi_${yr}`),
       };
     }).sort((a, b) => a.month.localeCompare(b.month));
-  }, [filtered, year]);
+  }, [filtered, sel.year, sel.quarter, sel.month]);
 
   const Kpi = ({ label, value }) => (
     <div className="bg-blue-100 text-blue-900 rounded-lg px-4 py-3 min-w-[120px] flex-1">
@@ -2979,15 +2971,17 @@ const TTHTab = ({ data }) => {
     </div>
   );
 
-  const Select = ({ label, value, onChange, options }) => (
-    <div>
-      <div className="text-xs text-gray-400 mb-1">{label}</div>
-      <select value={value} onChange={e => onChange(e.target.value)}
-        className="w-full bg-gray-800 border border-gray-700 text-white text-sm rounded px-2 py-1">
-        {options.map(o => <option key={o} value={o}>{o}</option>)}
-      </select>
-    </div>
-  );
+  const TTH_FILTERS = [
+    ['year', 'Year', allYears],
+    ['quarter', 'Quarter', ['Q1', 'Q2', 'Q3', 'Q4']],
+    ['month', 'Month', monthOptions],
+    ['client', 'Client', optsFor('client')],
+    ['ta', 'TA', optsFor('ta')],
+    ['techRole', 'Tech Role', optsFor('techRole')],
+    ['category', 'Job Category', optsFor('category')],
+    ['subcategory', 'Subcategory', optsFor('subcategory')],
+  ];
+  const activeFilterCount = Object.values(sel).reduce((n, a) => n + a.length, 0);
 
   return (
     <div className="space-y-6">
@@ -3005,15 +2999,25 @@ const TTHTab = ({ data }) => {
         </div>
       </div>
 
-      <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-8 gap-3">
-        <Select label="Year" value={year} onChange={v => { setYear(v); setQuarter('All'); setMonth('All'); }} options={years} />
-        <Select label="Quarter" value={quarter} onChange={v => { setQuarter(v); setMonth('All'); }} options={year === 'All' ? ['All'] : ['All', 'Q1', 'Q2', 'Q3', 'Q4']} />
-        <Select label="Month" value={month} onChange={setMonth} options={months} />
-        <Select label="Client" value={client} onChange={setClient} options={clients} />
-        <Select label="TA" value={ta} onChange={setTa} options={tas} />
-        <Select label="Tech Role" value={techRole} onChange={setTechRole} options={['All', 'Yes', 'No']} />
-        <Select label="Job Category" value={category} onChange={v => { setCategory(v); setSubcategory('All'); }} options={categories} />
-        <Select label="Subcategory" value={subcategory} onChange={setSubcategory} options={subcategories} />
+      <div className="bg-gray-800 border border-gray-700 rounded-lg p-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
+          {TTH_FILTERS.map(([k, label, opts]) => (
+            <div key={k}>
+              <div className="text-xs text-gray-400 mb-1">{label}</div>
+              <FinderMultiSelect fkey={`tth-${k}`} label={label} options={opts} selected={sel[k]}
+                onToggle={v => toggleSel(k, v)} onClear={() => clearSel(k)}
+                isOpen={openKey === k} onOpen={() => setOpenKey(openKey === k ? null : k)} />
+            </div>
+          ))}
+        </div>
+        <div className="mt-3 flex items-center gap-3 text-xs text-gray-400">
+          <span>{filtered.length.toLocaleString()} of {jobs.length.toLocaleString()} jobs match</span>
+          {activeFilterCount > 0 && (
+            <button type="button" onClick={clearAllSel} className="text-blue-400 hover:underline">
+              Clear all filters
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">

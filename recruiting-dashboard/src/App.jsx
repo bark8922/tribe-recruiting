@@ -2812,6 +2812,8 @@ const TTHTab = ({ data }) => {
   const [client, setClient] = useState('All');
   const [ta, setTa] = useState('All');
   const [techRole, setTechRole] = useState('All');
+  const [category, setCategory] = useState('All');
+  const [subcategory, setSubcategory] = useState('All');
   const [drillClient, setDrillClient] = useState(null);      // expanded row in table 1
   const [drillCategory, setDrillCategory] = useState(null);  // expanded row in table 2
 
@@ -2837,6 +2839,17 @@ const TTHTab = ({ data }) => {
     const ts = new Set(jobs.map(j => j.ta).filter(Boolean));
     return ['All', ...Array.from(ts).sort()];
   }, [jobs]);
+  // Job Category / Subcategory. Subcategory cascades off the selected category so the
+  // list stays short and can't produce an empty intersection.
+  const categories = useMemo(() => {
+    const cs = new Set(jobs.map(j => j.job_category).filter(Boolean));
+    return ['All', ...Array.from(cs).sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }))];
+  }, [jobs]);
+  const subcategories = useMemo(() => {
+    const pool = category === 'All' ? jobs : jobs.filter(j => j.job_category === category);
+    const ss = new Set(pool.map(j => j.job_subcategory).filter(Boolean));
+    return ['All', ...Array.from(ss).sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }))];
+  }, [jobs, category]);
 
   // A period-match predicate: does this job have any hire falling in the selected year/quarter/month?
   const jobMatchesPeriod = (j) => {
@@ -2884,9 +2897,11 @@ const TTHTab = ({ data }) => {
       if (client !== 'All' && j.client !== client) return false;
       if (ta !== 'All' && j.ta !== ta) return false;
       if (techRole !== 'All' && j.tech_role !== techRole) return false;
+      if (category !== 'All' && j.job_category !== category) return false;
+      if (subcategory !== 'All' && j.job_subcategory !== subcategory) return false;
       return true;
     });
-  }, [jobs, year, quarter, month, client, ta, techRole]);
+  }, [jobs, year, quarter, month, client, ta, techRole, category, subcategory]);
 
   // KPI totals
   const kpis = useMemo(() => ({
@@ -2990,13 +3005,15 @@ const TTHTab = ({ data }) => {
         </div>
       </div>
 
-      <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+      <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-8 gap-3">
         <Select label="Year" value={year} onChange={v => { setYear(v); setQuarter('All'); setMonth('All'); }} options={years} />
         <Select label="Quarter" value={quarter} onChange={v => { setQuarter(v); setMonth('All'); }} options={year === 'All' ? ['All'] : ['All', 'Q1', 'Q2', 'Q3', 'Q4']} />
         <Select label="Month" value={month} onChange={setMonth} options={months} />
         <Select label="Client" value={client} onChange={setClient} options={clients} />
         <Select label="TA" value={ta} onChange={setTa} options={tas} />
         <Select label="Tech Role" value={techRole} onChange={setTechRole} options={['All', 'Yes', 'No']} />
+        <Select label="Job Category" value={category} onChange={v => { setCategory(v); setSubcategory('All'); }} options={categories} />
+        <Select label="Subcategory" value={subcategory} onChange={setSubcategory} options={subcategories} />
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -3133,13 +3150,23 @@ const TTHTab = ({ data }) => {
 // Tech Role flag from job_category (subset of calc-col logic — Jacopo owns the full list).
 // ============================================================
 
-// Tech Role classifier — matches DAX `# Tech Roles Hired` filter (job_category subset).
-// The full `Tech Role` calc column also includes Product Manager, IT, QA, Engineering Management,
-// and IT/Tech Project Manager subcategories — but PD rows don't carry job_subcategory, so we use
-// the simpler hires-side filter. Per memory reference_metric_ownership.md, Jacopo owns this list.
+// Tech Role classifier — must stay in sync with the tech_role CASE in Keboola transform
+// 01kpztmw7d7911kbmyrdf7gcq5. This is only the FALLBACK path, used when a job_id isn't in
+// tth_jobs; tth_jobs.tech_role is canonical.
+//
+// Fixed 2026-08-14. The previous list was copied verbatim from the legacy Power BI DAX and mixed
+// category-level with subcategory-level labels, then tested all of them against job_category.
+// Only 'Design' exists as a job_category in Bubble, so the flag was true for Design and nothing
+// else — Backend Engineers, DevOps, Data Analysts and PMs all read as Non-Tech. Deliberately no
+// longer reconciles to the legacy PBI '# Tech Roles Hired' measure, which shared the defect.
+//
+// PD rows carry job_category but not job_subcategory, so the two subcategory-conditional cases in
+// the SQL — Operations (Program / Project Management) with IT/Technical Program Manager, and
+// Other with subcategory Tech — cannot be reproduced here and resolve to 'No' on this path.
 const TECH_ROLE_CATEGORIES = new Set([
-  'Data Analytics', 'DevOps', 'Software Engineering', 'Software', 'Design',
-  'Product Manager', 'Information Technology', 'Quality Assurance (QA) ', 'Engineering Management',
+  'Engineering', 'Engineering (DevOps / SRE)', 'Engineering (Engineering Management)',
+  'Engineering (Automation / Manual QA)', 'Data & Analytics', 'Product Management',
+  'IT & Technical Support', 'Design',
 ]);
 
 // Current TS roster — matches the hardcoded list in Keboola block b0.c6 (ts_summary_per_sourcer SQL).

@@ -27,6 +27,7 @@
   th.num,td.num{text-align:right;font-variant-numeric:tabular-nums}
   .ivh{color:#86efac}
   tr:hover td{background:#1b2434}
+  tr.arch td{opacity:.55}
   .role{font-weight:600}
   .owner{color:#cdd8e6}
   .muted{color:var(--muted)}
@@ -38,20 +39,21 @@
   .b-slow{background:rgba(245,158,11,.15);color:#fcd34d;border:1px solid rgba(245,158,11,.35)}
   .b-moving{background:rgba(34,197,94,.15);color:#86efac;border:1px solid rgba(34,197,94,.35)}
   .b-new{background:rgba(100,116,139,.18);color:#b6c2d2;border:1px solid rgba(100,116,139,.4)}
+  .b-archived{background:rgba(100,116,139,.12);color:#94a3b8;border:1px solid rgba(100,116,139,.3)}
   .foot{color:var(--muted);font-size:12px;margin-top:14px}
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>Role Pipeline Tracker</h1>
-  <div class="sub" id="sub">Are candidates actually moving through the stages? Internal sourcing pools and archived roles excluded.</div>
+  <div class="sub" id="sub">Are candidates actually moving through the stages? Internal sourcing pools excluded.</div>
 
   <div class="cards" id="cards"></div>
 
   <div class="controls">
     <select id="fOwner"><option value="">All owners</option></select>
     <select id="fClient"><option value="">All clients</option></select>
-    <select id="fStatus"><option value="">All statuses</option><option value="stalled">Stalled</option><option value="slow">Slow</option><option value="moving">Moving</option><option value="new">Filling</option></select>
+    <select id="fStatus"><option value="">All statuses</option><option value="stalled">Stalled</option><option value="slow">Slow</option><option value="moving">Moving</option><option value="new">Filling</option><option value="archived">Archived</option></select>
     <input type="text" id="fSearch" placeholder="Search role...">
   </div>
 
@@ -78,7 +80,7 @@
     <tbody id="rows"></tbody>
   </table>
   </div>
-  <div class="foot">Status: <b>Moving</b> = at least one candidate in an interview stage or beyond. <b>Stalled</b> = open &gt;10 days, 15+ candidates, nobody past Move to ATS. <b>Slow</b> = some progress but nobody in interviews yet. <b>Filling</b> = opened in the last 10 days, still sourcing.</div>
+  <div class="foot">Status: <b>Moving</b> = a candidate in an interview stage or beyond. <b>Stalled</b> = open &gt;10 days, 15+ candidates, nobody past Move to ATS. <b>Slow</b> = some progress but nobody in interviews. <b>Filling</b> = opened in the last 10 days. <b>Archived</b> = role closed/archived.</div>
 </div>
 
 <script>
@@ -87,6 +89,7 @@ let sortK='statusRank',sortDir=-1;
 
 function days(d){return Math.round((REF-new Date(d))/86400000);}
 function statusOf(r){
+  if(r.archived) return {k:'archived',t:'Archived',rank:-1};
   const atsPlus=r.ats+r.interview+r.offer+r.hired;
   const intPlus=r.interview+r.offer+r.hired;
   const d=days(r.opened);
@@ -101,8 +104,8 @@ function iv(v){return v>0?`<span class="ivcell">${v}</span>`:`<span class="zero"
 fetch('./data.json?t='+Date.now()).then(r=>r.json()).then(j=>{
   REF=new Date(j.generated_at||new Date());
   DATA=j.rows||[];
-  DATA.forEach(r=>{r.interview=r.int1+r.int2+r.int3;r.days=days(r.opened);const s=statusOf(r);r._s=s;r.statusRank=s.rank;});
-  document.getElementById('sub').textContent='Are candidates actually moving through the stages? Data as of '+(j.generated_at||'')+'. Internal sourcing pools and archived roles excluded.';
+  DATA.forEach(r=>{r.archived=Number(r.archived)||0;r.interview=r.int1+r.int2+r.int3;r.days=days(r.opened);const s=statusOf(r);r._s=s;r.statusRank=s.rank;});
+  document.getElementById('sub').textContent='Are candidates actually moving through the stages? Data as of '+(j.generated_at||'')+'. Internal sourcing pools excluded.';
   const owners=[...new Set(DATA.map(r=>r.owner))].sort();
   const clients=[...new Set(DATA.map(r=>r.client))].sort();
   const selO=document.getElementById('fOwner'),selC=document.getElementById('fClient');
@@ -121,17 +124,18 @@ function render(){
   let rows=DATA.filter(r=>(!o||r.owner===o)&&(!c||r.client===c)&&(!st||r._s.k===st)&&(!q||r.role.toLowerCase().includes(q)));
   rows.sort((a,b)=>{let x=a[sortK],y=b[sortK];if(typeof x==='string'){x=x.toLowerCase();y=y.toLowerCase();}return x<y?-1*sortDir:x>y?1*sortDir:0;});
 
-  const roles=rows.length;
-  const inInt=rows.reduce((s,r)=>s+r.interview,0);
-  const reachedInt=rows.reduce((s,r)=>s+r.interview+r.offer+r.hired,0);
-  const stalled=rows.filter(r=>r._s.k==='stalled').length;
+  const active=rows.filter(r=>!r.archived);
+  const roles=active.length;
+  const inInt=active.reduce((s,r)=>s+r.interview,0);
+  const reachedInt=active.reduce((s,r)=>s+r.interview+r.offer+r.hired,0);
+  const stalled=active.filter(r=>r._s.k==='stalled').length;
   document.getElementById('cards').innerHTML=`
-    <div class="card"><div class="n">${roles}</div><div class="l">Roles tracked</div></div>
+    <div class="card"><div class="n">${roles}</div><div class="l">Active roles tracked</div></div>
     <div class="card"><div class="n">${inInt}</div><div class="l">Candidates in an interview stage now</div></div>
     <div class="card"><div class="n">${reachedInt}</div><div class="l">Ever reached interview or beyond</div></div>
     <div class="card warn"><div class="n">${stalled}</div><div class="l">Stalled roles</div></div>`;
 
-  document.getElementById('rows').innerHTML=rows.map(r=>`<tr>
+  document.getElementById('rows').innerHTML=rows.map(r=>`<tr class="${r.archived?'arch':''}">
     <td class="role">${r.role}</td>
     <td class="muted">${r.client}</td>
     <td class="owner">${r.owner}</td>

@@ -20,7 +20,7 @@ from keboola.component import CommonInterface
 REPO = "bark8922/tribe-recruiting"
 TARGET_PATH = "recruiting-dashboard/public/role-tracker/data.json"
 INT_FIELDS = ["total", "contacted", "pos_resp", "screen", "ats",
-              "int1", "int2", "int3", "offer", "hired"]
+              "int1", "int2", "int3", "offer", "hired", "archived"]
 
 
 def gh(url, token, method="GET", data=None):

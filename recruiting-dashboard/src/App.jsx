@@ -194,7 +194,9 @@ const WBRTab = ({ data }) => {
 
   // Team-lead filter (Bamboo-derived, see refresh_team_leads.py).
   // Single-select dropdown; when set, filters TA Weekly Detail + TS Weekly +
-  // TS Overall Conversion Rate to that lead's direct reports only (no transitive).
+  // TS Overall Conversion Rate to that lead's direct reports PLUS the lead
+  // themselves (still no transitive reports - picking Kristjana gives Kristjana,
+  // Chene, Simon, Vladimir but not Chene's people).
   // Client Summary stays unfiltered. Ex-employees / unmatched names never
   // appear under any team filter (only in 'All teams' view).
   const [selectedTeamLead, setSelectedTeamLead] = useState('');
@@ -202,11 +204,32 @@ const WBRTab = ({ data }) => {
     () => (teamLeadsData.leads || []).map(l => l.name).sort((a, b) => a.localeCompare(b)),
     []
   );
+  // team_leads.json stores `reports` under their FUNNEL names but `name` under
+  // the BambooHR name. Those only diverge for leads listed in
+  // name_overrides_applied (currently just Lejla Dizdarevic, whose funnel rows
+  // read "Lejla Silva"). The map is funnel -> bamboo, so invert it to resolve a
+  // lead's own name back to whatever the funnel data calls them.
+  const bambooToFunnel = useMemo(() => {
+    const out = {};
+    for (const [funnel, bamboo] of Object.entries(teamLeadsData.name_overrides_applied || {})) {
+      out[normalizeTa(bamboo)] = normalizeTa(funnel);
+    }
+    return out;
+  }, []);
+
   const selectedLeadReports = useMemo(() => {
     if (!selectedTeamLead) return null;
     const lead = (teamLeadsData.leads || []).find(l => l.name === selectedTeamLead);
-    return lead ? new Set(lead.reports) : new Set();
-  }, [selectedTeamLead]);
+    if (!lead) return new Set();
+    const own = normalizeTa(lead.name);
+    // Include the lead under both their Bamboo name and their funnel alias so
+    // the row matches regardless of which the data uses.
+    return new Set([
+      own,
+      ...(bambooToFunnel[own] ? [bambooToFunnel[own]] : []),
+      ...lead.reports.map(normalizeTa),
+    ]);
+  }, [selectedTeamLead, bambooToFunnel]);
 
   // 6 weeks ending at the currently selected week (w12-w17 if selectedWeek=17).
   const drillWeeks = useMemo(
@@ -643,7 +666,7 @@ const WBRTab = ({ data }) => {
       return a.ta.localeCompare(b.ta);
     });
     return selectedLeadReports
-      ? _detail.filter(r => selectedLeadReports.has(r.ta))
+      ? _detail.filter(r => selectedLeadReports.has(normalizeTa(r.ta)))
       : _detail;
   }, [data, selectedWeek, selectedLeadReports]);
 
@@ -709,7 +732,7 @@ const WBRTab = ({ data }) => {
     });
     const _tsDataSorted = _tsBase.sort((a, b) => a.ts.localeCompare(b.ts));
     return selectedLeadReports
-      ? _tsDataSorted.filter(r => selectedLeadReports.has(r.ts))
+      ? _tsDataSorted.filter(r => selectedLeadReports.has(normalizeTa(r.ts)))
       : _tsDataSorted;
   }, [data, selectedWeek, selectedLeadReports]);
 
@@ -758,7 +781,7 @@ const WBRTab = ({ data }) => {
     });
     const _convSorted = _convBase.sort((a, b) => a.ts.localeCompare(b.ts));
     return selectedLeadReports
-      ? _convSorted.filter(r => selectedLeadReports.has(r.ts))
+      ? _convSorted.filter(r => selectedLeadReports.has(normalizeTa(r.ts)))
       : _convSorted;
   }, [data, selectedWeek, selectedLeadReports]);
 

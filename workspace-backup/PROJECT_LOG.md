@@ -2,7 +2,7 @@
 
 Single source of truth for status, decisions, and open items. Survives Cowork resets because it lives in this folder (on Blake's computer) and is backed up to GitHub. Claude updates this at the end of any session where real work happened. Blake can also say "update the log" anytime.
 
-Last updated: 2026-08-03
+Last updated: 2026-08-14
 
 ---
 
@@ -49,7 +49,8 @@ Orchestration = **Keboola Flows** (Flow B 3x/day `5 7,10,16` CET; Flow A 4x/day)
 ## Known gotchas
 
 - App.jsx is huge (~4,500 lines). Edit via Python search/replace, run `npx vite build` before every push.
-- Local folder can lag GitHub — clone the repo fresh and diff before copying anything.
+- Local folder can lag GitHub — clone the repo fresh and diff before copying anything. **This bites for real:** on 2026-08-14 the local `App.jsx` was months behind and would have reverted the TTH filters, Tech Role fix, PD heatmap and viewer-attributed views. Apply changes to the freshly-cloned repo copy, never to this folder's copy.
+- Some people exist under TWO spellings in the funnel data (double-space vs single-space, e.g. `"Simon  Siew"` / `"Simon Siew"`, `"Jelena  Lacmanovic"` / `"Jelena Lacmanovic"`), which splits their numbers across two identities. Always match/group names through `normalizeTa` — never raw string equality. Fixed in the WBR team filter 2026-08-14; other aggregates not yet swept.
 - The deployed dashboard is gated behind a login wall (`/api/login`), so the live `dashboard_data_snowflake.json.gz` can't be fetched unauthenticated from the sandbox (returns the sign-in HTML). Verify data via the Keboola table or a local `npm run build` instead.
 - Data ships as a committed gzip at `recruiting-dashboard/public/dashboard_data_snowflake.json.gz` (~2.3MB binary), written directly by `keboola_entry.py`. Do NOT reintroduce the 52MB plaintext `src/dashboard_data_snowflake.json`. Build is just `vite build` (the old `gzip-data.mjs` step is gone).
 - Keboola→GitHub push uses a PAT in the render component config (`kds-team.app-custom-python`, `01kpr863ypqr5pt74wms8fdj67`, field `#github_token`). If pushes fail with `git push rc=128 / 403`, the PAT lost write access — rotate it (re-authorize SSO if the org enforces it). This silently freezes the WHOLE deployed dashboard at the last good push.
@@ -67,6 +68,28 @@ Orchestration = **Keboola Flows** (Flow B 3x/day `5 7,10,16` CET; Flow A 4x/day)
 ---
 
 ## Session history
+
+### 2026-08-14 — WBR team-lead filter now includes the lead themselves (+ split-identity name bug)
+
+**Ask:** on the WBR page, picking a team lead showed only their reports. Blake wanted the lead in the list too — pick Gustavo's team, see Gustavo and his people.
+
+**Shipped:** commit `38f6f7a` on `bark8922/tribe-recruiting`, frontend only (`recruiting-dashboard/src/App.jsx`, +29/-6, all inside `WBRTab`). No SQL, no Keboola, no render-script change — the leads' rows already existed in the data, they were just being filtered out. `dist/` is gitignored so Cloudflare rebuilds from source.
+
+Three changes to `selectedLeadReports`:
+
+1. Seed the Set with the lead's own name alongside `lead.reports`. Still **non-transitive** — Kristjana gives Kristjana + Chené + Simon + Vladimir, not Chené's eight.
+2. **Lejla name resolution.** `team_leads.json` stores `reports` under FUNNEL names but `name` under the BambooHR name. Those only diverge for leads in `name_overrides_applied`, currently just Lejla (funnel "Lejla Silva" vs Bamboo "Lejla Dizdarevic"). Inverted that map in the frontend so a lead resolves to both spellings. If another lead ever gets a married-name override this keeps working; the cleaner long-term fix is to have `refresh_team_leads.py` emit a `funnel_name` per lead.
+3. **Whitespace normalization** on both sides of the match, via the existing `normalizeTa` helper (line ~49) rather than a new function.
+
+**The real bug found underneath (3):** the funnel data itself contains BOTH `"Simon  Siew"` and `"Simon Siew"`, and BOTH `"Jelena  Lacmanovic"` and `"Jelena Lacmanovic"` — double-spaced and single-spaced variants as separate strings. Those two people's numbers were **split across two identities**, and the exact-string team filter only ever matched one half. So Simon was silently missing from Kristjana's team view and Jelena from Chené's. Normalizing merges them. The TA-detail dedup key already used `normalizeTa`, so no duplicate rows appear.
+
+> **Open, not investigated:** this split-identity problem may affect any other WBR aggregate keyed on a raw name. Only the team filter was fixed. Worth a sweep.
+
+**Verified** by simulating the new logic against `dashboard_data_snowflake.json` before pushing: Andrea, Chené, Gustavo, Kristina, Meho, Niki, Simon, Vladimir each gain their own row; Lejla gains hers via the Silva alias; Kristjana gains Simon; Chené gains Jelena. Build clean (2300 modules).
+
+**Jacopo, Salem, Kristjana, Sanja gain nothing** — they appear nowhere in the WBR funnel under any spelling (fuzzy-matched to confirm it isn't a name problem). First three are directors per the 2026-05-28 `_team_lead_audit/AUDIT_SUMMARY.md`, which flags an open question about whether they belong in the dropdown at all. **Sanja is explained by the locked sourcing decision above: "Sanja Pavlovikj excluded entirely."** Their teams still render exactly as before; only the lead's own row is absent.
+
+> **Gotcha confirmed the hard way:** the local `App.jsx` in this folder was WAY behind GitHub — missing the TTH multi-select filters and the same-day Tech Role fix, the Project Overview heatmap + viewer-attributed views, and the Candidate Finder city/recency filters. Pushing it would have reverted all of that. Caught by diffing a fresh clone against local before copying. The changes were re-applied to the repo's `App.jsx` instead. Local copy has since been synced to repo HEAD; the stale one is kept as `App.jsx.stale-2026-08-14`. **Always clone fresh and diff — never copy this folder's App.jsx over the repo's.**
 
 ### 2026-08-10 — New client (No Isolation) pushed live on demand — the 2-step "sheet → dashboard now" runbook
 

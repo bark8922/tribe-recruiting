@@ -48,14 +48,6 @@ const kebolaClientMatches = (rawKeboolaClient, displayClient) => {
 // Normalize TA name — Keboola has double spaces for some names
 const normalizeTa = (name) => (name || '').replace(/\s+/g, ' ').trim();
 
-// A target row counts toward WBR rollups if it has a real (non-zero) target
-// for any metric. Replaces the old `team_group` (BU-label) gate, which silently
-// dropped officially-targeted TAs that simply lacked a BU label (e.g. Reaktor /
-// Simon Siew), making the Client Summary disagree with the TA Detail rows.
-const hasRealTarget = (t) =>
-  ((Number(t.contacted) || 0) + (Number(t.actual_screens) || 0) +
-   (Number(t.moved_to_ats) || 0) + (Number(t.hires) || 0)) > 0;
-
 // Business unit group — driven ENTIRELY by the display client name, not per-TA
 // team_group. Some Aviv TAs are tagged 'Ponies/Unicorns' in the target sheet
 // (internal team-management labels) even though Aviv the client belongs to
@@ -195,8 +187,8 @@ const WBRTab = ({ data }) => {
   // Team-lead filter (Bamboo-derived, see refresh_team_leads.py).
   // Single-select dropdown; when set, filters TA Weekly Detail + TS Weekly +
   // TS Overall Conversion Rate to that lead's direct reports PLUS the lead
-  // themselves (still no transitive reports - picking Kristjana gives Kristjana,
-  // Chene, Simon, Vladimir but not Chene's people).
+  // themselves (still no transitive reports — picking Kristjana gives Kristjana,
+  // Chené, Simon, Vladimir but not Chené's people).
   // Client Summary stays unfiltered. Ex-employees / unmatched names never
   // appear under any team filter (only in 'All teams' view).
   const [selectedTeamLead, setSelectedTeamLead] = useState('');
@@ -204,6 +196,7 @@ const WBRTab = ({ data }) => {
     () => (teamLeadsData.leads || []).map(l => l.name).sort((a, b) => a.localeCompare(b)),
     []
   );
+
   // team_leads.json stores `reports` under their FUNNEL names but `name` under
   // the BambooHR name. Those only diverge for leads listed in
   // name_overrides_applied (currently just Lejla Dizdarevic, whose funnel rows
@@ -265,7 +258,7 @@ const WBRTab = ({ data }) => {
   // Client Summary rollup logic with Wolt sub-BU routing via kebolaClientMatches).
   const drillClientWeekly = (displayClient) => {
     const out = {};
-    const targetsByTa = (data.targets || []).filter(t => hasRealTarget(t) && normalizeClient(t.client) === displayClient);
+    const targetsByTa = (data.targets || []).filter(t => t.team_group && normalizeClient(t.client) === displayClient);
     for (const t of targetsByTa) {
       const targetTaNorm = normalizeTa(t.ta);
       for (const [key, byWeek] of Object.entries(data.wbr_actuals || {})) {
@@ -291,7 +284,7 @@ const WBRTab = ({ data }) => {
   const drillTaTargets = (taName) => {
     const normalized = normalizeTa(taName);
     return (data.targets || [])
-      .filter(t => hasRealTarget(t) && normalizeTa(t.ta) === normalized)
+      .filter(t => t.team_group && normalizeTa(t.ta) === normalized)
       .reduce((a, r) => ({
         contacted:      a.contacted      + (Number(r.contacted) || 0),
         actual_screens: a.actual_screens + (Number(r.actual_screens) || 0),
@@ -303,7 +296,7 @@ const WBRTab = ({ data }) => {
   // Weekly targets for a DISPLAY client (sum of rostered TAs' targets).
   const drillClientTargets = (displayClient) =>
     (data.targets || [])
-      .filter(t => hasRealTarget(t) && normalizeClient(t.client) === displayClient)
+      .filter(t => t.team_group && normalizeClient(t.client) === displayClient)
       .reduce((a, r) => ({
         contacted:      a.contacted      + (Number(r.contacted) || 0),
         actual_screens: a.actual_screens + (Number(r.actual_screens) || 0),
@@ -384,7 +377,7 @@ const WBRTab = ({ data }) => {
     // under Aviv with 101 contacted, inflating Aviv from 549 (PBI) to 652. Filtering
     // team_group='' brings Aviv to 551 (+2 vs PBI), screens 95 exact, ATS 47 exact.
     data.targets.forEach((t) => {
-      if (!hasRealTarget(t)) return;  // skip roster-only placeholder TAs
+      if (!t.team_group) return;  // skip roster-only placeholder TAs
       const display = normalizeClient(t.client);
       // Find matching actuals for this TA across all matching raw client keys
       Object.keys(data.wbr_actuals).forEach((key) => {
@@ -424,7 +417,7 @@ const WBRTab = ({ data }) => {
     // hires from raw-'Wolt' rows where those TAs are job_recruiter.
     const recruiterToWoltSubBu = new Map();
     data.targets.forEach((t) => {
-      if (!hasRealTarget(t)) return;
+      if (!t.team_group) return;
       const ta = normalizeTa(t.ta);
       const cl = normalizeClient(t.client);
       if (ta && cl && cl.startsWith('Wolt') && !recruiterToWoltSubBu.has(ta)) {
@@ -440,7 +433,7 @@ const WBRTab = ({ data }) => {
     // relationship filter.
     const targetRosterPairs = new Set();
     data.targets.forEach((t) => {
-      if (!hasRealTarget(t)) return;
+      if (!t.team_group) return;
       targetRosterPairs.add(`${normalizeClient(t.client)}|${normalizeTa(t.ta)}`);
     });
 
@@ -1880,20 +1873,6 @@ const normalizeClientPD = (client) => {
 const PD_EXCLUDED_CLIENTS = new Set(['Tribe.xyz', 'Tribe: Talent Pools']);
 
 const pdPct = (v) => v == null ? '—' : `${(v * 100).toFixed(0)}%`;
-// RAG heatmap for Project Overview conversion cells. Thresholds match the
-// TS Summary tab's cellStyle exactly where the metric overlaps (cpr=pctContPR,
-// sas=pctScrActual, asats=pctActualATS); the non-overlapping metrics (vc, atsoff,
-// ch) use TS Summary's same default band so the two tabs color-agree. Colours are
-// the dark-tinted variant (readable in the dense table); null values stay unstyled.
-const PD_HEAT_TH = { vc:[0.30,0.60], cpr:[0.10,0.20], sas:[0.50,0.75], asats:[0.50,0.65], atsoff:[0.30,0.60], ch:[0.30,0.60] };
-const pdHeat = (v, metric) => {
-  if (v == null) return {};
-  const t = PD_HEAT_TH[metric] || [0.30, 0.60];
-  const base = { borderRadius: '4px', fontWeight: 600 };
-  if (v < t[0]) return { ...base, backgroundColor: '#4c1d1d', color: '#fca5a5' };
-  if (v < t[1]) return { ...base, backgroundColor: '#4a3410', color: '#fcd34d' };
-  return { ...base, backgroundColor: '#14351f', color: '#86efac' };
-};
 
 // ---------- PD Disqualified Reasons section ----------
 // Filterable port of the PBI Overview "Disqualified Reason" pie. Data comes
@@ -2166,14 +2145,13 @@ const ProjectDashboardTab = ({ data }) => {
   }, [pdRows, weekSet, searchText, filterClient, filterTa, filterTs, filterCategory, filterSource, showExternal, showInternal]);
 
   const kpis = useMemo(() => filtered.reduce((a, r) => ({
-    viewed: a.viewed + (r.viewed || 0),
     contacted: a.contacted + r.contacted,
     positive_response: a.positive_response + r.positive_response,
     actual_screens: a.actual_screens + r.actual_screens,
     ats: a.ats + r.ats,
     offered: a.offered + r.offered,
     hired: a.hired + r.hired,
-  }), { viewed: 0, contacted: 0, positive_response: 0, actual_screens: 0, ats: 0, offered: 0, hired: 0 }), [filtered]);
+  }), { contacted: 0, positive_response: 0, actual_screens: 0, ats: 0, offered: 0, hired: 0 }), [filtered]);
 
   // ── Client summary (for section headers) ──
   const byClient = useMemo(() => {
@@ -2194,14 +2172,9 @@ const ProjectDashboardTab = ({ data }) => {
     // TA attribution only). Surface client-level viewed totals from ts_summary_by_client.
     // Includes view-only clients (sourcer viewed candidates but hasn't contacted/screened
     // anyone there yet) — those become new rows in the per-client rollup.
-    // 2026-07-24: viewer-attributed views. When a person is selected (sourcer OR TA),
-    // client-level viewed = THAT person's own LinkedIn views (who_created_event), from
-    // ts_summary_by_client. A view belongs to whoever did the clicking.
-    const personView = filterTs || filterTa;
-    if (personView) {
-      const nm = (s) => (s || '').replace(/\s+/g, ' ').trim();
+    if (filterTs) {
       const tsByClient = (data.ts_summary_by_client || []).filter(r => {
-        if (nm(r.ts) !== nm(personView)) return false;
+        if (r.ts !== filterTs) return false;
         const wk = `${r.iso_year}-W${String(r.iso_week).padStart(2, '0')}`;
         return weekSet.has(wk);
       });
@@ -2212,13 +2185,12 @@ const ProjectDashboardTab = ({ data }) => {
       });
       // Overwrite viewed on existing rows + add new rows for view-only clients.
       for (const row of m.values()) {
-        row.viewed = viewedByClient[row.client] || 0;
+        if (viewedByClient[row.client] != null) row.viewed = viewedByClient[row.client];
       }
       Object.entries(viewedByClient).forEach(([c, v]) => {
-        if (filterClient && c !== filterClient) return;
         if (!m.has(c) && v > 0) {
           m.set(c, {
-            client: c, jobIds: new Set(), tas: new Set(), tses: new Set([personView]),
+            client: c, jobIds: new Set(), tas: new Set(), tses: new Set([filterTs]),
             viewed: v, contacted: 0, positive_response: 0,
             screens: 0, actual_screens: 0, ats: 0, offered: 0, hired: 0,
           });
@@ -2226,7 +2198,7 @@ const ProjectDashboardTab = ({ data }) => {
       });
     }
     return Array.from(m.values()).sort((a, b) => a.client.localeCompare(b.client));
-  }, [filtered, filterTs, filterTa, filterClient, weekSet, data]);
+  }, [filtered, filterTs, weekSet, data]);
 
   // ── Per-client job rollup ──
   const jobsByClient = useMemo(() => {
@@ -2246,40 +2218,6 @@ const ProjectDashboardTab = ({ data }) => {
       row.screens += (r.screens || 0); row.actual_screens += r.actual_screens; row.ats += r.ats;
       row.offered += r.offered; row.hired += r.hired;
     }
-    // 2026-07-24: per-JOB viewed attributed to the actual viewer (who_created_event),
-    // from views_by_job. When a person is selected (sourcer OR TA), each job row shows
-    // THAT person's own views on that job — mirrors the client-level overwrite in byClient.
-    // Job-level totals (no person selected) keep the project_dashboard view count.
-    const personViewJob = filterTs || filterTa;
-    if (personViewJob && (data.views_by_job || []).length) {
-      const nm = (s) => (s || '').replace(/\s+/g, ' ').trim();
-      const jobTitleById = {};
-      (data.jobs || []).forEach(j => { if (j.job_id) jobTitleById[j.job_id] = j.job_title; });
-      const viewedByJob = {}, clientByJob = {};
-      (data.views_by_job || []).forEach(r => {
-        if (nm(r.person) !== nm(personViewJob)) return;
-        const wk = `${r.iso_year}-W${String(r.iso_week).padStart(2, '0')}`;
-        if (!weekSet.has(wk)) return;
-        viewedByJob[r.job_id] = (viewedByJob[r.job_id] || 0) + (r.viewed || 0);
-        clientByJob[r.job_id] = normalizeClientPD(r.client);
-      });
-      for (const row of m.values()) {
-        row.viewed = viewedByJob[row.job_id] || 0;
-      }
-      Object.keys(viewedByJob).forEach((jid) => {
-        const c = clientByJob[jid];
-        if (filterClient && c !== filterClient) return;
-        const key = `${c}|${jid}`;
-        if (!m.has(key) && viewedByJob[jid] > 0) {
-          m.set(key, {
-            client: c, job_id: jid, job_title: jobTitleById[jid] || `(job ${jid})`,
-            job_category: '', is_external_recruiter: false, tas: new Set(), tses: new Set([personViewJob]),
-            viewed: viewedByJob[jid], contacted: 0, positive_response: 0, screens: 0,
-            actual_screens: 0, ats: 0, offered: 0, hired: 0,
-          });
-        }
-      });
-    }
     const by = {};
     for (const row of m.values()) {
       const ex = row.is_external_recruiter;
@@ -2296,7 +2234,7 @@ const ProjectDashboardTab = ({ data }) => {
     // Jobs sorted A-Z by title within each client (Blake's preference)
     for (const c in by) by[c].sort((a, b) => (a.job_title || '').localeCompare(b.job_title || ''));
     return by;
-  }, [filtered, filterTs, filterTa, filterClient, weekSet, data]);
+  }, [filtered]);
 
   // ── Per-client TA rollup ──
   const tasByClient = useMemo(() => {
@@ -2407,11 +2345,6 @@ const ProjectDashboardTab = ({ data }) => {
 
   return (
     <div className="space-y-4">
-      {/* Page header */}
-      <div>
-        <h2 className="text-2xl font-bold text-white">Project Overview</h2>
-        <div className="text-sm text-gray-400 mt-1">Contacted → positive response → screens → ATS → offers → hires for the selected period. Filter to a TA or client to see just those numbers.</div>
-      </div>
       {/* Filter bar */}
       <div className="bg-gray-800 rounded-lg p-4">
         <div className="flex flex-wrap gap-3 items-center">
@@ -2493,24 +2426,19 @@ const ProjectDashboardTab = ({ data }) => {
 
       {/* KPI cards */}
       <div className="grid grid-cols-6 gap-4">
-        {(() => {
-          const rel = (n, d, dec = 0) => d ? `${(100 * n / d).toFixed(dec)}%` : '—';
-          return [
-            ['Contacted', kpis.contacted, `${rel(kpis.contacted, kpis.viewed)} of ${kpis.viewed.toLocaleString()} viewed`, '#3b82f6'],
-            ['Positive Response', kpis.positive_response, `${rel(kpis.positive_response, kpis.contacted)} of contacted`, '#22d3ee'],
-            ['Actual Screens', kpis.actual_screens, `${rel(kpis.actual_screens, kpis.positive_response)} of pos. resp.`, '#14b8a6'],
-            ['ATS', kpis.ats, `${rel(kpis.ats, kpis.actual_screens)} of screens`, '#10b981'],
-            ['Offered', kpis.offered, `${rel(kpis.offered, kpis.ats)} of ATS`, '#f59e0b'],
-            ['Hired', kpis.hired, `${rel(kpis.hired, kpis.contacted, 1)} of contacted`, '#22c55e'],
-          ].map(([label, val, sub, accent]) => (
-            <div key={label} className="relative overflow-hidden rounded-lg p-4 bg-gradient-to-br from-blue-900 to-blue-800 border border-blue-700">
-              <div className="absolute top-0 left-0 right-0" style={{ height: 4, backgroundColor: accent }}></div>
-              <div className="text-blue-200 text-xs uppercase tracking-wide font-semibold">{label}</div>
-              <div className="text-3xl font-bold text-white mt-2">{val.toLocaleString()}</div>
-              <div className="text-blue-300 text-xs mt-2">{sub}</div>
-            </div>
-          ));
-        })()}
+        {[
+          ['Contacted', kpis.contacted],
+          ['Positive Response', kpis.positive_response],
+          ['Actual Screens', kpis.actual_screens],
+          ['ATS', kpis.ats],
+          ['Offered', kpis.offered],
+          ['Hired', kpis.hired],
+        ].map(([label, val]) => (
+          <div key={label} className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+            <div className="text-gray-400 text-xs uppercase tracking-wide">{label}</div>
+            <div className="text-3xl font-bold text-white mt-2">{val.toLocaleString()}</div>
+          </div>
+        ))}
       </div>
 
       {/* Section 1: Job Performance (grouped by client, collapsible) */}
@@ -2572,12 +2500,12 @@ const ProjectDashboardTab = ({ data }) => {
                       <td className="text-center px-1 py-1 text-gray-200">{c.ats}</td>
                       <td className="text-center px-1 py-1 text-gray-200">{c.offered}</td>
                       <td className="text-center px-1 py-1 text-gray-200 font-medium">{c.hired}</td>
-                      <td className="text-center px-1 py-1 text-gray-500" style={pdHeat(pctVC, 'vc')}>{pdPct(pctVC)}</td>
-                      <td className="text-center px-1 py-1 text-gray-500" style={pdHeat(pctCPR, 'cpr')}>{pdPct(pctCPR)}</td>
-                      <td className="text-center px-1 py-1 text-gray-500" style={pdHeat(pctSAS, 'sas')}>{pdPct(pctSAS)}</td>
-                      <td className="text-center px-1 py-1 text-gray-500" style={pdHeat(pctASATS, 'asats')}>{pdPct(pctASATS)}</td>
-                      <td className="text-center px-1 py-1 text-gray-500" style={pdHeat(pctATSOFF, 'atsoff')}>{pdPct(pctATSOFF)}</td>
-                      <td className="text-center px-1 py-1 text-gray-500" style={pdHeat(pctCH, 'ch')}>{pdPct(pctCH)}</td>
+                      <td className="text-center px-1 py-1 text-gray-400">{pdPct(pctVC)}</td>
+                      <td className="text-center px-1 py-1 text-gray-400">{pdPct(pctCPR)}</td>
+                      <td className="text-center px-1 py-1 text-gray-400">{pdPct(pctSAS)}</td>
+                      <td className="text-center px-1 py-1 text-gray-400">{pdPct(pctASATS)}</td>
+                      <td className="text-center px-1 py-1 text-gray-400">{pdPct(pctATSOFF)}</td>
+                      <td className="text-center px-1 py-1 text-gray-400">{pdPct(pctCH)}</td>
                     </tr>
                     {open && jobRows.map((r, i) => (
                       <tr key={`${c.client}|${r.job_id}`}
@@ -2597,12 +2525,12 @@ const ProjectDashboardTab = ({ data }) => {
                         <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.ats}</td>
                         <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.offered}</td>
                         <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.hired}</td>
-                        <td className="text-center px-1 py-0.5 text-gray-500 text-xs" style={pdHeat(r.pct_v_c, 'vc')}>{pdPct(r.pct_v_c)}</td>
-                        <td className="text-center px-1 py-0.5 text-gray-500 text-xs" style={pdHeat(r.pct_c_pr, 'cpr')}>{pdPct(r.pct_c_pr)}</td>
-                        <td className="text-center px-1 py-0.5 text-gray-500 text-xs" style={pdHeat(r.pct_s_as, 'sas')}>{pdPct(r.pct_s_as)}</td>
-                        <td className="text-center px-1 py-0.5 text-gray-500 text-xs" style={pdHeat(r.pct_as_ats, 'asats')}>{pdPct(r.pct_as_ats)}</td>
-                        <td className="text-center px-1 py-0.5 text-gray-500 text-xs" style={pdHeat(r.pct_ats_off, 'atsoff')}>{pdPct(r.pct_ats_off)}</td>
-                        <td className="text-center px-1 py-0.5 text-gray-500 text-xs" style={pdHeat(r.pct_c_hire, 'ch')}>{pdPct(r.pct_c_hire)}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-500 text-xs">{pdPct(r.pct_v_c)}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-500 text-xs">{pdPct(r.pct_c_pr)}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-500 text-xs">{pdPct(r.pct_s_as)}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-500 text-xs">{pdPct(r.pct_as_ats)}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-500 text-xs">{pdPct(r.pct_ats_off)}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-500 text-xs">{pdPct(r.pct_c_hire)}</td>
                       </tr>
                     ))}
                   </React.Fragment>
@@ -2828,95 +2756,103 @@ const TTHTab = ({ data }) => {
   const jobs = data.tth_jobs || [];
   const monthly = data.tth_monthly || [];
 
-  // Filters — all eight are multi-select. An empty array means "no constraint" (All).
-  // OR within a filter, AND across filters — same semantics as the Candidate Finder tab.
-  // Year seeds to the current year so the tab opens on the same view it used to.
-  const EMPTY_SEL = { year: [], quarter: [], month: [], client: [], ta: [], techRole: [], category: [], subcategory: [] };
-  const [sel, setSel] = useState(() => ({ ...EMPTY_SEL, year: [String(new Date().getFullYear())] }));
-  const [openKey, setOpenKey] = useState(null);
-  const toggleSel = (k, v) => setSel(p => ({ ...p, [k]: p[k].includes(v) ? p[k].filter(x => x !== v) : [...p[k], v] }));
-  const clearSel = (k) => setSel(p => ({ ...p, [k]: [] }));
-  const clearAllSel = () => setSel({ ...EMPTY_SEL });
-  // Close the open dropdown on any click outside a multi-select.
-  useEffect(() => {
-    const onDoc = (e) => { if (!e.target || !e.target.closest || !e.target.closest('[data-ms]')) setOpenKey(null); };
-    document.addEventListener('mousedown', onDoc);
-    return () => document.removeEventListener('mousedown', onDoc);
-  }, []);
+  // Filters — period (Year/Quarter/Month), client, TA, tech role
+  const [year, setYear] = useState('2026');
+  const [quarter, setQuarter] = useState('All');
+  const [month, setMonth] = useState('All');
+  const [client, setClient] = useState('All');
+  const [ta, setTa] = useState('All');
+  const [techRole, setTechRole] = useState('All');
+  const [category, setCategory] = useState('All');
+  const [subcategory, setSubcategory] = useState('All');
   const [drillClient, setDrillClient] = useState(null);      // expanded row in table 1
   const [drillCategory, setDrillCategory] = useState(null);  // expanded row in table 2
 
   // Available filter options — derive from hire_months (ANY hire, matching PBI)
-  const allYears = useMemo(() => {
+  const years = useMemo(() => {
     const ys = new Set();
-    jobs.forEach(j => (j.hire_months || []).forEach(m => { if (m) ys.add(m.slice(0, 4)); }));
-    return Array.from(ys).sort().reverse();
+    jobs.forEach(j => (j.hire_months || []).forEach(m => { if (m) ys.add(m.slice(0,4)); }));
+    return ['All', ...Array.from(ys).sort().reverse()];
   }, [jobs]);
-  const monthOptions = useMemo(() => {
+  const months = useMemo(() => {
+    if (year === 'All') return ['All'];
     const ms = new Set();
     jobs.forEach(j => (j.hire_months || []).forEach(m => {
-      if (m && (sel.year.length === 0 || sel.year.includes(m.slice(0, 4)))) ms.add(m);
+      if (m && m.slice(0,4) === year) ms.add(m);
     }));
-    return Array.from(ms).sort();
-  }, [jobs, sel.year]);
+    return ['All', ...Array.from(ms).sort()];
+  }, [jobs, year]);
+  const clients = useMemo(() => {
+    const cs = new Set(jobs.map(j => j.client).filter(Boolean));
+    return ['All', ...Array.from(cs).sort()];
+  }, [jobs]);
+  const tas = useMemo(() => {
+    const ts = new Set(jobs.map(j => j.ta).filter(Boolean));
+    return ['All', ...Array.from(ts).sort()];
+  }, [jobs]);
+  // Job Category / Subcategory. Subcategory cascades off the selected category so the
+  // list stays short and can't produce an empty intersection.
+  const categories = useMemo(() => {
+    const cs = new Set(jobs.map(j => j.job_category).filter(Boolean));
+    return ['All', ...Array.from(cs).sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }))];
+  }, [jobs]);
+  const subcategories = useMemo(() => {
+    const pool = category === 'All' ? jobs : jobs.filter(j => j.job_category === category);
+    const ss = new Set(pool.map(j => j.job_subcategory).filter(Boolean));
+    return ['All', ...Array.from(ss).sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }))];
+  }, [jobs, category]);
 
-  // Does a YYYY-MM fall inside the selected period? An empty list doesn't constrain.
-  const monthInPeriod = (m) => {
-    if (!m) return false;
-    if (sel.year.length && !sel.year.includes(m.slice(0, 4))) return false;
-    if (sel.quarter.length && !sel.quarter.includes('Q' + Math.ceil(Number(m.slice(5, 7)) / 3))) return false;
-    if (sel.month.length && !sel.month.includes(m)) return false;
-    return true;
-  };
-  const periodActive = sel.year.length > 0 || sel.quarter.length > 0 || sel.month.length > 0;
-
-  // A period-match predicate: does this job have any hire falling in the selected period?
+  // A period-match predicate: does this job have any hire falling in the selected year/quarter/month?
   const jobMatchesPeriod = (j) => {
-    if (!periodActive) return true;
+    if (year === 'All') return true;
     const hms = j.hire_months || [];
     if (!hms.length) return false;
-    return hms.some(monthInPeriod);
+    if (month !== 'All') return hms.includes(month);
+    if (quarter !== 'All') {
+      // quarter format: "Q1".."Q4", months Q1=01-03, Q2=04-06, Q3=07-09, Q4=10-12
+      const qNum = Number(quarter.replace('Q',''));
+      const qMonths = [qNum*3-2, qNum*3-1, qNum*3].map(n => String(n).padStart(2,'0'));
+      return hms.some(m => m.slice(0,4) === year && qMonths.includes(m.slice(5,7)));
+    }
+    return hms.some(m => m.slice(0,4) === year);
   };
 
-  // Dimension filters. Options cascade: each list offers only values still reachable given
-  // the period plus the OTHER dimension selections, so no combination can come back empty.
-  const DIMS = [['client', 'client'], ['ta', 'ta'], ['techRole', 'tech_role'],
-                ['category', 'job_category'], ['subcategory', 'job_subcategory']];
-  const matchesDimsExcept = (j, skip) =>
-    DIMS.every(([k, f]) => k === skip || sel[k].length === 0 || sel[k].includes(j[f]));
-  const optsFor = (key) => {
-    const field = (DIMS.find(([k]) => k === key) || [])[1];
-    const vals = new Set();
-    jobs.forEach(j => {
-      if (!jobMatchesPeriod(j) || !matchesDimsExcept(j, key)) return;
-      if (j[field]) vals.add(j[field]);
-    });
-    return Array.from(vals).sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
-  };
-
-  // Year-specific flag keys — fallback for legacy rows without t2f_months. Only meaningful
-  // for exactly one selected year; a multi-year (or unconstrained) selection falls back to
-  // the all-years OR flag.
-  const t2fFlag = sel.year.length === 1 ? `has_t2f_${sel.year[0]}` : 'has_t2f';
-  const t2fiFlag = sel.year.length === 1 ? `has_t2fi_${sel.year[0]}` : 'has_t2fi';
-  // Set of YYYY-MM strings matching the current period, used by avgByMonths for PBI-accurate
-  // month-level T2F/T2Fi filtering. An explicit month pick wins; otherwise enumerate the
-  // selected years crossed with the selected quarters.
+  // Year-specific flag keys — fallback for legacy data without t2f_months.
+  const t2fFlag = year === 'All' ? 'has_t2f' : `has_t2f_${year}`;
+  const t2fiFlag = year === 'All' ? 'has_t2fi' : `has_t2fi_${year}`;
+  // Set of YYYY-MM strings matching the current year/quarter/month filter.
+  // Used with avgByMonths for PBI-accurate month-level T2F/T2Fi filtering.
   const periodMonths = useMemo(() => {
     const set = new Set();
-    if (sel.month.length) { sel.month.forEach(m => set.add(m)); return set; }
-    const qs = sel.quarter.length ? sel.quarter.map(q => Number(q.slice(1))) : [1, 2, 3, 4];
-    (sel.year.length ? sel.year : allYears).forEach(y => qs.forEach(q => {
-      for (let i = 0; i < 3; i++) set.add(`${y}-${String(q * 3 - 2 + i).padStart(2, '0')}`);
-    }));
+    if (year === 'All') {
+      jobs.forEach(j => (j.hire_months || []).forEach(m => { if (m) set.add(m); }));
+      return set;
+    }
+    if (month !== 'All') { set.add(month); return set; }
+    if (quarter !== 'All') {
+      const qn = Number(quarter.replace('Q', ''));
+      for (let i = 0; i < 3; i++) {
+        const mm = String(qn * 3 - 2 + i).padStart(2, '0');
+        set.add(`${year}-${mm}`);
+      }
+      return set;
+    }
+    for (let i = 1; i <= 12; i++) set.add(`${year}-${String(i).padStart(2, '0')}`);
     return set;
-  }, [allYears, sel.year, sel.quarter, sel.month]);
+  }, [jobs, year, quarter, month]);
 
   // Apply filters to get working set
   const filtered = useMemo(() => {
-    return jobs.filter(j => jobMatchesPeriod(j)
-      && DIMS.every(([k, f]) => sel[k].length === 0 || sel[k].includes(j[f])));
-  }, [jobs, sel]);
+    return jobs.filter(j => {
+      if (!jobMatchesPeriod(j)) return false;
+      if (client !== 'All' && j.client !== client) return false;
+      if (ta !== 'All' && j.ta !== ta) return false;
+      if (techRole !== 'All' && j.tech_role !== techRole) return false;
+      if (category !== 'All' && j.job_category !== category) return false;
+      if (subcategory !== 'All' && j.job_subcategory !== subcategory) return false;
+      return true;
+    });
+  }, [jobs, year, quarter, month, client, ta, techRole, category, subcategory]);
 
   // KPI totals
   const kpis = useMemo(() => ({
@@ -2970,7 +2906,7 @@ const TTHTab = ({ data }) => {
     filtered.forEach(j => {
       (j.hire_months || []).forEach(mo => {
         if (!mo) return;
-        if (!monthInPeriod(mo)) return;
+        if (year !== 'All' && mo.slice(0,4) !== year) return;
         (groups[mo] = groups[mo] || []).push(j);
       });
     });
@@ -2985,7 +2921,7 @@ const TTHTab = ({ data }) => {
         t2fill: avgByMonths(js, 't2fill', 't2fi_months', moSet, `has_t2fi_${yr}`),
       };
     }).sort((a, b) => a.month.localeCompare(b.month));
-  }, [filtered, sel.year, sel.quarter, sel.month]);
+  }, [filtered, year]);
 
   const Kpi = ({ label, value }) => (
     <div className="bg-blue-100 text-blue-900 rounded-lg px-4 py-3 min-w-[120px] flex-1">
@@ -2994,17 +2930,15 @@ const TTHTab = ({ data }) => {
     </div>
   );
 
-  const TTH_FILTERS = [
-    ['year', 'Year', allYears],
-    ['quarter', 'Quarter', ['Q1', 'Q2', 'Q3', 'Q4']],
-    ['month', 'Month', monthOptions],
-    ['client', 'Client', optsFor('client')],
-    ['ta', 'TA', optsFor('ta')],
-    ['techRole', 'Tech Role', optsFor('techRole')],
-    ['category', 'Job Category', optsFor('category')],
-    ['subcategory', 'Subcategory', optsFor('subcategory')],
-  ];
-  const activeFilterCount = Object.values(sel).reduce((n, a) => n + a.length, 0);
+  const Select = ({ label, value, onChange, options }) => (
+    <div>
+      <div className="text-xs text-gray-400 mb-1">{label}</div>
+      <select value={value} onChange={e => onChange(e.target.value)}
+        className="w-full bg-gray-800 border border-gray-700 text-white text-sm rounded px-2 py-1">
+        {options.map(o => <option key={o} value={o}>{o}</option>)}
+      </select>
+    </div>
+  );
 
   return (
     <div className="space-y-6">
@@ -3022,25 +2956,15 @@ const TTHTab = ({ data }) => {
         </div>
       </div>
 
-      <div className="bg-gray-800 border border-gray-700 rounded-lg p-4">
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
-          {TTH_FILTERS.map(([k, label, opts]) => (
-            <div key={k}>
-              <div className="text-xs text-gray-400 mb-1">{label}</div>
-              <FinderMultiSelect fkey={`tth-${k}`} label={label} options={opts} selected={sel[k]}
-                onToggle={v => toggleSel(k, v)} onClear={() => clearSel(k)}
-                isOpen={openKey === k} onOpen={() => setOpenKey(openKey === k ? null : k)} />
-            </div>
-          ))}
-        </div>
-        <div className="mt-3 flex items-center gap-3 text-xs text-gray-400">
-          <span>{filtered.length.toLocaleString()} of {jobs.length.toLocaleString()} jobs match</span>
-          {activeFilterCount > 0 && (
-            <button type="button" onClick={clearAllSel} className="text-blue-400 hover:underline">
-              Clear all filters
-            </button>
-          )}
-        </div>
+      <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
+        <Select label="Year" value={year} onChange={v => { setYear(v); setQuarter('All'); setMonth('All'); }} options={years} />
+        <Select label="Quarter" value={quarter} onChange={v => { setQuarter(v); setMonth('All'); }} options={year === 'All' ? ['All'] : ['All', 'Q1', 'Q2', 'Q3', 'Q4']} />
+        <Select label="Month" value={month} onChange={setMonth} options={months} />
+        <Select label="Client" value={client} onChange={setClient} options={clients} />
+        <Select label="TA" value={ta} onChange={setTa} options={tas} />
+        <Select label="Tech Role" value={techRole} onChange={setTechRole} options={['All', 'Yes', 'No']} />
+        <Select label="Job Category" value={category} onChange={v => { setCategory(v); setSubcategory('All'); }} options={categories} />
+        <Select label="Subcategory" value={subcategory} onChange={setSubcategory} options={subcategories} />
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -5299,12 +5223,9 @@ const ProfitabilityTab = () => {
 const FINDER_KEYS = ['function', 'role_type', 'client', 'country', 'stage', 'reason'];
 const FINDER_FILTERS = [['function', 'Function'], ['role_type', 'Role type'], ['client', 'Client'], ['country', 'Country'], ['stage', 'Stage'], ['reason', 'Reason']];
 const FINDER_CSV_CAP = 5000;
-const FINDER_RECENCY = [['d30','Active last 30 days'],['d90','Active last 90 days'],['m6','Active last 6 months'],['m12','Active last 12 months'],['older','Older than 12 months']];
-const fmtFinderDate = (s) => { if (!s) return ''; const d = new Date(s + 'T00:00:00'); return isNaN(d) ? s : d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }); };
-const finderRecencyCut = (key) => { const d = new Date(); if (key === 'd30') d.setDate(d.getDate() - 30); else if (key === 'd90') d.setDate(d.getDate() - 90); else if (key === 'm6') d.setMonth(d.getMonth() - 6); else if (key === 'm12') d.setMonth(d.getMonth() - 12); else return null; return d.toISOString().slice(0, 10); };
 const finderStageClass = (s) => ({
   'Recruiter Screen': 'bg-blue-900 text-blue-200',
-  'Moved to ATS': 'bg-teal-900 text-teal-200',
+  'Offsite': 'bg-teal-900 text-teal-200',
   'Final Interview': 'bg-purple-900 text-purple-200',
   'Offer': 'bg-amber-900 text-amber-200',
   'Hired': 'bg-green-900 text-green-200',
@@ -5354,8 +5275,6 @@ const CandidateFinderTab = () => {
   const [sel, setSel] = useState({ function: [], role_type: [], client: [], country: [], stage: [], reason: [] });
   const [q, setQ] = useState('');
   const [onlyLi, setOnlyLi] = useState(false);
-  const [fCity, setFCity] = useState('');
-  const [fRecency, setFRecency] = useState('');
   const [limit, setLimit] = useState(300);
   const [openKey, setOpenKey] = useState(null);
 
@@ -5394,27 +5313,22 @@ const CandidateFinderTab = () => {
 
   const toggleVal = (k, v) => setSel((prev) => ({ ...prev, [k]: prev[k].includes(v) ? prev[k].filter((x) => x !== v) : [...prev[k], v] }));
   const clearKey = (k) => setSel((prev) => ({ ...prev, [k]: [] }));
-  const clearAll = () => { setSel({ function: [], role_type: [], client: [], country: [], stage: [], reason: [] }); setQ(''); setFCity(''); setFRecency(''); setOnlyLi(false); };
+  const clearAll = () => { setSel({ function: [], role_type: [], client: [], country: [], stage: [], reason: [] }); setQ(''); setOnlyLi(false); };
   const matchExcept = (r, skip) => FINDER_KEYS.every((k) => k === skip || sel[k].length === 0 || sel[k].includes(r[k]));
   const optsFor = (k) => [...new Set(rows.filter((r) => matchExcept(r, k)).map((r) => r[k]).filter(Boolean))].sort();
 
-  const recCut = fRecency ? finderRecencyCut(fRecency === 'older' ? 'm12' : fRecency) : null;
-  const d90cut = finderRecencyCut('d90');
   const out = rows.filter((r) => {
     if (!FINDER_KEYS.every((k) => sel[k].length === 0 || sel[k].includes(r[k]))) return false;
-    if (fCity && !((r.location || '').toLowerCase().includes(fCity.toLowerCase()))) return false;
-    if (fRecency === 'older') { if (!r.last_activity || (recCut && r.last_activity >= recCut)) return false; } else if (recCut) { if (!r.last_activity || r.last_activity < recCut) return false; }
     if (onlyLi && !r.linkedin) return false;
     if (q) {
-      const blob = ((r.name || '') + ' ' + (r.current_title || '') + ' ' + (r.company || '') + ' ' + (r.location || '') + ' ' + (r.sourced_role || '') + ' ' + (r.role_type || '')).toLowerCase();
+      const blob = ((r.name || '') + ' ' + (r.current_title || '') + ' ' + (r.company || '') + ' ' + (r.sourced_role || '') + ' ' + (r.role_type || '')).toLowerCase();
       if (!blob.includes(q.toLowerCase())) return false;
     }
     return true;
   });
-  out.sort((a, b) => (b.last_activity || '').localeCompare(a.last_activity || ''));
   const shown = out.slice(0, limit);
   const withLi = out.filter((r) => r.linkedin).length;
-  const anyFilter = FINDER_KEYS.some((k) => sel[k].length) || q || fCity || fRecency || onlyLi;
+  const anyFilter = FINDER_KEYS.some((k) => sel[k].length) || q || onlyLi;
   const canExport = out.length > 0 && out.length <= FINDER_CSV_CAP;
 
   const exportCsv = () => {
@@ -5434,7 +5348,7 @@ const CandidateFinderTab = () => {
 
   return (
     <div>
-      <p className="text-sm text-gray-400 mb-4">Candidates we have engaged (reached a recruiter screen or further). Pick Country and the other filters from the dropdowns (each is multi-select), type a city in the City box, or search by name, title or company. Names link to LinkedIn.</p>
+      <p className="text-sm text-gray-400 mb-4">Candidates we have engaged (reached a recruiter screen or further). Filters are multi-select; pick several values in any of them. Names link to LinkedIn.</p>
       <div className="grid grid-cols-2 md:grid-cols-6 gap-3 mb-3">
         {FINDER_FILTERS.map(([k, label]) => (
           <FinderMultiSelect key={k} fkey={k} label={label} options={optsFor(k)} selected={sel[k]}
@@ -5443,12 +5357,6 @@ const CandidateFinderTab = () => {
         ))}
       </div>
       <div className="flex flex-wrap gap-4 items-center mb-3">
-        <input value={fCity} onChange={(e) => setFCity(e.target.value)} placeholder="City (e.g. Berlin)"
-          className="bg-gray-800 border border-gray-700 text-white text-sm rounded px-3 py-1.5 w-44" />
-        <select value={fRecency} onChange={(e) => setFRecency(e.target.value)} className="bg-gray-800 border border-gray-700 text-white text-sm rounded px-2 py-1.5">
-          <option value="">Any activity</option>
-          {FINDER_RECENCY.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
-        </select>
         <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search name, title, company…"
           className="bg-gray-800 border border-gray-700 text-white text-sm rounded px-3 py-1.5 w-72" />
         <label className="flex items-center gap-2 text-sm text-gray-300">
@@ -5478,7 +5386,6 @@ const CandidateFinderTab = () => {
               <th className="text-left px-3 py-2">Role (sourced for)</th>
               <th className="text-left px-3 py-2">Stage</th>
               <th className="text-left px-3 py-2">Reason</th>
-              <th className="text-left px-3 py-2">Last activity</th>
             </tr>
           </thead>
           <tbody>
@@ -5494,7 +5401,6 @@ const CandidateFinderTab = () => {
                 <td className="px-3 py-2 text-gray-300">{r.sourced_role || '—'}</td>
                 <td className="px-3 py-2"><span className={'px-2 py-0.5 rounded text-xs font-medium ' + finderStageClass(r.stage)}>{r.stage}</span></td>
                 <td className="px-3 py-2 text-red-300 text-xs">{r.reason || ''}</td>
-                <td className={'px-3 py-2 text-xs whitespace-nowrap ' + (r.last_activity && r.last_activity >= d90cut ? 'text-green-300' : 'text-gray-400')}>{fmtFinderDate(r.last_activity)}</td>
               </tr>
             ))}
           </tbody>

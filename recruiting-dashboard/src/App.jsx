@@ -162,7 +162,27 @@ const CsvBtn = ({ fname }) => {
   );
 };
 
-const WBRTab = ({ data }) => {
+const NotesRefreshBtn = ({ state, at, error, onClick }) => (
+  <div className="flex items-center gap-3 mb-1">
+    <button
+      onClick={onClick}
+      disabled={state === 'loading'}
+      title="Re-read comments from the WBR target Google Sheet. Metrics are not refreshed."
+      className={'px-3 py-1.5 rounded text-sm font-semibold ' + (state === 'loading'
+        ? 'bg-gray-600 text-gray-300 cursor-wait'
+        : 'bg-blue-600 hover:bg-blue-700 text-white')}
+    >
+      {state === 'loading' ? 'Refreshing comments\u2026' : 'Refresh comments'}
+    </button>
+    {state === 'error'
+      ? <span className="text-xs text-red-400">Couldn't refresh: {error}</span>
+      : at
+        ? <span className="text-xs text-gray-500">Comments as of {at} CET · metrics unchanged</span>
+        : <span className="text-xs text-gray-500">Comments from the last scheduled refresh</span>}
+  </div>
+);
+
+const WBRTab = ({ data, notes }) => {
   // Derive week list from the weekly roster (keys like "w15", "w16"). This
   // auto-advances as Andy adds new weeks to the TA Weekly Note sheet.
   const WEEKS = useMemo(() => {
@@ -787,6 +807,7 @@ const WBRTab = ({ data }) => {
 
   return (
     <div className="space-y-6">
+      {notes && <NotesRefreshBtn {...notes} />}
       {drillDown && (
         <div
           onClick={(e) => { if (e.target === e.currentTarget) setDrillDown(null); }}
@@ -1340,7 +1361,7 @@ const WBRTab = ({ data }) => {
 };
 
 // MBR Tab — Monthly Business Review (last 4 weeks, w12-w15 = 2026-03-16 to 2026-04-12)
-const MBRTab = ({ data }) => {
+const MBRTab = ({ data, notes }) => {
   const MBR_WEEKS = (data.mbr_window?.weeks || ['w12','w13','w14','w15']);
   const windowLabel = `${data.mbr_window?.start || '2026-03-16'} → ${data.mbr_window?.end || '2026-04-12'}`;
 
@@ -1673,6 +1694,7 @@ const MBRTab = ({ data }) => {
 
   return (
     <div className="space-y-6">
+      {notes && <NotesRefreshBtn {...notes} />}
       <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
         <div className="text-sm text-gray-400">Monthly Business Review — last 4 weeks</div>
         <div className="text-xl font-semibold text-white mt-1">Window: {windowLabel} (weeks {MBR_WEEKS.join(', ')})</div>
@@ -5581,6 +5603,49 @@ const RecruitingDashboard = () => {
     })();
     return () => { cancelled = true; };
   }, []);
+  // On-demand comment refresh (WBR/MBR only). Re-reads the two note tabs from
+  // Andy's sheet via /api/wbr-notes and swaps them over the loaded bundle.
+  // Only ta_weekly_notes and ts_weekly are replaced; every metric key is left
+  // exactly as the scheduled render produced it.
+  const [notesOverride, setNotesOverride] = useState(null);
+  const [notesState, setNotesState] = useState('idle');
+  const [notesAt, setNotesAt] = useState(null);
+  const [notesError, setNotesError] = useState(null);
+  const refreshNotes = React.useCallback(async () => {
+    setNotesState('loading');
+    setNotesError(null);
+    try {
+      const res = await fetch('/api/wbr-notes', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: '{}',
+      });
+      // An expired session is answered by _middleware.ts with the login page,
+      // which is HTML with a 200 status, so status alone is not enough.
+      const ctype = res.headers.get('content-type') || '';
+      if (!ctype.includes('application/json')) {
+        throw new Error('session expired, reload the page and sign in again');
+      }
+      const body = await res.json();
+      if (!res.ok) throw new Error(body.error || ('HTTP ' + res.status));
+      if (!Array.isArray(body.ta_weekly_notes) || !Array.isArray(body.ts_weekly)) {
+        throw new Error('unexpected response shape');
+      }
+      setNotesOverride({ ta_weekly_notes: body.ta_weekly_notes, ts_weekly: body.ts_weekly });
+      setNotesAt(new Date().toLocaleTimeString('en-GB', {
+        timeZone: 'Europe/Berlin', hour: '2-digit', minute: '2-digit',
+      }));
+      setNotesState('done');
+    } catch (e) {
+      setNotesError(String(e && e.message ? e.message : e));
+      setNotesState('error');
+    }
+  }, []);
+  const notesProps = { state: notesState, at: notesAt, error: notesError, onClick: refreshNotes };
+  const dataWithNotes = useMemo(
+    () => (notesOverride && dashboardData ? { ...dashboardData, ...notesOverride } : dashboardData),
+    [dashboardData, notesOverride],
+  );
   // Snap-back: if state lands on a tab the current role doesn't see, fall back
   // to Project Dashboard. Covers both leadership-only and director-only tabs.
   const safeActiveTab =
@@ -5629,8 +5694,8 @@ const RecruitingDashboard = () => {
         </div>
       </div>
       <div className="px-6 py-6">
-        {safeActiveTab === 'wbr' && isLeadership && <WBRTab data={dashboardData} />}
-        {safeActiveTab === 'mbr' && isLeadership && <MBRTab data={dashboardData} />}
+        {safeActiveTab === 'wbr' && isLeadership && <WBRTab data={dataWithNotes} notes={notesProps} />}
+        {safeActiveTab === 'mbr' && isLeadership && <MBRTab data={dataWithNotes} notes={notesProps} />}
         {safeActiveTab === 'profitability' && isDirector && <ProfitabilityTab />}
         {safeActiveTab === 'project' && <ProjectDashboardTab data={dashboardData} />}
         {safeActiveTab === 'weekly' && <WeeklySummaryTab data={dashboardData} />}

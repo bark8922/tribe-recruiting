@@ -163,7 +163,7 @@ const CsvBtn = ({ fname }) => {
 };
 
 const NotesRefreshBtn = ({ state, at, error, onClick }) => (
-  <div className="flex items-center gap-3 mb-1">
+  <div className="flex items-center gap-3 ml-auto">
     <button
       onClick={onClick}
       disabled={state === 'loading'}
@@ -807,7 +807,6 @@ const WBRTab = ({ data, notes }) => {
 
   return (
     <div className="space-y-6">
-      {notes && <NotesRefreshBtn {...notes} />}
       {drillDown && (
         <div
           onClick={(e) => { if (e.target === e.currentTarget) setDrillDown(null); }}
@@ -931,6 +930,7 @@ const WBRTab = ({ data, notes }) => {
           ))}
         </select>
         <span className="text-xs text-gray-500 ml-2">Tip: click any Client, TA, or TS row below for a 6-week drill-down</span>
+        {notes && <NotesRefreshBtn {...notes} />}
       </div>
 
       {/* Team-lead filter (Bamboo-derived). Client Summary always shows full;
@@ -1694,10 +1694,12 @@ const MBRTab = ({ data, notes }) => {
 
   return (
     <div className="space-y-6">
-      {notes && <NotesRefreshBtn {...notes} />}
-      <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
-        <div className="text-sm text-gray-400">Monthly Business Review — last 4 weeks</div>
-        <div className="text-xl font-semibold text-white mt-1">Window: {windowLabel} (weeks {MBR_WEEKS.join(', ')})</div>
+      <div className="bg-gray-800 rounded-lg p-4 border border-gray-700 flex items-center justify-between gap-4 flex-wrap">
+        <div>
+          <div className="text-sm text-gray-400">Monthly Business Review — last 4 weeks</div>
+          <div className="text-xl font-semibold text-white mt-1">Window: {windowLabel} (weeks {MBR_WEEKS.join(', ')})</div>
+        </div>
+        {notes && <NotesRefreshBtn {...notes} />}
       </div>
 
       {/* 1. Client's Target — compact 540px, colgroup widths, color coding */}

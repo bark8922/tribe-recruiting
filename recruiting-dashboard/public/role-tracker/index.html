@@ -5,22 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Role Pipeline Tracker</title>
 <style>
-  :root{
-    --bg:#0f1420; --panel:#161d2b; --line:#263145; --text:#e7edf5; --muted:#8fa0b6;
-    --red:#ef4444; --amber:#f59e0b; --green:#22c55e; --grey:#64748b; --accent:#3b82f6;
-  }
+  :root{--bg:#0f1420;--panel:#161d2b;--line:#263145;--text:#e7edf5;--muted:#8fa0b6;--red:#ef4444;--amber:#f59e0b;--green:#22c55e;--grey:#64748b;--accent:#3b82f6;}
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--text);font:14px/1.4 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
   .wrap{max-width:1680px;margin:0 auto;padding:20px 24px}
   h1{font-size:20px;margin:0 0 2px}
-  .sub{color:var(--muted);font-size:13px;margin-bottom:18px}
+  .sub{color:var(--muted);font-size:13px;margin-bottom:16px}
+  .tabs{display:flex;gap:8px;margin-bottom:16px}
+  .tabs button{background:var(--panel);border:1px solid var(--line);color:var(--muted);padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
+  .tabs button.on{background:#1d2a44;color:#fff;border-color:var(--accent)}
   .cards{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 16px;min-width:150px}
   .card .n{font-size:24px;font-weight:700}
   .card .l{color:var(--muted);font-size:12px;margin-top:2px}
   .card.warn .n{color:var(--red)}
+  .card.good .n{color:var(--green)}
   .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
   select,input[type=text]{background:var(--panel);border:1px solid var(--line);color:var(--text);padding:8px 10px;border-radius:8px;font-size:13px}
+  label.chk{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:13px;cursor:pointer}
   table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
   th,td{padding:7px 9px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
   th{font-size:11px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);cursor:pointer;user-select:none;position:sticky;top:0;background:var(--panel)}
@@ -40,7 +42,10 @@
   .b-moving{background:rgba(34,197,94,.15);color:#86efac;border:1px solid rgba(34,197,94,.35)}
   .b-new{background:rgba(100,116,139,.18);color:#b6c2d2;border:1px solid rgba(100,116,139,.4)}
   .b-archived{background:rgba(100,116,139,.12);color:#94a3b8;border:1px solid rgba(100,116,139,.3)}
+  .b-followup{background:rgba(239,68,68,.15);color:#fca5a5;border:1px solid rgba(239,68,68,.35)}
+  .b-ok{background:rgba(34,197,94,.15);color:#86efac;border:1px solid rgba(34,197,94,.35)}
   .foot{color:var(--muted);font-size:12px;margin-top:14px}
+  .hidden{display:none}
 </style>
 </head>
 <body>
@@ -48,52 +53,70 @@
   <h1>Role Pipeline Tracker</h1>
   <div class="sub" id="sub">Are candidates actually moving through the stages? Internal sourcing pools excluded.</div>
 
+  <div class="tabs">
+    <button id="tabRoles" class="on" onclick="setView('roles')">Roles</button>
+    <button id="tabOwners" onclick="setView('owners')">Owners</button>
+  </div>
+
   <div class="cards" id="cards"></div>
 
-  <div class="controls">
-    <select id="fOwner"><option value="">All owners</option></select>
-    <select id="fClient"><option value="">All clients</option></select>
-    <select id="fStatus"><option value="">All statuses</option><option value="stalled">Stalled</option><option value="slow">Slow</option><option value="moving">Moving</option><option value="new">Filling</option><option value="archived">Archived</option></select>
-    <input type="text" id="fSearch" placeholder="Search role...">
+  <!-- ROLES VIEW -->
+  <div id="rolesView">
+    <div class="controls">
+      <select id="fOwner"><option value="">All owners</option></select>
+      <select id="fClient"><option value="">All clients</option></select>
+      <select id="fStatus"><option value="">All statuses</option><option value="stalled">Stalled</option><option value="slow">Slow</option><option value="moving">Moving</option><option value="new">Filling</option><option value="archived">Archived</option></select>
+      <input type="text" id="fSearch" placeholder="Search role...">
+    </div>
+    <div style="overflow-x:auto">
+    <table id="tbl">
+      <thead><tr>
+        <th data-k="role">Role</th><th data-k="client">Client</th><th data-k="owner">Owner</th>
+        <th data-k="opened">Opened</th><th data-k="days" class="num">Days</th><th data-k="total" class="num">Total</th>
+        <th data-k="contacted" class="num">Contacted</th><th data-k="pos_resp" class="num">Pos Resp</th>
+        <th data-k="screen" class="num">Screen</th><th data-k="ats" class="num">Move to ATS</th>
+        <th data-k="int1" class="num ivh">Int 1</th><th data-k="int2" class="num ivh">Int 2</th><th data-k="int3" class="num ivh">Int 3</th>
+        <th data-k="offer" class="num">Offer</th><th data-k="hired" class="num">Hired</th><th data-k="statusRank">Status</th>
+      </tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    </div>
+    <div class="foot">Status: <b>Moving</b> = a candidate in an interview stage or beyond. <b>Stalled</b> = open &gt;10 days, 15+ candidates, nobody past Move to ATS. <b>Slow</b> = some progress but nobody in interviews. <b>Filling</b> = opened in the last 10 days. <b>Archived</b> = role closed.</div>
   </div>
 
-  <div style="overflow-x:auto">
-  <table id="tbl">
-    <thead><tr>
-      <th data-k="role">Role</th>
-      <th data-k="client">Client</th>
-      <th data-k="owner">Owner</th>
-      <th data-k="opened">Opened</th>
-      <th data-k="days" class="num">Days</th>
-      <th data-k="total" class="num">Total</th>
-      <th data-k="contacted" class="num">Contacted</th>
-      <th data-k="pos_resp" class="num">Pos Resp</th>
-      <th data-k="screen" class="num">Screen</th>
-      <th data-k="ats" class="num">Move to ATS</th>
-      <th data-k="int1" class="num ivh">Int 1</th>
-      <th data-k="int2" class="num ivh">Int 2</th>
-      <th data-k="int3" class="num ivh">Int 3</th>
-      <th data-k="offer" class="num">Offer</th>
-      <th data-k="hired" class="num">Hired</th>
-      <th data-k="statusRank">Status</th>
-    </tr></thead>
-    <tbody id="rows"></tbody>
-  </table>
+  <!-- OWNERS VIEW -->
+  <div id="ownersView" class="hidden">
+    <div class="controls">
+      <label class="chk"><input type="checkbox" id="oFollow"> Follow-up only</label>
+    </div>
+    <div style="overflow-x:auto">
+    <table id="otbl">
+      <thead><tr>
+        <th data-ok="owner">Owner</th>
+        <th data-ok="roles" class="num">Active roles</th>
+        <th data-ok="engaged" class="num">With interviews</th>
+        <th data-ok="pct" class="num">% using stages</th>
+        <th data-ok="gap" class="num">Gap roles</th>
+        <th data-ok="statusRank">Status</th>
+      </tr></thead>
+      <tbody id="orows"></tbody>
+    </table>
+    </div>
+    <div class="foot"><b>With interviews</b> = roles that have a candidate in/through an interview stage (interview, offer, or hired). <b>Gap roles</b> = roles where candidates reached Move to ATS but nobody is tracked into any interview stage — the sign the owner isn't using the interview stages. <b>Follow up</b> = 1+ gap roles.</div>
   </div>
-  <div class="foot">Status: <b>Moving</b> = a candidate in an interview stage or beyond. <b>Stalled</b> = open &gt;10 days, 15+ candidates, nobody past Move to ATS. <b>Slow</b> = some progress but nobody in interviews. <b>Filling</b> = opened in the last 10 days. <b>Archived</b> = role closed/archived.</div>
 </div>
 
 <script>
-let DATA=[], REF=new Date();
-let sortK='statusRank',sortDir=-1;
+let DATA=[], REF=new Date(), VIEW='roles';
+let sortK='statusRank',sortDir=-1, oSortK='gap',oSortDir=-1;
 
 function days(d){return Math.round((REF-new Date(d))/86400000);}
+function engaged(r){return (r.int1+r.int2+r.int3+r.offer+r.hired)>0;}
 function statusOf(r){
   if(r.archived) return {k:'archived',t:'Archived',rank:-1};
   const atsPlus=r.ats+r.interview+r.offer+r.hired;
-  const intPlus=r.interview+r.offer+r.hired;
   const d=days(r.opened);
-  if(intPlus>0) return {k:'moving',t:'Moving',rank:0};
+  if(engaged(r)) return {k:'moving',t:'Moving',rank:0};
   if(d<=10) return {k:'new',t:'Filling',rank:1};
   if(atsPlus===0 && r.total>=15) return {k:'stalled',t:'Stalled',rank:3};
   return {k:'slow',t:'Slow',rank:2};
@@ -114,45 +137,67 @@ fetch('./data.json?t='+Date.now()).then(r=>r.json()).then(j=>{
   render();
 });
 
-document.querySelectorAll('th').forEach(th=>th.addEventListener('click',()=>{
-  const k=th.dataset.k; if(sortK===k) sortDir*=-1; else{sortK=k;sortDir=(k==='role'||k==='owner'||k==='client'||k==='opened')?1:-1;} render();
-}));
+document.querySelectorAll('#tbl th').forEach(th=>th.addEventListener('click',()=>{const k=th.dataset.k;if(sortK===k)sortDir*=-1;else{sortK=k;sortDir=(k==='role'||k==='owner'||k==='client'||k==='opened')?1:-1;}render();}));
+document.querySelectorAll('#otbl th').forEach(th=>th.addEventListener('click',()=>{const k=th.dataset.ok;if(oSortK===k)oSortDir*=-1;else{oSortK=k;oSortDir=(k==='owner')?1:-1;}render();}));
 ['fOwner','fClient','fStatus','fSearch'].forEach(id=>document.getElementById(id).addEventListener('input',render));
+document.getElementById('oFollow').addEventListener('input',render);
+
+function setView(v){VIEW=v;
+  document.getElementById('tabRoles').classList.toggle('on',v==='roles');
+  document.getElementById('tabOwners').classList.toggle('on',v==='owners');
+  document.getElementById('rolesView').classList.toggle('hidden',v!=='roles');
+  document.getElementById('ownersView').classList.toggle('hidden',v!=='owners');
+  render();
+}
+
+function ownerRollup(active){
+  const m={};
+  active.forEach(r=>{const o=r.owner||'(unassigned)';const b=m[o]||(m[o]={owner:o,roles:0,engaged:0,gap:0});
+    b.roles++; if(engaged(r)) b.engaged++; else if(r.ats>0) b.gap++;});
+  return Object.values(m).map(b=>{b.pct=b.roles?Math.round(b.engaged/b.roles*100):0;
+    b.statusRank=b.gap>0?1:0; b._s=b.gap>0?{k:'followup',t:'Follow up'}:{k:'ok',t:'OK'}; return b;});
+}
 
 function render(){
-  const o=document.getElementById('fOwner').value,c=document.getElementById('fClient').value,st=document.getElementById('fStatus').value,q=document.getElementById('fSearch').value.toLowerCase();
-  let rows=DATA.filter(r=>(!o||r.owner===o)&&(!c||r.client===c)&&(!st||r._s.k===st)&&(!q||r.role.toLowerCase().includes(q)));
-  rows.sort((a,b)=>{let x=a[sortK],y=b[sortK];if(typeof x==='string'){x=x.toLowerCase();y=y.toLowerCase();}return x<y?-1*sortDir:x>y?1*sortDir:0;});
+  const active=DATA.filter(r=>!r.archived);
+  const withInt=active.filter(engaged).length;
+  const pct=active.length?Math.round(withInt/active.length*100):0;
 
-  const active=rows.filter(r=>!r.archived);
-  const roles=active.length;
-  const inInt=active.reduce((s,r)=>s+r.interview,0);
-  const reachedInt=active.reduce((s,r)=>s+r.interview+r.offer+r.hired,0);
-  const stalled=active.filter(r=>r._s.k==='stalled').length;
-  document.getElementById('cards').innerHTML=`
-    <div class="card"><div class="n">${roles}</div><div class="l">Active roles tracked</div></div>
-    <div class="card"><div class="n">${inInt}</div><div class="l">Candidates in an interview stage now</div></div>
-    <div class="card"><div class="n">${reachedInt}</div><div class="l">Ever reached interview or beyond</div></div>
-    <div class="card warn"><div class="n">${stalled}</div><div class="l">Stalled roles</div></div>`;
-
-  document.getElementById('rows').innerHTML=rows.map(r=>`<tr class="${r.archived?'arch':''}">
-    <td class="role">${r.role}</td>
-    <td class="muted">${r.client}</td>
-    <td class="owner">${r.owner}</td>
-    <td class="muted">${r.opened}</td>
-    <td class="num">${r.days}</td>
-    <td class="num"><b>${r.total}</b></td>
-    <td class="num">${cell(r.contacted)}</td>
-    <td class="num">${cell(r.pos_resp)}</td>
-    <td class="num">${cell(r.screen)}</td>
-    <td class="num">${cell(r.ats)}</td>
-    <td class="num">${iv(r.int1)}</td>
-    <td class="num">${iv(r.int2)}</td>
-    <td class="num">${iv(r.int3)}</td>
-    <td class="num">${cell(r.offer)}</td>
-    <td class="num">${cell(r.hired)}</td>
-    <td><span class="badge b-${r._s.k}">${r._s.t}</span></td>
-  </tr>`).join('');
+  if(VIEW==='roles'){
+    const o=document.getElementById('fOwner').value,c=document.getElementById('fClient').value,st=document.getElementById('fStatus').value,q=document.getElementById('fSearch').value.toLowerCase();
+    let rows=DATA.filter(r=>(!o||r.owner===o)&&(!c||r.client===c)&&(!st||r._s.k===st)&&(!q||r.role.toLowerCase().includes(q)));
+    rows.sort((a,b)=>{let x=a[sortK],y=b[sortK];if(typeof x==='string'){x=x.toLowerCase();y=y.toLowerCase();}return x<y?-1*sortDir:x>y?1*sortDir:0;});
+    const stalled=active.filter(r=>r._s.k==='stalled').length;
+    document.getElementById('cards').innerHTML=`
+      <div class="card"><div class="n">${active.length}</div><div class="l">Active roles tracked</div></div>
+      <div class="card good"><div class="n">${withInt} <span style="font-size:15px;color:var(--muted)">/ ${active.length} (${pct}%)</span></div><div class="l">Roles with interview activity</div></div>
+      <div class="card"><div class="n">${active.reduce((s,r)=>s+r.interview,0)}</div><div class="l">Candidates in an interview stage now</div></div>
+      <div class="card warn"><div class="n">${stalled}</div><div class="l">Stalled roles</div></div>`;
+    document.getElementById('rows').innerHTML=rows.map(r=>`<tr class="${r.archived?'arch':''}">
+      <td class="role">${r.role}</td><td class="muted">${r.client}</td><td class="owner">${r.owner}</td>
+      <td class="muted">${r.opened}</td><td class="num">${r.days}</td><td class="num"><b>${r.total}</b></td>
+      <td class="num">${cell(r.contacted)}</td><td class="num">${cell(r.pos_resp)}</td><td class="num">${cell(r.screen)}</td><td class="num">${cell(r.ats)}</td>
+      <td class="num">${iv(r.int1)}</td><td class="num">${iv(r.int2)}</td><td class="num">${iv(r.int3)}</td>
+      <td class="num">${cell(r.offer)}</td><td class="num">${cell(r.hired)}</td>
+      <td><span class="badge b-${r._s.k}">${r._s.t}</span></td></tr>`).join('');
+  } else {
+    let owners=ownerRollup(active);
+    const followOnly=document.getElementById('oFollow').checked;
+    if(followOnly) owners=owners.filter(o=>o.gap>0);
+    owners.sort((a,b)=>{let x=a[oSortK],y=b[oSortK];if(typeof x==='string'){x=x.toLowerCase();y=y.toLowerCase();}return x<y?-1*oSortDir:x>y?1*oSortDir:0;});
+    const followCount=ownerRollup(active).filter(o=>o.gap>0).length;
+    document.getElementById('cards').innerHTML=`
+      <div class="card"><div class="n">${ownerRollup(active).length}</div><div class="l">Owners with active roles</div></div>
+      <div class="card warn"><div class="n">${followCount}</div><div class="l">Owners to follow up</div></div>
+      <div class="card good"><div class="n">${withInt} <span style="font-size:15px;color:var(--muted)">/ ${active.length} (${pct}%)</span></div><div class="l">Roles with interview activity</div></div>`;
+    document.getElementById('orows').innerHTML=owners.map(o=>`<tr>
+      <td class="owner"><b>${o.owner}</b></td>
+      <td class="num">${o.roles}</td>
+      <td class="num ivcell">${o.engaged}</td>
+      <td class="num">${o.pct}%</td>
+      <td class="num">${o.gap>0?`<span style="color:#fca5a5;font-weight:600">${o.gap}</span>`:'<span class="zero">0</span>'}</td>
+      <td><span class="badge b-${o._s.k}">${o._s.t}</span></td></tr>`).join('');
+  }
 }
 </script>
 </body>

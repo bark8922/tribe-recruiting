@@ -2,7 +2,7 @@
 
 Single source of truth for status, decisions, and open items. Survives Cowork resets because it lives in this folder (on Blake's computer) and is backed up to GitHub. Claude updates this at the end of any session where real work happened. Blake can also say "update the log" anytime.
 
-Last updated: 2026-08-14
+Last updated: 2026-08-20
 
 ---
 
@@ -68,6 +68,22 @@ Orchestration = **Keboola Flows** (Flow B 3x/day `5 7,10,16` CET; Flow A 4x/day)
 ---
 
 ## Session history
+
+### 2026-08-20 — Role Pipeline Tracker: new **Coverage** tab (open roles vs actually tracked)
+
+- **Why:** OKRs Dashboards meeting (Blake, Jacopo, Kristjana, Salem, [transcript](https://app.fireflies.ai/view/01M0FRCBTXH58E9F28H1PBCDFV)). Salem asked for total open roles vs how many are tracked on the new Interview 1/2/3 pipeline, **with the open date**, so leads don't have to walk roles line by line. Blake's steer: this belongs ON the tracker, not in a spreadsheet, with a toggle for the role types that don't count and a signal for roles with no movement in ~90 days.
+- **The blind spot it fixes:** the tracker was built from `candidate_stage_rungs`, which only contains jobs that already have the Interview rungs. So by construction it could never show a role that *isn't* on the new pipeline. The "43 roles" in the meeting was 43 roles *on the pipeline*, not 43 roles open.
+- **The actual numbers (2026-08-20):** **452 open client-facing roles, only 45 on the new pipeline (10%), and 264 of them (58%) have had zero candidate movement in 90+ days** (20 of those never had any activity at all). Total non-archived rows in Bubble = 491, the rest being BD 17 / Internal 11 / Test 5 / Marketing 4 / Unassigned 2. That gap is the archive backlog Jacopo and Salem were circling; the 90-day column is the evidence for which ones to kill.
+- **Definition of "on the new pipeline" (reused, not reinvented):** the job's `stages` array resolves to a `stagesType` named `Interview 1/2/3` — byte-for-byte the same derivation `candidate_stage_rungs` uses, so the Coverage tab and the Roles tab can never disagree. Verified: the Roles tab still reports 43 / 15 / 35%, matching what Jacopo showed on screen.
+- **Built (all additive, nothing existing modified):**
+  - New Snowflake transform **`01m0ftpar7gtbqdjzpe0wwjay4`** ("Role Tracker open-role coverage") → `out.c-Role-Tracker-open-role-coverage.role_tracker_open_roles`. One row per non-archived job: role, client, owner, opened, days_open, `role_type` (Client/BD/Internal/Marketing/Test/Unassigned), `on_new_pipeline`, candidates, `last_activity`, `days_since_activity`. Movement signal = max event date per job from `out.c-reporting-v2.event`.
+  - Writer `recruiting-dashboard/role_tracker_writer/keboola_entry.py` now emits `{generated_at, rows[], open_roles[]}`. The coverage CSV is **optional**: missing or unparseable → warning + still writes `rows`.
+  - `public/role-tracker/index.html` gains a third tab. Defaults to client-facing only; checkbox pulls in BD/internal/marketing/test and reveals a Type column. Filters: owner, client, on/off pipeline, quiet-only, search. Badges: `Nd ago` green / `Nd quiet` red past 90 / `Never` grey.
+  - Flow `118392817` phase `phase-tracker-3` gained `task-tracker-coverage` (continueOnFailure, parallel with the summary task); writer input mapping gained the second table (config v2).
+- **Tested before push** with jsdom against the real 491-row dataset: all filters, both toggles, sort, and the empty state. Regression-checked the Roles and Owners tabs (48 rows / 17 owners, unchanged). Confirmed graceful degradation — with `open_roles` absent the Coverage tab hides itself and the old tabs render normally.
+- **Deployed:** commit `6d8fb87` on `main`, Cloudflare serving 200.
+- **⚠️ OPEN — the tab is live but EMPTY until the flow runs.** The Keboola MCP token is rejected by the job queue (`401 Invalid access token` on `queue.eu-central-1.keboola.com`) so the new transform has **never been executed**; `role_tracker_open_roles` does not exist yet. Reads and config writes work fine, so this is a job-run permission gap, not a dead token. **Fix: hit Run on flow `118392817` (or just the coverage transform) in the Keboola UI**, otherwise it self-heals on the next scheduled run (08:15 Prague). Until then the tab correctly hides rather than showing a broken view.
+- **Also raised in the same meeting, NOT yet done:** reinstate the BambooHR leaver notification so departing recruiters' roles come off the job board (ask Andrea); prune TAs who predate the 2025 data window from the Project Overview page, keeping anyone active during 2025 clickable for case studies; rename the "Owners" tab, which Blake himself called "not a great name".
 
 ### 2026-08-14 — WBR team-lead filter now includes the lead themselves (+ split-identity name bug)
 

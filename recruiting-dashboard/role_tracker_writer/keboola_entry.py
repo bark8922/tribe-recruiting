@@ -1,11 +1,23 @@
 """keboola_entry.py -- Role Pipeline Tracker data writer.
 
-Reads the pre-aggregated `role_tracker_summary` table (mapped as an input CSV)
-and PUTs recruiting-dashboard/public/role-tracker/data.json to
-bark8922/tribe-recruiting via the GitHub Contents API. Sibling of the sourcing
-and calls dashboard writers. Runs in the 4x/day recruiting Flow after the
-`role_tracker_summary` transformation. Data is tiny so the Contents API is used
-(same approach as the sourcing writer).
+Reads two pre-aggregated tables (mapped as input CSVs) and PUTs
+recruiting-dashboard/public/role-tracker/data.json to bark8922/tribe-recruiting
+via the GitHub Contents API:
+
+  role_tracker_summary    -> "rows"        one row per role ON the new
+                                           Interview 1/2/3 pipeline. Powers the
+                                           Roles and Owners tabs.
+  role_tracker_open_roles -> "open_roles"  one row per NON-ARCHIVED role whether
+                                           or not it uses the new pipeline.
+                                           Powers the Coverage tab.
+
+The coverage table is OPTIONAL. If its CSV is not mapped or fails to parse we
+log a warning and still write "rows", so the Roles/Owners tabs can never be
+broken by a problem in the newer dataset.
+
+Sibling of the sourcing and calls dashboard writers. Runs in the 4x/day
+recruiting Flow after both transformations. Data is tiny so the Contents API is
+used (same approach as the sourcing writer).
 """
 import base64
 import csv
@@ -21,6 +33,10 @@ REPO = "bark8922/tribe-recruiting"
 TARGET_PATH = "recruiting-dashboard/public/role-tracker/data.json"
 INT_FIELDS = ["total", "contacted", "pos_resp", "screen", "ats",
               "int1", "int2", "int3", "offer", "hired", "archived"]
+COVERAGE_STR_FIELDS = ["role", "client", "owner", "opened", "role_type",
+                       "last_activity"]
+COVERAGE_INT_FIELDS = ["days_open", "on_new_pipeline", "candidates",
+                       "days_since_activity"]
 
 
 def gh(url, token, method="GET", data=None):
@@ -52,6 +68,38 @@ def put_file(token, path, content_str):
         print("[role-tracker] PUT HTTP " + str(resp.status), flush=True)
 
 
+def read_coverage(tables_in_path):
+    """Read role_tracker_open_roles.csv. Best-effort: never raises."""
+    src = os.path.join(tables_in_path, "role_tracker_open_roles.csv")
+    if not os.path.exists(src):
+        print("[role-tracker] coverage CSV not mapped, skipping open_roles",
+              flush=True)
+        return []
+    rows = []
+    try:
+        with open(src, newline="", encoding="utf-8") as f:
+            for r in csv.DictReader(f):
+                obj = {k: (r.get(k) or "") for k in COVERAGE_STR_FIELDS}
+                obj["opened"] = obj["opened"][:10]
+                obj["last_activity"] = obj["last_activity"][:10]
+                for k in COVERAGE_INT_FIELDS:
+                    raw = r.get(k)
+                    if raw is None or str(raw).strip() == "":
+                        obj[k] = None if k == "days_since_activity" else 0
+                        continue
+                    try:
+                        obj[k] = int(float(raw))
+                    except (TypeError, ValueError):
+                        obj[k] = None if k == "days_since_activity" else 0
+                rows.append(obj)
+    except Exception as exc:
+        print("[role-tracker] WARNING coverage read failed: " + str(exc),
+              flush=True)
+        return []
+    rows.sort(key=lambda x: (x["role_type"] != "Client", -(x["days_open"] or 0)))
+    return rows
+
+
 def main():
     ci = CommonInterface()
     params = ci.configuration.parameters
@@ -77,12 +125,15 @@ def main():
             rows.append(obj)
 
     rows.sort(key=lambda x: x["total"], reverse=True)
+    open_roles = read_coverage(ci.tables_in_path)
     payload = {
         "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
         "rows": rows,
+        "open_roles": open_roles,
     }
     put_file(token, TARGET_PATH, json.dumps(payload, ensure_ascii=False))
-    print("[role-tracker] wrote " + str(len(rows)) + " roles", flush=True)
+    print("[role-tracker] wrote " + str(len(rows)) + " roles, "
+          + str(len(open_roles)) + " open roles", flush=True)
 
 
 main()

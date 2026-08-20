@@ -44,6 +44,12 @@
   .b-archived{background:rgba(100,116,139,.12);color:#94a3b8;border:1px solid rgba(100,116,139,.3)}
   .b-followup{background:rgba(239,68,68,.15);color:#fca5a5;border:1px solid rgba(239,68,68,.35)}
   .b-ok{background:rgba(34,197,94,.15);color:#86efac;border:1px solid rgba(34,197,94,.35)}
+  .b-quiet{background:rgba(239,68,68,.15);color:#fca5a5;border:1px solid rgba(239,68,68,.35)}
+  .b-dead{background:rgba(100,116,139,.15);color:#94a3b8;border:1px solid rgba(100,116,139,.35)}
+  .b-live{background:rgba(34,197,94,.15);color:#86efac;border:1px solid rgba(34,197,94,.35)}
+  .b-yes{background:rgba(59,130,246,.15);color:#93c5fd;border:1px solid rgba(59,130,246,.35)}
+  .b-no{background:rgba(245,158,11,.15);color:#fcd34d;border:1px solid rgba(245,158,11,.35)}
+  .ty{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.03em}
   .foot{color:var(--muted);font-size:12px;margin-top:14px}
   .hidden{display:none}
 </style>
@@ -56,6 +62,7 @@
   <div class="tabs">
     <button id="tabRoles" class="on" onclick="setView('roles')">Roles</button>
     <button id="tabOwners" onclick="setView('owners')">Owners</button>
+    <button id="tabCoverage" onclick="setView('coverage')">Coverage</button>
   </div>
 
   <div class="cards" id="cards"></div>
@@ -104,11 +111,42 @@
     </div>
     <div class="foot"><b>With interviews</b> = roles that have a candidate in/through an interview stage (interview, offer, or hired). <b>Gap roles</b> = roles where candidates reached Move to ATS but nobody is tracked into any interview stage — the sign the owner isn't using the interview stages. <b>Follow up</b> = 1+ gap roles.</div>
   </div>
+
+  <!-- COVERAGE VIEW -->
+  <div id="coverageView" class="hidden">
+    <div class="controls">
+      <select id="cOwner"><option value="">All owners</option></select>
+      <select id="cClient"><option value="">All clients</option></select>
+      <select id="cPipe"><option value="">On pipeline: any</option><option value="1">On new pipeline</option><option value="0">Not on new pipeline</option></select>
+      <input type="text" id="cSearch" placeholder="Search role...">
+      <label class="chk"><input type="checkbox" id="cQuiet"> No movement 90+ days</label>
+      <label class="chk"><input type="checkbox" id="cInternal"> Include BD / internal / marketing / test</label>
+    </div>
+    <div style="overflow-x:auto">
+    <table id="ctbl">
+      <thead><tr>
+        <th data-ck="role">Role</th>
+        <th data-ck="client">Client</th>
+        <th data-ck="owner">Owner</th>
+        <th data-ck="role_type" class="ctype hidden">Type</th>
+        <th data-ck="opened">Opened</th>
+        <th data-ck="days_open" class="num">Days open</th>
+        <th data-ck="candidates" class="num">Candidates</th>
+        <th data-ck="on_new_pipeline">New pipeline</th>
+        <th data-ck="last_activity">Last movement</th>
+        <th data-ck="quietRank">Movement</th>
+      </tr></thead>
+      <tbody id="crows"></tbody>
+    </table>
+    </div>
+    <div class="foot">Every role still <b>open</b> in Bubble, whether or not it uses the new Interview 1/2/3 pipeline. <b>New pipeline</b> = the role was created with the Interview 1/2/3 stages, so it can be tracked properly. <b>Last movement</b> = the most recent candidate event on the role. <b>Quiet</b> = nothing has moved in 90+ days, which usually means the role should be archived or reopened on the new pipeline. Client-facing roles only unless you tick the last box.</div>
+  </div>
 </div>
 
 <script>
-let DATA=[], REF=new Date(), VIEW='roles';
-let sortK='statusRank',sortDir=-1, oSortK='gap',oSortDir=-1;
+let DATA=[], OPEN=[], REF=new Date(), VIEW='roles';
+let sortK='statusRank',sortDir=-1, oSortK='gap',oSortDir=-1, cSortK='days_since_activity',cSortDir=-1;
+const QUIET_DAYS=90;
 
 function days(d){return Math.round((REF-new Date(d))/86400000);}
 function engaged(r){return (r.int1+r.int2+r.int3+r.offer+r.hired)>0;}
@@ -127,6 +165,18 @@ function iv(v){return v>0?`<span class="ivcell">${v}</span>`:`<span class="zero"
 fetch('./data.json?t='+Date.now()).then(r=>r.json()).then(j=>{
   REF=new Date(j.generated_at||new Date());
   DATA=j.rows||[];
+  OPEN=(j.open_roles||[]).map(r=>{
+    const dsa=(r.days_since_activity===null||r.days_since_activity===undefined)?null:Number(r.days_since_activity);
+    r.days_since_activity=dsa;
+    r.on_new_pipeline=Number(r.on_new_pipeline)||0;
+    r.candidates=Number(r.candidates)||0;
+    r.days_open=Number(r.days_open)||0;
+    r._q = dsa===null ? {k:'dead',t:'Never',rank:2}
+         : dsa>QUIET_DAYS ? {k:'quiet',t:dsa+'d quiet',rank:1}
+         : {k:'live',t:dsa+'d ago',rank:0};
+    r.quietRank=r._q.rank;
+    return r;
+  });
   DATA.forEach(r=>{r.archived=Number(r.archived)||0;r.interview=r.int1+r.int2+r.int3;r.days=days(r.opened);const s=statusOf(r);r._s=s;r.statusRank=s.rank;});
   document.getElementById('sub').textContent='Are candidates actually moving through the stages? Data as of '+(j.generated_at||'')+'. Internal sourcing pools excluded.';
   const owners=[...new Set(DATA.map(r=>r.owner))].sort();
@@ -134,6 +184,10 @@ fetch('./data.json?t='+Date.now()).then(r=>r.json()).then(j=>{
   const selO=document.getElementById('fOwner'),selC=document.getElementById('fClient');
   owners.forEach(o=>selO.add(new Option(o,o)));
   clients.forEach(c=>selC.add(new Option(c,c)));
+  const cSelO=document.getElementById('cOwner'),cSelC=document.getElementById('cClient');
+  [...new Set(OPEN.map(r=>r.owner))].sort().forEach(o=>cSelO.add(new Option(o,o)));
+  [...new Set(OPEN.map(r=>r.client))].sort().forEach(c=>cSelC.add(new Option(c,c)));
+  if(!OPEN.length) document.getElementById('tabCoverage').classList.add('hidden');
   render();
 });
 
@@ -141,12 +195,16 @@ document.querySelectorAll('#tbl th').forEach(th=>th.addEventListener('click',()=
 document.querySelectorAll('#otbl th').forEach(th=>th.addEventListener('click',()=>{const k=th.dataset.ok;if(oSortK===k)oSortDir*=-1;else{oSortK=k;oSortDir=(k==='owner')?1:-1;}render();}));
 ['fOwner','fClient','fStatus','fSearch'].forEach(id=>document.getElementById(id).addEventListener('input',render));
 document.getElementById('oFollow').addEventListener('input',render);
+document.querySelectorAll('#ctbl th').forEach(th=>th.addEventListener('click',()=>{const k=th.dataset.ck;if(cSortK===k)cSortDir*=-1;else{cSortK=k;cSortDir=(k==='role'||k==='owner'||k==='client'||k==='role_type'||k==='opened')?1:-1;}render();}));
+['cOwner','cClient','cPipe','cSearch','cQuiet','cInternal'].forEach(id=>document.getElementById(id).addEventListener('input',render));
 
 function setView(v){VIEW=v;
   document.getElementById('tabRoles').classList.toggle('on',v==='roles');
   document.getElementById('tabOwners').classList.toggle('on',v==='owners');
+  document.getElementById('tabCoverage').classList.toggle('on',v==='coverage');
   document.getElementById('rolesView').classList.toggle('hidden',v!=='roles');
   document.getElementById('ownersView').classList.toggle('hidden',v!=='owners');
+  document.getElementById('coverageView').classList.toggle('hidden',v!=='coverage');
   render();
 }
 
@@ -158,10 +216,54 @@ function ownerRollup(active){
     b.statusRank=b.gap>0?1:0; b._s=b.gap>0?{k:'followup',t:'Follow up'}:{k:'ok',t:'OK'}; return b;});
 }
 
+function renderCoverage(){
+  const inc=document.getElementById('cInternal').checked;
+  const scope=OPEN.filter(r=>inc||r.role_type==='Client');
+  document.querySelectorAll('.ctype').forEach(el=>el.classList.toggle('hidden',!inc));
+
+  const onPipe=scope.filter(r=>r.on_new_pipeline===1).length;
+  const pct=scope.length?Math.round(onPipe/scope.length*100):0;
+  const quiet=scope.filter(r=>r._q.rank>0).length;
+  const never=scope.filter(r=>r.days_since_activity===null).length;
+  document.getElementById('cards').innerHTML=`
+    <div class="card"><div class="n">${scope.length}</div><div class="l">${inc?'Open roles (all types)':'Open client roles'}</div></div>
+    <div class="card good"><div class="n">${onPipe} <span style="font-size:15px;color:var(--muted)">/ ${scope.length} (${pct}%)</span></div><div class="l">On the new pipeline</div></div>
+    <div class="card warn"><div class="n">${quiet}</div><div class="l">No movement in ${QUIET_DAYS}+ days</div></div>
+    <div class="card"><div class="n">${never}</div><div class="l">No candidate activity ever</div></div>`;
+
+  const o=document.getElementById('cOwner').value,c=document.getElementById('cClient').value,
+        p=document.getElementById('cPipe').value,q=document.getElementById('cSearch').value.toLowerCase(),
+        quietOnly=document.getElementById('cQuiet').checked;
+  let rows=scope.filter(r=>(!o||r.owner===o)&&(!c||r.client===c)
+    &&(p===''||String(r.on_new_pipeline)===p)
+    &&(!q||(r.role||'').toLowerCase().includes(q))
+    &&(!quietOnly||r._q.rank>0));
+  rows.sort((a,b)=>{
+    let x=a[cSortK],y=b[cSortK];
+    if(cSortK==='days_since_activity'){x=(x===null?1e9:x);y=(y===null?1e9:y);}
+    if(typeof x==='string'){x=x.toLowerCase();y=(y||'').toLowerCase();}
+    return x<y?-1*cSortDir:x>y?1*cSortDir:0;});
+
+  document.getElementById('crows').innerHTML=rows.map(r=>`<tr>
+    <td class="role">${r.role||'(untitled)'}</td>
+    <td class="muted">${r.client}</td>
+    <td class="owner">${r.owner}</td>
+    <td class="ctype ty ${inc?'':'hidden'}">${r.role_type}</td>
+    <td class="muted">${r.opened}</td>
+    <td class="num">${r.days_open}</td>
+    <td class="num">${cell(r.candidates)}</td>
+    <td><span class="badge b-${r.on_new_pipeline?'yes':'no'}">${r.on_new_pipeline?'Yes':'No'}</span></td>
+    <td class="muted">${r.last_activity||'—'}</td>
+    <td><span class="badge b-${r._q.k}">${r._q.t}</span></td></tr>`).join('')
+    || '<tr><td colspan="10" class="muted" style="padding:18px">No roles match these filters.</td></tr>';
+}
+
 function render(){
   const active=DATA.filter(r=>!r.archived);
   const withInt=active.filter(engaged).length;
   const pct=active.length?Math.round(withInt/active.length*100):0;
+
+  if(VIEW==='coverage'){ renderCoverage(); return; }
 
   if(VIEW==='roles'){
     const o=document.getElementById('fOwner').value,c=document.getElementById('fClient').value,st=document.getElementById('fStatus').value,q=document.getElementById('fSearch').value.toLowerCase();

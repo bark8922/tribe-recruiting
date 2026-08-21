@@ -143,18 +143,18 @@
         <th data-ck="candidates" class="num">Candidates</th>
         <th data-ck="on_new_pipeline">New pipeline</th>
         <th data-ck="last_activity">Last movement</th>
-        <th data-ck="quietRank">Movement</th>
+        <th data-ck="quietDays">Movement</th>
       </tr></thead>
       <tbody id="crows"></tbody>
     </table>
     </div>
-    <div class="foot">Every role still <b>open</b> in Bubble, whether or not it uses the new Interview 1/2/3 pipeline. <b>New pipeline</b> = the role was created with the Interview 1/2/3 stages, so it can be tracked properly. <b>Last movement</b> = the most recent candidate event on the role. <b>Quiet</b> = nothing has moved in 90+ days, which usually means the role should be archived or reopened on the new pipeline. Client-facing roles only unless you tick the last box. <b>Export CSV</b> downloads exactly what you are looking at, in the order you sorted it, and includes the Bubble <b>Job ID</b> for each role even though it is not shown on screen.</div>
+    <div class="foot">Every role still <b>open</b> in Bubble, whether or not it uses the new Interview 1/2/3 pipeline. <b>New pipeline</b> = the role was created with the Interview 1/2/3 stages, so it can be tracked properly. <b>Last movement</b> = the most recent candidate event on the role. <b>Quiet</b> = nothing has moved in 90+ days, which usually means the role should be archived or reopened on the new pipeline. A role that has never had any candidate activity counts as quiet only once it has been <i>open</i> for 90+ days, so a role posted this week is not flagged as stale. Client-facing roles only unless you tick the last box. <b>Export CSV</b> downloads exactly what you are looking at, in the order you sorted it, and includes the Bubble <b>Job ID</b> for each role even though it is not shown on screen.</div>
   </div>
 </div>
 
 <script>
 let DATA=[], OPEN=[], REF=new Date(), VIEW='roles';
-let sortK='statusRank',sortDir=-1, oSortK='gap',oSortDir=-1, cSortK='days_since_activity',cSortDir=-1;
+let sortK='statusRank',sortDir=-1, oSortK='gap',oSortDir=-1, cSortK='quietDays',cSortDir=-1;
 const QUIET_DAYS=90;
 
 function days(d){return Math.round((REF-new Date(d))/86400000);}
@@ -180,10 +180,18 @@ fetch('./data.json?t='+Date.now()).then(r=>r.json()).then(j=>{
     r.on_new_pipeline=Number(r.on_new_pipeline)||0;
     r.candidates=Number(r.candidates)||0;
     r.days_open=Number(r.days_open)||0;
-    r._q = dsa===null ? {k:'dead',t:'Never',rank:2}
-         : dsa>QUIET_DAYS ? {k:'quiet',t:dsa+'d quiet',rank:1}
-         : {k:'live',t:dsa+'d ago',rank:0};
-    r.quietRank=r._q.rank;
+    // Belt and braces: the transform classifies test clients, but if a new one
+    // is created between refreshes, keep it out of the client-facing view.
+    if(/(^|[^a-z])test([^a-z]|$)/i.test(r.client||'')) r.role_type='Test';
+    // A role that has never had activity is not "quiet for 90 days" if it only
+    // opened yesterday. Fall back to how long it has been open.
+    r.quietDays = (r.quiet_days!==null&&r.quiet_days!==undefined)
+      ? Number(r.quiet_days)
+      : (dsa===null ? r.days_open : dsa);
+    r._q = dsa!==null
+         ? (dsa>QUIET_DAYS ? {k:'quiet',t:dsa+'d quiet'} : {k:'live',t:dsa+'d ago'})
+         : (r.days_open>QUIET_DAYS ? {k:'quiet',t:'none in '+r.days_open+'d'}
+                                   : {k:'new',t:'new, none yet'});
     return r;
   });
   DATA.forEach(r=>{r.archived=Number(r.archived)||0;r.interview=r.int1+r.int2+r.int3;r.days=days(r.opened);const s=statusOf(r);r._s=s;r.statusRank=s.rank;});
@@ -231,7 +239,8 @@ const CSV_COLS=[
   ['job_id','Job ID'],['role','Role'],['client','Client'],['owner','Owner'],
   ['role_type','Type'],['opened','Opened'],['days_open','Days open'],
   ['candidates','Candidates'],['on_new_pipeline','On new pipeline'],
-  ['last_activity','Last movement'],['days_since_activity','Days since movement']
+  ['last_activity','Last movement'],['days_since_activity','Days since movement'],
+  ['quietDays','Days quiet (age if never active)']
 ];
 function csvCell(v){
   if(v===null||v===undefined) return '';
@@ -272,13 +281,13 @@ function renderCoverage(){
 
   const onPipe=scope.filter(r=>r.on_new_pipeline===1).length;
   const pct=scope.length?Math.round(onPipe/scope.length*100):0;
-  const quiet=scope.filter(r=>r._q.rank>0).length;
-  const never=scope.filter(r=>r.days_since_activity===null).length;
+  const quiet=scope.filter(r=>r.quietDays>QUIET_DAYS).length;
+  const never=scope.filter(r=>r.days_since_activity===null&&r.days_open>QUIET_DAYS).length;
   document.getElementById('cards').innerHTML=`
     <div class="card"><div class="n">${scope.length}</div><div class="l">${inc?'Open roles (all types)':'Open client roles'}</div></div>
     <div class="card good"><div class="n">${onPipe} <span style="font-size:15px;color:var(--muted)">/ ${scope.length} (${pct}%)</span></div><div class="l">On the new pipeline</div></div>
     <div class="card warn"><div class="n">${quiet}</div><div class="l">No movement in ${QUIET_DAYS}+ days</div></div>
-    <div class="card"><div class="n">${never}</div><div class="l">No candidate activity ever</div></div>`;
+    <div class="card"><div class="n">${never}</div><div class="l">Never any activity, open ${QUIET_DAYS}+ days</div></div>`;
 
   const o=document.getElementById('cOwner').value,c=document.getElementById('cClient').value,
         p=document.getElementById('cPipe').value,q=document.getElementById('cSearch').value.toLowerCase(),
@@ -286,10 +295,10 @@ function renderCoverage(){
   let rows=scope.filter(r=>(!o||r.owner===o)&&(!c||r.client===c)
     &&(p===''||String(r.on_new_pipeline)===p)
     &&(!q||(r.role||'').toLowerCase().includes(q))
-    &&(!quietOnly||r._q.rank>0));
+    &&(!quietOnly||r.quietDays>QUIET_DAYS));
   rows.sort((a,b)=>{
     let x=a[cSortK],y=b[cSortK];
-    if(cSortK==='days_since_activity'){x=(x===null?1e9:x);y=(y===null?1e9:y);}
+    if(cSortK==='quietDays'||cSortK==='days_since_activity'){x=(x===null?-1:x);y=(y===null?-1:y);}
     if(typeof x==='string'){x=x.toLowerCase();y=(y||'').toLowerCase();}
     return x<y?-1*cSortDir:x>y?1*cSortDir:0;});
 

@@ -38,7 +38,7 @@ INT_FIELDS = ["total", "contacted", "pos_resp", "screen", "ats",
 COVERAGE_STR_FIELDS = ["job_id", "role", "client", "owner", "opened",
                        "role_type", "last_activity"]
 COVERAGE_INT_FIELDS = ["days_open", "on_new_pipeline", "candidates",
-                       "days_since_activity"]
+                       "days_since_activity", "quiet_days"]
 
 
 def gh(url, token, method="GET", data=None):
@@ -87,12 +87,12 @@ def read_coverage(tables_in_path):
                 for k in COVERAGE_INT_FIELDS:
                     raw = r.get(k)
                     if raw is None or str(raw).strip() == "":
-                        obj[k] = None if k == "days_since_activity" else 0
+                        obj[k] = None if k in ("days_since_activity", "quiet_days") else 0
                         continue
                     try:
                         obj[k] = int(float(raw))
                     except (TypeError, ValueError):
-                        obj[k] = None if k == "days_since_activity" else 0
+                        obj[k] = None if k in ("days_since_activity", "quiet_days") else 0
                 rows.append(obj)
     except Exception as exc:
         print("[role-tracker] WARNING coverage read failed: " + str(exc),

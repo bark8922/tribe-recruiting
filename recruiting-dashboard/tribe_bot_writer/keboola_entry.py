@@ -50,7 +50,8 @@ SOURCE_CSV = "candidate_dq_by_stage.csv"
 STR_FIELDS = ["candidate_id", "job_id", "job_title", "client_name",
               "recruiter", "sourcer", "job_category", "job_subcategory",
               "stage", "reason"]
-DATE_FIELDS = ["dq_date", "date_contacted", "date_screen", "date_screen_actual"]
+DATE_FIELDS = ["dq_date", "date_contacted", "date_screen", "date_screen_actual",
+               "date_ats"]
 
 
 def gh(url, token, method="GET", data=None):

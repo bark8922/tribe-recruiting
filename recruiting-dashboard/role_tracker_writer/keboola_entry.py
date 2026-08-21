@@ -9,7 +9,9 @@ via the GitHub Contents API:
                                            Roles and Owners tabs.
   role_tracker_open_roles -> "open_roles"  one row per NON-ARCHIVED role whether
                                            or not it uses the new pipeline.
-                                           Powers the Coverage tab.
+                                           Powers the Coverage tab. Carries
+                                           job_id, which the page never renders
+                                           but does include in its CSV export.
 
 The coverage table is OPTIONAL. If its CSV is not mapped or fails to parse we
 log a warning and still write "rows", so the Roles/Owners tabs can never be
@@ -33,8 +35,8 @@ REPO = "bark8922/tribe-recruiting"
 TARGET_PATH = "recruiting-dashboard/public/role-tracker/data.json"
 INT_FIELDS = ["total", "contacted", "pos_resp", "screen", "ats",
               "int1", "int2", "int3", "offer", "hired", "archived"]
-COVERAGE_STR_FIELDS = ["role", "client", "owner", "opened", "role_type",
-                       "last_activity"]
+COVERAGE_STR_FIELDS = ["job_id", "role", "client", "owner", "opened",
+                       "role_type", "last_activity"]
 COVERAGE_INT_FIELDS = ["days_open", "on_new_pipeline", "candidates",
                        "days_since_activity"]
 

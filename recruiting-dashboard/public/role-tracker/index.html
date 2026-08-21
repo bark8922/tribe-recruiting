@@ -50,6 +50,11 @@
   .b-yes{background:rgba(59,130,246,.15);color:#93c5fd;border:1px solid rgba(59,130,246,.35)}
   .b-no{background:rgba(245,158,11,.15);color:#fcd34d;border:1px solid rgba(245,158,11,.35)}
   .ty{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.03em}
+  .count{margin-left:auto;display:flex;align-items:center;gap:12px}
+  .count .n{color:var(--text);font-weight:700;font-variant-numeric:tabular-nums}
+  .count .of{color:var(--muted);font-size:13px}
+  button.exp{background:#1d2a44;border:1px solid var(--accent);color:#dbeafe;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
+  button.exp:hover{background:#24365a}
   .foot{color:var(--muted);font-size:12px;margin-top:14px}
   .hidden{display:none}
 </style>
@@ -121,6 +126,10 @@
       <input type="text" id="cSearch" placeholder="Search role...">
       <label class="chk"><input type="checkbox" id="cQuiet"> No movement 90+ days</label>
       <label class="chk"><input type="checkbox" id="cInternal"> Include BD / internal / marketing / test</label>
+      <div class="count">
+        <span><span class="n" id="cCount">0</span> <span class="of">roles shown</span></span>
+        <button class="exp" id="cExport" type="button">Export CSV</button>
+      </div>
     </div>
     <div style="overflow-x:auto">
     <table id="ctbl">
@@ -139,7 +148,7 @@
       <tbody id="crows"></tbody>
     </table>
     </div>
-    <div class="foot">Every role still <b>open</b> in Bubble, whether or not it uses the new Interview 1/2/3 pipeline. <b>New pipeline</b> = the role was created with the Interview 1/2/3 stages, so it can be tracked properly. <b>Last movement</b> = the most recent candidate event on the role. <b>Quiet</b> = nothing has moved in 90+ days, which usually means the role should be archived or reopened on the new pipeline. Client-facing roles only unless you tick the last box.</div>
+    <div class="foot">Every role still <b>open</b> in Bubble, whether or not it uses the new Interview 1/2/3 pipeline. <b>New pipeline</b> = the role was created with the Interview 1/2/3 stages, so it can be tracked properly. <b>Last movement</b> = the most recent candidate event on the role. <b>Quiet</b> = nothing has moved in 90+ days, which usually means the role should be archived or reopened on the new pipeline. Client-facing roles only unless you tick the last box. <b>Export CSV</b> downloads exactly what you are looking at, in the order you sorted it, and includes the Bubble <b>Job ID</b> for each role even though it is not shown on screen.</div>
   </div>
 </div>
 
@@ -197,6 +206,7 @@ document.querySelectorAll('#otbl th').forEach(th=>th.addEventListener('click',()
 document.getElementById('oFollow').addEventListener('input',render);
 document.querySelectorAll('#ctbl th').forEach(th=>th.addEventListener('click',()=>{const k=th.dataset.ck;if(cSortK===k)cSortDir*=-1;else{cSortK=k;cSortDir=(k==='role'||k==='owner'||k==='client'||k==='role_type'||k==='opened')?1:-1;}render();}));
 ['cOwner','cClient','cPipe','cSearch','cQuiet','cInternal'].forEach(id=>document.getElementById(id).addEventListener('input',render));
+document.getElementById('cExport').addEventListener('click',exportCoverage);
 
 function setView(v){VIEW=v;
   document.getElementById('tabRoles').classList.toggle('on',v==='roles');
@@ -214,6 +224,45 @@ function ownerRollup(active){
     b.roles++; if(engaged(r)) b.engaged++; else if(r.ats>0) b.gap++;});
   return Object.values(m).map(b=>{b.pct=b.roles?Math.round(b.engaged/b.roles*100):0;
     b.statusRank=b.gap>0?1:0; b._s=b.gap>0?{k:'followup',t:'Follow up'}:{k:'ok',t:'OK'}; return b;});
+}
+
+let COVERAGE_VIEW=[];
+const CSV_COLS=[
+  ['job_id','Job ID'],['role','Role'],['client','Client'],['owner','Owner'],
+  ['role_type','Type'],['opened','Opened'],['days_open','Days open'],
+  ['candidates','Candidates'],['on_new_pipeline','On new pipeline'],
+  ['last_activity','Last movement'],['days_since_activity','Days since movement']
+];
+function csvCell(v){
+  if(v===null||v===undefined) return '';
+  const s=String(v);
+  return /[",\n\r]/.test(s) ? '"'+s.replace(/"/g,'""')+'"' : s;
+}
+function exportCoverage(){
+  if(!COVERAGE_VIEW.length) return;
+  const head=CSV_COLS.map(c=>csvCell(c[1])).join(',');
+  const body=COVERAGE_VIEW.map(r=>CSV_COLS.map(c=>{
+    let v=r[c[0]];
+    if(c[0]==='on_new_pipeline') v=v?'Yes':'No';
+    if(c[0]==='days_since_activity'&&v===null) v='';
+    if(c[0]==='last_activity'&&!v) v='';
+    return csvCell(v);
+  }).join(',')).join('\r\n');
+  // BOM so Excel reads accented names correctly
+  const blob=new Blob(['\uFEFF'+head+'\r\n'+body],{type:'text/csv;charset=utf-8;'});
+  const bits=[];
+  if(document.getElementById('cQuiet').checked) bits.push('quiet90');
+  const p=document.getElementById('cPipe').value;
+  if(p==='1') bits.push('on-pipeline'); else if(p==='0') bits.push('not-on-pipeline');
+  const ow=document.getElementById('cOwner').value;
+  if(ow) bits.push(ow.replace(/[^a-z0-9]+/gi,'-').toLowerCase());
+  const cl=document.getElementById('cClient').value;
+  if(cl) bits.push(cl.replace(/[^a-z0-9]+/gi,'-').toLowerCase());
+  const name='open-roles'+(bits.length?'-'+bits.join('-'):'')+'-'+(REF.toISOString().slice(0,10))+'.csv';
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob); a.download=name;
+  document.body.appendChild(a); a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},0);
 }
 
 function renderCoverage(){
@@ -243,6 +292,14 @@ function renderCoverage(){
     if(cSortK==='days_since_activity'){x=(x===null?1e9:x);y=(y===null?1e9:y);}
     if(typeof x==='string'){x=x.toLowerCase();y=(y||'').toLowerCase();}
     return x<y?-1*cSortDir:x>y?1*cSortDir:0;});
+
+  COVERAGE_VIEW=rows;
+  const cnt=document.getElementById('cCount');
+  cnt.textContent=rows.length;
+  cnt.nextElementSibling.textContent = rows.length===scope.length
+    ? (rows.length===1?'role':'roles')
+    : (rows.length===1?'role':'roles')+' of '+scope.length;
+  document.getElementById('cExport').disabled=!rows.length;
 
   document.getElementById('crows').innerHTML=rows.map(r=>`<tr>
     <td class="role">${r.role||'(untitled)'}</td>

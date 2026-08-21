@@ -48,7 +48,8 @@ TARGET_PATH = "recruiting-dashboard/public/tribe-bot/candidate_dq.json.gz"
 SOURCE_CSV = "candidate_dq_by_stage.csv"
 
 STR_FIELDS = ["candidate_id", "job_id", "job_title", "client_name",
-              "recruiter", "sourcer", "job_category", "job_subcategory",
+              "job_recruiter", "job_sourcer", "candidate_sourcer",
+              "job_category", "job_subcategory",
               "stage", "stage_detail", "reason"]
 DATE_FIELDS = ["dq_date", "date_contacted", "date_screen", "date_screen_actual",
                "date_ats", "date_interview"]

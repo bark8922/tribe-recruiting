@@ -162,7 +162,27 @@ const CsvBtn = ({ fname }) => {
   );
 };
 
-const WBRTab = ({ data }) => {
+const NotesRefreshBtn = ({ state, at, error, onClick }) => (
+  <div className="flex items-center gap-3 ml-auto">
+    <button
+      onClick={onClick}
+      disabled={state === 'loading'}
+      title="Re-read comments from the WBR target Google Sheet. Metrics are not refreshed."
+      className={'px-3 py-1.5 rounded text-sm font-semibold ' + (state === 'loading'
+        ? 'bg-gray-600 text-gray-300 cursor-wait'
+        : 'bg-blue-600 hover:bg-blue-700 text-white')}
+    >
+      {state === 'loading' ? 'Refreshing comments\u2026' : 'Refresh comments'}
+    </button>
+    {state === 'error'
+      ? <span className="text-xs text-red-400">Couldn't refresh: {error}</span>
+      : at
+        ? <span className="text-xs text-gray-500">Comments as of {at} CET · metrics unchanged</span>
+        : <span className="text-xs text-gray-500">Comments from the last scheduled refresh</span>}
+  </div>
+);
+
+const WBRTab = ({ data, notes }) => {
   // Derive week list from the weekly roster (keys like "w15", "w16"). This
   // auto-advances as Andy adds new weeks to the TA Weekly Note sheet.
   const WEEKS = useMemo(() => {
@@ -910,6 +930,7 @@ const WBRTab = ({ data }) => {
           ))}
         </select>
         <span className="text-xs text-gray-500 ml-2">Tip: click any Client, TA, or TS row below for a 6-week drill-down</span>
+        {notes && <NotesRefreshBtn {...notes} />}
       </div>
 
       {/* Team-lead filter (Bamboo-derived). Client Summary always shows full;
@@ -1340,7 +1361,7 @@ const WBRTab = ({ data }) => {
 };
 
 // MBR Tab — Monthly Business Review (last 4 weeks, w12-w15 = 2026-03-16 to 2026-04-12)
-const MBRTab = ({ data }) => {
+const MBRTab = ({ data, notes }) => {
   const MBR_WEEKS = (data.mbr_window?.weeks || ['w12','w13','w14','w15']);
   const windowLabel = `${data.mbr_window?.start || '2026-03-16'} → ${data.mbr_window?.end || '2026-04-12'}`;
 
@@ -1673,9 +1694,12 @@ const MBRTab = ({ data }) => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
-        <div className="text-sm text-gray-400">Monthly Business Review — last 4 weeks</div>
-        <div className="text-xl font-semibold text-white mt-1">Window: {windowLabel} (weeks {MBR_WEEKS.join(', ')})</div>
+      <div className="bg-gray-800 rounded-lg p-4 border border-gray-700 flex items-center justify-between gap-4 flex-wrap">
+        <div>
+          <div className="text-sm text-gray-400">Monthly Business Review — last 4 weeks</div>
+          <div className="text-xl font-semibold text-white mt-1">Window: {windowLabel} (weeks {MBR_WEEKS.join(', ')})</div>
+        </div>
+        {notes && <NotesRefreshBtn {...notes} />}
       </div>
 
       {/* 1. Client's Target — compact 540px, colgroup widths, color coding */}
@@ -1878,6 +1902,13 @@ const normalizeClientPD = (client) => {
 
 // Non-real PD clients: always excluded from Project Dashboard (Tribe.xyz (IR) is kept).
 const PD_EXCLUDED_CLIENTS = new Set(['Tribe.xyz', 'Tribe: Talent Pools']);
+
+// 2026-08-21: a name whose ENTIRE all-time funnel footprint is this small is a
+// data artifact, not someone anyone filters by (one row, zero or near-zero
+// counts — e.g. a job assignment that never produced activity). 11 TA names and
+// 19 TS names sat at <= 5 when this was set. Judged all-time on purpose so the
+// threshold doesn't move when the period selector moves.
+const PD_GHOST_ACTIVITY_MAX = 5;
 
 const pdPct = (v) => v == null ? '—' : `${(v * 100).toFixed(0)}%`;
 // RAG heatmap for Project Overview conversion cells. Thresholds match the
@@ -2353,8 +2384,40 @@ const ProjectDashboardTab = ({ data }) => {
 
   // Filter dropdown options
   const uniqueClients    = useMemo(() => Array.from(new Set(pdRows.filter((r) => !PD_EXCLUDED_CLIENTS.has(r.client)).map((r) => normalizeClientPD(r.client)))).sort(), [pdRows]);
-  const uniqueTas        = useMemo(() => Array.from(new Set(pdRows.map((r) => r.ta).filter(Boolean))).sort(), [pdRows]);
-  const uniqueTses       = useMemo(() => Array.from(new Set(pdRows.map((r) => r.ts).filter(Boolean))).sort(), [pdRows]);
+  // 2026-08-21 (Salem): the TA/TS pickers used to read every row all-time. The PD
+  // window starts 2025-W01, so that was 108 TAs / 120 TSes — 20 months of staff
+  // churn, most of them long gone. They're now scoped to the SELECTED period, so
+  // "last week" lists ~25 TAs. Nobody is permanently removed: pick a 2025 period
+  // and the 2025 roster comes back clickable (2025 case studies need it). The
+  // current selection is always kept in the list so a chosen filter can never
+  // silently disappear when the period changes.
+  const ghostNames = useMemo(() => {
+    const acc = new Map();
+    const bump = (k, v) => { if (k) acc.set(k, (acc.get(k) || 0) + v); };
+    for (const r of pdRows) {
+      const v = (r.viewed || 0) + (r.contacted || 0) + (r.positive_response || 0)
+              + (r.actual_screens || 0) + (r.ats || 0) + (r.offered || 0) + (r.hired || 0);
+      bump(r.ta, v);
+      if (r.ts !== r.ta) bump(r.ts, v);
+    }
+    const out = new Set();
+    for (const [k, v] of acc) if (v <= PD_GHOST_ACTIVITY_MAX) out.add(k);
+    return out;
+  }, [pdRows]);
+  const periodRows = useMemo(
+    () => pdRows.filter((r) => weekSet.has(`${r.iso_year}-W${String(r.iso_week).padStart(2, '0')}`)),
+    [pdRows, weekSet]
+  );
+  const uniqueTas = useMemo(() => {
+    const s = new Set(periodRows.map((r) => r.ta).filter((n) => n && !ghostNames.has(n)));
+    if (filterTa) s.add(filterTa);
+    return Array.from(s).sort();
+  }, [periodRows, ghostNames, filterTa]);
+  const uniqueTses = useMemo(() => {
+    const s = new Set(periodRows.map((r) => r.ts).filter((n) => n && !ghostNames.has(n)));
+    if (filterTs) s.add(filterTs);
+    return Array.from(s).sort();
+  }, [periodRows, ghostNames, filterTs]);
   const uniqueCategories = useMemo(() => Array.from(new Set(pdRows.map((r) => r.job_category).filter(Boolean))).sort(), [pdRows]);
   const uniqueSources    = useMemo(() => Array.from(new Set(pdRows.map((r) => r.candidate_source).filter(Boolean))).sort(), [pdRows]);
 
@@ -2410,7 +2473,7 @@ const ProjectDashboardTab = ({ data }) => {
       {/* Page header */}
       <div>
         <h2 className="text-2xl font-bold text-white">Project Overview</h2>
-        <div className="text-sm text-gray-400 mt-1">Contacted → positive response → screens → ATS → offers → hires for the selected period. Filter to a TA or client to see just those numbers.</div>
+        <div className="text-sm text-gray-400 mt-1">Contacted → positive response → screens → ATS → offers → hires for the selected period. Filter to a TA or client to see just those numbers. The TA and TS lists show whoever was active in the selected period — widen the period to reach earlier people.</div>
       </div>
       {/* Filter bar */}
       <div className="bg-gray-800 rounded-lg p-4">
@@ -2466,12 +2529,12 @@ const ProjectDashboardTab = ({ data }) => {
           </select>
           <select value={filterTa} onChange={(e) => setFilterTa(e.target.value)}
             className="px-3 py-2 bg-gray-700 text-white rounded border border-gray-600 text-sm">
-            <option value="">All TAs</option>
+            <option value="">All TAs ({uniqueTas.length})</option>
             {uniqueTas.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
           <select value={filterTs} onChange={(e) => setFilterTs(e.target.value)}
             className="px-3 py-2 bg-gray-700 text-white rounded border border-gray-600 text-sm">
-            <option value="">All TSes</option>
+            <option value="">All TSes ({uniqueTses.length})</option>
             {uniqueTses.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
           <select value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)}
@@ -5581,6 +5644,49 @@ const RecruitingDashboard = () => {
     })();
     return () => { cancelled = true; };
   }, []);
+  // On-demand comment refresh (WBR/MBR only). Re-reads the two note tabs from
+  // Andy's sheet via /api/wbr-notes and swaps them over the loaded bundle.
+  // Only ta_weekly_notes and ts_weekly are replaced; every metric key is left
+  // exactly as the scheduled render produced it.
+  const [notesOverride, setNotesOverride] = useState(null);
+  const [notesState, setNotesState] = useState('idle');
+  const [notesAt, setNotesAt] = useState(null);
+  const [notesError, setNotesError] = useState(null);
+  const refreshNotes = React.useCallback(async () => {
+    setNotesState('loading');
+    setNotesError(null);
+    try {
+      const res = await fetch('/api/wbr-notes', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: '{}',
+      });
+      // An expired session is answered by _middleware.ts with the login page,
+      // which is HTML with a 200 status, so status alone is not enough.
+      const ctype = res.headers.get('content-type') || '';
+      if (!ctype.includes('application/json')) {
+        throw new Error('session expired, reload the page and sign in again');
+      }
+      const body = await res.json();
+      if (!res.ok) throw new Error(body.error || ('HTTP ' + res.status));
+      if (!Array.isArray(body.ta_weekly_notes) || !Array.isArray(body.ts_weekly)) {
+        throw new Error('unexpected response shape');
+      }
+      setNotesOverride({ ta_weekly_notes: body.ta_weekly_notes, ts_weekly: body.ts_weekly });
+      setNotesAt(new Date().toLocaleTimeString('en-GB', {
+        timeZone: 'Europe/Berlin', hour: '2-digit', minute: '2-digit',
+      }));
+      setNotesState('done');
+    } catch (e) {
+      setNotesError(String(e && e.message ? e.message : e));
+      setNotesState('error');
+    }
+  }, []);
+  const notesProps = { state: notesState, at: notesAt, error: notesError, onClick: refreshNotes };
+  const dataWithNotes = useMemo(
+    () => (notesOverride && dashboardData ? { ...dashboardData, ...notesOverride } : dashboardData),
+    [dashboardData, notesOverride],
+  );
   // Snap-back: if state lands on a tab the current role doesn't see, fall back
   // to Project Dashboard. Covers both leadership-only and director-only tabs.
   const safeActiveTab =
@@ -5629,8 +5735,8 @@ const RecruitingDashboard = () => {
         </div>
       </div>
       <div className="px-6 py-6">
-        {safeActiveTab === 'wbr' && isLeadership && <WBRTab data={dashboardData} />}
-        {safeActiveTab === 'mbr' && isLeadership && <MBRTab data={dashboardData} />}
+        {safeActiveTab === 'wbr' && isLeadership && <WBRTab data={dataWithNotes} notes={notesProps} />}
+        {safeActiveTab === 'mbr' && isLeadership && <MBRTab data={dataWithNotes} notes={notesProps} />}
         {safeActiveTab === 'profitability' && isDirector && <ProfitabilityTab />}
         {safeActiveTab === 'project' && <ProjectDashboardTab data={dashboardData} />}
         {safeActiveTab === 'weekly' && <WeeklySummaryTab data={dashboardData} />}

@@ -1903,6 +1903,13 @@ const normalizeClientPD = (client) => {
 // Non-real PD clients: always excluded from Project Dashboard (Tribe.xyz (IR) is kept).
 const PD_EXCLUDED_CLIENTS = new Set(['Tribe.xyz', 'Tribe: Talent Pools']);
 
+// 2026-08-21: a name whose ENTIRE all-time funnel footprint is this small is a
+// data artifact, not someone anyone filters by (one row, zero or near-zero
+// counts — e.g. a job assignment that never produced activity). 11 TA names and
+// 19 TS names sat at <= 5 when this was set. Judged all-time on purpose so the
+// threshold doesn't move when the period selector moves.
+const PD_GHOST_ACTIVITY_MAX = 5;
+
 const pdPct = (v) => v == null ? '—' : `${(v * 100).toFixed(0)}%`;
 // RAG heatmap for Project Overview conversion cells. Thresholds match the
 // TS Summary tab's cellStyle exactly where the metric overlaps (cpr=pctContPR,
@@ -2377,8 +2384,40 @@ const ProjectDashboardTab = ({ data }) => {
 
   // Filter dropdown options
   const uniqueClients    = useMemo(() => Array.from(new Set(pdRows.filter((r) => !PD_EXCLUDED_CLIENTS.has(r.client)).map((r) => normalizeClientPD(r.client)))).sort(), [pdRows]);
-  const uniqueTas        = useMemo(() => Array.from(new Set(pdRows.map((r) => r.ta).filter(Boolean))).sort(), [pdRows]);
-  const uniqueTses       = useMemo(() => Array.from(new Set(pdRows.map((r) => r.ts).filter(Boolean))).sort(), [pdRows]);
+  // 2026-08-21 (Salem): the TA/TS pickers used to read every row all-time. The PD
+  // window starts 2025-W01, so that was 108 TAs / 120 TSes — 20 months of staff
+  // churn, most of them long gone. They're now scoped to the SELECTED period, so
+  // "last week" lists ~25 TAs. Nobody is permanently removed: pick a 2025 period
+  // and the 2025 roster comes back clickable (2025 case studies need it). The
+  // current selection is always kept in the list so a chosen filter can never
+  // silently disappear when the period changes.
+  const ghostNames = useMemo(() => {
+    const acc = new Map();
+    const bump = (k, v) => { if (k) acc.set(k, (acc.get(k) || 0) + v); };
+    for (const r of pdRows) {
+      const v = (r.viewed || 0) + (r.contacted || 0) + (r.positive_response || 0)
+              + (r.actual_screens || 0) + (r.ats || 0) + (r.offered || 0) + (r.hired || 0);
+      bump(r.ta, v);
+      if (r.ts !== r.ta) bump(r.ts, v);
+    }
+    const out = new Set();
+    for (const [k, v] of acc) if (v <= PD_GHOST_ACTIVITY_MAX) out.add(k);
+    return out;
+  }, [pdRows]);
+  const periodRows = useMemo(
+    () => pdRows.filter((r) => weekSet.has(`${r.iso_year}-W${String(r.iso_week).padStart(2, '0')}`)),
+    [pdRows, weekSet]
+  );
+  const uniqueTas = useMemo(() => {
+    const s = new Set(periodRows.map((r) => r.ta).filter((n) => n && !ghostNames.has(n)));
+    if (filterTa) s.add(filterTa);
+    return Array.from(s).sort();
+  }, [periodRows, ghostNames, filterTa]);
+  const uniqueTses = useMemo(() => {
+    const s = new Set(periodRows.map((r) => r.ts).filter((n) => n && !ghostNames.has(n)));
+    if (filterTs) s.add(filterTs);
+    return Array.from(s).sort();
+  }, [periodRows, ghostNames, filterTs]);
   const uniqueCategories = useMemo(() => Array.from(new Set(pdRows.map((r) => r.job_category).filter(Boolean))).sort(), [pdRows]);
   const uniqueSources    = useMemo(() => Array.from(new Set(pdRows.map((r) => r.candidate_source).filter(Boolean))).sort(), [pdRows]);
 
@@ -2434,7 +2473,7 @@ const ProjectDashboardTab = ({ data }) => {
       {/* Page header */}
       <div>
         <h2 className="text-2xl font-bold text-white">Project Overview</h2>
-        <div className="text-sm text-gray-400 mt-1">Contacted → positive response → screens → ATS → offers → hires for the selected period. Filter to a TA or client to see just those numbers.</div>
+        <div className="text-sm text-gray-400 mt-1">Contacted → positive response → screens → ATS → offers → hires for the selected period. Filter to a TA or client to see just those numbers. The TA and TS lists show whoever was active in the selected period — widen the period to reach earlier people.</div>
       </div>
       {/* Filter bar */}
       <div className="bg-gray-800 rounded-lg p-4">
@@ -2490,12 +2529,12 @@ const ProjectDashboardTab = ({ data }) => {
           </select>
           <select value={filterTa} onChange={(e) => setFilterTa(e.target.value)}
             className="px-3 py-2 bg-gray-700 text-white rounded border border-gray-600 text-sm">
-            <option value="">All TAs</option>
+            <option value="">All TAs ({uniqueTas.length})</option>
             {uniqueTas.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
           <select value={filterTs} onChange={(e) => setFilterTs(e.target.value)}
             className="px-3 py-2 bg-gray-700 text-white rounded border border-gray-600 text-sm">
-            <option value="">All TSes</option>
+            <option value="">All TSes ({uniqueTses.length})</option>
             {uniqueTses.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
           <select value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)}

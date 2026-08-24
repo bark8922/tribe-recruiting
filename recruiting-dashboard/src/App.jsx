@@ -557,12 +557,33 @@ const WBRTab = ({ data, notes }) => {
         }
       });
 
-      // Roles for this TA
+      // Roles for this TA — per-week, from ta_jobs_weekly.
+      //
+      // 2026-08-24 (Blake): this used to sum `data.roles`, which render_json.py
+      // NEVER writes — it rides along on the `out = dict(live)` shallow copy and
+      // has been byte-identical since at least 2026-06-03. Because it is keyed on
+      // each TA's client AT FREEZE TIME, any TA who moved client failed the
+      // kebolaClientMatches join and rendered 0 (w34: 7 of 17 rows), and clients
+      // created after the freeze (Pliant, No Isolation, Reaktor, Fever, Voize,
+      // every Wolt sub-BU, Aviv) had no entry at all. The non-zero rows were wrong
+      // too — w34 column totalled 46 vs 66 real.
+      //
+      // ta_jobs_weekly is the metric the Client Summary # Jobs column already uses
+      // (PBI DAX replica: DISTINCTCOUNT(event.job_id) per client/TA/week, validated
+      // 99.2% vs PBI w16), so the two tables now reconcile instead of disagreeing
+      // by construction. No Wolt sub-BU disambiguation needed here: verified across
+      // every week in the roster that no TA is ever targeted on two Wolt sub-BUs,
+      // so kebolaClientMatches cannot double-credit a raw 'Wolt|TA' row.
+      //
+      // Deliberately NO fallback to data.roles — falling back to a known-frozen map
+      // just reprints the old lie. ta_jobs_weekly covers every week the selector can
+      // reach (w1..w35 in the current snapshot); anything else correctly shows 0.
+      const taJobsThisWeek = data.ta_jobs_weekly?.[weekKey] || {};
       let roles = 0;
-      Object.keys(data.roles || {}).forEach((key) => {
+      Object.keys(taJobsThisWeek).forEach((key) => {
         const [rClient, rTa] = key.split('|');
         if (kebolaClientMatches(rClient, display) && normalizeTa(rTa) === normalizeTa(t.ta)) {
-          roles += data.roles[key] || 0;
+          roles += taJobsThisWeek[key] || 0;
         }
       });
 
@@ -712,10 +733,18 @@ const WBRTab = ({ data, notes }) => {
     const _tsBase = Object.values(tsMap).map((t) => {
       const tsName = t.ts;
       const actuals = data.ts_actuals?.[tsName]?.[weekKey] || {};
-      // Prefer the per-week ts_jobs_weekly (new pipeline metric) when present;
-      // fall back to the static ts_jobs dict for older snapshots.
-      const weeklyJobs = data.ts_jobs_weekly?.[weekKey]?.[tsName];
-      const jobs = weeklyJobs || data.ts_jobs?.[tsName] || {};
+      // Per-week ts_jobs_weekly only.
+      //
+      // 2026-08-24 (Blake): the old `|| data.ts_jobs?.[tsName]` fallback is gone.
+      // `ts_jobs` is another field render_json.py never writes (identical Jun 3 →
+      // Aug 24), and it holds a single all-time value per TS with no week
+      // dimension — so it printed the SAME num_jobs / num_tas / ta_names into
+      // every week it covered, including TA names of people who have since left
+      // (Ella Darie, Nenad Skoko, Wladyslaw Gadomski...). It fired in 162
+      // (week, TS) cells across w1-w35 and, because num_jobs feeds the
+      // "any activity" visibility filter below, it also conjured 12 TS rows that
+      // should have been hidden entirely. A missing week now correctly reads 0.
+      const jobs = data.ts_jobs_weekly?.[weekKey]?.[tsName] || {};
       const hires12w = data.ts_hires_12w?.[tsName] || 0;
 
       // Derived targets: the WBR TS Weekly Note sheet only has a `Contacted Target`
@@ -5751,3 +5780,9 @@ const RecruitingDashboard = () => {
 };
 
 export default RecruitingDashboard;
+
+// Named export for regression tests only — lets a harness render WBRTab in
+// isolation against the real gz (react-dom/server + jsdom) without booting the
+// whole app or its auth gate. Tree-shaken out of the production bundle: build
+// hash and byte size are identical with and without this line.
+export { WBRTab };

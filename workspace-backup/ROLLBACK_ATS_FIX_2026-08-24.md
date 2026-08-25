@@ -28,6 +28,146 @@ wrongly pulled forward are back in week 33.
 
 ---
 
+## PART 2 IS COMPLETE AND VERIFIED — 2026-08-25 12:39 UTC
+
+All three transformations now anchor ATS on the ATS event date AND match `moved_to_stageType = 'Offsite'`
+(catching Aiven's renamed "Move to ATS stage" and Tribe.xyz IR's "Language Check").
+
+| Transformation | Config ID | Version | Rollback to |
+|---|---|---|---|
+| WBR/MBR weekly agg | `01kpr0tr0dt5ryf96a5zk85bx7` | **52** | 51 |
+| PD - weekly funnel | `01kpqh9r7g2z66c8vvdr5d87xd` | **13** | 12 |
+| PD - event-attr | `01ks4qf6zate4m7f0cxng2hnyy` | **4** | 3 |
+
+Final state, all three tables in agreement:
+
+| Table | 2025 ATS | 2026 ATS |
+|---|---|---|
+| weekly funnel | 14,031 | **7,127** |
+| event-attr | 14,031 | **7,127** |
+| wbr_weekly | n/a (2026-only) | **7,127** |
+
+Predicted 7,123 at 09:15; actual 7,127 at 12:39. The +4 is ordinary new recruiting activity over
+those hours, not a discrepancy. 2025 is exactly as predicted and unchanged.
+
+Spot checks, both dashboards agreeing on the same candidates:
+
+| Check | Value |
+|---|---|
+| WBR Jelena wk33 / wk34 ATS | **6 / 8** |
+| PD No Isolation wk33 / wk34 ATS | **6 / 8** |
+| WBR Jelena CONTACTED wk32/33/34 | **185 / 250 / 260** |
+
+Mikhail's original report (8 in wk34, should be 6) and Blake's Contacted report (260 dropping to 181)
+are both resolved, and WBR and the Project Dashboard no longer disagree.
+
+Note: the two PD edits were applied by Blake in the Keboola UI on 2026-08-25 because the original
+Keboola MCP connector was returning 401 on all write endpoints. A second connector
+(token `11797764` "API Claude -token", non-expiring) was later added and works for both reads and
+writes; that is what ran the final jobs.
+
+---
+
+## Superseded: PART 2 was incomplete at 09:25 UTC. Kept for history.
+
+State as of 2026-08-25 09:25 UTC, when the Keboola connector dropped mid-change.
+
+| Transformation | Config ID | Version | ATS anchor | Stage match | Done? |
+|---|---|---|---|---|---|
+| WBR/MBR weekly agg | `01kpr0tr0dt5ryf96a5zk85bx7` | **52** | event date | stageType `Offsite` | **DONE AND VERIFIED** — 2026 ATS = **7,123** as predicted, Jelena wk33 **6**, wk34 **8**, CONTACTED unaffected |
+| PD - weekly funnel | `01kpqh9r7g2z66c8vvdr5d87xd` | 12 | event date | literal `'Moved to ATS'` | **NOT changed** |
+| PD - event-attr | `01ks4qf6zate4m7f0cxng2hnyy` | 3 | event date | literal `'Moved to ATS'` | **NOT changed** |
+
+**Consequence while incomplete:** WBR and the Project Dashboard will differ by ~11 candidates in
+2026 (Aiven's renamed stage plus one Tribe.xyz IR). WBR is the *more* correct of the two. This is an
+incomplete improvement, not a regression.
+
+### TO FINISH (once the Keboola connector is reconnected)
+
+1. Verify job `1015144312` succeeded, and that `wbr_weekly` 2026 reads ATS **7,123**,
+   Jelena wk33 **6**, wk34 **8**, and CONTACTED still **75,473**.
+2. Apply to `01kpqh9r7g2z66c8vvdr5d87xd`, block b0, code b0.c0, one replacement:
+   `WHERE "moved_to_stage" = 'Moved to ATS'` → `WHERE "moved_to_stageType" = 'Offsite'`
+3. Apply to `01ks4qf6zate4m7f0cxng2hnyy`, block b0, code b0.c0, one replacement:
+   `MIN(CASE WHEN e."moved_to_stage"='Moved to ATS' THEN TRY_TO_DATE(e."date_created") END) AS ats_date,`
+   → `MIN(CASE WHEN e."moved_to_stageType"='Offsite' THEN TRY_TO_DATE(e."date_created") END) AS ats_date,`
+4. Run both, then confirm all three tables read 2026 ATS **7,123** and 2025 ATS **14,031**.
+
+---
+
+## PART 2, 2026-08-25 — WBR's own ATS column, and the stage-name-vs-type rule
+
+Two gaps found the next day. Part 1 (below) only covered the two Project Dashboard transforms.
+
+**Gap A: `wbr_weekly` has its OWN ATS calculation** which Part 1 did not touch, so WBR still bucketed
+on `date_interview` and disagreed with the Project Dashboard. Jelena Lacmanovic 2026: WBR read wk33=2
+/ wk34=11, Project Dashboard read wk33=6 / wk34=8. Verified she has only No Isolation roles in those
+weeks, so the scopes really are comparable and the two genuinely disagreed.
+
+**Gap B: matching the stage NAME missed a client's renamed stage.** Part 1 tested
+`moved_to_stage = 'Moved to ATS'`. Three stage names share stageType `Offsite` and all mean the same
+thing:
+
+| Stage name | Type | Candidates 2026 | Clients |
+|---|---|---|---|
+| Moved to ATS | Offsite | 7,528 | 25 |
+| Move to ATS stage | Offsite | 20 | Aiven only |
+| Language Check | Offsite | 1 | Tribe.xyz (IR) |
+
+So the fix now tests `moved_to_stageType = 'Offsite'`. WBR's looser rule was accidentally catching
+these; it was not a bug on WBR's part, which is why the two disagreed by more than the date issue.
+
+### Versions BEFORE Part 2
+
+| Transformation | Config ID | Restore to |
+|---|---|---|
+| WBR/MBR weekly aggregations | `01kpr0tr0dt5ryf96a5zk85bx7` | **51** |
+| Project Dashboard - weekly funnel | `01kpqh9r7g2z66c8vvdr5d87xd` | **12** |
+| Project Dashboard - event-attr | `01ks4qf6zate4m7f0cxng2hnyy` | **3** |
+
+### Numbers BEFORE Part 2 (2026-08-25)
+
+| Table | ISO_YEAR | ATS now | Predicted after |
+|---|---|---|---|
+| `project_dashboard` | 2025 | 14,031 | **14,031** (no change) |
+| `project_dashboard` | 2026 | 7,112 | **7,123** (+11) |
+| `project_dashboard_eventattr` | 2026 | 7,112 | **7,123** (+11) |
+| `wbr_weekly` | 2026 | **7,093** | **7,123** (+30) |
+
+After Part 2 all three tables should read **7,123** for 2026 and agree with each other.
+
+Spot-check, Jelena Lacmanovic 2026 in `wbr_weekly`: wk33 2 → **6**, wk34 11 → **8**, matching the
+Project Dashboard.
+
+### Original SQL before Part 2
+
+`wbr_weekly` (`01kpr0tr0dt5ryf96a5zk85bx7`):
+```sql
+ats_ AS (
+  SELECT client, ta, YEAROFWEEKISO(di) AS iso_year, WEEKISO(di) AS iso_week,
+         COUNT(DISTINCT "candidate_id") AS ats
+  FROM joined WHERE di IS NOT NULL AND YEAROFWEEKISO(di) = 2026
+  GROUP BY 1,2,3,4
+),
+```
+
+`weekly funnel` (`01kpqh9r7g2z66c8vvdr5d87xd`), inside `ats_ev`:
+```sql
+  WHERE "moved_to_stage" = 'Moved to ATS'
+    AND TRY_TO_DATE("date_created") IS NOT NULL
+```
+
+`event-attr` (`01ks4qf6zate4m7f0cxng2hnyy`), inside `ev_attr`:
+```sql
+    MIN(CASE WHEN e."moved_to_stage"='Moved to ATS' THEN TRY_TO_DATE(e."date_created") END) AS ats_date,
+```
+
+> Note on the 24 Aug figures below: they were captured before the scheduled Flow ran again. ATS 2026
+> read 7,078 at 11:26 on the 24th and 7,112 on the 25th. That drift is ordinary new recruiting
+> activity, not the fix. The Flow ran successfully four times in between.
+
+---
+
 ## 1. One-line summary of what changed
 
 The ATS column used to take its week from `candidate_stage.date_interview`. It now takes its week

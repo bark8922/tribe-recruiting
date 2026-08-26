@@ -2,6 +2,44 @@
 
 **One-line change in `candidate_stage`. This file is how you undo it.**
 
+## STATUS: APPLIED AND VERIFIED — 2026-08-26 09:15 UTC
+
+Config `375145203` version 237 -> **238**. Rollback = `kbc_rollback_config` to version **237**.
+Applied surgically via `kbc_edit_sql` (dry-run first, `expect_matches: 1`, exactly 1 replacement).
+PROD V2 job `1015406001` succeeded in 1007s, then wbr/weekly-funnel/event-attr rebuilt.
+
+**Primary goal achieved — TA side and sourcer side now agree exactly, every week:**
+
+| ISO week 2026 | wbr_weekly (TA) | ts_weekly (sourcer) |
+|---|---|---|
+| 31 | 1,529 | **1,529** |
+| 32 | 1,754 | **1,754** |
+| 33 | 2,163 | **2,163** |
+| 34 | 1,617 | **1,617** |
+| 35 | 630 | **630** |
+
+Jelena Lacmanovic wk32/33/34 CONTACTED = **185 / 250 / 260**; wk33/34 ATS = **6 / 8**.
+ATS 2026 = **7,246** on all three of wbr_weekly, weekly funnel and event-attr.
+
+The Project Dashboard sits slightly below WBR (e.g. wk33 2,039 vs 2,163). That gap is exactly the
+clients the Project Dashboard excludes and WBR does not (BD - Tribe et al) — verified: wk33 gap of
+124 equals the 124 CONTACTED on those excluded clients. Deliberate scope difference, not drift.
+
+All consumers moved only by ordinary daily growth: ir_funnel_jobweek +3, ir_sourced_jobweek +3,
+sourcing_dashboard_per_sourcer +182, sourcing_int_vs_ext +254, sourcing_wbr_comments +84,
+ts_summary_by_client +167, ts_weekly +223, wbr_weekly +292.
+
+### One table dropped, and it was NOT this change
+
+`ts_summary_per_sourcer` fell from CONTACTED 32,044 to 22,930 (-28%) and 1,597 rows to 1,138.
+**Proven unrelated.** Recomputing that table's contacted count against TODAY's roster with both
+anchors gives: min (live) **22,930**, max (old behaviour) **22,939** — a difference of **9**.
+
+The real cause: `current_roster` is built from `in.c-wbr-sheet.wbr_ts_weekly`, the WBR sourcer sheet.
+Someone edited it and it re-imported at **08:41 UTC on 2026-08-26**, between the previous WBR run and
+this one. `ts_summary_per_sourcer` is the only table gated on that roster, which is why it is the
+only one that moved. Worth asking who changed the sourcer roster sheet.
+
 Third and final piece of the mutable-date work. See also `ROLLBACK_ATS_FIX_2026-08-24.md`
 and `ROLLBACK_CONTACTED_FIX_2026-08-24.md`.
 

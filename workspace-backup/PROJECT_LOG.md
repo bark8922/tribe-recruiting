@@ -2,7 +2,7 @@
 
 Single source of truth for status, decisions, and open items. Survives Cowork resets because it lives in this folder (on Blake's computer) and is backed up to GitHub. Claude updates this at the end of any session where real work happened. Blake can also say "update the log" anytime.
 
-Last updated: 2026-08-24
+Last updated: 2026-08-26
 
 ---
 
@@ -34,6 +34,7 @@ Orchestration = **Keboola Flows** (Flow B 3x/day `5 7,10,16` CET; Flow A 4x/day)
 | Item | Status | Blocked on |
 |---|---|---|
 | Intake Eligibility Tracker (Google Sheet + n8n daily feed) | LIVE + verified: daily-feed PUBLISHED (Supabase node, weekdays ~06:00 CEST), 7-day lookback, scheduled runs firing clean, sheet complete through 07-24 | Nothing (done). |
+| Silver Medalist role alert to Sashka (n8n `UDTat0pq3EueGdxb`) | LIVE 2026-08-26: weekdays 09:00 Prague, DMs Sashka as **Tribe Bot**, Engineering subcategory filter + title blocklist, dedupe ledger `sashka_role_alerts`, roles linked to Bubble. Test message sent to her and received. Expect silence until a new Engineering role opens. See `SILVER_MEDALIST_BACKEND_ALERT_SPEC.md` | Sashka's feedback on whether the picks are relevant |
 | AI call tool usage dashboard (Bubble `call_record`) | Ingestion live, two-tab snapshot delivered 2026-07-17 | Blake: team feedback, then green-light auto-refresh (transform + build wiring) |
 | Role Pipeline tab (per-role candidate deep-dive) | Scoped + all decisions locked 2026-07-15, see `ROLE_PIPELINE_SCOPE.md`, nothing built | Blake: green-light / schedule the ~1.5-day build |
 | Cortex Analyst pilot | Scoped 2026-06-12, not started | Blake go/no-go: green-light free Snowflake trial, pick 2-3 pilot users, confirm aggregates-only data |

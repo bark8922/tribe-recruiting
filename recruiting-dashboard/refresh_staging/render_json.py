@@ -102,6 +102,7 @@ SNOW_IR_DQ_BY_STAGE        = HERE / "snowflake_ir_dq_by_stage.csv"
 SNOW_IR_JOBS_ACTIVE        = HERE / "snowflake_ir_jobs_active.csv"
 SNOW_IR_DQ_BYJOB_REASON    = HERE / "snowflake_ir_dq_byjob_reason.csv"
 SNOW_NEW_PROJECT_HEALTH    = HERE / "snowflake_new_project_health.csv"
+SNOW_SM_CANDIDATES         = HERE / "snowflake_sm_candidates.csv"
 SNOW_TTH_JOBS = HERE / "snowflake_tth_jobs.csv"
 SNOW_WEEKLY_SUMMARY = HERE / "snowflake_weekly_summary.csv"  # PBI Weekly Progress port (dim_type x dim_value x week)
 SNOW_WEEKLY_SUMMARY_BYJOB = HERE / "snowflake_weekly_summary_byjob.csv"  # person x job drill
@@ -1398,6 +1399,58 @@ def load_new_project_health():
     return rows
 
 
+def load_sm_candidates():
+    """Silver Medalist introductions (gated Silver Medalists tab).
+
+    Reads snowflake_sm_candidates.csv, one row per candidate carrying the
+    Silver Medalist source tag. matched = moved into the Silver Medalists
+    stage (falls back to the date the candidate was added), intro = first
+    move to a Contacted-type stage. Flags mark rows whose intro timestamp is
+    a backfill or the default landing stage rather than a real introduction;
+    the frontend counts those in the funnel but drops them from the timing
+    averages. See sm_transform.sql.
+    """
+    if not SNOW_SM_CANDIDATES.exists():
+        return []
+
+    def _i(v):
+        try:
+            return int(float(v))
+        except (TypeError, ValueError):
+            return None
+
+    rows = []
+    with SNOW_SM_CANDIDATES.open() as f:
+        for row in csv.DictReader(f):
+            cid = (row.get("CANDIDATE_ID") or "").strip()
+            if not cid:
+                continue
+            rows.append({
+                "candidate_id":         cid,
+                "candidate_name":       (row.get("CANDIDATE_NAME") or "").strip(),
+                "linkedin":             (row.get("LINKEDIN") or "").strip(),
+                "client":               (row.get("CLIENT") or "").strip(),
+                "job_title":            (row.get("JOB_TITLE") or "").strip(),
+                "job_id":               (row.get("JOB_ID") or "").strip(),
+                "recruiter":            (row.get("RECRUITER") or "").strip(),
+                "matched_at":           (row.get("MATCHED_AT") or "").strip(),
+                "intro_at":             (row.get("INTRO_AT") or "").strip(),
+                "screen_at":            (row.get("SCREEN_AT") or "").strip(),
+                "interview_at":         (row.get("INTERVIEW_AT") or "").strip(),
+                "offer_at":             (row.get("OFFER_AT") or "").strip(),
+                "hired_at":             (row.get("HIRED_AT") or "").strip(),
+                "disqualified":         (row.get("DISQUALIFIED") or "").strip(),
+                "req_to_intro_hours":   _i(row.get("REQ_TO_INTRO_HOURS")),
+                "intro_to_hire_days":   _i(row.get("INTRO_TO_HIRE_DAYS")),
+                "flag_intro_synthetic": _i(row.get("FLAG_INTRO_SYNTHETIC")) or 0,
+                "flag_intro_missing":   _i(row.get("FLAG_INTRO_MISSING")) or 0,
+                "flag_no_matched_stage":_i(row.get("FLAG_NO_MATCHED_STAGE")) or 0,
+                "matched_week":         (row.get("MATCHED_WEEK") or "").strip(),
+                "intro_week":           (row.get("INTRO_WEEK") or "").strip(),
+            })
+    return rows
+
+
 def load_ts_summary():
     """Return [{ts, iso_year, iso_week, viewed, contacted, reacted,
     positive_response, screens, actual_screens, ats, offers, hires,
@@ -2454,6 +2507,7 @@ def main():
     out["ir_jobs_active"]         = _ir_load(load_ir_jobs_active,         "ir_jobs_active")
     out["ir_dq_byjob_reason"]     = _ir_load(load_ir_dq_byjob_reason,     "ir_dq_byjob_reason")
     out["new_project_health"]     = _ir_load(load_new_project_health,     "new_project_health")
+    out["sm_candidates"]          = _ir_load(load_sm_candidates,          "sm_candidates")
     # Ashby-derived right side of the IR funnel (Phase 2b). Empty if extractor was skipped.
     out["ir_ashby_active_pipeline"] = _ir_load(load_ir_ashby_active_pipeline, "ir_ashby_active_pipeline")
     out["ir_ashby_dq_reasons"]      = _ir_load(load_ir_ashby_dq_reasons,      "ir_ashby_dq_reasons")

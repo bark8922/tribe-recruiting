@@ -9,6 +9,7 @@
 export const SESSION_COOKIE = "tribe_session";
 export const ROLE_COOKIE = "tribe_role";
 export const PROJECT_HEALTH_COOKIE = "tribe_ph";
+export const SILVER_MEDALIST_COOKIE = "tribe_sm";
 export const SESSION_MAX_AGE_SECONDS = 2592000; // 30 days
 export const SESSION_MAX_AGE_MS = SESSION_MAX_AGE_SECONDS * 1000;
 
@@ -56,6 +57,16 @@ export const DIRECTOR_EMAILS: Set<string> = new Set([
 export const PROJECT_HEALTH_EMAILS: Set<string> = new Set([
   "blake@tribe.xyz",
   "jacopo@tribe.xyz",
+]);
+
+// Silver Medalists tab (2026-08-26) — Blake, Martin, Sashka only.
+// Gates the tab via a readable tribe_sm=1 cookie. Lowercase only.
+// Note: sashka@tribe.xyz is NOT in LEADERSHIP_EMAILS, so she logs in as a
+// member and sees the member tabs plus this one.
+export const SILVER_MEDALIST_EMAILS: Set<string> = new Set([
+  "blake@tribe.xyz",
+  "martin@tribe.xyz",
+  "sashka@tribe.xyz",
 ]);
 
 export interface SessionPayload {
@@ -171,6 +182,10 @@ export function roleCookie(role: "director" | "leadership" | "member", maxAgeSec
 
 export function projHealthCookie(allowed: boolean, maxAgeSeconds = SESSION_MAX_AGE_SECONDS): string {
   return `${PROJECT_HEALTH_COOKIE}=${allowed ? "1" : "0"}; Path=/; Max-Age=${maxAgeSeconds}; Secure; SameSite=None`;
+}
+
+export function silverMedalistCookie(allowed: boolean, maxAgeSeconds = SESSION_MAX_AGE_SECONDS): string {
+  return `${SILVER_MEDALIST_COOKIE}=${allowed ? "1" : "0"}; Path=/; Max-Age=${maxAgeSeconds}; Secure; SameSite=None`;
 }
 
 export function clearCookie(name: string): string {

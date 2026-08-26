@@ -6,9 +6,11 @@ import {
   DIRECTOR_EMAILS,
   LEADERSHIP_EMAILS,
   PROJECT_HEALTH_EMAILS,
+  SILVER_MEDALIST_EMAILS,
   projHealthCookie,
   SESSION_MAX_AGE_MS,
   roleCookie,
+  silverMedalistCookie,
   sessionCookie,
   signSession,
 } from "../_lib/session";
@@ -76,12 +78,14 @@ export const onRequestPost: PagesFunction<Env> = async (ctx) => {
   // Directors are a strict subset of leadership — they also see WBR/MBR.
   const role = isDirector ? "director" : isLeadership ? "leadership" : "member";
   const isProjHealth = PROJECT_HEALTH_EMAILS.has(email);
+  const isSilverMedalist = SILVER_MEDALIST_EMAILS.has(email);
 
   const headers = new Headers();
   headers.append("location", "/");
   headers.append("set-cookie", sessionCookie(signed));
   headers.append("set-cookie", roleCookie(role));
   headers.append("set-cookie", projHealthCookie(isProjHealth));
+  headers.append("set-cookie", silverMedalistCookie(isSilverMedalist));
   headers.set("cache-control", "no-store");
   return new Response(null, { status: 302, headers });
 };

@@ -4649,13 +4649,34 @@ const SilverMedalistsTab = ({ data }) => {
       .map(([week, intros]) => ({ week, intros }));
   }, [f]);
 
-  const funnel = [
-    { stage: 'Matched',   n: matched },
-    { stage: 'Intro',     n: intros },
-    { stage: 'Interview', n: interviews },
-    { stage: 'Offer',     n: offers },
-    { stage: 'Hired',     n: hires },
-  ];
+  // Funnel laid out house-style: one row per client, stages as columns, each
+  // conversion sitting immediately before the stage it feeds (same shape as the
+  // TS Conversion table on the TS Summary tab).
+  const funnelRows = useMemo(() => {
+    const byClient = new Map();
+    for (const r of f) {
+      const k = r.client || '(no client)';
+      if (!byClient.has(k)) {
+        byClient.set(k, { client: k, matched: 0, intro: 0, interview: 0, offer: 0, hired: 0 });
+      }
+      const b = byClient.get(k);
+      b.matched += 1;
+      if (r.intro_at || r.flag_intro_missing) b.intro += 1;
+      if (r.interview_at) b.interview += 1;
+      if (r.offer_at)     b.offer += 1;
+      if (r.hired_at)     b.hired += 1;
+    }
+    return [...byClient.values()].sort((a, b) => b.matched - a.matched);
+  }, [f]);
+
+  const funnelTotal = useMemo(() => funnelRows.reduce((t, r) => ({
+    client: 'Total',
+    matched:   t.matched   + r.matched,
+    intro:     t.intro     + r.intro,
+    interview: t.interview + r.interview,
+    offer:     t.offer     + r.offer,
+    hired:     t.hired     + r.hired,
+  }), { client: 'Total', matched: 0, intro: 0, interview: 0, offer: 0, hired: 0 }), [funnelRows]);
 
   const dq = f.filter(r => r.flag_intro_synthetic || r.flag_intro_missing || r.flag_no_matched_stage).length;
 
@@ -4727,31 +4748,67 @@ const SilverMedalistsTab = ({ data }) => {
         </ResponsiveContainer>
       </div>
 
-      <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
-        <div className="text-sm text-gray-300 mb-3">Funnel</div>
-        <table className="w-full text-sm">
-          <thead className="text-gray-500 border-b border-gray-800">
-            <tr>
-              <th className="text-left px-3 py-2">Stage</th>
-              <th className="text-right px-3 py-2">Count</th>
-              <th className="text-right px-3 py-2">Conversion from previous</th>
-              <th className="text-right px-3 py-2">% of intros</th>
+      <div className="bg-gray-800 rounded-lg p-4 border border-gray-700 overflow-x-auto">
+        <div className="text-sm text-gray-300 mb-3">Funnel by client</div>
+        <table className="w-full text-sm" style={{ minWidth: '760px' }}>
+          <thead>
+            <tr className="text-gray-300 border-b border-gray-600">
+              <th className="text-left px-3 py-2">Client</th>
+              <th className="text-center px-2 py-2">Matched</th>
+              <th className="text-center px-2 py-2" title="% Matched to Intro">% M&rarr;I</th>
+              <th className="text-center px-2 py-2">Intro</th>
+              <th className="text-center px-2 py-2" title="% Intro to Interview">% I&rarr;IV</th>
+              <th className="text-center px-2 py-2">Interview</th>
+              <th className="text-center px-2 py-2" title="% Interview to Offer">% IV&rarr;O</th>
+              <th className="text-center px-2 py-2">Offer</th>
+              <th className="text-center px-2 py-2" title="% Offer to Hired">% O&rarr;H</th>
+              <th className="text-center px-2 py-2">Hired</th>
+              <th className="text-center px-2 py-2" title="% Intro to Hired, overall">% I&rarr;H</th>
             </tr>
           </thead>
           <tbody>
-            {funnel.map((row, i) => {
-              const prev = i === 0 ? null : funnel[i - 1].n;
-              const conv = prev == null ? null : pct(row.n, prev);
-              const ofIntro = i <= 1 ? null : pct(row.n, intros);
+            {funnelRows.map((row, idx) => {
+              const fmt = (v) => (v == null ? '\u2014' : `${v}%`);
+              // Same palette as the TS Conversion table. Thresholds are a first
+              // pass with no history behind them yet — revisit once there is a
+              // few months of real volume.
+              const cell = (v, greenAt) => {
+                if (v == null) return {};
+                return v >= greenAt
+                  ? { backgroundColor: '#166534', color: '#bbf7d0' }
+                  : { backgroundColor: '#991b1b', color: '#fecaca' };
+              };
               return (
-                <tr key={row.stage} className="border-b border-gray-800">
-                  <td className="px-3 py-2 text-gray-200">{row.stage}</td>
-                  <td className="px-3 py-2 text-right text-gray-300">{row.n}</td>
-                  <td className="px-3 py-2 text-right text-gray-300">{conv == null ? '—' : `${conv}%`}</td>
-                  <td className="px-3 py-2 text-right text-gray-300">{ofIntro == null ? '—' : `${ofIntro}%`}</td>
+                <tr key={row.client} className={`${idx % 2 === 0 ? 'bg-gray-800' : 'bg-gray-750'} hover:bg-gray-700`}>
+                  <td className="text-left px-3 py-2 text-white font-medium">{row.client}</td>
+                  <td className="text-center px-2 py-2 text-gray-300">{row.matched}</td>
+                  <td className="text-center px-2 py-2" style={cell(pct(row.intro, row.matched), 70)}>{fmt(pct(row.intro, row.matched))}</td>
+                  <td className="text-center px-2 py-2 text-gray-300">{row.intro}</td>
+                  <td className="text-center px-2 py-2" style={cell(pct(row.interview, row.intro), 40)}>{fmt(pct(row.interview, row.intro))}</td>
+                  <td className="text-center px-2 py-2 text-gray-300">{row.interview}</td>
+                  <td className="text-center px-2 py-2" style={cell(pct(row.offer, row.interview), 25)}>{fmt(pct(row.offer, row.interview))}</td>
+                  <td className="text-center px-2 py-2 text-gray-300">{row.offer}</td>
+                  <td className="text-center px-2 py-2" style={cell(pct(row.hired, row.offer), 60)}>{fmt(pct(row.hired, row.offer))}</td>
+                  <td className="text-center px-2 py-2 text-gray-300">{row.hired}</td>
+                  <td className="text-center px-2 py-2" style={cell(pct(row.hired, row.intro), 10)}>{fmt(pct(row.hired, row.intro))}</td>
                 </tr>
               );
             })}
+            {funnelRows.length > 0 && (
+              <tr className="bg-gray-700 border-t border-gray-600 font-bold text-base">
+                <td className="text-left px-3 py-2 text-white">Total</td>
+                <td className="text-center px-2 py-2 text-white">{funnelTotal.matched}</td>
+                <td className="text-center px-2 py-2 text-white">{pct(funnelTotal.intro, funnelTotal.matched) == null ? '\u2014' : `${pct(funnelTotal.intro, funnelTotal.matched)}%`}</td>
+                <td className="text-center px-2 py-2 text-white">{funnelTotal.intro}</td>
+                <td className="text-center px-2 py-2 text-white">{pct(funnelTotal.interview, funnelTotal.intro) == null ? '\u2014' : `${pct(funnelTotal.interview, funnelTotal.intro)}%`}</td>
+                <td className="text-center px-2 py-2 text-white">{funnelTotal.interview}</td>
+                <td className="text-center px-2 py-2 text-white">{pct(funnelTotal.offer, funnelTotal.interview) == null ? '\u2014' : `${pct(funnelTotal.offer, funnelTotal.interview)}%`}</td>
+                <td className="text-center px-2 py-2 text-white">{funnelTotal.offer}</td>
+                <td className="text-center px-2 py-2 text-white">{pct(funnelTotal.hired, funnelTotal.offer) == null ? '\u2014' : `${pct(funnelTotal.hired, funnelTotal.offer)}%`}</td>
+                <td className="text-center px-2 py-2 text-white">{funnelTotal.hired}</td>
+                <td className="text-center px-2 py-2 text-white">{pct(funnelTotal.hired, funnelTotal.intro) == null ? '\u2014' : `${pct(funnelTotal.hired, funnelTotal.intro)}%`}</td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

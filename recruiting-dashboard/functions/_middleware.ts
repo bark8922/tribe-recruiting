@@ -6,7 +6,7 @@
 // SameSite=None + Secure cookies are required so the dashboard works
 // when iframed inside Bubble (overview.tribe.xyz).
 
-import { DIRECTOR_EMAILS, LEADERSHIP_EMAILS, PROJECT_HEALTH_EMAILS, SESSION_COOKIE, parseCookies, projHealthCookie, roleCookie, verifySession } from "./_lib/session";
+import { DIRECTOR_EMAILS, LEADERSHIP_EMAILS, PROJECT_HEALTH_EMAILS, SESSION_COOKIE, SILVER_MEDALIST_EMAILS, parseCookies, projHealthCookie, roleCookie, silverMedalistCookie, verifySession } from "./_lib/session";
 
 interface Env {
   SESSION_SECRET: string;
@@ -61,8 +61,15 @@ export const onRequest: PagesFunction<Env> = async (ctx: Ctx) => {
         ? "leadership"
         : "member";
     out.headers.append("set-cookie", roleCookie(role));
-    if (PROJECT_HEALTH_EMAILS.has(session.email)) {
+    if (PROJECT_HEALTH_EMAILS.has(email)) {
       out.headers.append("set-cookie", projHealthCookie(true));
+    }
+    // Same treatment for the Silver Medalists gate (2026-08-27): refresh it on
+    // every authenticated request so the tab appears on the next page load
+    // without a logout/login. Sessions last 30 days, so relying on catching a
+    // fresh login means the tab stays invisible for weeks.
+    if (SILVER_MEDALIST_EMAILS.has(email)) {
+      out.headers.append("set-cookie", silverMedalistCookie(true));
     }
     return out;
   }

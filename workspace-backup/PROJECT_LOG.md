@@ -360,3 +360,56 @@ Blake added **No Isolation** (TA: Jelena Lacmanovic, Aug 2026 targets 150 contac
 - Reconstructed project status after Blake reinstalled Claude desktop (chat history lost, files survived).
 - Set up durability: this PROJECT_LOG.md, project memory, and GitHub folder backup.
 - Note: `Lejla_week25_screens.csv` added today — ad-hoc week-25 screen-credit tally for Lejla Silva (AVIV QA Automation roles), not dashboard code.
+
+---
+
+## 2026-08-27 — Flow unblocked, pipeline healthy, full table audit
+
+### Root cause of "the flow won't run"
+On 2026-08-26 16:21 Prague I added the Silver Medalists task to flow
+`01kpqyq1pz6qpmk7m9s4qx8gmg` and wrote four optional keys as explicit nulls
+(`configData`, `delay`, `retry`, `variableOverrides`). The `keboola.flow` schema types these as
+object / string-number / object / array and **none accept null**. The config became invalid, so the
+flow could not start by scheduler or by hand. **No error job is ever created**, which is why it
+looked like the platform was idle rather than broken.
+
+Fixed by removing the four keys (v12 → v13). Flow ran clean end to end in ~9 min, job `1015661934`.
+Full write-up in memory: `incident-flow-config-null-keys`.
+
+### Verification after the run
+
+| Check | Result |
+|---|---|
+| Rodrigo Gomes 2026 W35 ATS | **4** in project_dashboard, event_attr AND weekly_summary (was 143) |
+| Jelena Lacmanovic Contacted wk32/33/34 as TA | **185 / 250 / 260** as expected |
+| ATS 2026 total | **7,105** identical across project_dashboard, event_attr and all 4 weekly_summary dimensions |
+| Hires 2026 | **1,323** identical across all tables |
+| Per-sourcer ATS wk33-35 | project_dashboard vs weekly_summary diff = **0 on every row**, max 17, no outliers |
+| Bucket freshness | every dashboard bucket refreshed 09:19-09:23 Prague |
+
+### Contacted discrepancy — RECONCILED, not a bug
+`wbr_weekly` 76,270 vs `project_dashboard` 73,768, gap **2,502**. Fully explained:
+`BD - Tribe` (2,081) + `Tribe - Marketing` (421) = 2,502 exactly. wbr_weekly includes Tribe's own
+internal hiring, project_dashboard excludes it. Scoping decision, not a defect. **Open question for
+Blake: should internal hiring be in the WBR numbers at all?**
+
+### New issues found during the audit (none urgent)
+1. **Trailing-space client names.** `AVIV ` / `Nexi ` / `Reaktor ` / `Statista ` in wbr_weekly vs
+   trimmed in project_dashboard. Totals are unaffected but any join across the two on CLIENT will
+   silently drop these. Same class as the `Jelena  Lacmanovic` double-space problem.
+2. **weekly_summary internal inconsistency.** CONTACTED 2026 by dimension: ta = 77,149 but
+   client / company / ts = 76,261, an 888 gap. ATS is identical (7,105) across all four, so this is
+   specific to how CONTACTED is computed per dimension. Not caused by our changes. No blank
+   DIM_VALUEs.
+3. **`sourcing_closing_hires` is stale since 2026-06-04.** Every other table in that bucket
+   refreshed today. Either intentionally static or a dead table. Needs a decision.
+4. **`out.c-prodv2-rewrite-test` is 1.35 GB / 27M rows**, created 2026-08-26 during the rewrite
+   testing. Safe to drop once confirmed unused.
+
+### Still open from before
+- Mikhail's original ATS bug is UNFIXED. ATS still buckets on `date_interview`, so a candidate
+  moved to ATS in week 33 with an interview date in week 34 counts in 34. Any event-based fix MUST
+  handle the phantom stage-event bursts (see `incident-phantom-stage-event-bursts`).
+  `is_event_duplicated` is NOT a usable filter.
+- Message to Mikhail about the phantom bursts drafted, NOT SENT. Blake's call.
+- `ts_conversion` has no week dimension and mixes time windows.

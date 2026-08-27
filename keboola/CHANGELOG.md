@@ -140,6 +140,71 @@ Keboola UI.
 
 ---
 
+## v241 — APPLIED 2026-08-27 10:55 CEST
+
+**Change:** the six sequential full-table `UPDATE`s on `final_candidate_stage_bubble` collapsed into
+one. They were a pure coalesce chain filling missing stage dates
+(hired → offer → interview → screen_actual → screen → contacted → lnkdin), each rewriting all
+1.4M rows. Flattened explicitly, because SQL evaluates every `SET` expression against the row as it
+was *before* the update, so the chain cannot rely on statement order.
+
+Six full-table rewrites → one. No logic change, no other table involved.
+
+**Result, first production run (13:18, job 1015699931): 756 seconds vs 917 that morning on the old
+code. 161 seconds faster, 17.6%.** Roughly 25-30 credits/month.
+
+### How it was verified
+
+Not by argument. A parallel copy of the config (`01m0yfxnc5g1cnq62rq5jgva4b`) writing to a scratch
+bucket, run against the *same* source data with an *otherwise identical* config, then compared
+row by row against production:
+
+```
+1,403,895 rows | 0 missing on either side
+date_lnkdin_viewed 0 | date_contacted 0 | date_screen 0 | date_screen_actual 0
+date_interview 0 | date_offer 0 | date_hired 0 | date_created 0
+stage_current 0 | stage_current_type 0
+automation_emails 0 | automation_connections 0 | automation_inmails 0 | automation_messages 0
+hired_contacts 0 | hired_views 0 | hired_screens 0
+hired_order 2,180  <- see below
+```
+
+Downstream tables that read those columns also came back at zero: `candidate.is_candidate_reacted`,
+`job.date_first_hired`, `job.date_first_hired_contacted`.
+
+**`hired_order` is the one column that differs, and it does not matter.** Its `row_number()` has no
+tie-breaker and 1,399,088 of 1,403,769 rows are tied, so ordering within ties is arbitrary. Nothing
+live reads it: the only consumers are the transformation itself and the Data Gateway, idle since
+2026-06-09. The three columns computed *from* it all came back identical, so its jitter does not
+propagate. Note the root cause is a separate latent bug: `set "hired_order" = NULL where "date_hired"
+is NULL` never fires, because Keboola stores empty cells as `''` rather than NULL. That is why
+almost every row is tied and why the column is populated for all 1.4M candidates instead of only
+actual hires.
+
+**Does NOT touch the v238 `date_contacted` min() fix.** Confirmed after shipping: line 596 still
+reads `min(t."date_created")`.
+
+**Rollback:** `version=240`.
+
+### What this cost to get right, and why
+
+Six test runs, roughly 9 credits. Two of those were wasted by my own errors and are worth recording
+so they are not repeated:
+
+1. **Compared against a moving target.** Production changed under me (v238) partway through. I said
+   I would rebase the test copy onto it and then didn't, so for several hours I was comparing a copy
+   with the old `max` rule against production with the new `min` rule and explaining away
+   differences that had nothing to do with the change under test. **Rule: before any A/B, make both
+   sides identical except the one thing being tested.**
+2. **Hashed tables without excluding `_timestamp`.** Keboola adds that column to every table and it
+   changes on every load, so `HASH_AGG(*)` reported all 16 tables as different regardless of
+   content. Cost a run to discover. **Rule: exclude `_timestamp` from any table comparison.**
+3. **Mistimed the data window.** Started a run 3 minutes before a scheduled Bubble pull, so it would
+   have read a mix of two generations. Killed it. **Rule: the clean window is immediately after a
+   production run finishes, and it lasts until the next extractor fires.**
+
+---
+
 ## v234–v237 — APPLIED 2026-08-25 17:12 CEST
 
 Applied as four separate versions by token "API Claude -token":

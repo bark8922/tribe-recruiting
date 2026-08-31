@@ -2,7 +2,7 @@
 
 Single source of truth for status, decisions, and open items. Survives Cowork resets because it lives in this folder (on Blake's computer) and is backed up to GitHub. Claude updates this at the end of any session where real work happened. Blake can also say "update the log" anytime.
 
-Last updated: 2026-08-26
+Last updated: 2026-08-31
 
 ---
 
@@ -69,6 +69,22 @@ Orchestration = **Keboola Flows** (Flow B 3x/day `5 7,10,16` CET; Flow A 4x/day)
 ---
 
 ## Session history
+
+### 2026-08-31 — SHIPPED: Interview 1/2/3 columns on the Project Dashboard funnel
+
+Made the middle of the funnel visible. The Project Dashboard Client/Job table now shows **Int 1 / Int 2 / Int 3** between **ATS** and **Offered**, so we can see where candidates fall off between ATS and Offer (previously the report jumped ATS → Offer).
+
+Chain shipped end to end:
+- **Transform** `01kpqh9r7g2z66c8vvdr5d87xd` (weekly funnel), live **v19**. Added `int1_ev/int2_ev/int3_ev` membership CTEs and three count columns inside the existing `ats_` CTE (same ATS-gated population, same week bucket), plus `INT1/INT2/INT3` in the final SELECT between ATS and OFFERED. **Purely additive** — rollback is v16.
+- **Gating lesson (important):** interviews are counted only over the candidates the **ATS column already counts** (real `candidate_stage` population: `di` not null + in `ats_ev`), then split by which Interview event they hit. This makes interviews a strict subset of ATS and excludes the phantom-burst candidates exactly the way ATS does. A naive raw-event count inflated phantom roles (e.g. Engineering Manager Belgium showed Int1 41 vs a real ATS of 3; gated it reads Int1 2).
+- **Validated additive:** global ATS/Offer/Hired byte-identical before/after (ATS 20,589 = original logic recomputed on current data; Offer 4,274; Hired 3,971). Org interview funnel: ATS-pop 20,585 → Int1 103/104 → Int2 26 → Int3 14 (small because the pipeline only started mid-July).
+- **Render** `render_json.py` (`load_project_dashboard`): carries `int1/2/3` into `project_dashboard.rows`. The render component `01kpr863…` input mapping had no column filter, so the new columns flowed automatically; re-ran it, published `dashboard_data_snowflake.json.gz` now contains int1/2/3 in all 29,140 rows.
+- **Frontend** `App.jsx` `ProjectDashboardTab` (repo commit `fb81261`): Int 1/2/3 columns added to the Client/Job funnel table (header + client + job rows) and the `byClient`/`jobsByClient` aggregators. Production build verified clean (2300 modules). Cloudflare auto-deploys from main.
+- **SQL mirror** `refresh_staging/project_dashboard.sql` synced with the interview additions (still lags Keboola on other fixes; Keboola is authoritative).
+
+**Old roles show 0** in the three columns (correct — they never had interview events). The **asterisk** treatment for old rows was deferred: it needs a per-job `on_new_pipeline` flag (the PD `JOB_ID` space aligns with `candidate_stage_rungs.job_id`, 67/73 overlap, so the clean source is that job set — needs one extra data wire). Blake's hard requirement was "show old roles with 0s"; the asterisk was a "maybe".
+
+**Not yet done (next waves):** WBR, MBR, TS Summary, Weekly Summary, IR still stop at ATS → Offer (Wave 2). Circle by-job table, Tribe Bot ladder, tribe-job-intel Supabase/Slack roles bot (Wave 3). TTH deferred. See `INTERVIEW_STAGES_REPORTING_BUILD_PLAN.md`.
 
 ### 2026-08-24 — SHIPPED: Contacted was bucketed on `date_contacted` (max of events), not the first contact event
 

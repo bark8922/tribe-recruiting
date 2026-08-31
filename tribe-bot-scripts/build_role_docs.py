@@ -33,13 +33,21 @@ MAX_INTAKE_CHARS = 8000
 
 
 def sb(path):
-    url = f"{SUPABASE_URL}/rest/v1/{path}"
-    h = {"apikey": SB_KEY, "Accept": "application/json"}
-    if not SB_KEY.startswith("sb_"):
-        h["Authorization"] = "Bearer " + SB_KEY
-    req = urllib.request.Request(url, headers=h)
-    with urllib.request.urlopen(req, timeout=120) as r:
-        return json.loads(r.read())
+    """Fetch all rows, paging past Supabase's 1000-row response cap."""
+    out, offset, page = [], 0, 1000
+    while True:
+        url = f"{SUPABASE_URL}/rest/v1/{path}"
+        h = {"apikey": SB_KEY, "Accept": "application/json",
+             "Range-Unit": "items", "Range": f"{offset}-{offset + page - 1}"}
+        if not SB_KEY.startswith("sb_"):
+            h["Authorization"] = "Bearer " + SB_KEY
+        req = urllib.request.Request(url, headers=h)
+        with urllib.request.urlopen(req, timeout=180) as r:
+            batch = json.loads(r.read())
+        out.extend(batch)
+        if len(batch) < page:
+            return out
+        offset += page
 
 
 def push(doc):
@@ -49,7 +57,7 @@ def push(doc):
         "Content-Type": "application/json",
     })
     try:
-        with urllib.request.urlopen(req, timeout=120) as r:
+        with urllib.request.urlopen(req, timeout=300) as r:
             return r.status
     except urllib.error.HTTPError as e:
         print(f"  FAILED {doc['id']}: HTTP {e.code} {e.read().decode()[:200]}")
@@ -179,7 +187,7 @@ def main():
         L = [f"# Intake call {when}", "",
              "Intake notes not yet linked to a role in the recruiting database.", ""]
         if fields:
-            L += ["## Extracted details", fields, ""]
+            L += ["## Extracted details", fields[:3000], ""]
         L += ["## Notes", txt[:MAX_INTAKE_CHARS]]
         if i.get("google_doc_url"):
             L += ["", f"Full doc: {i['google_doc_url']}"]

@@ -2241,13 +2241,14 @@ const ProjectDashboardTab = ({ data }) => {
     for (const r of filtered) {
       const c = normalizeClientPD(r.client);
       if (!m.has(c)) m.set(c, { client: c, jobIds: new Set(), tas: new Set(), tses: new Set(),
-        viewed: 0, contacted: 0, positive_response: 0, screens: 0, actual_screens: 0, ats: 0, offered: 0, hired: 0 });
+        viewed: 0, contacted: 0, positive_response: 0, screens: 0, actual_screens: 0, ats: 0, int1: 0, int2: 0, int3: 0, offered: 0, hired: 0 });
       const row = m.get(c);
       row.jobIds.add(r.job_id);
       if (r.ta) row.tas.add(r.ta);
       if (r.ts) row.tses.add(r.ts);
       row.viewed += (r.viewed || 0); row.contacted += r.contacted; row.positive_response += r.positive_response;
       row.screens += (r.screens || 0); row.actual_screens += r.actual_screens; row.ats += r.ats;
+      row.int1 += (r.int1 || 0); row.int2 += (r.int2 || 0); row.int3 += (r.int3 || 0);
       row.offered += r.offered; row.hired += r.hired;
     }
     // 2026-06-04: when filtered by sourcer, PD's viewed CTE has ts='' (job-level
@@ -2280,7 +2281,7 @@ const ProjectDashboardTab = ({ data }) => {
           m.set(c, {
             client: c, jobIds: new Set(), tas: new Set(), tses: new Set([personView]),
             viewed: v, contacted: 0, positive_response: 0,
-            screens: 0, actual_screens: 0, ats: 0, offered: 0, hired: 0,
+            screens: 0, actual_screens: 0, ats: 0, int1: 0, int2: 0, int3: 0, offered: 0, hired: 0,
           });
         }
       });
@@ -2297,13 +2298,14 @@ const ProjectDashboardTab = ({ data }) => {
       if (!m.has(key)) m.set(key, {
         client: c, job_id: r.job_id, job_title: r.job_title, job_category: r.job_category,
         is_external_recruiter: r.is_external_recruiter, tas: new Set(), tses: new Set(),
-        viewed: 0, contacted: 0, positive_response: 0, screens: 0, actual_screens: 0, ats: 0, offered: 0, hired: 0,
+        viewed: 0, contacted: 0, positive_response: 0, screens: 0, actual_screens: 0, ats: 0, int1: 0, int2: 0, int3: 0, offered: 0, hired: 0,
       });
       const row = m.get(key);
       if (r.ta) row.tas.add(r.ta);
       if (r.ts) row.tses.add(r.ts);
       row.viewed += (r.viewed || 0); row.contacted += r.contacted; row.positive_response += r.positive_response;
       row.screens += (r.screens || 0); row.actual_screens += r.actual_screens; row.ats += r.ats;
+      row.int1 += (r.int1 || 0); row.int2 += (r.int2 || 0); row.int3 += (r.int3 || 0);
       row.offered += r.offered; row.hired += r.hired;
     }
     // 2026-07-24: per-JOB viewed attributed to the actual viewer (who_created_event),
@@ -2335,7 +2337,7 @@ const ProjectDashboardTab = ({ data }) => {
             client: c, job_id: jid, job_title: jobTitleById[jid] || `(job ${jid})`,
             job_category: '', is_external_recruiter: false, tas: new Set(), tses: new Set([personViewJob]),
             viewed: viewedByJob[jid], contacted: 0, positive_response: 0, screens: 0,
-            actual_screens: 0, ats: 0, offered: 0, hired: 0,
+            actual_screens: 0, ats: 0, int1: 0, int2: 0, int3: 0, offered: 0, hired: 0,
           });
         }
       });
@@ -2628,6 +2630,9 @@ const ProjectDashboardTab = ({ data }) => {
                 <th className="text-center px-1 py-1">Screens</th>
                 <th className="text-center px-1 py-1">Actual Screens</th>
                 <th className="text-center px-1 py-1">ATS</th>
+                <th className="text-center px-1 py-1">Int 1</th>
+                <th className="text-center px-1 py-1">Int 2</th>
+                <th className="text-center px-1 py-1">Int 3</th>
                 <th className="text-center px-1 py-1">Offered</th>
                 <th className="text-center px-1 py-1">Hired</th>
                 <th className="text-center px-1 py-1">% V→C</th>
@@ -2662,6 +2667,9 @@ const ProjectDashboardTab = ({ data }) => {
                       <td className="text-center px-1 py-1 text-gray-200">{c.screens}</td>
                       <td className="text-center px-1 py-1 text-gray-200">{c.actual_screens}</td>
                       <td className="text-center px-1 py-1 text-gray-200">{c.ats}</td>
+                      <td className="text-center px-1 py-1 text-gray-200">{c.int1}</td>
+                      <td className="text-center px-1 py-1 text-gray-200">{c.int2}</td>
+                      <td className="text-center px-1 py-1 text-gray-200">{c.int3}</td>
                       <td className="text-center px-1 py-1 text-gray-200">{c.offered}</td>
                       <td className="text-center px-1 py-1 text-gray-200 font-medium">{c.hired}</td>
                       <td className="text-center px-1 py-1 text-gray-500" style={pdHeat(pctVC, 'vc')}>{pdPct(pctVC)}</td>
@@ -2687,6 +2695,9 @@ const ProjectDashboardTab = ({ data }) => {
                         <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.screens}</td>
                         <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.actual_screens}</td>
                         <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.ats}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.int1}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.int2}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.int3}</td>
                         <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.offered}</td>
                         <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.hired}</td>
                         <td className="text-center px-1 py-0.5 text-gray-500 text-xs" style={pdHeat(r.pct_v_c, 'vc')}>{pdPct(r.pct_v_c)}</td>

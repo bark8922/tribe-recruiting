@@ -751,6 +751,9 @@ def load_project_dashboard(source_path=SNOW_PROJECT_DASHBOARD):
                 "screens":                int(row.get("SCREENS") or 0),
                 "actual_screens":         int(row.get("ACTUAL_SCREENS") or 0),
                 "ats":                    int(row.get("ATS") or 0),
+                "int1":                   int(row.get("INT1") or 0),
+                "int2":                   int(row.get("INT2") or 0),
+                "int3":                   int(row.get("INT3") or 0),
                 "offered":                int(row.get("OFFERED") or 0),
                 "hired":                  int(row.get("HIRED") or 0),
             })

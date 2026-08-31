@@ -159,11 +159,27 @@ actual_screens AS (
     AND "candidate_id" IN (SELECT "candidate_id" FROM eval_ev)
   GROUP BY 1,2,3,4,5,6,7,8,9,10
 ),
+int1_ev AS (
+  -- 2026-08-31: candidates who ever reached Interview 1 (new pipeline, from 2026-07-14).
+  SELECT DISTINCT "candidate_id" FROM "KEBOOLA_855"."out.c-reporting-v2"."event"
+  WHERE "moved_to_stageType" = 'Interview 1'
+),
+int2_ev AS (
+  SELECT DISTINCT "candidate_id" FROM "KEBOOLA_855"."out.c-reporting-v2"."event"
+  WHERE "moved_to_stageType" = 'Interview 2'
+),
+int3_ev AS (
+  SELECT DISTINCT "candidate_id" FROM "KEBOOLA_855"."out.c-reporting-v2"."event"
+  WHERE "moved_to_stageType" = 'Interview 3'
+),
 ats_ AS (
   -- 2026-06-03: gate on 'Moved to ATS' event (was: date alone). See header comment.
   SELECT client, job_id, job_title, job_category, ta, ts, candidate_source, is_external_recruiter,
          YEAROFWEEKISO(di) AS iso_year, WEEKISO(di) AS iso_week,
-         COUNT(DISTINCT "candidate_id") AS ats
+         COUNT(DISTINCT "candidate_id") AS ats,
+         COUNT(DISTINCT CASE WHEN "candidate_id" IN (SELECT "candidate_id" FROM int1_ev) THEN "candidate_id" END) AS int1,
+         COUNT(DISTINCT CASE WHEN "candidate_id" IN (SELECT "candidate_id" FROM int2_ev) THEN "candidate_id" END) AS int2,
+         COUNT(DISTINCT CASE WHEN "candidate_id" IN (SELECT "candidate_id" FROM int3_ev) THEN "candidate_id" END) AS int3
   FROM joined
   WHERE di IS NOT NULL
     AND YEAROFWEEKISO(di) >= 2025
@@ -233,4 +249,7 @@ SELECT
   COALESCE(sc.screens,           0) AS "SCREENS",
   COALESCE(a.actual_screens,     0) AS "ACTUAL_SCREENS",
   COALESCE(t.ats,                0) AS "ATS",
+  COALESCE(t.int1,               0) AS "INT1",
+  COALESCE(t.int2,               0) AS "INT2",
+  COALESCE(t.int3,               0) AS "INT3",
   COALESCE(o.offered,            0) AS "OFFERED",

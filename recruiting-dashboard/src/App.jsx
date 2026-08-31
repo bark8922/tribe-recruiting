@@ -3556,7 +3556,7 @@ const TSSummaryTab = ({ data }) => {
     const ensure = (ts) => {
       if (!agg[ts]) agg[ts] = {
         sourcer: ts, viewed: 0, contacted: 0, positive_response: 0, screens: 0,
-        actual_screens: 0, ats: 0, offered: 0, hires: 0, jobs: 0,
+        actual_screens: 0, ats: 0, int1: 0, int2: 0, int3: 0, offered: 0, hires: 0, jobs: 0,
       };
       return agg[ts];
     };
@@ -3574,6 +3574,7 @@ const TSSummaryTab = ({ data }) => {
         a.screens += r.screens;
         a.actual_screens += r.actual_screens;
         a.ats += r.ats;
+        a.int1 += r.int1 || 0; a.int2 += r.int2 || 0; a.int3 += r.int3 || 0;
         a.offered += r.offers;
         a.hires += r.hires;
         a.jobs += r.jobs;
@@ -3591,6 +3592,7 @@ const TSSummaryTab = ({ data }) => {
         a.screens += r.screens || 0;
         a.actual_screens += r.actual_screens || 0;
         a.ats += r.ats || 0;
+        a.int1 += r.int1 || 0; a.int2 += r.int2 || 0; a.int3 += r.int3 || 0;
         a.offered += r.offered || 0;
       });
       filteredHires.forEach(h => {
@@ -3629,7 +3631,7 @@ const TSSummaryTab = ({ data }) => {
         client: r.client || '',
         archived: archivedJobIds.has(r.job_id),
         viewed: 0, contacted: 0, positive_response: 0, screens: 0,
-        actual_screens: 0, ats: 0, offered: 0, hires: 0,
+        actual_screens: 0, ats: 0, int1: 0, int2: 0, int3: 0, offered: 0, hires: 0,
       };
       const a = bucket[r.job_id];
       a.viewed += r.viewed || 0;
@@ -3638,6 +3640,7 @@ const TSSummaryTab = ({ data }) => {
       a.screens += r.screens || 0;
       a.actual_screens += r.actual_screens || 0;
       a.ats += r.ats || 0;
+      a.int1 += r.int1 || 0; a.int2 += r.int2 || 0; a.int3 += r.int3 || 0;
       a.offered += r.offered || 0;
     });
     filteredHires.forEach(h => {
@@ -3651,7 +3654,7 @@ const TSSummaryTab = ({ data }) => {
         client: h.client || '',
         archived: archivedJobIds.has(h.job_id),
         viewed: 0, contacted: 0, positive_response: 0, screens: 0,
-        actual_screens: 0, ats: 0, offered: 0, hires: 0,
+        actual_screens: 0, ats: 0, int1: 0, int2: 0, int3: 0, offered: 0, hires: 0,
       };
       bucket[h.job_id].hires += 1;
     });
@@ -3683,7 +3686,7 @@ const TSSummaryTab = ({ data }) => {
       if (sourcer !== 'All' && r.ts !== sourcer) return false;
       return true;
     };
-    const t = { viewed: 0, contacted: 0, reacted: 0, positive_response: 0, actual_screens: 0, ats: 0, offers: 0, hires: 0 };
+    const t = { viewed: 0, contacted: 0, reacted: 0, positive_response: 0, actual_screens: 0, ats: 0, int1: 0, int2: 0, int3: 0, offers: 0, hires: 0 };
     if (useTsSummary) {
       tsSummary.forEach(r => {
         if (!periodMatch(r)) return;
@@ -3693,6 +3696,7 @@ const TSSummaryTab = ({ data }) => {
         t.positive_response += r.positive_response || 0;
         t.actual_screens += r.actual_screens || 0;
         t.ats += r.ats || 0;
+        t.int1 += r.int1 || 0; t.int2 += r.int2 || 0; t.int3 += r.int3 || 0;
         t.offers += r.offers || 0;
         t.hires += r.hires || 0;
       });
@@ -3712,6 +3716,7 @@ const TSSummaryTab = ({ data }) => {
         t.positive_response += r.positive_response || 0;
         t.actual_screens += r.actual_screens || 0;
         t.ats += r.ats || 0;
+        t.int1 += r.int1 || 0; t.int2 += r.int2 || 0; t.int3 += r.int3 || 0;
         t.offers += r.offered || 0;
       });
       const tsByClient = data.ts_summary_by_client || [];
@@ -3735,6 +3740,9 @@ const TSSummaryTab = ({ data }) => {
       { stage: 'Positive Response', count: t.positive_response },
       { stage: 'Actual Screens',    count: t.actual_screens },
       { stage: 'Move to ATS',       count: t.ats },
+      { stage: 'Int 1',             count: t.int1 },
+      { stage: 'Int 2',             count: t.int2 },
+      { stage: 'Int 3',             count: t.int3 },
       { stage: 'Offers',            count: t.offers },
       { stage: 'Hired',             count: t.hires },
     ];
@@ -4016,6 +4024,9 @@ const TSSummaryTab = ({ data }) => {
                   <th className="text-right px-2 py-2 font-medium">Scr</th>
                   <th className="text-right px-2 py-2 font-medium">Actual</th>
                   <th className="text-right px-2 py-2 font-medium">ATS</th>
+                  <th className="text-right px-2 py-2 font-medium">Int1</th>
+                  <th className="text-right px-2 py-2 font-medium">Int2</th>
+                  <th className="text-right px-2 py-2 font-medium">Int3</th>
                   <th className="text-right px-2 py-2 font-medium">Off</th>
                   <th className="text-right px-2 py-2 font-medium">Hires</th>
                   <th className="text-right px-2 py-2 font-medium">Jobs</th>
@@ -4042,6 +4053,9 @@ const TSSummaryTab = ({ data }) => {
                         <td className="px-2 py-1.5 text-right text-gray-300">{r.screens.toLocaleString()}</td>
                         <td className="px-2 py-1.5 text-right text-gray-300">{r.actual_screens.toLocaleString()}</td>
                         <td className="px-2 py-1.5 text-right text-gray-300">{r.ats.toLocaleString()}</td>
+                        <td className="px-2 py-1.5 text-right text-gray-300">{(r.int1||0).toLocaleString()}</td>
+                        <td className="px-2 py-1.5 text-right text-gray-300">{(r.int2||0).toLocaleString()}</td>
+                        <td className="px-2 py-1.5 text-right text-gray-300">{(r.int3||0).toLocaleString()}</td>
                         <td className="px-2 py-1.5 text-right text-gray-300">{r.offered.toLocaleString()}</td>
                         <td className="px-2 py-1.5 text-right text-green-300 font-semibold">{r.hires.toLocaleString()}</td>
                         <td className="px-2 py-1.5 text-right text-gray-400">{r.jobs}</td>
@@ -4065,6 +4079,9 @@ const TSSummaryTab = ({ data }) => {
                             <td className="px-2 py-1 text-right text-gray-400">{j.screens.toLocaleString()}</td>
                             <td className="px-2 py-1 text-right text-gray-400">{j.actual_screens.toLocaleString()}</td>
                             <td className="px-2 py-1 text-right text-gray-400">{j.ats.toLocaleString()}</td>
+                            <td className="px-2 py-1 text-right text-gray-400">{(j.int1||0).toLocaleString()}</td>
+                            <td className="px-2 py-1 text-right text-gray-400">{(j.int2||0).toLocaleString()}</td>
+                            <td className="px-2 py-1 text-right text-gray-400">{(j.int3||0).toLocaleString()}</td>
                             <td className="px-2 py-1 text-right text-gray-400">{j.offered.toLocaleString()}</td>
                             <td className="px-2 py-1 text-right text-green-400/80">{j.hires ? j.hires.toLocaleString() : ''}</td>
                             <td className="px-2 py-1 text-right text-gray-500"></td>
@@ -4181,7 +4198,7 @@ const TSSummaryTab = ({ data }) => {
 const WSUM_WINDOWS = [
   ['12', 'Last 12 weeks'], ['26', 'Last 26 weeks'], ['2026', '2026 only'], ['2025', '2025 only'], ['all', 'All weeks (2025–26)'],
 ];
-const WSUM_METRICS = ['viewed','contacted','reacted','positive_response','screens','actual_screens','ats','offered','hired'];
+const WSUM_METRICS = ['viewed','contacted','reacted','positive_response','screens','actual_screens','ats','int1','int2','int3','offered','hired'];
 
 const WeeklySummaryTab = ({ data }) => {
   const rows = data.weekly_summary || [];
@@ -4245,7 +4262,7 @@ const WeeklySummaryTab = ({ data }) => {
       <th className="text-center px-1 py-1">LinkedIn Viewed</th><th className="text-center px-1 py-1">Contacted</th>
       <th className="text-center px-1 py-1">Reacted</th><th className="text-center px-1 py-1">Pos Resp</th>
       <th className="text-center px-1 py-1">Rec Screens</th><th className="text-center px-1 py-1">Actual Screens</th>
-      <th className="text-center px-1 py-1">Moved to ATS</th><th className="text-center px-1 py-1">Offered</th><th className="text-center px-1 py-1">Hired</th>
+      <th className="text-center px-1 py-1">Moved to ATS</th><th className="text-center px-1 py-1">Int 1</th><th className="text-center px-1 py-1">Int 2</th><th className="text-center px-1 py-1">Int 3</th><th className="text-center px-1 py-1">Offered</th><th className="text-center px-1 py-1">Hired</th>
       <th className="text-center px-1 py-1">% V→C</th><th className="text-center px-1 py-1">% C→R</th><th className="text-center px-1 py-1">% C→PR</th>
       <th className="text-center px-1 py-1">% PR→S</th><th className="text-center px-1 py-1">% S→ATS</th><th className="text-center px-1 py-1">% AS→ATS</th>
     </tr></thead>
@@ -4263,6 +4280,9 @@ const WeeklySummaryTab = ({ data }) => {
         <td className={`text-center px-1 py-1 ${base}`}>{c.screens.toLocaleString()}</td>
         <td className={`text-center px-1 py-1 ${base}`}>{c.actual_screens.toLocaleString()}</td>
         <td className={`text-center px-1 py-1 ${base}`}>{c.ats.toLocaleString()}</td>
+        <td className={`text-center px-1 py-1 ${base}`}>{(c.int1||0).toLocaleString()}</td>
+        <td className={`text-center px-1 py-1 ${base}`}>{(c.int2||0).toLocaleString()}</td>
+        <td className={`text-center px-1 py-1 ${base}`}>{(c.int3||0).toLocaleString()}</td>
         <td className={`text-center px-1 py-1 ${base}`}>{c.offered.toLocaleString()}</td>
         <td className={`text-center px-1 py-1 ${base} font-medium`}>{c.hired.toLocaleString()}</td>
         <td className="text-center px-1 py-1 text-gray-400">{pdPct(rate(c.contacted, c.viewed))}</td>

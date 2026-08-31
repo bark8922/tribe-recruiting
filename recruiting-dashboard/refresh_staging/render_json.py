@@ -648,7 +648,7 @@ def load_wbr():
             wk = f"w{wn}"
             c = row["CLIENT"]
             t = row["TA"]  # keep raw (preserves double-space, trailing space)
-            for m in ("contacted", "screened", "actual_screens", "ats", "offers", "hires"):
+            for m in ("contacted", "screened", "actual_screens", "ats", "int1", "int2", "int3", "offers", "hires"):
                 raw[(c, t)][wk][m] += int(row[m.upper()])
     return raw
 
@@ -1038,7 +1038,7 @@ def load_ts():
             wk = f"w{wn}"
             ts = row["TS"]
             for m in ("contacted", "recruiter_screens", "actual_screens",
-                      "ats", "offers", "hires"):
+                      "ats", "int1", "int2", "int3", "offers", "hires"):
                 raw[ts][wk][m] += int(row[m.upper()])
     return raw
 
@@ -1493,6 +1493,9 @@ def load_ts_summary():
                 "screens": _g(row, "screens"),
                 "actual_screens": _g(row, "actual_screens"),
                 "ats": _g(row, "ats"),
+                "int1": _g(row, "int1"),
+                "int2": _g(row, "int2"),
+                "int3": _g(row, "int3"),
                 "offers": _g(row, "offers"),
                 "hires": _g(row, "hires"),
                 "hires_tech": _g(row, "hires_tech"),
@@ -1933,6 +1936,9 @@ def load_weekly_summary(source_path=SNOW_WEEKLY_SUMMARY):
                 "screens":           int(row.get("REC_SCREENS") or 0),
                 "actual_screens":    int(row.get("ACTUAL_SCREENS") or 0),
                 "ats":               int(row.get("ATS") or 0),
+                "int1":              int(row.get("INT1") or 0),
+                "int2":              int(row.get("INT2") or 0),
+                "int3":              int(row.get("INT3") or 0),
                 "offered":           int(row.get("OFFERED") or 0),
                 "hired":             int(row.get("HIRED") or 0),
             })
@@ -1964,6 +1970,9 @@ def load_weekly_summary_byjob(source_path=SNOW_WEEKLY_SUMMARY_BYJOB):
                 "screens":           int(row.get("REC_SCREENS") or 0),
                 "actual_screens":    int(row.get("ACTUAL_SCREENS") or 0),
                 "ats":               int(row.get("ATS") or 0),
+                "int1":              int(row.get("INT1") or 0),
+                "int2":              int(row.get("INT2") or 0),
+                "int3":              int(row.get("INT3") or 0),
                 "offered":           int(row.get("OFFERED") or 0),
                 "hired":             int(row.get("HIRED") or 0),
             })

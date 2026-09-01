@@ -70,6 +70,25 @@ Orchestration = **Keboola Flows** (Flow B 3x/day `5 7,10,16` CET; Flow A 4x/day)
 
 ## Session history
 
+### 2026-08-31 — Wave 2: Interview 1/2/3 in the WBR/MBR/TS/Weekly-Summary DATA layer (backend live, frontend tabs pending)
+
+Extended the interview columns from Project Dashboard (Wave 1) to the other weekly grids. **Transforms live and validated; the 4 React tabs still need the columns surfaced.**
+
+Transforms edited (same gating pattern as Wave 1 — interviews are a strict subset of each table's own ATS, added as `CASE WHEN candidate IN intN_ev` inside that table's `ats` CTE, so they can never move ATS/Offer/Hired):
+- `WBR/MBR weekly aggregations` `01kpr0tr0dt5ryf96a5zk85bx7` (live v60): **wbr_weekly** (feeds WBR + MBR; MBR is a frontend rolling-4-week window on the same table), **ts_weekly**, **ts_summary_per_sourcer**. Rollback v53.
+- `Weekly Summary` `01ksm8rz0qfrhgzekke65bkd28` (live v11): **weekly_summary** + **weekly_summary_byjob**. Rollback v5.
+- `render_json.py` (repo commit `ddb32a6`): int1/2/3 added to load_wbr, load_ts, load_ts_summary, load_weekly_summary(+byjob). Render re-run so the data.gz carries them.
+
+Validated numerically (Keboola columns are TEXT — compare with TO_NUMBER, not string): **zero** subset-invariant violations at the headline on every table; company-level Weekly Summary totals match everything else exactly (ATS 20,589, INT1 104, INT2 26, INT3 14). ATS/Offer/Hire sums unchanged. Only edge case: 2 weekly_summary_byjob rows show Int3>Int2 — real stage-skips (a candidate reached Interview 3 without a logged Interview 2), correct under the raw-stage definition.
+
+**Deferred within Wave 2:** ts_conversion (the TS funnel *chart*, extends past ATS — more surgery), and IR (`ir_funnel_jobweek` already has its own Onsite/Culture/Call-with-Client interview columns; Tribe internal roles are on the old stages, so Int1/2/3 would be ~0).
+
+Frontend decision (Blake, 2026-08-31): **raw Int 1/2/3 volume columns**, no "X of Y on new pipeline" context cell / scoped conversion for now (those still need the per-job `on_new_pipeline` flag, deferred with the PD asterisk).
+
+**SHIPPED frontend (commit `ab7871f` area):** TSSummaryTab (per-sourcer table + drilldown + the 8→11-stage funnel chart) and WeeklySummaryTab (Int 1/2/3 between Moved to ATS and Offered). Production build clean.
+
+**REMAINING:** WBRTab + MBRTab. The data already flows — `build_wbr_actuals`/`build_ts_actuals` copy all metrics generically, so `wbr_actuals`/`ts_actuals` already carry int1/2/3 (v.int1 exists in the drill buckets). Only frontend rendering is left: add Int 1/2/3 to the 6-week drill-down funnel (header + weekly rows + 6w total) in each, plus the weekly-bucket aggregators (drillTaWeekly/drillClientWeekly init+accumulate). These are the densest, most target-heavy tables in the app, so do them carefully. The wide per-TA summary grid (with targets) can stay without Int columns unless Blake wants them (interviews have no targets). See INTERVIEW_STAGES_REPORTING_BUILD_PLAN.md.
+
 ### 2026-08-31 — SHIPPED: Interview 1/2/3 columns on the Project Dashboard funnel
 
 Made the middle of the funnel visible. The Project Dashboard Client/Job table now shows **Int 1 / Int 2 / Int 3** between **ATS** and **Offered**, so we can see where candidates fall off between ATS and Offer (previously the report jumped ATS → Offer).
@@ -429,3 +448,223 @@ Blake: should internal hiring be in the WBR numbers at all?**
   `is_event_duplicated` is NOT a usable filter.
 - Message to Mikhail about the phantom bursts drafted, NOT SENT. Blake's call.
 - `ts_conversion` has no week dimension and mixes time windows.
+
+---
+
+## 2026-09-01 — SHIPPED: ATS now anchored on the ATS move, not the last interview
+
+### The problem
+`date_interview` is a derived column holding the LATEST interview-ish event. `Moved to ATS` is stage
+type `Offsite`, so the ATS move fed that same column and lost to any later interview. Once the new
+Interview 1/2/3 funnel rolled out (mid-July), every advance up the interview ladder dragged the
+candidate's ATS credit into the current week. Mis-dating rate went 0.1% (Jan-Jun) to **9.0% (Aug)**,
+with only 15 of 122 clients migrated, so it was getting worse on its own.
+
+### What shipped
+
+**PROD V2 `375145203` v241 -> v246.** New `date_ats` column = `min()` of `Moved to ATS` events,
+gated `stage_current_num >= 3`, identical to every other stage date. Deliberately OUTSIDE the
+coalesce cascade so it can never be backfilled from a later stage (that cascade is what invents
+Jonaed's phantom screens). Four edit points: column placeholder, the UPDATE, and BOTH sides of the
+`final_candidate_stage_tmp` UNION.
+
+**Weekly funnel `01kpqh9r7g2z66c8vvdr5d87xd` v19 -> v24.** `ats_` CTE now buckets on `da` not `di`.
+Int1/2/3 follow automatically since they are computed inside `ats_`.
+
+### Gotcha that cost one failed run
+Keboola stores each script array element as exactly ONE statement. Inserting a second `update`
+inside an existing element fails with *"Actual statement count 2 did not match the desired statement
+count 1"*. Fix: set `date_ats` as a second SET column inside the existing `date_offer` UPDATE.
+The failed run wrote NOTHING; prod data was untouched throughout.
+
+### Verification
+| Check | Result |
+|---|---|
+| `date_ats` populated | **49,239**, exactly as predicted |
+| Candidates entering/leaving the ATS count | **0 / 0** |
+| Aaron Dilley / Luis Alves / Parmeet Singh / Mathias Reck / Vladislav Sakharov | all match raw events |
+| `date_offer` integrity | 24 exceptions, all with offer dates <= 2023-04-12, outside reporting |
+| Live weeks 29,30,31,32,33,35 vs prediction | **exact match** on ATS and Int1 |
+| Weeks 34, 36 | higher than predicted because a scheduled PROD V2 run landed 12 min of newer data between prediction and run. Week 36 = 10 (Mon) + 5 (Tue), genuine new work |
+
+### Impact on weekly numbers
+Week 36 (org): 31 -> 15. Weeks 29-33 gained back +3/+7/+3/+7/+7. Simon Siew 18 -> 3.
+Mateja Jokovic W34 11 -> 4. Yearly totals per person unchanged (net zero for all ten affected).
+Int1/2/3 totals preserved exactly (108/27/15), redistributed to the correct weeks.
+
+### Why the moves are correct
+Candidate-level audit: of Simon's 18 in W36, only 3 actually went to ATS this week. Aaron Dilley
+went **19 Jul** (43 days earlier) and sits at Interview 2; Luis Alves went **26 Jul** and is at
+**Offer**. Of Mateja's 11 in W34, one belonged there; the rest went to Pliant between 31 Jul and
+13 Aug and all sit at Interview 1 or 2.
+
+### NOT fixed, still open
+- `ts_weekly` RECRUITER_SCREENS counts raw ungated events (Rodrigo 184 vs true ~7)
+- POSITIVE_RESPONSE ungated in every table
+- the cascade inventing screens (Jonaed 97 vs 18 real)
+- WBR and event-attr still bucket ATS on `date_interview` -> **they now disagree with the Project
+  Dashboard by the amounts above until Wave 3**
+- Blake's stage-TYPE edit still lost (Aiven `Move to ATS stage`, 20 candidates, still invisible)
+
+### Rollback
+PROD V2 -> **241**. Weekly funnel -> **19**.
+
+---
+
+## 2026-09-01 (later) — SHIPPED: Int1/2/3 now count in their OWN week
+
+### The principle, from Blake, and it is the rule for every stage
+> What day did the recruiter go into Bubble and move the candidate to that stage?
+> That is the week it counts in. It is not tied to anything else.
+
+Move to ATS, Interview 1, Interview 2, Interview 3, Offer, Hired are DISTINCT stages.
+**None is a subset of another.**
+
+### What was wrong
+Wave 1/2 computed int1/2/3 INSIDE the `ats_` CTE, bucketed on the ATS week. So Aaron Dilley, moved
+to ATS 19 Jul and to Interview 1 on 31 Aug, had his Interview 1 filed under **week 29**. Week 36 read
+**6** when **31** Interview 1 moves happened; week 29 read 3 when **zero** happened. Wrong in both
+directions.
+
+### What shipped
+- **PROD V2 `375145203` v246 -> v250**: `date_int1`, `date_int2`, `date_int3` = `min()` of that
+  stage's own event. **No `stage_current_num` gate**, deliberately (see below).
+- **Weekly funnel `01kpqh9r…` v24 -> v30**: int1/2/3 pulled out of `ats_` into three standalone CTEs
+  bucketed on their own dates, added to `keys`, joined on the same grain.
+
+### Why NO gate on the interview dates
+The Interview 1/2/3 stage types were created mid-July 2026. Every historical phantom burst
+(Apr 2024, Feb 2025, Jan 2025) predates them, so they have no phantom exposure. Verified post-archive:
+**1 phantom event in week 33, zero in weeks 34/35/36**. A gate would only wrongly drop candidates who
+reached an interview and were later moved back down.
+
+### THE NEAR-MISS: my burst filter would have destroyed real data
+Blake warned that people legitimately open a pipeline and click a candidate through several stages at
+one moment, to record a hire that already happened. Tested against 2026:
+
+| Same-timestamp multi-stage writes | Count |
+|---|---|
+| **LEGITIMATE** (candidate IS at the highest stage written) | **1,158** |
+| **PHANTOM** (stages written ABOVE where they sit) | **19** |
+
+Counting every burst as phantom would have **deleted 1,158 real records to catch 19**. Never use that
+filter. The correct rule, if one is ever needed, requires BOTH conditions:
+4+ stage types at one timestamp **AND** the stage is above where the candidate currently sits.
+Across all history that keeps 20,133 bulk-move events and 3,304 move-back events, excluding 6,448
+(0.49%) genuine phantoms.
+
+### Mikhail's archive worked
+Archived events 9,682 -> 11,292. On the four AVIV jobs, burst events reaching reporting fell from
+~1,622 across 181 candidates to **4 on 1 candidate**. **This also fixed the ts_weekly screens
+problem on its own**: Rodrigo W35 RECRUITER_SCREENS went **184 -> 10**. No code change needed.
+But phantoms were NOT only Rodrigo: 6,448 remain across all history, mostly Apr 2024 / Feb 2025.
+
+### Verification
+`date_int1/2/3` populated 119 / 29 / 16, **zero mismatches** vs raw events. Row count and every
+pre-existing date column unchanged. Live Int1 by week matches the filtered raw count **exactly** for
+weeks 31-36 (7/9/10/39/20/31).
+
+Week 36 now reads ATS 15, Int1 31. Int1 exceeding ATS is correct and was structurally impossible
+under the old subset model.
+
+### Rollback
+PROD V2 -> **246** (keeps date_ats, drops the int dates) or **241** (drops both).
+Weekly funnel -> **24** (keeps the ATS anchor) or **19** (drops both).
+
+### STILL OPEN
+- WBR, ts_weekly, event-attr, weekly_summary still bucket ATS on `date_interview` AND still compute
+  int1/2/3 the old subset way. **Wave 3 must point them at date_ats / date_int1/2/3, not replicate
+  the old logic.**
+- The `stage_current_num >= N` gates on ATS/screens/offers/hires still drop candidates who moved
+  backwards (289 for ATS). Pre-existing, small, no urgency.
+- `date_screen` still inflated by the coalesce cascade (Jonaed 97 counted vs 18 real).
+
+---
+
+## 2026-09-01 (Part 1 complete) — every funnel table now shares one definition
+
+**THE RULE, from Blake:** the week a stage counts in is the week the recruiter made that move.
+ATS, Interview 1, Interview 2, Interview 3, Offer, Hired are DISTINCT stages. None is a subset of
+another. Nothing borrows another stage's date.
+
+### Shipped
+
+| Config | v before -> after | Tables |
+|---|---|---|
+| PROD V2 `375145203` | 241 -> **253** | `date_ats`, `date_int1/2/3`, `on_new_pipeline` |
+| weekly funnel `01kpqh9r…` | 19 -> **30** | `project_dashboard` |
+| WBR/MBR `01kpr0tr…` | 60 -> **76** | `wbr_weekly`, `ts_weekly`, `ts_summary_per_sourcer` |
+| Weekly Summary `01ksm8rz…` | 11 -> **21** | `weekly_summary`, `weekly_summary_byjob` |
+| event-attr `01ks4qf6…` | 8 -> **15** | `project_dashboard_eventattr` (INT1/2/3 were never here; added) |
+
+### Verified: all four surfaces identical
+| Week | ATS | Int1 | Int2 | Int3 |
+|---|---|---|---|---|
+| 34 | 108 | 39 | 7 | 2 |
+| 35 | 107 | 20 | 3 | 1 |
+| 36 | 17 | 31 | 4 | 3 |
+
+Same in `project_dashboard`, `wbr_weekly`, `project_dashboard_eventattr`, `weekly_summary`.
+
+### on_new_pipeline: I nearly built a duplicate
+I invented a date heuristic (created >= 2026-07-14 OR has an interview event) for something the
+**role tracker already computes exactly**. Blake caught it. `role_tracker_open_roles`
+(`01m0ftpar7g…`) reads `Jobs."stages"`, the job's own stage-ID list, and checks for an
+Interview-type stage. My heuristic was wrong on 6 of 133 active jobs. **Replaced with the tracker's
+logic**, re-expressed with LIKE instead of LATERAL FLATTEN so it fits a correlated subquery;
+verified identical on all 6,862 jobs. Tracker and funnels now share one definition by construction.
+
+**I also told Blake the job-to-stages link did not exist.** It does. It is on the Jobs side
+(`Jobs."stages"`), not the stages side. Bad conclusion stated as fact.
+
+### Still open
+- **`ts_weekly` buckets with `YEAR()`/`WEEKOFYEAR()`**, not ISO, unlike every other table. Left
+  deliberately so this change moved one thing. Its week boundaries can still differ.
+- Frontend does not yet use `on_new_pipeline`; old-funnel rows show a bare 0 rather than a dash.
+- **Interview conversion denominators undecided.** Dividing Int1 by all ATS includes old-funnel roles
+  that can never reach an interview. Scope to `on_new_pipeline` before publishing any rate.
+- Part 2 not started: IR funnel, Circle, Tribe Bot, Slack roles bot.
+- Parked: `>= N` gates drop move-backs (289 on ATS); `date_screen` cascade inflation (Jonaed 97 vs
+  18); positive response ungated; 6,448 historical phantoms Mikhail could archive.
+- **Unrelated and more serious: RLS disabled on 17 tribe-job-intel Supabase tables** incl.
+  dash_candidates (95k) and dash_candidate_dq (92k).
+
+### Rollback
+PROD V2 **241**, weekly funnel **19**, WBR **60**, Weekly Summary **11**, event-attr **8**.
+
+---
+
+## 2026-09-01 (frontend) — WBR now displays Interview 1/2/3
+
+### The gap
+Everything upstream was already done. `wbr_weekly` had the columns with correct values,
+`render_json.py` `load_wbr` carried them, and `wbr_actuals` in the published JSON contained them:
+
+```
+'Enam|Aleksandra Vistac': { 'w9': { contacted: 55, screened: 21, actual_screens: 10,
+    ats: 6, int1: 0, int2: 0, int3: 0, offers: 1, hires: 0 }, ... }
+```
+
+**`WBRTab` simply never rendered them.** No mention of `int1` anywhere below line 2171 of App.jsx;
+the columns existed only in `ProjectDashboardTab`, `TSSummaryTab` and `WeeklySummaryTab`.
+
+### Shipped — commit `67a3a3d` on bark8922/tribe-recruiting main
+- **6-week drill-down panel** (click a client / TA / TS): Int 1/2/3 between ATS and Offers, incl.
+  colgroup widths, headers, body cells and the 6w Total row.
+- **Client Summary table**: same three columns, PLUS the aggregation plumbing — those rows were
+  initialised without int fields and never summed them from `wbr_actuals`.
+- Verified with `npm run build`: 2,300 modules, no errors.
+
+### DEPLOY PATH (write this down)
+**Cloudflare Pages auto-builds from `main`.** It is in the repo's own README. `dist` is gitignored
+*because* Cloudflare builds it. Push to main = deployed.
+**`tribe-dashboard` the Cloudflare Worker is the FINANCE dashboard, not this one.** I saw it in
+workers_list, assumed it served recruiting, and asked Blake how to deploy instead of reading the
+README that answers it in one line.
+
+### NOT done, deliberately
+- **MBR.** `mbr_ta_actuals` and `mbr_ta_targets` carry no interview fields at all, so
+  `render_json.py` needs extending before the MBR tab can show anything. Frontend alone won't do it.
+- **WBR TA detail grid.** Already 15 columns (12w Hires / 12w ATS / 12w Scrns / 12w S->H / 12w TTF /
+  Hires / Contacted / Screens / ATS / % S->A / # Jobs / 60d+ / Comment). Adding three more is a
+  layout decision for Blake, not a data one.

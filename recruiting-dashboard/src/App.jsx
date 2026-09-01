@@ -667,6 +667,9 @@ const WBRTab = ({ data, notes }) => {
         contacted: actual.contacted,
         screened: actual.screened,
         ats: actual.ats,
+        int1: actual.int1 || 0,
+        int2: actual.int2 || 0,
+        int3: actual.int3 || 0,
         offers: actual.offers,
         hires: actual.hires,
         roles,
@@ -764,6 +767,9 @@ const WBRTab = ({ data, notes }) => {
         recruiter_screens: actuals.recruiter_screens || actuals.screened || 0,
         actual_screens: actuals.actual_screens || 0,
         ats: actuals.ats || 0,
+        int1: actuals.int1 || 0,
+        int2: actuals.int2 || 0,
+        int3: actuals.int3 || 0,
         offers: actuals.offers || 0,
         hires: actuals.hires || 0,
         num_jobs: jobs.num_jobs || 0,
@@ -1013,13 +1019,16 @@ const WBRTab = ({ data, notes }) => {
         <h3 className="text-lg font-semibold text-white mb-4">Client Summary — Week {selectedWeek}</h3>
         <div style={{ overflowX: 'auto' }}>
           <CsvBtn fname="wbr_client_summary" />
-          <table className="text-sm" style={{ width: '780px', maxWidth: '100%', margin: '0 auto', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
+          <table className="text-sm" style={{ width: '960px', maxWidth: '100%', margin: '0 auto', tableLayout: 'fixed', borderCollapse: 'collapse' }}>
             <colgroup>
               <col style={{ width: '180px' }} />
               <col style={{ width: '60px' }} />
               <col style={{ width: '90px' }} />
               <col style={{ width: '80px' }} />
               <col style={{ width: '65px' }} />
+              <col style={{ width: '62px' }} />
+              <col style={{ width: '62px' }} />
+              <col style={{ width: '62px' }} />
               <col style={{ width: '70px' }} />
               <col style={{ width: '65px' }} />
               <col style={{ width: '70px' }} />
@@ -1103,6 +1112,9 @@ const WBRTab = ({ data, notes }) => {
               <col style={{ width: '78px' }} />
               <col style={{ width: '70px' }} />
               <col style={{ width: '54px' }} />
+              <col style={{ width: '58px' }} />
+              <col style={{ width: '58px' }} />
+              <col style={{ width: '58px' }} />
               <col style={{ width: '60px' }} />
               <col style={{ width: '60px' }} />
               <col style={{ width: '54px' }} />
@@ -1121,6 +1133,9 @@ const WBRTab = ({ data, notes }) => {
                 <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Weekly Contacted">Contacted</th>
                 <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Weekly Actual Screens">Screens</th>
                 <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Weekly ATS">ATS</th>
+                <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Weekly Interview 1">Int 1</th>
+                <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Weekly Interview 2">Int 2</th>
+                <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Weekly Interview 3">Int 3</th>
                 <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="% Actual Screens to ATS">% S→A</th>
                 <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="# Active Roles"># Jobs</th>
                 <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Jobs Opened > 60 days">60d+</th>
@@ -1147,6 +1162,9 @@ const WBRTab = ({ data, notes }) => {
                     <th className="text-center px-2 py-2" title="Weekly Contacted">Contacted</th>
                     <th className="text-center px-2 py-2" title="Weekly Actual Screens">Screens</th>
                     <th className="text-center px-2 py-2" title="Weekly ATS">ATS</th>
+                    <th className="text-center px-2 py-2" title="Weekly Interview 1">Int 1</th>
+                    <th className="text-center px-2 py-2" title="Weekly Interview 2">Int 2</th>
+                    <th className="text-center px-2 py-2" title="Weekly Interview 3">Int 3</th>
                     <th className="text-center px-2 py-2" title="% Actual Screens to ATS">% S→A</th>
                     <th className="text-center px-2 py-2" title="# Active Roles"># Jobs</th>
                     <th className="text-center px-2 py-2" title="Jobs Opened > 60 days">60d+</th>
@@ -1156,7 +1174,7 @@ const WBRTab = ({ data, notes }) => {
                 return (
                   <React.Fragment key={group}>
                     <tr className="bg-gray-900">
-                      <td colSpan={15} className="text-left px-2 py-3 text-white font-bold text-base" style={{ borderTop: '3px solid #4B5563' }}>
+                      <td colSpan={18} className="text-left px-2 py-3 text-white font-bold text-base" style={{ borderTop: '3px solid #4B5563' }}>
                         {group === 'Dolphins/Whales' ? '🐬 Dolphins & Whales' : '🦄 Ponies & Unicorns'}
                       </td>
                     </tr>
@@ -1188,6 +1206,9 @@ const WBRTab = ({ data, notes }) => {
                           <td className="text-center px-2 py-2" style={getCellStyle(row.ats, row.ats_target)}>
                             {row.ats || ''}
                           </td>
+                          <td className="text-center px-2 py-2 text-gray-300">{row.int1 || ''}</td>
+                          <td className="text-center px-2 py-2 text-gray-300">{row.int2 || ''}</td>
+                          <td className="text-center px-2 py-2 text-gray-300">{row.int3 || ''}</td>
                           <td className="text-center px-2 py-2 text-gray-400">{row.pct_screens_to_ats != null ? `${row.pct_screens_to_ats}%` : '—'}</td>
                           <td className="text-center px-2 py-2 text-gray-300">{row.roles || ''}</td>
                           <td className="text-center px-2 py-2 text-gray-300">{row.jobs_60d || ''}</td>
@@ -1259,6 +1280,9 @@ const WBRTab = ({ data, notes }) => {
                 <col style={{ width: '76px' }} />
                 <col style={{ width: '76px' }} />
                 <col style={{ width: '54px' }} />
+                <col style={{ width: '58px' }} />
+                <col style={{ width: '58px' }} />
+                <col style={{ width: '58px' }} />
                 <col style={{ width: '60px' }} />
                 <col style={{ width: '54px' }} />
                 <col style={{ width: '210px' }} />
@@ -1273,6 +1297,9 @@ const WBRTab = ({ data, notes }) => {
                   <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Recruiter Screens">Rec Scrns</th>
                   <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Actual Screens">Act Scrns</th>
                   <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Moved to ATS">ATS</th>
+                  <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Weekly Interview 1">Int 1</th>
+                  <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Weekly Interview 2">Int 2</th>
+                  <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="Weekly Interview 3">Int 3</th>
                   <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="# Active Jobs"># Jobs</th>
                   <th className="text-center px-2 py-2 bg-gray-800 border-b border-gray-600" title="# TAs supported"># TAs</th>
                   <th className="text-left px-3 py-2 bg-gray-800 border-b border-gray-600">TA Names</th>
@@ -1302,6 +1329,9 @@ const WBRTab = ({ data, notes }) => {
                     <td className="text-center px-2 py-2 align-top" style={getCellStyle(row.ats, row.ats_target)}>
                       {row.ats}
                     </td>
+                    <td className="text-center px-2 py-2 text-gray-300 align-top">{row.int1 || ''}</td>
+                    <td className="text-center px-2 py-2 text-gray-300 align-top">{row.int2 || ''}</td>
+                    <td className="text-center px-2 py-2 text-gray-300 align-top">{row.int3 || ''}</td>
                     <td className="text-center px-2 py-2 text-gray-300 align-top">{row.num_jobs}</td>
                     <td className="text-center px-2 py-2 text-gray-300 align-top">{row.num_tas}</td>
                     <td className="text-left px-3 py-3 text-gray-300 align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: '1.55' }}>{row.ta_names || '—'}</td>

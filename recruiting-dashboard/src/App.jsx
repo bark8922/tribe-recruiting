@@ -1237,6 +1237,9 @@ const WBRTab = ({ data, notes }) => {
                       <td className="text-center px-2 py-2 text-white">{groupRows.reduce((s, r) => s + r.contacted, 0)}</td>
                       <td className="text-center px-2 py-2 text-white">{groupRows.reduce((s, r) => s + r.screened, 0)}</td>
                       <td className="text-center px-2 py-2 text-white">{groupRows.reduce((s, r) => s + r.ats, 0)}</td>
+                      <td className="text-center px-2 py-2 text-white">{groupRows.reduce((s, r) => s + (r.int1 || 0), 0)}</td>
+                      <td className="text-center px-2 py-2 text-white">{groupRows.reduce((s, r) => s + (r.int2 || 0), 0)}</td>
+                      <td className="text-center px-2 py-2 text-white">{groupRows.reduce((s, r) => s + (r.int3 || 0), 0)}</td>
                       <td className="text-center px-2 py-2 text-white">—</td>
                       <td className="text-center px-2 py-2 text-white">{groupRows.reduce((s, r) => s + r.roles, 0)}</td>
                       <td className="text-center px-2 py-2 text-white">{groupRows.reduce((s, r) => s + r.jobs_60d, 0)}</td>
@@ -1257,6 +1260,9 @@ const WBRTab = ({ data, notes }) => {
                 <td className="text-center px-2 py-2 text-white">{taDetail.reduce((s, r) => s + r.contacted, 0)}</td>
                 <td className="text-center px-2 py-2 text-white">{taDetail.reduce((s, r) => s + r.screened, 0)}</td>
                 <td className="text-center px-2 py-2 text-white">{taDetail.reduce((s, r) => s + r.ats, 0)}</td>
+                <td className="text-center px-2 py-2 text-white">{taDetail.reduce((s, r) => s + (r.int1 || 0), 0)}</td>
+                <td className="text-center px-2 py-2 text-white">{taDetail.reduce((s, r) => s + (r.int2 || 0), 0)}</td>
+                <td className="text-center px-2 py-2 text-white">{taDetail.reduce((s, r) => s + (r.int3 || 0), 0)}</td>
                 <td className="text-center px-2 py-2 text-white">—</td>
                 <td className="text-center px-2 py-2 text-white">{taDetail.reduce((s, r) => s + r.roles, 0)}</td>
                 <td className="text-center px-2 py-2 text-white">{taDetail.reduce((s, r) => s + r.jobs_60d, 0)}</td>
@@ -1349,6 +1355,9 @@ const WBRTab = ({ data, notes }) => {
                   <td className="text-center px-2 py-2 text-white">{tsData.reduce((sum, r) => sum + r.recruiter_screens, 0)}</td>
                   <td className="text-center px-2 py-2 text-white">{tsData.reduce((sum, r) => sum + r.actual_screens, 0)}</td>
                   <td className="text-center px-2 py-2 text-white">{tsData.reduce((sum, r) => sum + r.ats, 0)}</td>
+                  <td className="text-center px-2 py-2 text-white">{tsData.reduce((sum, r) => sum + (r.int1 || 0), 0)}</td>
+                  <td className="text-center px-2 py-2 text-white">{tsData.reduce((sum, r) => sum + (r.int2 || 0), 0)}</td>
+                  <td className="text-center px-2 py-2 text-white">{tsData.reduce((sum, r) => sum + (r.int3 || 0), 0)}</td>
                   <td className="text-center px-2 py-2 text-white">{tsData.reduce((sum, r) => sum + r.num_jobs, 0)}</td>
                   <td className="text-center px-2 py-2 text-white">{tsData.reduce((sum, r) => sum + r.num_tas, 0)}</td>
                   <td className="text-left px-3 py-2 text-gray-400">—</td>

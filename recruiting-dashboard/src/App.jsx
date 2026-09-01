@@ -544,7 +544,7 @@ const WBRTab = ({ data, notes }) => {
       const display = normalizeClient(t.client);
       // Skip (client, TA) pairs not in the weekly note for this week
       if (hasWeeklyRoster && !activePairsThisWeek.has(`${display}|${normalizeTa(t.ta)}`)) return;
-      let actual = { contacted: 0, screened: 0, ats: 0, offers: 0, hires: 0 };
+      let actual = { contacted: 0, screened: 0, ats: 0, int1: 0, int2: 0, int3: 0, offers: 0, hires: 0 };
 
       Object.keys(data.wbr_actuals).forEach((key) => {
         const [rawClient, rawTa] = key.split('|');
@@ -554,6 +554,9 @@ const WBRTab = ({ data, notes }) => {
             actual.contacted += wk.contacted || 0;
             actual.screened += wk.actual_screens || wk.screened || 0;
             actual.ats += wk.ats || 0;
+            actual.int1 += wk.int1 || 0;
+            actual.int2 += wk.int2 || 0;
+            actual.int3 += wk.int3 || 0;
             actual.offers += wk.offers || 0;
             actual.hires += wk.hires || 0;
           }

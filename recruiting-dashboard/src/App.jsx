@@ -387,7 +387,7 @@ const WBRTab = ({ data, notes }) => {
       if (!summary[display]) {
         summary[display] = {
           client: display,
-          contacted: 0, screened: 0, ats: 0, offers: 0, hires: 0,
+          contacted: 0, screened: 0, ats: 0, int1: 0, int2: 0, int3: 0, offers: 0, hires: 0,
           contacted_target: 0, screened_target: 0, ats_target: 0, hires_target: 0,
           roles: 0, hires_12w: 0,
         };
@@ -415,6 +415,9 @@ const WBRTab = ({ data, notes }) => {
             summary[display].contacted += wk.contacted || 0;
             summary[display].screened += wk.actual_screens || wk.screened || 0;
             summary[display].ats += wk.ats || 0;
+            summary[display].int1 += wk.int1 || 0;
+            summary[display].int2 += wk.int2 || 0;
+            summary[display].int3 += wk.int3 || 0;
             summary[display].offers += wk.offers || 0;
             summary[display].hires += wk.hires || 0;
           }
@@ -862,6 +865,9 @@ const WBRTab = ({ data, notes }) => {
                 {drillDown.kind === 'ts' && <col style={{ width: '100px' }} />}
                 <col style={{ width: '100px' }} />
                 <col style={{ width: '80px' }} />
+                <col style={{ width: '60px' }} />
+                <col style={{ width: '60px' }} />
+                <col style={{ width: '60px' }} />
                 <col style={{ width: '80px' }} />
                 <col style={{ width: '80px' }} />
                 {showComment && <col />}
@@ -873,6 +879,9 @@ const WBRTab = ({ data, notes }) => {
                   {drillDown.kind === 'ts' && <th className="text-center px-2 py-2">Rec Scrn</th>}
                   <th className="text-center px-2 py-2">Act Scrn</th>
                   <th className="text-center px-2 py-2">ATS</th>
+                  <th className="text-center px-2 py-2">Int 1</th>
+                  <th className="text-center px-2 py-2">Int 2</th>
+                  <th className="text-center px-2 py-2">Int 3</th>
                   <th className="text-center px-2 py-2">Offers</th>
                   <th className="text-center px-2 py-2">Hires</th>
                   {showComment && <th className="text-left px-3 py-2">Comment</th>}
@@ -908,6 +917,9 @@ const WBRTab = ({ data, notes }) => {
                       )}
                       <td className="text-center px-2 py-2 align-top" style={getCellStyle(v.actual_screens || 0, asTgt)}>{v.actual_screens || 0}</td>
                       <td className="text-center px-2 py-2 align-top" style={getCellStyle(v.ats || 0, atsTgt)}>{v.ats || 0}</td>
+                      <td className="text-center px-2 py-2 text-gray-300 align-top">{v.int1 || 0}</td>
+                      <td className="text-center px-2 py-2 text-gray-300 align-top">{v.int2 || 0}</td>
+                      <td className="text-center px-2 py-2 text-gray-300 align-top">{v.int3 || 0}</td>
                       <td className="text-center px-2 py-2 text-gray-300 align-top">{v.offers || 0}</td>
                       <td className="text-center px-2 py-2 align-top" style={hiresTgt > 0 ? getCellStyle(v.hires || 0, hiresTgt) : undefined}>{v.hires || 0}</td>
                       {showComment && (
@@ -930,6 +942,9 @@ const WBRTab = ({ data, notes }) => {
                       ...(drillDown.kind === 'ts' ? [drillWeeks.reduce((s, wk) => s + (((byWeek[wk] || {}).recruiter_screens) || ((byWeek[wk] || {}).screened) || 0), 0)] : []),
                       sumKey('actual_screens'),
                       sumKey('ats'),
+                      sumKey('int1'),
+                      sumKey('int2'),
+                      sumKey('int3'),
                       sumKey('offers'),
                       sumKey('hires'),
                     ];
@@ -1016,6 +1031,9 @@ const WBRTab = ({ data, notes }) => {
                 <th className="text-center px-2 py-2">Contacted</th>
                 <th className="text-center px-2 py-2">Screens</th>
                 <th className="text-center px-2 py-2">ATS</th>
+                <th className="text-center px-2 py-2">Int 1</th>
+                <th className="text-center px-2 py-2">Int 2</th>
+                <th className="text-center px-2 py-2">Int 3</th>
                 <th className="text-center px-2 py-2">Offers</th>
                 <th className="text-center px-2 py-2">Hires</th>
                 <th className="text-center px-2 py-2" title="Last 12w Hires">12w H</th>
@@ -1040,6 +1058,9 @@ const WBRTab = ({ data, notes }) => {
                   <td className="text-center px-2 py-2" style={getCellStyle(row.ats, row.ats_target)}>
                     {row.ats}
                   </td>
+                  <td className="text-center px-2 py-2 text-gray-300">{row.int1 || 0}</td>
+                  <td className="text-center px-2 py-2 text-gray-300">{row.int2 || 0}</td>
+                  <td className="text-center px-2 py-2 text-gray-300">{row.int3 || 0}</td>
                   <td className="text-center px-2 py-2 text-gray-300">{row.offers}</td>
                   <td className="text-center px-2 py-2 text-gray-300">{row.hires}</td>
                   <td className="text-center px-2 py-2 text-gray-300">{row.hires_12w}</td>
@@ -1051,6 +1072,9 @@ const WBRTab = ({ data, notes }) => {
                 <td className="text-center px-2 py-2 text-white">{clientSummary.reduce((sum, r) => sum + r.contacted, 0)}</td>
                 <td className="text-center px-2 py-2 text-white">{clientSummary.reduce((sum, r) => sum + r.screened, 0)}</td>
                 <td className="text-center px-2 py-2 text-white">{clientSummary.reduce((sum, r) => sum + r.ats, 0)}</td>
+                <td className="text-center px-2 py-2 text-white">{clientSummary.reduce((sum, r) => sum + (r.int1 || 0), 0)}</td>
+                <td className="text-center px-2 py-2 text-white">{clientSummary.reduce((sum, r) => sum + (r.int2 || 0), 0)}</td>
+                <td className="text-center px-2 py-2 text-white">{clientSummary.reduce((sum, r) => sum + (r.int3 || 0), 0)}</td>
                 <td className="text-center px-2 py-2 text-white">{clientSummary.reduce((sum, r) => sum + r.offers, 0)}</td>
                 <td className="text-center px-2 py-2 text-white">{clientSummary.reduce((sum, r) => sum + r.hires, 0)}</td>
                 <td className="text-center px-2 py-2 text-white" title="Sum of 12w hires across ALL active clients (includes Wolt Volume + other hidden rows), to match PBI's Total behaviour">{Object.values(data.mbr_client_totals || {}).reduce((s, v) => s + (v.hires_12w || 0), 0) || clientSummary.reduce((sum, r) => sum + r.hires_12w, 0)}</td>

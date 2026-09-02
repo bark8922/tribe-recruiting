@@ -751,6 +751,7 @@ def load_project_dashboard(source_path=SNOW_PROJECT_DASHBOARD):
                 "screens":                int(row.get("SCREENS") or 0),
                 "actual_screens":         int(row.get("ACTUAL_SCREENS") or 0),
                 "ats":                    int(row.get("ATS") or 0),
+                "on_new_pipeline":        str(row.get("ON_NEW_PIPELINE") or "").strip().lower() in ("true", "1", "t"),
                 "int1":                   int(row.get("INT1") or 0),
                 "int2":                   int(row.get("INT2") or 0),
                 "int3":                   int(row.get("INT3") or 0),

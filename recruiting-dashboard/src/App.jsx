@@ -11,6 +11,13 @@ import { Search } from 'lucide-react';
 import clientProfitabilityData from './client_profitability.json';
 import teamLeadsData from './team_leads.json';
 
+// np = how many rows behind this cell came from a role on the new pipeline.
+// np === 0 means NO role here can ever have an Interview 1/2/3, so a 0 would be a
+// lie; show an em dash instead. A genuine 0 on a new-pipeline role still shows 0,
+// and np === null (source table carries no flag) always shows the number.
+const intCell = (v, np) => (np === 0 && !v) ? '\u2014' : (v || 0).toLocaleString();
+
+
 // WEEKS is now derived per-render from data.wbr_ta_weekly_roster keys so that
 // newly-added weeks (e.g. w16, w17) appear automatically once the weekly roster
 // syncs from Andy's Google Sheet. See derivation inside WBRTab.
@@ -2358,7 +2365,7 @@ const ProjectDashboardTab = ({ data }) => {
     for (const r of filtered) {
       const c = normalizeClientPD(r.client);
       if (!m.has(c)) m.set(c, { client: c, jobIds: new Set(), tas: new Set(), tses: new Set(),
-        viewed: 0, contacted: 0, positive_response: 0, screens: 0, actual_screens: 0, ats: 0, int1: 0, int2: 0, int3: 0, offered: 0, hired: 0 });
+        viewed: 0, contacted: 0, positive_response: 0, screens: 0, actual_screens: 0, ats: 0, int1: 0, int2: 0, int3: 0, np: 0, offered: 0, hired: 0 });
       const row = m.get(c);
       row.jobIds.add(r.job_id);
       if (r.ta) row.tas.add(r.ta);
@@ -2366,6 +2373,7 @@ const ProjectDashboardTab = ({ data }) => {
       row.viewed += (r.viewed || 0); row.contacted += r.contacted; row.positive_response += r.positive_response;
       row.screens += (r.screens || 0); row.actual_screens += r.actual_screens; row.ats += r.ats;
       row.int1 += (r.int1 || 0); row.int2 += (r.int2 || 0); row.int3 += (r.int3 || 0);
+      row.np += r.on_new_pipeline ? 1 : 0;
       row.offered += r.offered; row.hired += r.hired;
     }
     // 2026-06-04: when filtered by sourcer, PD's viewed CTE has ts='' (job-level
@@ -2398,7 +2406,7 @@ const ProjectDashboardTab = ({ data }) => {
           m.set(c, {
             client: c, jobIds: new Set(), tas: new Set(), tses: new Set([personView]),
             viewed: v, contacted: 0, positive_response: 0,
-            screens: 0, actual_screens: 0, ats: 0, int1: 0, int2: 0, int3: 0, offered: 0, hired: 0,
+            screens: 0, actual_screens: 0, ats: 0, int1: 0, int2: 0, int3: 0, np: 0, offered: 0, hired: 0,
           });
         }
       });
@@ -2415,7 +2423,7 @@ const ProjectDashboardTab = ({ data }) => {
       if (!m.has(key)) m.set(key, {
         client: c, job_id: r.job_id, job_title: r.job_title, job_category: r.job_category,
         is_external_recruiter: r.is_external_recruiter, tas: new Set(), tses: new Set(),
-        viewed: 0, contacted: 0, positive_response: 0, screens: 0, actual_screens: 0, ats: 0, int1: 0, int2: 0, int3: 0, offered: 0, hired: 0,
+        viewed: 0, contacted: 0, positive_response: 0, screens: 0, actual_screens: 0, ats: 0, int1: 0, int2: 0, int3: 0, np: 0, offered: 0, hired: 0,
       });
       const row = m.get(key);
       if (r.ta) row.tas.add(r.ta);
@@ -2423,6 +2431,7 @@ const ProjectDashboardTab = ({ data }) => {
       row.viewed += (r.viewed || 0); row.contacted += r.contacted; row.positive_response += r.positive_response;
       row.screens += (r.screens || 0); row.actual_screens += r.actual_screens; row.ats += r.ats;
       row.int1 += (r.int1 || 0); row.int2 += (r.int2 || 0); row.int3 += (r.int3 || 0);
+      row.np += r.on_new_pipeline ? 1 : 0;
       row.offered += r.offered; row.hired += r.hired;
     }
     // 2026-07-24: per-JOB viewed attributed to the actual viewer (who_created_event),
@@ -2454,7 +2463,7 @@ const ProjectDashboardTab = ({ data }) => {
             client: c, job_id: jid, job_title: jobTitleById[jid] || `(job ${jid})`,
             job_category: '', is_external_recruiter: false, tas: new Set(), tses: new Set([personViewJob]),
             viewed: viewedByJob[jid], contacted: 0, positive_response: 0, screens: 0,
-            actual_screens: 0, ats: 0, int1: 0, int2: 0, int3: 0, offered: 0, hired: 0,
+            actual_screens: 0, ats: 0, int1: 0, int2: 0, int3: 0, np: 0, offered: 0, hired: 0,
           });
         }
       });
@@ -2784,9 +2793,9 @@ const ProjectDashboardTab = ({ data }) => {
                       <td className="text-center px-1 py-1 text-gray-200">{c.screens}</td>
                       <td className="text-center px-1 py-1 text-gray-200">{c.actual_screens}</td>
                       <td className="text-center px-1 py-1 text-gray-200">{c.ats}</td>
-                      <td className="text-center px-1 py-1 text-gray-200">{c.int1}</td>
-                      <td className="text-center px-1 py-1 text-gray-200">{c.int2}</td>
-                      <td className="text-center px-1 py-1 text-gray-200">{c.int3}</td>
+                      <td className="text-center px-1 py-1 text-gray-200">{intCell(c.int1, c.np)}</td>
+                      <td className="text-center px-1 py-1 text-gray-200">{intCell(c.int2, c.np)}</td>
+                      <td className="text-center px-1 py-1 text-gray-200">{intCell(c.int3, c.np)}</td>
                       <td className="text-center px-1 py-1 text-gray-200">{c.offered}</td>
                       <td className="text-center px-1 py-1 text-gray-200 font-medium">{c.hired}</td>
                       <td className="text-center px-1 py-1 text-gray-500" style={pdHeat(pctVC, 'vc')}>{pdPct(pctVC)}</td>
@@ -2812,9 +2821,9 @@ const ProjectDashboardTab = ({ data }) => {
                         <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.screens}</td>
                         <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.actual_screens}</td>
                         <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.ats}</td>
-                        <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.int1}</td>
-                        <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.int2}</td>
-                        <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.int3}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{intCell(r.int1, r.np)}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{intCell(r.int2, r.np)}</td>
+                        <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{intCell(r.int3, r.np)}</td>
                         <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.offered}</td>
                         <td className="text-center px-1 py-0.5 text-gray-300 text-xs">{r.hired}</td>
                         <td className="text-center px-1 py-0.5 text-gray-500 text-xs" style={pdHeat(r.pct_v_c, 'vc')}>{pdPct(r.pct_v_c)}</td>
@@ -3673,7 +3682,7 @@ const TSSummaryTab = ({ data }) => {
     const ensure = (ts) => {
       if (!agg[ts]) agg[ts] = {
         sourcer: ts, viewed: 0, contacted: 0, positive_response: 0, screens: 0,
-        actual_screens: 0, ats: 0, int1: 0, int2: 0, int3: 0, offered: 0, hires: 0, jobs: 0,
+        actual_screens: 0, ats: 0, int1: 0, int2: 0, int3: 0, np: null, offered: 0, hires: 0, jobs: 0,
       };
       return agg[ts];
     };
@@ -3710,6 +3719,7 @@ const TSSummaryTab = ({ data }) => {
         a.actual_screens += r.actual_screens || 0;
         a.ats += r.ats || 0;
         a.int1 += r.int1 || 0; a.int2 += r.int2 || 0; a.int3 += r.int3 || 0;
+        a.np = (a.np || 0) + (r.on_new_pipeline ? 1 : 0);
         a.offered += r.offered || 0;
       });
       filteredHires.forEach(h => {
@@ -3748,7 +3758,7 @@ const TSSummaryTab = ({ data }) => {
         client: r.client || '',
         archived: archivedJobIds.has(r.job_id),
         viewed: 0, contacted: 0, positive_response: 0, screens: 0,
-        actual_screens: 0, ats: 0, int1: 0, int2: 0, int3: 0, offered: 0, hires: 0,
+        actual_screens: 0, ats: 0, int1: 0, int2: 0, int3: 0, np: 0, offered: 0, hires: 0,
       };
       const a = bucket[r.job_id];
       a.viewed += r.viewed || 0;
@@ -3758,6 +3768,7 @@ const TSSummaryTab = ({ data }) => {
       a.actual_screens += r.actual_screens || 0;
       a.ats += r.ats || 0;
       a.int1 += r.int1 || 0; a.int2 += r.int2 || 0; a.int3 += r.int3 || 0;
+      a.np += r.on_new_pipeline ? 1 : 0;
       a.offered += r.offered || 0;
     });
     filteredHires.forEach(h => {
@@ -3771,7 +3782,7 @@ const TSSummaryTab = ({ data }) => {
         client: h.client || '',
         archived: archivedJobIds.has(h.job_id),
         viewed: 0, contacted: 0, positive_response: 0, screens: 0,
-        actual_screens: 0, ats: 0, int1: 0, int2: 0, int3: 0, offered: 0, hires: 0,
+        actual_screens: 0, ats: 0, int1: 0, int2: 0, int3: 0, np: 0, offered: 0, hires: 0,
       };
       bucket[h.job_id].hires += 1;
     });
@@ -4170,9 +4181,9 @@ const TSSummaryTab = ({ data }) => {
                         <td className="px-2 py-1.5 text-right text-gray-300">{r.screens.toLocaleString()}</td>
                         <td className="px-2 py-1.5 text-right text-gray-300">{r.actual_screens.toLocaleString()}</td>
                         <td className="px-2 py-1.5 text-right text-gray-300">{r.ats.toLocaleString()}</td>
-                        <td className="px-2 py-1.5 text-right text-gray-300">{(r.int1||0).toLocaleString()}</td>
-                        <td className="px-2 py-1.5 text-right text-gray-300">{(r.int2||0).toLocaleString()}</td>
-                        <td className="px-2 py-1.5 text-right text-gray-300">{(r.int3||0).toLocaleString()}</td>
+                        <td className="px-2 py-1.5 text-right text-gray-300">{intCell(r.int1, r.np)}</td>
+                        <td className="px-2 py-1.5 text-right text-gray-300">{intCell(r.int2, r.np)}</td>
+                        <td className="px-2 py-1.5 text-right text-gray-300">{intCell(r.int3, r.np)}</td>
                         <td className="px-2 py-1.5 text-right text-gray-300">{r.offered.toLocaleString()}</td>
                         <td className="px-2 py-1.5 text-right text-green-300 font-semibold">{r.hires.toLocaleString()}</td>
                         <td className="px-2 py-1.5 text-right text-gray-400">{r.jobs}</td>
@@ -4196,9 +4207,9 @@ const TSSummaryTab = ({ data }) => {
                             <td className="px-2 py-1 text-right text-gray-400">{j.screens.toLocaleString()}</td>
                             <td className="px-2 py-1 text-right text-gray-400">{j.actual_screens.toLocaleString()}</td>
                             <td className="px-2 py-1 text-right text-gray-400">{j.ats.toLocaleString()}</td>
-                            <td className="px-2 py-1 text-right text-gray-400">{(j.int1||0).toLocaleString()}</td>
-                            <td className="px-2 py-1 text-right text-gray-400">{(j.int2||0).toLocaleString()}</td>
-                            <td className="px-2 py-1 text-right text-gray-400">{(j.int3||0).toLocaleString()}</td>
+                            <td className="px-2 py-1 text-right text-gray-400">{intCell(j.int1, j.np)}</td>
+                            <td className="px-2 py-1 text-right text-gray-400">{intCell(j.int2, j.np)}</td>
+                            <td className="px-2 py-1 text-right text-gray-400">{intCell(j.int3, j.np)}</td>
                             <td className="px-2 py-1 text-right text-gray-400">{j.offered.toLocaleString()}</td>
                             <td className="px-2 py-1 text-right text-green-400/80">{j.hires ? j.hires.toLocaleString() : ''}</td>
                             <td className="px-2 py-1 text-right text-gray-500"></td>

@@ -1482,6 +1482,9 @@ const MBRTab = ({ data, notes }) => {
         contacted: t.contacted || 0,
         actual_screens: t.actual_screens || 0,
         ats: t.ats || 0,
+        int1: t.int1 || 0,
+        int2: t.int2 || 0,
+        int3: t.int3 || 0,
         offers: t.offers || 0,
         hires: t.hires || 0,
         hires_12w: t.hires_12w || 0,
@@ -1573,6 +1576,9 @@ const MBRTab = ({ data, notes }) => {
         contacted: a.contacted || 0,
         actual_screens: a.actual_screens || 0,
         ats: a.ats || 0,
+        int1: a.int1 || 0,
+        int2: a.int2 || 0,
+        int3: a.int3 || 0,
         offers: a.offers || 0,
         hires: a.hires || 0,
         hires_12w: a.hires_12w || 0,
@@ -1647,6 +1653,9 @@ const MBRTab = ({ data, notes }) => {
         actual_screens: a.actual_screens_4w || 0,
         actual_screens_target: 7 * weekCount,
         ats: a.ats_4w || 0,
+        int1: a.int1_4w || 0,
+        int2: a.int2_4w || 0,
+        int3: a.int3_4w || 0,
         ats_target: 4 * weekCount,
         hires_12w: a.hires_12w || 0,
         screens_12w: a.screens_12w || 0,
@@ -1669,10 +1678,13 @@ const MBRTab = ({ data, notes }) => {
     contacted: acc.contacted + r.contacted,
     actual_screens: acc.actual_screens + r.actual_screens,
     ats: acc.ats + r.ats,
+    int1: acc.int1 + (r.int1 || 0),
+    int2: acc.int2 + (r.int2 || 0),
+    int3: acc.int3 + (r.int3 || 0),
     offers: acc.offers + r.offers,
     hires: acc.hires + r.hires,
     hires_12w: acc.hires_12w + r.hires_12w,
-  }), { contacted:0, actual_screens:0, ats:0, offers:0, hires:0, hires_12w:0 });
+  }), { contacted:0, actual_screens:0, ats:0, int1:0, int2:0, int3:0, offers:0, hires:0, hires_12w:0 });
 
   const renderTaGroup = (group) => {
     const rows = taRows.filter(r => r.team_group === group);
@@ -1682,6 +1694,9 @@ const MBRTab = ({ data, notes }) => {
       contacted: a.contacted + r.contacted,
       actual_screens: a.actual_screens + r.actual_screens,
       ats: a.ats + r.ats,
+      int1: a.int1 + (r.int1 || 0),
+      int2: a.int2 + (r.int2 || 0),
+      int3: a.int3 + (r.int3 || 0),
       hires: a.hires + r.hires,
       hires_12w: a.hires_12w + r.hires_12w,
       ats_12w: a.ats_12w + r.ats_12w,
@@ -1691,7 +1706,7 @@ const MBRTab = ({ data, notes }) => {
       actual_screens_target: a.actual_screens_target + r.actual_screens_target,
       ats_target: a.ats_target + r.ats_target,
       hires_target: a.hires_target + r.hires_target,
-    }), { contacted:0, actual_screens:0, ats:0, hires:0, hires_12w:0, ats_12w:0, screens_12w:0, jobs_60d:0, contacted_target:0, actual_screens_target:0, ats_target:0, hires_target:0 });
+    }), { contacted:0, actual_screens:0, ats:0, int1:0, int2:0, int3:0, hires:0, hires_12w:0, ats_12w:0, screens_12w:0, jobs_60d:0, contacted_target:0, actual_screens_target:0, ats_target:0, hires_target:0 });
 
     return (
       <div className="bg-gray-800 rounded-lg p-4" key={group}>
@@ -1714,6 +1729,9 @@ const MBRTab = ({ data, notes }) => {
               <col style={{ width: '50px' }} />
               <col style={{ width: '55px' }} />
               <col style={{ width: '50px' }} />
+              <col style={{ width: '52px' }} />
+              <col style={{ width: '52px' }} />
+              <col style={{ width: '52px' }} />
               <col style={{ width: '55px' }} />
               <col style={{ width: '395px' }} />
             </colgroup>
@@ -1733,6 +1751,9 @@ const MBRTab = ({ data, notes }) => {
                 <th className="text-center px-2 py-2">Tgt</th>
                 <th className="text-center px-2 py-2" title="4w Moved to ATS">ATS</th>
                 <th className="text-center px-2 py-2">Tgt</th>
+                <th className="text-center px-2 py-2" title="4w Interview 1">Int 1</th>
+                <th className="text-center px-2 py-2" title="4w Interview 2">Int 2</th>
+                <th className="text-center px-2 py-2" title="4w Interview 3">Int 3</th>
                 <th className="text-center px-2 py-2" title="Jobs Opened &gt; 60 days">{'>'}60d</th>
                 <th className="text-left px-3 py-2">Latest Comment</th>
               </tr>
@@ -1757,6 +1778,9 @@ const MBRTab = ({ data, notes }) => {
                     <td className="text-center px-2 py-2 text-gray-500">{r.actual_screens_target || '—'}</td>
                     <td className="text-center px-2 py-2" style={getCellStyle(r.ats, r.ats_target)}>{r.ats || ''}</td>
                     <td className="text-center px-2 py-2 text-gray-500">{r.ats_target || '—'}</td>
+                    <td className="text-center px-2 py-2 text-gray-300">{r.int1 || ''}</td>
+                    <td className="text-center px-2 py-2 text-gray-300">{r.int2 || ''}</td>
+                    <td className="text-center px-2 py-2 text-gray-300">{r.int3 || ''}</td>
                     <td className="text-center px-2 py-2 text-gray-300">{r.jobs_60d || ''}</td>
                     <td className="text-left px-3 py-3 text-gray-300 align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: '1.55' }}>{r.comment || '—'}</td>
                   </tr>
@@ -1777,6 +1801,9 @@ const MBRTab = ({ data, notes }) => {
                 <td className="text-center px-2 py-2 text-white">{totals.actual_screens_target}</td>
                 <td className="text-center px-2 py-2 text-white">{totals.ats}</td>
                 <td className="text-center px-2 py-2 text-white">{totals.ats_target}</td>
+                <td className="text-center px-2 py-2 text-white">{totals.int1}</td>
+                <td className="text-center px-2 py-2 text-white">{totals.int2}</td>
+                <td className="text-center px-2 py-2 text-white">{totals.int3}</td>
                 <td className="text-center px-2 py-2 text-white">{totals.jobs_60d}</td>
                 <td className="text-left px-3 py-2 text-gray-400">—</td>
               </tr>
@@ -1810,6 +1837,9 @@ const MBRTab = ({ data, notes }) => {
               <col style={{ width: '100px' }} />
               <col style={{ width: '95px' }} />
               <col style={{ width: '70px' }} />
+              <col style={{ width: '55px' }} />
+              <col style={{ width: '55px' }} />
+              <col style={{ width: '55px' }} />
               <col style={{ width: '80px' }} />
             </colgroup>
             <thead>
@@ -1820,6 +1850,9 @@ const MBRTab = ({ data, notes }) => {
                 <th className="text-center px-2 py-2">Contacted</th>
                 <th className="text-center px-2 py-2">Act Scrn</th>
                 <th className="text-center px-2 py-2">ATS</th>
+                <th className="text-center px-2 py-2" title="4w Interview 1">Int 1</th>
+                <th className="text-center px-2 py-2" title="4w Interview 2">Int 2</th>
+                <th className="text-center px-2 py-2" title="4w Interview 3">Int 3</th>
                 <th className="text-center px-2 py-2">Offers</th>
               </tr>
             </thead>
@@ -1832,6 +1865,9 @@ const MBRTab = ({ data, notes }) => {
                   <td className="text-center px-2 py-2" style={getCellStyle(row.contacted, row.contacted_target)}>{row.contacted}</td>
                   <td className="text-center px-2 py-2" style={getCellStyle(row.actual_screens, row.actual_screens_target)}>{row.actual_screens}</td>
                   <td className="text-center px-2 py-2" style={getCellStyle(row.ats, row.ats_target)}>{row.ats}</td>
+                  <td className="text-center px-2 py-2 text-gray-300">{row.int1 || ''}</td>
+                  <td className="text-center px-2 py-2 text-gray-300">{row.int2 || ''}</td>
+                  <td className="text-center px-2 py-2 text-gray-300">{row.int3 || ''}</td>
                   <td className="text-center px-2 py-2 text-gray-300">{row.offers}</td>
                 </tr>
               ))}
@@ -1842,6 +1878,9 @@ const MBRTab = ({ data, notes }) => {
                 <td className="text-center px-2 py-2 text-white">{clientTotals.contacted}</td>
                 <td className="text-center px-2 py-2 text-white">{clientTotals.actual_screens}</td>
                 <td className="text-center px-2 py-2 text-white">{clientTotals.ats}</td>
+                <td className="text-center px-2 py-2 text-white">{clientTotals.int1}</td>
+                <td className="text-center px-2 py-2 text-white">{clientTotals.int2}</td>
+                <td className="text-center px-2 py-2 text-white">{clientTotals.int3}</td>
                 <td className="text-center px-2 py-2 text-white">{clientTotals.offers}</td>
               </tr>
             </tbody>
@@ -1870,6 +1909,9 @@ const MBRTab = ({ data, notes }) => {
               <col style={{ width: '80px' }} />
               <col style={{ width: '80px' }} />
               <col style={{ width: '65px' }} />
+              <col style={{ width: '55px' }} />
+              <col style={{ width: '55px' }} />
+              <col style={{ width: '55px' }} />
               <col style={{ width: '425px' }} />
             </colgroup>
             <thead>
@@ -1882,6 +1924,9 @@ const MBRTab = ({ data, notes }) => {
                 <th className="text-center px-2 py-2">Rec Scrn</th>
                 <th className="text-center px-2 py-2">Act Scrn</th>
                 <th className="text-center px-2 py-2">ATS</th>
+                <th className="text-center px-2 py-2" title="4w Interview 1">Int 1</th>
+                <th className="text-center px-2 py-2" title="4w Interview 2">Int 2</th>
+                <th className="text-center px-2 py-2" title="4w Interview 3">Int 3</th>
                 <th className="text-left px-3 py-2">Latest Comment</th>
               </tr>
             </thead>
@@ -1896,6 +1941,9 @@ const MBRTab = ({ data, notes }) => {
                   <td className="text-center px-2 py-2 align-top" style={getCellStyle(r.recruiter_screens, r.recruiter_screens_target)}>{r.recruiter_screens}</td>
                   <td className="text-center px-2 py-2 align-top" style={getCellStyle(r.actual_screens, r.actual_screens_target)}>{r.actual_screens}</td>
                   <td className="text-center px-2 py-2 align-top" style={getCellStyle(r.ats, r.ats_target)}>{r.ats}</td>
+                  <td className="text-center px-2 py-2 text-gray-300 align-top">{r.int1 || ''}</td>
+                  <td className="text-center px-2 py-2 text-gray-300 align-top">{r.int2 || ''}</td>
+                  <td className="text-center px-2 py-2 text-gray-300 align-top">{r.int3 || ''}</td>
                   <td className="text-left px-3 py-3 text-gray-300 align-top" style={{ whiteSpace: 'normal', wordBreak: 'break-word', lineHeight: '1.55' }}>{r.comment || '—'}</td>
                 </tr>
               ))}
@@ -1908,6 +1956,9 @@ const MBRTab = ({ data, notes }) => {
                 <td className="text-center px-2 py-2 text-white">{tsRows.reduce((s, r) => s + r.recruiter_screens, 0)}</td>
                 <td className="text-center px-2 py-2 text-white">{tsRows.reduce((s, r) => s + r.actual_screens, 0)}</td>
                 <td className="text-center px-2 py-2 text-white">{tsRows.reduce((s, r) => s + r.ats, 0)}</td>
+                <td className="text-center px-2 py-2 text-white">{tsRows.reduce((s, r) => s + (r.int1 || 0), 0)}</td>
+                <td className="text-center px-2 py-2 text-white">{tsRows.reduce((s, r) => s + (r.int2 || 0), 0)}</td>
+                <td className="text-center px-2 py-2 text-white">{tsRows.reduce((s, r) => s + (r.int3 || 0), 0)}</td>
                 <td className="text-left px-3 py-2 text-gray-400">—</td>
               </tr>
             </tbody>

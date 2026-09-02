@@ -1801,7 +1801,7 @@ def build_mbr_ta_actuals(raw_wbr, aux, mbr_wolt_roster, mbr_weeks: list[str], ta
     PBI shows as 0.
     """
     out = defaultdict(lambda: dict(
-        contacted=0, actual_screens=0, ats=0, offers=0, hires=0,
+        contacted=0, actual_screens=0, ats=0, int1=0, int2=0, int3=0, offers=0, hires=0,
         hires_12w=0, screens_12w=0, ats_12w=0, jobs_60d=0,
     ))
     # 4-week MBR actuals from snowflake_wbr
@@ -1832,6 +1832,9 @@ def build_mbr_ta_actuals(raw_wbr, aux, mbr_wolt_roster, mbr_weeks: list[str], ta
             out[key]["contacted"] += mv.get("contacted", 0)
             out[key]["actual_screens"] += mv.get("actual_screens", 0)
             out[key]["ats"] += mv.get("ats", 0)
+            out[key]["int1"] += mv.get("int1", 0)
+            out[key]["int2"] += mv.get("int2", 0)
+            out[key]["int3"] += mv.get("int3", 0)
             out[key]["offers"] += mv.get("offers", 0)
             out[key]["hires"] += mv.get("hires", 0)
     # 12w + 60d from aux
@@ -1857,7 +1860,8 @@ def build_mbr_ta_actuals(raw_wbr, aux, mbr_wolt_roster, mbr_weeks: list[str], ta
     # Drop empty rows
     return {
         k: v for k, v in out.items()
-        if any(v[f] for f in ("contacted", "actual_screens", "ats", "offers", "hires",
+        if any(v[f] for f in ("contacted", "actual_screens", "ats", "int1", "int2", "int3",
+                              "offers", "hires",
                               "hires_12w", "screens_12w", "ats_12w", "jobs_60d"))
     }
 
@@ -1872,6 +1876,7 @@ def build_mbr_ts_actuals(raw_ts, aux, mbr_weeks: list[str], ts_roster=None):
         if ts_roster is not None and fold_name(ts) not in ts_roster:
             continue
         row = dict(contacted_4w=0, recruiter_screens_4w=0, actual_screens_4w=0, ats_4w=0,
+                   int1_4w=0, int2_4w=0, int3_4w=0,
                    hires_12w=0, screens_12w=0, ats_12w=0)
         for wk in mbr_weeks:
             mv = weeks.get(wk, {})
@@ -1879,6 +1884,9 @@ def build_mbr_ts_actuals(raw_ts, aux, mbr_weeks: list[str], ts_roster=None):
             row["recruiter_screens_4w"] += mv.get("recruiter_screens", 0)
             row["actual_screens_4w"] += mv.get("actual_screens", 0)
             row["ats_4w"] += mv.get("ats", 0)
+            row["int1_4w"] += mv.get("int1", 0)
+            row["int2_4w"] += mv.get("int2", 0)
+            row["int3_4w"] += mv.get("int3", 0)
         out[ts] = row
     # 12w from aux (TS role)
     metric_map = {"hires": "hires_12w", "screens": "screens_12w", "ats": "ats_12w"}
@@ -1890,6 +1898,7 @@ def build_mbr_ts_actuals(raw_ts, aux, mbr_weeks: list[str], ts_roster=None):
             continue
         if ts not in out:
             out[ts] = dict(contacted_4w=0, recruiter_screens_4w=0, actual_screens_4w=0, ats_4w=0,
+                           int1_4w=0, int2_4w=0, int3_4w=0,
                            hires_12w=0, screens_12w=0, ats_12w=0)
         out[ts][metric_map[m]] += v
     # drop empty
@@ -1900,10 +1909,12 @@ def build_mbr_ts_actuals(raw_ts, aux, mbr_weeks: list[str], ts_roster=None):
 def build_mbr_client_totals(mbr_ta_actuals):
     """Aggregate mbr_ta_actuals up to display-client level. Matches the original
     dashboard_data shape {client: {contacted, actual_screens, ats, offers, hires, hires_12w}}."""
-    out = defaultdict(lambda: dict(contacted=0, actual_screens=0, ats=0, offers=0, hires=0, hires_12w=0))
+    out = defaultdict(lambda: dict(contacted=0, actual_screens=0, ats=0, int1=0, int2=0, int3=0,
+                                   offers=0, hires=0, hires_12w=0))
     for key, row in mbr_ta_actuals.items():
         client = key.split("|", 1)[0]
-        for f in ("contacted", "actual_screens", "ats", "offers", "hires", "hires_12w"):
+        for f in ("contacted", "actual_screens", "ats", "int1", "int2", "int3",
+                  "offers", "hires", "hires_12w"):
             out[client][f] += row.get(f, 0)
     return {k: v for k, v in out.items()
             if any(v[f] for f in v)}

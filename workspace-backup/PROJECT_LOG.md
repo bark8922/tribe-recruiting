@@ -668,3 +668,381 @@ README that answers it in one line.
 - **WBR TA detail grid.** Already 15 columns (12w Hires / 12w ATS / 12w Scrns / 12w S->H / 12w TTF /
   Hires / Contacted / Screens / ATS / % S->A / # Jobs / 60d+ / Comment). Adding three more is a
   layout decision for Blake, not a data one.
+
+---
+
+## 2026-09-01 (frontend, final) — Int 1/2/3 live on WBR
+
+Commits on bark8922/tribe-recruiting main: `67a3a3d`, `e6abce2`, `9f49b76`, `9b8f42e`.
+Cloudflare Pages auto-deploys from main.
+
+**Now showing Int 1/2/3:** Client Summary, TA Detail, TS (Sourcer) Weekly, and the 6-week
+drill-down. Verified against published data for w36: Reaktor|Simon Siew int1=17 int2=3 int3=2,
+Taxfix|Marina Nikolic int1=6, Pliant|Mateja Jokovic int1=3, Aviv|Kristina Colovic int1=2.
+
+### It took four commits, and the reason is worth writing down
+This dashboard has **three separate accumulators** reading the same `wbr_actuals`
+(Client Summary at ~line 380, TA Detail at ~line 547, TS from `ts_actuals` at ~line 744).
+Adding a metric means touching each one. And the tables are `tableLayout: 'fixed'`, so a new
+column needs, per table:
+  1. the **colgroup** (Client Summary had 8 cols for 11 columns -> text overlapped)
+  2. **every header row** (TA Detail has TWO: main + one repeated per BU group)
+  3. the **body row**
+  4. **every totals row** (TA Detail has TWO: group total + grand total; TS has one)
+  5. any **colSpan** (the Dolphins/Ponies divider was hardcoded 15)
+Miss 4 and values silently shift left — Blake saw "int2 total = 42", which was a different
+metric under the wrong header. Miss 1 and columns visually collapse.
+
+**Checker that should be run before any future column change** — counts colgroup vs every
+`<th>`/`<td>` row per table. Final state: Client Summary 11/11/11, TA Detail 18 across all six
+rows, TS 14/14/14.
+
+### TO DO (agreed with Blake, not started)
+1. **Conversion rates on the tables** — % between stages (ATS->Int1, Int1->Int2, etc).
+   **Blocked on a decision:** the denominator must be scoped to `on_new_pipeline` roles, or old
+   funnel roles that can never reach an interview will drag every rate down.
+2. **MBR** — needs `render_json.py` extended first; `mbr_ta_actuals` / `mbr_ta_targets` carry no
+   interview fields at all. Frontend alone will not do it.
+3. **`on_new_pipeline` in the UI** — column exists on the `job` table (PROD V2 v253) but nothing
+   reads it; old-funnel rows show a bare 0 instead of a dash.
+4. **`ts_weekly` non-ISO weeks** — `YEAR()`/`WEEKOFYEAR()` instead of ISO. Zero divergence for all
+   of 2026; **breaks on 1-3 Jan 2027** (files them as year 2027 week 53, a week that cannot exist).
+   Fix before Christmas.
+5. **TA Detail is now 18 columns.** Was already dense at 15. If cramped, drop or narrow something
+   rather than squeezing further.
+6. Part 2 surfaces: IR funnel, Circle, Tribe Bot, Slack roles bot.
+7. Parked: `>= N` gates drop move-backs (289 on ATS); `date_screen` cascade inflation (Jonaed 97 vs
+   18 real); POSITIVE_RESPONSE ungated everywhere; 6,448 historical phantoms Mikhail could archive.
+8. **Unrelated, more serious: RLS disabled on 17 tribe-job-intel Supabase tables**, incl.
+   dash_candidates (95k) and dash_candidate_dq (92k) — readable/writable with the anon key.
+
+### 2026-09-01 — priority order agreed with Blake (supersedes the to-do list above)
+
+**DECIDED, not an open question:** interview conversion denominator = **new-funnel roles only**
+(`on_new_pipeline`). Old-funnel roles cannot reach Int 1/2/3, so including them just inflates the
+denominator. I wrongly parked work behind this as if it needed a decision.
+
+**1. MBR.** Acceptance test, Blake's: **4 weeks of WBR must sum to MBR** (MBR is a rolling 4-week
+window — see [[reference-mbr-window-is-rolling-4-weeks]]). Switching between the tabs should show no
+difference. Verify with a query, not by eye. Needs `render_json.py` extended first
+(`mbr_ta_actuals` / `mbr_ta_targets` carry no interview fields), then MBRTab.
+
+**2. Circle.** `bark8922/tribe-circle`. By-job table only, NOT the member gauges. `METRIC_FIELDS` in
+`inject_jobs.py` + the job table in `circle.html`. Reads `project_dashboard.rows`, which already
+carries int1/2/3 — no data work.
+
+**3. Tribe Bot — HANDED TO BLAKE**, to be done in the Tribe Bot chat which holds that context.
+Changing the `candidate_dq_by_stage` stage ladder propagates to Supabase via the gz + droplet
+loader, so it needs checking that the bot still reads correctly. Decision already made: expose
+Int 1/2/3, remove the collapsed "Interview" rung, fold old-funnel interview events to Moved to ATS.
+
+**4. Slack roles bot = "Your Roles Weekly Update"** (the 16:45 sourcer DM). Runs on tribe-job-intel
+Supabase; funnel mirrored in `dash_funnel`, `pipeline_weekly_cache`, `pipeline_weekly_cache_by_ts`,
+fed from the dashboard `.gz`. Needs schema + loader + DM rendering, and the **voice pilot renders the
+same fields separately** so that's a second place to sync. See [[reference-roles-weekly-bot]].
+**Open question for Blake: does a sourcer's weekly DM even want interview counts?**
+
+**5. Conversions on the tables** — build item now the denominator is settled.
+
+**DROPPED by Blake:** IR funnel (unsure anyone uses it, he'll revisit with Sonia); the `ts_weekly`
+non-ISO week fix; telling Simon/Mateja.
+
+**KEPT, outside this queue:** RLS disabled on 17 tribe-job-intel Supabase tables.
+
+---
+
+## 2026-09-02 — Wave 3 shipped: MBR, Circle, Tribe Bot
+
+**MBR (item 1) DONE.** `tribe-recruiting` `70c0733`. `render_json.py` carries int1/2/3 through
+`build_mbr_ta_actuals`, `build_mbr_ts_actuals` (`_4w` suffix) and `build_mbr_client_totals`;
+MBRTab renders them in all three tables. Column counts checked against colgroup, headers, body
+and every totals row (the trap from 2026-09-01).
+
+The 4-weeks-of-WBR-equals-MBR identity holds **by construction**: int1/2/3 accumulate on the
+identical loop, inside the identical filters, immediately next to `ats` in all three builders.
+All three drop-empty filters were also extended, so a person with only interview activity is
+not silently dropped.
+
+**Verified the deploy path rather than assuming it.** The Keboola render task
+(`01kpr863ypqr5pt74wms8fdj67`) has `parameters.source = "git"`, branch `main`, entry
+`recruiting-dashboard/refresh_staging/keboola_entry.py`. It clones the repo at run time, so there
+is NO stale copy of `render_json.py` inside Keboola and the GitHub push IS the deploy.
+
+**Circle (item 2) DONE, after one real mistake.** `tribe-circle` `f7bf158` then `3aae1ca`.
+
+- `inject_jobs.py`: int1/2/3 added to `METRIC_FIELDS`.
+- **Latent KeyError caught before commit:** `aggregate_jobs` seeds each job bucket from an
+  explicit field list that did not include the new fields, so `b[f] += ...` would have crashed
+  on the first row. `METRIC_FIELDS` alone is not enough; the seed dict must match it.
+- **THE MISTAKE: `index.html` and `circle.html` are byte-identical twins and the Worker serves
+  `index.html`.** I edited only `circle.html`, so the columns never reached the live page and
+  Blake correctly reported seeing nothing. Fixed by copying one to the other. **Anything that
+  edits the Circle page must write BOTH files.** This is a footgun worth removing later.
+
+**Tribe Bot (item 3) DONE HERE, not handed off.** Config `01m0hpfwrz98tvaxn4km3y8zx7`
+**v8 -> v12** (rollback: 8). Job `1017147661` succeeded, 92,397 rows in and out, unchanged.
+
+**Blake overruled the earlier decision, and was right.** The old plan (fold old-funnel interview
+events into Moved to ATS) would have destroyed 1,394 genuine interview rejections and made old
+roles look like they never interviewed anyone. The whole point is to SEE the difference between
+the funnels. New ladder keeps them separate:
+
+| Rung | New funnel | Old funnel |
+|---|---|---|
+| Interview (old funnel) | 0 | 1,394 |
+| Interview 1 | 13 | 0 |
+| Interview 2 | 4 | 0 |
+| Interview 3 | 1 | 0 |
+
+**Zero crossover**, verified live. Also added `date_int1/2/3` and an `on_new_pipeline` boolean
+(same flag the dashboard uses) so the bot can scope by generation. `date_interview` left
+unchanged for backward compatibility. Config description rewritten to document all of it, since
+that description is the documentation the next person reads.
+
+Nothing else in the table moved: every other rung is identical before and after.
+
+**Timing note:** the writer (`01m0htjpz…`) builds 09:00 and the droplet loads Supabase 10:00
+Prague, both already past today, so the bot picks this up on tomorrow's cycle. No action needed.
+
+### Still open
+- **Conversions on the tables** (old item 5). Denominator settled: `on_new_pipeline` only.
+- **Slack roles bot** (old item 4). Blake: underlying data yes, DM rendering NOT needed.
+- **Frontend does not use `on_new_pipeline` yet** — old-funnel rows show 0 rather than a dash.
+- RLS disabled on 17 tribe-job-intel Supabase tables.
+
+---
+
+## 2026-09-02 — Circle: Simon and Jelena had rings but no jobs
+
+**Shipped** `4042610` on bark8922/tribe-circle, workflow_dispatch fired, live at 08:10Z.
+
+`inject_jobs.py` `aggregate_jobs()` matched `r.get("ta") != name` on the raw string.
+`project_dashboard.rows` holds `"Simon  Siew"` and `"Jelena  Lacmanovic"` double-spaced;
+circle members hold them single-spaced. Zero matches, empty `_jobs`.
+
+**The tell**: rings showed real numbers while the job list was empty. Rings read
+`wbr_actuals[f"{client}|{ta}"]`, which is single-spaced (normalized upstream), and `_drops`
+matches on client not name. Same file, two conventions.
+
+**Blast radius**: simulated all 22 members raw vs normalized against the same source.
+Only Simon (0/0 -> 3/3) and Jelena (0/0 -> 4/4) changed. All others byte-identical. The other
+zeros this week are real (3-day week; they all show jobs for W35).
+
+Fix is `norm_name()` = `re.sub(r"\s+", " ", s).strip()` on both sides of the ta/ts/client
+compare, mirroring `normalizeTa` in App.jsx.
+
+**Still unswept**: `"Manuel  Carvalho"` and `"Pratik  Sridhar"` carry the same defect in the
+source. Not in Circle today, so nothing is broken, but they break identically if added, and any
+other consumer keyed on a raw `ta`/`ts` from `project_dashboard.rows` is exposed.
+
+### I got a number wrong and Blake caught it
+I claimed `wbr_actuals` (ats=18) and `project_dashboard.rows` (ats=3) disagreed for Simon W36 and
+blamed the `date_ats` anchor split. They do not disagree. I had compared the hand-committed
+`circle_data.json` from `f7bf158` — built off an older source snapshot — against the current `.gz`.
+**Rule: before calling two numbers a disagreement, confirm both came from the same vintage.**
+Only `circle-refresh-bot` commits to `circle_data.json` are a valid reference point.
+
+## 2026-09-02 later — false zeros in the interview columns
+
+**The problem, sized:** in ISO weeks 30-36, of 362 project_dashboard rows where a candidate was
+actually moved to ATS, **225 (62%) are old-funnel roles that cannot physically have an
+Interview 1/2/3**, and every one displayed `0`. The other 91 zeros are genuine (new-funnel role,
+nobody reached that round). A reader cannot tell the two apart, so the whole column reads as
+"we barely interview anyone".
+
+**Data:** weekly funnel `01kpqh9r7g2z66c8vvdr5d87xd` **v30 -> v32** (rollback 30). `job_meta`
+now carries `on_new_pipeline` from `out.c-reporting-v2.job` and the final SELECT emits
+`ON_NEW_PIPELINE` via a `LEFT JOIN job_meta jm2`. Job `1017150706` succeeded.
+
+Verified: **29,175 rows before and after**, so the extra join caused no fan-out, and
+**0 interviews sit on old-funnel roles**, which independently confirms the flag agrees with the
+event data.
+
+**Frontend:** `tribe-recruiting` `aab5bcf`. One helper at the top of `App.jsx`:
+
+    const intCell = (v, np) => (np === 0 && !v) ? '—' : (v || 0).toLocaleString();
+
+`np` is a count of how many new-pipeline rows are behind that cell, accumulated alongside
+int1/2/3 in each PD-fed aggregator. **The invariant that makes this safe: a dash appears only
+when np is 0 AND the value is 0, so a real number can never be hidden**, and a source table with
+no flag passes `np = null` and is untouched. Covers Project Dashboard (client + job rows) and
+KPI-TS Summary (sourcer + job rows).
+
+**Deliberately left alone:** WBR and MBR read `wbr_weekly`, which has no `on_new_pipeline`.
+Doing those needs a new-pipeline job count on that table first, because a person's row blends
+old and new roles and a dash would be wrong there. Weekly Summary reads `weekly_summary`, same
+situation.
+
+**Put the helper at the top of the file on purpose** — six of the twelve call sites sit above
+where it was first written. Function bodies make that safe, but this app has already produced
+one blank page from a TDZ mistake ([[incident-leader-dashboard-tdz-blank]]), so no reliance on
+subtlety.
+
+### 2026-09-02 11:40 — all of today's work verified live
+
+Flow `1017155870` ran 10:48 Prague, all tasks green, render included.
+
+**MBR acceptance test PASSES numerically, not just by construction.** MBR window is
+**w32-w35** (not w33-w36; it is a rolling 4 weeks, see [[reference-mbr-window-is-rolling-4-weeks]]).
+Across all 20 client|TA keys MBR shows, 4 weeks of `wbr_actuals` equals `mbr_ta_actuals` exactly:
+
+| metric | 4wk WBR | MBR | per-key |
+|---|---|---|---|
+| int1 | 71 | 71 | 20/20 |
+| int2 | 16 | 16 | 20/20 |
+| int3 | 7 | 7 | 20/20 |
+| ats (control) | 373 | 373 | 20/20 |
+
+`mbr_client_totals` int1 = 71, agreeing with the TA table.
+
+**Dash fix live:** published JSON carries `on_new_pipeline`, 500 flagged rows, and **0 interviews
+on old-funnel rows**.
+
+**Circle live:** `31a3a02` at 10:51 Prague. All 149 job entries carry int1/2/3, 70 interviews.
+
+## 2026-09-02 — DEFECT AUDIT against live data (Blake asked me to prove each one)
+
+Blake was right to push back. **Two of the five were not real.** All numbers below are from the
+live tables after today's 10:48 flow run.
+
+### NOT AN ISSUE — ts_weekly vs project_dashboard "disagreement"
+The 2025 gap was **coverage, not disagreement**: `ts_weekly` holds no 2025 rows at all, so all
+2,781 of those sourcer-weeks exist only in project_dashboard. Of the **1,408 sourcer-weeks
+present in BOTH** in 2026, **8 differ on screens and 4 on ATS**, and 6 of the 8 are the current
+incomplete week (built minutes apart in the flow). The rest is deliberate roster gating:
+`ts_weekly` is capped to the sourcer roster, so TAs who appear as `job_sourcer` (Fuad Safarov,
+Chantal Bozkurt, Wladyslaw Gadomski) show in PD only. **Close this one.**
+I also checked the hypothesis that week 1 is a garbage bucket. It is not: 79 rows / 566 contacted
+is a genuinely short holiday week, lower than weeks 2-5, not inflated.
+
+### NOT AN ISSUE — POSITIVE_RESPONSE ungated
+**Zero phantom Positive Response events in every year on record.** The concern was that a burst
+could write a fake PR. It has never happened. **Close this one.**
+
+### REAL BUT HISTORICAL ONLY — phantom bursts
+| year | burst events | phantom | legit bulk move |
+|---|---|---|---|
+| 2024 | 10,540 | **3,375** | 7,165 |
+| 2025 | 39,329 | **2,807** | 36,522 |
+| 2026 | 24,148 | **44** (6 ATS) | 24,104 |
+
+Mikhail's archive worked. 2026 is effectively clean. This only distorts 2024/2025, so it matters
+for year-over-year analysis, not for anything operational. Note again how large the **legitimate**
+bulk-move column is: 24,104 in 2026 alone. A naive burst filter would still be catastrophic.
+
+### REAL BUT HISTORICAL ONLY — the stage_current_num gates
+Candidates with a genuine `Moved to ATS` event whose `candidate_stage.date_ats` is NULL because
+they were later moved back down, so they are counted nowhere:
+
+| year | real ATS moves | not counted | % |
+|---|---|---|---|
+| 2024 | 12,226 | 674 | 5.5% |
+| 2025 | 14,316 | 633 | 4.4% |
+| 2026 | 7,564 | **9** | **0.1%** |
+
+Same shape as the bursts: older cohorts have had time to be moved back down. It understates
+2024/2025 ATS by 4-5% and current-year by nothing. It is uniform across every surface (the gate
+lives in PROD V2), so it is an understatement, not a disagreement.
+
+### REAL AND CURRENT — the Aiven stage-name gap, and it splits two surfaces
+`project_dashboard.ats_ev` gates on the exact stage NAME `moved_to_stage = 'Moved to ATS'`.
+Other Offsite-typed stages are invisible to it:
+
+| stage name | events | candidates | counted by PD? |
+|---|---|---|---|
+| Moved to ATS | 23,442 | 21,880 | yes |
+| **Move to ATS stage** | 22 | **20** | **no** |
+| Hiring Manager Interview (trailing space) | 15 | 15 | no |
+| Language Check | 2 | 1 | no |
+
+**The cross-surface consequence:** `candidate_dq_by_stage` gates on `moved_to_stageType = 'Offsite'`,
+so the **Tribe Bot counts these 20 candidates as having reached ATS while the dashboard does not.**
+Two surfaces, same question, different answers. Small (36 candidates over 18 months) but it is the
+only one of the five that is both current and inconsistent between surfaces. Fix = gate PD on the
+stage TYPE, matching the DQ table.
+
+### One-row nit
+A single project_dashboard row sits in **ISO_YEAR 2202**, week 47, from one typo'd date.
+
+### Verdict
+Nothing here justifies dropping other work. The only one worth doing soon is the stage-name gap,
+because it makes the Tribe Bot and the dashboard disagree. The gates and the bursts are
+history-accuracy items to fix if and when someone does year-over-year analysis.
+
+## 2026-09-02 — dash_funnel: what the Tribe Bot needs
+
+**Traced, not guessed.** `dash_funnel` (29,174 rows) is a mirror of `project_dashboard`. Its
+column names are the **lowercase snake_case keys from `render_json.load_project_dashboard`**, not
+the Snowflake uppercase names, which is how we know the loader reads
+`dashboard_data_snowflake.json.gz` -> `project_dashboard.rows` directly rather than going via
+Keboola. Load pattern is truncate-and-reload: a Postgres helper `dash_truncate_all()` clears
+dash_jobs, dash_tth, dash_funnel, dash_hires, dash_drops_sourcer, dash_drops_recruiter, then the
+Onyx loader on the DigitalOcean droplet bulk-inserts. `dash_candidates` and `dash_candidate_dq`
+are loaded separately (hence the separate Keboola writer `01m0htjpz…`).
+
+Currently healthy and current: max week 36, and w35 ATS = 107, matching the dashboard.
+
+**Keboola side: NOTHING TO DO.** The published gz already carries int1/int2/int3 and
+`on_new_pipeline` as of today.
+
+**Two things needed, neither in Keboola:**
+1. Supabase DDL on `dash_funnel`: `int1`, `int2`, `int3` integer + `on_new_pipeline` boolean.
+2. The Onyx loader on the droplet must include those fields in its insert. **No access from here.**
+
+**The ordering risk:** if the loader inserts by NAME (dicts / explicit column list), adding
+nullable columns is safe and can go first. If it inserts POSITIONALLY, adding columns breaks the
+next nightly load. `dash_candidate_dq` proves its own loader is name-based (it has a serial `id`
+with a nextval default that it cannot be supplying). **`dash_funnel` has no such tell**, so this
+needs confirming with whoever owns the droplet before touching the schema.
+
+**Good news on the DQ side:** today's ladder change reaches the bot tomorrow with ZERO extra work,
+because `Interview 1/2/3` and `Interview (old funnel)` are new VALUES in the existing `stage` text
+column. Only the new `date_int1/2/3` and `on_new_pipeline` COLUMNS need the DDL + loader change.
+
+So the bot gets the important half for free, and the funnel half is blocked on the droplet.
+
+### 2026-09-02 later — post-handover check on the Tribe Bot tables
+
+**Columns added** to `dash_funnel` (int1/2/3, on_new_pipeline) and `dash_candidate_dq`
+(date_int1/2/3, on_new_pipeline), all nullable, no defaults, with column comments.
+
+**The positional-insert risk is now DISPROVEN and closed.** `dash_funnel` reloaded cleanly after
+the DDL (29,190 rows), so its loader is name-based like the DQ one. The columns are safe.
+
+**But the four funnel fields are still arriving empty.** Verified both ends:
+
+| | rows | flagged on_new_pipeline | interviews |
+|---|---|---|---|
+| published `.gz` (`project_dashboard.rows`) | 29,191 | **511** | **176** |
+| Supabase `dash_funnel` | 29,190 | **0** | **0** |
+
+All four keys ARE in the published file. The loader is reading it and inserting rows but not
+mapping the new fields, so its column list or field-picking step still needs them added.
+
+**`dash_candidate_dq` is on track, not broken.** It still shows the old collapsed `Interview` rung
+(1,412) because its file is built at 09:00 Prague and the transform change landed ~10:05. Tomorrow's
+build carries the split ladder. No action.
+
+### 2026-09-02 — dash_funnel CONFIRMED WORKING
+
+Onyx loader updated. `dash_funnel` now carries the interview fields and matches the published file
+exactly: **29,190 rows, 511 flagged `on_new_pipeline`, 176 interviews, and `must_be_zero` = 0**
+(no interviews on rows the flag says cannot have them).
+
+Cross-surface check against the dashboard, 2026:
+
+| wk | ats | int1 | int2 | int3 |
+|---|---|---|---|---|
+| 33 | 86 | 10 | 4 | 2 |
+| 34 | 109 | 40 | 8 | 3 |
+| **35** | **107** | **20** | **3** | **1** |
+| 36 (live) | 25 | 35 | 8 | 7 |
+
+**Week 35 is the control**: a completed week, and it matches the dashboard exactly (107 / 20 / 3 / 1).
+Weeks 34 and 36 differ slightly from this morning's snapshot only because the day's later flow runs
+added activity. So the Tribe Bot and the dashboard now answer funnel questions identically.
+
+`dash_candidate_dq` still on the old collapsed ladder until tomorrow's 09:00 build. Expected.
+
+Also worth remembering: I handed Blake a SQL snippet without saying where to run it and it was
+pasted into bash. **Say the client, or better, just run it myself over the Supabase MCP.**

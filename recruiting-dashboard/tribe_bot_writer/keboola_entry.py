@@ -52,7 +52,9 @@ STR_FIELDS = ["candidate_id", "job_id", "job_title", "client_name",
               "job_category", "job_subcategory",
               "stage", "stage_detail", "reason"]
 DATE_FIELDS = ["dq_date", "date_contacted", "date_screen", "date_screen_actual",
-               "date_ats", "date_interview"]
+               "date_ats", "date_interview",
+               # new-funnel interview rounds, added 2026-09-02. NULL on old-funnel roles.
+               "date_int1", "date_int2", "date_int3"]
 
 
 def gh(url, token, method="GET", data=None):
@@ -104,6 +106,10 @@ def main():
                 obj[k] = v or None
             ext = (r.get("is_external_recruiter") or "").strip().lower()
             obj["is_external_recruiter"] = ext in ("true", "1", "yes")
+            # true when the role runs the new interview funnel (Interview 1/2/3).
+            # Interview conversion denominators must be scoped to this flag.
+            newp = (r.get("on_new_pipeline") or "").strip().lower()
+            obj["on_new_pipeline"] = newp in ("true", "1", "yes", "t")
             rows.append(obj)
 
     payload = {
